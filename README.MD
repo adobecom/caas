@@ -1,10 +1,6 @@
-# CaaS-UI
-
-CaaS-UI is a web-based user interface for a cloud-based application. It is built on the React.js library.
-
 ## Installation
 
-To install caas-ui, simply clone the repo from github:
+To install, simply clone the repo from github:
 
 ```
 git clone https://github.com/<username>/caas-ui
@@ -36,4 +32,4 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[Apache](https://choosealicense.com/licenses/apache/)
