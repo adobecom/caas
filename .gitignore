@@ -114,3 +114,8 @@ web_modules/
 .pnp.*
 
 .idea
+
+#compiled local files
+/dist/main.js
+/dist/main.min.js
+/dist/main.source.js
