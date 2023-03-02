@@ -1,5 +1,14 @@
 
 
+# [0.4.0](https://github.com/adobecom/caas/compare/0.3.1...0.4.0) (2023-03-02)
+
+
+### Features
+
+* couldn't name variable obj ([cb9ae14](https://github.com/adobecom/caas/commit/cb9ae14a0add72f07da98811a7197c82c60b7961))
+* **grid:** add ability to hide ctas on indiv. cards ([1df96e6](https://github.com/adobecom/caas/commit/1df96e64e351eb60237771f0bc8845b259aa1f1f))
+* moving where function was ([b6f2728](https://github.com/adobecom/caas/commit/b6f27286ac50ac05f2072654b72bf9bb74ac6164))
+
 ## [0.3.1](https://github.com/adobecom/caas/compare/0.3.0...0.3.1) (2023-03-02)
 
 # [0.3.0](https://github.com/adobecom/caas/compare/0.2.2...0.3.0) (2023-03-02)
