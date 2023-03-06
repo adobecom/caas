@@ -2,6 +2,7 @@ const path = require('path');
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
+const webpack = require('webpack');
 
 const extractStyles = new ExtractTextPlugin({
     filename: './app.css', // this is output name for file
@@ -15,9 +16,16 @@ const listStyles = new StyleLintPlugin({
     fix: false,
 });
 
+const date = new Date().toLocaleString('en-US', { hour12: false });
+
 const plugins = [
     extractStyles,
     listStyles,
+    new webpack.BannerPlugin({
+        banner: `Chimera UI Libraries - Build ${date}
+        `,
+        entryOnly: true,
+    }),
 ];
 
 module.exports = {
