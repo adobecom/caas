@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 3/30/2023, 14:47:25
+ * Chimera UI Libraries - Build 3/30/2023, 15:12:07
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -9114,7 +9114,7 @@ domRegistry.register({
     consonantPageRDC: _ConsonantPageDOM2.default
 });
 
-alert('hi');
+console.log('hi');
 
 var initReact = function initReact(element) {
     domRegistry.init(element);
