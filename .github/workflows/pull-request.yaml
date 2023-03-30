@@ -85,7 +85,7 @@ jobs:
           path: '.'
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: crazy-max/ghaction-github-pages
+        uses: crazy-max/ghaction-github-pages@v1
         with:
           target_branch: ${{ github.ref_name }}
           build_dir: build
