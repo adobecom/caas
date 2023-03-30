@@ -90,7 +90,7 @@ jobs:
           target_branch: ${{ github.ref_name }}
           build_dir: dist
         env:
-          GH_PAT: ${{ secrets.CAAS_TOKEN }}
+          GITHUB_PAT: ${{ secrets.CAAS_TOKEN }}
   run-e2e-tests:
     runs-on: ubuntu-latest
     needs: deployment
