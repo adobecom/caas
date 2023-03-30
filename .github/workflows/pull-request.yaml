@@ -85,9 +85,12 @@ jobs:
           path: '.'
       - name: Deploy to GitHub Pages
         id: deployment
+        uses: crazy-max/ghaction-github-pages
         with:
-          token: ${{ secrets.CAAS_TOKEN }}
-        uses: actions/deploy-pages@v2
+          target_branch: ${{ github.ref_name }}
+          build_dir: build
+        env:
+          GITHUB_TOKEN: ${{ secrets.CAAS_TOKEN }}
   run-e2e-tests:
     runs-on: ubuntu-latest
     needs: deployment
