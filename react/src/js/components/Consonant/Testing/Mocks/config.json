@@ -124,6 +124,7 @@
             }
         }
     },
+    "hideCtaIds": "[]",
     "sort": {
         "enabled": true,
         "defaultSort": "featured",

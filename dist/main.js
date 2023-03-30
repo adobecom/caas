@@ -1,3 +1,7 @@
+/*!
+ * Chimera UI Libraries - Build 3/29/2023, 23:14:48
+ *         
+ */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1500,6 +1504,8 @@ var FILTER_PANEL = exports.FILTER_PANEL = {
 var SORT_TYPES = exports.SORT_TYPES = {
     DATEASC: 'dateasc',
     DATEDESC: 'datedesc',
+    MODIFIEDDESC: 'modifieddesc',
+    MODIFIEDASC: 'modifiedasc',
     EVENTSORT: 'eventsort',
     FEATURED: 'featured',
     TITLEASC: 'titleasc',
@@ -1576,6 +1582,7 @@ var DEFAULT_CONFIG = exports.DEFAULT_CONFIG = {
         }
     },
     featuredCards: [],
+    hideCtaIds: [],
     header: {
         enabled: false
     },
@@ -2239,7 +2246,7 @@ module.exports = Object.keys || function keys(O) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.getFeaturedCards = exports.getRandomSort = exports.getUpdatedCardBookmarkData = exports.processCards = exports.getCardsMatchingSearch = exports.getEventSort = exports.getDateDescSort = exports.getDateAscSort = exports.getFeaturedSort = exports.getTitleDescSort = exports.getTitleAscSort = exports.hasTag = exports.getCardsMatchingQuery = exports.highlightCard = exports.getFilteredCards = exports.getActivePanels = exports.getActiveFilterIds = exports.getBookmarkedCards = exports.getCollectionCards = exports.getTotalPages = exports.getNumCardsToShow = exports.shouldDisplayPaginator = undefined;
+exports.getFeaturedCards = exports.getRandomSort = exports.getUpdatedCardBookmarkData = exports.processCards = exports.getCardsMatchingSearch = exports.getEventSort = exports.getDateDescSort = exports.getDateAscSort = exports.getFeaturedSort = exports.getModifiedAscSort = exports.getModifiedDescSort = exports.getTitleDescSort = exports.getTitleAscSort = exports.hasTag = exports.getCardsMatchingQuery = exports.highlightCard = exports.getFilteredCards = exports.getActivePanels = exports.getActiveFilterIds = exports.getBookmarkedCards = exports.getCollectionCards = exports.getTotalPages = exports.getNumCardsToShow = exports.shouldDisplayPaginator = undefined;
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -2405,7 +2412,7 @@ var getFilteredCards = exports.getFilteredCards = function getFilteredCards(card
         } else if (usingOrFilter) {
             // check if card' tags panels include all panels with selected filters
             var tagPanels = new Set(card.tags.map(function (tag) {
-                return tag.parent.id;
+                return tag.parent.id || tag.id.replace(/\/.*$/, '');
             }));
             if (!(0, _general.isSuperset)(tagPanels, activePanels)) return false;
 
@@ -2560,6 +2567,31 @@ var getTitleAscSort = exports.getTitleAscSort = function getTitleAscSort(cards) 
  */
 var getTitleDescSort = exports.getTitleDescSort = function getTitleDescSort(cards) {
     return getTitleAscSort(cards).reverse();
+};
+
+/**
+ * Returns all cards sorted by date modified newest to oldest
+ * @param {Array} cards - All cards in the card collection
+ * @returns {Array} - All cards sorted by title
+ */
+var getModifiedDescSort = exports.getModifiedDescSort = function getModifiedDescSort(cards) {
+    return cards.sort(function (cardOne, cardTwo) {
+        var cardOneModDate = (0, _general.getByPath)(cardOne, 'modifiedDate');
+        var cardTwoModDate = (0, _general.getByPath)(cardTwo, 'modifiedDate');
+        if (cardOneModDate && cardTwoModDate) {
+            return cardTwoModDate.localeCompare(cardOneModDate);
+        }
+        return 0;
+    });
+};
+
+/**
+ * Returns all cards sorted by date modified oldest to newest
+ * @param {Array} cards - All cards in the card collection
+ * @returns {Array} - All cards sorted by title
+ */
+var getModifiedAscSort = exports.getModifiedAscSort = function getModifiedAscSort(cards) {
+    return getModifiedDescSort(cards).reverse();
 };
 
 /**
@@ -3104,8 +3136,9 @@ var VideoButton = function VideoButton(_ref) {
         _react2.default.createElement(
             'button',
             {
-                className: 'consonant-HalfHeightCard-videoButton-wrapper',
+                className: 'consonant-videoButton-wrapper',
                 'daa-ll': 'play',
+                'aria-label': 'Play',
                 onClick: handleShowModal },
             _react2.default.createElement('div', { className: className })
         ),
@@ -6347,6 +6380,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     collection: {},
     featuredCards: [{}],
     filterPanel: {},
+    hideCtaIds: [{}],
     sort: {},
     pagination: {},
     bookmarks: {},
@@ -6362,6 +6396,7 @@ var Container = function Container(props) {
 
     var getConfig = (0, _consonant.makeConfigGetter)(config);
     var filterGroupPrefix = 'ch_';
+    var searchPrefix = 'sh_';
 
     /**
      **** Authored Configs ****
@@ -6382,6 +6417,7 @@ var Container = function Container(props) {
     var defaultSort = getConfig('sort', 'defaultSort');
     var defaultSortOption = (0, _consonant.getDefaultSortOption)(config, defaultSort);
     var featuredCards = getConfig('featuredCards', '').toString().replace(/\[|\]/g, '').replace(/`/g, '').split(',');
+    var hideCtaIds = getConfig('hideCtaIds', '').toString().replace(/\[|\]/g, '').replace(/`/g, '').split(',');
     var leftPanelSearchPlaceholder = getConfig('search', 'i18n.leftFilterPanel.searchPlaceholderText');
     var topPanelSearchPlaceholder = getConfig('search', 'i18n.topFilterPanel.searchPlaceholderText');
     var searchPlaceholderText = getConfig('search', 'i18n.filterInfo.searchPlaceholderText');
@@ -6774,6 +6810,15 @@ var Container = function Container(props) {
             var filterClearedState = getFilterItemClearedState(id, prevFilters);
             return filterClearedState;
         });
+
+        var urlParams = new URLSearchParams(window.location.search);
+        clearUrlState();
+        urlParams.forEach(function (value, key) {
+            var chFilter = key.toLowerCase().replace('ch_', '').replace(' ', '-');
+            if (key.indexOf(filterGroupPrefix) !== 0 || !id.includes(chFilter)) {
+                setUrlState(key, value.replace('%20', ' '));
+            }
+        });
     };
 
     /**
@@ -6842,6 +6887,7 @@ var Container = function Container(props) {
      */
     var handleSearchInputChange = function handleSearchInputChange(val) {
         setSearchQuery(val);
+        setUrlState(searchPrefix, val);
     };
 
     /**
@@ -7166,7 +7212,7 @@ var Container = function Container(props) {
                 setIsFirstLoad(true);
                 if (!(0, _general.getByPath)(payload, 'cards.length')) return;
 
-                var _removeDuplicateCards = new _JsonProcessor2.default(payload.cards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds),
+                var _removeDuplicateCards = new _JsonProcessor2.default(payload.cards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds),
                     _removeDuplicateCards2 = _removeDuplicateCards.processedCards,
                     processedCards = _removeDuplicateCards2 === undefined ? [] : _removeDuplicateCards2;
 
@@ -7377,7 +7423,7 @@ var Container = function Container(props) {
      * @returns {Object}
      * */
     var getFilteredCollection = function getFilteredCollection() {
-        return cardFilterer.sortCards(sortOption, eventFilter, featuredCards, isFirstLoad).keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks).keepCardsWithinDateRange().filterCards(activeFilterIds, activePanels, filterLogic, _constants.FILTER_TYPES).truncateList(totalCardLimit).searchCards(searchQuery, searchFields).removeCards(inclusionIds);
+        return cardFilterer.sortCards(sortOption, eventFilter, featuredCards, hideCtaIds, isFirstLoad).keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks).keepCardsWithinDateRange().filterCards(activeFilterIds, activePanels, filterLogic, _constants.FILTER_TYPES).truncateList(totalCardLimit).searchCards(searchQuery, searchFields).removeCards(inclusionIds);
     };
 
     /**
@@ -8026,6 +8072,17 @@ var Grid = function Grid(props) {
         element.scrollIntoView({ block: 'nearest' });
     };
 
+    /**
+     * Determines whether ctas should be hidden on a given card
+     * @param {Object} card - object to get value
+     * @param {String} style - the collection button style
+     * @returns {bool} - whether a cta should be hidden
+     */
+    var getHideCta = function getHideCta(card, style) {
+        if (card.hideCtaId || style === 'hidden') return true;
+        return false;
+    };
+
     return cardsToshow.length > 0 && _react2.default.createElement(
         'div',
         {
@@ -8043,6 +8100,7 @@ var Grid = function Grid(props) {
                 id = card.id;
 
             var cardNumber = index + 1;
+            var hideCTA = getHideCta(card, collectionButtonStyle);
 
             switch (cardStyle) {
                 case _constants.CARD_STYLES.FULL:
@@ -8096,7 +8154,7 @@ var Grid = function Grid(props) {
                         renderBorder: renderCardsBorders
                     }, card, {
                         renderOverlay: renderCardsOverlay,
-                        hideCTA: collectionButtonStyle === 'hidden',
+                        hideCTA: hideCTA,
                         onFocus: function onFocus() {
                             return scrollCardIntoView(card.id);
                         } }));
@@ -8111,7 +8169,7 @@ var Grid = function Grid(props) {
                         locale: locale,
                         renderBorder: renderCardsBorders,
                         renderOverlay: renderCardsOverlay,
-                        hideCTA: collectionButtonStyle === 'hidden',
+                        hideCTA: hideCTA,
                         onFocus: function onFocus() {
                             return scrollCardIntoView(card.id);
                         } }));
@@ -8128,7 +8186,7 @@ var Grid = function Grid(props) {
                         locale: locale,
                         renderBorder: renderCardsBorders,
                         renderOverlay: renderCardsOverlay,
-                        hideCTA: collectionButtonStyle === 'hidden',
+                        hideCTA: hideCTA,
                         onFocus: function onFocus() {
                             return scrollCardIntoView(card.id);
                         } }));
@@ -50036,7 +50094,9 @@ var OneHalfCard = function OneHalfCard(props) {
             } else if (cardButtonStyle === 'link') {
                 infobit.type = _constants.INFOBIT_TYPE.LINK;
             }
-            return infobit;
+            return _extends({}, infobit, {
+                isCta: true
+            });
         });
     }
 
@@ -50603,6 +50663,7 @@ var buttonType = {
     iconSrc: _propTypes.string,
     iconAlt: _propTypes.string,
     iconPos: _propTypes.string,
+    isCta: _propTypes.bool,
     onFocus: _propTypes.func
 };
 
@@ -50612,6 +50673,7 @@ var defaultProps = {
     iconSrc: '',
     iconAlt: '',
     iconPos: '',
+    isCta: false,
     style: BUTTON_STYLE.CTA,
     onFocus: function onFocus() {}
 };
@@ -50637,6 +50699,7 @@ var Button = function Button(_ref) {
         iconSrc = _ref.iconSrc,
         iconAlt = _ref.iconAlt,
         iconPos = _ref.iconPos,
+        isCta = _ref.isCta,
         onFocus = _ref.onFocus;
 
     /**
@@ -50655,7 +50718,7 @@ var Button = function Button(_ref) {
      */
     var isCtaButton = style === BUTTON_STYLE.CTA && cardButtonStyle !== BUTTON_STYLE.PRIMARY || cardButtonStyle === BUTTON_STYLE.CTA && style !== BUTTON_STYLE.SECONDARY;
 
-    if (isCtaButton) {
+    if (isCta) {
         ctaAction = getConfig('collection', 'ctaAction');
     }
 
@@ -52920,7 +52983,9 @@ var TextCard = function TextCard(props) {
             } else if (cardButtonStyle === 'link') {
                 infobit.type = _constants.INFOBIT_TYPE.LINK;
             }
-            return infobit;
+            return _extends({}, infobit, {
+                isCta: true
+            });
         });
     }
 
@@ -53516,6 +53581,10 @@ var Paginator = function Paginator(props) {
         } else {
             nextPage = parseInt(target.firstChild.nodeValue, BASE_10);
         }
+        var caasWrapper = target.closest('.consonant-Wrapper');
+        if (caasWrapper && typeof caasWrapper.scrollIntoView === 'function') {
+            caasWrapper.scrollIntoView({ behavior: 'smooth' });
+        }
         onClick(nextPage);
     };
 
@@ -53704,7 +53773,7 @@ var CardFilterer = function () {
 
     }, {
         key: 'sortCards',
-        value: function sortCards(sortOption, eventFilter, featuredCardIds, isFirstLoad) {
+        value: function sortCards(sortOption, eventFilter, featuredCardIds, hideCtaIds, isFirstLoad) {
             if (!this.filteredCards.length) return this;
 
             var sortType = sortOption ? sortOption.sort.toLowerCase() : null;
@@ -53715,6 +53784,12 @@ var CardFilterer = function () {
                     break;
                 case _constants.SORT_TYPES.DATEDESC:
                     this.filteredCards = (0, _Helpers.getDateDescSort)(this.filteredCards);
+                    break;
+                case _constants.SORT_TYPES.MODIFIEDDESC:
+                    this.filteredCards = (0, _Helpers.getModifiedDescSort)(this.filteredCards);
+                    break;
+                case _constants.SORT_TYPES.MODIFIEDASC:
+                    this.filteredCards = (0, _Helpers.getModifiedAscSort)(this.filteredCards);
                     break;
                 case _constants.SORT_TYPES.EVENTSORT:
                     {
@@ -53985,6 +54060,7 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
     var sortOptions = getConfig('sort', 'options');
     var filterGroupLabel = getConfig('filterPanel', 'i18n.topPanel.groupLabel');
     var moreFiltersBtnText = getConfig('filterPanel', 'i18n.topPanel.moreFiltersBtnText');
+    var HeadingLevel = getConfig('collection', 'i18n.titleHeadingLevel');
     var title = getConfig('collection', 'i18n.title');
     var useLightText = getConfig('collection', 'useLightText');
 
@@ -54219,7 +54295,7 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
                 'div',
                 { className: 'consonant-TopFilters-infoWrapper' },
                 title && _react2.default.createElement(
-                    'h3',
+                    HeadingLevel,
                     {
                         'data-testid': 'consonant-TopFilters-collectionTitle',
                         className: 'consonant-TopFilters-collectionTitle' },
@@ -56114,6 +56190,7 @@ var JsonProcessor = function () {
             this.processedCards = (0, _general.removeDuplicatesByKey)(this.processedCards, 'id');
             return this;
         }
+
         /**
          * This method joins authored featured caards with cards returned from API responsee
          *
@@ -56142,13 +56219,14 @@ var JsonProcessor = function () {
          * @param {*} truncateTextQty
          * @param {*} onlyShowBookmarks
          * @param {*} bookmarkedCardIds
+         * @param {*} hideCtaIds
          * @return {*}
          * @memberof JsonProcessor
          */
 
     }, {
         key: 'addCardMetaData',
-        value: function addCardMetaData(truncateTextQty, onlyShowBookmarks, bookmarkedCardIds) {
+        value: function addCardMetaData(truncateTextQty, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds) {
             this.processedCards = this.processedCards.map(function (card) {
                 return _extends({}, card, {
                     description: (0, _general.truncateString)((0, _general.getByPath)(card, 'contentArea.description', ''), truncateTextQty),
@@ -56156,6 +56234,9 @@ var JsonProcessor = function () {
                         return i === card.id;
                     }),
                     disableBookmarkIco: onlyShowBookmarks,
+                    hideCtaId: hideCtaIds.some(function (i) {
+                        return i === card.id;
+                    }),
                     initial: {
                         title: (0, _general.getByPath)(card, 'contentArea.title', ''),
                         description: (0, _general.getByPath)(card, 'contentArea.description', ''),

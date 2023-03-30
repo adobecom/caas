@@ -34,6 +34,7 @@ export default class JsonProcessor {
         this.processedCards = removeDuplicatesByKey(this.processedCards, 'id');
         return this;
     }
+
     /**
      * This method joins authored featured caards with cards returned from API responsee
      *
@@ -58,15 +59,17 @@ export default class JsonProcessor {
      * @param {*} truncateTextQty
      * @param {*} onlyShowBookmarks
      * @param {*} bookmarkedCardIds
+     * @param {*} hideCtaIds
      * @return {*}
      * @memberof JsonProcessor
      */
-    addCardMetaData(truncateTextQty, onlyShowBookmarks, bookmarkedCardIds) {
+    addCardMetaData(truncateTextQty, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds) {
         this.processedCards = this.processedCards.map(card => ({
             ...card,
             description: truncateString(getByPath(card, 'contentArea.description', ''), truncateTextQty),
             isBookmarked: bookmarkedCardIds.some(i => i === card.id),
             disableBookmarkIco: onlyShowBookmarks,
+            hideCtaId: hideCtaIds.some(i => i === card.id),
             initial: {
                 title: getByPath(card, 'contentArea.title', ''),
                 description: getByPath(card, 'contentArea.description', ''),

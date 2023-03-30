@@ -242,7 +242,10 @@ const OneHalfCard = (props) => {
             } else if (cardButtonStyle === 'link') {
                 infobit.type = INFOBIT_TYPE.LINK;
             }
-            return infobit;
+            return {
+                ...infobit,
+                isCta: true,
+            };
         });
     }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import className from 'classnames';
-import { string, func } from 'prop-types';
+import { string, func, bool } from 'prop-types';
 
 import { useConfig } from '../../Helpers/hooks';
 import { getLinkTarget } from '../../Helpers/general';
@@ -18,6 +18,7 @@ const buttonType = {
     iconSrc: string,
     iconAlt: string,
     iconPos: string,
+    isCta: bool,
     onFocus: func,
 };
 
@@ -27,6 +28,7 @@ const defaultProps = {
     iconSrc: '',
     iconAlt: '',
     iconPos: '',
+    isCta: false,
     style: BUTTON_STYLE.CTA,
     onFocus: () => {},
 };
@@ -52,6 +54,7 @@ const Button = ({
     iconSrc,
     iconAlt,
     iconPos,
+    isCta,
     onFocus,
 }) => {
     /**
@@ -71,7 +74,7 @@ const Button = ({
     const isCtaButton = (style === BUTTON_STYLE.CTA && cardButtonStyle !== BUTTON_STYLE.PRIMARY) ||
         (cardButtonStyle === BUTTON_STYLE.CTA && style !== BUTTON_STYLE.SECONDARY);
 
-    if (isCtaButton) {
+    if (isCta) {
         ctaAction = getConfig('collection', 'ctaAction');
     }
 

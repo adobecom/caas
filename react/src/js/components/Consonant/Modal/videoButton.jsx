@@ -53,8 +53,9 @@ const VideoButton = ({
     return (
         <Fragment>
             <button
-                className="consonant-HalfHeightCard-videoButton-wrapper"
+                className="consonant-videoButton-wrapper"
                 daa-ll="play"
+                aria-label="Play"
                 onClick={handleShowModal}>
                 <div className={className} />
             </button>

@@ -1,6 +1,6 @@
 exports.config = {
     specs: [
-        './e2e-tests/specs/**/*.js'
+        './e2e-tests/specs/**/*.js',
     ],
     // Patterns to exclude.
     exclude: [
@@ -17,9 +17,9 @@ exports.config = {
                 '--disable-infobars',
                 '--headless',
                 '--disable-gpu',
-                '--window-size=1440,735'
+                '--window-size=1440,735',
             ],
-        }
+        },
     }],
     logLevel: 'info',
     bail: 0,
@@ -32,6 +32,6 @@ exports.config = {
     reporters: ['spec'],
     mochaOpts: {
         ui: 'bdd',
-        timeout: 60000
-    }
-}
+        timeout: 60000,
+    },
+};

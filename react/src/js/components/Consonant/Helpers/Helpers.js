@@ -146,7 +146,7 @@ export const getFilteredCards = (cards, activeFilters, activePanels, filterType,
             return intersection(tagIds, activeFiltersSet).size;
         } else if (usingOrFilter) {
             // check if card' tags panels include all panels with selected filters
-            const tagPanels = new Set(card.tags.map(tag => tag.parent.id));
+            const tagPanels = new Set(card.tags.map(tag => tag.parent.id || tag.id.replace(/\/.*$/, '')));
             if (!isSuperset(tagPanels, activePanels)) return false;
 
             // check if card' tags include all panels with selected filters
@@ -257,6 +257,27 @@ export const getTitleAscSort = cards => cards.sort((cardOne, cardTwo) => {
  * @returns {Array} - All cards sorted by title
  */
 export const getTitleDescSort = cards => getTitleAscSort(cards).reverse();
+
+/**
+ * Returns all cards sorted by date modified newest to oldest
+ * @param {Array} cards - All cards in the card collection
+ * @returns {Array} - All cards sorted by title
+ */
+export const getModifiedDescSort = cards => cards.sort((cardOne, cardTwo) => {
+    const cardOneModDate = getByPath(cardOne, 'modifiedDate');
+    const cardTwoModDate = getByPath(cardTwo, 'modifiedDate');
+    if (cardOneModDate && cardTwoModDate) {
+        return cardTwoModDate.localeCompare(cardOneModDate);
+    }
+    return 0;
+});
+
+/**
+ * Returns all cards sorted by date modified oldest to newest
+ * @param {Array} cards - All cards in the card collection
+ * @returns {Array} - All cards sorted by title
+ */
+export const getModifiedAscSort = cards => getModifiedDescSort(cards).reverse();
 
 /**
  * Returns all cards Featured sorted

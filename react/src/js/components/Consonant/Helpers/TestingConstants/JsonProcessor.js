@@ -55,6 +55,7 @@ const addCardMetaData = [
         truncateTextQty: 5,
         onlyShowBookmarks: false,
         bookmarkedCardIds: [1],
+        hideCtaIds: [2],
         expectedValue: [
             {
                 id: 1,
@@ -68,6 +69,7 @@ const addCardMetaData = [
                 description: '12345',
                 isBookmarked: true,
                 disableBookmarkIco: false,
+                hideCtaId: false,
                 initial: {
                     title: 'title 1',
                     description: '12345',
@@ -88,6 +90,7 @@ const addCardMetaData = [
                 description: '',
                 isBookmarked: false,
                 disableBookmarkIco: false,
+                hideCtaId: true,
                 initial: {
                     title: '',
                     description: '',
@@ -108,6 +111,7 @@ const addCardMetaData = [
                 description: '12345...',
                 isBookmarked: false,
                 disableBookmarkIco: false,
+                hideCtaId: false,
                 initial: {
                     title: 'title 2',
                     description: '123456',

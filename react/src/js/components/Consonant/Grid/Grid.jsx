@@ -192,6 +192,17 @@ const Grid = (props) => {
         element.scrollIntoView({ block: 'nearest' });
     };
 
+    /**
+     * Determines whether ctas should be hidden on a given card
+     * @param {Object} card - object to get value
+     * @param {String} style - the collection button style
+     * @returns {bool} - whether a cta should be hidden
+     */
+    const getHideCta = (card, style) => {
+        if (card.hideCtaId || style === 'hidden') return true;
+        return false;
+    };
+
     return cardsToshow.length > 0 && (
         <div
             ref={forwardedRef}
@@ -203,6 +214,7 @@ const Grid = (props) => {
                 const cardStyle = collectionStyleOverride || cardStyleOverride;
                 const { contentArea: { title = '' } = {}, id } = card;
                 const cardNumber = index + 1;
+                const hideCTA = getHideCta(card, collectionButtonStyle);
 
                 switch (cardStyle) {
                     case CARD_STYLES.FULL:
@@ -257,7 +269,7 @@ const Grid = (props) => {
                                 renderBorder={renderCardsBorders}
                                 {...card}
                                 renderOverlay={renderCardsOverlay}
-                                hideCTA={collectionButtonStyle === 'hidden'}
+                                hideCTA={hideCTA}
                                 onFocus={() => scrollCardIntoView(card.id)} />
                         );
                     case CARD_STYLES.TEXT:
@@ -272,7 +284,7 @@ const Grid = (props) => {
                                 locale={locale}
                                 renderBorder={renderCardsBorders}
                                 renderOverlay={renderCardsOverlay}
-                                hideCTA={collectionButtonStyle === 'hidden'}
+                                hideCTA={hideCTA}
                                 onFocus={() => scrollCardIntoView(card.id)} />
                         );
                     case CARD_STYLES.CUSTOM:
@@ -289,7 +301,7 @@ const Grid = (props) => {
                                 locale={locale}
                                 renderBorder={renderCardsBorders}
                                 renderOverlay={renderCardsOverlay}
-                                hideCTA={collectionButtonStyle === 'hidden'}
+                                hideCTA={hideCTA}
                                 onFocus={() => scrollCardIntoView(card.id)} />
                         );
                 }

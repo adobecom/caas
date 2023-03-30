@@ -67,6 +67,8 @@ export const FILTER_PANEL = {
 export const SORT_TYPES = {
     DATEASC: 'dateasc',
     DATEDESC: 'datedesc',
+    MODIFIEDDESC: 'modifieddesc',
+    MODIFIEDASC: 'modifiedasc',
     EVENTSORT: 'eventsort',
     FEATURED: 'featured',
     TITLEASC: 'titleasc',
@@ -143,6 +145,7 @@ export const DEFAULT_CONFIG = {
         },
     },
     featuredCards: [],
+    hideCtaIds: [],
     header: {
         enabled: false,
     },

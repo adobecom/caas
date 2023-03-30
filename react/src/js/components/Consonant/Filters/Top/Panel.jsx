@@ -103,6 +103,7 @@ const FiltersPanelTop = (props) => {
     const sortOptions = getConfig('sort', 'options');
     const filterGroupLabel = getConfig('filterPanel', 'i18n.topPanel.groupLabel');
     const moreFiltersBtnText = getConfig('filterPanel', 'i18n.topPanel.moreFiltersBtnText');
+    const HeadingLevel = getConfig('collection', 'i18n.titleHeadingLevel');
     const title = getConfig('collection', 'i18n.title');
     const useLightText = getConfig('collection', 'useLightText');
 
@@ -331,11 +332,11 @@ const FiltersPanelTop = (props) => {
                 {shouldDisplayCollectionInfo &&
                 <div className="consonant-TopFilters-infoWrapper">
                     {title &&
-                    <h3
+                    <HeadingLevel
                         data-testid="consonant-TopFilters-collectionTitle"
                         className="consonant-TopFilters-collectionTitle">
                         {title}
-                    </h3>
+                    </HeadingLevel>
                     }
                     {showTotalResults &&
                     <div

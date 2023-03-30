@@ -4,6 +4,8 @@ import {
     highlightCard,
     getDateAscSort,
     getDateDescSort,
+    getModifiedDescSort,
+    getModifiedAscSort,
     getEventSort,
     getFeaturedSort,
     getTitleAscSort,
@@ -98,7 +100,7 @@ export default class CardFilterer {
      * @return {*} Chainable
      * @memberof CardFilterer
      */
-    sortCards(sortOption, eventFilter, featuredCardIds, isFirstLoad) {
+    sortCards(sortOption, eventFilter, featuredCardIds, hideCtaIds, isFirstLoad) {
         if (!this.filteredCards.length) return this;
 
         const sortType = sortOption ? sortOption.sort.toLowerCase() : null;
@@ -109,6 +111,12 @@ export default class CardFilterer {
                 break;
             case SORT_TYPES.DATEDESC:
                 this.filteredCards = getDateDescSort(this.filteredCards);
+                break;
+            case SORT_TYPES.MODIFIEDDESC:
+                this.filteredCards = getModifiedDescSort(this.filteredCards);
+                break;
+            case SORT_TYPES.MODIFIEDASC:
+                this.filteredCards = getModifiedAscSort(this.filteredCards);
                 break;
             case SORT_TYPES.EVENTSORT: {
                 const {
