@@ -76,13 +76,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          token: ${{ SECRETS.CAAS_TOKEN }}
       - name: Setup Pages
         uses: actions/configure-pages@v2
+        with:
+          token: ${{ SECRETS.CAAS_TOKEN }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
           # Uploads entire repository
           path: '.'
+          token: ${{ SECRETS.CAAS_TOKEN }}
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
