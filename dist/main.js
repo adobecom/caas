@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 3/27/2023, 10:20:13
+ * Chimera UI Libraries - Build 3/29/2023, 19:39:11
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -53581,6 +53581,10 @@ var Paginator = function Paginator(props) {
         } else {
             nextPage = parseInt(target.firstChild.nodeValue, BASE_10);
         }
+        var caasWrapper = target.closest('.consonant-Wrapper');
+        if (caasWrapper && typeof caasWrapper.scrollIntoView === 'function') {
+            caasWrapper.scrollIntoView({ behavior: 'smooth' });
+        }
         onClick(nextPage);
     };
 
@@ -53769,7 +53773,7 @@ var CardFilterer = function () {
 
     }, {
         key: 'sortCards',
-        value: function sortCards(sortOption, eventFilter, featuredCardIds, isFirstLoad) {
+        value: function sortCards(sortOption, eventFilter, featuredCardIds, hideCtaIds, isFirstLoad) {
             if (!this.filteredCards.length) return this;
 
             var sortType = sortOption ? sortOption.sort.toLowerCase() : null;

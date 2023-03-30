@@ -1,6 +1,6 @@
 {
   "name": "CaaS",
-  "version": "0.6.7",
+  "version": "0.6.10",
   "private": false,
   "description": "",
   "scripts": {
@@ -11,7 +11,8 @@
     "release": "HUSKY_SKIP_HOOKS=1 release-it --ci",
     "test:coverage": "jest --coverage",
     "test:unit": "jest",
-    "test:e2e": "wdio run wdio.conf.js",
+    "test:e2e-local": "wdio run wdio.conf.js env=LOCAL",
+    "test:e2e-prod": "wdio run wdio.conf.js env=PROD",
     "serve": "serve",
     "watch": "npm run serve & webpack -w",
     "start": "npm run serve"

@@ -74,7 +74,7 @@
                     }
                 },
                 resultsPerPage: '5',
-                endpoint: "../../caas/mock-json/all-art-board-15-cards-show.json",
+                endpoint: location.hostname === "localhost" ? "../../mock-json/all-art-board-15-cards-show.json" : "../../caas/mock-json/all-art-board-15-cards-show.json",
                 totalCardsToShow: '55',
                 cardStyle: "1:2", // available options: "1:2", "3:4", "full-card", "half-height", "custom-card", "product", "double-wide";
                 showTotalResults: 'true',
