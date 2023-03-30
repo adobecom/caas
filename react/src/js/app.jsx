@@ -37,7 +37,7 @@ function authorWatch(el) {
     }
 }
 
-alert('hi');
+console.log('hi');
 
 // Add to DXF Registry
 try {
