@@ -85,7 +85,8 @@ jobs:
           path: '.'
       - name: Deploy to GitHub Pages
         id: deployment
-        token: ${{ secrets.CAAS_TOKEN }}
+        with:
+          token: ${{ secrets.CAAS_TOKEN }}
         uses: actions/deploy-pages@v2
   run-e2e-tests:
     runs-on: ubuntu-latest
