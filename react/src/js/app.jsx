@@ -37,6 +37,8 @@ function authorWatch(el) {
     }
 }
 
+alert('hi');
+
 // Add to DXF Registry
 try {
     window.dexter.dxf.registerApp(initReact);
