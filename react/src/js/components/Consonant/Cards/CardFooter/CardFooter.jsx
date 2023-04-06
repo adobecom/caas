@@ -93,6 +93,14 @@ const CardFooter = (props) => {
                 <div
                     className="consonant-CardFooter-cell consonant-CardFooter-cell--left">
                     <Group renderList={left} onFocus={onFocus} />
+                    <span
+                        data-wcs-osi="A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M"
+                        data-template="price"
+                        data-display-recurrence="false"
+                        className="placeholder" />
+
+                    {'{{Price - A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M - Photoshop}}'}
+
                 </div>
                 }
                 {shouldRenderCenter &&
