@@ -474,6 +474,7 @@ const Container = (props) => {
      */
     const handleSearchInputChange = (val) => {
         setSearchQuery(val);
+        setCurrentPage(1);
         setUrlState(searchPrefix, val);
     };
 
