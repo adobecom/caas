@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 4/17/2023, 14:44:20
+ * Chimera UI Libraries - Build 4/17/2023, 14:47:38
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -9113,6 +9113,8 @@ function authorWatch(el) {
         domRegistry.render(_ConsonantPageDOM2.default);
     }
 }
+
+console.log("hi");
 
 // Add to DXF Registry
 try {
