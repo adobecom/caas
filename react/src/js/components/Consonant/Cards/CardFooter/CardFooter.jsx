@@ -93,13 +93,11 @@ const CardFooter = (props) => {
                 <div
                     className="consonant-CardFooter-cell consonant-CardFooter-cell--left">
                     <Group renderList={left} onFocus={onFocus} />
-                    <span
-                        data-wcs-osi="A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M"
-                        data-template="price"
-                        data-display-recurrence="false"
-                        className="placeholder" />
-
-                    {'{{Price - A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M - Photoshop}}'}
+                    <span>
+                        <a href="/tools/ost?osi=A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M&#x26;offerId=30404A88D89A328584307175B8B27616&#x26;type=price&#x26;seat=true&#x26;tax=true">
+                            {'{{Price - 30404A88D89A328584307175B8B27616 - Photoshop}}'}
+                        </a>
+                    </span>
 
                 </div>
                 }

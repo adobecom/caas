@@ -1121,6 +1121,11 @@ const Container = (props) => {
         'consonant-Wrapper--withLeftFilter': filterPanelEnabled && isLeftFilterPanel,
     });
 
+    const merchScript = document.createElement('script');
+    merchScript.setAttribute('src', 'https://milo.adobe.com/libs/blocks/merch/merch.js');
+    merchScript.setAttribute('type', 'module');
+    document.head.appendChild(merchScript);
+
     return (
         <ConfigContext.Provider value={config}>
             <ExpandableContext.Provider value={{ value: openDropdown, setValue: setOpenDropdown }} >
