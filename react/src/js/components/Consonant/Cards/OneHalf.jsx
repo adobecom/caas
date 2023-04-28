@@ -357,6 +357,18 @@ const OneHalfCard = (props) => {
                         {description}
                     </p>
                 }
+                <p>
+                    <span
+                        is="inline-price"
+                        data-wcs-type="price"
+                        data-display-recurrence="false"
+                        data-display-per-unit="false"
+                        data-display-tax="false"
+                        data-wcs-osi="A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M"
+                        class="placeholder"
+                    />
+                </p>
+
                 {!hideCTA && footer.map(footerItem => (
                     <CardFooter
                         divider={footerItem.divider}
