@@ -350,6 +350,18 @@ const OneHalfCard = (props) => {
                     className="consonant-OneHalfCard-title">
                     {title}
                 </p>
+                <p className="consonant-Card-price">
+                    <span
+                        is="inline-price"
+                        data-wcs-type="price"
+                        data-display-recurrence="false"
+                        data-display-per-unit="false"
+                        data-display-tax="false"
+                        data-wcs-osi="r_JXAnlFI7xD6FxWKl2ODvZriLYBoSL701Kd1hRyhe8"
+                        data-promotion-code="nicopromo"
+                        class="placeholder"
+                    />
+                </p>
                 {
                     description &&
                     <p
@@ -357,18 +369,6 @@ const OneHalfCard = (props) => {
                         {description}
                     </p>
                 }
-                <p>
-                    <span
-                        is="inline-price"
-                        data-wcs-type="price"
-                        data-display-recurrence="false"
-                        data-display-per-unit="false"
-                        data-display-tax="false"
-                        data-wcs-osi="A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M"
-                        class="placeholder"
-                    />
-                </p>
-
                 {!hideCTA && footer.map(footerItem => (
                     <CardFooter
                         divider={footerItem.divider}

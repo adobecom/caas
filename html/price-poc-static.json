@@ -1,0 +1,1070 @@
+{
+    "cards": [
+        {
+            "id": "461fa81d-853c-3d6c-8432-c105ee388216",
+            "entityId": "00527f34-8db2-373b-a4e1-1238094eef81",
+            "showCard": {
+                "from": "",
+                "until": ""
+            },
+            "styles": {
+                "typeOverride": "",
+                "backgroundImage": "https://www.adobe.com/content/dam/cc/us/en/products/adobe-connect/resources/govloop_thumbnail_v1.png",
+                "backgroundAltText": "Connecting Key Players: Improving Public Sector Emergency Response",
+                "mnemonic": ""
+            },
+            "overlays": {
+                "banner": {
+                    "backgroundColor": "#EAEAEA",
+                    "fontColor": "#323232",
+                    "description": "Latest",
+                    "icon": ""
+                },
+                "logo": {
+                    "src": ""
+                },
+                "label": {
+                    "description": ""
+                },
+                "videoButton": {
+                    "url": ""
+                }
+            },
+            "tags": [
+                {
+                    "parent": {
+                        "id": "caas:content-type",
+                        "title": "Content Type"
+                    },
+                    "id": "caas:content-type/customer-story",
+                    "title": "Customer Story",
+                    "url": "/content/cq:tags/caas/content-type/customer-story"
+                },
+                {
+                    "parent": {
+                        "id": "ppbu:elearning/adobe-connect/industry-whitepaper",
+                        "title": "Industry Whitepaper"
+                    },
+                    "id": "ppbu:elearning/adobe-connect/industry-whitepaper/all",
+                    "title": "All",
+                    "url": "/content/cq:tags/ppbu/elearning/adobe-connect/industry-whitepaper/all"
+                },
+                {
+                    "parent": {
+                        "id": "ppbu:elearning/adobe-connect/industry-whitepaper",
+                        "title": "Industry Whitepaper"
+                    },
+                    "id": "ppbu:elearning/adobe-connect/industry-whitepaper/government",
+                    "title": "Government",
+                    "url": "/content/cq:tags/ppbu/elearning/adobe-connect/industry-whitepaper/government"
+                }
+            ],
+            "contentArea": {
+                "detailText": "",
+                "title": "Connecting Key Players: Improving Public Sector Emergency Response",
+                "url": "https://www.adobe.com/content/dam/cc/us/en/products/adobe-connect/resources/connecting_key_players_improving_public-sector.pdf",
+                "description": "Adobe and Govloop bring you this Market Trends Report on emergency preparedness and how modern tech helps lead the way with seamless and efficient communication.",
+                "dateDetailText": {
+                    "type": "date-interval",
+                    "startTime": "",
+                    "endTime": ""
+                }
+            },
+            "footer": [
+                {
+                    "divider": false,
+                    "left": [
+                        {
+                            "type": "bookmark",
+                            "saveCardIcon": "",
+                            "unsaveCardIcon": "",
+                            "cardSaveText": "",
+                            "unsaveCardText": ""
+                        }
+                    ],
+                    "center": [],
+                    "right": [
+                        {
+                            "type": "button",
+                            "style": "primary",
+                            "text": "Read now",
+                            "href": "https://www.adobe.com/content/dam/cc/us/en/products/adobe-connect/resources/connecting_key_players_improving_public-sector.pdf"
+                        }
+                    ]
+                }
+            ],
+            "search": {},
+            "cardDate": "2022-09-02T09:53:22.517Z",
+            "createdDate": "2022-09-02T09:53:22.517Z",
+            "modifiedDate": "2022-09-06T11:12:09.331Z",
+            "startDate": "",
+            "endDate": "",
+            "ctaLink": "https://www.adobe.com/content/dam/cc/us/en/products/adobe-connect/resources/connecting_key_players_improving_public-sector.pdf",
+            "overlayLink": "https://www.adobe.com/content/dam/cc/us/en/products/adobe-connect/resources/connecting_key_players_improving_public-sector.pdf"
+        },
+        {
+            "id": "4bf2531e-0874-3512-b0a5-b63928ce809a",
+            "entityId": "0081ee45-097d-30c0-bf6e-06cb064d1e0d",
+            "showCard": {
+                "from": "",
+                "until": ""
+            },
+            "styles": {
+                "typeOverride": "",
+                "backgroundImage": "https://www.adobe.com/content/dam/cc/us/en/creativecloud/photography/discover/surreal-photography/desktop/Surreal-photography_P1_900x420.jpg",
+                "backgroundAltText": "Surreal photography",
+                "mnemonic": ""
+            },
+            "overlays": {
+                "banner": {
+                    "backgroundColor": "#EAEAEA",
+                    "fontColor": "#323232",
+                    "description": "",
+                    "icon": ""
+                },
+                "logo": {
+                    "src": ""
+                },
+                "label": {
+                    "description": ""
+                },
+                "videoButton": {
+                    "url": ""
+                }
+            },
+            "tags": [
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/photoshop",
+                    "title": "Photoshop",
+                    "url": "/content/cq:tags/caas/products/photoshop"
+                },
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/adobe-creative-cloud",
+                    "title": "Adobe Creative Cloud",
+                    "url": "/content/cq:tags/caas/products/adobe-creative-cloud"
+                },
+                {
+                    "parent": {
+                        "id": "caas:content-type",
+                        "title": "Content Type"
+                    },
+                    "id": "caas:content-type/article",
+                    "title": "Article",
+                    "url": "/content/cq:tags/caas/content-type/article"
+                },
+                {
+                    "parent": {
+                        "id": "caas:product-categories",
+                        "title": "Product Categories"
+                    },
+                    "id": "caas:product-categories/photo",
+                    "title": "Photo",
+                    "url": "/content/cq:tags/caas/product-categories/photo"
+                }
+            ],
+            "contentArea": {
+                "detailText": "",
+                "title": "Understanding the art of surreal photography.",
+                "url": "https://www.adobe.com/creativecloud/photography/discover/surreal-photography.html",
+                "description": "Explore the world of surrealist photography and find out how to make your own dreamlike portraiture, provocative takes on everyday life, and sometimes funny images using surreal …",
+                "dateDetailText": {
+                    "type": "date-interval",
+                    "startTime": "",
+                    "endTime": ""
+                }
+            },
+            "footer": [
+                {
+                    "divider": false,
+                    "left": [
+                        {
+                            "type": "bookmark",
+                            "saveCardIcon": "",
+                            "unsaveCardIcon": "",
+                            "cardSaveText": "",
+                            "unsaveCardText": ""
+                        }
+                    ],
+                    "center": [],
+                    "right": [
+                        {
+                            "type": "button",
+                            "style": "",
+                            "text": "Read now",
+                            "href": "https://www.adobe.com/creativecloud/photography/discover/surreal-photography.html"
+                        }
+                    ]
+                }
+            ],
+            "search": {},
+            "cardDate": "2022-10-14T04:13:57.220Z",
+            "createdDate": "2022-10-14T04:13:57.220Z",
+            "modifiedDate": "2022-12-20T05:03:16.498Z",
+            "startDate": "",
+            "endDate": "",
+            "ctaLink": "https://www.adobe.com/creativecloud/photography/discover/surreal-photography.html",
+            "overlayLink": "https://www.adobe.com/creativecloud/photography/discover/surreal-photography.html"
+        },
+        {
+            "id": "21f61b79-7198-3f53-ae67-14db26aab61a",
+            "entityId": "008c5ed6-b124-3b25-8d73-d2f16348231e",
+            "showCard": {
+                "from": "",
+                "until": ""
+            },
+            "styles": {
+                "typeOverride": "",
+                "backgroundImage": "https://www.adobe.com/content/dam/cc/us/en/creativecloud/video/discover/travel-videos/travel-video_P1_900x420.jpg",
+                "backgroundAltText": "Travel videos",
+                "mnemonic": ""
+            },
+            "overlays": {
+                "banner": {
+                    "backgroundColor": "#EAEAEA",
+                    "fontColor": "#323232",
+                    "description": "",
+                    "icon": ""
+                },
+                "logo": {
+                    "src": ""
+                },
+                "label": {
+                    "description": ""
+                },
+                "videoButton": {
+                    "url": ""
+                }
+            },
+            "tags": [
+                {
+                    "parent": {
+                        "id": "caas:content-type",
+                        "title": "Content Type"
+                    },
+                    "id": "caas:content-type/article",
+                    "title": "Article",
+                    "url": "/content/cq:tags/caas/content-type/article"
+                },
+                {
+                    "parent": {
+                        "id": "caas:product-categories",
+                        "title": "Product Categories"
+                    },
+                    "id": "caas:product-categories/video",
+                    "title": "Video",
+                    "url": "/content/cq:tags/caas/product-categories/video"
+                },
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/premiere-pro",
+                    "title": "Premiere Pro",
+                    "url": "/content/cq:tags/caas/products/premiere-pro"
+                }
+            ],
+            "contentArea": {
+                "detailText": "Create travel videos that inspire wanderlust.",
+                "title": "Learn how to plan and execute a video of your globetrotting expeditions. Get pro tips and advice to make stunning travel stories out of your adventures.",
+                "url": "https://www.adobe.com/creativecloud/video/discover/travel-videos.html",
+                "description": "Learn how to plan and execute a video of your globetrotting expeditions. Get pro tips and advice to make stunning travel stories out of your adventures.",
+                "dateDetailText": {
+                    "type": "date-interval",
+                    "startTime": "",
+                    "endTime": ""
+                }
+            },
+            "footer": [
+                {
+                    "divider": false,
+                    "left": [
+                        {
+                            "type": "bookmark",
+                            "saveCardIcon": "",
+                            "unsaveCardIcon": "",
+                            "cardSaveText": "",
+                            "unsaveCardText": ""
+                        }
+                    ],
+                    "center": [],
+                    "right": [
+                        {
+                            "type": "button",
+                            "style": "",
+                            "text": "Read now",
+                            "href": "https://www.adobe.com/creativecloud/video/discover/travel-videos.html"
+                        }
+                    ]
+                }
+            ],
+            "search": {},
+            "cardDate": "2022-12-27T08:40:21.926Z",
+            "createdDate": "2022-12-27T08:40:21.926Z",
+            "modifiedDate": "2023-01-06T03:59:12.694Z",
+            "startDate": "",
+            "endDate": "",
+            "ctaLink": "https://www.adobe.com/creativecloud/video/discover/travel-videos.html",
+            "overlayLink": "https://www.adobe.com/creativecloud/video/discover/travel-videos.html"
+        },
+        {
+            "id": "e9d4c0ae-1aa9-3c92-a68c-f15b18f961c8",
+            "entityId": "00c70efc-e1b9-3963-85e1-f522a4654aba",
+            "showCard": {
+                "from": "",
+                "until": ""
+            },
+            "styles": {
+                "typeOverride": "",
+                "backgroundImage": "https://www.adobe.com/content/dam/cct/creativecloud/business/teams/solution-briefs/boost-productivity-through-powerful-business-integrations-with-cct-768x440.png",
+                "backgroundAltText": "Boost productivity with Adobe Creative Cloud integrations | Adobe",
+                "mnemonic": ""
+            },
+            "overlays": {
+                "banner": {
+                    "backgroundColor": "#EAEAEA",
+                    "fontColor": "#323232",
+                    "description": "",
+                    "icon": ""
+                },
+                "logo": {
+                    "src": ""
+                },
+                "label": {
+                    "description": "Solution brief"
+                },
+                "videoButton": {
+                    "url": ""
+                }
+            },
+            "tags": [
+                {
+                    "parent": {
+                        "id": "caas:product-categories",
+                        "title": "Product Categories"
+                    },
+                    "id": "caas:product-categories/graphic-design",
+                    "title": "Graphic Design",
+                    "url": "/content/cq:tags/caas/product-categories/graphic-design"
+                },
+                {
+                    "parent": {
+                        "id": "caas:topic",
+                        "title": "Topic"
+                    },
+                    "id": "caas:topic/process-and-scale",
+                    "title": "Process and scale",
+                    "url": "/content/cq:tags/caas/topic/process-and-scale"
+                },
+                {
+                    "parent": {
+                        "id": "cct-b2b-resource-center:resource-center-filters/article-type",
+                        "title": "Type"
+                    },
+                    "id": "cct-b2b-resource-center:resource-center-filters/article-type/solution-brief",
+                    "title": "Solution brief",
+                    "url": "/content/cq:tags/cct-b2b-resource-center/resource-center-filters/article-type/solution-brief"
+                },
+                {
+                    "parent": {
+                        "id": "caas:topic",
+                        "title": "Topic"
+                    },
+                    "id": "caas:topic/collaboration",
+                    "title": "Collaboration",
+                    "url": "/content/cq:tags/caas/topic/collaboration"
+                },
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/creative-cloud-for-teams",
+                    "title": "Creative Cloud for teams",
+                    "url": "/content/cq:tags/caas/products/creative-cloud-for-teams"
+                },
+                {
+                    "parent": {
+                        "id": "caas:content-type",
+                        "title": "Content Type"
+                    },
+                    "id": "caas:content-type/solution-brief",
+                    "title": "Solution brief",
+                    "url": "/content/cq:tags/caas/content-type/solution-brief"
+                },
+                {
+                    "parent": {},
+                    "id": "caas:content-type/solution-brief",
+                    "title": "Solution brief",
+                    "url": "/content/cq:tags/caas/content-type/solution-brief"
+                }
+            ],
+            "contentArea": {
+                "detailText": "",
+                "title": "Boost productivity with Adobe Creative Cloud integrations.",
+                "url": "https://www.adobe.com/creativecloud/business/teams/resources/solution-briefs/boost-productivity-through-powerful-business-integrations-with-creative-cloud-for-teams.html",
+                "description": "Increase your creative team’s productivity with Creative Cloud integrations designed to streamline workflows and collaboration.",
+                "dateDetailText": {
+                    "type": "date-interval",
+                    "startTime": "",
+                    "endTime": ""
+                }
+            },
+            "footer": [
+                {
+                    "divider": false,
+                    "left": [
+                        {
+                            "type": "bookmark",
+                            "saveCardIcon": "",
+                            "unsaveCardIcon": "",
+                            "cardSaveText": "",
+                            "unsaveCardText": ""
+                        }
+                    ],
+                    "center": [],
+                    "right": [
+                        {
+                            "type": "button",
+                            "style": "",
+                            "text": "Read now",
+                            "href": "https://www.adobe.com/creativecloud/business/teams/resources/solution-briefs/boost-productivity-through-powerful-business-integrations-with-creative-cloud-for-teams.html"
+                        }
+                    ]
+                }
+            ],
+            "search": {},
+            "cardDate": "2021-12-20T10:19:43.654Z",
+            "createdDate": "2021-12-20T10:19:43.654Z",
+            "modifiedDate": "2022-11-16T17:06:55.140Z",
+            "startDate": "",
+            "endDate": "",
+            "ctaLink": "https://www.adobe.com/creativecloud/business/teams/resources/solution-briefs/boost-productivity-through-powerful-business-integrations-with-creative-cloud-for-teams.html",
+            "overlayLink": "https://www.adobe.com/creativecloud/business/teams/resources/solution-briefs/boost-productivity-through-powerful-business-integrations-with-creative-cloud-for-teams.html"
+        },
+        {
+            "id": "c40d24d3-1b55-3cd1-bd43-42340ebd4c41",
+            "entityId": "00cf3433-4dbf-3024-831f-9af7ce476cee",
+            "showCard": {
+                "from": "",
+                "until": ""
+            },
+            "styles": {
+                "typeOverride": "",
+                "backgroundImage": "https://www.adobe.com/content/dam/cc/us/en/creativecloud/photography/discover/photo-to-cartoon/photo-to-cartoon_P1_900x420.jpg",
+                "backgroundAltText": "Photo to cartoon",
+                "mnemonic": ""
+            },
+            "overlays": {
+                "banner": {
+                    "backgroundColor": "#EAEAEA",
+                    "fontColor": "#323232",
+                    "description": "",
+                    "icon": ""
+                },
+                "logo": {
+                    "src": ""
+                },
+                "label": {
+                    "description": ""
+                },
+                "videoButton": {
+                    "url": ""
+                }
+            },
+            "tags": [
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/photoshop",
+                    "title": "Photoshop",
+                    "url": "/content/cq:tags/caas/products/photoshop"
+                },
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/adobe-creative-cloud",
+                    "title": "Adobe Creative Cloud",
+                    "url": "/content/cq:tags/caas/products/adobe-creative-cloud"
+                },
+                {
+                    "parent": {
+                        "id": "caas:content-type",
+                        "title": "Content Type"
+                    },
+                    "id": "caas:content-type/article",
+                    "title": "Article",
+                    "url": "/content/cq:tags/caas/content-type/article"
+                },
+                {
+                    "parent": {
+                        "id": "caas:product-categories",
+                        "title": "Product Categories"
+                    },
+                    "id": "caas:product-categories/photo",
+                    "title": "Photo",
+                    "url": "/content/cq:tags/caas/product-categories/photo"
+                }
+            ],
+            "contentArea": {
+                "detailText": "",
+                "title": "Convert photos into cartoon drawings.",
+                "url": "https://www.adobe.com/creativecloud/photography/discover/photo-to-cartoon.html",
+                "description": "Transform any picture into a cartoon in a few simple steps. Learn how to use Adobe Photoshop to easily add creative cartoon photo effects to your image.",
+                "dateDetailText": {
+                    "type": "date-interval",
+                    "startTime": "",
+                    "endTime": ""
+                }
+            },
+            "footer": [
+                {
+                    "divider": false,
+                    "left": [
+                        {
+                            "type": "bookmark",
+                            "saveCardIcon": "",
+                            "unsaveCardIcon": "",
+                            "cardSaveText": "",
+                            "unsaveCardText": ""
+                        }
+                    ],
+                    "center": [],
+                    "right": [
+                        {
+                            "type": "button",
+                            "style": "",
+                            "text": "Read now",
+                            "href": "https://www.adobe.com/creativecloud/photography/discover/photo-to-cartoon.html"
+                        }
+                    ]
+                }
+            ],
+            "search": {},
+            "cardDate": "2022-08-11T09:17:04.129Z",
+            "createdDate": "2022-08-11T09:17:04.129Z",
+            "modifiedDate": "2022-09-08T06:24:26.384Z",
+            "startDate": "",
+            "endDate": "",
+            "ctaLink": "https://www.adobe.com/creativecloud/photography/discover/photo-to-cartoon.html",
+            "overlayLink": "https://www.adobe.com/creativecloud/photography/discover/photo-to-cartoon.html"
+        },
+        {
+            "id": "32f9ead1-ded2-39ea-895f-2e991cbec034",
+            "entityId": "013c91e8-92e8-3342-844b-62855be4c4bf",
+            "showCard": {
+                "from": "",
+                "until": ""
+            },
+            "styles": {
+                "typeOverride": "",
+                "backgroundImage": "https://www.adobe.com/content/dam/cc/us/en/products/photoshop/outline-text/thumbnail.jpeg",
+                "backgroundAltText": "How to Outline Text in Photoshop",
+                "mnemonic": ""
+            },
+            "overlays": {
+                "banner": {
+                    "backgroundColor": "#EAEAEA",
+                    "fontColor": "#323232",
+                    "description": "",
+                    "icon": ""
+                },
+                "logo": {
+                    "src": ""
+                },
+                "label": {
+                    "description": ""
+                },
+                "videoButton": {
+                    "url": ""
+                }
+            },
+            "tags": [
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/photoshop",
+                    "title": "Photoshop",
+                    "url": "/content/cq:tags/caas/products/photoshop"
+                },
+                {
+                    "parent": {
+                        "id": "caas:features",
+                        "title": "Features"
+                    },
+                    "id": "caas:features/edit-photos",
+                    "title": "Edit photos",
+                    "url": "/content/cq:tags/caas/features/edit-photos"
+                },
+                {
+                    "parent": {
+                        "id": "caas:business-unit",
+                        "title": "Business Unit"
+                    },
+                    "id": "caas:business-unit/creative-cloud",
+                    "title": "Creative Cloud",
+                    "url": "/content/cq:tags/caas/business-unit/creative-cloud"
+                },
+                {
+                    "parent": {
+                        "id": "caas:technical-level",
+                        "title": "Technical Level"
+                    },
+                    "id": "caas:technical-level/intermediate",
+                    "title": "Intermediate",
+                    "url": "/content/cq:tags/caas/technical-level/intermediate"
+                },
+                {
+                    "parent": {
+                        "id": "caas:content-type",
+                        "title": "Content Type"
+                    },
+                    "id": "caas:content-type/features",
+                    "title": "Features",
+                    "url": "/content/cq:tags/caas/content-type/features"
+                }
+            ],
+            "contentArea": {
+                "detailText": "",
+                "title": "How to Outline Text in Photoshop",
+                "url": "https://www.adobe.com/products/photoshop/outline-text.html",
+                "description": "Learn what it means to outline text, when and why to outline text, and how to outline text in Adobe Photoshop using different methods.",
+                "dateDetailText": {
+                    "type": "date-interval",
+                    "startTime": "",
+                    "endTime": ""
+                }
+            },
+            "footer": [
+                {
+                    "divider": false,
+                    "left": [
+                        {
+                            "type": "bookmark",
+                            "saveCardIcon": "",
+                            "unsaveCardIcon": "",
+                            "cardSaveText": "",
+                            "unsaveCardText": ""
+                        }
+                    ],
+                    "center": [],
+                    "right": [
+                        {
+                            "type": "button",
+                            "style": "",
+                            "text": "Read now",
+                            "href": "https://www.adobe.com/products/photoshop/outline-text.html"
+                        }
+                    ]
+                }
+            ],
+            "search": {},
+            "cardDate": "2022-08-24T04:49:49.162Z",
+            "createdDate": "2022-08-24T04:49:49.162Z",
+            "modifiedDate": "2023-03-27T05:17:43.679Z",
+            "startDate": "",
+            "endDate": "",
+            "ctaLink": "https://www.adobe.com/products/photoshop/outline-text.html",
+            "overlayLink": "https://www.adobe.com/products/photoshop/outline-text.html"
+        },
+        {
+            "id": "78711a1f-b849-3e57-b191-ee55e38b6ab5",
+            "entityId": "013e7987-c0df-3211-943c-0672070ef98c",
+            "showCard": {
+                "from": "",
+                "until": ""
+            },
+            "styles": {
+                "typeOverride": "",
+                "backgroundImage": "https://www.adobe.com/content/dam/cc/en/trust-center/ungated/images/Security_Overview_updated_6c.png",
+                "backgroundAltText": "Adobe Vendor Security Review (VSR) program overview",
+                "mnemonic": ""
+            },
+            "overlays": {
+                "banner": {
+                    "backgroundColor": "#EAEAEA",
+                    "fontColor": "#323232",
+                    "description": "pdf",
+                    "icon": ""
+                },
+                "logo": {
+                    "src": ""
+                },
+                "label": {
+                    "description": ""
+                },
+                "videoButton": {
+                    "url": ""
+                }
+            },
+            "tags": [
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/adobe-campaign",
+                    "title": "Adobe Campaign",
+                    "url": "/content/cq:tags/caas/products/adobe-campaign"
+                },
+                {
+                    "parent": {
+                        "id": "caas:content-type",
+                        "title": "Content Type"
+                    },
+                    "id": "caas:content-type/documentation",
+                    "title": "Documentation",
+                    "url": "/content/cq:tags/caas/content-type/documentation"
+                },
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/adobe-analytics",
+                    "title": "Adobe Analytics",
+                    "url": "/content/cq:tags/caas/products/adobe-analytics"
+                },
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/adobe-experience-platform",
+                    "title": "Adobe Experience Platform",
+                    "url": "/content/cq:tags/caas/products/adobe-experience-platform"
+                },
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/experience-manager-cloud-service",
+                    "title": "Experience Manager Cloud Service",
+                    "url": "/content/cq:tags/caas/products/experience-manager-cloud-service"
+                },
+                {
+                    "parent": {
+                        "id": "trust-center:information-type",
+                        "title": "Type"
+                    },
+                    "id": "trust-center:information-type/security-overview-whitepapers",
+                    "title": "Security overview whitepapers",
+                    "url": "/content/cq:tags/trust-center/information-type/security-overview-whitepapers"
+                },
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/adobe-primetime",
+                    "title": "Adobe Primetime",
+                    "url": "/content/cq:tags/caas/products/adobe-primetime"
+                },
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/creative-cloud-for-enterprise",
+                    "title": "Creative Cloud for enterprise",
+                    "url": "/content/cq:tags/caas/products/creative-cloud-for-enterprise"
+                },
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/adobe-advertising-cloud",
+                    "title": "Adobe Advertising Cloud",
+                    "url": "/content/cq:tags/caas/products/adobe-advertising-cloud"
+                },
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/adobe-commerce-cloud",
+                    "title": "Adobe Commerce Cloud",
+                    "url": "/content/cq:tags/caas/products/adobe-commerce-cloud"
+                },
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/adobe-journey-optimizer",
+                    "title": "Adobe Journey Optimizer",
+                    "url": "/content/cq:tags/caas/products/adobe-journey-optimizer"
+                },
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/adobe-sign",
+                    "title": "Adobe Sign",
+                    "url": "/content/cq:tags/caas/products/adobe-sign"
+                },
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/connect",
+                    "title": "Connect",
+                    "url": "/content/cq:tags/caas/products/connect"
+                },
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/experience-manager-managed-service",
+                    "title": "Experience Manager Managed Service",
+                    "url": "/content/cq:tags/caas/products/experience-manager-managed-service"
+                },
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/adobe-audience-manager",
+                    "title": "Adobe Audience Manager",
+                    "url": "/content/cq:tags/caas/products/adobe-audience-manager"
+                },
+                {
+                    "parent": {
+                        "id": "trust-center:solution",
+                        "title": "Solution"
+                    },
+                    "id": "trust-center:solution/corporate",
+                    "title": "Corporate",
+                    "url": "/content/cq:tags/trust-center/solution/corporate"
+                },
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/workfront",
+                    "title": "Adobe Workfront",
+                    "url": "/content/cq:tags/caas/products/workfront"
+                },
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/adobe-document-cloud",
+                    "title": "Adobe Document Cloud",
+                    "url": "/content/cq:tags/caas/products/adobe-document-cloud"
+                },
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/marketo-engage-bizible",
+                    "title": "Marketo Engage",
+                    "url": "/content/cq:tags/caas/products/marketo-engage-bizible"
+                },
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/captivate",
+                    "title": "Captivate",
+                    "url": "/content/cq:tags/caas/products/captivate"
+                },
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/adobe-target",
+                    "title": "Adobe Target",
+                    "url": "/content/cq:tags/caas/products/adobe-target"
+                }
+            ],
+            "contentArea": {
+                "detailText": "",
+                "title": "Adobe Vendor Security Review (VSR) program overview",
+                "url": "https://www.adobe.com/content/dam/cc/en/trust-center/ungated/whitepapers/corporate/adobe-vendor-assessment-program-over-view.pdf",
+                "description": "White paper describing Adobe's current vendor security review (VSR) program facilitating security assessment of our third-party suppliers",
+                "dateDetailText": {
+                    "type": "date-interval",
+                    "startTime": "",
+                    "endTime": ""
+                }
+            },
+            "footer": [
+                {
+                    "divider": false,
+                    "left": [
+                        {
+                            "type": "bookmark",
+                            "saveCardIcon": "",
+                            "unsaveCardIcon": "",
+                            "cardSaveText": "",
+                            "unsaveCardText": ""
+                        }
+                    ],
+                    "center": [],
+                    "right": [
+                        {
+                            "type": "button",
+                            "style": "primary",
+                            "text": "Read now",
+                            "href": "https://www.adobe.com/content/dam/cc/en/trust-center/ungated/whitepapers/corporate/adobe-vendor-assessment-program-over-view.pdf"
+                        }
+                    ]
+                }
+            ],
+            "search": {},
+            "cardDate": "2022-04-26T13:44:51.543Z",
+            "createdDate": "2022-04-26T13:44:51.543Z",
+            "modifiedDate": "2022-06-30T09:55:45.365Z",
+            "startDate": "",
+            "endDate": "",
+            "ctaLink": "https://www.adobe.com/content/dam/cc/en/trust-center/ungated/whitepapers/corporate/adobe-vendor-assessment-program-over-view.pdf",
+            "overlayLink": "https://www.adobe.com/content/dam/cc/en/trust-center/ungated/whitepapers/corporate/adobe-vendor-assessment-program-over-view.pdf"
+        },
+        {
+            "id": "b8d085ac-3c92-350c-b461-ef01f9136fe0",
+            "entityId": "014abfa2-373e-39c0-b2fc-69417919b3e6",
+            "showCard": {
+                "from": "",
+                "until": ""
+            },
+            "styles": {
+                "typeOverride": "",
+                "backgroundImage": "https://www.adobe.com/content/dam/cc/en/trust-center/compliance/trust-center-ux-sliced-images/compliance-certifications.png",
+                "backgroundAltText": "Adobe Workfront SOC2 Bridge Letter",
+                "mnemonic": ""
+            },
+            "overlays": {
+                "banner": {
+                    "backgroundColor": "#EAEAEA",
+                    "fontColor": "#323232",
+                    "description": "Pdf",
+                    "icon": ""
+                },
+                "logo": {
+                    "src": ""
+                },
+                "label": {
+                    "description": ""
+                },
+                "videoButton": {
+                    "url": ""
+                }
+            },
+            "tags": [
+                {
+                    "parent": {
+                        "id": "caas:products",
+                        "title": "Products"
+                    },
+                    "id": "caas:products/workfront",
+                    "title": "Adobe Workfront",
+                    "url": "/content/cq:tags/caas/products/workfront"
+                },
+                {
+                    "parent": {
+                        "id": "trust-center:information-type",
+                        "title": "Type"
+                    },
+                    "id": "trust-center:information-type/compliance-certifications",
+                    "title": "Compliance certifications",
+                    "url": "/content/cq:tags/trust-center/information-type/compliance-certifications"
+                },
+                {
+                    "parent": {
+                        "id": "caas:content-type",
+                        "title": "Content Type"
+                    },
+                    "id": "caas:content-type/documentation",
+                    "title": "Documentation",
+                    "url": "/content/cq:tags/caas/content-type/documentation"
+                },
+                {
+                    "parent": {
+                        "id": "caas:",
+                        "title": "CaaS"
+                    },
+                    "id": "caas:gated",
+                    "title": "Gated",
+                    "url": "/content/cq:tags/caas/gated"
+                },
+                {
+                    "parent": {
+                        "id": "trust-center:solution",
+                        "title": "Solution"
+                    },
+                    "id": "trust-center:solution/experience-cloud",
+                    "title": "Experience Cloud",
+                    "url": "/content/cq:tags/trust-center/solution/experience-cloud"
+                }
+            ],
+            "contentArea": {
+                "detailText": "",
+                "title": "Adobe Workfront SOC2 Bridge Letter",
+                "url": "https://www.adobe.com/trust/resources/adobe-workfront-soc2-bridge-letter.html",
+                "description": "Current SOC2 bridge letter reporting control effectiveness since SOC2 certification report date",
+                "dateDetailText": {
+                    "type": "date-interval",
+                    "startTime": "",
+                    "endTime": ""
+                }
+            },
+            "footer": [
+                {
+                    "divider": false,
+                    "left": [
+                        {
+                            "type": "bookmark",
+                            "saveCardIcon": "",
+                            "unsaveCardIcon": "",
+                            "cardSaveText": "",
+                            "unsaveCardText": ""
+                        }
+                    ],
+                    "center": [],
+                    "right": [
+                        {
+                            "type": "button",
+                            "style": "call-to-action",
+                            "text": "Read now",
+                            "href": "https://www.adobe.com/trust/resources/adobe-workfront-soc2-bridge-letter.html"
+                        }
+                    ]
+                }
+            ],
+            "search": {},
+            "cardDate": "2022-04-26T13:44:47.510Z",
+            "createdDate": "2022-04-26T13:44:47.510Z",
+            "modifiedDate": "2022-06-26T16:27:01.075Z",
+            "startDate": "",
+            "endDate": "",
+            "ctaLink": "https://www.adobe.com/trust/resources/adobe-workfront-soc2-bridge-letter.html",
+            "overlayLink": "https://www.adobe.com/trust/resources/adobe-workfront-soc2-bridge-letter.html"
+        }
+    ],
+    "filters": []
+}

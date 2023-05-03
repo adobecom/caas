@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 4/5/2023, 16:56:34
+ * Chimera UI Libraries - Build 5/3/2023, 09:15:58
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -7564,6 +7564,11 @@ var Container = function Container(props) {
         'consonant-Wrapper--carousel': isCarouselContainer,
         'consonant-Wrapper--withLeftFilter': filterPanelEnabled && isLeftFilterPanel
     });
+
+    var merchScript = document.createElement('script');
+    merchScript.setAttribute('src', 'https://milo.adobe.com/libs/blocks/merch/merch.js');
+    merchScript.setAttribute('type', 'module');
+    document.head.appendChild(merchScript);
 
     return _react2.default.createElement(
         _contexts.ConfigContext.Provider,
@@ -50207,6 +50212,20 @@ var OneHalfCard = function OneHalfCard(props) {
                     'aria-level': headingLevel,
                     className: 'consonant-OneHalfCard-title' },
                 title
+            ),
+            _react2.default.createElement(
+                'p',
+                { className: 'consonant-Card-price' },
+                _react2.default.createElement('span', {
+                    is: 'inline-price',
+                    'data-wcs-type': 'price',
+                    'data-display-recurrence': 'false',
+                    'data-display-per-unit': 'false',
+                    'data-display-tax': 'false',
+                    'data-wcs-osi': 'r_JXAnlFI7xD6FxWKl2ODvZriLYBoSL701Kd1hRyhe8',
+                    'data-promotion-code': 'nicopromo',
+                    'class': 'placeholder'
+                })
             ),
             description && _react2.default.createElement(
                 'p',
