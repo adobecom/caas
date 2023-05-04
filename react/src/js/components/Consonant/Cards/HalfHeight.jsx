@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Fragment } from 'react';
 
 import classNames from 'classnames';
@@ -19,7 +20,6 @@ import {
     tagsType,
 } from '../types/card';
 import LinkBlocker from './LinkBlocker/LinkBlocker';
-import VideoButton from '../Modal/videoButton';
 import prettyFormatDate from '../Helpers/prettyFormat';
 
 const halfHeightCardType = {
@@ -238,13 +238,6 @@ const HalfHeightCard = (props) => {
                 role={altText && 'img'}
                 aria-label={altText} />
             <div className="consonant-HalfHeightCard-inner">
-                {videoURLToUse &&
-                <VideoButton
-                    videoURL={videoURLToUse}
-                    gateVideo={gateVideo}
-                    onFocus={onFocus}
-                    className="consonant-HalfHeightCard-videoIco" />
-                }
                 {title &&
                 <p
                     role="heading"

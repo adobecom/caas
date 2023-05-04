@@ -42,24 +42,24 @@
 
         /* Cards variations */
 
-        &--2up {
-            grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-mobileMinWidth, max-content));
-
-            .consonant-ThreeFourthCard,
-            .consonant-OneHalfCard,
-            .consonant-HalfHeightCard,
-            .consonant-DoubleWideCard,
-            .consonant-ProductCard,
-            .consonant-TextCard,
-            .consonant-FullCard {
-                max-width: @consonant-DoubleWideCard-maxWidth;
-
-                &-inner {
-                    width: @consonant-DoubleWideCard-maxWidth;
-                    max-width: 100%;
-                }
-            }
-        }
+        //&--2up {
+        //    grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-mobileMinWidth, max-content));
+        //
+        //    .consonant-ThreeFourthCard,
+        //    .consonant-OneHalfCard,
+        //    .consonant-HalfHeightCard,
+        //    .consonant-DoubleWideCard,
+        //    .consonant-ProductCard,
+        //    .consonant-TextCard,
+        //    .consonant-FullCard {
+        //        max-width: @consonant-DoubleWideCard-maxWidth;
+        //
+        //        &-inner {
+        //            width: @consonant-DoubleWideCard-maxWidth;
+        //            max-width: 100%;
+        //        }
+        //    }
+        //}
 
         &--3up {
             .consonant-ThreeFourthCard,
@@ -75,117 +75,117 @@
             }
         }
 
-        &--4up {
-            grid-template-columns: repeat(auto-fit, minmax(@consonant-CardsGrid-smallerCardMinWidth, max-content));
+        //&--4up {
+        //    grid-template-columns: repeat(auto-fit, minmax(@consonant-CardsGrid-smallerCardMinWidth, max-content));
+        //
+        //    .consonant-ThreeFourthCard,
+        //    .consonant-OneHalfCard,
+        //    .consonant-HalfHeightCard,
+        //    .consonant-ProductCard,
+        //    .consonant-TextCard,
+        //    .consonant-FullCard {
+        //        min-width: @consonant-CardsGrid-smallerCardMinWidth;
+        //        max-width: @consonant-CardsGrid-smallerCardMaxWidth;
+        //        height: @consonant-CardsGrid-smallerCardheight;
+        //
+        //        &-inner {
+        //            width: @consonant-CardsGrid-smallerCardMaxWidth;
+        //            max-width: 100%;
+        //        }
+        //    }
+        //
+        //    .consonant-ThreeFourthCard .consonant-ThreeFourthCard-img {
+        //        min-height: @consonant-CardsGrid-smallerCardImgThreeFourthHeight;
+        //    }
+        //
+        //    .consonant-ThreeFourthCard > a > .consonant-ThreeFourthCard-text {
+        //        display: none;
+        //    }
+        //
+        //    .consonant-ThreeFourthCard > a > .consonant-ThreeFourthCard-title {
+        //        margin-bottom: 0;
+        //        max-height: 1.375rem * 2;
+        //
+        //        .line-clamp(2);
+        //
+        //        &:first-child {
+        //            max-height: 1.375rem * 3;
+        //
+        //            .line-clamp(3);
+        //        }
+        //    }
+        //
+        //    .consonant-ProductCard,
+        //    .consonant-TextCard,
+        //    .consonant-OneHalfCard {
+        //        height: auto;
+        //    }
+        //
+        //    .consonant-OneHalfCard .consonant-OneHalfCard-img {
+        //        min-height: @consonant-CardsGrid-smallerCardImgOneHalfHeight;
+        //        max-height: @consonant-CardsGrid-smallerCardImgOneHalfHeight;
+        //    }
+        //
+        //    .consonant-HalfHeightCard {
+        //        height: @consonant-OneHalfCard-height;
+        //    }
+        //}
 
-            .consonant-ThreeFourthCard,
-            .consonant-OneHalfCard,
-            .consonant-HalfHeightCard,
-            .consonant-ProductCard,
-            .consonant-TextCard,
-            .consonant-FullCard {
-                min-width: @consonant-CardsGrid-smallerCardMinWidth;
-                max-width: @consonant-CardsGrid-smallerCardMaxWidth;
-                height: @consonant-CardsGrid-smallerCardheight;
-
-                &-inner {
-                    width: @consonant-CardsGrid-smallerCardMaxWidth;
-                    max-width: 100%;
-                }
-            }
-
-            .consonant-ThreeFourthCard .consonant-ThreeFourthCard-img {
-                min-height: @consonant-CardsGrid-smallerCardImgThreeFourthHeight;
-            }
-
-            .consonant-ThreeFourthCard > a > .consonant-ThreeFourthCard-text {
-                display: none;
-            }
-
-            .consonant-ThreeFourthCard > a > .consonant-ThreeFourthCard-title {
-                margin-bottom: 0;
-                max-height: 1.375rem * 2;
-
-                .line-clamp(2);
-
-                &:first-child {
-                    max-height: 1.375rem * 3;
-
-                    .line-clamp(3);
-                }
-            }
-
-            .consonant-ProductCard,
-            .consonant-TextCard,
-            .consonant-OneHalfCard {
-                height: auto;
-            }
-
-            .consonant-OneHalfCard .consonant-OneHalfCard-img {
-                min-height: @consonant-CardsGrid-smallerCardImgOneHalfHeight;
-                max-height: @consonant-CardsGrid-smallerCardImgOneHalfHeight;
-            }
-
-            .consonant-HalfHeightCard {
-                height: @consonant-OneHalfCard-height;
-            }
-        }
-
-        &--5up {
-            grid-template-columns: repeat(auto-fit, minmax(@consonant-CardsGrid-smallestCardMinWidth, max-content));
-
-            .consonant-ThreeFourthCard,
-            .consonant-OneHalfCard,
-            .consonant-HalfHeightCard,
-            .consonant-ProductCard,
-            .consonant-TextCard,
-            .consonant-FullCard {
-                min-width: @consonant-CardsGrid-smallestCardMinWidth;
-                max-width: @consonant-CardsGrid-smallestCardMaxWidth;
-                height: @consonant-CardsGrid-smallestCardHeight;
-
-                &-inner {
-                    width: @consonant-CardsGrid-smallestCardMaxWidth;
-                    max-width: 100%;
-                }
-            }
-
-            .consonant-ThreeFourthCard .consonant-ThreeFourthCard-img {
-                min-height: @consonant-CardsGrid-smallestCardImgThreeFourthHeight;
-            }
-
-            .consonant-ThreeFourthCard > a > .consonant-ThreeFourthCard-text {
-                display: none;
-            }
-
-            .consonant-ThreeFourthCard > a > .consonant-ThreeFourthCard-title {
-                margin-bottom: 0;
-                max-height: 1.375rem * 2;
-
-                .line-clamp(2);
-
-                &:first-child {
-                    max-height: 1.375rem * 3;
-
-                    .line-clamp(3);
-                }
-            }
-
-            .consonant-ProductCard,
-            .consonant-TextCard,
-            .consonant-OneHalfCard {
-                height: auto;
-            }
-
-            .consonant-OneHalfCard .consonant-OneHalfCard-img {
-                min-height: @consonant-CardsGrid-smallestCardImgOneHalfHeight;
-                max-height: @consonant-CardsGrid-smallestCardImgOneHalfHeight;
-            }
-
-            .consonant-HalfHeightCard {
-                height: @consonant-OneHalfCard-height;
-            }
-        }
+        //&--5up {
+        //    grid-template-columns: repeat(auto-fit, minmax(@consonant-CardsGrid-smallestCardMinWidth, max-content));
+        //
+        //    .consonant-ThreeFourthCard,
+        //    .consonant-OneHalfCard,
+        //    .consonant-HalfHeightCard,
+        //    .consonant-ProductCard,
+        //    .consonant-TextCard,
+        //    .consonant-FullCard {
+        //        min-width: @consonant-CardsGrid-smallestCardMinWidth;
+        //        max-width: @consonant-CardsGrid-smallestCardMaxWidth;
+        //        height: @consonant-CardsGrid-smallestCardHeight;
+        //
+        //        &-inner {
+        //            width: @consonant-CardsGrid-smallestCardMaxWidth;
+        //            max-width: 100%;
+        //        }
+        //    }
+        //
+        //    .consonant-ThreeFourthCard .consonant-ThreeFourthCard-img {
+        //        min-height: @consonant-CardsGrid-smallestCardImgThreeFourthHeight;
+        //    }
+        //
+        //    .consonant-ThreeFourthCard > a > .consonant-ThreeFourthCard-text {
+        //        display: none;
+        //    }
+        //
+        //    .consonant-ThreeFourthCard > a > .consonant-ThreeFourthCard-title {
+        //        margin-bottom: 0;
+        //        max-height: 1.375rem * 2;
+        //
+        //        .line-clamp(2);
+        //
+        //        &:first-child {
+        //            max-height: 1.375rem * 3;
+        //
+        //            .line-clamp(3);
+        //        }
+        //    }
+        //
+        //    .consonant-ProductCard,
+        //    .consonant-TextCard,
+        //    .consonant-OneHalfCard {
+        //        height: auto;
+        //    }
+        //
+        //    .consonant-OneHalfCard .consonant-OneHalfCard-img {
+        //        min-height: @consonant-CardsGrid-smallestCardImgOneHalfHeight;
+        //        max-height: @consonant-CardsGrid-smallestCardImgOneHalfHeight;
+        //    }
+        //
+        //    .consonant-HalfHeightCard {
+        //        height: @consonant-OneHalfCard-height;
+        //    }
+        //}
 
         &--3up&--doubleWideCards,
         &--4up&--doubleWideCards,
@@ -199,23 +199,23 @@
         }
 
         @media @consonant-680px-up {
-            &--2up {
-                grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-desktopMinWidth, max-content));
+            //&--2up {
+            //    grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-desktopMinWidth, max-content));
+            //
+            //    .consonant-ThreeFourthCard,
+            //    .consonant-OneHalfCard,
+            //    .consonant-HalfHeightCard,
+            //    .consonant-DoubleWideCard,
+            //    .consonant-FullCard {
+            //        min-width: @consonant-DoubleWideCard-desktopMinWidth;
+            //    }
+            //}
 
-                .consonant-ThreeFourthCard,
-                .consonant-OneHalfCard,
-                .consonant-HalfHeightCard,
-                .consonant-DoubleWideCard,
-                .consonant-FullCard {
-                    min-width: @consonant-DoubleWideCard-desktopMinWidth;
-                }
-            }
-
-            &--3up&--doubleWideCards,
-            &--4up&--doubleWideCards,
-            &--5up&--doubleWideCards {
-                grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-desktopMinWidth, max-content));
-            }
+            //&--3up&--doubleWideCards,
+            //&--4up&--doubleWideCards,
+            //&--5up&--doubleWideCards {
+            //    grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-desktopMinWidth, max-content));
+            //}
         }
     }
 }

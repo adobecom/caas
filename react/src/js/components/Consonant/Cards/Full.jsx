@@ -18,7 +18,6 @@ import {
     overlaysType,
 } from '../types/card';
 import LinkBlocker from './LinkBlocker/LinkBlocker';
-import VideoButton from '../Modal/videoButton';
 
 const fullCardType = {
     ctaLink: string,
@@ -233,12 +232,7 @@ const FullCard = (props) => {
                     {badgeText}
                 </span>
                 }
-                {videoURL &&
-                <VideoButton
-                    videoURL={videoURL}
-                    onFocus={onFocus}
-                    className="consonant-FullCard-videoIco" />
-                }
+                {videoURL && true}
                 {logoSrc &&
                 <div
                     style={({

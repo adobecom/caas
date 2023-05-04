@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import classNames from 'classnames';
 import {
@@ -217,78 +218,6 @@ const Grid = (props) => {
                 const hideCTA = getHideCta(card, collectionButtonStyle);
 
                 switch (cardStyle) {
-                    case CARD_STYLES.FULL:
-                        return (
-                            <FullCard
-                                lh={`Card ${cardNumber} | ${cleanTitle(title)} | ${id}`}
-                                key={card.id}
-                                {...card}
-                                bannerMap={bannerMap}
-                                renderBorder={renderCardsBorders}
-                                renderOverlay={renderCardsOverlay}
-                                onFocus={() => scrollCardIntoView(card.id)} />
-                        );
-                    case CARD_STYLES.SQUARE:
-                        return (
-                            <ThreeFourthCard
-                                lh={`Card ${cardNumber} | ${cleanTitle(title)} | ${id}`}
-                                key={card.id}
-                                {...card}
-                                bannerMap={bannerMap}
-                                renderBorder={renderCardsBorders}
-                                renderOverlay={renderCardsOverlay}
-                                onFocus={() => scrollCardIntoView(card.id)} />
-                        );
-                    case CARD_STYLES.HALF_HEIGHT:
-                        return (
-                            <HalfHeightCard
-                                lh={`Card ${cardNumber} | ${cleanTitle(title)} | ${id}`}
-                                key={card.id}
-                                {...card}
-                                bannerMap={bannerMap}
-                                renderBorder={renderCardsBorders}
-                                renderOverlay={renderCardsOverlay}
-                                onFocus={() => scrollCardIntoView(card.id)} />
-                        );
-                    case CARD_STYLES.DOUBLE_WIDE:
-                        return (
-                            <DoubleWideCard
-                                lh={`Card ${cardNumber} | ${cleanTitle(title)} | ${id}`}
-                                key={card.id}
-                                {...card}
-                                bannerMap={bannerMap}
-                                renderBorder={renderCardsBorders}
-                                renderOverlay={renderCardsOverlay}
-                                onFocus={() => scrollCardIntoView(card.id)} />
-                        );
-                    case CARD_STYLES.PRODUCT:
-                        return (
-                            <ProductCard
-                                lh={`Card ${index} | ${cleanTitle(title)} | ${id}`}
-                                key={card.id}
-                                renderBorder={renderCardsBorders}
-                                {...card}
-                                renderOverlay={renderCardsOverlay}
-                                hideCTA={hideCTA}
-                                onFocus={() => scrollCardIntoView(card.id)} />
-                        );
-                    case CARD_STYLES.TEXT:
-                        return (
-                            <TextCard
-                                lh={`Card ${cardNumber} | ${cleanTitle(title)} | ${id}`}
-                                key={card.id}
-                                {...card}
-                                bannerMap={bannerMap}
-                                onClick={onCardBookmark}
-                                dateFormat={dateFormat}
-                                locale={locale}
-                                renderBorder={renderCardsBorders}
-                                renderOverlay={renderCardsOverlay}
-                                hideCTA={hideCTA}
-                                onFocus={() => scrollCardIntoView(card.id)} />
-                        );
-                    case CARD_STYLES.CUSTOM:
-                        return parseHTML(customCard(card));
                     default:
                         return (
                             <OneHalfCard

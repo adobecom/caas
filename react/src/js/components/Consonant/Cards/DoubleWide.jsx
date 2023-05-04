@@ -14,7 +14,6 @@ import {
     overlaysType,
 } from '../types/card';
 import LinkBlocker from './LinkBlocker/LinkBlocker';
-import VideoButton from '../Modal/videoButton';
 import { getEventBanner, getLinkTarget } from '../Helpers/general';
 
 const doubleWideCardType = {
@@ -212,12 +211,7 @@ const DoubleWideCard = (props) => {
                 style={{ backgroundImage: lazyLoadedImage && `url("${lazyLoadedImage}")` }}
                 role={altText && 'img'}
                 aria-label={altText}>
-                {videoURL &&
-                <VideoButton
-                    videoURL={videoURL}
-                    onFocus={onFocus}
-                    className="consonant-DoubleWideCard-videoIco" />
-                }
+                {videoURL && true}
             </div>
             <a
                 href={cardLink}
