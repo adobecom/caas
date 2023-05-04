@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React, {
     Fragment,
-    // useEffect,
+    useEffect,
     useRef,
     useState,
     // createRef,
@@ -12,13 +12,13 @@ import React, {
 // import Popup from '../Sort/Popup';
 // import Search from '../Search/Search';
 // import Loader from '../Loader/Loader';
-// import {
-//     getByPath,
-//     saveBookmarksToLocalStorage,
-//     readBookmarksFromLocalStorage,
-//     readInclusionsFromLocalStorage,
-//     getTransitions,
-// } from '../Helpers/general';
+import {
+    getByPath,
+    // saveBookmarksToLocalStorage,
+    // readBookmarksFromLocalStorage,
+    // readInclusionsFromLocalStorage,
+    // getTransitions,
+} from '../Helpers/general';
 // import { configType } from '../types/config';
 // import CardsCarousel from '../CardsCarousel/CardsCarousel';
 import NoResultsView from '../NoResults/View';
@@ -29,7 +29,7 @@ import Grid from '../Grid/Grid';
 import CardFilterer from '../Helpers/CardFilterer';
 // import FiltersPanelTop from '../Filters/Top/Panel';
 // import LeftFilterPanel from '../Filters/Left/Panel';
-// import JsonProcessor from '../Helpers/JsonProcessor';
+import JsonProcessor from '../Helpers/JsonProcessor';
 // import { useWindowDimensions, useURLState } from '../Helpers/hooks';
 // import { Info as LeftInfo } from '../Filters/Left/Info';
 // import {
@@ -127,7 +127,7 @@ const Container = (props) => {
     // const noResultsDescription = getConfig('search', 'i18n.noResultsDescription');
     // const apiFailureTitle = getConfig('collection', 'i18n.onErrorTitle');
     // const apiFailureDescription = getConfig('collection', 'i18n.onErrorDescription');
-    // const isLazy = getConfig('collection', 'lazyload');
+    const isLazy = getConfig('collection', 'lazyload');
     // const trackImpressions = getConfig('analytics', 'trackImpressions');
     // const collectionIdentifier = getConfig('analytics', 'collectionIdentifier');
     // const targetEnabled = getConfig('target', 'enabled');
@@ -313,1028 +313,7 @@ const Container = (props) => {
      *
      * @type {[Array, Function]} Cards
      */
-    const [cards, setCards] = useState([
-        {
-            "id": "6d6438c8-5aa2-36be-bfd0-18a9f6e4cd9c",
-            "showCard": {
-                "from": "2020-10-01T20:00:00Z",
-                "until": "2025-10-31T21:45:00Z"
-            },
-            "tags": [
-                {
-                    "id": "adobe-com-enterprise:content-type/webinar"
-                },
-                {
-                    "id": "adobe-com-enterprise:availability/upcoming"
-                },
-                {
-                    "id": "adobe-com-enterprise:topic/digital-trends"
-                }
-            ],
-            "overlays": {
-                "banner": {
-                    "backgroundColor": "#CB6F10",
-                    "fontColor": "#FFFFFF",
-                    "description": "Upcoming",
-                    "icon": ""
-                },
-                "logo": {},
-                "label": {},
-                "videoButton": {}
-            },
-            "contentArea": {
-                "detailText": "",
-                "title": "Bebudegedo rugemanolo kecigaxico ru. Maco vebuc muqelohur terex repec heludem pepam do regisa vec noleviwur puladabu. Ho zuduno nerakema pufe.",
-                "description": "Toverah nabili. Rarohapudi mamik neneh bor ti tado do. Decede de cebimolona moba yoten malizo norunecac ca mubun cun lube nek tebabi dezekexi pulu pa dunubec varec cet livo. Dibeloj ko reradir nomemason cinotojub bucicib qimabadal peponecig lepudonob besoku.",
-                "dateDetailText": {}
-            },
-            "styles": {
-                "typeOverride": "",
-                "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/104643%20Adobe_Digital-Bites-web-graphics_marquee%201600x600.jpg"
-            },
-            "footer": [
-                {
-                    "divider": true,
-                    "left": [
-                        {
-                            "type": "bookmark",
-                            "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
-                            "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
-                            "cardSaveText": "Save Card",
-                            "cardUnsaveText": "Unsave Card"
-                        },
-                        {
-                            "type": "date-interval",
-                            "startTime": "2020-10-20T20:00:00Z",
-                            "endTime": "2020-10-27T21:45:00Z"
-                        }
-                    ],
-                    "center": [],
-                    "right": [
-                        {
-                            "type": "button",
-                            "style": "primary",
-                            "text": "Read More",
-                            "href": "https://www.google.com"
-                        }
-                    ]
-                }
-            ],
-            "cardDate": "2020-07-02T09:41:35.933Z"
-        },
-        {
-            "id": "ac578dee-f01b-3ea0-a282-2116619e4251",
-            "showCard": {
-                "from": "2020-10-01T20:00:00Z",
-                "until": "2025-10-31T21:45:00Z"
-            },
-            "tags": [
-                {
-                    "id": "adobe-com-enterprise:content-type/webinar"
-                },
-                {
-                    "id": "adobe-com-enterprise:availability/upcoming"
-                },
-                {
-                    "id": "adobe-com-enterprise:topic/Stock"
-                }
-            ],
-            "overlays": {
-                "banner": {
-                    "backgroundColor": "#FFFFFF",
-                    "fontColor": "#D7373F",
-                    "description": "Live",
-                    "icon": "https://upload.wikimedia.org/wikipedia/commons/9/92/Location_dot_red.svg"
-                },
-                "logo": {},
-                "label": {},
-                "videoButton": {}
-            },
-            "contentArea": {
-                "detailText": "",
-                "title": "No sanoken pore.",
-                "description": "Bopibi ducipasa torureda za rotiludona lupo denos jemo pipupekeb putobepal dare yucidekina lu tamiha no. Cabohanus lujesir tonagico paxudigatu banunejo. Bab heben bareze cimelob giced kalu dubetu bogo. Lecole ni rido mami nanoc muwulobu nobiniyas moxotuqa yej ti cofirupu ci buharal perocin.",
-                "dateDetailText": {}
-            },
-            "styles": {
-                "typeOverride": "",
-                "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/Adobe_Stock_Audio_Banner_1600x%20600.jpg"
-            },
-            "footer": [
-                {
-                    "divider": true,
-                    "left": [
-                        {
-                            "type": "bookmark",
-                            "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
-                            "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
-                            "cardSaveText": "Save Card",
-                            "cardUnsaveText": "Unsave Card"
-                        },
-                        {
-                            "type": "date-interval",
-                            "startTime": "2020-10-20T20:00:00Z",
-                            "endTime": "2020-10-27T21:45:00Z"
-                        }
-                    ],
-                    "center": [],
-                    "right": [
-                        {
-                            "type": "button",
-                            "style": "call-to-action",
-                            "text": "Read More",
-                            "href": "https://www.google.com"
-                        }
-                    ]
-                }
-            ],
-            "cardDate": "2020-07-30T08:45:42.881Z"
-        },
-        {
-            "id": "5187e934-ed9e-39de-bf6d-ea796098de3f",
-            "showCard": {
-                "from": "2020-10-01T20:00:00Z",
-                "until": "2025-10-31T21:45:00Z"
-            },
-            "tags": [
-                {
-                    "id": "adobe-com-enterprise:content-type/webinar"
-                },
-                {
-                    "id": "adobe-com-enterprise:availability/upcoming"
-                },
-                {
-                    "id": "adobe-com-enterprise:topic/digital-foundation"
-                }
-            ],
-            "overlays": {
-                "banner": {
-                    "backgroundColor": "#CB6F10",
-                    "fontColor": "#FFFFFF",
-                    "description": "Upcoming",
-                    "icon": ""
-                },
-                "logo": {},
-                "label": {},
-                "videoButton": {}
-            },
-            "contentArea": {
-                "detailText": "",
-                "title": "Nafucoz cipagehu cope wo lidumoq. Rubotixore tol melec dagamicadi nadurijo sohehax pup lapunijew royi nehecoro sedic mabuk ducej ribide.",
-                "description": "Bareg. Xekileb qi rapobumo bar dabiq remorugib bigiromo yulodobere detubur. Dugemubilu koyibepire. Do bikebopi kiluhe. Mexuralucu ro pu peb.",
-                "dateDetailText": {}
-            },
-            "styles": {
-                "typeOverride": "",
-                "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/landing_page_no_description.png"
-            },
-            "footer": [
-                {
-                    "divider": true,
-                    "left": [
-                        {
-                            "type": "bookmark",
-                            "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
-                            "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
-                            "cardSaveText": "Save Card",
-                            "cardUnsaveText": "Unsave Card"
-                        },
-                        {
-                            "type": "date-interval",
-                            "startTime": "2020-10-20T20:00:00Z",
-                            "endTime": "2020-10-27T21:45:00Z"
-                        }
-                    ],
-                    "center": [],
-                    "right": [
-                        {
-                            "type": "button",
-                            "style": "call-to-action",
-                            "text": "Read More",
-                            "href": "https://www.google.com"
-                        }
-                    ]
-                }
-            ],
-            "cardDate": "2020-08-10T12:54:50.040Z"
-        },
-        {
-            "id": "ad83970f-c987-3c86-846f-4edaec827fb1",
-            "showCard": {
-                "from": "2020-10-01T20:00:00Z",
-                "until": "2025-10-31T21:45:00Z"
-            },
-            "tags": [
-                {
-                    "id": "adobe-com-enterprise:content-type/webinar"
-                },
-                {
-                    "id": "adobe-com-enterprise:availability/upcoming"
-                },
-                {
-                    "id": "adobe-com-enterprise:topic/digital-foundation"
-                }
-            ],
-            "overlays": {
-                "banner": {
-                    "backgroundColor": "#CB6F10",
-                    "fontColor": "#FFFFFF",
-                    "description": "Upcoming",
-                    "icon": ""
-                },
-                "logo": {},
-                "label": {},
-                "videoButton": {}
-            },
-            "contentArea": {
-                "detailText": "",
-                "title": "Zapiv rebucu rup nubahareja pu dad cunu muna.",
-                "description": "Korubopep pana.",
-                "dateDetailText": {}
-            },
-            "styles": {
-                "typeOverride": "",
-                "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/104820%20Adobe%20pharma%20webinar%20web%20graphics_2400x800.png"
-            },
-            "footer": [
-                {
-                    "divider": true,
-                    "left": [
-                        {
-                            "type": "bookmark",
-                            "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
-                            "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
-                            "cardSaveText": "Save Card",
-                            "cardUnsaveText": "Unsave Card"
-                        },
-                        {
-                            "type": "date-interval",
-                            "startTime": "2020-10-20T20:00:00Z",
-                            "endTime": "2020-10-27T21:45:00Z"
-                        }
-                    ],
-                    "center": [],
-                    "right": [
-                        {
-                            "type": "button",
-                            "style": "call-to-action",
-                            "text": "Read More",
-                            "href": "https://www.google.com"
-                        }
-                    ]
-                }
-            ],
-            "cardDate": "2020-07-16T12:24:48.834Z"
-        },
-        {
-            "id": "79c4132f-d4f4-3291-8d31-6bea27759a79",
-            "showCard": {
-                "from": "2020-10-01T20:00:00Z",
-                "until": "2025-10-31T21:45:00Z"
-            },
-            "tags": [
-                {
-                    "id": "adobe-com-enterprise:content-type/webinar"
-                },
-                {
-                    "id": "adobe-com-enterprise:availability/on-demand"
-                },
-                {
-                    "id": "adobe-com-enterprise:topic/digital-foundation"
-                }
-            ],
-            "overlays": {
-                "banner": {
-                    "backgroundColor": "#1473E6",
-                    "fontColor": "#FFFFFF",
-                    "description": "On-Demand",
-                    "icon": ""
-                },
-                "logo": {},
-                "label": {},
-                "videoButton": {}
-            },
-            "contentArea": {
-                "detailText": "",
-                "title": "Gi.",
-                "description": "Momicucil bogoruwi werari ner minib cicicinu lemu ceb. Dugunirik tibape zaligumoju. Vobura teyeru tonip ci. Doconim topuc toderita bekag. Pecul rimohep..",
-                "dateDetailText": {}
-            },
-            "styles": {
-                "typeOverride": "",
-                "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/1440x400acomfullbanner_2.png"
-            },
-            "footer": [
-                {
-                    "divider": true,
-                    "left": [
-                        {
-                            "type": "bookmark",
-                            "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
-                            "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
-                            "cardSaveText": "Save Card",
-                            "cardUnsaveText": "Unsave Card"
-                        },
-                        {
-                            "type": "date-interval",
-                            "startTime": "2020-10-20T20:00:00Z",
-                            "endTime": "2020-10-27T21:45:00Z"
-                        }
-                    ],
-                    "center": [],
-                    "right": [
-                        {
-                            "type": "button",
-                            "style": "call-to-action",
-                            "text": "Read More",
-                            "href": "https://www.google.com"
-                        }
-                    ]
-                }
-            ],
-            "cardDate": "2020-08-06T09:13:35.392Z"
-        },
-        {
-            "id": "a122e5f1-55df-3021-ad4d-154909059ee6",
-            "showCard": {
-                "from": "2020-10-01T20:00:00Z",
-                "until": "2025-10-31T21:45:00Z"
-            },
-            "tags": [
-                {
-                    "id": "adobe-com-enterprise:content-type/webinar"
-                },
-                {
-                    "id": "adobe-com-enterprise:availability/on-demand"
-                },
-                {
-                    "id": "adobe-com-enterprise:topic/business-continuity"
-                }
-            ],
-            "overlays": {
-                "banner": {
-                    "backgroundColor": "#FFFFFF",
-                    "fontColor": "#D7373F",
-                    "description": "Live",
-                    "icon": "https://upload.wikimedia.org/wikipedia/commons/9/92/Location_dot_red.svg"
-                },
-                "logo": {},
-                "label": {},
-                "videoButton": {}
-            },
-            "contentArea": {
-                "detailText": "",
-                "title": "Der put dulatupu. Dopo ma morema..",
-                "description": "Qewugitiru labavutur babereluq bu bi pora ciboneluye. Niropob xuciropeyo. Temirim.",
-                "dateDetailText": {}
-            },
-            "styles": {
-                "typeOverride": "",
-                "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/business-continuity/mobile_image_1440x810_option%201c.jpg"
-            },
-            "footer": [
-                {
-                    "divider": true,
-                    "left": [
-                        {
-                            "type": "bookmark",
-                            "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
-                            "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
-                            "cardSaveText": "Save Card",
-                            "cardUnsaveText": "Unsave Card"
-                        },
-                        {
-                            "type": "date-interval",
-                            "startTime": "2020-10-20T20:00:00Z",
-                            "endTime": "2020-10-27T21:45:00Z"
-                        }
-                    ],
-                    "center": [],
-                    "right": [
-                        {
-                            "type": "button",
-                            "style": "call-to-action",
-                            "text": "Read More",
-                            "href": "https://www.google.com"
-                        }
-                    ]
-                }
-            ],
-            "cardDate": "2020-07-24T11:01:47.558Z"
-        },
-        {
-            "id": "4b689970-e9fa-37ce-8faa-acf01c653bdc",
-            "showCard": {
-                "from": "2020-10-01T20:00:00Z",
-                "until": "2025-10-31T21:45:00Z"
-            },
-            "tags": [
-                {
-                    "id": "adobe-com-enterprise:content-type/webinar"
-                },
-                {
-                    "id": "adobe-com-enterprise:availability/on-demand"
-                },
-                {
-                    "id": "adobe-com-enterprise:topic/business-continuity"
-                }
-            ],
-            "overlays": {
-                "banner": {
-                    "backgroundColor": "#1473E6",
-                    "fontColor": "#FFFFFF",
-                    "description": "On-Demand",
-                    "icon": ""
-                },
-                "logo": {},
-                "label": {},
-                "videoButton": {}
-            },
-            "contentArea": {
-                "detailText": "",
-                "title": "Gepanos tipakobena zotibodeb rejegoperu daceciro racoc pixudicota xeficebu rukoluto suliqom hitirifi waritic kubakib roduw..",
-                "description": "Yo dab. Niloh guranebod mohirehada hotud xanepulewe rin nalam five nadomod tuduwukipa dadabim worur. Rac pe. Gi. Bapuzar puro me lihopicozo li quc label belaxikar naruli noburide qehabi ficipiga nakofunova fopoqo vonodinete lip how medup dopur ruboda karac mepe. Vilubumam bipobobeva tobe radu. Haceqacuda puculici balonodi pimeriwabo. Boto ca. Mapara calaki pahuf wite lakid miroha lemu zuc. Bu.",
-                "dateDetailText": {}
-            },
-            "styles": {
-                "typeOverride": "",
-                "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/business-continuity/mobile_image_1440x810_option%201d.jpg"
-            },
-            "footer": [
-                {
-                    "divider": true,
-                    "left": [
-                        {
-                            "type": "bookmark",
-                            "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
-                            "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
-                            "cardSaveText": "Save Card",
-                            "cardUnsaveText": "Unsave Card"
-                        },
-                        {
-                            "type": "date-interval",
-                            "startTime": "2020-10-20T20:00:00Z",
-                            "endTime": "2020-10-27T21:45:00Z"
-                        }
-                    ],
-                    "center": [],
-                    "right": [
-                        {
-                            "type": "button",
-                            "style": "call-to-action",
-                            "text": "Read More",
-                            "href": "https://www.google.com"
-                        }
-                    ]
-                }
-            ],
-            "cardDate": "2020-07-24T11:01:41.854Z"
-        },
-        {
-            "id": "194d8a83-d22d-3d78-b0f9-1a890112dcc0",
-            "showCard": {
-                "from": "2020-10-01T20:00:00Z",
-                "until": "2025-10-31T21:45:00Z"
-            },
-            "tags": [
-                {
-                    "id": "adobe-com-enterprise:content-type/webinar"
-                },
-                {
-                    "id": "adobe-com-enterprise:availability/on-demand"
-                },
-                {
-                    "id": "adobe-com-enterprise:topic/business-continuity"
-                }
-            ],
-            "overlays": {
-                "banner": {
-                    "backgroundColor": "#1473E6",
-                    "fontColor": "#FFFFFF",
-                    "description": "On-Demand",
-                    "icon": ""
-                },
-                "logo": {},
-                "label": {},
-                "videoButton": {}
-            },
-            "contentArea": {
-                "detailText": "",
-                "title": "Niririritu dibahe.",
-                "description": "He wezo baxedoco nerukimul pec nafepiqa guro cimiranid remetib kopinu. Darihowu jakunu nekedek nok me tir niqataz mezo behe kebew ba sul wobune ponur qa zemapu lekedebo wimocamoba cificey qumunelul. Jekucako ga pitageric kapag decec. Diqodar bonebu hi qikorelile hutomi tutoled ki wu nopoci robicor. Nab qiter box pu nugilitur helobu. Cima neta. Dec. Gutikawon deniwu dililo loliw.",
-                "dateDetailText": {}
-            },
-            "styles": {
-                "typeOverride": "",
-                "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/business-continuity/mobile_image_1440x810_option%201c.jpg"
-            },
-            "footer": [
-                {
-                    "divider": true,
-                    "left": [
-                        {
-                            "type": "bookmark",
-                            "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
-                            "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
-                            "cardSaveText": "Save Card",
-                            "cardUnsaveText": "Unsave Card"
-                        },
-                        {
-                            "type": "date-interval",
-                            "startTime": "2020-10-20T20:00:00Z",
-                            "endTime": "2020-10-27T21:45:00Z"
-                        }
-                    ],
-                    "center": [],
-                    "right": [
-                        {
-                            "type": "button",
-                            "style": "call-to-action",
-                            "text": "Read More",
-                            "href": "https://www.google.com"
-                        }
-                    ]
-                }
-            ],
-            "cardDate": "2020-07-24T10:36:59.320Z"
-        },
-        {
-            "id": "48c1906c-9ba5-32c2-afe3-4554af25ac99",
-            "showCard": {
-                "from": "2020-10-01T20:00:00Z",
-                "until": "2025-10-31T21:45:00Z"
-            },
-            "tags": [
-                {
-                    "id": "adobe-com-enterprise:content-type/webinar"
-                },
-                {
-                    "id": "adobe-com-enterprise:availability/on-demand"
-                },
-                {
-                    "id": "adobe-com-enterprise:topic/business-continuity"
-                }
-            ],
-            "overlays": {
-                "banner": {
-                    "backgroundColor": "#1473E6",
-                    "fontColor": "#FFFFFF",
-                    "description": "On-Demand",
-                    "icon": ""
-                },
-                "logo": {},
-                "label": {},
-                "videoButton": {}
-            },
-            "contentArea": {
-                "detailText": "",
-                "title": "Bod pi poriyucabu catanet pote pudu yo. Turudoweto tera qulax cuponiducu damen vineyu ropupepib papov lalokopub gededec du toxo. Guq.",
-                "description": "Lurap pudubedo. Hofih dota pimu qen jubuy sacozikeje deni bewuyibap ro ga pametiha ci jusaq gamugilur hupohal cu li nojuzigeha pa pa gubabi xohitume beh goxu lucufiripi tonalur. Mabe boxa nomen be dinalisoc pepela lulira ladimax zac ruraq cekub. Gupefep nevi. Bumi pa patiliwig negibemimu pec peti tivat ped ti cal ra rata nuloyip mojudona lebamituk cojemolebe..",
-                "dateDetailText": {}
-            },
-            "styles": {
-                "typeOverride": "",
-                "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/business-continuity/mobile_image_1440x810_option%201c.jpg"
-            },
-            "footer": [
-                {
-                    "divider": true,
-                    "left": [
-                        {
-                            "type": "bookmark",
-                            "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
-                            "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
-                            "cardSaveText": "Save Card",
-                            "cardUnsaveText": "Unsave Card"
-                        },
-                        {
-                            "type": "date-interval",
-                            "startTime": "2020-10-20T20:00:00Z",
-                            "endTime": "2020-10-27T21:45:00Z"
-                        }
-                    ],
-                    "center": [],
-                    "right": [
-                        {
-                            "type": "button",
-                            "style": "call-to-action",
-                            "text": "Read More",
-                            "href": "https://www.google.com"
-                        }
-                    ]
-                }
-            ],
-            "cardDate": "2020-07-24T10:36:55.358Z"
-        },
-        {
-            "id": "e8dad9e3-2cd3-3b46-9985-46a3c3a2ff31",
-            "showCard": {
-                "from": "2020-10-01T20:00:00Z",
-                "until": "2025-10-31T21:45:00Z"
-            },
-            "tags": [
-                {
-                    "id": "adobe-com-enterprise:content-type/webinar"
-                },
-                {
-                    "id": "adobe-com-enterprise:availability/on-demand"
-                },
-                {
-                    "id": "adobe-com-enterprise:topic/business-continuity"
-                }
-            ],
-            "overlays": {
-                "banner": {
-                    "backgroundColor": "#1473E6",
-                    "fontColor": "#FFFFFF",
-                    "description": "On-Demand",
-                    "icon": ""
-                },
-                "logo": {},
-                "label": {},
-                "videoButton": {}
-            },
-            "contentArea": {
-                "detailText": "",
-                "title": "Soju nar gahu ke dol cacen puba zukirubidu dobipodol.",
-                "description": "Be yu quw ro pa cereg roruru xol yudimutiro cedi bumekohire quco humarubi bulacoga.",
-                "dateDetailText": {}
-            },
-            "styles": {
-                "typeOverride": "",
-                "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/business-continuity/mobile_image_1440x810_option%201c.jpg"
-            },
-            "footer": [
-                {
-                    "divider": true,
-                    "left": [
-                        {
-                            "type": "bookmark",
-                            "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
-                            "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
-                            "cardSaveText": "Save Card",
-                            "cardUnsaveText": "Unsave Card"
-                        },
-                        {
-                            "type": "date-interval",
-                            "startTime": "2020-10-20T20:00:00Z",
-                            "endTime": "2020-10-27T21:45:00Z"
-                        }
-                    ],
-                    "center": [],
-                    "right": [
-                        {
-                            "type": "button",
-                            "style": "call-to-action",
-                            "text": "Read More",
-                            "href": "https://www.google.com"
-                        }
-                    ]
-                }
-            ],
-            "cardDate": "2020-07-24T10:36:50.122Z"
-        },
-        {
-            "id": "b10726b9-e35b-33d6-a140-6f8e38add752",
-            "showCard": {
-                "from": "2020-10-01T20:00:00Z",
-                "until": "2025-10-31T21:45:00Z"
-            },
-            "tags": [
-                {
-                    "id": "adobe-com-enterprise:content-type/webinar"
-                },
-                {
-                    "id": "adobe-com-enterprise:availability/on-demand"
-                },
-                {
-                    "id": "adobe-com-enterprise:topic/business-continuity"
-                }
-            ],
-            "overlays": {
-                "banner": {
-                    "backgroundColor": "#1473E6",
-                    "fontColor": "#FFFFFF",
-                    "description": "On-Demand",
-                    "icon": ""
-                },
-                "logo": {},
-                "label": {},
-                "videoButton": {}
-            },
-            "contentArea": {
-                "detailText": "",
-                "title": "Diyubohome. Nu hodibubol netilo lodeqapi gedutuxode zocemu recopori. Nudapulule kid pib nol cucebi luki ci copoc vabacamum dizic bucogobak. Buraganada.",
-                "description": "Jalo jeli rekiqoxi loralanixe mahiw pe yucotinod. Pod bogiba gud bute yobagi gixinofir buneq laxedig tuhake padamemey zeb bagaru bovuro pubopepuhi herudida qunepahuno bu pope huhah ka zonu xanucugace bulob redomuxoge bic cimumim gelorodo.",
-                "dateDetailText": {}
-            },
-            "styles": {
-                "typeOverride": "",
-                "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/business-continuity/mobile_image_1440x810_option%201c.jpg"
-            },
-            "footer": [
-                {
-                    "divider": true,
-                    "left": [
-                        {
-                            "type": "bookmark",
-                            "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
-                            "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
-                            "cardSaveText": "Save Card",
-                            "cardUnsaveText": "Unsave Card"
-                        },
-                        {
-                            "type": "date-interval",
-                            "startTime": "2020-10-20T20:00:00Z",
-                            "endTime": "2020-10-27T21:45:00Z"
-                        }
-                    ],
-                    "center": [],
-                    "right": [
-                        {
-                            "type": "button",
-                            "style": "call-to-action",
-                            "text": "Read More",
-                            "href": "https://www.google.com"
-                        }
-                    ]
-                }
-            ],
-            "cardDate": "2020-07-24T10:36:25.686Z"
-        },
-        {
-            "id": "3f17494c-7dd7-3a09-a664-09efacfa5984",
-            "showCard": {
-                "from": "2020-10-01T20:00:00Z",
-                "until": "2025-10-31T21:45:00Z"
-            },
-            "tags": [
-                {
-                    "id": "adobe-com-enterprise:content-type/webinar"
-                },
-                {
-                    "id": "adobe-com-enterprise:availability/on-demand"
-                },
-                {
-                    "id": "adobe-com-enterprise:topic/business-continuity"
-                }
-            ],
-            "overlays": {
-                "banner": {
-                    "backgroundColor": "#1473E6",
-                    "fontColor": "#FFFFFF",
-                    "description": "On-Demand",
-                    "icon": ""
-                },
-                "logo": {},
-                "label": {},
-                "videoButton": {}
-            },
-            "contentArea": {
-                "detailText": "",
-                "title": "Yumo vopij talapona daceyatoqe botaxukeje pili qojaris gogura li pon bodi. Punut jipunu tehicubup tutohido.",
-                "description": "Pahid rid mac. Joc mire.",
-                "dateDetailText": {}
-            },
-            "styles": {
-                "typeOverride": "",
-                "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/business-continuity/mobile_image_1440x810_option%201b.jpg"
-            },
-            "footer": [
-                {
-                    "divider": true,
-                    "left": [
-                        {
-                            "type": "bookmark",
-                            "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
-                            "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
-                            "cardSaveText": "Save Card",
-                            "cardUnsaveText": "Unsave Card"
-                        },
-                        {
-                            "type": "date-interval",
-                            "startTime": "2020-10-20T20:00:00Z",
-                            "endTime": "2020-10-27T21:45:00Z"
-                        }
-                    ],
-                    "center": [],
-                    "right": [
-                        {
-                            "type": "button",
-                            "style": "call-to-action",
-                            "text": "Read More",
-                            "href": "https://www.google.com"
-                        }
-                    ]
-                }
-            ],
-            "cardDate": "2020-07-24T10:36:21.639Z"
-        },
-        {
-            "id": "9f4a974f-6247-3246-aba1-1f202f58c590",
-            "showCard": {
-                "from": "2020-10-01T20:00:00Z",
-                "until": "2025-10-31T21:45:00Z"
-            },
-            "tags": [
-                {
-                    "id": "adobe-com-enterprise:content-type/webinar"
-                },
-                {
-                    "id": "adobe-com-enterprise:availability/on-demand"
-                },
-                {
-                    "id": "adobe-com-enterprise:topic/business-continuity"
-                }
-            ],
-            "overlays": {
-                "banner": {
-                    "backgroundColor": "#FFFFFF",
-                    "fontColor": "#D7373F",
-                    "description": "Live",
-                    "icon": "https://upload.wikimedia.org/wikipedia/commons/9/92/Location_dot_red.svg"
-                },
-                "logo": {},
-                "label": {},
-                "videoButton": {}
-            },
-            "contentArea": {
-                "detailText": "",
-                "title": "Kan mojulegaye rimapit.",
-                "description": "Kolup xuwubuk ledova buvid. Pedomer. Lerib muwijiq hasepuv bozucimar minos galogacu copegod coduni desudep. Huduberefe tugucenabo hibonaxal wodeto wafax tec penelebuhu radocinaru lunodir minodina robicu momihabudu. Tunel copu. Getarirase qapah meminemosi nulud. Qupibo mobera pena boho tos. Domo piw gohijanar bacabili paturedaro gu dicapud ga suw reci bo. Vegenigabi bepokuled buf qirer cucehaju jabuna yulep ri. Romalekapi leg. Ren li nuyorote mihepi. Fudi tec madat bam. Ca. Bubebi mo cimedut.",
-                "dateDetailText": {}
-            },
-            "styles": {
-                "typeOverride": "",
-                "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/business-continuity/mobile_image_1440x810_option%201b.jpg"
-            },
-            "footer": [
-                {
-                    "divider": true,
-                    "left": [
-                        {
-                            "type": "bookmark",
-                            "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
-                            "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
-                            "cardSaveText": "Save Card",
-                            "cardUnsaveText": "Unsave Card"
-                        },
-                        {
-                            "type": "date-interval",
-                            "startTime": "2020-10-20T20:00:00Z",
-                            "endTime": "2020-10-27T21:45:00Z"
-                        }
-                    ],
-                    "center": [],
-                    "right": [
-                        {
-                            "type": "button",
-                            "style": "call-to-action",
-                            "text": "Read More",
-                            "href": "https://www.google.com"
-                        }
-                    ]
-                }
-            ],
-            "cardDate": "2020-07-24T10:36:16.193Z"
-        },
-        {
-            "id": "d5ce10b3-feee-3cb0-a36f-b92f3686b36f",
-            "showCard": {
-                "from": "2020-10-01T20:00:00Z",
-                "until": "2025-10-31T21:45:00Z"
-            },
-            "tags": [
-                {
-                    "id": "adobe-com-enterprise:content-type/webinar"
-                },
-                {
-                    "id": "adobe-com-enterprise:availability/on-demand"
-                },
-                {
-                    "id": "adobe-com-enterprise:topic/business-continuity"
-                }
-            ],
-            "overlays": {
-                "banner": {
-                    "backgroundColor": "#1473E6",
-                    "fontColor": "#FFFFFF",
-                    "description": "On-Demand",
-                    "icon": ""
-                },
-                "logo": {},
-                "label": {},
-                "videoButton": {}
-            },
-            "contentArea": {
-                "detailText": "",
-                "title": "No rifew libabo miluba xapudu rilomob ne bewaduputo begete ceb hoh. Bavalabom debemes. Hamariwun bedatu cidemame..",
-                "description": "Tibap keli tohima muvude. Mulabecu xihokor. Reraq cemidilun pep kedotefite pecocu gecunetolo rulomo dujamadod bare rizipojiq nirid poneciqo ni juvijo nepiberego re de ronepocac malire. Noner hep wilej. Pi rarab delalutap caponavaq dom ken jetun purarabe tebu sobifebu defemuled ralumeri zi mi cucerim. Lej kameduqab hanalog li. Bizomut modobe. Xo donuqep nojob meg di vubaboco mogalefum giko pisobopop ranuta ba yogisebop barujab xanux.",
-                "dateDetailText": {}
-            },
-            "styles": {
-                "typeOverride": "",
-                "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/business-continuity/mobile_image_1440x810_option%201b.jpg"
-            },
-            "footer": [
-                {
-                    "divider": true,
-                    "left": [
-                        {
-                            "type": "bookmark",
-                            "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
-                            "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
-                            "cardSaveText": "Save Card",
-                            "cardUnsaveText": "Unsave Card"
-                        },
-                        {
-                            "type": "date-interval",
-                            "startTime": "2020-10-20T20:00:00Z",
-                            "endTime": "2020-10-27T21:45:00Z"
-                        }
-                    ],
-                    "center": [],
-                    "right": [
-                        {
-                            "type": "button",
-                            "style": "call-to-action",
-                            "text": "Read More",
-                            "href": "https://www.google.com"
-                        }
-                    ]
-                }
-            ],
-            "cardDate": "2020-07-24T10:36:11.569Z"
-        },
-        {
-            "id": "89ac773a-e3ef-34a2-adb3-e40e5a519fb5",
-            "showCard": {
-                "from": "2020-10-01T20:00:00Z",
-                "until": "2025-10-31T21:45:00Z"
-            },
-            "tags": [
-                {
-                    "id": "adobe-com-enterprise:content-type/webinar"
-                },
-                {
-                    "id": "adobe-com-enterprise:availability/on-demand"
-                },
-                {
-                    "id": "adobe-com-enterprise:topic/business-continuity"
-                }
-            ],
-            "overlays": {
-                "banner": {
-                    "backgroundColor": "#FFFFFF",
-                    "fontColor": "#D7373F",
-                    "description": "Live",
-                    "icon": "https://upload.wikimedia.org/wikipedia/commons/9/92/Location_dot_red.svg"
-                },
-                "logo": {},
-                "label": {},
-                "videoButton": {}
-            },
-            "contentArea": {
-                "detailText": "",
-                "title": "Dihutumow rih re gida norojedera ledobe lokelite duj jecaro budecobalu jodugoro lumuho cun lacimoj lebayitima nisuju negomo yekuri folara.",
-                "description": "Vidim yanakad. Ne. Padiquco moromih kizabirixe babi bicesac dewaholuwa derunipi rakuga bu bipedaviwi ladiwecof tove bupubefuv. Moma. Panup nuje sibi timose mubimider dedob le pere ga bo naco ro. Hilib lalalicot su vocutu pavi pibaduro donet pi. Zuvope tid nuyahudib tam. Ridip fopedo. La yah bati ranuliqohu higi..",
-                "dateDetailText": {}
-            },
-            "styles": {
-                "typeOverride": "",
-                "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/Thumbnail__Create-and-Collaborate_small.jpg"
-            },
-            "footer": [
-                {
-                    "divider": true,
-                    "left": [
-                        {
-                            "type": "bookmark",
-                            "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
-                            "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
-                            "cardSaveText": "Save Card",
-                            "cardUnsaveText": "Unsave Card"
-                        },
-                        {
-                            "type": "date-interval",
-                            "startTime": "2020-10-20T20:00:00Z",
-                            "endTime": "2020-10-27T21:45:00Z"
-                        }
-                    ],
-                    "center": [],
-                    "right": [
-                        {
-                            "type": "button",
-                            "style": "call-to-action",
-                            "text": "Read More",
-                            "href": "https://www.google.com"
-                        }
-                    ]
-                }
-            ],
-            "cardDate": "2020-07-24T10:35:58.220Z"
-        },
-    ]);
+    const [cards, setCards] = useState([]);
 
     /**
      * @typedef {Boolean} LoadingState — Can either be true or false
@@ -1345,7 +324,7 @@ const Container = (props) => {
      *
      * @type {[Boolean, Function]} Loading
      */
-    // const [isLoading, setLoading] = useState(false);
+    const [isLoading, setLoading] = useState(false);
 
     /**
      * @typedef {Boolean} ApiFailureState — Can either be true or false
@@ -1356,11 +335,11 @@ const Container = (props) => {
      *
      * @type {[Boolean, Function]} ApiFailure
      */
-    // const [isApiFailure, setApiFailure] = useState(false);
+    const [isApiFailure, setApiFailure] = useState(false);
     // const [randomSortId, setRandomSortId] = useState(null);
-    // const [isFirstLoad, setIsFirstLoad] = useState(true);
-    // const [visibleStamp, setVisibleStamp] = useState();
-    // const [hasFetched, setHasFetched] = useState(false);
+    const [isFirstLoad, setIsFirstLoad] = useState(true);
+    const [visibleStamp, setVisibleStamp] = useState();
+    const [hasFetched, setHasFetched] = useState(false);
 
     /**
      * Creates a DOM reference to first filter item
@@ -1713,107 +692,105 @@ const Container = (props) => {
      * success fail the request.
      * @returns {Void} - an updated state
      */
-    // useEffect(() => {
-    //     if ((isLazy && visibleStamp) || (isLazy && !hasFetched)) {
-    //         return;
-    //     }
-    //     const { __satelliteLoadedPromise: visitorPromise } = window;
-    //
-    //     let collectionEndpoint = getConfig('collection', 'endpoint');
-    //     const fallbackEndpoint = getConfig('collection', 'fallbackEndpoint');
-    //
-    //     const r = new RegExp('^(?:[a-z]+:)?//', 'i');
-    //     let collectionEndpointURI;
-    //     if (r.test(collectionEndpoint)) {
-    //         collectionEndpointURI = new URL(collectionEndpoint);
-    //     } else {
-    //         collectionEndpointURI = new URL(collectionEndpoint, window.location.origin);
-    //     }
-    //
-    //     if (!fallbackEndpoint) {
-    //         collectionEndpointURI.searchParams.set('flatFile', false);
-    //         collectionEndpoint = collectionEndpointURI.toString();
-    //     }
-    //
-    //     setLoading(true);
-    //
-    //     /**
-    //      * @func getCards
-    //      * @desc wraps fetch with function to make it reusable
-    //      *
-    //      * @param {String} endPoint, URL with params for card request
-    //      * @returns {Void} - an updated state
-    //      */
-    //     function getCards(endPoint = collectionEndpoint) {
-    //         return window.fetch(endPoint, {
-    //             credentials: 'include',
-    //         })
-    //             .then((resp) => {
-    //                 const {
-    //                     ok,
-    //                     status,
-    //                     statusText,
-    //                     url,
-    //                 } = resp;
-    //
-    //                 if (ok) {
-    //                     return resp.json().then((json) => {
-    //                         const validData = !!Object.keys(json).length;
-    //
-    //                         if (validData) return json;
-    //
-    //                         return Promise.reject(new Error('no valid reponse data'));
-    //                     });
-    //                 }
-    //
-    //                 return Promise.reject(new Error(`${status}: ${statusText}, failure for call to ${url}`));
-    //             })
-    //             .then((payload) => {
-    //                 setLoading(false);
-    //                 setIsFirstLoad(true);
-    //                 if (!getByPath(payload, 'cards.length')) return;
-    //
-    //                 const { processedCards = [] } = new JsonProcessor(payload.cards)
-    //                     .removeDuplicateCards()
-    //                     .addCardMetaData(
-    //                         TRUNCATE_TEXT_QTY,
-    //                         onlyShowBookmarks,
-    //                         bookmarkedCardIds,
-    //                         hideCtaIds,
-    //                     );
-    //
-    //                 const transitions = getTransitions(processedCards);
-    //                 if (sortOption.sort.toLowerCase() === 'eventsort') {
-    //                     while (transitions.size() > 0) {
-    //                         setTimeout(() => {
-    //                             nextTransition();
-    //                         }, transitions.dequeue().priority + ONE_SECOND_DELAY);
-    //                     }
-    //                 }
-    //
-    //                 setCards(processedCards);
-    //                 if (!showEmptyFilters) {
-    //                     setFilters(prevFilters => removeEmptyFilters(prevFilters, processedCards));
-    //                 }
-    //                 setTimeout(() => {
-    //                     if (!scrollElementRef.current) return;
-    //                     if (processedCards.length === 0) return;
-    //                     if (currentPage === 1) return;
-    //                     const cardsToshow = processedCards.slice(0, resultsPerPage * currentPage);
-    //                     const getLastPageID = (resultsPerPage * currentPage) - resultsPerPage;
-    //                     if (cardsToshow.length < getLastPageID) return;
-    //                     const lastID = scrollElementRef.current.children[getLastPageID];
-    //                     lastID.scrollIntoView();
-    //                 }, 100);
-    //             }).catch(() => {
-    //                 if (endPoint === collectionEndpoint && fallbackEndpoint) {
-    //                     getCards(fallbackEndpoint);
-    //                     return;
-    //                 }
-    //                 setLoading(false);
-    //                 setApiFailure(true);
-    //             });
-    //     }
+    useEffect(() => {
+        // if ((isLazy && visibleStamp) || (isLazy && !hasFetched)) {
+        //     return;
+        // }
+        // const { __satelliteLoadedPromise: visitorPromise } = window;
+
+        // let collectionEndpoint = getConfig('collection', 'endpoint');
+        // const fallbackEndpoint = getConfig('collection', 'fallbackEndpoint');
+        //
+        // const r = new RegExp('^(?:[a-z]+:)?//', 'i');
+        // let collectionEndpointURI;
+        // if (r.test(collectionEndpoint)) {
+        //     collectionEndpointURI = new URL(collectionEndpoint);
+        // } else {
+        //     collectionEndpointURI = new URL(collectionEndpoint, window.location.origin);
+        // }
+        //
+        // if (!fallbackEndpoint) {
+        //     collectionEndpointURI.searchParams.set('flatFile', false);
+        //     collectionEndpoint = collectionEndpointURI.toString();
+        // }
+
+        // setLoading(true);
+    });
+
+        /**
+         * @func getCards
+         * @desc wraps fetch with function to make it reusable
+         *
+         * @param {String} endPoint, URL with params for card request
+         * @returns {Void} - an updated state
+         */
+        function getCards(endPoint = getConfig('collection', 'endpoint')) {
+            return window.fetch(endPoint, {
+                credentials: 'include',
+            })
+                .then((resp) => {
+                    const {
+                        ok,
+                        status,
+                        statusText,
+                        url,
+                    } = resp;
+
+                    if (ok) {
+                        return resp.json().then((json) => {
+                             return json;
+                            // return Promise.reject(new Error('no valid reponse data'));
+                        });
+                    }
+
+                    // return Promise.reject(new Error(`${status}: ${statusText}, failure for call to ${url}`));
+                })
+                .then((payload) => {
+                    // setLoading(false);
+                    // setIsFirstLoad(true);
+                    // if (!getByPath(payload, 'cards.length')) return;
+
+                    const processedCards = payload.cards;
+                        // .removeDuplicateCards()
+                        // .addCardMetaData(
+                        //     TRUNCATE_TEXT_QTY,
+                        //     onlyShowBookmarks,
+                        //     bookmarkedCardIds,
+                        //     hideCtaIds,
+                        // );
+
+                    // const transitions = getTransitions(processedCards);
+                    // if (sortOption.sort.toLowerCase() === 'eventsort') {
+                    //     while (transitions.size() > 0) {
+                    //         setTimeout(() => {
+                    //             nextTransition();
+                    //         }, transitions.dequeue().priority + ONE_SECOND_DELAY);
+                    //     }
+                    // }
+
+                    setCards(processedCards);
+                    // if (!showEmptyFilters) {
+                    //     setFilters(prevFilters => removeEmptyFilters(prevFilters, processedCards));
+                    // }
+                    // setTimeout(() => {
+                    //     if (!scrollElementRef.current) return;
+                    //     if (processedCards.length === 0) return;
+                    //     if (currentPage === 1) return;
+                    //     const cardsToshow = processedCards.slice(0, resultsPerPage * currentPage);
+                    //     const getLastPageID = (resultsPerPage * currentPage) - resultsPerPage;
+                    //     if (cardsToshow.length < getLastPageID) return;
+                    //     const lastID = scrollElementRef.current.children[getLastPageID];
+                    //     lastID.scrollIntoView();
+                    // }, 100);
+                }).catch(() => {
+                    // if (endPoint === collectionEndpoint && fallbackEndpoint) {
+                    //     getCards(fallbackEndpoint);
+                    //     return;
+                    // }
+                    // setLoading(false);
+                    // setApiFailure(true);
+                });
+        }
     //     /**
     //      * @func getVisitorData
     //      * @desc wraps fetching Visitor API data in a function for reuse, also if
@@ -1922,6 +899,10 @@ const Container = (props) => {
     //         setSearchQuery('');
     //     }
     // }, [showBookmarks]);
+
+    useEffect(() => {
+        getCards();
+    }, []);
 
     /**
      * Handles focus and escape on mobile filter toggle
@@ -2238,7 +1219,7 @@ const Container = (props) => {
                         {
                             <Fragment>
                                 <Grid
-                                    resultsPerPage={55}
+                                    resultsPerPage={9}
                                     pages={1}
                                     cards={cards}
                                     forwardedRef={scrollElementRef}
