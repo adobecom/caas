@@ -124,3 +124,8 @@ export const cardType = {
     contentArea: shape(contentAreaType),
     appliesTo: arrayOf(shape(appliesToType)),
 };
+
+export const offer = {
+    id: string,
+    selectorId: string,
+};

@@ -49,6 +49,8 @@ const oneHalfCardType = {
     bannerMap: shape(Object).isRequired,
     tags: arrayOf(shape(tagsType)),
     onFocus: func.isRequired,
+    showOffers: bool,
+    offerURL: string,
 };
 
 const defaultProps = {
@@ -68,6 +70,8 @@ const defaultProps = {
     endDate: '',
     modifiedDate: '',
     tags: [],
+    showOffers: false,
+    offerURL: '',
 };
 
 /**
@@ -99,6 +103,7 @@ const OneHalfCard = (props) => {
         onClick,
         dateFormat,
         modifiedDate,
+        offerURL,
         styles: {
             backgroundImage: image,
             backgroundAltText: altText,
@@ -111,7 +116,6 @@ const OneHalfCard = (props) => {
                 startTime,
                 endTime,
             },
-
         },
         overlays: {
             banner: {
@@ -141,12 +145,16 @@ const OneHalfCard = (props) => {
         endDate,
         bannerMap,
         onFocus,
+        showOffers,
     } = props;
 
     let bannerBackgroundColorToUse = bannerBackgroundColor;
     let bannerIconToUse = bannerIcon;
     let bannerFontColorToUse = bannerFontColor;
     let bannerDescriptionToUse = bannerDescription;
+
+    // (POC) Price On Cards
+    const offerParams = new URLSearchParams(offerURL.replace(/^.*\?/, ''));
 
     const getConfig = useConfig();
 
@@ -350,18 +358,22 @@ const OneHalfCard = (props) => {
                     className="consonant-OneHalfCard-title">
                     {title}
                 </p>
-                <p className="consonant-Card-price">
-                    <span
-                        is="inline-price"
-                        data-wcs-type="price"
-                        data-display-recurrence="false"
-                        data-display-per-unit="false"
-                        data-display-tax="false"
-                        data-wcs-osi="r_JXAnlFI7xD6FxWKl2ODvZriLYBoSL701Kd1hRyhe8"
-                        data-promotion-code="nicopromo"
-                        class="placeholder"
-                    />
-                </p>
+                {
+                    showOffers &&
+                    <p className="consonant-Card-price">
+                        <span
+                            is="inline-price"
+                            data-wcs-type={offerParams.get('type')}
+                            data-wcs-term={offerParams.get('term')}
+                            data-wcs-reocurrence={offerParams.get('term')}
+                            data-display-per-unit={offerParams.get('seat')}
+                            data-display-tax={offerParams.get('tax')}
+                            data-wcs-osi={offerParams.get('osi')}
+                            data-promotion-code={offerParams.get('promo')}
+                            class="placeholder"
+                        />
+                    </p>
+                }
                 {
                     description &&
                     <p

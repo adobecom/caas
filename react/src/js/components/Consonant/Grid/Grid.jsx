@@ -88,6 +88,7 @@ const Grid = (props) => {
     const locale = getConfig('language', '');
     const paginationType = getConfig('pagination', 'type');
     const collectionButtonStyle = getConfig('collection', 'collectionButtonStyle');
+    const showOffers = getConfig('collection', 'showOffers');
 
     let customCard;
     try {
@@ -302,7 +303,8 @@ const Grid = (props) => {
                                 renderBorder={renderCardsBorders}
                                 renderOverlay={renderCardsOverlay}
                                 hideCTA={hideCTA}
-                                onFocus={() => scrollCardIntoView(card.id)} />
+                                onFocus={() => scrollCardIntoView(card.id)}
+                                showOffers={showOffers} />
                         );
                 }
             })}

@@ -1121,8 +1121,9 @@ const Container = (props) => {
         'consonant-Wrapper--withLeftFilter': filterPanelEnabled && isLeftFilterPanel,
     });
 
+    // POC (Price On Cards)
     const merchScript = document.createElement('script');
-    merchScript.setAttribute('src', 'https://milo.adobe.com/libs/blocks/merch/merch.js');
+    merchScript.setAttribute('src', 'http://cmiqueo.corp.adobe.com/chimera/js/merch/merch.js');
     merchScript.setAttribute('type', 'module');
     document.head.appendChild(merchScript);
 
