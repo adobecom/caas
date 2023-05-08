@@ -310,6 +310,8 @@ var config = {
     onCardUnsaved: function(){}
 };
 
+render(<Container config={parseToPrimitive(config)} />, document.getElementById('someDivId'));
+
 // class Foo extends PureComponent {
 //     render(props) {
 //         console.log("render");
@@ -317,8 +319,13 @@ var config = {
 //     }
 // }
 
-const dom = document.getElementById('someDivId');
-render(<Container config={parseToPrimitive(config)} />, dom);
+// class ConsonantCardCollection {
+//     constructor(config, dom){
+//         render(<Container config={parseToPrimitive(config)} />, dom);
+//     }
+// }
+//
+// window.ConsonantCardCollection = ConsonantCardCollection;
 
 // var a = ReactDOMServer.renderToString(<React.Fragment>
 //     <Container config={parseToPrimitive(config)} />

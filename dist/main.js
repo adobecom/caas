@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 5/4/2023, 15:47:20
+ * Chimera UI Libraries - Build 5/8/2023, 13:47:07
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -4792,7 +4792,11 @@ var config = {
     customCard: ["data", "return `<div class=customCard><div class=backgroundImg></div> <section><label>PHOTO EDITING</label><p><b>Transform a landscape with Sky Replacement.</b></p></div></section> </div>`"],
     onCardSaved: function onCardSaved() {},
     onCardUnsaved: function onCardUnsaved() {}
-};
+}; /* eslint-disable */
+//import "./polyfills";
+
+
+(0, _preact.render)(_react2.default.createElement(_Container2.default, { config: (0, _general.parseToPrimitive)(config) }), document.getElementById('someDivId'));
 
 // class Foo extends PureComponent {
 //     render(props) {
@@ -4801,10 +4805,13 @@ var config = {
 //     }
 // }
 
-/* eslint-disable */
-//import "./polyfills";
-var dom = document.getElementById('someDivId');
-(0, _preact.render)(_react2.default.createElement(_Container2.default, { config: (0, _general.parseToPrimitive)(config) }), dom);
+// class ConsonantCardCollection {
+//     constructor(config, dom){
+//         render(<Container config={parseToPrimitive(config)} />, dom);
+//     }
+// }
+//
+// window.ConsonantCardCollection = ConsonantCardCollection;
 
 // var a = ReactDOMServer.renderToString(<React.Fragment>
 //     <Container config={parseToPrimitive(config)} />
@@ -6355,7 +6362,7 @@ var Container = function Container(props) {
             _react.Fragment,
             null,
             _react2.default.createElement(_Grid2.default, {
-              resultsPerPage: 9,
+              resultsPerPage: 3,
               pages: 1,
               cards: cards,
               forwardedRef: scrollElementRef,

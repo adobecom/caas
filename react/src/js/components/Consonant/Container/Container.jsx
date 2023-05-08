@@ -1219,7 +1219,7 @@ const Container = (props) => {
                         {
                             <Fragment>
                                 <Grid
-                                    resultsPerPage={9}
+                                    resultsPerPage={3}
                                     pages={1}
                                     cards={cards}
                                     forwardedRef={scrollElementRef}
