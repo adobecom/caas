@@ -161,7 +161,11 @@ const Grid = (props) => {
      * The final cards to show in the collection
      * @type {Array}
      */
-    let cardsToshow = cards;
+    let cardsToshow = new Array(3);
+
+    for(let i = 0; i < 3; i++){
+        cardsToshow[i]= cards[i];
+    }
 
     /**
      * Current page (used if paginator component is authored)
@@ -170,7 +174,7 @@ const Grid = (props) => {
     const currentPage = resultsPerPage * (pages - 1);
 
     if (isPaginator) {
-        cardsToshow = cards.slice(currentPage, totalPages);
+        //cardsToshow = cards.slice(currentPage, totalPages);
     }
 
     /**
@@ -178,7 +182,7 @@ const Grid = (props) => {
      * @type {Number}
      */
     if (isLoadMore) {
-        cardsToshow = cards.slice(0, resultsPerPage * pages);
+        //cardsToshow = cards.slice(0, resultsPerPage * pages);
     }
 
     const cleanTitle = title => title.toString().replace(/\|/g, '-');

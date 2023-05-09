@@ -51,7 +51,7 @@ import JsonProcessor from '../Helpers/JsonProcessor';
 //     ExpandableContext,
 // } from '../Helpers/contexts';
 import {
-    getDefaultSortOption,
+    // getDefaultSortOption,
     makeConfigGetter,
 } from '../Helpers/consonant';
 //
@@ -109,7 +109,8 @@ const Container = (props) => {
         // const searchFields = getConfig('search', 'searchFields');
     const sortOptions = getConfig('sort', 'options');
     const defaultSort = getConfig('sort', 'defaultSort');
-    const defaultSortOption = getDefaultSortOption(config, defaultSort);
+    const tempCards = getConfig('cards', '');
+    //const defaultSortOption = getDefaultSortOption(config, defaultSort);
     // const featuredCards = getConfig('featuredCards', '')
     //     .toString()
     //     .replace(/\[|\]/g, '')
@@ -127,7 +128,7 @@ const Container = (props) => {
     // const noResultsDescription = getConfig('search', 'i18n.noResultsDescription');
     // const apiFailureTitle = getConfig('collection', 'i18n.onErrorTitle');
     // const apiFailureDescription = getConfig('collection', 'i18n.onErrorDescription');
-    const isLazy = getConfig('collection', 'lazyload');
+    // const isLazy = getConfig('collection', 'lazyload');
     // const trackImpressions = getConfig('analytics', 'trackImpressions');
     // const collectionIdentifier = getConfig('analytics', 'collectionIdentifier');
     // const targetEnabled = getConfig('target', 'enabled');
@@ -255,7 +256,7 @@ const Container = (props) => {
      *
      * @type {[String, Function]} SortOption
      */
-    const [sortOption, setSortOption] = useState(defaultSortOption);
+    //const [sortOption, setSortOption] = useState(defaultSortOption);
     //
     // if (sortOption.sort === SORT_TYPES.RANDOM) {
     //     totalCardLimit = sampleSize;
@@ -313,7 +314,7 @@ const Container = (props) => {
      *
      * @type {[Array, Function]} Cards
      */
-    const [cards, setCards] = useState([]);
+    const [cards, setCards] = useState(tempCards);
 
     /**
      * @typedef {Boolean} LoadingState — Can either be true or false
@@ -724,73 +725,73 @@ const Container = (props) => {
          * @param {String} endPoint, URL with params for card request
          * @returns {Void} - an updated state
          */
-        function getCards(endPoint = getConfig('collection', 'endpoint')) {
-            return window.fetch(endPoint, {
-                credentials: 'include',
-            })
-                .then((resp) => {
-                    const {
-                        ok,
-                        status,
-                        statusText,
-                        url,
-                    } = resp;
-
-                    if (ok) {
-                        return resp.json().then((json) => {
-                             return json;
-                            // return Promise.reject(new Error('no valid reponse data'));
-                        });
-                    }
-
-                    // return Promise.reject(new Error(`${status}: ${statusText}, failure for call to ${url}`));
-                })
-                .then((payload) => {
-                    // setLoading(false);
-                    // setIsFirstLoad(true);
-                    // if (!getByPath(payload, 'cards.length')) return;
-
-                    const processedCards = payload.cards;
-                        // .removeDuplicateCards()
-                        // .addCardMetaData(
-                        //     TRUNCATE_TEXT_QTY,
-                        //     onlyShowBookmarks,
-                        //     bookmarkedCardIds,
-                        //     hideCtaIds,
-                        // );
-
-                    // const transitions = getTransitions(processedCards);
-                    // if (sortOption.sort.toLowerCase() === 'eventsort') {
-                    //     while (transitions.size() > 0) {
-                    //         setTimeout(() => {
-                    //             nextTransition();
-                    //         }, transitions.dequeue().priority + ONE_SECOND_DELAY);
-                    //     }
-                    // }
-
-                    setCards(processedCards);
-                    // if (!showEmptyFilters) {
-                    //     setFilters(prevFilters => removeEmptyFilters(prevFilters, processedCards));
-                    // }
-                    // setTimeout(() => {
-                    //     if (!scrollElementRef.current) return;
-                    //     if (processedCards.length === 0) return;
-                    //     if (currentPage === 1) return;
-                    //     const cardsToshow = processedCards.slice(0, resultsPerPage * currentPage);
-                    //     const getLastPageID = (resultsPerPage * currentPage) - resultsPerPage;
-                    //     if (cardsToshow.length < getLastPageID) return;
-                    //     const lastID = scrollElementRef.current.children[getLastPageID];
-                    //     lastID.scrollIntoView();
-                    // }, 100);
-                }).catch(() => {
-                    // if (endPoint === collectionEndpoint && fallbackEndpoint) {
-                    //     getCards(fallbackEndpoint);
-                    //     return;
-                    // }
-                    // setLoading(false);
-                    // setApiFailure(true);
-                });
-        }
+        // function getCards(endPoint = getConfig('collection', 'endpoint')) {
+        //     return window.fetch(endPoint, {
+        //         credentials: 'include',
+        //     })
+        //         .then((resp) => {
+        //             const {
+        //                 ok,
+        //                 status,
+        //                 statusText,
+        //                 url,
+        //             } = resp;
+        //
+        //             if (ok) {
+        //                 return resp.json().then((json) => {
+        //                      return json;
+        //                     // return Promise.reject(new Error('no valid reponse data'));
+        //                 });
+        //             }
+        //
+        //             // return Promise.reject(new Error(`${status}: ${statusText}, failure for call to ${url}`));
+        //         })
+        //         .then((payload) => {
+        //             // setLoading(false);
+        //             // setIsFirstLoad(true);
+        //             // if (!getByPath(payload, 'cards.length')) return;
+        //
+        //             const processedCards = payload.cards;
+        //                 // .removeDuplicateCards()
+        //                 // .addCardMetaData(
+        //                 //     TRUNCATE_TEXT_QTY,
+        //                 //     onlyShowBookmarks,
+        //                 //     bookmarkedCardIds,
+        //                 //     hideCtaIds,
+        //                 // );
+        //
+        //             // const transitions = getTransitions(processedCards);
+        //             // if (sortOption.sort.toLowerCase() === 'eventsort') {
+        //             //     while (transitions.size() > 0) {
+        //             //         setTimeout(() => {
+        //             //             nextTransition();
+        //             //         }, transitions.dequeue().priority + ONE_SECOND_DELAY);
+        //             //     }
+        //             // }
+        //
+        //             setCards(processedCards);
+        //             // if (!showEmptyFilters) {
+        //             //     setFilters(prevFilters => removeEmptyFilters(prevFilters, processedCards));
+        //             // }
+        //             // setTimeout(() => {
+        //             //     if (!scrollElementRef.current) return;
+        //             //     if (processedCards.length === 0) return;
+        //             //     if (currentPage === 1) return;
+        //             //     const cardsToshow = processedCards.slice(0, resultsPerPage * currentPage);
+        //             //     const getLastPageID = (resultsPerPage * currentPage) - resultsPerPage;
+        //             //     if (cardsToshow.length < getLastPageID) return;
+        //             //     const lastID = scrollElementRef.current.children[getLastPageID];
+        //             //     lastID.scrollIntoView();
+        //             // }, 100);
+        //         }).catch(() => {
+        //             // if (endPoint === collectionEndpoint && fallbackEndpoint) {
+        //             //     getCards(fallbackEndpoint);
+        //             //     return;
+        //             // }
+        //             // setLoading(false);
+        //             // setApiFailure(true);
+        //         });
+        // }
     //     /**
     //      * @func getVisitorData
     //      * @desc wraps fetching Visitor API data in a function for reuse, also if
@@ -901,7 +902,7 @@ const Container = (props) => {
     // }, [showBookmarks]);
 
     useEffect(() => {
-        getCards();
+        //getCards();
     }, []);
 
     /**

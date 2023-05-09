@@ -31,7 +31,8 @@
                                 <section id="create-app" class="create-app consonant">
                                     <div class="collection-Container  create-card-collection">
                                         <div class="container create-card-collection__outer-wrapper">
-                                            <div id="someDivId">Please include the necessary clientlibs </div>
+                                            <div id="someDivId">
+                                            </div>
                                             <!--<div id="someDivIdTwo"></div>-->
                                              <!--<consonant-card-collection id="f" data-config="{}"></consonant-card-collection>-->
                                         </div>
@@ -45,259 +46,464 @@
         </div>
     </div>
 
-    <script type="text/javascript" src="./dist/main.min.js"></script>
-
     <script type="text/javascript">
-        // var config = {
-        //     collection: {
-        //         mode: "lightest", // Can be empty, "light", "dark", "darkest";
-        //         layout: {
-        //             type: '3up', // Can be "2up", "3up", "4up", "5up";
-        //             gutter: '4x', // Can be "2x", "3x", "4x";
-        //             container: '1200MaxWidth', // Can be "83Percent", "1200MaxWidth", "32Margin";
-        //         },
-        //         lazyLoad: false,
-        //         button: {
-        //           style: "call-to-action", // Can be "primary", "call-to-action";
-        //         },
-        //         banner: {
-        //             upcoming: {
-        //                 description: "Upcoming"
-        //             },
-        //             live: {
-        //                 description: "Live"
-        //             },
-        //             onDemand: {
-        //                 description: "On Demand"
-        //             }
-        //         },
-        //         resultsPerPage: '1',
-        //         endpoint: location.hostname === "localhost" ? "../../mock-json/all-art-board-15-cards-show.json" : "../../caas/mock-json/all-art-board-15-cards-show.json",
-        //         totalCardsToShow: '1',
-        //         cardStyle: "1:2", // available options: "1:2", "3:4", "full-card", "half-height", "custom-card", "product", "double-wide";
-        //         showTotalResults: 'true',
-        //         i18n: {
-        //             prettyDateIntervalFormat: '{LLL} {dd} | {timeRange} {timeZone}',
-        //             totalResultsText: '{total} Results',
-        //             title: 'Lorem Ipsum 2',
-        //             titleHeadingLevel: 'h2',
-        //             cardTitleAccessibilityLevel: '3',
-        //             onErrorTitle: 'Sorry there was a system error.',
-        //             onErrorDescription: 'Please try reloading the page or try coming back to the page another time.',
-        //             lastModified: "Last modified {date}"
-        //         },
-        //         setCardBorders: "true", // Can be true or false;
-        //         useOverlayLinks: "false", // Can be true or false;
-        //     },
-        //     featuredCards: ['c7d34f39-397c-3727-9dff-5d0d9d8cf731'],
-        //     filterPanel: {
-        //         enabled: 'true',
-        //         type: 'top',
-        //         eventFilter: 'all',
-        //         showEmptyFilters: true,
-        //         filters: [
-        //             {
-        //                 "group": "By Solution",
-        //                 "id": "adobe-com-enterprise:topic",
-        //                 "items": [
-        //                     {
-        //                         "label": "Business Continuity",
-        //                         "id": "adobe-com-enterprise:topic/business-continuity"
-        //                     },
-        //                     {
-        //                         "label": "Creativity and Design",
-        //                         "id": "adobe-com-enterprise:topic/creativity-design"
-        //                     },
-        //                     {
-        //                         "label": "Customer Intelligence",
-        //                         "id": "adobe-com-enterprise:topic/customer-intelligence"
-        //                     },
-        //                     {
-        //                         "label": "Data Management Platform",
-        //                         "id": "adobe-com-enterprise:topic/data-management-platform"
-        //                     },
-        //                     {
-        //                         "label": "Digital Foundation",
-        //                         "id": "adobe-com-enterprise:topic/digital-foundation"
-        //                     },
-        //                     {
-        //                         "label": "Digital Trends",
-        //                         "id": "adobe-com-enterprise:topic/digital-trends"
-        //                     },
-        //                     {
-        //                         "label": "Document Management",
-        //                         "id": "adobe-com-enterprise:topic/document-management"
-        //                     },
-        //                     {
-        //                         "label": "Marketing Automation",
-        //                         "id": "adobe-com-enterprise:topic/marketing-automation"
-        //                     },
-        //                     {
-        //                         "label": "Personalization",
-        //                         "id": "adobe-com-enterprise:topic/personalization"
-        //                     },
-        //                     {
-        //                         "label": "Stock",
-        //                         "id": "adobe-com-enterprise:topic/Stock"
-        //                     }
-        //                 ]
-        //             },
-        //             {
-        //                 "group": "Availability",
-        //                 "id": "adobe-com-enterprise:availability",
-        //                 "items": [
-        //                     {
-        //                         "label": "On-Demand",
-        //                         "id": "adobe-com-enterprise:availability/on-demand"
-        //                     },
-        //                     {
-        //                         "label": "Upcoming",
-        //                         "id": "adobe-com-enterprise:availability/upcoming"
-        //                     }
-        //                 ]
-        //             },
-        //             {
-        //                 "group": "Duration",
-        //                 "id": "adobe-com-enterprise:duration",
-        //                 "items": [
-        //                     {
-        //                         "label": "Long",
-        //                         "id": "adobe-com-enterprise:duration/long"
-        //                     },
-        //                     {
-        //                         "label": "Short",
-        //                         "id": "adobe-com-enterprise:duration/short"
-        //                     }
-        //                 ]
-        //             },
-        //             {
-        //                 "group": "Rating",
-        //                 "id": "adobe-com-enterprise:rating",
-        //                 "items": [
-        //                     {
-        //                         "label": "5",
-        //                         "id": "adobe-com-enterprise:rating/5"
-        //                     },
-        //                     {
-        //                         "label": "4",
-        //                         "id": "adobe-com-enterprise:rating/4"
-        //                     }
-        //                 ]
-        //             }
-        //         ],
-        //         filterLogic: 'or',
-        //         topPanel: {
-        //             mobile: {
-        //                 blurFilters: true,
-        //             }
-        //         },
-        //         i18n: {
-        //             leftPanel: {
-        //                 header: 'My Favorites',
-        //                 // searchBoxTitle: 'Search',
-        //                 clearAllFiltersText: 'Clear All',
-        //                 mobile: {
-        //                     filtersBtnLabel: 'Filters:',
-        //                     panel: {
-        //                         header: 'Filters',
-        //                         totalResultsText: '{total} Results',
-        //                         applyBtnText: 'Apply',
-        //                         clearFilterText: 'Clear',
-        //                         doneBtnText: 'Done',
-        //                     },
-        //                     group: {
-        //                         totalResultsText: '{total} Results',
-        //                         applyBtnText: 'Apply',
-        //                         clearFilterText: 'Clear Left',
-        //                         doneBtnText: 'Done',
-        //                     }
-        //                 }
-        //             },
-        //             topPanel: {
-        //                 groupLabel: 'Filters',
-        //                 clearAllFiltersText: 'Clear All Top',
-        //                 moreFiltersBtnText: 'More Filters: +',
-        //                 mobile: {
-        //                     group: {
-        //                         totalResultsText: '{total} esults',
-        //                         applyBtnText: 'Apply',
-        //                         clearFilterText: 'Clear Top',
-        //                         doneBtnText: 'Done',
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     },
-        //     hideCtaIds: [''],
-        //     sort: {
-        //         enabled: 'true',
-        //         defaultSort: 'customSort',
-        //         options: '[{"label":"Random", "sort":"random"},{"label":"Featured","sort":"featured"},{"label":"Title: (A-Z)","sort":"titleAsc"},{"label":"Title: (Z-A)","sort":"titleDesc"},{"label":"Date: (Oldest to newest)","sort":"dateAsc"},{"label":"Date: (Newest to oldest)","sort":"dateDesc"}, {"label": "Custom Sort", "sort": "customSort"}]',
-        //         customSort: function(card){console.log("customSort: ", card); return card;}
-        //     },
-        //     pagination: {
-        //         animationStyle: 'paged',
-        //         enabled: 'true',
-        //         type: 'loadMore',
-        //         loadMoreButton: {
-        //           style: "primary", // Can be "primary", "over-background";
-        //           useThemeThree: "true", // Can be "true" or "false";
-        //         },
-        //         i18n: {
-        //             loadMore: {
-        //                 btnText: 'Load More',
-        //                 resultsQuantityText: 'Showing {start} of {end} cards',
-        //             },
-        //             paginator: {
-        //                 resultsQuantityText: '{start}-{end} of {total} results',
-        //                 prevLabel: 'Prev',
-        //                 nextLabel: 'Next',
-        //             }
-        //         }
-        //     },
-        //     bookmarks: {
-        //         showOnCards: 'true',
-        //         leftFilterPanel: {
-        //             bookmarkOnlyCollection: 'false',
-        //             showBookmarksFilter: 'true',
-        //             selectBookmarksIcon: '',
-        //             unselectBookmarksIcon: '',
-        //         },
-        //         i18n: {
-        //             leftFilterPanel: {
-        //                 filterTitle: 'My Favorites',
-        //             }
-        //         }
-        //     },
-        //     search: {
-        //         enabled: 'true',
-        //         searchFields: '["contentArea.title","contentArea.description","search.meta.author","overlays.banner.description", "foo.bar"]',
-        //         i18n: {
-        //             noResultsTitle: 'No Results Found',
-        //             noResultsDescription: 'We could not find any results. {break} Try checking your spelling or broadening your search.',
-        //             leftFilterPanel: {
-        //                 searchTitle: 'Search',
-        //                 searchPlaceholderText: 'Search here...',
-        //             },
-        //             topFilterPanel: {
-        //                 searchPlaceholderText: 'i18n.topFilterPanel.searchPlaceholderText',
-        //             },
-        //             filterInfo: {
-        //                 searchPlaceholderText: 'i18n.filterInfo.searchPlaceholderText',
-        //             }
-        //         }
-        //     },
-        //     language: 'en-US',
-        //     analytics: {
-        //         trackImpressions: 'true',
-        //         collectionIdentifier: 'Some Identifier',
-        //     },
-        //     customCard: ["data", "return `<div class=customCard><div class=backgroundImg></div> <section><label>PHOTO EDITING</label><p><b>Transform a landscape with Sky Replacement.</b></p></div></section> </div>`"],
-        //     onCardSaved: function(){},
-        //     onCardUnsaved: function(){}
-        // };
-        //const consonantCardCollection = new ConsonantCardCollection(config, document.getElementById("someDivId"));
+        window.config = {
+            collection: {
+                mode: "lightest", // Can be empty, "light", "dark", "darkest";
+                layout: {
+                    type: '3up', // Can be "2up", "3up", "4up", "5up";
+                    gutter: '4x', // Can be "2x", "3x", "4x";
+                    container: '1200MaxWidth', // Can be "83Percent", "1200MaxWidth", "32Margin";
+                },
+                lazyLoad: false,
+                button: {
+                    style: "call-to-action", // Can be "primary", "call-to-action";
+                },
+                banner: {
+                    upcoming: {
+                        description: "Upcoming"
+                    },
+                    live: {
+                        description: "Live"
+                    },
+                    onDemand: {
+                        description: "On Demand"
+                    }
+                },
+                resultsPerPage: '1',
+                endpoint: location.hostname === "localhost" ? "../../mock-json/all-art-board-15-cards-show.json" : "../../caas/mock-json/all-art-board-15-cards-show.json",
+                totalCardsToShow: '1',
+                cardStyle: "1:2", // available options: "1:2", "3:4", "full-card", "half-height", "custom-card", "product", "double-wide";
+                showTotalResults: 'true',
+                i18n: {
+                    prettyDateIntervalFormat: '{LLL} {dd} | {timeRange} {timeZone}',
+                    totalResultsText: '{total} Results',
+                    title: 'Lorem Ipsum 2',
+                    titleHeadingLevel: 'h2',
+                    cardTitleAccessibilityLevel: '3',
+                    onErrorTitle: 'Sorry there was a system error.',
+                    onErrorDescription: 'Please try reloading the page or try coming back to the page another time.',
+                    lastModified: "Last modified {date}"
+                },
+                setCardBorders: "true", // Can be true or false;
+                useOverlayLinks: "false", // Can be true or false;
+            },
+            featuredCards: ['c7d34f39-397c-3727-9dff-5d0d9d8cf731'],
+            cards: [
+                {
+                    "id": "6d6438c8-5aa2-36be-bfd0-18a9f6e4cd9c",
+                    "showCard": {
+                        "from": "2020-10-01T20:00:00Z",
+                        "until": "2025-10-31T21:45:00Z"
+                    },
+                    "tags": [
+                        {
+                            "id": "adobe-com-enterprise:content-type/webinar"
+                        },
+                        {
+                            "id": "adobe-com-enterprise:availability/upcoming"
+                        },
+                        {
+                            "id": "adobe-com-enterprise:topic/digital-trends"
+                        }
+                    ],
+                    "overlays": {
+                        "banner": {
+                            "backgroundColor": "#CB6F10",
+                            "fontColor": "#FFFFFF",
+                            "description": "Upcoming",
+                            "icon": ""
+                        },
+                        "logo": {},
+                        "label": {},
+                        "videoButton": {}
+                    },
+                    "contentArea": {
+                        "detailText": "",
+                        "title": "Bebudegedo rugemanolo kecigaxico ru. Maco vebuc muqelohur terex repec heludem pepam do regisa vec noleviwur puladabu. Ho zuduno nerakema pufe.",
+                        "description": "Toverah nabili. Rarohapudi mamik neneh bor ti tado do. Decede de cebimolona moba yoten malizo norunecac ca mubun cun lube nek tebabi dezekexi pulu pa dunubec varec cet livo. Dibeloj ko reradir nomemason cinotojub bucicib qimabadal peponecig lepudonob besoku.",
+                        "dateDetailText": {}
+                    },
+                    "styles": {
+                        "typeOverride": "",
+                        "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/104643%20Adobe_Digital-Bites-web-graphics_marquee%201600x600.jpg"
+                    },
+                    "footer": [
+                        {
+                            "divider": true,
+                            "left": [
+                                {
+                                    "type": "bookmark",
+                                    "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
+                                    "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
+                                    "cardSaveText": "Save Card",
+                                    "cardUnsaveText": "Unsave Card"
+                                },
+                                {
+                                    "type": "date-interval",
+                                    "startTime": "2020-10-20T20:00:00Z",
+                                    "endTime": "2020-10-27T21:45:00Z"
+                                }
+                            ],
+                            "center": [],
+                            "right": [
+                                {
+                                    "type": "button",
+                                    "style": "primary",
+                                    "text": "Read More",
+                                    "href": "https://www.google.com"
+                                }
+                            ]
+                        }
+                    ],
+                    "cardDate": "2020-07-02T09:41:35.933Z"
+                },
+                {
+                    "id": "ac578dee-f01b-3ea0-a282-2116619e4251",
+                    "showCard": {
+                        "from": "2020-10-01T20:00:00Z",
+                        "until": "2025-10-31T21:45:00Z"
+                    },
+                    "tags": [
+                        {
+                            "id": "adobe-com-enterprise:content-type/webinar"
+                        },
+                        {
+                            "id": "adobe-com-enterprise:availability/upcoming"
+                        },
+                        {
+                            "id": "adobe-com-enterprise:topic/Stock"
+                        }
+                    ],
+                    "overlays": {
+                        "banner": {
+                            "backgroundColor": "#FFFFFF",
+                            "fontColor": "#D7373F",
+                            "description": "Live",
+                            "icon": "https://upload.wikimedia.org/wikipedia/commons/9/92/Location_dot_red.svg"
+                        },
+                        "logo": {},
+                        "label": {},
+                        "videoButton": {}
+                    },
+                    "contentArea": {
+                        "detailText": "",
+                        "title": "No sanoken pore.",
+                        "description": "Bopibi ducipasa torureda za rotiludona lupo denos jemo pipupekeb putobepal dare yucidekina lu tamiha no. Cabohanus lujesir tonagico paxudigatu banunejo. Bab heben bareze cimelob giced kalu dubetu bogo. Lecole ni rido mami nanoc muwulobu nobiniyas moxotuqa yej ti cofirupu ci buharal perocin.",
+                        "dateDetailText": {}
+                    },
+                    "styles": {
+                        "typeOverride": "",
+                        "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/Adobe_Stock_Audio_Banner_1600x%20600.jpg"
+                    },
+                    "footer": [
+                        {
+                            "divider": true,
+                            "left": [
+                                {
+                                    "type": "bookmark",
+                                    "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
+                                    "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
+                                    "cardSaveText": "Save Card",
+                                    "cardUnsaveText": "Unsave Card"
+                                },
+                                {
+                                    "type": "date-interval",
+                                    "startTime": "2020-10-20T20:00:00Z",
+                                    "endTime": "2020-10-27T21:45:00Z"
+                                }
+                            ],
+                            "center": [],
+                            "right": [
+                                {
+                                    "type": "button",
+                                    "style": "call-to-action",
+                                    "text": "Read More",
+                                    "href": "https://www.google.com"
+                                }
+                            ]
+                        }
+                    ],
+                    "cardDate": "2020-07-30T08:45:42.881Z"
+                },
+                {
+                    "id": "5187e934-ed9e-39de-bf6d-ea796098de3f",
+                    "showCard": {
+                        "from": "2020-10-01T20:00:00Z",
+                        "until": "2025-10-31T21:45:00Z"
+                    },
+                    "tags": [
+                        {
+                            "id": "adobe-com-enterprise:content-type/webinar"
+                        },
+                        {
+                            "id": "adobe-com-enterprise:availability/upcoming"
+                        },
+                        {
+                            "id": "adobe-com-enterprise:topic/digital-foundation"
+                        }
+                    ],
+                    "overlays": {
+                        "banner": {
+                            "backgroundColor": "#CB6F10",
+                            "fontColor": "#FFFFFF",
+                            "description": "Upcoming",
+                            "icon": ""
+                        },
+                        "logo": {},
+                        "label": {},
+                        "videoButton": {}
+                    },
+                    "contentArea": {
+                        "detailText": "",
+                        "title": "Nafucoz cipagehu cope wo lidumoq. Rubotixore tol melec dagamicadi nadurijo sohehax pup lapunijew royi nehecoro sedic mabuk ducej ribide.",
+                        "description": "Bareg. Xekileb qi rapobumo bar dabiq remorugib bigiromo yulodobere detubur. Dugemubilu koyibepire. Do bikebopi kiluhe. Mexuralucu ro pu peb.",
+                        "dateDetailText": {}
+                    },
+                    "styles": {
+                        "typeOverride": "",
+                        "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/landing_page_no_description.png"
+                    },
+                    "footer": [
+                        {
+                            "divider": true,
+                            "left": [
+                                {
+                                    "type": "bookmark",
+                                    "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
+                                    "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
+                                    "cardSaveText": "Save Card",
+                                    "cardUnsaveText": "Unsave Card"
+                                },
+                                {
+                                    "type": "date-interval",
+                                    "startTime": "2020-10-20T20:00:00Z",
+                                    "endTime": "2020-10-27T21:45:00Z"
+                                }
+                            ],
+                            "center": [],
+                            "right": [
+                                {
+                                    "type": "button",
+                                    "style": "call-to-action",
+                                    "text": "Read More",
+                                    "href": "https://www.google.com"
+                                }
+                            ]
+                        }
+                    ],
+                    "cardDate": "2020-08-10T12:54:50.040Z"
+                },
+            ],
+            filterPanel: {
+                enabled: 'true',
+                type: 'top',
+                eventFilter: 'all',
+                showEmptyFilters: true,
+                filters: [
+                    {
+                        "group": "By Solution",
+                        "id": "adobe-com-enterprise:topic",
+                        "items": [
+                            {
+                                "label": "Business Continuity",
+                                "id": "adobe-com-enterprise:topic/business-continuity"
+                            },
+                            {
+                                "label": "Creativity and Design",
+                                "id": "adobe-com-enterprise:topic/creativity-design"
+                            },
+                            {
+                                "label": "Customer Intelligence",
+                                "id": "adobe-com-enterprise:topic/customer-intelligence"
+                            },
+                            {
+                                "label": "Data Management Platform",
+                                "id": "adobe-com-enterprise:topic/data-management-platform"
+                            },
+                            {
+                                "label": "Digital Foundation",
+                                "id": "adobe-com-enterprise:topic/digital-foundation"
+                            },
+                            {
+                                "label": "Digital Trends",
+                                "id": "adobe-com-enterprise:topic/digital-trends"
+                            },
+                            {
+                                "label": "Document Management",
+                                "id": "adobe-com-enterprise:topic/document-management"
+                            },
+                            {
+                                "label": "Marketing Automation",
+                                "id": "adobe-com-enterprise:topic/marketing-automation"
+                            },
+                            {
+                                "label": "Personalization",
+                                "id": "adobe-com-enterprise:topic/personalization"
+                            },
+                            {
+                                "label": "Stock",
+                                "id": "adobe-com-enterprise:topic/Stock"
+                            }
+                        ]
+                    },
+                    {
+                        "group": "Availability",
+                        "id": "adobe-com-enterprise:availability",
+                        "items": [
+                            {
+                                "label": "On-Demand",
+                                "id": "adobe-com-enterprise:availability/on-demand"
+                            },
+                            {
+                                "label": "Upcoming",
+                                "id": "adobe-com-enterprise:availability/upcoming"
+                            }
+                        ]
+                    },
+                    {
+                        "group": "Duration",
+                        "id": "adobe-com-enterprise:duration",
+                        "items": [
+                            {
+                                "label": "Long",
+                                "id": "adobe-com-enterprise:duration/long"
+                            },
+                            {
+                                "label": "Short",
+                                "id": "adobe-com-enterprise:duration/short"
+                            }
+                        ]
+                    },
+                    {
+                        "group": "Rating",
+                        "id": "adobe-com-enterprise:rating",
+                        "items": [
+                            {
+                                "label": "5",
+                                "id": "adobe-com-enterprise:rating/5"
+                            },
+                            {
+                                "label": "4",
+                                "id": "adobe-com-enterprise:rating/4"
+                            }
+                        ]
+                    }
+                ],
+                filterLogic: 'or',
+                topPanel: {
+                    mobile: {
+                        blurFilters: true,
+                    }
+                },
+                i18n: {
+                    leftPanel: {
+                        header: 'My Favorites',
+                        // searchBoxTitle: 'Search',
+                        clearAllFiltersText: 'Clear All',
+                        mobile: {
+                            filtersBtnLabel: 'Filters:',
+                            panel: {
+                                header: 'Filters',
+                                totalResultsText: '{total} Results',
+                                applyBtnText: 'Apply',
+                                clearFilterText: 'Clear',
+                                doneBtnText: 'Done',
+                            },
+                            group: {
+                                totalResultsText: '{total} Results',
+                                applyBtnText: 'Apply',
+                                clearFilterText: 'Clear Left',
+                                doneBtnText: 'Done',
+                            }
+                        }
+                    },
+                    topPanel: {
+                        groupLabel: 'Filters',
+                        clearAllFiltersText: 'Clear All Top',
+                        moreFiltersBtnText: 'More Filters: +',
+                        mobile: {
+                            group: {
+                                totalResultsText: '{total} esults',
+                                applyBtnText: 'Apply',
+                                clearFilterText: 'Clear Top',
+                                doneBtnText: 'Done',
+                            }
+                        }
+                    }
+                }
+            },
+            hideCtaIds: [''],
+            sort: {
+                enabled: 'true',
+                defaultSort: 'customSort',
+                options: '[{"label":"Random", "sort":"random"},{"label":"Featured","sort":"featured"},{"label":"Title: (A-Z)","sort":"titleAsc"},{"label":"Title: (Z-A)","sort":"titleDesc"},{"label":"Date: (Oldest to newest)","sort":"dateAsc"},{"label":"Date: (Newest to oldest)","sort":"dateDesc"}, {"label": "Custom Sort", "sort": "customSort"}]',
+                customSort: function(card){console.log("customSort: ", card); return card;}
+            },
+            pagination: {
+                animationStyle: 'paged',
+                enabled: 'true',
+                type: 'loadMore',
+                loadMoreButton: {
+                    style: "primary", // Can be "primary", "over-background";
+                    useThemeThree: "true", // Can be "true" or "false";
+                },
+                i18n: {
+                    loadMore: {
+                        btnText: 'Load More',
+                        resultsQuantityText: 'Showing {start} of {end} cards',
+                    },
+                    paginator: {
+                        resultsQuantityText: '{start}-{end} of {total} results',
+                        prevLabel: 'Prev',
+                        nextLabel: 'Next',
+                    }
+                }
+            },
+            bookmarks: {
+                showOnCards: 'true',
+                leftFilterPanel: {
+                    bookmarkOnlyCollection: 'false',
+                    showBookmarksFilter: 'true',
+                    selectBookmarksIcon: '',
+                    unselectBookmarksIcon: '',
+                },
+                i18n: {
+                    leftFilterPanel: {
+                        filterTitle: 'My Favorites',
+                    }
+                }
+            },
+            search: {
+                enabled: 'true',
+                searchFields: '["contentArea.title","contentArea.description","search.meta.author","overlays.banner.description", "foo.bar"]',
+                i18n: {
+                    noResultsTitle: 'No Results Found',
+                    noResultsDescription: 'We could not find any results. {break} Try checking your spelling or broadening your search.',
+                    leftFilterPanel: {
+                        searchTitle: 'Search',
+                        searchPlaceholderText: 'Search here...',
+                    },
+                    topFilterPanel: {
+                        searchPlaceholderText: 'i18n.topFilterPanel.searchPlaceholderText',
+                    },
+                    filterInfo: {
+                        searchPlaceholderText: 'i18n.filterInfo.searchPlaceholderText',
+                    }
+                }
+            },
+            language: 'en-US',
+            analytics: {
+                trackImpressions: 'true',
+                collectionIdentifier: 'Some Identifier',
+            },
+            customCard: ["data", "return `<div class=customCard><div class=backgroundImg></div> <section><label>PHOTO EDITING</label><p><b>Transform a landscape with Sky Replacement.</b></p></div></section> </div>`"],
+            onCardSaved: function(){},
+            onCardUnsaved: function(){}
+        };
     </script>
+
+    <script type="text/javascript" src="./dist/main.min.js"></script>
 </body>
 
 

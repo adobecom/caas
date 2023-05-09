@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 5/8/2023, 13:47:07
+ * Chimera UI Libraries - Build 5/9/2023, 15:15:47
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -4564,239 +4564,256 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // window.ConsonantCardCollection = ConsonantCardCollecton;
 
 // var ReactDOMServer = require('react-dom/server');
+// var config = {
+//     collection: {
+//         mode: "lightest", // Can be empty, "light", "dark", "darkest";
+//         layout: {
+//             type: '3up', // Can be "2up", "3up", "4up", "5up";
+//             gutter: '4x', // Can be "2x", "3x", "4x";
+//             container: '1200MaxWidth', // Can be "83Percent", "1200MaxWidth", "32Margin";
+//         },
+//         lazyLoad: false,
+//         button: {
+//             style: "call-to-action", // Can be "primary", "call-to-action";
+//         },
+//         banner: {
+//             upcoming: {
+//                 description: "Upcoming"
+//             },
+//             live: {
+//                 description: "Live"
+//             },
+//             onDemand: {
+//                 description: "On Demand"
+//             }
+//         },
+//         resultsPerPage: '5',
+//         endpoint: location.hostname === "localhost" ? "../../mock-json/smoke.json" : "../../caas/mock-json/smoke.json",
+//         totalCardsToShow: '55',
+//         cardStyle: "1:2", // available options: "1:2", "3:4", "full-card", "half-height", "custom-card", "product", "double-wide";
+//         showTotalResults: 'true',
+//         i18n: {
+//             prettyDateIntervalFormat: '{LLL} {dd} | {timeRange} {timeZone}',
+//             totalResultsText: '{total} Results',
+//             title: 'Lorem Ipsum 7',
+//             titleHeadingLevel: 'h2',
+//             cardTitleAccessibilityLevel: '3',
+//             onErrorTitle: 'Sorry there was a system error.',
+//             onErrorDescription: 'Please try reloading the page or try coming back to the page another time.',
+//             lastModified: "Last modified {date}"
+//         },
+//         setCardBorders: "true", // Can be true or false;
+//         useOverlayLinks: "false", // Can be true or false;
+//     },
+//     featuredCards: ['c7d34f39-397c-3727-9dff-5d0d9d8cf731'],
+//     filterPanel: {
+//         enabled: 'true',
+//         type: 'left',
+//         eventFilter: 'all',
+//         showEmptyFilters: true,
+//         filters: [
+//             {
+//                 "group": "By Solution",
+//                 "id": "adobe-com-enterprise:topic",
+//                 "items": [
+//                     {
+//                         "label": "Business Continuity",
+//                         "id": "adobe-com-enterprise:topic/business-continuity"
+//                     },
+//                     {
+//                         "label": "Creativity and Design",
+//                         "id": "adobe-com-enterprise:topic/creativity-design"
+//                     },
+//                     {
+//                         "label": "Customer Intelligence",
+//                         "id": "adobe-com-enterprise:topic/customer-intelligence"
+//                     },
+//                     {
+//                         "label": "Data Management Platform",
+//                         "id": "adobe-com-enterprise:topic/data-management-platform"
+//                     },
+//                     {
+//                         "label": "Digital Foundation",
+//                         "id": "adobe-com-enterprise:topic/digital-foundation"
+//                     },
+//                     {
+//                         "label": "Digital Trends",
+//                         "id": "adobe-com-enterprise:topic/digital-trends"
+//                     },
+//                     {
+//                         "label": "Document Management",
+//                         "id": "adobe-com-enterprise:topic/document-management"
+//                     },
+//                     {
+//                         "label": "Marketing Automation",
+//                         "id": "adobe-com-enterprise:topic/marketing-automation"
+//                     },
+//                     {
+//                         "label": "Personalization",
+//                         "id": "adobe-com-enterprise:topic/personalization"
+//                     },
+//                     {
+//                         "label": "Stock",
+//                         "id": "adobe-com-enterprise:topic/Stock"
+//                     }
+//                 ]
+//             },
+//             {
+//                 "group": "Availability",
+//                 "id": "adobe-com-enterprise:availability",
+//                 "items": [
+//                     {
+//                         "label": "On-Demand",
+//                         "id": "adobe-com-enterprise:availability/on-demand"
+//                     },
+//                     {
+//                         "label": "Upcoming",
+//                         "id": "adobe-com-enterprise:availability/upcoming"
+//                     }
+//                 ]
+//             },
+//             {
+//                 "group": "Duration",
+//                 "id": "adobe-com-enterprise:duration",
+//                 "items": [
+//                     {
+//                         "label": "Long",
+//                         "id": "adobe-com-enterprise:duration/long"
+//                     },
+//                     {
+//                         "label": "Short",
+//                         "id": "adobe-com-enterprise:duration/short"
+//                     }
+//                 ]
+//             },
+//             {
+//                 "group": "Rating",
+//                 "id": "adobe-com-enterprise:rating",
+//                 "items": [
+//                     {
+//                         "label": "5",
+//                         "id": "adobe-com-enterprise:rating/5"
+//                     },
+//                     {
+//                         "label": "4",
+//                         "id": "adobe-com-enterprise:rating/4"
+//                     }
+//                 ]
+//             }
+//         ],
+//         filterLogic: 'or',
+//         topPanel: {
+//             mobile: {
+//                 blurFilters: true,
+//             }
+//         },
+//         i18n: {
+//             leftPanel: {
+//                 header: 'My Favorites',
+//                 // searchBoxTitle: 'Search',
+//                 clearAllFiltersText: 'Clear All',
+//                 mobile: {
+//                     filtersBtnLabel: 'Filters:',
+//                     panel: {
+//                         header: 'Filters',
+//                         totalResultsText: '{total} Results',
+//                         applyBtnText: 'Apply',
+//                         clearFilterText: 'Clear',
+//                         doneBtnText: 'Done',
+//                     },
+//                     group: {
+//                         totalResultsText: '{total} Results',
+//                         applyBtnText: 'Apply',
+//                         clearFilterText: 'Clear Left',
+//                         doneBtnText: 'Done',
+//                     }
+//                 }
+//             },
+//             topPanel: {
+//                 groupLabel: 'Filters',
+//                 clearAllFiltersText: 'Clear All Top',
+//                 moreFiltersBtnText: 'More Filters: +',
+//                 mobile: {
+//                     group: {
+//                         totalResultsText: '{total} esults',
+//                         applyBtnText: 'Apply',
+//                         clearFilterText: 'Clear Top',
+//                         doneBtnText: 'Done',
+//                     }
+//                 }
+//             }
+//         }
+//     },
+//     hideCtaIds: [''],
+//     sort: {
+//         enabled: 'true',
+//         defaultSort: 'customSort',
+//         options: '[{"label":"Random", "sort":"random"},{"label":"Featured","sort":"featured"},{"label":"Title: (A-Z)","sort":"titleAsc"},{"label":"Title: (Z-A)","sort":"titleDesc"},{"label":"Date: (Oldest to newest)","sort":"dateAsc"},{"label":"Date: (Newest to oldest)","sort":"dateDesc"}, {"label": "Custom Sort", "sort": "customSort"}]',
+//         customSort: function(card){console.log("customSort: ", card); return card;}
+//     },
+//     pagination: {
+//         animationStyle: 'paged',
+//         enabled: 'true',
+//         type: 'loadMore',
+//         loadMoreButton: {
+//             style: "primary", // Can be "primary", "over-background";
+//             useThemeThree: "true", // Can be "true" or "false";
+//         },
+//         i18n: {
+//             loadMore: {
+//                 btnText: 'Load More',
+//                 resultsQuantityText: 'Showing {start} of {end} cards',
+//             },
+//             paginator: {
+//                 resultsQuantityText: '{start}-{end} of {total} results',
+//                 prevLabel: 'Prev',
+//                 nextLabel: 'Next',
+//             }
+//         }
+//     },
+//     bookmarks: {
+//         showOnCards: 'true',
+//         leftFilterPanel: {
+//             bookmarkOnlyCollection: 'false',
+//             showBookmarksFilter: 'true',
+//             selectBookmarksIcon: '',
+//             unselectBookmarksIcon: '',
+//         },
+//         i18n: {
+//             leftFilterPanel: {
+//                 filterTitle: 'My Favorites',
+//             }
+//         }
+//     },
+//     search: {
+//         enabled: 'true',
+//         searchFields: '["contentArea.title","contentArea.description","search.meta.author","overlays.banner.description", "foo.bar"]',
+//         i18n: {
+//             noResultsTitle: 'No Results Found',
+//             noResultsDescription: 'We could not find any results. {break} Try checking your spelling or broadening your search.',
+//             leftFilterPanel: {
+//                 searchTitle: 'Search',
+//                 searchPlaceholderText: 'Search here...',
+//             },
+//             topFilterPanel: {
+//                 searchPlaceholderText: 'i18n.topFilterPanel.searchPlaceholderText',
+//             },
+//             filterInfo: {
+//                 searchPlaceholderText: 'i18n.filterInfo.searchPlaceholderText',
+//             }
+//         }
+//     },
+//     language: 'en-US',
+//     analytics: {
+//         trackImpressions: 'true',
+//         collectionIdentifier: 'Some Identifier',
+//     },
+//     customCard: ["data", "return `<div class=customCard><div class=backgroundImg></div> <section><label>PHOTO EDITING</label><p><b>Transform a landscape with Sky Replacement.</b></p></div></section> </div>`"],
+//     onCardSaved: function(){},
+//     onCardUnsaved: function(){}
+// };
 
-// import ReactDOM, {render} from 'react-dom'
-//import * as ReactDOM from 'react-dom/client';
-// import { DOMRegistry } from 'react-dom-components';
-var config = {
-    collection: {
-        mode: "lightest", // Can be empty, "light", "dark", "darkest";
-        layout: {
-            type: '3up', // Can be "2up", "3up", "4up", "5up";
-            gutter: '4x', // Can be "2x", "3x", "4x";
-            container: '1200MaxWidth' // Can be "83Percent", "1200MaxWidth", "32Margin";
-        },
-        lazyLoad: false,
-        button: {
-            style: "call-to-action" // Can be "primary", "call-to-action";
-        },
-        banner: {
-            upcoming: {
-                description: "Upcoming"
-            },
-            live: {
-                description: "Live"
-            },
-            onDemand: {
-                description: "On Demand"
-            }
-        },
-        resultsPerPage: '5',
-        endpoint: location.hostname === "localhost" ? "../../mock-json/smoke.json" : "../../caas/mock-json/smoke.json",
-        totalCardsToShow: '55',
-        cardStyle: "1:2", // available options: "1:2", "3:4", "full-card", "half-height", "custom-card", "product", "double-wide";
-        showTotalResults: 'true',
-        i18n: {
-            prettyDateIntervalFormat: '{LLL} {dd} | {timeRange} {timeZone}',
-            totalResultsText: '{total} Results',
-            title: 'Lorem Ipsum 7',
-            titleHeadingLevel: 'h2',
-            cardTitleAccessibilityLevel: '3',
-            onErrorTitle: 'Sorry there was a system error.',
-            onErrorDescription: 'Please try reloading the page or try coming back to the page another time.',
-            lastModified: "Last modified {date}"
-        },
-        setCardBorders: "true", // Can be true or false;
-        useOverlayLinks: "false" // Can be true or false;
-    },
-    featuredCards: ['c7d34f39-397c-3727-9dff-5d0d9d8cf731'],
-    filterPanel: {
-        enabled: 'true',
-        type: 'left',
-        eventFilter: 'all',
-        showEmptyFilters: true,
-        filters: [{
-            "group": "By Solution",
-            "id": "adobe-com-enterprise:topic",
-            "items": [{
-                "label": "Business Continuity",
-                "id": "adobe-com-enterprise:topic/business-continuity"
-            }, {
-                "label": "Creativity and Design",
-                "id": "adobe-com-enterprise:topic/creativity-design"
-            }, {
-                "label": "Customer Intelligence",
-                "id": "adobe-com-enterprise:topic/customer-intelligence"
-            }, {
-                "label": "Data Management Platform",
-                "id": "adobe-com-enterprise:topic/data-management-platform"
-            }, {
-                "label": "Digital Foundation",
-                "id": "adobe-com-enterprise:topic/digital-foundation"
-            }, {
-                "label": "Digital Trends",
-                "id": "adobe-com-enterprise:topic/digital-trends"
-            }, {
-                "label": "Document Management",
-                "id": "adobe-com-enterprise:topic/document-management"
-            }, {
-                "label": "Marketing Automation",
-                "id": "adobe-com-enterprise:topic/marketing-automation"
-            }, {
-                "label": "Personalization",
-                "id": "adobe-com-enterprise:topic/personalization"
-            }, {
-                "label": "Stock",
-                "id": "adobe-com-enterprise:topic/Stock"
-            }]
-        }, {
-            "group": "Availability",
-            "id": "adobe-com-enterprise:availability",
-            "items": [{
-                "label": "On-Demand",
-                "id": "adobe-com-enterprise:availability/on-demand"
-            }, {
-                "label": "Upcoming",
-                "id": "adobe-com-enterprise:availability/upcoming"
-            }]
-        }, {
-            "group": "Duration",
-            "id": "adobe-com-enterprise:duration",
-            "items": [{
-                "label": "Long",
-                "id": "adobe-com-enterprise:duration/long"
-            }, {
-                "label": "Short",
-                "id": "adobe-com-enterprise:duration/short"
-            }]
-        }, {
-            "group": "Rating",
-            "id": "adobe-com-enterprise:rating",
-            "items": [{
-                "label": "5",
-                "id": "adobe-com-enterprise:rating/5"
-            }, {
-                "label": "4",
-                "id": "adobe-com-enterprise:rating/4"
-            }]
-        }],
-        filterLogic: 'or',
-        topPanel: {
-            mobile: {
-                blurFilters: true
-            }
-        },
-        i18n: {
-            leftPanel: {
-                header: 'My Favorites',
-                // searchBoxTitle: 'Search',
-                clearAllFiltersText: 'Clear All',
-                mobile: {
-                    filtersBtnLabel: 'Filters:',
-                    panel: {
-                        header: 'Filters',
-                        totalResultsText: '{total} Results',
-                        applyBtnText: 'Apply',
-                        clearFilterText: 'Clear',
-                        doneBtnText: 'Done'
-                    },
-                    group: {
-                        totalResultsText: '{total} Results',
-                        applyBtnText: 'Apply',
-                        clearFilterText: 'Clear Left',
-                        doneBtnText: 'Done'
-                    }
-                }
-            },
-            topPanel: {
-                groupLabel: 'Filters',
-                clearAllFiltersText: 'Clear All Top',
-                moreFiltersBtnText: 'More Filters: +',
-                mobile: {
-                    group: {
-                        totalResultsText: '{total} esults',
-                        applyBtnText: 'Apply',
-                        clearFilterText: 'Clear Top',
-                        doneBtnText: 'Done'
-                    }
-                }
-            }
-        }
-    },
-    hideCtaIds: [''],
-    sort: {
-        enabled: 'true',
-        defaultSort: 'customSort',
-        options: '[{"label":"Random", "sort":"random"},{"label":"Featured","sort":"featured"},{"label":"Title: (A-Z)","sort":"titleAsc"},{"label":"Title: (Z-A)","sort":"titleDesc"},{"label":"Date: (Oldest to newest)","sort":"dateAsc"},{"label":"Date: (Newest to oldest)","sort":"dateDesc"}, {"label": "Custom Sort", "sort": "customSort"}]',
-        customSort: function customSort(card) {
-            console.log("customSort: ", card);return card;
-        }
-    },
-    pagination: {
-        animationStyle: 'paged',
-        enabled: 'true',
-        type: 'loadMore',
-        loadMoreButton: {
-            style: "primary", // Can be "primary", "over-background";
-            useThemeThree: "true" // Can be "true" or "false";
-        },
-        i18n: {
-            loadMore: {
-                btnText: 'Load More',
-                resultsQuantityText: 'Showing {start} of {end} cards'
-            },
-            paginator: {
-                resultsQuantityText: '{start}-{end} of {total} results',
-                prevLabel: 'Prev',
-                nextLabel: 'Next'
-            }
-        }
-    },
-    bookmarks: {
-        showOnCards: 'true',
-        leftFilterPanel: {
-            bookmarkOnlyCollection: 'false',
-            showBookmarksFilter: 'true',
-            selectBookmarksIcon: '',
-            unselectBookmarksIcon: ''
-        },
-        i18n: {
-            leftFilterPanel: {
-                filterTitle: 'My Favorites'
-            }
-        }
-    },
-    search: {
-        enabled: 'true',
-        searchFields: '["contentArea.title","contentArea.description","search.meta.author","overlays.banner.description", "foo.bar"]',
-        i18n: {
-            noResultsTitle: 'No Results Found',
-            noResultsDescription: 'We could not find any results. {break} Try checking your spelling or broadening your search.',
-            leftFilterPanel: {
-                searchTitle: 'Search',
-                searchPlaceholderText: 'Search here...'
-            },
-            topFilterPanel: {
-                searchPlaceholderText: 'i18n.topFilterPanel.searchPlaceholderText'
-            },
-            filterInfo: {
-                searchPlaceholderText: 'i18n.filterInfo.searchPlaceholderText'
-            }
-        }
-    },
-    language: 'en-US',
-    analytics: {
-        trackImpressions: 'true',
-        collectionIdentifier: 'Some Identifier'
-    },
-    customCard: ["data", "return `<div class=customCard><div class=backgroundImg></div> <section><label>PHOTO EDITING</label><p><b>Transform a landscape with Sky Replacement.</b></p></div></section> </div>`"],
-    onCardSaved: function onCardSaved() {},
-    onCardUnsaved: function onCardUnsaved() {}
-}; /* eslint-disable */
-//import "./polyfills";
-
-
-(0, _preact.render)(_react2.default.createElement(_Container2.default, { config: (0, _general.parseToPrimitive)(config) }), document.getElementById('someDivId'));
+//render(<Container config={parseToPrimitive(window.config)} />, document.getElementById('someDivId'));
 
 // class Foo extends PureComponent {
 //     render(props) {
@@ -4805,13 +4822,15 @@ var config = {
 //     }
 // }
 
-// class ConsonantCardCollection {
-//     constructor(config, dom){
-//         render(<Container config={parseToPrimitive(config)} />, dom);
-//     }
-// }
-//
-// window.ConsonantCardCollection = ConsonantCardCollection;
+//function ConsonantCardCollection(config, dom){
+//}
+
+// import ReactDOM, {render} from 'react-dom'
+//import * as ReactDOM from 'react-dom/client';
+// import { DOMRegistry } from 'react-dom-components';
+(0, _preact.render)(_react2.default.createElement(_Container2.default, { config: (0, _general.parseToPrimitive)(window.config) }), document.getElementById('someDivId'));
+
+//window.ConsonantCardCollection = ConsonantCardCollection;
 
 // var a = ReactDOMServer.renderToString(<React.Fragment>
 //     <Container config={parseToPrimitive(config)} />
@@ -4828,6 +4847,8 @@ var config = {
 //     window.dx.author.watch.registerFunction(authorWatch);
 // }
 // export default initReact;
+/* eslint-disable */
+//import "./polyfills";
 
 /***/ }),
 /* 31 */
@@ -5305,7 +5326,8 @@ var Container = function Container(props) {
   // const searchFields = getConfig('search', 'searchFields');
   var sortOptions = getConfig('sort', 'options');
   var defaultSort = getConfig('sort', 'defaultSort');
-  var defaultSortOption = (0, _consonant.getDefaultSortOption)(config, defaultSort);
+  var tempCards = getConfig('cards', '');
+  //const defaultSortOption = getDefaultSortOption(config, defaultSort);
   // const featuredCards = getConfig('featuredCards', '')
   //     .toString()
   //     .replace(/\[|\]/g, '')
@@ -5323,7 +5345,7 @@ var Container = function Container(props) {
   // const noResultsDescription = getConfig('search', 'i18n.noResultsDescription');
   // const apiFailureTitle = getConfig('collection', 'i18n.onErrorTitle');
   // const apiFailureDescription = getConfig('collection', 'i18n.onErrorDescription');
-  var isLazy = getConfig('collection', 'lazyload');
+  // const isLazy = getConfig('collection', 'lazyload');
   // const trackImpressions = getConfig('analytics', 'trackImpressions');
   // const collectionIdentifier = getConfig('analytics', 'collectionIdentifier');
   // const targetEnabled = getConfig('target', 'enabled');
@@ -5451,11 +5473,7 @@ var Container = function Container(props) {
    *
    * @type {[String, Function]} SortOption
    */
-
-  var _useState = (0, _react.useState)(defaultSortOption),
-      _useState2 = _slicedToArray(_useState, 2),
-      sortOption = _useState2[0],
-      setSortOption = _useState2[1];
+  //const [sortOption, setSortOption] = useState(defaultSortOption);
   //
   // if (sortOption.sort === SORT_TYPES.RANDOM) {
   //     totalCardLimit = sampleSize;
@@ -5514,11 +5532,10 @@ var Container = function Container(props) {
    * @type {[Array, Function]} Cards
    */
 
-
-  var _useState3 = (0, _react.useState)([]),
-      _useState4 = _slicedToArray(_useState3, 2),
-      cards = _useState4[0],
-      setCards = _useState4[1];
+  var _useState = (0, _react.useState)(tempCards),
+      _useState2 = _slicedToArray(_useState, 2),
+      cards = _useState2[0],
+      setCards = _useState2[1];
 
   /**
    * @typedef {Boolean} LoadingState — Can either be true or false
@@ -5531,10 +5548,10 @@ var Container = function Container(props) {
    */
 
 
-  var _useState5 = (0, _react.useState)(false),
-      _useState6 = _slicedToArray(_useState5, 2),
-      isLoading = _useState6[0],
-      setLoading = _useState6[1];
+  var _useState3 = (0, _react.useState)(false),
+      _useState4 = _slicedToArray(_useState3, 2),
+      isLoading = _useState4[0],
+      setLoading = _useState4[1];
 
   /**
    * @typedef {Boolean} ApiFailureState — Can either be true or false
@@ -5547,27 +5564,27 @@ var Container = function Container(props) {
    */
 
 
-  var _useState7 = (0, _react.useState)(false),
-      _useState8 = _slicedToArray(_useState7, 2),
-      isApiFailure = _useState8[0],
-      setApiFailure = _useState8[1];
+  var _useState5 = (0, _react.useState)(false),
+      _useState6 = _slicedToArray(_useState5, 2),
+      isApiFailure = _useState6[0],
+      setApiFailure = _useState6[1];
   // const [randomSortId, setRandomSortId] = useState(null);
 
 
-  var _useState9 = (0, _react.useState)(true),
+  var _useState7 = (0, _react.useState)(true),
+      _useState8 = _slicedToArray(_useState7, 2),
+      isFirstLoad = _useState8[0],
+      setIsFirstLoad = _useState8[1];
+
+  var _useState9 = (0, _react.useState)(),
       _useState10 = _slicedToArray(_useState9, 2),
-      isFirstLoad = _useState10[0],
-      setIsFirstLoad = _useState10[1];
+      visibleStamp = _useState10[0],
+      setVisibleStamp = _useState10[1];
 
-  var _useState11 = (0, _react.useState)(),
+  var _useState11 = (0, _react.useState)(false),
       _useState12 = _slicedToArray(_useState11, 2),
-      visibleStamp = _useState12[0],
-      setVisibleStamp = _useState12[1];
-
-  var _useState13 = (0, _react.useState)(false),
-      _useState14 = _slicedToArray(_useState13, 2),
-      hasFetched = _useState14[0],
-      setHasFetched = _useState14[1];
+      hasFetched = _useState12[0],
+      setHasFetched = _useState12[1];
 
   /**
    * Creates a DOM reference to first filter item
@@ -5954,72 +5971,73 @@ var Container = function Container(props) {
    * @param {String} endPoint, URL with params for card request
    * @returns {Void} - an updated state
    */
-  function getCards() {
-    var endPoint = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getConfig('collection', 'endpoint');
-
-    return window.fetch(endPoint, {
-      credentials: 'include'
-    }).then(function (resp) {
-      var ok = resp.ok,
-          status = resp.status,
-          statusText = resp.statusText,
-          url = resp.url;
-
-
-      if (ok) {
-        return resp.json().then(function (json) {
-          return json;
-          // return Promise.reject(new Error('no valid reponse data'));
-        });
-      }
-
-      // return Promise.reject(new Error(`${status}: ${statusText}, failure for call to ${url}`));
-    }).then(function (payload) {
-      // setLoading(false);
-      // setIsFirstLoad(true);
-      // if (!getByPath(payload, 'cards.length')) return;
-
-      var processedCards = payload.cards;
-      // .removeDuplicateCards()
-      // .addCardMetaData(
-      //     TRUNCATE_TEXT_QTY,
-      //     onlyShowBookmarks,
-      //     bookmarkedCardIds,
-      //     hideCtaIds,
-      // );
-
-      // const transitions = getTransitions(processedCards);
-      // if (sortOption.sort.toLowerCase() === 'eventsort') {
-      //     while (transitions.size() > 0) {
-      //         setTimeout(() => {
-      //             nextTransition();
-      //         }, transitions.dequeue().priority + ONE_SECOND_DELAY);
-      //     }
-      // }
-
-      setCards(processedCards);
-      // if (!showEmptyFilters) {
-      //     setFilters(prevFilters => removeEmptyFilters(prevFilters, processedCards));
-      // }
-      // setTimeout(() => {
-      //     if (!scrollElementRef.current) return;
-      //     if (processedCards.length === 0) return;
-      //     if (currentPage === 1) return;
-      //     const cardsToshow = processedCards.slice(0, resultsPerPage * currentPage);
-      //     const getLastPageID = (resultsPerPage * currentPage) - resultsPerPage;
-      //     if (cardsToshow.length < getLastPageID) return;
-      //     const lastID = scrollElementRef.current.children[getLastPageID];
-      //     lastID.scrollIntoView();
-      // }, 100);
-    }).catch(function () {
-      // if (endPoint === collectionEndpoint && fallbackEndpoint) {
-      //     getCards(fallbackEndpoint);
-      //     return;
-      // }
-      // setLoading(false);
-      // setApiFailure(true);
-    });
-  }
+  // function getCards(endPoint = getConfig('collection', 'endpoint')) {
+  //     return window.fetch(endPoint, {
+  //         credentials: 'include',
+  //     })
+  //         .then((resp) => {
+  //             const {
+  //                 ok,
+  //                 status,
+  //                 statusText,
+  //                 url,
+  //             } = resp;
+  //
+  //             if (ok) {
+  //                 return resp.json().then((json) => {
+  //                      return json;
+  //                     // return Promise.reject(new Error('no valid reponse data'));
+  //                 });
+  //             }
+  //
+  //             // return Promise.reject(new Error(`${status}: ${statusText}, failure for call to ${url}`));
+  //         })
+  //         .then((payload) => {
+  //             // setLoading(false);
+  //             // setIsFirstLoad(true);
+  //             // if (!getByPath(payload, 'cards.length')) return;
+  //
+  //             const processedCards = payload.cards;
+  //                 // .removeDuplicateCards()
+  //                 // .addCardMetaData(
+  //                 //     TRUNCATE_TEXT_QTY,
+  //                 //     onlyShowBookmarks,
+  //                 //     bookmarkedCardIds,
+  //                 //     hideCtaIds,
+  //                 // );
+  //
+  //             // const transitions = getTransitions(processedCards);
+  //             // if (sortOption.sort.toLowerCase() === 'eventsort') {
+  //             //     while (transitions.size() > 0) {
+  //             //         setTimeout(() => {
+  //             //             nextTransition();
+  //             //         }, transitions.dequeue().priority + ONE_SECOND_DELAY);
+  //             //     }
+  //             // }
+  //
+  //             setCards(processedCards);
+  //             // if (!showEmptyFilters) {
+  //             //     setFilters(prevFilters => removeEmptyFilters(prevFilters, processedCards));
+  //             // }
+  //             // setTimeout(() => {
+  //             //     if (!scrollElementRef.current) return;
+  //             //     if (processedCards.length === 0) return;
+  //             //     if (currentPage === 1) return;
+  //             //     const cardsToshow = processedCards.slice(0, resultsPerPage * currentPage);
+  //             //     const getLastPageID = (resultsPerPage * currentPage) - resultsPerPage;
+  //             //     if (cardsToshow.length < getLastPageID) return;
+  //             //     const lastID = scrollElementRef.current.children[getLastPageID];
+  //             //     lastID.scrollIntoView();
+  //             // }, 100);
+  //         }).catch(() => {
+  //             // if (endPoint === collectionEndpoint && fallbackEndpoint) {
+  //             //     getCards(fallbackEndpoint);
+  //             //     return;
+  //             // }
+  //             // setLoading(false);
+  //             // setApiFailure(true);
+  //         });
+  // }
   //     /**
   //      * @func getVisitorData
   //      * @desc wraps fetching Visitor API data in a function for reuse, also if
@@ -6130,7 +6148,7 @@ var Container = function Container(props) {
   // }, [showBookmarks]);
 
   (0, _react.useEffect)(function () {
-    getCards();
+    //getCards();
   }, []);
 
   /**
@@ -7867,7 +7885,11 @@ var Grid = function Grid(props) {
      * The final cards to show in the collection
      * @type {Array}
      */
-    var cardsToshow = cards;
+    var cardsToshow = new Array(3);
+
+    for (var i = 0; i < 3; i++) {
+        cardsToshow[i] = cards[i];
+    }
 
     /**
      * Current page (used if paginator component is authored)
@@ -7875,16 +7897,16 @@ var Grid = function Grid(props) {
      */
     var currentPage = resultsPerPage * (pages - 1);
 
-    if (isPaginator) {
-        cardsToshow = cards.slice(currentPage, totalPages);
-    }
+    if (isPaginator) {}
+    //cardsToshow = cards.slice(currentPage, totalPages);
+
 
     /**
      * Current page (used if load more button is authored)
      * @type {Number}
      */
     if (isLoadMore) {
-        cardsToshow = cards.slice(0, resultsPerPage * pages);
+        //cardsToshow = cards.slice(0, resultsPerPage * pages);
     }
 
     var cleanTitle = function cleanTitle(title) {
