@@ -146,7 +146,7 @@ export const getFilteredCards = (cards, activeFilters, activePanels, filterType,
             return intersection(tagIds, activeFiltersSet).size;
         } else if (usingOrFilter) {
             // check if card' tags panels include all panels with selected filters
-            const tagPanels = new Set(card.tags.map(tag => tag.parent.id || tag.id.replace(/\/.*$/, '')));
+            const tagPanels = new Set(card.tags.map(tag => tag.id.replace(/\/.*$/, '')));
             if (!isSuperset(tagPanels, activePanels)) return false;
 
             // check if card' tags include all panels with selected filters

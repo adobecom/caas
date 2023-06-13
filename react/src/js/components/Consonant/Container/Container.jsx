@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, {
     Fragment,
     useEffect,
@@ -101,7 +102,7 @@ const Container = (props) => {
     const paginationIsEnabled = getConfig('pagination', 'enabled');
     const resultsPerPage = getConfig('collection', 'resultsPerPage');
     const onlyShowBookmarks = getConfig('bookmarks', 'leftFilterPanel.bookmarkOnlyCollection');
-    const authoredFilters = getConfig('filterPanel', 'filters');
+    let authoredFilters = getConfig('filterPanel', 'filters');
     const filterLogic = getConfig('filterPanel', 'filterLogic').toLowerCase().trim();
     let totalCardLimit = getConfig('collection', 'totalCardsToShow');
     const sampleSize = getConfig('collection', 'reservoir.sample');
@@ -356,6 +357,34 @@ const Container = (props) => {
     /**
      **** Helper Methods ****
      */
+
+    function getParentChild(id){
+        let i = id.length;
+        while(id[i] !== "/" && i >= 0){
+            i--;
+        }
+        return [id.substring(0, i), id.substring(i + 1)]
+    }
+
+    function rollingHash(s, l){
+        let BASE = 31;
+        let MOD = 10 ** l + 7;
+        let hash = 0;
+        let basePower = 1;
+        for(let i = 0; i < s.length; i++){
+            hash = (hash + (s.charCodeAt(i) - 97 + 1) * basePower) % MOD;
+            basePower =  (basePower * BASE) % MOD;
+        }
+        return btoa((hash + MOD) % MOD);
+    }
+
+    for(let group of authoredFilters){
+        group.id = rollingHash(group.id, 6);
+        for(let filterItem of group.items){
+            let [parent, child] = getParentChild(filterItem.id);
+            filterItem.id =`${rollingHash(parent, 6)}/${rollingHash(child, 6)}`
+        }
+    }
 
     /**
      * For a given group of filters, it will unselect all of them

@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 6/3/2023, 01:37:11
+ * Chimera UI Libraries - Build 6/8/2023, 15:36:20
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -2423,7 +2423,7 @@ var getFilteredCards = exports.getFilteredCards = function getFilteredCards(card
         } else if (usingOrFilter) {
             // check if card' tags panels include all panels with selected filters
             var tagPanels = new Set(card.tags.map(function (tag) {
-                return tag.parent.id || tag.id.replace(/\/.*$/, '');
+                return tag.id.replace(/\/.*$/, '');
             }));
             if (!(0, _general.isSuperset)(tagPanels, activePanels)) return false;
 
@@ -6295,7 +6295,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); /* eslint-disable */
+
 
 var _react = __webpack_require__(0);
 
@@ -6773,11 +6774,86 @@ var Container = function Container(props) {
      **** Helper Methods ****
      */
 
-    /**
-     * For a given group of filters, it will unselect all of them
-     * @param {Array} filterGroups - a group of filters
-     * @returns {Array} fitlerGroups - the updated group of filters
-     */
+    function getParentChild(id) {
+        var i = id.length;
+        while (id[i] !== "/" && i >= 0) {
+            i--;
+        }
+        return [id.substring(0, i), id.substring(i + 1)];
+    }
+
+    function rollingHash(s, l) {
+        var BASE = 31;
+        var MOD = Math.pow(10, l) + 7;
+        var hash = 0;
+        var basePower = 1;
+        for (var i = 0; i < s.length; i++) {
+            hash = (hash + (s.charCodeAt(i) - 97 + 1) * basePower) % MOD;
+            basePower = basePower * BASE % MOD;
+        }
+        return btoa((hash + MOD) % MOD);
+    }
+
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+        for (var _iterator = authoredFilters[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var group = _step.value;
+
+            group.id = rollingHash(group.id, 6);
+            var _iteratorNormalCompletion2 = true;
+            var _didIteratorError2 = false;
+            var _iteratorError2 = undefined;
+
+            try {
+                for (var _iterator2 = group.items[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                    var filterItem = _step2.value;
+
+                    var _getParentChild = getParentChild(filterItem.id),
+                        _getParentChild2 = _slicedToArray(_getParentChild, 2),
+                        parent = _getParentChild2[0],
+                        child = _getParentChild2[1];
+
+                    filterItem.id = rollingHash(parent, 6) + '/' + rollingHash(child, 6);
+                }
+            } catch (err) {
+                _didIteratorError2 = true;
+                _iteratorError2 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                        _iterator2.return();
+                    }
+                } finally {
+                    if (_didIteratorError2) {
+                        throw _iteratorError2;
+                    }
+                }
+            }
+        }
+
+        /**
+         * For a given group of filters, it will unselect all of them
+         * @param {Array} filterGroups - a group of filters
+         * @returns {Array} fitlerGroups - the updated group of filters
+         */
+    } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+    } finally {
+        try {
+            if (!_iteratorNormalCompletion && _iterator.return) {
+                _iterator.return();
+            }
+        } finally {
+            if (_didIteratorError) {
+                throw _iteratorError;
+            }
+        }
+    }
+
     var getAllFiltersClearedState = function getAllFiltersClearedState(filterGroups) {
         return filterGroups.map(function (filterGroup) {
             return _extends({}, filterGroup, {
