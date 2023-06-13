@@ -74,7 +74,7 @@
                     }
                 },
                 resultsPerPage: '5',
-                endpoint: location.hostname === "localhost" ? "../../mock-json/all-art-board-15-cards-show.json" : "../../caas/mock-json/all-art-board-15-cards-show.json",
+                endpoint: "https://14257-chimera-sanrai.adobeioruntime.net/api/v1/web/chimera-0.0.1/collection?originSelection=northstar&contentTypeTags=&collectionTags=&excludeContentWithTags=&language=en&country=us&complexQuery=&excludeIds=&currentEntityId=&featuredCards=&environment=&draft=false&size=10000&flatFile=false",
                 totalCardsToShow: '55',
                 cardStyle: "1:2", // available options: "1:2", "3:4", "full-card", "half-height", "custom-card", "product", "double-wide";
                 showTotalResults: 'true',
@@ -94,100 +94,72 @@
             featuredCards: ['c7d34f39-397c-3727-9dff-5d0d9d8cf731'],
             filterPanel: {
                 enabled: 'true',
-                type: 'top',
+                type: 'left',
                 eventFilter: 'all',
                 showEmptyFilters: true,
                 filters: [
                     {
-                        "group": "By Solution",
-                        "id": "adobe-com-enterprise:topic",
+                        "group": "Primary Track",
+                        "id": "caas:events/eml/primary-track",
                         "items": [
                             {
-                                "label": "Business Continuity",
-                                "id": "adobe-com-enterprise:topic/business-continuity"
+                                "label": "Ask the experts",
+                                "id": "caas:events/eml/primary-track/ask-the-experts"
                             },
                             {
-                                "label": "Creativity and Design",
-                                "id": "adobe-com-enterprise:topic/creativity-design"
+                                "label": "B2b customer journeys in realtime",
+                                "id": "caas:events/eml/primary-track/b2b-customer-journeys-in-real-time"
                             },
                             {
-                                "label": "Customer Intelligence",
-                                "id": "adobe-com-enterprise:topic/customer-intelligence"
+                                "label": "B2C Customer Journeys In Real Time",
+                                "id": "caas:events/eml/primary-track/b2c-customer-journeys-in-real-time"
                             },
                             {
-                                "label": "Data Management Platform",
-                                "id": "adobe-com-enterprise:topic/data-management-platform"
+                                "label": "Experience Maker Success",
+                                "id": "caas:events/eml/primary-track/experience-maker-success"
                             },
                             {
-                                "label": "Digital Foundation",
-                                "id": "adobe-com-enterprise:topic/digital-foundation"
+                                "label": "Keynote",
+                                "id": "caas:events/eml/primary-track/keynote"
                             },
                             {
-                                "label": "Digital Trends",
-                                "id": "adobe-com-enterprise:topic/digital-trends"
+                                "label": "Managing Collaborative Work",
+                                "id": "caas:events/eml/primary-track/managing-collaborative-work"
                             },
                             {
-                                "label": "Document Management",
-                                "id": "adobe-com-enterprise:topic/document-management"
+                                "label": "Real time profiles for real personalization",
+                                "id": "caas:events/eml/primary-track/real-time-profiles-for-real-personalization"
                             },
                             {
-                                "label": "Marketing Automation",
-                                "id": "adobe-com-enterprise:topic/marketing-automation"
+                                "label": "Trends and Inspiration",
+                                "id": "caas:events/eml/primary-track/trends-and-inspiration"
                             },
-                            {
-                                "label": "Personalization",
-                                "id": "adobe-com-enterprise:topic/personalization"
-                            },
-                            {
-                                "label": "Stock",
-                                "id": "adobe-com-enterprise:topic/Stock"
-                            }
                         ]
                     },
                     {
-                        "group": "Availability",
-                        "id": "adobe-com-enterprise:availability",
+                        "group": "Track",
+                        "id": "caas:events/eml/track",
                         "items": [
                             {
-                                "label": "On-Demand",
-                                "id": "adobe-com-enterprise:availability/on-demand"
+                                "label": "b2b customer journeys in real time",
+                                "id": "caas:events/eml/track/b2b-customer-journeys-in-real-time"
                             },
                             {
-                                "label": "Upcoming",
-                                "id": "adobe-com-enterprise:availability/upcoming"
-                            }
-                        ]
-                    },
-                    {
-                        "group": "Duration",
-                        "id": "adobe-com-enterprise:duration",
-                        "items": [
-                            {
-                                "label": "Long",
-                                "id": "adobe-com-enterprise:duration/long"
+                                "label": "b2c customer journeys in real time",
+                                "id": "caas:events/eml/track/b2c-customer-journeys-in-real-time"
                             },
                             {
-                                "label": "Short",
-                                "id": "adobe-com-enterprise:duration/short"
-                            }
-                        ]
-                    },
-                    {
-                        "group": "Rating",
-                        "id": "adobe-com-enterprise:rating",
-                        "items": [
-                            {
-                                "label": "5",
-                                "id": "adobe-com-enterprise:rating/5"
+                                "label": "driving growth with commerce",
+                                "id": "caas:events/eml/track/driving-growth-with-commerce"
                             },
                             {
-                                "label": "4",
-                                "id": "adobe-com-enterprise:rating/4"
+                                "label": "Experience Maker Success",
+                                "id": "caas:events/eml/track/experience-maker-success"
                             }
                         ]
                     }
                 ],
-                filterLogic: 'or',
+                filterLogic: 'xor',
                 topPanel: {
                     mobile: {
                         blurFilters: true,
