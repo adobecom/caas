@@ -125,6 +125,13 @@
     "wdio-chromedriver-service": "^8.0.1",
     "webpack": "^3.9.1"
   },
+  "husky": {
+    "hooks": {
+      "prepare-commit-msg": "exec < /dev/tty && npx cz --hook || true",
+      "pre-commit": "npm run build && git add . && enforce-branch-name '.*'",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
