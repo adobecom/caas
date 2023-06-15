@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 6/8/2023, 15:36:20
+ * Chimera UI Libraries - Build 6/13/2023, 16:25:34
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6783,7 +6783,7 @@ var Container = function Container(props) {
     }
 
     function rollingHash(s, l) {
-        var BASE = 31;
+        var BASE = 53;
         var MOD = Math.pow(10, l) + 7;
         var hash = 0;
         var basePower = 1;
@@ -6794,66 +6794,11 @@ var Container = function Container(props) {
         return btoa((hash + MOD) % MOD);
     }
 
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
-
-    try {
-        for (var _iterator = authoredFilters[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var group = _step.value;
-
-            group.id = rollingHash(group.id, 6);
-            var _iteratorNormalCompletion2 = true;
-            var _didIteratorError2 = false;
-            var _iteratorError2 = undefined;
-
-            try {
-                for (var _iterator2 = group.items[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                    var filterItem = _step2.value;
-
-                    var _getParentChild = getParentChild(filterItem.id),
-                        _getParentChild2 = _slicedToArray(_getParentChild, 2),
-                        parent = _getParentChild2[0],
-                        child = _getParentChild2[1];
-
-                    filterItem.id = rollingHash(parent, 6) + '/' + rollingHash(child, 6);
-                }
-            } catch (err) {
-                _didIteratorError2 = true;
-                _iteratorError2 = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                        _iterator2.return();
-                    }
-                } finally {
-                    if (_didIteratorError2) {
-                        throw _iteratorError2;
-                    }
-                }
-            }
-        }
-
-        /**
-         * For a given group of filters, it will unselect all of them
-         * @param {Array} filterGroups - a group of filters
-         * @returns {Array} fitlerGroups - the updated group of filters
-         */
-    } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-    } finally {
-        try {
-            if (!_iteratorNormalCompletion && _iterator.return) {
-                _iterator.return();
-            }
-        } finally {
-            if (_didIteratorError) {
-                throw _iteratorError;
-            }
-        }
-    }
-
+    /**
+     * For a given group of filters, it will unselect all of them
+     * @param {Array} filterGroups - a group of filters
+     * @returns {Array} fitlerGroups - the updated group of filters
+     */
     var getAllFiltersClearedState = function getAllFiltersClearedState(filterGroups) {
         return filterGroups.map(function (filterGroup) {
             return _extends({}, filterGroup, {
@@ -7302,6 +7247,66 @@ var Container = function Container(props) {
                 var _removeDuplicateCards = new _JsonProcessor2.default(payload.cards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds),
                     _removeDuplicateCards2 = _removeDuplicateCards.processedCards,
                     processedCards = _removeDuplicateCards2 === undefined ? [] : _removeDuplicateCards2;
+
+                if (payload.isHashed) {
+                    var TAG_HASH_LENGTH = 6;
+                    var _iteratorNormalCompletion = true;
+                    var _didIteratorError = false;
+                    var _iteratorError = undefined;
+
+                    try {
+                        for (var _iterator = authoredFilters[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                            var group = _step.value;
+
+                            group.id = rollingHash(group.id, 6);
+                            var _iteratorNormalCompletion2 = true;
+                            var _didIteratorError2 = false;
+                            var _iteratorError2 = undefined;
+
+                            try {
+                                for (var _iterator2 = group.items[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                                    var filterItem = _step2.value;
+
+                                    var _getParentChild = getParentChild(filterItem.id),
+                                        _getParentChild2 = _slicedToArray(_getParentChild, 2),
+                                        parent = _getParentChild2[0],
+                                        child = _getParentChild2[1];
+
+                                    filterItem.id = rollingHash(parent, TAG_HASH_LENGTH) + '/' + rollingHash(child, TAG_HASH_LENGTH);
+                                }
+                            } catch (err) {
+                                _didIteratorError2 = true;
+                                _iteratorError2 = err;
+                            } finally {
+                                try {
+                                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                                        _iterator2.return();
+                                    }
+                                } finally {
+                                    if (_didIteratorError2) {
+                                        throw _iteratorError2;
+                                    }
+                                }
+                            }
+                        }
+                    } catch (err) {
+                        _didIteratorError = true;
+                        _iteratorError = err;
+                    } finally {
+                        try {
+                            if (!_iteratorNormalCompletion && _iterator.return) {
+                                _iterator.return();
+                            }
+                        } finally {
+                            if (_didIteratorError) {
+                                throw _iteratorError;
+                            }
+                        }
+                    }
+                }
+                setFilters(function () {
+                    return authoredFilters;
+                });
 
                 var transitions = (0, _general.getTransitions)(processedCards);
                 if (sortOption.sort.toLowerCase() === 'eventsort') {

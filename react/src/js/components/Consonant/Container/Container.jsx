@@ -367,7 +367,10 @@ const Container = (props) => {
     }
 
     function rollingHash(s, l){
-        let BASE = 31;
+        if(!s){
+            return "";
+        }
+        let BASE = 53;
         let MOD = 10 ** l + 7;
         let hash = 0;
         let basePower = 1;
@@ -376,14 +379,6 @@ const Container = (props) => {
             basePower =  (basePower * BASE) % MOD;
         }
         return btoa((hash + MOD) % MOD);
-    }
-
-    for(let group of authoredFilters){
-        group.id = rollingHash(group.id, 6);
-        for(let filterItem of group.items){
-            let [parent, child] = getParentChild(filterItem.id);
-            filterItem.id =`${rollingHash(parent, 6)}/${rollingHash(child, 6)}`
-        }
     }
 
     /**
@@ -790,6 +785,17 @@ const Container = (props) => {
                             bookmarkedCardIds,
                             hideCtaIds,
                         );
+                    if(payload.isHashed){
+                        const TAG_HASH_LENGTH = 6;
+                        for(let group of authoredFilters){
+                            group.id = rollingHash(group.id, TAG_HASH_LENGTH);
+                            for(let filterItem of group.items){
+                                let [parent, child] = getParentChild(filterItem.id);
+                                filterItem.id =`${rollingHash(parent, TAG_HASH_LENGTH)}/${rollingHash(child, TAG_HASH_LENGTH)}`
+                            }
+                        }
+                    }
+                    setFilters(() => authoredFilters);
 
                     const transitions = getTransitions(processedCards);
                     if (sortOption.sort.toLowerCase() === 'eventsort') {
