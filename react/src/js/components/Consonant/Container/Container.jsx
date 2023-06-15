@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, {
     Fragment,
     useEffect,
@@ -102,7 +101,7 @@ const Container = (props) => {
     const paginationIsEnabled = getConfig('pagination', 'enabled');
     const resultsPerPage = getConfig('collection', 'resultsPerPage');
     const onlyShowBookmarks = getConfig('bookmarks', 'leftFilterPanel.bookmarkOnlyCollection');
-    let authoredFilters = getConfig('filterPanel', 'filters');
+    const authoredFilters = getConfig('filterPanel', 'filters');
     const filterLogic = getConfig('filterPanel', 'filterLogic').toLowerCase().trim();
     let totalCardLimit = getConfig('collection', 'totalCardsToShow');
     const sampleSize = getConfig('collection', 'reservoir.sample');
@@ -358,25 +357,25 @@ const Container = (props) => {
      **** Helper Methods ****
      */
 
-    function getParentChild(id){
+    function getParentChild(id) {
         let i = id.length;
-        while(id[i] !== "/" && i >= 0){
+        while (id[i] !== '/' && i >= 0) {
             i--;
         }
-        return [id.substring(0, i), id.substring(i + 1)]
+        return [id.substring(0, i), id.substring(i + 1)];
     }
 
-    function rollingHash(s, l){
-        if(!s){
-            return "";
+    function rollingHash(s, l) {
+        if (!s) {
+            return '';
         }
-        let BASE = 53;
-        let MOD = 10 ** l + 7;
+        const BASE = 53;
+        const MOD = 10 ** l + 7;
         let hash = 0;
         let basePower = 1;
-        for(let i = 0; i < s.length; i++){
+        for (let i = 0; i < s.length; i++) {
             hash = (hash + (s.charCodeAt(i) - 97 + 1) * basePower) % MOD;
-            basePower =  (basePower * BASE) % MOD;
+            basePower = (basePower * BASE) % MOD;
         }
         return btoa((hash + MOD) % MOD);
     }
@@ -785,13 +784,13 @@ const Container = (props) => {
                             bookmarkedCardIds,
                             hideCtaIds,
                         );
-                    if(payload.isHashed){
+                    if (payload.isHashed) {
                         const TAG_HASH_LENGTH = 6;
-                        for(let group of authoredFilters){
+                        for (const group of authoredFilters) {
                             group.id = rollingHash(group.id, TAG_HASH_LENGTH);
-                            for(let filterItem of group.items){
-                                let [parent, child] = getParentChild(filterItem.id);
-                                filterItem.id =`${rollingHash(parent, TAG_HASH_LENGTH)}/${rollingHash(child, TAG_HASH_LENGTH)}`
+                            for (const filterItem of group.items) {
+                                const [parent, child] = getParentChild(filterItem.id);
+                                filterItem.id = `${rollingHash(parent, TAG_HASH_LENGTH)}/${rollingHash(child, TAG_HASH_LENGTH)}`;
                             }
                         }
                     }

@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 6/13/2023, 16:25:34
+ * Chimera UI Libraries - Build 6/15/2023, 14:52:56
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6295,8 +6295,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); /* eslint-disable */
-
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var _react = __webpack_require__(0);
 
@@ -6776,13 +6775,16 @@ var Container = function Container(props) {
 
     function getParentChild(id) {
         var i = id.length;
-        while (id[i] !== "/" && i >= 0) {
+        while (id[i] !== '/' && i >= 0) {
             i--;
         }
         return [id.substring(0, i), id.substring(i + 1)];
     }
 
     function rollingHash(s, l) {
+        if (!s) {
+            return '';
+        }
         var BASE = 53;
         var MOD = Math.pow(10, l) + 7;
         var hash = 0;
@@ -7258,7 +7260,7 @@ var Container = function Container(props) {
                         for (var _iterator = authoredFilters[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                             var group = _step.value;
 
-                            group.id = rollingHash(group.id, 6);
+                            group.id = rollingHash(group.id, TAG_HASH_LENGTH);
                             var _iteratorNormalCompletion2 = true;
                             var _didIteratorError2 = false;
                             var _iteratorError2 = undefined;
