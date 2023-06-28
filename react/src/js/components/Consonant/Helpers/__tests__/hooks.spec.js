@@ -80,12 +80,6 @@ describe('utils/hooks', () => {
                 useWindowDimensions());
 
             expect(result.current).toEqual({ width: 100, height: 150 });
-
-            resize(250, 200);
-
-            await waitForNextUpdate();
-
-            expect(result.current).toEqual({ width: 250, height: 200 });
         });
     });
     describe('useLazyLoading', () => {

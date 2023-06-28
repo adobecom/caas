@@ -51,23 +51,27 @@ function debounce(fn, wait) {
  *
  * @type {function(): {Int, Int}} WindowDimensions
  */
-export const useWindowDimensions = () => {
-    const getWindowDimensions = () => ({
-        width: window.innerWidth,
-        height: window.innerHeight,
-    });
+// export const useWindowDimensions = () => {
+//     const getWindowDimensions = () => ({
+//         width: window.innerWidth,
+//         height: window.innerHeight,
+//     });
 
-    const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+//     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
-    useEffect(() => {
-        const handleResize = debounce(() => setWindowDimensions(getWindowDimensions()));
+//     useEffect(() => {
+//         const handleResize = debounce(() => setWindowDimensions(getWindowDimensions()));
 
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+//         window.addEventListener('resize', handleResize);
+//         return () => window.removeEventListener('resize', handleResize);
+//     }, []);
 
-    return windowDimensions;
-};
+//     return windowDimensions;
+// };
+export const useWindowDimensions = () => ({
+    width: window.innerWidth,
+    height: window.innerHeight,
+});
 
 /**
  * @typedef {String} OpenDropdownState - Id of a selected dropdown
