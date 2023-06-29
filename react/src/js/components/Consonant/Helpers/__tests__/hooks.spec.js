@@ -31,13 +31,6 @@ const ConfigContextProvider = ({ children }) => (
     </ConfigContext.Provider>
 );
 
-const resize = (width, height) => {
-    global.window.innerWidth = width;
-    global.window.innerHeight = height;
-
-    global.dispatchEvent(new Event('resize'));
-};
-
 describe('utils/hooks', () => {
     describe('useExpandable', () => {
         test('should change expand value if dropdownId provided', () => {
