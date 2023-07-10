@@ -221,14 +221,15 @@ export const DEFAULT_SHOW_ITEMS_PER_PAGE = 8;
  * @type {Object}
  */
 export const CARD_STYLES = {
-    WIDE: '1:2',
-    SQUARE: '3:4',
-    FULL: 'full-card',
+    WIDE: '1:2-DISABLED',
+    SQUARE: '3:4-DISABLED',
+    FULL: 'full-card-DISABLED',
     HALF_HEIGHT: 'half-height',
     DOUBLE_WIDE: 'double-wide',
     CUSTOM: 'custom-card',
-    PRODUCT: 'product',
-    TEXT: 'text-card',
+    PRODUCT: 'product-DISABLED',
+    TEXT: 'text-card-DISABLED',
+    CARD: 'card',
 };
 
 /**

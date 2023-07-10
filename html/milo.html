@@ -26,7 +26,7 @@
             collection: {
                 mode: "lightest", // Can be empty, "light", "dark", "darkest";
                 layout: {
-                    type: '3up', // Can be "2up", "3up", "4up", "5up";
+                    type: '4up', // Can be "2up", "3up", "4up", "5up";
                     gutter: '4x', // Can be "2x", "3x", "4x";
                     container: '1200MaxWidth', // Can be "83Percent", "1200MaxWidth", "32Margin";
                 },
@@ -45,10 +45,10 @@
                         description: "On Demand"
                     }
                 },
-                resultsPerPage: '5',
+                resultsPerPage: '8',
                 endpoint: location.hostname === "localhost" ? "../../mock-json/smoke.json" : "../../caas/mock-json/smoke.json",
-                totalCardsToShow: '55',
-                cardStyle: "1:2", // available options: "1:2", "3:4", "full-card", "half-height", "custom-card", "product", "double-wide";
+                totalCardsToShow: '16',
+                cardStyle: "3:4", // available options: "1:2", "3:4", "full-card", "half-height", "custom-card", "product", "double-wide";
                 showTotalResults: 'true',
                 i18n: {
                     prettyDateIntervalFormat: '{LLL} {dd} | {timeRange} {timeZone}',
@@ -65,7 +65,7 @@
             },
             featuredCards: ['c7d34f39-397c-3727-9dff-5d0d9d8cf731'],
             filterPanel: {
-                enabled: 'true',
+                enabled: 'false',
                 type: 'left',
                 eventFilter: 'all',
                 showEmptyFilters: true,
@@ -211,8 +211,8 @@
             },
             pagination: {
                 animationStyle: 'paged',
-                enabled: 'true',
-                type: 'loadMore',
+                enabled: 'false',
+                type: 'paginator',
                 loadMoreButton: {
                     style: "primary", // Can be "primary", "over-background";
                     useThemeThree: "true", // Can be "true" or "false";

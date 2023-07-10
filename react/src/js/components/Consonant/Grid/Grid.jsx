@@ -16,11 +16,13 @@ import { cardType } from '../types/card';
 import { getByPath } from '../Helpers/general';
 import { useConfig } from '../Helpers/hooks';
 import ThreeFourthCard from '../Cards/ThreeFourth';
-import OneHalfCard from '../Cards/OneHalf';
+// import OneHalfCard from '../Cards/OneHalf';
 import HalfHeightCard from '../Cards/HalfHeight';
 import DoubleWideCard from '../Cards/DoubleWide';
 import ProductCard from '../Cards/Product';
 import TextCard from '../Cards/Text';
+import Card from '../Cards/Card';
+
 import {
     CARD_STYLES,
     DEFAULT_SHOW_ITEMS_PER_PAGE,
@@ -79,7 +81,7 @@ const Grid = (props) => {
      **** Authored Configs ****
      */
     const getConfig = useConfig();
-    const collectionStyleOverride = getConfig('collection', 'cardStyle');
+    const collectionStyleOverride = getConfig('collection', 'cardStyle').replace(':', '-');
     const cardsGridLayout = getConfig('collection', 'layout.type');
     const cardsGridGutter = getConfig('collection', 'layout.gutter');
     const renderCardsBorders = getConfig('collection', 'setCardBorders');
@@ -206,6 +208,7 @@ const Grid = (props) => {
     return cardsToshow.length > 0 && (
         <div
             ref={forwardedRef}
+            data-card-style={collectionStyleOverride}
             data-testid="consonant-CardsGrid"
             className={gridClass}
             aria-live={isAriaLiveActive ? 'polite' : 'off'}>
@@ -217,7 +220,7 @@ const Grid = (props) => {
                 const hideCTA = getHideCta(card, collectionButtonStyle);
 
                 switch (cardStyle) {
-                    case CARD_STYLES.FULL:
+                    case CARD_STYLES.FULL: // *** Has been disabled ***
                         return (
                             <FullCard
                                 lh={`Card ${cardNumber} | ${cleanTitle(title)} | ${id}`}
@@ -228,7 +231,7 @@ const Grid = (props) => {
                                 renderOverlay={renderCardsOverlay}
                                 onFocus={() => scrollCardIntoView(card.id)} />
                         );
-                    case CARD_STYLES.SQUARE:
+                    case CARD_STYLES.SQUARE: // *** Has been disabled ***
                         return (
                             <ThreeFourthCard
                                 lh={`Card ${cardNumber} | ${cleanTitle(title)} | ${id}`}
@@ -261,7 +264,7 @@ const Grid = (props) => {
                                 renderOverlay={renderCardsOverlay}
                                 onFocus={() => scrollCardIntoView(card.id)} />
                         );
-                    case CARD_STYLES.PRODUCT:
+                    case CARD_STYLES.PRODUCT: // *** Has been disabled ***
                         return (
                             <ProductCard
                                 lh={`Card ${index} | ${cleanTitle(title)} | ${id}`}
@@ -291,7 +294,8 @@ const Grid = (props) => {
                         return parseHTML(customCard(card));
                     default:
                         return (
-                            <OneHalfCard
+                            <Card
+                                cardStyle={cardStyle}
                                 lh={`Card ${cardNumber} | ${cleanTitle(title)} | ${id}`}
                                 key={card.id}
                                 {...card}

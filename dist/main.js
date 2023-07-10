@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 6/30/2023, 14:16:26
+ * Chimera UI Libraries - Build 7/9/2023, 21:41:31
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -1645,14 +1645,15 @@ var DEFAULT_SHOW_ITEMS_PER_PAGE = exports.DEFAULT_SHOW_ITEMS_PER_PAGE = 8;
  * @type {Object}
  */
 var CARD_STYLES = exports.CARD_STYLES = {
-    WIDE: '1:2',
-    SQUARE: '3:4',
-    FULL: 'full-card',
+    WIDE: '1:2-DISABLED',
+    SQUARE: '3:4-DISABLED',
+    FULL: 'full-card-DISABLED',
     HALF_HEIGHT: 'half-height',
     DOUBLE_WIDE: 'double-wide',
     CUSTOM: 'custom-card',
-    PRODUCT: 'product',
-    TEXT: 'text-card'
+    PRODUCT: 'product-DISABLED',
+    TEXT: 'text-card-DISABLED',
+    CARD: 'card'
 };
 
 /**
@@ -2243,15 +2244,15 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _immer = __webpack_require__(287);
+var _immer = __webpack_require__(271);
 
 var _immer2 = _interopRequireDefault(_immer);
 
-var _rendering = __webpack_require__(44);
+var _rendering = __webpack_require__(43);
 
 var _general = __webpack_require__(5);
 
-var _eventSort = __webpack_require__(288);
+var _eventSort = __webpack_require__(274);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3243,96 +3244,6 @@ exports.default = getPrettyDateInterval;
 /* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/**
- * cuid.js
- * Collision-resistant UID generator for browsers and node.
- * Sequential for fast db lookups and recency sorting.
- * Safe for element IDs and server-side lookups.
- *
- * Extracted from CLCTR
- *
- * Copyright (c) Eric Elliott 2012
- * MIT License
- */
-
-var fingerprint = __webpack_require__(271);
-var pad = __webpack_require__(120);
-var getRandomValue = __webpack_require__(272);
-
-var c = 0,
-  blockSize = 4,
-  base = 36,
-  discreteValues = Math.pow(base, blockSize);
-
-function randomBlock () {
-  return pad((getRandomValue() *
-    discreteValues << 0)
-    .toString(base), blockSize);
-}
-
-function safeCounter () {
-  c = c < discreteValues ? c : 0;
-  c++; // this is not subliminal
-  return c - 1;
-}
-
-function cuid () {
-  // Starting with a lowercase letter makes
-  // it HTML element ID friendly.
-  var letter = 'c', // hard-coded allows for sequential access
-
-    // timestamp
-    // warning: this exposes the exact date and time
-    // that the uid was created.
-    timestamp = (new Date().getTime()).toString(base),
-
-    // Prevent same-machine collisions.
-    counter = pad(safeCounter().toString(base), blockSize),
-
-    // A few chars to generate distinct ids for different
-    // clients (so different computers are far less
-    // likely to generate the same id)
-    print = fingerprint(),
-
-    // Grab some more chars from Math.random()
-    random = randomBlock() + randomBlock();
-
-  return letter + timestamp + counter + print + random;
-}
-
-cuid.slug = function slug () {
-  var date = new Date().getTime().toString(36),
-    counter = safeCounter().toString(36).slice(-4),
-    print = fingerprint().slice(0, 1) +
-      fingerprint().slice(-1),
-    random = randomBlock().slice(-2);
-
-  return date.slice(-2) +
-    counter + print + random;
-};
-
-cuid.isCuid = function isCuid (stringToCheck) {
-  if (typeof stringToCheck !== 'string') return false;
-  if (stringToCheck.startsWith('c')) return true;
-  return false;
-};
-
-cuid.isSlug = function isSlug (stringToCheck) {
-  if (typeof stringToCheck !== 'string') return false;
-  var stringLength = stringToCheck.length;
-  if (stringLength >= 7 && stringLength <= 10) return true;
-  return false;
-};
-
-cuid.fingerprint = fingerprint;
-
-module.exports = cuid;
-
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 
 
@@ -3345,7 +3256,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _cuid = __webpack_require__(43);
+var _cuid = __webpack_require__(44);
 
 var _cuid2 = _interopRequireDefault(_cuid);
 
@@ -3426,6 +3337,96 @@ var RenderTotalResults = exports.RenderTotalResults = function RenderTotalResult
         );
     });
 };
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * cuid.js
+ * Collision-resistant UID generator for browsers and node.
+ * Sequential for fast db lookups and recency sorting.
+ * Safe for element IDs and server-side lookups.
+ *
+ * Extracted from CLCTR
+ *
+ * Copyright (c) Eric Elliott 2012
+ * MIT License
+ */
+
+var fingerprint = __webpack_require__(272);
+var pad = __webpack_require__(120);
+var getRandomValue = __webpack_require__(273);
+
+var c = 0,
+  blockSize = 4,
+  base = 36,
+  discreteValues = Math.pow(base, blockSize);
+
+function randomBlock () {
+  return pad((getRandomValue() *
+    discreteValues << 0)
+    .toString(base), blockSize);
+}
+
+function safeCounter () {
+  c = c < discreteValues ? c : 0;
+  c++; // this is not subliminal
+  return c - 1;
+}
+
+function cuid () {
+  // Starting with a lowercase letter makes
+  // it HTML element ID friendly.
+  var letter = 'c', // hard-coded allows for sequential access
+
+    // timestamp
+    // warning: this exposes the exact date and time
+    // that the uid was created.
+    timestamp = (new Date().getTime()).toString(base),
+
+    // Prevent same-machine collisions.
+    counter = pad(safeCounter().toString(base), blockSize),
+
+    // A few chars to generate distinct ids for different
+    // clients (so different computers are far less
+    // likely to generate the same id)
+    print = fingerprint(),
+
+    // Grab some more chars from Math.random()
+    random = randomBlock() + randomBlock();
+
+  return letter + timestamp + counter + print + random;
+}
+
+cuid.slug = function slug () {
+  var date = new Date().getTime().toString(36),
+    counter = safeCounter().toString(36).slice(-4),
+    print = fingerprint().slice(0, 1) +
+      fingerprint().slice(-1),
+    random = randomBlock().slice(-2);
+
+  return date.slice(-2) +
+    counter + print + random;
+};
+
+cuid.isCuid = function isCuid (stringToCheck) {
+  if (typeof stringToCheck !== 'string') return false;
+  if (stringToCheck.startsWith('c')) return true;
+  return false;
+};
+
+cuid.isSlug = function isSlug (stringToCheck) {
+  if (typeof stringToCheck !== 'string') return false;
+  var stringLength = stringToCheck.length;
+  if (stringLength >= 7 && stringLength <= 10) return true;
+  return false;
+};
+
+cuid.fingerprint = fingerprint;
+
+module.exports = cuid;
+
 
 /***/ }),
 /* 45 */
@@ -4788,7 +4789,7 @@ var _classnames = __webpack_require__(3);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _Group = __webpack_require__(273);
+var _Group = __webpack_require__(277);
 
 var _Group2 = _interopRequireDefault(_Group);
 
@@ -7929,6 +7930,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+// import OneHalfCard from '../Cards/OneHalf';
+
 
 var _react = __webpack_require__(0);
 
@@ -7958,25 +7961,25 @@ var _ThreeFourth = __webpack_require__(269);
 
 var _ThreeFourth2 = _interopRequireDefault(_ThreeFourth);
 
-var _OneHalf = __webpack_require__(270);
-
-var _OneHalf2 = _interopRequireDefault(_OneHalf);
-
-var _HalfHeight = __webpack_require__(289);
+var _HalfHeight = __webpack_require__(270);
 
 var _HalfHeight2 = _interopRequireDefault(_HalfHeight);
 
-var _DoubleWide = __webpack_require__(290);
+var _DoubleWide = __webpack_require__(275);
 
 var _DoubleWide2 = _interopRequireDefault(_DoubleWide);
 
-var _Product = __webpack_require__(291);
+var _Product = __webpack_require__(276);
 
 var _Product2 = _interopRequireDefault(_Product);
 
-var _Text = __webpack_require__(292);
+var _Text = __webpack_require__(291);
 
 var _Text2 = _interopRequireDefault(_Text);
+
+var _Card = __webpack_require__(292);
+
+var _Card2 = _interopRequireDefault(_Card);
 
 var _constants = __webpack_require__(15);
 
@@ -8031,7 +8034,7 @@ var Grid = function Grid(props) {
      */
 
     var getConfig = (0, _hooks.useConfig)();
-    var collectionStyleOverride = getConfig('collection', 'cardStyle');
+    var collectionStyleOverride = getConfig('collection', 'cardStyle').replace(':', '-');
     var cardsGridLayout = getConfig('collection', 'layout.type');
     var cardsGridGutter = getConfig('collection', 'layout.gutter');
     var renderCardsBorders = getConfig('collection', 'setCardBorders');
@@ -8161,6 +8164,7 @@ var Grid = function Grid(props) {
         'div',
         {
             ref: forwardedRef,
+            'data-card-style': collectionStyleOverride,
             'data-testid': 'consonant-CardsGrid',
             className: gridClass,
             'aria-live': isAriaLiveActive ? 'polite' : 'off' },
@@ -8178,6 +8182,7 @@ var Grid = function Grid(props) {
 
             switch (cardStyle) {
                 case _constants.CARD_STYLES.FULL:
+                    // *** Has been disabled ***
                     return _react2.default.createElement(_Full2.default, _extends({
                         lh: 'Card ' + cardNumber + ' | ' + cleanTitle(title) + ' | ' + id,
                         key: card.id
@@ -8189,6 +8194,7 @@ var Grid = function Grid(props) {
                             return scrollCardIntoView(card.id);
                         } }));
                 case _constants.CARD_STYLES.SQUARE:
+                    // *** Has been disabled ***
                     return _react2.default.createElement(_ThreeFourth2.default, _extends({
                         lh: 'Card ' + cardNumber + ' | ' + cleanTitle(title) + ' | ' + id,
                         key: card.id
@@ -8222,6 +8228,7 @@ var Grid = function Grid(props) {
                             return scrollCardIntoView(card.id);
                         } }));
                 case _constants.CARD_STYLES.PRODUCT:
+                    // *** Has been disabled ***
                     return _react2.default.createElement(_Product2.default, _extends({
                         lh: 'Card ' + index + ' | ' + cleanTitle(title) + ' | ' + id,
                         key: card.id,
@@ -8250,7 +8257,8 @@ var Grid = function Grid(props) {
                 case _constants.CARD_STYLES.CUSTOM:
                     return (0, _htmlReactParser2.default)(customCard(card));
                 default:
-                    return _react2.default.createElement(_OneHalf2.default, _extends({
+                    return _react2.default.createElement(_Card2.default, _extends({
+                        cardStyle: cardStyle,
                         lh: 'Card ' + cardNumber + ' | ' + cleanTitle(title) + ' | ' + id,
                         key: card.id
                     }, card, {
@@ -43894,7 +43902,7 @@ var _Grid = __webpack_require__(115);
 
 var _Grid2 = _interopRequireDefault(_Grid);
 
-var _rendering = __webpack_require__(44);
+var _rendering = __webpack_require__(43);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -49917,7 +49925,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var _react = __webpack_require__(0);
 
@@ -49927,27 +49935,13 @@ var _classnames = __webpack_require__(3);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _cuid = __webpack_require__(43);
-
-var _cuid2 = _interopRequireDefault(_cuid);
-
 var _propTypes = __webpack_require__(1);
 
-var _CardFooter = __webpack_require__(74);
-
-var _CardFooter2 = _interopRequireDefault(_CardFooter);
-
-var _prettyFormat = __webpack_require__(42);
-
-var _prettyFormat2 = _interopRequireDefault(_prettyFormat);
-
-var _constants = __webpack_require__(15);
+var _hooks = __webpack_require__(6);
 
 var _Helpers = __webpack_require__(33);
 
 var _general = __webpack_require__(5);
-
-var _hooks = __webpack_require__(6);
 
 var _card = __webpack_require__(16);
 
@@ -49959,23 +49953,22 @@ var _videoButton = __webpack_require__(41);
 
 var _videoButton2 = _interopRequireDefault(_videoButton);
 
+var _prettyFormat = __webpack_require__(42);
+
+var _prettyFormat2 = _interopRequireDefault(_prettyFormat);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var oneHalfCardType = {
-    isBookmarked: _propTypes.bool,
-    dateFormat: _propTypes.string,
+var halfHeightCardType = {
+    ctaLink: _propTypes.string,
     id: _propTypes.string.isRequired,
     lh: _propTypes.string,
     styles: (0, _propTypes.shape)(_card.stylesType),
-    disableBookmarkIco: _propTypes.bool,
-    onClick: _propTypes.func.isRequired,
     overlays: (0, _propTypes.shape)(_card.overlaysType),
-    footer: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_card.footerType)),
     contentArea: (0, _propTypes.shape)(_card.contentAreaType),
     renderBorder: _propTypes.bool,
     renderOverlay: _propTypes.bool,
     overlayLink: _propTypes.string,
-    hideCTA: _propTypes.bool,
     startDate: _propTypes.string,
     endDate: _propTypes.string,
     modifiedDate: _propTypes.string,
@@ -49985,18 +49978,14 @@ var oneHalfCardType = {
 };
 
 var defaultProps = {
-    footer: [],
     styles: {},
-    overlays: {},
-    dateFormat: '',
-    contentArea: {},
     lh: '',
-    isBookmarked: false,
-    disableBookmarkIco: false,
+    ctaLink: '',
+    overlays: {},
+    contentArea: {},
     renderBorder: true,
     renderOverlay: false,
     overlayLink: '',
-    hideCTA: false,
     startDate: '',
     endDate: '',
     modifiedDate: '',
@@ -50004,12 +49993,13 @@ var defaultProps = {
 };
 
 /**
- * 1/2 image aspect ratio card
+ * Half height card
  *
  * @component
  * @example
  * const props= {
     id: String,
+    ctaLink: String,
     styles: Object,
     contentArea: Object,
     overlays: Object,
@@ -50018,29 +50008,20 @@ var defaultProps = {
     overlayLink: String,
  * }
  * return (
- *   <OneHalfCard {...props}/>
+ *   <HalfHeightCard {...props}/>
  * )
  */
-var OneHalfCard = function OneHalfCard(props) {
+var HalfHeightCard = function HalfHeightCard(props) {
     var id = props.id,
-        footer = props.footer,
         lh = props.lh,
-        tags = props.tags,
-        disableBookmarkIco = props.disableBookmarkIco,
-        isBookmarked = props.isBookmarked,
-        onClick = props.onClick,
-        dateFormat = props.dateFormat,
-        modifiedDate = props.modifiedDate,
+        ctaLink = props.ctaLink,
         _props$styles = props.styles,
         image = _props$styles.backgroundImage,
         altText = _props$styles.backgroundAltText,
+        tags = props.tags,
         _props$contentArea = props.contentArea,
         title = _props$contentArea.title,
         label = _props$contentArea.detailText,
-        description = _props$contentArea.description,
-        _props$contentArea$da = _props$contentArea.dateDetailText,
-        startTime = _props$contentArea$da.startTime,
-        endTime = _props$contentArea$da.endTime,
         _props$overlays = props.overlays,
         _props$overlays$banne = _props$overlays.banner,
         bannerDescription = _props$overlays$banne.description,
@@ -50048,18 +50029,12 @@ var OneHalfCard = function OneHalfCard(props) {
         bannerBackgroundColor = _props$overlays$banne.backgroundColor,
         bannerIcon = _props$overlays$banne.icon,
         videoURL = _props$overlays.videoButton.url,
-        _props$overlays$logo = _props$overlays.logo,
-        logoSrc = _props$overlays$logo.src,
-        logoAlt = _props$overlays$logo.alt,
-        logoBg = _props$overlays$logo.backgroundColor,
-        logoBorderBg = _props$overlays$logo.borderColor,
-        badgeText = _props$overlays.label.description,
         renderBorder = props.renderBorder,
         renderOverlay = props.renderOverlay,
         overlayLink = props.overlayLink,
-        hideCTA = props.hideCTA,
         startDate = props.startDate,
         endDate = props.endDate,
+        modifiedDate = props.modifiedDate,
         bannerMap = props.bannerMap,
         onFocus = props.onFocus;
 
@@ -50068,20 +50043,33 @@ var OneHalfCard = function OneHalfCard(props) {
     var bannerIconToUse = bannerIcon;
     var bannerFontColorToUse = bannerFontColor;
     var bannerDescriptionToUse = bannerDescription;
+    var videoURLToUse = videoURL;
+    var gateVideo = false;
+    var labelToUse = label;
 
     var getConfig = (0, _hooks.useConfig)();
 
     /**
      **** Authored Configs ****
      */
+    var registrationUrl = getConfig('collection', 'banner.register.url');
     var i18nFormat = getConfig('collection', 'i18n.prettyDateIntervalFormat');
     var locale = getConfig('language', '');
     var disableBanners = getConfig('collection', 'disableBanners');
-    var cardButtonStyle = getConfig('collection', 'button.style');
-    var headingLevel = getConfig('collection.i18n', 'cardTitleAccessibilityLevel');
+    var ctaAction = getConfig('collection', 'ctaAction');
     var additionalParams = getConfig('collection', 'additionalRequestParams');
+    var headingLevel = getConfig('collection.i18n', 'cardTitleAccessibilityLevel');
     var detailsTextOption = getConfig('collection', 'detailsTextOption');
     var lastModified = getConfig('collection', 'i18n.lastModified');
+
+    /**
+     * Detail text
+     * @type {String}
+     */
+    if (modifiedDate && detailsTextOption === 'modifiedDate') {
+        var localModifiedDate = new Date(modifiedDate);
+        labelToUse = lastModified.replace('{date}', localModifiedDate.toLocaleDateString());
+    }
 
     /**
      * Class name for the card:
@@ -50090,107 +50078,77 @@ var OneHalfCard = function OneHalfCard(props) {
      */
     var cardClassName = (0, _classnames2.default)({
         'consonant-Card': true,
-        'consonant-OneHalfCard': true,
-        'consonant-u-noBorders': !renderBorder,
-        'consonant-hide-cta': hideCTA
+        'consonant-HalfHeightCard': true,
+        'consonant-u-noBorders': !renderBorder
     });
 
     /**
-     * Formatted date string
-     * @type {String}
+     * Creates a card image DOM reference
+     * @returns {Object} - card image DOM reference
      */
-    var prettyDate = startTime ? (0, _prettyFormat2.default)(startTime, endTime, locale, i18nFormat) : '';
+    var imageRef = _react2.default.useRef();
 
     /**
-     * Detail text
-     * @type {String}
+     * @typedef {Image} LazyLoadedImageState
+     * @description — Has image as state after image is lazy loaded
+     *
+     * @typedef {Function} LazyLoadedImageStateSetter
+     * @description - Sets state once image is lazy loaded
+     *
+     * @type {[Image]} lazyLoadedImage
      */
-    var detailText = prettyDate || label;
-    if (modifiedDate && detailsTextOption === 'modifiedDate') {
-        var localModifiedDate = new Date(modifiedDate);
-        detailText = lastModified.replace('{date}', localModifiedDate.toLocaleDateString());
-    }
 
-    /**
-     * isGated
-     * @type {Boolean}
-     */
-    var isGated = (0, _Helpers.hasTag)(/caas:gated/, tags);
+    var _useLazyLoading = (0, _hooks.useLazyLoading)(imageRef, image),
+        _useLazyLoading2 = _slicedToArray(_useLazyLoading, 1),
+        lazyLoadedImage = _useLazyLoading2[0];
 
-    /**
-     * Extends infobits with the configuration data
-     * @param {Array} data - Array of the infobits
-     * @return {Array} - Array of the infobits with the configuration data added
-     */
-    function extendFooterData(data) {
-        if (!data) return [];
+    var isRegistered = (0, _hooks.useRegistered)(false);
+    var isGated = (0, _Helpers.hasTag)(/caas:gated/, tags) || (0, _Helpers.hasTag)(/caas:card-style\/half-height-featured/, tags);
 
-        return data.map(function (infobit) {
-            // MWPW-129085: Compiler wrongly compiles this object to private, read-only,
-            // Created copy so object instance has public methods and properties.
-            var copy = _extends({}, infobit);
-            if (copy.type === _constants.INFOBIT_TYPE.BOOKMARK) {
-                if (isGated) {
-                    copy.type = _constants.INFOBIT_TYPE.GATED;
-                }
-                return _extends({}, infobit, {
-                    cardId: id,
-                    disableBookmarkIco: disableBookmarkIco,
-                    isBookmarked: isBookmarked,
-                    onClick: onClick
-                });
-            } else if (copy.type === _constants.INFOBIT_TYPE.DATE) {
-                return _extends({}, copy, {
-                    dateFormat: dateFormat,
-                    locale: locale
-                });
-            } else if (cardButtonStyle === 'link') {
-                copy.type = _constants.INFOBIT_TYPE.LINK;
-            }
-            return _extends({}, copy, {
-                isCta: true
-            });
-        });
-    }
-
-    if (startDate && endDate) {
+    if (isGated && !isRegistered) {
+        bannerDescriptionToUse = bannerMap.register.description;
+        bannerIconToUse = '';
+        bannerBackgroundColorToUse = bannerMap.register.backgroundColor;
+        bannerFontColorToUse = bannerMap.register.fontColor;
+        videoURLToUse = registrationUrl;
+        gateVideo = true;
+    } else if (startDate && endDate) {
         var eventBanner = (0, _general.getEventBanner)(startDate, endDate, bannerMap);
         bannerBackgroundColorToUse = eventBanner.backgroundColor;
         bannerDescriptionToUse = eventBanner.description;
         bannerFontColorToUse = eventBanner.fontColor;
         bannerIconToUse = eventBanner.icon;
+        var now = (0, _general.getCurrentDate)();
+        if ((0, _general.isDateBeforeInterval)(now, startDate)) {
+            labelToUse = (0, _prettyFormat2.default)(startDate, endDate, locale, i18nFormat);
+        }
     }
-    var hasBanner = bannerDescriptionToUse && bannerFontColorToUse && bannerBackgroundColorToUse;
-    var headingAria = videoURL || label || detailText || description || logoSrc || badgeText || hasBanner && !disableBanners ? '' : title;
 
-    var ariaText = title;
-    if (hasBanner && !disableBanners) {
+    var target = (0, _general.getLinkTarget)(ctaLink, ctaAction);
+    var linkBlockerTarget = (0, _general.getLinkTarget)(overlayLink);
+    var ariaText = lh.split(' | ').slice(1, -1).join(' | ');
+
+    if (bannerDescriptionToUse && bannerFontColorToUse && bannerBackgroundColorToUse && (!isGated || !isRegistered) && (!disableBanners || isGated)) {
         ariaText = bannerDescriptionToUse + ' | ' + ariaText;
     }
 
-    var linkBlockerTarget = (0, _general.getLinkTarget)(overlayLink);
     var addParams = new URLSearchParams(additionalParams);
+    var cardLink = additionalParams && addParams.keys().next().value ? ctaLink + '?' + addParams.toString() : ctaLink;
     var overlay = additionalParams && addParams.keys().next().value ? overlayLink + '?' + addParams.toString() : overlayLink;
+    var hasBanner = bannerDescriptionToUse && bannerFontColorToUse && bannerBackgroundColorToUse;
+    var headingAria = videoURL || label || hasBanner && !disableBanners ? '' : title;
 
-    return _react2.default.createElement(
-        'div',
-        {
-            'daa-lh': lh,
-            className: cardClassName,
-            'aria-label': ariaText,
-            'data-testid': 'consonant-OneHalfCard',
-            id: id },
-        _react2.default.createElement(
-            'div',
-            {
-                'data-testid': 'consonant-OneHalfCard-img',
-                className: 'consonant-OneHalfCard-img' },
-            _react2.default.createElement('img', { src: image, alt: altText, 'aria-label': altText, loading: 'lazy' }),
-            hasBanner && !disableBanners && _react2.default.createElement(
+    /**
+     * Inner HTML of the card, which will be included into either div or a tag;
+     */
+    var renderCardContent = function renderCardContent() {
+        return _react2.default.createElement(
+            _react.Fragment,
+            null,
+            hasBanner && (!isGated || !isRegistered) && (!disableBanners || isGated) && _react2.default.createElement(
                 'span',
                 {
-                    'data-testid': 'consonant-OneHalfCard-banner',
-                    className: 'consonant-OneHalfCard-banner',
+                    className: 'consonant-HalfHeightCard-banner',
                     style: {
                         backgroundColor: bannerBackgroundColorToUse,
                         color: bannerFontColorToUse
@@ -50198,12 +50156,11 @@ var OneHalfCard = function OneHalfCard(props) {
                 bannerIconToUse && _react2.default.createElement(
                     'div',
                     {
-                        className: 'consonant-OneHalfCard-bannerIconWrapper' },
+                        className: 'consonant-HalfHeightCard-bannerIconWrapper' },
                     _react2.default.createElement('img', {
                         alt: '',
                         loading: 'lazy',
-                        src: bannerIconToUse,
-                        'data-testid': 'consonant-Card-bannerImg' })
+                        src: bannerIconToUse })
                 ),
                 _react2.default.createElement(
                     'span',
@@ -50211,1371 +50168,75 @@ var OneHalfCard = function OneHalfCard(props) {
                     bannerDescriptionToUse
                 )
             ),
-            badgeText && _react2.default.createElement(
-                'span',
-                {
-                    className: 'consonant-OneHalfCard-badge' },
-                badgeText
-            ),
-            videoURL && _react2.default.createElement(_videoButton2.default, {
-                videoURL: videoURL,
-                onFocus: onFocus,
-                className: 'consonant-OneHalfCard-videoIco' }),
-            logoSrc && _react2.default.createElement(
-                'div',
-                {
-                    style: {
-                        backgroundColor: logoBg,
-                        borderColor: logoBorderBg
-                    },
-                    className: 'consonant-OneHalfCard-logo' },
-                _react2.default.createElement('img', {
-                    src: logoSrc,
-                    alt: logoAlt,
-                    loading: 'lazy',
-                    width: '32' })
-            )
-        ),
-        _react2.default.createElement(
-            'div',
-            {
-                className: 'consonant-OneHalfCard-inner' },
-            detailText && _react2.default.createElement(
-                'span',
-                {
-                    'data-testid': 'consonant-OneHalfCard-label',
-                    className: 'consonant-OneHalfCard-label' },
-                detailText
-            ),
+            _react2.default.createElement('div', {
+                className: 'consonant-HalfHeightCard-img',
+                ref: imageRef,
+                style: { backgroundImage: lazyLoadedImage && 'url("' + lazyLoadedImage + '")' },
+                role: altText && 'img',
+                'aria-label': altText }),
             _react2.default.createElement(
-                'p',
-                {
-                    role: 'heading',
-                    'aria-label': headingAria,
-                    'aria-level': headingLevel,
-                    className: 'consonant-OneHalfCard-title' },
-                title
-            ),
-            description && _react2.default.createElement(
-                'p',
-                {
-                    className: 'consonant-OneHalfCard-text' },
-                description
-            ),
-            !hideCTA && footer.map(function (footerItem) {
-                return _react2.default.createElement(_CardFooter2.default, {
-                    divider: footerItem.divider,
-                    isFluid: footerItem.isFluid,
-                    key: (0, _cuid2.default)(),
-                    left: extendFooterData(footerItem.left),
-                    center: extendFooterData(footerItem.center),
-                    right: extendFooterData(footerItem.right),
-                    onFocus: onFocus });
-            })
-        ),
-        (renderOverlay || hideCTA) && _react2.default.createElement(_LinkBlocker2.default, { target: linkBlockerTarget, link: overlay })
+                'div',
+                { className: 'consonant-HalfHeightCard-inner' },
+                videoURLToUse && _react2.default.createElement(_videoButton2.default, {
+                    videoURL: videoURLToUse,
+                    gateVideo: gateVideo,
+                    onFocus: onFocus,
+                    className: 'consonant-HalfHeightCard-videoIco' }),
+                title && _react2.default.createElement(
+                    'p',
+                    {
+                        role: 'heading',
+                        'aria-label': headingAria,
+                        'aria-level': headingLevel,
+                        className: 'consonant-HalfHeightCard-title',
+                        'daa-ll': 'Card CTA' },
+                    title
+                ),
+                labelToUse && _react2.default.createElement(
+                    'span',
+                    { className: 'consonant-HalfHeightCard-label' },
+                    labelToUse
+                )
+            )
+        );
+    };
+
+    return videoURLToUse ? _react2.default.createElement(
+        'div',
+        {
+            className: cardClassName,
+            'daa-lh': lh,
+            'aria-label': ariaText,
+            id: id },
+        'onFocus=',
+        onFocus,
+        renderOverlay && _react2.default.createElement(_LinkBlocker2.default, { target: linkBlockerTarget, link: overlay }),
+        renderCardContent()
+    ) : _react2.default.createElement(
+        'a',
+        {
+            href: cardLink,
+            target: target,
+            'aria-label': ariaText,
+            rel: 'noopener noreferrer',
+            className: cardClassName,
+            title: '',
+            'daa-lh': lh,
+            tabIndex: '0',
+            onFocus: onFocus,
+            id: id },
+        renderOverlay && _react2.default.createElement(_LinkBlocker2.default, { target: linkBlockerTarget, link: overlay }),
+        renderCardContent()
     );
 };
 
-OneHalfCard.propTypes = oneHalfCardType;
-OneHalfCard.defaultProps = defaultProps;
+HalfHeightCard.propTypes = halfHeightCardType;
+HalfHeightCard.defaultProps = defaultProps;
 
-exports.default = OneHalfCard;
+exports.default = HalfHeightCard;
 
 /***/ }),
 /* 271 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var pad = __webpack_require__(120);
-
-var env = typeof window === 'object' ? window : self;
-var globalCount = Object.keys(env).length;
-var mimeTypesLength = navigator.mimeTypes ? navigator.mimeTypes.length : 0;
-var clientId = pad((mimeTypesLength +
-  navigator.userAgent.length).toString(36) +
-  globalCount.toString(36), 4);
-
-module.exports = function fingerprint () {
-  return clientId;
-};
-
-
-/***/ }),
-/* 272 */
-/***/ (function(module, exports) {
-
-
-var getRandomValue;
-
-var crypto = typeof window !== 'undefined' &&
-  (window.crypto || window.msCrypto) ||
-  typeof self !== 'undefined' &&
-  self.crypto;
-
-if (crypto) {
-    var lim = Math.pow(2, 32) - 1;
-    getRandomValue = function () {
-        return Math.abs(crypto.getRandomValues(new Uint32Array(1))[0] / lim);
-    };
-} else {
-    getRandomValue = Math.random;
-}
-
-module.exports = getRandomValue;
-
-
-/***/ }),
-/* 273 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _cuid = __webpack_require__(43);
-
-var _cuid2 = _interopRequireDefault(_cuid);
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _Icon = __webpack_require__(274);
-
-var _Icon2 = _interopRequireDefault(_Icon);
-
-var _Text = __webpack_require__(275);
-
-var _Text2 = _interopRequireDefault(_Text);
-
-var _Price = __webpack_require__(276);
-
-var _Price2 = _interopRequireDefault(_Price);
-
-var _Button = __webpack_require__(277);
-
-var _Button2 = _interopRequireDefault(_Button);
-
-var _Link = __webpack_require__(278);
-
-var _Link2 = _interopRequireDefault(_Link);
-
-var _Rating = __webpack_require__(279);
-
-var _Rating2 = _interopRequireDefault(_Rating);
-
-var _Progress = __webpack_require__(280);
-
-var _Progress2 = _interopRequireDefault(_Progress);
-
-var _IconWithText = __webpack_require__(281);
-
-var _IconWithText2 = _interopRequireDefault(_IconWithText);
-
-var _LinkWithIcon = __webpack_require__(282);
-
-var _LinkWithIcon2 = _interopRequireDefault(_LinkWithIcon);
-
-var _DateInterval = __webpack_require__(283);
-
-var _DateInterval2 = _interopRequireDefault(_DateInterval);
-
-var _Bookmark = __webpack_require__(284);
-
-var _Bookmark2 = _interopRequireDefault(_Bookmark);
-
-var _Gated = __webpack_require__(286);
-
-var _Gated2 = _interopRequireDefault(_Gated);
-
-var _constants = __webpack_require__(15);
-
-var _general = __webpack_require__(5);
-
-var _card = __webpack_require__(16);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var groupType = {
-    renderList: (0, _propTypes.arrayOf)((0, _propTypes.oneOfType)([(0, _propTypes.shape)(_card.footerLeftType), (0, _propTypes.shape)(_card.footerRightType), (0, _propTypes.shape)(_card.footerCenterType)])),
-    onFocus: _propTypes.func
-};
-
-var defaultProps = {
-    renderList: [],
-    onFocus: function onFocus() {}
-};
-
-/**
- * Group of Infobits (shown in 3:2 Card Footer)
- *
- * @component
- * @example
- * const props= {
-    renderList: Array,
- * }
- * return (
- *   <Group {...props}/>
- * )
- */
-var Group = function Group(props) {
-    var renderList = props.renderList,
-        onFocus = props.onFocus;
-
-
-    return _react2.default.createElement(
-        _react.Fragment,
-        null,
-        renderList.map(function (infobit) {
-            switch (infobit.type) {
-                case _constants.INFOBIT_TYPE.PRICE:
-                    return _react2.default.createElement(_Price2.default, _extends({}, infobit, {
-                        key: (0, _cuid2.default)() }));
-
-                case _constants.INFOBIT_TYPE.BUTTON:
-                    return _react2.default.createElement(_Button2.default, _extends({}, infobit, {
-                        key: (0, _cuid2.default)(),
-                        onFocus: onFocus }));
-
-                case _constants.INFOBIT_TYPE.ICON_TEXT:
-                    return _react2.default.createElement(_IconWithText2.default, _extends({}, infobit, {
-                        key: (0, _cuid2.default)() }));
-
-                case _constants.INFOBIT_TYPE.LINK_ICON:
-                    return _react2.default.createElement(_LinkWithIcon2.default, _extends({}, infobit, {
-                        key: (0, _cuid2.default)() }));
-
-                case _constants.INFOBIT_TYPE.TEXT:
-                    return _react2.default.createElement(_Text2.default, _extends({}, infobit, {
-                        key: (0, _cuid2.default)() }));
-
-                case _constants.INFOBIT_TYPE.ICON:
-                    return _react2.default.createElement(_Icon2.default, _extends({}, infobit, {
-                        key: (0, _cuid2.default)() }));
-
-                case _constants.INFOBIT_TYPE.LINK:
-                    return _react2.default.createElement(_Link2.default, _extends({}, infobit, {
-                        key: (0, _cuid2.default)() }));
-
-                case _constants.INFOBIT_TYPE.PROGRESS:
-                    return _react2.default.createElement(_Progress2.default, _extends({}, infobit, {
-                        key: (0, _cuid2.default)() }));
-
-                case _constants.INFOBIT_TYPE.RATING:
-                    return _react2.default.createElement(_Rating2.default, {
-                        key: (0, _cuid2.default)(),
-                        label: infobit.label,
-                        totalStars: (0, _general.parseToPrimitive)(infobit.totalStars),
-                        starsFilled: (0, _general.parseToPrimitive)(infobit.starsFilled) });
-
-                case _constants.INFOBIT_TYPE.BOOKMARK:
-                    return _react2.default.createElement(_Bookmark2.default, _extends({}, infobit, {
-                        key: (0, _cuid2.default)() }));
-
-                case _constants.INFOBIT_TYPE.DATE:
-                    return _react2.default.createElement(_DateInterval2.default, _extends({}, infobit, {
-                        key: (0, _cuid2.default)() }));
-
-                case _constants.INFOBIT_TYPE.GATED:
-                    return _react2.default.createElement(_Gated2.default, _extends({}, infobit, {
-                        key: (0, _cuid2.default)() }));
-
-                default:
-                    return null;
-            }
-        })
-    );
-};
-
-Group.propTypes = groupType;
-Group.defaultProps = defaultProps;
-
-exports.default = Group;
-
-/***/ }),
-/* 274 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var iconType = {
-    alt: _propTypes.string,
-    src: _propTypes.string.isRequired
-};
-
-var defaultProps = {
-    alt: ''
-};
-
-/**
- * Icon With Text Infobit (shown in 3:2 Card Footer)
- *
- * @component
- * @example
- * const props= {
-    src: String,
-    srcAltText: String,
-    text: String,
- * }
- * return (
- *   <IconWithText {...props}/>
- * )
- */
-var Icon = function Icon(_ref) {
-    var src = _ref.src,
-        alt = _ref.alt;
-    return _react2.default.createElement('img', {
-        className: 'consonant-IconInfobit',
-        width: '28',
-        src: src,
-        alt: alt,
-        loading: 'lazy' });
-};
-
-Icon.propTypes = iconType;
-Icon.defaultProps = defaultProps;
-
-exports.default = Icon;
-
-/***/ }),
-/* 275 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var textType = {
-  text: _propTypes.string.isRequired
-};
-
-/**
- * Text infobit (shown in 3:2 Card Footer)
- *
- * @component
- * @example
- * const props= {
-    text: String,
- * }
- * return (
- *   <Text {...props}/>
- * )
- */
-var Text = function Text(_ref) {
-  var text = _ref.text;
-  return _react2.default.createElement(
-    'p',
-    { className: 'consonant-TextInfobit' },
-    text
-  );
-};
-
-Text.propTypes = textType;
-
-exports.default = Text;
-
-/***/ }),
-/* 276 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var priceType = {
-    term: _propTypes.string,
-    price: _propTypes.string.isRequired
-};
-
-var defaultProps = {
-    term: ''
-};
-
-/**
- * Price Infobit (shown in 3:2 Card Footer)
- *
- * @component
- * @example
- * const props= {
-    price: String,
-    term: String,
- * }
- * return (
- *   <Price {...props}/>
- * )
- */
-var Price = function Price(_ref) {
-    var price = _ref.price,
-        term = _ref.term;
-    return _react2.default.createElement(
-        'span',
-        {
-            className: 'consonant-PriceInfobit' },
-        _react2.default.createElement(
-            'strong',
-            {
-                className: 'consonant-PriceInfobit-price' },
-            price
-        ),
-        _react2.default.createElement(
-            'span',
-            {
-                className: 'consonant-PriceInfobit-term' },
-            term
-        )
-    );
-};
-
-Price.propTypes = priceType;
-Price.defaultProps = defaultProps;
-
-exports.default = Price;
-
-/***/ }),
-/* 277 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _classnames = __webpack_require__(3);
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _propTypes = __webpack_require__(1);
-
-var _hooks = __webpack_require__(6);
-
-var _general = __webpack_require__(5);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var BUTTON_STYLE = {
-    PRIMARY: 'primary',
-    SECONDARY: 'secondary',
-    CTA: 'call-to-action'
-};
-
-var buttonType = {
-    text: _propTypes.string,
-    href: _propTypes.string,
-    style: _propTypes.string,
-    iconSrc: _propTypes.string,
-    iconAlt: _propTypes.string,
-    iconPos: _propTypes.string,
-    isCta: _propTypes.bool,
-    onFocus: _propTypes.func
-};
-
-var defaultProps = {
-    href: '',
-    text: '',
-    iconSrc: '',
-    iconAlt: '',
-    iconPos: '',
-    isCta: false,
-    style: BUTTON_STYLE.CTA,
-    onFocus: function onFocus() {}
-};
-
-/**
- * Button Infobit (shown in 3:2 Card Footer)
- *
- * @component
- * @example
- * const props= {
-    style: String,
-    href: String,
-    text: String,
- * }
- * return (
- *   <Button {...props}/>
- * )
- */
-var Button = function Button(_ref) {
-    var style = _ref.style,
-        text = _ref.text,
-        href = _ref.href,
-        iconSrc = _ref.iconSrc,
-        iconAlt = _ref.iconAlt,
-        iconPos = _ref.iconPos,
-        isCta = _ref.isCta,
-        onFocus = _ref.onFocus;
-
-    /**
-     **** Authored Configs ****
-     */
-    var getConfig = (0, _hooks.useConfig)();
-    var cardButtonStyle = getConfig('collection', 'button.style');
-    var additionalParams = getConfig('collection', 'additionalRequestParams');
-
-    var ctaAction = '';
-
-    /**
-     * Whether we should render cta button or not
-     * cardButtonStyle has higher priority than style
-     * @type {Boolean}
-     */
-    var isCtaButton = style === BUTTON_STYLE.CTA && cardButtonStyle !== BUTTON_STYLE.PRIMARY || cardButtonStyle === BUTTON_STYLE.CTA && style !== BUTTON_STYLE.SECONDARY;
-
-    if (isCta) {
-        ctaAction = getConfig('collection', 'ctaAction');
-    }
-
-    /**
-     * Class name for button:
-     * Whether we should render cta button or not
-     * @type {String}
-     */
-    var buttonClass = (0, _classnames2.default)({
-        'consonant-BtnInfobit': true,
-        'consonant-BtnInfobit--cta': isCtaButton
-    });
-
-    /**
-     * Class name for button icon:
-     * Whether icon should be placed before or after the text
-     * @type {String}
-     */
-    var iconClass = (0, _classnames2.default)({
-        'consonant-BtnInfobit-ico': true,
-        'consonant-BtnInfobit-ico--last': iconPos.toLowerCase() === 'aftertext'
-    });
-
-    var target = (0, _general.getLinkTarget)(href, ctaAction);
-    var addParams = new URLSearchParams(additionalParams);
-    var buttonLink = additionalParams && addParams.keys().next().value ? href + '?' + addParams.toString() : href;
-
-    return _react2.default.createElement(
-        'a',
-        {
-            className: buttonClass,
-            'daa-ll': text,
-            'data-testid': 'consonant-BtnInfobit',
-            tabIndex: '0',
-            rel: 'noopener noreferrer',
-            target: target,
-            href: buttonLink,
-            onFocus: onFocus },
-        iconSrc && _react2.default.createElement('img', {
-            'data-testid': 'consonant-BtnInfobit-ico',
-            src: iconSrc,
-            width: '20',
-            height: '20',
-            className: iconClass,
-            alt: iconAlt,
-            loading: 'lazy' }),
-        _react2.default.createElement(
-            'span',
-            null,
-            text
-        )
-    );
-};
-
-Button.propTypes = buttonType;
-Button.defaultProps = defaultProps;
-
-exports.default = Button;
-
-/***/ }),
-/* 278 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _hooks = __webpack_require__(6);
-
-var _general = __webpack_require__(5);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var linkType = {
-    linkHint: _propTypes.string,
-    href: _propTypes.string.isRequired,
-    text: _propTypes.string.isRequired
-};
-
-var defaultProps = {
-    linkHint: ''
-};
-
-/**
- * Link Infobit (shown in 3:2 Card Footer)
- *
- * @component
- * @example
- * const props= {
-    href: String,
-    linkHint: String,
-    text: String,
- * }
- * return (
- *   <Link {...props}/>
- * )
- */
-var Link = function Link(_ref) {
-    var href = _ref.href,
-        linkHint = _ref.linkHint,
-        text = _ref.text;
-
-    /**
-     **** Authored Configs ****
-     */
-    var getConfig = (0, _hooks.useConfig)();
-    var ctaAction = getConfig('collection', 'ctaAction');
-
-    var target = (0, _general.getLinkTarget)(href, ctaAction);
-    return _react2.default.createElement(
-        'a',
-        {
-            className: 'consonant-LinkInfobit',
-            'data-testid': 'consonant-LinkInfobit',
-            'daa-ll': text,
-            href: href,
-            target: target,
-            title: linkHint,
-            rel: 'noopener noreferrer',
-            tabIndex: '0' },
-        text
-    );
-};
-
-Link.propTypes = linkType;
-Link.defaultProps = defaultProps;
-
-exports.default = Link;
-
-/***/ }),
-/* 279 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _classnames = __webpack_require__(3);
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var maxAllowedStars = 5;
-var defaultFilledStars = 0;
-
-var ratingType = {
-    label: _propTypes.string,
-    totalStars: _propTypes.number,
-    starsFilled: _propTypes.number
-};
-
-var defaultProps = {
-    label: '',
-    totalStars: maxAllowedStars,
-    starsFilled: defaultFilledStars
-};
-
-/**
- * Will calculate the rating (percentage) that is shown
- * @param {Number} id - How many stars should be filled
- * @param {Number} id - Total amount of stars to display
- * @returns {Number} - Rating Percentage
- */
-var getRating = function getRating(starsFilled, totalStars) {
-    var starsFilledNotValid = starsFilled < 0 || starsFilled > totalStars;
-    var totalStarsNotValid = totalStars <= 0 || totalStars > maxAllowedStars;
-
-    if (starsFilledNotValid) {
-        /* eslint-disable-next-line no-param-reassign */
-        starsFilled = defaultFilledStars;
-    }
-
-    if (totalStarsNotValid) {
-        /* eslint-disable-next-line no-param-reassign */
-        totalStars = Number.MAX_SAFE_INTEGER;
-    }
-
-    var scalingFactor = 100;
-    var ratingPercentage = starsFilled / totalStars;
-    var rating = Math.round(ratingPercentage * scalingFactor);
-    return rating;
-};
-
-/**
- * Rating Infobit (shown in 3:2 Card Footer)
- *
- * Displays how many stars should be shown for a giving rating
- *
- * @component
- * @example
- * const props= {
-    totalStars: Int,
-    starsFilled: Int,
-    label: String,
- * }
- * return (
- *   <Rating {...props}/>
- * )
- */
-var Rating = function Rating(_ref) {
-    var label = _ref.label,
-        totalStars = _ref.totalStars,
-        starsFilled = _ref.starsFilled;
-
-    var className = (0, _classnames2.default)({
-        'consonant-RatingInfobit': true,
-        'consonant-RatingInfobit--negMargin': !label
-    });
-
-    var ratingToDisplay = getRating(starsFilled, totalStars);
-
-    return _react2.default.createElement(
-        'div',
-        {
-            className: className,
-            'data-stars': totalStars },
-        _react2.default.createElement('span', {
-            'data-testid': 'consonant-RatingInfobit-stars',
-            className: 'consonant-RatingInfobit-stars',
-            'data-rating': ratingToDisplay }),
-        label && _react2.default.createElement(
-            'span',
-            {
-                className: 'consonant-RatingInfobit-text' },
-            label
-        )
-    );
-};
-
-Rating.propTypes = ratingType;
-Rating.defaultProps = defaultProps;
-
-exports.default = Rating;
-
-/***/ }),
-/* 280 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var progressType = {
-    label: _propTypes.string,
-    color: _propTypes.string,
-    percentage: _propTypes.string,
-    completionText: _propTypes.string
-};
-
-var defaultProps = {
-    label: '',
-    percentage: '0',
-    color: '#1473E6',
-    completionText: ''
-};
-
-/**
- * Progress Bar infobit (shown in 3:2 Card Footer)
- *
- * @component
- * @example
- * const props= {
-    label: String,
-    completionText: String,
-    percentage: String,
-    color: String
- * }
- * return (
- *   <Progress {...props}/>
- * )
- */
-var Progress = function Progress(_ref) {
-    var label = _ref.label,
-        completionText = _ref.completionText,
-        percentage = _ref.percentage,
-        color = _ref.color;
-
-    var valueStyles = {
-        width: 'calc(' + percentage + ' + 2px)',
-        backgroundColor: color
-    };
-
-    var BASE_10 = 10;
-    /**
-     * Percentage as int to be used in Aria Label
-     *
-     * This is different than Percentage prop @type {String} which is diplayed
-     * to user
-     * @type {Number}
-     */
-    var percentageInt = parseInt(percentage, BASE_10);
-
-    return _react2.default.createElement(
-        'div',
-        {
-            className: 'consonant-ProgressInfobit' },
-        _react2.default.createElement(
-            'div',
-            {
-                className: 'consonant-ProgressInfobit-wrapper' },
-            _react2.default.createElement(
-                'span',
-                {
-                    className: 'consonant-ProgressInfobit-text',
-                    title: label },
-                label
-            ),
-            _react2.default.createElement(
-                'span',
-                {
-                    className: 'consonant-ProgressInfobit-text consonant-ProgressInfobit-text--italic',
-                    title: completionText },
-                completionText
-            )
-        ),
-        _react2.default.createElement(
-            'div',
-            {
-                className: 'consonant-ProgressInfobit-el' },
-            _react2.default.createElement(
-                'span',
-                {
-                    className: 'consonant-ProgressInfobit-val',
-                    style: valueStyles,
-                    role: 'progressbar',
-                    'aria-valuenow': percentageInt,
-                    'aria-valuemin': '0',
-                    'aria-valuemax': '100' },
-                percentage
-            )
-        )
-    );
-};
-
-Progress.propTypes = progressType;
-Progress.defaultProps = defaultProps;
-
-exports.default = Progress;
-
-/***/ }),
-/* 281 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var iconWithTextType = {
-    src: _propTypes.string,
-    srcAltText: _propTypes.string,
-    text: (0, _propTypes.oneOfType)([_propTypes.string, _propTypes.number])
-};
-
-var defaultProps = {
-    src: '',
-    text: '',
-    srcAltText: ''
-};
-
-/**
- * Icon With Text Infobit (shown in 3:2 Card Footer)
- *
- * @component
- * @example
- * const props= {
-    src: String,
-    srcAltText: String,
-    text: String,
- * }
- * return (
- *   <IconWithText {...props}/>
- * )
- */
-var IconWithText = function IconWithText(_ref) {
-    var src = _ref.src,
-        srcAltText = _ref.srcAltText,
-        text = _ref.text;
-    return _react2.default.createElement(
-        'div',
-        {
-            className: 'consonant-IconWithTextInfobit' },
-        src && _react2.default.createElement('img', {
-            src: src,
-            height: '22',
-            alt: srcAltText,
-            loading: 'lazy' }),
-        _react2.default.createElement(
-            'span',
-            {
-                className: 'consonant-IconWithTextInfobit-text' },
-            text
-        )
-    );
-};
-
-IconWithText.propTypes = iconWithTextType;
-IconWithText.defaultProps = defaultProps;
-
-exports.default = IconWithText;
-
-/***/ }),
-/* 282 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var linkWithIconType = {
-    src: _propTypes.string,
-    href: _propTypes.string,
-    text: _propTypes.string,
-    linkHint: _propTypes.string,
-    srcAltText: _propTypes.string,
-    openInNewTab: (0, _propTypes.oneOfType)([_propTypes.string, _propTypes.bool])
-};
-
-var defaultProps = {
-    src: '',
-    href: '',
-    text: '',
-    linkHint: '',
-    srcAltText: '',
-    openInNewTab: true
-};
-
-/**
- * LinkWithIcon Infobit (shown in 3:2 Card Footer)
- *
- * @component
- * @example
- * const props= {
-    href: String,
-    openInNewTab: Boolean,
-    linkHint: String,
-    text: String,
-    src: String,
-    srcAltText: String,
- * }
- * return (
- *   <LinkWithIcon {...props}/>
- * )
- */
-var LinkWithIcon = function LinkWithIcon(_ref) {
-    var href = _ref.href,
-        openInNewTab = _ref.openInNewTab,
-        linkHint = _ref.linkHint,
-        text = _ref.text,
-        src = _ref.src,
-        srcAltText = _ref.srcAltText;
-    return _react2.default.createElement(
-        'a',
-        {
-            'daa-ll': text,
-            href: href,
-            'data-testid': 'consonant-LinkWithIcoInfobit',
-            target: openInNewTab ? '_blank' : '_self',
-            className: 'consonant-LinkWithIcoInfobit',
-            title: linkHint,
-            rel: 'noopener noreferrer',
-            tabIndex: '0' },
-        src && _react2.default.createElement('img', { src: src, alt: srcAltText, loading: 'lazy', height: '18' }),
-        _react2.default.createElement(
-            'span',
-            null,
-            text
-        )
-    );
-};
-
-LinkWithIcon.propTypes = linkWithIconType;
-LinkWithIcon.defaultProps = defaultProps;
-
-exports.default = LinkWithIcon;
-
-/***/ }),
-/* 283 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _prettyFormat = __webpack_require__(42);
-
-var _prettyFormat2 = _interopRequireDefault(_prettyFormat);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var dateIntervalType = {
-    locale: _propTypes.string.isRequired,
-    endTime: _propTypes.string.isRequired,
-    startTime: _propTypes.string.isRequired,
-    dateFormat: _propTypes.string.isRequired
-};
-
-/**
- * Date Interval Infobit (shown in 3:2 Card Footer)
- *
- * @component
- * @example
- * const props= {
-    startTime: String,
-    endTime: String,
-    locale: String,
-    dateFormat: String,
- * }
- * return (
- *   <DateInterval {...props}/>
- * )
- */
-var DateInterval = function DateInterval(_ref) {
-    var startTime = _ref.startTime,
-        endTime = _ref.endTime,
-        locale = _ref.locale,
-        dateFormat = _ref.dateFormat;
-
-    var prettyDateInterval = (0, _prettyFormat2.default)(startTime, endTime, locale, dateFormat);
-    return _react2.default.createElement(
-        'span',
-        {
-            title: prettyDateInterval,
-            className: 'consonant-DateIntervalInfobit' },
-        prettyDateInterval
-    );
-};
-
-DateInterval.propTypes = dateIntervalType;
-
-exports.default = DateInterval;
-
-/***/ }),
-/* 284 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _classnames = __webpack_require__(3);
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _propTypes = __webpack_require__(1);
-
-var _Tooltip = __webpack_require__(285);
-
-var _Tooltip2 = _interopRequireDefault(_Tooltip);
-
-var _hooks = __webpack_require__(6);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var bookmarkType = {
-    isBookmarked: _propTypes.bool,
-    saveCardIcon: _propTypes.string,
-    unsaveCardIcon: _propTypes.string,
-    onClick: _propTypes.func.isRequired,
-    cardId: _propTypes.string.isRequired,
-    disableBookmarkIco: _propTypes.bool.isRequired,
-    isProductCard: _propTypes.bool
-};
-
-var defaultProps = {
-    saveCardIcon: '',
-    unsaveCardIcon: '',
-    isBookmarked: false,
-    isProductCard: false
-};
-
-/**
- * Bookmark Infobit (shown in 3:2 Card Footer)
- * Used to save/unsave a card to local storage
- *
- * @component
- * @example
- * const props= {
-    cardId: String,
-    isBookmarked: String,
-    saveCardIcon: String,
-    unsaveCardIcon: String,
-    cardSaveText: String,
-    cardUnsaveText: String,
-    onClick: Function,
-    disableBookmarkIco: Boolean,
- * }
- * return (
- *   <Bookmark {...props}/>
- * )
- */
-var Bookmark = function Bookmark(_ref) {
-    var cardId = _ref.cardId,
-        isBookmarked = _ref.isBookmarked,
-        saveCardIcon = _ref.saveCardIcon,
-        unsaveCardIcon = _ref.unsaveCardIcon,
-        onClick = _ref.onClick,
-        disableBookmarkIco = _ref.disableBookmarkIco,
-        isProductCard = _ref.isProductCard;
-
-    var getConfig = (0, _hooks.useConfig)();
-    var showOnCards = getConfig('bookmarks', 'showOnCards');
-
-    /**
-     **** Authored Configs ****
-     */
-    var saveCardText = getConfig('bookmarks', 'i18n.card.saveText');
-    var unsaveCardText = getConfig('bookmarks', 'i18n.card.unsaveText');
-
-    var bookmarkInfobitClass = (0, _classnames2.default)({
-        'consonant-BookmarkInfobit': true,
-        'is-active': isBookmarked,
-        'is-disabled': disableBookmarkIco
-    });
-
-    var bookmarkIcon = function bookmarkIcon() {
-        var cardIcon = isBookmarked ? saveCardIcon : unsaveCardIcon;
-        return _react2.default.createElement('span', {
-            'data-testid': 'consonant-BookmarkInfobit-ico',
-            className: 'consonant-BookmarkInfobit-ico',
-            'daa-ll': 'bookmark',
-            style: { backgroundImage: cardIcon ? 'url(' + cardIcon + ')' : '' } });
-    };
-
-    var handleClick = function handleClick(clickEvt) {
-        clickEvt.stopPropagation();
-        onClick(cardId);
-    };
-
-    var tooltipText = isBookmarked ? unsaveCardText : saveCardText;
-
-    return !isProductCard && showOnCards && _react2.default.createElement(
-        'button',
-        {
-            'data-testid': 'consonant-BookmarkInfobit',
-            'data-tooltip-wrapper': true,
-            type: 'button',
-            className: bookmarkInfobitClass,
-            onClick: handleClick,
-            tabIndex: '0' },
-        showOnCards && bookmarkIcon(),
-        showOnCards && _react2.default.createElement(_Tooltip2.default, {
-            'data-testid': 'consonant-Tooltip',
-            text: tooltipText })
-    );
-};
-
-Bookmark.propTypes = bookmarkType;
-Bookmark.defaultProps = defaultProps;
-
-exports.default = Bookmark;
-
-/***/ }),
-/* 285 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var tooltipType = { text: _propTypes.string };
-var defaultProps = { text: '' };
-
-/**
- * Tooltip (shown in 3:2 Card Footer -- primarily used with bookmark infobit)
- * Used on hover to indicate to users that they do or not do an actino
- *
- * @component
- * @example
- * const props= {
-    text: String,
- * }
- * return (
- *   <Tooltip {...props}/>
- * )
- */
-var Tooltip = function Tooltip(_ref) {
-    var text = _ref.text;
-    return _react2.default.createElement(
-        'span',
-        {
-            className: 'consonant-Tooltip' },
-        text
-    );
-};
-
-Tooltip.propTypes = tooltipType;
-Tooltip.defaultProps = defaultProps;
-
-exports.default = Tooltip;
-
-/***/ }),
-/* 286 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * Gated Icon svg
- */
-var Gated = function Gated() {
-    return _react2.default.createElement(
-        "span",
-        { className: "consonant-GatedInfobit" },
-        _react2.default.createElement(
-            "svg",
-            { xmlns: "http://www.w3.org/2000/svg", height: "20", viewBox: "0 0 15 20", width: "15" },
-            _react2.default.createElement("path", {
-                fill: "#747474",
-                d: "M14.38,8.66h-0.62v-2.3c0.06-3.45-2.69-6.3-6.14-6.36c-3.45-0.06-6.3,2.69-6.36,6.14 c0,0.07,0,0.15,0,0.22v2.3H0.63C0.28,8.66,0,8.95,0,9.29c0,0,0,0,0,0v10.07C0,19.71,0.28,20,0.62,20c0,0,0,0,0,0h13.75 c0.35,0,0.63-0.29,0.62-0.63c0,0,0,0,0,0V9.29C15,8.95,14.72,8.66,14.38,8.66C14.38,8.66,14.38,8.66,14.38,8.66z M3.75,6.36 c0-2.07,1.68-3.75,3.75-3.75s3.75,1.68,3.75,3.75v2.3h-7.5V6.36z M8.75,15.09v1.76c0,0.35-0.28,0.63-0.62,0.63c0,0,0,0,0,0H6.88 c-0.35,0-0.63-0.29-0.62-0.63c0,0,0,0,0,0v-1.76c-0.58-0.53-0.78-1.36-0.5-2.09c0.36-0.97,1.43-1.46,2.4-1.1 c0.51,0.19,0.91,0.59,1.1,1.1C9.53,13.73,9.33,14.56,8.75,15.09z" })
-        )
-    );
-};
-
-exports.default = Gated;
-
-/***/ }),
-/* 287 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51606,7 +50267,49 @@ function n(n){for(var t=arguments.length,r=Array(t>1?t-1:0),e=1;e<t;e++)r[e-1]=a
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(12)))
 
 /***/ }),
-/* 288 */
+/* 272 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var pad = __webpack_require__(120);
+
+var env = typeof window === 'object' ? window : self;
+var globalCount = Object.keys(env).length;
+var mimeTypesLength = navigator.mimeTypes ? navigator.mimeTypes.length : 0;
+var clientId = pad((mimeTypesLength +
+  navigator.userAgent.length).toString(36) +
+  globalCount.toString(36), 4);
+
+module.exports = function fingerprint () {
+  return clientId;
+};
+
+
+/***/ }),
+/* 273 */
+/***/ (function(module, exports) {
+
+
+var getRandomValue;
+
+var crypto = typeof window !== 'undefined' &&
+  (window.crypto || window.msCrypto) ||
+  typeof self !== 'undefined' &&
+  self.crypto;
+
+if (crypto) {
+    var lim = Math.pow(2, 32) - 1;
+    getRandomValue = function () {
+        return Math.abs(crypto.getRandomValues(new Uint32Array(1))[0] / lim);
+    };
+} else {
+    getRandomValue = Math.random;
+}
+
+module.exports = getRandomValue;
+
+
+/***/ }),
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51926,328 +50629,7 @@ exports.defineIsOnDemandScheduled = defineIsOnDemandScheduled;
 exports.defineIsUpcoming = defineIsUpcoming;
 
 /***/ }),
-/* 289 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _classnames = __webpack_require__(3);
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _propTypes = __webpack_require__(1);
-
-var _hooks = __webpack_require__(6);
-
-var _Helpers = __webpack_require__(33);
-
-var _general = __webpack_require__(5);
-
-var _card = __webpack_require__(16);
-
-var _LinkBlocker = __webpack_require__(27);
-
-var _LinkBlocker2 = _interopRequireDefault(_LinkBlocker);
-
-var _videoButton = __webpack_require__(41);
-
-var _videoButton2 = _interopRequireDefault(_videoButton);
-
-var _prettyFormat = __webpack_require__(42);
-
-var _prettyFormat2 = _interopRequireDefault(_prettyFormat);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var halfHeightCardType = {
-    ctaLink: _propTypes.string,
-    id: _propTypes.string.isRequired,
-    lh: _propTypes.string,
-    styles: (0, _propTypes.shape)(_card.stylesType),
-    overlays: (0, _propTypes.shape)(_card.overlaysType),
-    contentArea: (0, _propTypes.shape)(_card.contentAreaType),
-    renderBorder: _propTypes.bool,
-    renderOverlay: _propTypes.bool,
-    overlayLink: _propTypes.string,
-    startDate: _propTypes.string,
-    endDate: _propTypes.string,
-    modifiedDate: _propTypes.string,
-    bannerMap: (0, _propTypes.shape)(Object).isRequired,
-    tags: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_card.tagsType)),
-    onFocus: _propTypes.func.isRequired
-};
-
-var defaultProps = {
-    styles: {},
-    lh: '',
-    ctaLink: '',
-    overlays: {},
-    contentArea: {},
-    renderBorder: true,
-    renderOverlay: false,
-    overlayLink: '',
-    startDate: '',
-    endDate: '',
-    modifiedDate: '',
-    tags: []
-};
-
-/**
- * Half height card
- *
- * @component
- * @example
- * const props= {
-    id: String,
-    ctaLink: String,
-    styles: Object,
-    contentArea: Object,
-    overlays: Object,
-    renderBorder: Boolean,
-    renderOverlay: Boolean,
-    overlayLink: String,
- * }
- * return (
- *   <HalfHeightCard {...props}/>
- * )
- */
-var HalfHeightCard = function HalfHeightCard(props) {
-    var id = props.id,
-        lh = props.lh,
-        ctaLink = props.ctaLink,
-        _props$styles = props.styles,
-        image = _props$styles.backgroundImage,
-        altText = _props$styles.backgroundAltText,
-        tags = props.tags,
-        _props$contentArea = props.contentArea,
-        title = _props$contentArea.title,
-        label = _props$contentArea.detailText,
-        _props$overlays = props.overlays,
-        _props$overlays$banne = _props$overlays.banner,
-        bannerDescription = _props$overlays$banne.description,
-        bannerFontColor = _props$overlays$banne.fontColor,
-        bannerBackgroundColor = _props$overlays$banne.backgroundColor,
-        bannerIcon = _props$overlays$banne.icon,
-        videoURL = _props$overlays.videoButton.url,
-        renderBorder = props.renderBorder,
-        renderOverlay = props.renderOverlay,
-        overlayLink = props.overlayLink,
-        startDate = props.startDate,
-        endDate = props.endDate,
-        modifiedDate = props.modifiedDate,
-        bannerMap = props.bannerMap,
-        onFocus = props.onFocus;
-
-
-    var bannerBackgroundColorToUse = bannerBackgroundColor;
-    var bannerIconToUse = bannerIcon;
-    var bannerFontColorToUse = bannerFontColor;
-    var bannerDescriptionToUse = bannerDescription;
-    var videoURLToUse = videoURL;
-    var gateVideo = false;
-    var labelToUse = label;
-
-    var getConfig = (0, _hooks.useConfig)();
-
-    /**
-     **** Authored Configs ****
-     */
-    var registrationUrl = getConfig('collection', 'banner.register.url');
-    var i18nFormat = getConfig('collection', 'i18n.prettyDateIntervalFormat');
-    var locale = getConfig('language', '');
-    var disableBanners = getConfig('collection', 'disableBanners');
-    var ctaAction = getConfig('collection', 'ctaAction');
-    var additionalParams = getConfig('collection', 'additionalRequestParams');
-    var headingLevel = getConfig('collection.i18n', 'cardTitleAccessibilityLevel');
-    var detailsTextOption = getConfig('collection', 'detailsTextOption');
-    var lastModified = getConfig('collection', 'i18n.lastModified');
-
-    /**
-     * Detail text
-     * @type {String}
-     */
-    if (modifiedDate && detailsTextOption === 'modifiedDate') {
-        var localModifiedDate = new Date(modifiedDate);
-        labelToUse = lastModified.replace('{date}', localModifiedDate.toLocaleDateString());
-    }
-
-    /**
-     * Class name for the card:
-     * whether card border should be rendered or no;
-     * @type {String}
-     */
-    var cardClassName = (0, _classnames2.default)({
-        'consonant-Card': true,
-        'consonant-HalfHeightCard': true,
-        'consonant-u-noBorders': !renderBorder
-    });
-
-    /**
-     * Creates a card image DOM reference
-     * @returns {Object} - card image DOM reference
-     */
-    var imageRef = _react2.default.useRef();
-
-    /**
-     * @typedef {Image} LazyLoadedImageState
-     * @description — Has image as state after image is lazy loaded
-     *
-     * @typedef {Function} LazyLoadedImageStateSetter
-     * @description - Sets state once image is lazy loaded
-     *
-     * @type {[Image]} lazyLoadedImage
-     */
-
-    var _useLazyLoading = (0, _hooks.useLazyLoading)(imageRef, image),
-        _useLazyLoading2 = _slicedToArray(_useLazyLoading, 1),
-        lazyLoadedImage = _useLazyLoading2[0];
-
-    var isRegistered = (0, _hooks.useRegistered)(false);
-    var isGated = (0, _Helpers.hasTag)(/caas:gated/, tags) || (0, _Helpers.hasTag)(/caas:card-style\/half-height-featured/, tags);
-
-    if (isGated && !isRegistered) {
-        bannerDescriptionToUse = bannerMap.register.description;
-        bannerIconToUse = '';
-        bannerBackgroundColorToUse = bannerMap.register.backgroundColor;
-        bannerFontColorToUse = bannerMap.register.fontColor;
-        videoURLToUse = registrationUrl;
-        gateVideo = true;
-    } else if (startDate && endDate) {
-        var eventBanner = (0, _general.getEventBanner)(startDate, endDate, bannerMap);
-        bannerBackgroundColorToUse = eventBanner.backgroundColor;
-        bannerDescriptionToUse = eventBanner.description;
-        bannerFontColorToUse = eventBanner.fontColor;
-        bannerIconToUse = eventBanner.icon;
-        var now = (0, _general.getCurrentDate)();
-        if ((0, _general.isDateBeforeInterval)(now, startDate)) {
-            labelToUse = (0, _prettyFormat2.default)(startDate, endDate, locale, i18nFormat);
-        }
-    }
-
-    var target = (0, _general.getLinkTarget)(ctaLink, ctaAction);
-    var linkBlockerTarget = (0, _general.getLinkTarget)(overlayLink);
-    var ariaText = lh.split(' | ').slice(1, -1).join(' | ');
-
-    if (bannerDescriptionToUse && bannerFontColorToUse && bannerBackgroundColorToUse && (!isGated || !isRegistered) && (!disableBanners || isGated)) {
-        ariaText = bannerDescriptionToUse + ' | ' + ariaText;
-    }
-
-    var addParams = new URLSearchParams(additionalParams);
-    var cardLink = additionalParams && addParams.keys().next().value ? ctaLink + '?' + addParams.toString() : ctaLink;
-    var overlay = additionalParams && addParams.keys().next().value ? overlayLink + '?' + addParams.toString() : overlayLink;
-    var hasBanner = bannerDescriptionToUse && bannerFontColorToUse && bannerBackgroundColorToUse;
-    var headingAria = videoURL || label || hasBanner && !disableBanners ? '' : title;
-
-    /**
-     * Inner HTML of the card, which will be included into either div or a tag;
-     */
-    var renderCardContent = function renderCardContent() {
-        return _react2.default.createElement(
-            _react.Fragment,
-            null,
-            hasBanner && (!isGated || !isRegistered) && (!disableBanners || isGated) && _react2.default.createElement(
-                'span',
-                {
-                    className: 'consonant-HalfHeightCard-banner',
-                    style: {
-                        backgroundColor: bannerBackgroundColorToUse,
-                        color: bannerFontColorToUse
-                    } },
-                bannerIconToUse && _react2.default.createElement(
-                    'div',
-                    {
-                        className: 'consonant-HalfHeightCard-bannerIconWrapper' },
-                    _react2.default.createElement('img', {
-                        alt: '',
-                        loading: 'lazy',
-                        src: bannerIconToUse })
-                ),
-                _react2.default.createElement(
-                    'span',
-                    null,
-                    bannerDescriptionToUse
-                )
-            ),
-            _react2.default.createElement('div', {
-                className: 'consonant-HalfHeightCard-img',
-                ref: imageRef,
-                style: { backgroundImage: lazyLoadedImage && 'url("' + lazyLoadedImage + '")' },
-                role: altText && 'img',
-                'aria-label': altText }),
-            _react2.default.createElement(
-                'div',
-                { className: 'consonant-HalfHeightCard-inner' },
-                videoURLToUse && _react2.default.createElement(_videoButton2.default, {
-                    videoURL: videoURLToUse,
-                    gateVideo: gateVideo,
-                    onFocus: onFocus,
-                    className: 'consonant-HalfHeightCard-videoIco' }),
-                title && _react2.default.createElement(
-                    'p',
-                    {
-                        role: 'heading',
-                        'aria-label': headingAria,
-                        'aria-level': headingLevel,
-                        className: 'consonant-HalfHeightCard-title',
-                        'daa-ll': 'Card CTA' },
-                    title
-                ),
-                labelToUse && _react2.default.createElement(
-                    'span',
-                    { className: 'consonant-HalfHeightCard-label' },
-                    labelToUse
-                )
-            )
-        );
-    };
-
-    return videoURLToUse ? _react2.default.createElement(
-        'div',
-        {
-            className: cardClassName,
-            'daa-lh': lh,
-            'aria-label': ariaText,
-            id: id },
-        'onFocus=',
-        onFocus,
-        renderOverlay && _react2.default.createElement(_LinkBlocker2.default, { target: linkBlockerTarget, link: overlay }),
-        renderCardContent()
-    ) : _react2.default.createElement(
-        'a',
-        {
-            href: cardLink,
-            target: target,
-            'aria-label': ariaText,
-            rel: 'noopener noreferrer',
-            className: cardClassName,
-            title: '',
-            'daa-lh': lh,
-            tabIndex: '0',
-            onFocus: onFocus,
-            id: id },
-        renderOverlay && _react2.default.createElement(_LinkBlocker2.default, { target: linkBlockerTarget, link: overlay }),
-        renderCardContent()
-    );
-};
-
-HalfHeightCard.propTypes = halfHeightCardType;
-HalfHeightCard.defaultProps = defaultProps;
-
-exports.default = HalfHeightCard;
-
-/***/ }),
-/* 290 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52528,7 +50910,7 @@ DoubleWideCard.defaultProps = defaultProps;
 exports.default = DoubleWideCard;
 
 /***/ }),
-/* 291 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52552,7 +50934,7 @@ var _classnames2 = _interopRequireDefault(_classnames);
 
 var _propTypes = __webpack_require__(1);
 
-var _cuid = __webpack_require__(43);
+var _cuid = __webpack_require__(44);
 
 var _cuid2 = _interopRequireDefault(_cuid);
 
@@ -52792,7 +51174,1257 @@ ProductCard.defaultProps = defaultProps;
 exports.default = ProductCard;
 
 /***/ }),
-/* 292 */
+/* 277 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _cuid = __webpack_require__(44);
+
+var _cuid2 = _interopRequireDefault(_cuid);
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(1);
+
+var _Icon = __webpack_require__(278);
+
+var _Icon2 = _interopRequireDefault(_Icon);
+
+var _Text = __webpack_require__(279);
+
+var _Text2 = _interopRequireDefault(_Text);
+
+var _Price = __webpack_require__(280);
+
+var _Price2 = _interopRequireDefault(_Price);
+
+var _Button = __webpack_require__(281);
+
+var _Button2 = _interopRequireDefault(_Button);
+
+var _Link = __webpack_require__(282);
+
+var _Link2 = _interopRequireDefault(_Link);
+
+var _Rating = __webpack_require__(283);
+
+var _Rating2 = _interopRequireDefault(_Rating);
+
+var _Progress = __webpack_require__(284);
+
+var _Progress2 = _interopRequireDefault(_Progress);
+
+var _IconWithText = __webpack_require__(285);
+
+var _IconWithText2 = _interopRequireDefault(_IconWithText);
+
+var _LinkWithIcon = __webpack_require__(286);
+
+var _LinkWithIcon2 = _interopRequireDefault(_LinkWithIcon);
+
+var _DateInterval = __webpack_require__(287);
+
+var _DateInterval2 = _interopRequireDefault(_DateInterval);
+
+var _Bookmark = __webpack_require__(288);
+
+var _Bookmark2 = _interopRequireDefault(_Bookmark);
+
+var _Gated = __webpack_require__(290);
+
+var _Gated2 = _interopRequireDefault(_Gated);
+
+var _constants = __webpack_require__(15);
+
+var _general = __webpack_require__(5);
+
+var _card = __webpack_require__(16);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var groupType = {
+    renderList: (0, _propTypes.arrayOf)((0, _propTypes.oneOfType)([(0, _propTypes.shape)(_card.footerLeftType), (0, _propTypes.shape)(_card.footerRightType), (0, _propTypes.shape)(_card.footerCenterType)])),
+    onFocus: _propTypes.func
+};
+
+var defaultProps = {
+    renderList: [],
+    onFocus: function onFocus() {}
+};
+
+/**
+ * Group of Infobits (shown in 3:2 Card Footer)
+ *
+ * @component
+ * @example
+ * const props= {
+    renderList: Array,
+ * }
+ * return (
+ *   <Group {...props}/>
+ * )
+ */
+var Group = function Group(props) {
+    var renderList = props.renderList,
+        onFocus = props.onFocus;
+
+
+    return _react2.default.createElement(
+        _react.Fragment,
+        null,
+        renderList.map(function (infobit) {
+            switch (infobit.type) {
+                case _constants.INFOBIT_TYPE.PRICE:
+                    return _react2.default.createElement(_Price2.default, _extends({}, infobit, {
+                        key: (0, _cuid2.default)() }));
+
+                case _constants.INFOBIT_TYPE.BUTTON:
+                    return _react2.default.createElement(_Button2.default, _extends({}, infobit, {
+                        key: (0, _cuid2.default)(),
+                        onFocus: onFocus }));
+
+                case _constants.INFOBIT_TYPE.ICON_TEXT:
+                    return _react2.default.createElement(_IconWithText2.default, _extends({}, infobit, {
+                        key: (0, _cuid2.default)() }));
+
+                case _constants.INFOBIT_TYPE.LINK_ICON:
+                    return _react2.default.createElement(_LinkWithIcon2.default, _extends({}, infobit, {
+                        key: (0, _cuid2.default)() }));
+
+                case _constants.INFOBIT_TYPE.TEXT:
+                    return _react2.default.createElement(_Text2.default, _extends({}, infobit, {
+                        key: (0, _cuid2.default)() }));
+
+                case _constants.INFOBIT_TYPE.ICON:
+                    return _react2.default.createElement(_Icon2.default, _extends({}, infobit, {
+                        key: (0, _cuid2.default)() }));
+
+                case _constants.INFOBIT_TYPE.LINK:
+                    return _react2.default.createElement(_Link2.default, _extends({}, infobit, {
+                        key: (0, _cuid2.default)() }));
+
+                case _constants.INFOBIT_TYPE.PROGRESS:
+                    return _react2.default.createElement(_Progress2.default, _extends({}, infobit, {
+                        key: (0, _cuid2.default)() }));
+
+                case _constants.INFOBIT_TYPE.RATING:
+                    return _react2.default.createElement(_Rating2.default, {
+                        key: (0, _cuid2.default)(),
+                        label: infobit.label,
+                        totalStars: (0, _general.parseToPrimitive)(infobit.totalStars),
+                        starsFilled: (0, _general.parseToPrimitive)(infobit.starsFilled) });
+
+                case _constants.INFOBIT_TYPE.BOOKMARK:
+                    return _react2.default.createElement(_Bookmark2.default, _extends({}, infobit, {
+                        key: (0, _cuid2.default)() }));
+
+                case _constants.INFOBIT_TYPE.DATE:
+                    return _react2.default.createElement(_DateInterval2.default, _extends({}, infobit, {
+                        key: (0, _cuid2.default)() }));
+
+                case _constants.INFOBIT_TYPE.GATED:
+                    return _react2.default.createElement(_Gated2.default, _extends({}, infobit, {
+                        key: (0, _cuid2.default)() }));
+
+                default:
+                    return null;
+            }
+        })
+    );
+};
+
+Group.propTypes = groupType;
+Group.defaultProps = defaultProps;
+
+exports.default = Group;
+
+/***/ }),
+/* 278 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var iconType = {
+    alt: _propTypes.string,
+    src: _propTypes.string.isRequired
+};
+
+var defaultProps = {
+    alt: ''
+};
+
+/**
+ * Icon With Text Infobit (shown in 3:2 Card Footer)
+ *
+ * @component
+ * @example
+ * const props= {
+    src: String,
+    srcAltText: String,
+    text: String,
+ * }
+ * return (
+ *   <IconWithText {...props}/>
+ * )
+ */
+var Icon = function Icon(_ref) {
+    var src = _ref.src,
+        alt = _ref.alt;
+    return _react2.default.createElement('img', {
+        className: 'consonant-IconInfobit',
+        width: '28',
+        src: src,
+        alt: alt,
+        loading: 'lazy' });
+};
+
+Icon.propTypes = iconType;
+Icon.defaultProps = defaultProps;
+
+exports.default = Icon;
+
+/***/ }),
+/* 279 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var textType = {
+  text: _propTypes.string.isRequired
+};
+
+/**
+ * Text infobit (shown in 3:2 Card Footer)
+ *
+ * @component
+ * @example
+ * const props= {
+    text: String,
+ * }
+ * return (
+ *   <Text {...props}/>
+ * )
+ */
+var Text = function Text(_ref) {
+  var text = _ref.text;
+  return _react2.default.createElement(
+    'p',
+    { className: 'consonant-TextInfobit' },
+    text
+  );
+};
+
+Text.propTypes = textType;
+
+exports.default = Text;
+
+/***/ }),
+/* 280 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var priceType = {
+    term: _propTypes.string,
+    price: _propTypes.string.isRequired
+};
+
+var defaultProps = {
+    term: ''
+};
+
+/**
+ * Price Infobit (shown in 3:2 Card Footer)
+ *
+ * @component
+ * @example
+ * const props= {
+    price: String,
+    term: String,
+ * }
+ * return (
+ *   <Price {...props}/>
+ * )
+ */
+var Price = function Price(_ref) {
+    var price = _ref.price,
+        term = _ref.term;
+    return _react2.default.createElement(
+        'span',
+        {
+            className: 'consonant-PriceInfobit' },
+        _react2.default.createElement(
+            'strong',
+            {
+                className: 'consonant-PriceInfobit-price' },
+            price
+        ),
+        _react2.default.createElement(
+            'span',
+            {
+                className: 'consonant-PriceInfobit-term' },
+            term
+        )
+    );
+};
+
+Price.propTypes = priceType;
+Price.defaultProps = defaultProps;
+
+exports.default = Price;
+
+/***/ }),
+/* 281 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = __webpack_require__(3);
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _propTypes = __webpack_require__(1);
+
+var _hooks = __webpack_require__(6);
+
+var _general = __webpack_require__(5);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var BUTTON_STYLE = {
+    PRIMARY: 'primary',
+    SECONDARY: 'secondary',
+    CTA: 'call-to-action'
+};
+
+var buttonType = {
+    text: _propTypes.string,
+    href: _propTypes.string,
+    style: _propTypes.string,
+    iconSrc: _propTypes.string,
+    iconAlt: _propTypes.string,
+    iconPos: _propTypes.string,
+    isCta: _propTypes.bool,
+    onFocus: _propTypes.func
+};
+
+var defaultProps = {
+    href: '',
+    text: '',
+    iconSrc: '',
+    iconAlt: '',
+    iconPos: '',
+    isCta: false,
+    style: BUTTON_STYLE.CTA,
+    onFocus: function onFocus() {}
+};
+
+/**
+ * Button Infobit (shown in 3:2 Card Footer)
+ *
+ * @component
+ * @example
+ * const props= {
+    style: String,
+    href: String,
+    text: String,
+ * }
+ * return (
+ *   <Button {...props}/>
+ * )
+ */
+var Button = function Button(_ref) {
+    var style = _ref.style,
+        text = _ref.text,
+        href = _ref.href,
+        iconSrc = _ref.iconSrc,
+        iconAlt = _ref.iconAlt,
+        iconPos = _ref.iconPos,
+        isCta = _ref.isCta,
+        onFocus = _ref.onFocus;
+
+    /**
+     **** Authored Configs ****
+     */
+    var getConfig = (0, _hooks.useConfig)();
+    var cardButtonStyle = getConfig('collection', 'button.style');
+    var additionalParams = getConfig('collection', 'additionalRequestParams');
+
+    var ctaAction = '';
+
+    /**
+     * Whether we should render cta button or not
+     * cardButtonStyle has higher priority than style
+     * @type {Boolean}
+     */
+    var isCtaButton = style === BUTTON_STYLE.CTA && cardButtonStyle !== BUTTON_STYLE.PRIMARY || cardButtonStyle === BUTTON_STYLE.CTA && style !== BUTTON_STYLE.SECONDARY;
+
+    if (isCta) {
+        ctaAction = getConfig('collection', 'ctaAction');
+    }
+
+    /**
+     * Class name for button:
+     * Whether we should render cta button or not
+     * @type {String}
+     */
+    var buttonClass = (0, _classnames2.default)({
+        'consonant-BtnInfobit': true,
+        'consonant-BtnInfobit--cta': isCtaButton
+    });
+
+    /**
+     * Class name for button icon:
+     * Whether icon should be placed before or after the text
+     * @type {String}
+     */
+    var iconClass = (0, _classnames2.default)({
+        'consonant-BtnInfobit-ico': true,
+        'consonant-BtnInfobit-ico--last': iconPos.toLowerCase() === 'aftertext'
+    });
+
+    var target = (0, _general.getLinkTarget)(href, ctaAction);
+    var addParams = new URLSearchParams(additionalParams);
+    var buttonLink = additionalParams && addParams.keys().next().value ? href + '?' + addParams.toString() : href;
+
+    return _react2.default.createElement(
+        'a',
+        {
+            className: buttonClass,
+            'daa-ll': text,
+            'data-testid': 'consonant-BtnInfobit',
+            tabIndex: '0',
+            rel: 'noopener noreferrer',
+            target: target,
+            href: buttonLink,
+            onFocus: onFocus },
+        iconSrc && _react2.default.createElement('img', {
+            'data-testid': 'consonant-BtnInfobit-ico',
+            src: iconSrc,
+            width: '20',
+            height: '20',
+            className: iconClass,
+            alt: iconAlt,
+            loading: 'lazy' }),
+        _react2.default.createElement(
+            'span',
+            null,
+            text
+        )
+    );
+};
+
+Button.propTypes = buttonType;
+Button.defaultProps = defaultProps;
+
+exports.default = Button;
+
+/***/ }),
+/* 282 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(1);
+
+var _hooks = __webpack_require__(6);
+
+var _general = __webpack_require__(5);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var linkType = {
+    linkHint: _propTypes.string,
+    href: _propTypes.string.isRequired,
+    text: _propTypes.string.isRequired
+};
+
+var defaultProps = {
+    linkHint: ''
+};
+
+/**
+ * Link Infobit (shown in 3:2 Card Footer)
+ *
+ * @component
+ * @example
+ * const props= {
+    href: String,
+    linkHint: String,
+    text: String,
+ * }
+ * return (
+ *   <Link {...props}/>
+ * )
+ */
+var Link = function Link(_ref) {
+    var href = _ref.href,
+        linkHint = _ref.linkHint,
+        text = _ref.text;
+
+    /**
+     **** Authored Configs ****
+     */
+    var getConfig = (0, _hooks.useConfig)();
+    var ctaAction = getConfig('collection', 'ctaAction');
+
+    var target = (0, _general.getLinkTarget)(href, ctaAction);
+    return _react2.default.createElement(
+        'a',
+        {
+            className: 'consonant-LinkInfobit',
+            'data-testid': 'consonant-LinkInfobit',
+            'daa-ll': text,
+            href: href,
+            target: target,
+            title: linkHint,
+            rel: 'noopener noreferrer',
+            tabIndex: '0' },
+        text
+    );
+};
+
+Link.propTypes = linkType;
+Link.defaultProps = defaultProps;
+
+exports.default = Link;
+
+/***/ }),
+/* 283 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = __webpack_require__(3);
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _propTypes = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var maxAllowedStars = 5;
+var defaultFilledStars = 0;
+
+var ratingType = {
+    label: _propTypes.string,
+    totalStars: _propTypes.number,
+    starsFilled: _propTypes.number
+};
+
+var defaultProps = {
+    label: '',
+    totalStars: maxAllowedStars,
+    starsFilled: defaultFilledStars
+};
+
+/**
+ * Will calculate the rating (percentage) that is shown
+ * @param {Number} id - How many stars should be filled
+ * @param {Number} id - Total amount of stars to display
+ * @returns {Number} - Rating Percentage
+ */
+var getRating = function getRating(starsFilled, totalStars) {
+    var starsFilledNotValid = starsFilled < 0 || starsFilled > totalStars;
+    var totalStarsNotValid = totalStars <= 0 || totalStars > maxAllowedStars;
+
+    if (starsFilledNotValid) {
+        /* eslint-disable-next-line no-param-reassign */
+        starsFilled = defaultFilledStars;
+    }
+
+    if (totalStarsNotValid) {
+        /* eslint-disable-next-line no-param-reassign */
+        totalStars = Number.MAX_SAFE_INTEGER;
+    }
+
+    var scalingFactor = 100;
+    var ratingPercentage = starsFilled / totalStars;
+    var rating = Math.round(ratingPercentage * scalingFactor);
+    return rating;
+};
+
+/**
+ * Rating Infobit (shown in 3:2 Card Footer)
+ *
+ * Displays how many stars should be shown for a giving rating
+ *
+ * @component
+ * @example
+ * const props= {
+    totalStars: Int,
+    starsFilled: Int,
+    label: String,
+ * }
+ * return (
+ *   <Rating {...props}/>
+ * )
+ */
+var Rating = function Rating(_ref) {
+    var label = _ref.label,
+        totalStars = _ref.totalStars,
+        starsFilled = _ref.starsFilled;
+
+    var className = (0, _classnames2.default)({
+        'consonant-RatingInfobit': true,
+        'consonant-RatingInfobit--negMargin': !label
+    });
+
+    var ratingToDisplay = getRating(starsFilled, totalStars);
+
+    return _react2.default.createElement(
+        'div',
+        {
+            className: className,
+            'data-stars': totalStars },
+        _react2.default.createElement('span', {
+            'data-testid': 'consonant-RatingInfobit-stars',
+            className: 'consonant-RatingInfobit-stars',
+            'data-rating': ratingToDisplay }),
+        label && _react2.default.createElement(
+            'span',
+            {
+                className: 'consonant-RatingInfobit-text' },
+            label
+        )
+    );
+};
+
+Rating.propTypes = ratingType;
+Rating.defaultProps = defaultProps;
+
+exports.default = Rating;
+
+/***/ }),
+/* 284 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var progressType = {
+    label: _propTypes.string,
+    color: _propTypes.string,
+    percentage: _propTypes.string,
+    completionText: _propTypes.string
+};
+
+var defaultProps = {
+    label: '',
+    percentage: '0',
+    color: '#1473E6',
+    completionText: ''
+};
+
+/**
+ * Progress Bar infobit (shown in 3:2 Card Footer)
+ *
+ * @component
+ * @example
+ * const props= {
+    label: String,
+    completionText: String,
+    percentage: String,
+    color: String
+ * }
+ * return (
+ *   <Progress {...props}/>
+ * )
+ */
+var Progress = function Progress(_ref) {
+    var label = _ref.label,
+        completionText = _ref.completionText,
+        percentage = _ref.percentage,
+        color = _ref.color;
+
+    var valueStyles = {
+        width: 'calc(' + percentage + ' + 2px)',
+        backgroundColor: color
+    };
+
+    var BASE_10 = 10;
+    /**
+     * Percentage as int to be used in Aria Label
+     *
+     * This is different than Percentage prop @type {String} which is diplayed
+     * to user
+     * @type {Number}
+     */
+    var percentageInt = parseInt(percentage, BASE_10);
+
+    return _react2.default.createElement(
+        'div',
+        {
+            className: 'consonant-ProgressInfobit' },
+        _react2.default.createElement(
+            'div',
+            {
+                className: 'consonant-ProgressInfobit-wrapper' },
+            _react2.default.createElement(
+                'span',
+                {
+                    className: 'consonant-ProgressInfobit-text',
+                    title: label },
+                label
+            ),
+            _react2.default.createElement(
+                'span',
+                {
+                    className: 'consonant-ProgressInfobit-text consonant-ProgressInfobit-text--italic',
+                    title: completionText },
+                completionText
+            )
+        ),
+        _react2.default.createElement(
+            'div',
+            {
+                className: 'consonant-ProgressInfobit-el' },
+            _react2.default.createElement(
+                'span',
+                {
+                    className: 'consonant-ProgressInfobit-val',
+                    style: valueStyles,
+                    role: 'progressbar',
+                    'aria-valuenow': percentageInt,
+                    'aria-valuemin': '0',
+                    'aria-valuemax': '100' },
+                percentage
+            )
+        )
+    );
+};
+
+Progress.propTypes = progressType;
+Progress.defaultProps = defaultProps;
+
+exports.default = Progress;
+
+/***/ }),
+/* 285 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var iconWithTextType = {
+    src: _propTypes.string,
+    srcAltText: _propTypes.string,
+    text: (0, _propTypes.oneOfType)([_propTypes.string, _propTypes.number])
+};
+
+var defaultProps = {
+    src: '',
+    text: '',
+    srcAltText: ''
+};
+
+/**
+ * Icon With Text Infobit (shown in 3:2 Card Footer)
+ *
+ * @component
+ * @example
+ * const props= {
+    src: String,
+    srcAltText: String,
+    text: String,
+ * }
+ * return (
+ *   <IconWithText {...props}/>
+ * )
+ */
+var IconWithText = function IconWithText(_ref) {
+    var src = _ref.src,
+        srcAltText = _ref.srcAltText,
+        text = _ref.text;
+    return _react2.default.createElement(
+        'div',
+        {
+            className: 'consonant-IconWithTextInfobit' },
+        src && _react2.default.createElement('img', {
+            src: src,
+            height: '22',
+            alt: srcAltText,
+            loading: 'lazy' }),
+        _react2.default.createElement(
+            'span',
+            {
+                className: 'consonant-IconWithTextInfobit-text' },
+            text
+        )
+    );
+};
+
+IconWithText.propTypes = iconWithTextType;
+IconWithText.defaultProps = defaultProps;
+
+exports.default = IconWithText;
+
+/***/ }),
+/* 286 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var linkWithIconType = {
+    src: _propTypes.string,
+    href: _propTypes.string,
+    text: _propTypes.string,
+    linkHint: _propTypes.string,
+    srcAltText: _propTypes.string,
+    openInNewTab: (0, _propTypes.oneOfType)([_propTypes.string, _propTypes.bool])
+};
+
+var defaultProps = {
+    src: '',
+    href: '',
+    text: '',
+    linkHint: '',
+    srcAltText: '',
+    openInNewTab: true
+};
+
+/**
+ * LinkWithIcon Infobit (shown in 3:2 Card Footer)
+ *
+ * @component
+ * @example
+ * const props= {
+    href: String,
+    openInNewTab: Boolean,
+    linkHint: String,
+    text: String,
+    src: String,
+    srcAltText: String,
+ * }
+ * return (
+ *   <LinkWithIcon {...props}/>
+ * )
+ */
+var LinkWithIcon = function LinkWithIcon(_ref) {
+    var href = _ref.href,
+        openInNewTab = _ref.openInNewTab,
+        linkHint = _ref.linkHint,
+        text = _ref.text,
+        src = _ref.src,
+        srcAltText = _ref.srcAltText;
+    return _react2.default.createElement(
+        'a',
+        {
+            'daa-ll': text,
+            href: href,
+            'data-testid': 'consonant-LinkWithIcoInfobit',
+            target: openInNewTab ? '_blank' : '_self',
+            className: 'consonant-LinkWithIcoInfobit',
+            title: linkHint,
+            rel: 'noopener noreferrer',
+            tabIndex: '0' },
+        src && _react2.default.createElement('img', { src: src, alt: srcAltText, loading: 'lazy', height: '18' }),
+        _react2.default.createElement(
+            'span',
+            null,
+            text
+        )
+    );
+};
+
+LinkWithIcon.propTypes = linkWithIconType;
+LinkWithIcon.defaultProps = defaultProps;
+
+exports.default = LinkWithIcon;
+
+/***/ }),
+/* 287 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(1);
+
+var _prettyFormat = __webpack_require__(42);
+
+var _prettyFormat2 = _interopRequireDefault(_prettyFormat);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var dateIntervalType = {
+    locale: _propTypes.string.isRequired,
+    endTime: _propTypes.string.isRequired,
+    startTime: _propTypes.string.isRequired,
+    dateFormat: _propTypes.string.isRequired
+};
+
+/**
+ * Date Interval Infobit (shown in 3:2 Card Footer)
+ *
+ * @component
+ * @example
+ * const props= {
+    startTime: String,
+    endTime: String,
+    locale: String,
+    dateFormat: String,
+ * }
+ * return (
+ *   <DateInterval {...props}/>
+ * )
+ */
+var DateInterval = function DateInterval(_ref) {
+    var startTime = _ref.startTime,
+        endTime = _ref.endTime,
+        locale = _ref.locale,
+        dateFormat = _ref.dateFormat;
+
+    var prettyDateInterval = (0, _prettyFormat2.default)(startTime, endTime, locale, dateFormat);
+    return _react2.default.createElement(
+        'span',
+        {
+            title: prettyDateInterval,
+            className: 'consonant-DateIntervalInfobit' },
+        prettyDateInterval
+    );
+};
+
+DateInterval.propTypes = dateIntervalType;
+
+exports.default = DateInterval;
+
+/***/ }),
+/* 288 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = __webpack_require__(3);
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _propTypes = __webpack_require__(1);
+
+var _Tooltip = __webpack_require__(289);
+
+var _Tooltip2 = _interopRequireDefault(_Tooltip);
+
+var _hooks = __webpack_require__(6);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var bookmarkType = {
+    isBookmarked: _propTypes.bool,
+    saveCardIcon: _propTypes.string,
+    unsaveCardIcon: _propTypes.string,
+    onClick: _propTypes.func.isRequired,
+    cardId: _propTypes.string.isRequired,
+    disableBookmarkIco: _propTypes.bool.isRequired,
+    isProductCard: _propTypes.bool
+};
+
+var defaultProps = {
+    saveCardIcon: '',
+    unsaveCardIcon: '',
+    isBookmarked: false,
+    isProductCard: false
+};
+
+/**
+ * Bookmark Infobit (shown in 3:2 Card Footer)
+ * Used to save/unsave a card to local storage
+ *
+ * @component
+ * @example
+ * const props= {
+    cardId: String,
+    isBookmarked: String,
+    saveCardIcon: String,
+    unsaveCardIcon: String,
+    cardSaveText: String,
+    cardUnsaveText: String,
+    onClick: Function,
+    disableBookmarkIco: Boolean,
+ * }
+ * return (
+ *   <Bookmark {...props}/>
+ * )
+ */
+var Bookmark = function Bookmark(_ref) {
+    var cardId = _ref.cardId,
+        isBookmarked = _ref.isBookmarked,
+        saveCardIcon = _ref.saveCardIcon,
+        unsaveCardIcon = _ref.unsaveCardIcon,
+        onClick = _ref.onClick,
+        disableBookmarkIco = _ref.disableBookmarkIco,
+        isProductCard = _ref.isProductCard;
+
+    var getConfig = (0, _hooks.useConfig)();
+    var showOnCards = getConfig('bookmarks', 'showOnCards');
+
+    /**
+     **** Authored Configs ****
+     */
+    var saveCardText = getConfig('bookmarks', 'i18n.card.saveText');
+    var unsaveCardText = getConfig('bookmarks', 'i18n.card.unsaveText');
+
+    var bookmarkInfobitClass = (0, _classnames2.default)({
+        'consonant-BookmarkInfobit': true,
+        'is-active': isBookmarked,
+        'is-disabled': disableBookmarkIco
+    });
+
+    var bookmarkIcon = function bookmarkIcon() {
+        var cardIcon = isBookmarked ? saveCardIcon : unsaveCardIcon;
+        return _react2.default.createElement('span', {
+            'data-testid': 'consonant-BookmarkInfobit-ico',
+            className: 'consonant-BookmarkInfobit-ico',
+            'daa-ll': 'bookmark',
+            style: { backgroundImage: cardIcon ? 'url(' + cardIcon + ')' : '' } });
+    };
+
+    var handleClick = function handleClick(clickEvt) {
+        clickEvt.stopPropagation();
+        onClick(cardId);
+    };
+
+    var tooltipText = isBookmarked ? unsaveCardText : saveCardText;
+
+    return !isProductCard && showOnCards && _react2.default.createElement(
+        'button',
+        {
+            'data-testid': 'consonant-BookmarkInfobit',
+            'data-tooltip-wrapper': true,
+            type: 'button',
+            className: bookmarkInfobitClass,
+            onClick: handleClick,
+            tabIndex: '0' },
+        showOnCards && bookmarkIcon(),
+        showOnCards && _react2.default.createElement(_Tooltip2.default, {
+            'data-testid': 'consonant-Tooltip',
+            text: tooltipText })
+    );
+};
+
+Bookmark.propTypes = bookmarkType;
+Bookmark.defaultProps = defaultProps;
+
+exports.default = Bookmark;
+
+/***/ }),
+/* 289 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var tooltipType = { text: _propTypes.string };
+var defaultProps = { text: '' };
+
+/**
+ * Tooltip (shown in 3:2 Card Footer -- primarily used with bookmark infobit)
+ * Used on hover to indicate to users that they do or not do an actino
+ *
+ * @component
+ * @example
+ * const props= {
+    text: String,
+ * }
+ * return (
+ *   <Tooltip {...props}/>
+ * )
+ */
+var Tooltip = function Tooltip(_ref) {
+    var text = _ref.text;
+    return _react2.default.createElement(
+        'span',
+        {
+            className: 'consonant-Tooltip' },
+        text
+    );
+};
+
+Tooltip.propTypes = tooltipType;
+Tooltip.defaultProps = defaultProps;
+
+exports.default = Tooltip;
+
+/***/ }),
+/* 290 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Gated Icon svg
+ */
+var Gated = function Gated() {
+    return _react2.default.createElement(
+        "span",
+        { className: "consonant-GatedInfobit" },
+        _react2.default.createElement(
+            "svg",
+            { xmlns: "http://www.w3.org/2000/svg", height: "20", viewBox: "0 0 15 20", width: "15" },
+            _react2.default.createElement("path", {
+                fill: "#747474",
+                d: "M14.38,8.66h-0.62v-2.3c0.06-3.45-2.69-6.3-6.14-6.36c-3.45-0.06-6.3,2.69-6.36,6.14 c0,0.07,0,0.15,0,0.22v2.3H0.63C0.28,8.66,0,8.95,0,9.29c0,0,0,0,0,0v10.07C0,19.71,0.28,20,0.62,20c0,0,0,0,0,0h13.75 c0.35,0,0.63-0.29,0.62-0.63c0,0,0,0,0,0V9.29C15,8.95,14.72,8.66,14.38,8.66C14.38,8.66,14.38,8.66,14.38,8.66z M3.75,6.36 c0-2.07,1.68-3.75,3.75-3.75s3.75,1.68,3.75,3.75v2.3h-7.5V6.36z M8.75,15.09v1.76c0,0.35-0.28,0.63-0.62,0.63c0,0,0,0,0,0H6.88 c-0.35,0-0.63-0.29-0.62-0.63c0,0,0,0,0,0v-1.76c-0.58-0.53-0.78-1.36-0.5-2.09c0.36-0.97,1.43-1.46,2.4-1.1 c0.51,0.19,0.91,0.59,1.1,1.1C9.53,13.73,9.33,14.56,8.75,15.09z" })
+        )
+    );
+};
+
+exports.default = Gated;
+
+/***/ }),
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52814,7 +52446,7 @@ var _classnames = __webpack_require__(3);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _cuid = __webpack_require__(43);
+var _cuid = __webpack_require__(44);
 
 var _cuid2 = _interopRequireDefault(_cuid);
 
@@ -53155,6 +52787,393 @@ TextCard.defaultProps = defaultProps;
 exports.default = TextCard;
 
 /***/ }),
+/* 292 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = __webpack_require__(3);
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _cuid = __webpack_require__(44);
+
+var _cuid2 = _interopRequireDefault(_cuid);
+
+var _propTypes = __webpack_require__(1);
+
+var _CardFooter = __webpack_require__(74);
+
+var _CardFooter2 = _interopRequireDefault(_CardFooter);
+
+var _prettyFormat = __webpack_require__(42);
+
+var _prettyFormat2 = _interopRequireDefault(_prettyFormat);
+
+var _constants = __webpack_require__(15);
+
+var _Helpers = __webpack_require__(33);
+
+var _general = __webpack_require__(5);
+
+var _hooks = __webpack_require__(6);
+
+var _card = __webpack_require__(16);
+
+var _LinkBlocker = __webpack_require__(27);
+
+var _LinkBlocker2 = _interopRequireDefault(_LinkBlocker);
+
+var _videoButton = __webpack_require__(41);
+
+var _videoButton2 = _interopRequireDefault(_videoButton);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var CardType = {
+    cardStyle: _propTypes.string,
+    isBookmarked: _propTypes.bool,
+    dateFormat: _propTypes.string,
+    id: _propTypes.string.isRequired,
+    lh: _propTypes.string,
+    styles: (0, _propTypes.shape)(_card.stylesType),
+    disableBookmarkIco: _propTypes.bool,
+    onClick: _propTypes.func.isRequired,
+    overlays: (0, _propTypes.shape)(_card.overlaysType),
+    footer: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_card.footerType)),
+    contentArea: (0, _propTypes.shape)(_card.contentAreaType),
+    renderBorder: _propTypes.bool,
+    renderOverlay: _propTypes.bool,
+    overlayLink: _propTypes.string,
+    hideCTA: _propTypes.bool,
+    startDate: _propTypes.string,
+    endDate: _propTypes.string,
+    modifiedDate: _propTypes.string,
+    bannerMap: (0, _propTypes.shape)(Object).isRequired,
+    tags: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_card.tagsType)),
+    onFocus: _propTypes.func.isRequired
+};
+
+var defaultProps = {
+    cardStyle: '',
+    footer: [],
+    styles: {},
+    overlays: {},
+    dateFormat: '',
+    contentArea: {},
+    lh: '',
+    isBookmarked: false,
+    disableBookmarkIco: false,
+    renderBorder: true,
+    renderOverlay: false,
+    overlayLink: '',
+    hideCTA: false,
+    startDate: '',
+    endDate: '',
+    modifiedDate: '',
+    tags: []
+};
+
+/**
+ * 1/2 image aspect ratio card
+ *
+ * @component
+ * @example
+ * const props= {
+    id: String,
+    styles: Object,
+    contentArea: Object,
+    overlays: Object,
+    renderBorder: Boolean,
+    renderOverlay: Boolean,
+    overlayLink: String,
+ * }
+ * return (
+ *   <Card {...props}/>
+ * )
+ */
+var Card = function Card(props) {
+    var id = props.id,
+        footer = props.footer,
+        lh = props.lh,
+        tags = props.tags,
+        cardStyle = props.cardStyle,
+        disableBookmarkIco = props.disableBookmarkIco,
+        isBookmarked = props.isBookmarked,
+        onClick = props.onClick,
+        dateFormat = props.dateFormat,
+        modifiedDate = props.modifiedDate,
+        _props$styles = props.styles,
+        image = _props$styles.backgroundImage,
+        altText = _props$styles.backgroundAltText,
+        mnemonic = _props$styles.mnemonic,
+        _props$contentArea = props.contentArea,
+        title = _props$contentArea.title,
+        label = _props$contentArea.detailText,
+        description = _props$contentArea.description,
+        _props$contentArea$da = _props$contentArea.dateDetailText,
+        startTime = _props$contentArea$da.startTime,
+        endTime = _props$contentArea$da.endTime,
+        _props$overlays = props.overlays,
+        _props$overlays$banne = _props$overlays.banner,
+        bannerDescription = _props$overlays$banne.description,
+        bannerFontColor = _props$overlays$banne.fontColor,
+        bannerBackgroundColor = _props$overlays$banne.backgroundColor,
+        bannerIcon = _props$overlays$banne.icon,
+        videoURL = _props$overlays.videoButton.url,
+        _props$overlays$logo = _props$overlays.logo,
+        logoSrc = _props$overlays$logo.src,
+        logoAlt = _props$overlays$logo.alt,
+        logoBg = _props$overlays$logo.backgroundColor,
+        logoBorderBg = _props$overlays$logo.borderColor,
+        badgeText = _props$overlays.label.description,
+        renderBorder = props.renderBorder,
+        renderOverlay = props.renderOverlay,
+        overlayLink = props.overlayLink,
+        hideCTA = props.hideCTA,
+        startDate = props.startDate,
+        endDate = props.endDate,
+        bannerMap = props.bannerMap,
+        onFocus = props.onFocus;
+
+
+    var bannerBackgroundColorToUse = bannerBackgroundColor;
+    var bannerIconToUse = bannerIcon;
+    var bannerFontColorToUse = bannerFontColor;
+    var bannerDescriptionToUse = bannerDescription;
+
+    var getConfig = (0, _hooks.useConfig)();
+
+    /**
+     **** Authored Configs ****
+     */
+    var i18nFormat = getConfig('collection', 'i18n.prettyDateIntervalFormat');
+    var locale = getConfig('language', '');
+    var disableBanners = getConfig('collection', 'disableBanners');
+    var cardButtonStyle = getConfig('collection', 'button.style');
+    var headingLevel = getConfig('collection.i18n', 'cardTitleAccessibilityLevel');
+    var additionalParams = getConfig('collection', 'additionalRequestParams');
+    var detailsTextOption = getConfig('collection', 'detailsTextOption');
+    var lastModified = getConfig('collection', 'i18n.lastModified');
+
+    /**
+     * Class name for the card:
+     * whether card border should be rendered or no;
+     * @type {String}
+     */
+    var cardClassName = (0, _classnames2.default)({
+        'consonant-Card': true,
+        'consonant-u-noBorders': !renderBorder,
+        'consonant-hide-cta': hideCTA
+    });
+
+    /**
+     * Formatted date string
+     * @type {String}
+     */
+    var prettyDate = startTime ? (0, _prettyFormat2.default)(startTime, endTime, locale, i18nFormat) : '';
+
+    /**
+     * Detail text
+     * @type {String}
+     */
+    var detailText = prettyDate || label;
+    if (modifiedDate && detailsTextOption === 'modifiedDate') {
+        var localModifiedDate = new Date(modifiedDate);
+        detailText = lastModified.replace('{date}', localModifiedDate.toLocaleDateString());
+    }
+
+    /**
+     * isGated
+     * @type {Boolean}
+     */
+    var isGated = (0, _Helpers.hasTag)(/caas:gated/, tags);
+
+    /**
+     * Extends infobits with the configuration data
+     * @param {Array} data - Array of the infobits
+     * @return {Array} - Array of the infobits with the configuration data added
+     */
+    function extendFooterData(data) {
+        if (!data) return [];
+
+        return data.map(function (infobit) {
+            // MWPW-129085: Compiler wrongly compiles this object to private, read-only,
+            // Created copy so object instance has public methods and properties.
+            var copy = _extends({}, infobit);
+            if (copy.type === _constants.INFOBIT_TYPE.BOOKMARK) {
+                if (isGated) {
+                    copy.type = _constants.INFOBIT_TYPE.GATED;
+                }
+                return _extends({}, infobit, {
+                    cardId: id,
+                    disableBookmarkIco: disableBookmarkIco,
+                    isBookmarked: isBookmarked,
+                    onClick: onClick
+                });
+            } else if (copy.type === _constants.INFOBIT_TYPE.DATE) {
+                return _extends({}, copy, {
+                    dateFormat: dateFormat,
+                    locale: locale
+                });
+            } else if (cardButtonStyle === 'link') {
+                copy.type = _constants.INFOBIT_TYPE.LINK;
+            }
+            return _extends({}, copy, {
+                isCta: true
+            });
+        });
+    }
+
+    if (startDate && endDate) {
+        var eventBanner = (0, _general.getEventBanner)(startDate, endDate, bannerMap);
+        bannerBackgroundColorToUse = eventBanner.backgroundColor;
+        bannerDescriptionToUse = eventBanner.description;
+        bannerFontColorToUse = eventBanner.fontColor;
+        bannerIconToUse = eventBanner.icon;
+    }
+    var hasBanner = bannerDescriptionToUse && bannerFontColorToUse && bannerBackgroundColorToUse;
+    var headingAria = videoURL || label || detailText || description || logoSrc || badgeText || hasBanner && !disableBanners ? '' : title;
+
+    var ariaText = title;
+    if (hasBanner && !disableBanners) {
+        ariaText = bannerDescriptionToUse + ' | ' + ariaText;
+    }
+
+    var linkBlockerTarget = (0, _general.getLinkTarget)(overlayLink);
+    var addParams = new URLSearchParams(additionalParams);
+    var overlay = additionalParams && addParams.keys().next().value ? overlayLink + '?' + addParams.toString() : overlayLink;
+
+    var isOneHalf = cardStyle === '1-2';
+    var isProduct = cardStyle === 'product';
+
+    var showHeader = !isProduct;
+    var showText = isOneHalf || isProduct;
+    var showFooter = isOneHalf || isProduct;
+
+    return _react2.default.createElement(
+        'div',
+        {
+            'daa-lh': lh,
+            className: cardClassName,
+            'aria-label': ariaText,
+            'data-testid': 'consonant-Card',
+            id: id },
+        showHeader && _react2.default.createElement(
+            'div',
+            {
+                'data-testid': 'consonant-Card-header',
+                className: 'consonant-Card-header' },
+            _react2.default.createElement('img', { src: image, alt: altText, 'aria-label': altText, loading: 'lazy' }),
+            hasBanner && !disableBanners && _react2.default.createElement(
+                'span',
+                {
+                    'data-testid': 'consonant-Card-banner',
+                    className: 'consonant-Card-banner',
+                    style: {
+                        backgroundColor: bannerBackgroundColorToUse,
+                        color: bannerFontColorToUse
+                    } },
+                bannerIconToUse && _react2.default.createElement(
+                    'div',
+                    {
+                        className: 'consonant-Card-bannerIconWrapper' },
+                    _react2.default.createElement('img', {
+                        alt: '',
+                        loading: 'lazy',
+                        src: bannerIconToUse,
+                        'data-testid': 'consonant-Card-bannerImg' })
+                ),
+                _react2.default.createElement(
+                    'span',
+                    null,
+                    bannerDescriptionToUse
+                )
+            ),
+            badgeText && _react2.default.createElement(
+                'span',
+                {
+                    className: 'consonant-Card-badge' },
+                badgeText
+            ),
+            videoURL && _react2.default.createElement(_videoButton2.default, {
+                videoURL: videoURL,
+                onFocus: onFocus,
+                className: 'consonant-Card-videoIco' }),
+            logoSrc && _react2.default.createElement(
+                'div',
+                {
+                    style: {
+                        backgroundColor: logoBg,
+                        borderColor: logoBorderBg
+                    },
+                    className: 'consonant-Card-logo' },
+                _react2.default.createElement('img', {
+                    src: logoSrc,
+                    alt: logoAlt,
+                    loading: 'lazy',
+                    width: '32' })
+            )
+        ),
+        _react2.default.createElement(
+            'div',
+            {
+                className: 'consonant-Card-inner' },
+            detailText && _react2.default.createElement(
+                'span',
+                {
+                    'data-testid': 'consonant-Card-label',
+                    className: 'consonant-Card-label' },
+                detailText
+            ),
+            _react2.default.createElement(
+                'p',
+                {
+                    role: 'heading',
+                    'aria-label': headingAria,
+                    'aria-level': headingLevel,
+                    className: 'consonant-Card-title' },
+                isProduct && mnemonic && _react2.default.createElement('img', { src: mnemonic, alt: 'mnemonic', loading: 'lazy' }),
+                title
+            ),
+            showText && description && _react2.default.createElement(
+                'p',
+                {
+                    className: 'consonant-Card-text' },
+                description
+            ),
+            showFooter && !hideCTA && footer.map(function (footerItem) {
+                return _react2.default.createElement(_CardFooter2.default, {
+                    divider: footerItem.divider,
+                    isFluid: footerItem.isFluid,
+                    key: (0, _cuid2.default)(),
+                    left: extendFooterData(footerItem.left),
+                    center: extendFooterData(footerItem.center),
+                    right: extendFooterData(footerItem.right),
+                    onFocus: onFocus });
+            })
+        ),
+        (renderOverlay || hideCTA) && _react2.default.createElement(_LinkBlocker2.default, { target: linkBlockerTarget, link: overlay })
+    );
+};
+
+Card.propTypes = CardType;
+Card.defaultProps = defaultProps;
+
+exports.default = Card;
+
+/***/ }),
 /* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -53175,7 +53194,7 @@ var _classnames = __webpack_require__(3);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _rendering = __webpack_require__(44);
+var _rendering = __webpack_require__(43);
 
 var _hooks = __webpack_require__(6);
 
@@ -54033,7 +54052,7 @@ var _SearchIcon2 = _interopRequireDefault(_SearchIcon);
 
 var _Group = __webpack_require__(301);
 
-var _rendering = __webpack_require__(44);
+var _rendering = __webpack_require__(43);
 
 var _general = __webpack_require__(5);
 
@@ -56340,7 +56359,7 @@ var _config = __webpack_require__(21);
 
 var _Info = __webpack_require__(316);
 
-var _rendering = __webpack_require__(44);
+var _rendering = __webpack_require__(43);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
