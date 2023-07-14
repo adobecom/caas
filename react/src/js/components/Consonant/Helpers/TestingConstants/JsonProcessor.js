@@ -30,6 +30,7 @@ const addCardMetaData = [
                     detailText: 'detailText 1',
                     dateDetailText: '',
                 },
+                tags: [{ id: 'caas:tagB' }],
             },
             {
                 id: 2,
@@ -40,6 +41,10 @@ const addCardMetaData = [
                     detailText: '',
                     dateDetailText: '',
                 },
+                tags: [
+                    { id: 'caas:tagA' },
+                    { id: 'caas:tagB' },
+                ],
             },
             {
                 id: 3,
@@ -50,12 +55,14 @@ const addCardMetaData = [
                     detailText: 'detailText 2',
                     dateDetailText: '',
                 },
+                tags: [{ id: 'caas:tagC' }],
             },
         ],
         truncateTextQty: 5,
         onlyShowBookmarks: false,
         bookmarkedCardIds: [1],
         hideCtaIds: [2],
+        hideCtaTags: ['caas:tagC'],
         expectedValue: [
             {
                 id: 1,
@@ -70,6 +77,7 @@ const addCardMetaData = [
                 isBookmarked: true,
                 disableBookmarkIco: false,
                 hideCtaId: false,
+                hideCtaTags: false,
                 initial: {
                     title: 'title 1',
                     description: '12345',
@@ -77,6 +85,7 @@ const addCardMetaData = [
                     dateDetailText: '',
                     detailText: 'detailText 1',
                 },
+                tags: [{ id: 'caas:tagB' }],
             },
             {
                 id: 2,
@@ -91,6 +100,7 @@ const addCardMetaData = [
                 isBookmarked: false,
                 disableBookmarkIco: false,
                 hideCtaId: true,
+                hideCtaTags: false,
                 initial: {
                     title: '',
                     description: '',
@@ -98,6 +108,10 @@ const addCardMetaData = [
                     dateDetailText: '',
                     detailText: '',
                 },
+                tags: [
+                    { id: 'caas:tagA' },
+                    { id: 'caas:tagB' },
+                ],
             },
             {
                 id: 3,
@@ -112,6 +126,7 @@ const addCardMetaData = [
                 isBookmarked: false,
                 disableBookmarkIco: false,
                 hideCtaId: false,
+                hideCtaTags: true,
                 initial: {
                     title: 'title 2',
                     description: '123456',
@@ -119,6 +134,7 @@ const addCardMetaData = [
                     dateDetailText: '',
                     detailText: 'detailText 2',
                 },
+                tags: [{ id: 'caas:tagC' }],
             },
         ],
     },

@@ -76,6 +76,7 @@ import {
     featuredCards: [{}],
     filterPanel: {},
     hideCtaIds: [{}],
+    hideCtaTags: [{}],
     sort: {},
     pagination: {},
     bookmarks: {},
@@ -116,6 +117,11 @@ const Container = (props) => {
         .replace(/`/g, '')
         .split(',');
     const hideCtaIds = getConfig('hideCtaIds', '')
+        .toString()
+        .replace(/\[|\]/g, '')
+        .replace(/`/g, '')
+        .split(',');
+    const hideCtaTags = getConfig('hideCtaTags', '')
         .toString()
         .replace(/\[|\]/g, '')
         .replace(/`/g, '')
@@ -785,6 +791,7 @@ const Container = (props) => {
                             onlyShowBookmarks,
                             bookmarkedCardIds,
                             hideCtaIds,
+                            hideCtaTags,
                         );
                     if (payload.isHashed) {
                         const TAG_HASH_LENGTH = 6;

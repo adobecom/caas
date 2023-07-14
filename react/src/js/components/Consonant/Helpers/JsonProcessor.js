@@ -3,6 +3,7 @@ import {
     truncateString,
     removeDuplicatesByKey,
 } from './general';
+import { hasTag } from './Helpers';
 
 /**
  * Class that handles parsing raw JSON data and returning a set of processed cards
@@ -60,16 +61,27 @@ export default class JsonProcessor {
      * @param {*} onlyShowBookmarks
      * @param {*} bookmarkedCardIds
      * @param {*} hideCtaIds
+     * @param {*} hideCtaTags
      * @return {*}
      * @memberof JsonProcessor
      */
-    addCardMetaData(truncateTextQty, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds) {
+    addCardMetaData(
+        truncateTextQty,
+        onlyShowBookmarks,
+        bookmarkedCardIds,
+        hideCtaIds,
+        hideCtaTags,
+    ) {
         this.processedCards = this.processedCards.map(card => ({
             ...card,
             description: truncateString(getByPath(card, 'contentArea.description', ''), truncateTextQty),
             isBookmarked: bookmarkedCardIds.some(i => i === card.id),
             disableBookmarkIco: onlyShowBookmarks,
             hideCtaId: hideCtaIds.some(i => i === card.id),
+            hideCtaTags: hideCtaTags.some((tag) => {
+                const re = new RegExp(tag);
+                return hasTag(re, card.tags);
+            }),
             initial: {
                 title: getByPath(card, 'contentArea.title', ''),
                 description: getByPath(card, 'contentArea.description', ''),

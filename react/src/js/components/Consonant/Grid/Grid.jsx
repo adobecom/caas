@@ -199,7 +199,7 @@ const Grid = (props) => {
      * @returns {bool} - whether a cta should be hidden
      */
     const getHideCta = (card, style) => {
-        if (card.hideCtaId || style === 'hidden') return true;
+        if (card.hideCtaId || card.hideCtaTags || style === 'hidden') return true;
         return false;
     };
 
