@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 7/14/2023, 14:16:29
+ * Chimera UI Libraries - Build 7/14/2023, 14:32:36
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -48314,7 +48314,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFocusTrap", function() { return createFocusTrap; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tabbable__ = __webpack_require__(267);
 /*!
-* focus-trap 7.4.0
+* focus-trap 7.5.2
 * @license MIT, https://github.com/focus-trap/focus-trap/blob/master/LICENSE
 */
 
@@ -48400,10 +48400,10 @@ var isSelectableInput = function isSelectableInput(node) {
   return node.tagName && node.tagName.toLowerCase() === 'input' && typeof node.select === 'function';
 };
 var isEscapeEvent = function isEscapeEvent(e) {
-  return e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27;
+  return (e === null || e === void 0 ? void 0 : e.key) === 'Escape' || (e === null || e === void 0 ? void 0 : e.key) === 'Esc' || (e === null || e === void 0 ? void 0 : e.keyCode) === 27;
 };
 var isTabEvent = function isTabEvent(e) {
-  return e.key === 'Tab' || e.keyCode === 9;
+  return (e === null || e === void 0 ? void 0 : e.key) === 'Tab' || (e === null || e === void 0 ? void 0 : e.keyCode) === 9;
 };
 
 // checks for TAB by default
@@ -48487,8 +48487,11 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
     //   container: HTMLElement,
     //   tabbableNodes: Array<HTMLElement>, // empty if none
     //   focusableNodes: Array<HTMLElement>, // empty if none
-    //   firstTabbableNode: HTMLElement|null,
-    //   lastTabbableNode: HTMLElement|null,
+    //   posTabIndexesFound: boolean,
+    //   firstTabbableNode: HTMLElement|undefined,
+    //   lastTabbableNode: HTMLElement|undefined,
+    //   firstDomTabbableNode: HTMLElement|undefined,
+    //   lastDomTabbableNode: HTMLElement|undefined,
     //   nextTabbableNode: (node: HTMLElement, forward: boolean) => HTMLElement|undefined
     // }>}
     containerGroups: [],
@@ -48505,7 +48508,9 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
     paused: false,
     // timer ID for when delayInitialFocus is true and initial focus in this trap
     //  has been delayed during activation
-    delayInitialFocusTimer: undefined
+    delayInitialFocusTimer: undefined,
+    // the most recent KeyboardEvent for the configured nav key (typically [SHIFT+]TAB), if any
+    recentNavEvent: undefined
   };
   var trap; // eslint-disable-line prefer-const -- some private functions reference it, and its methods reference private functions, so we must declare here and define later
 
@@ -48524,23 +48529,26 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
   /**
    * Finds the index of the container that contains the element.
    * @param {HTMLElement} element
+   * @param {Event} [event] If available, and `element` isn't directly found in any container,
+   *  the event's composed path is used to see if includes any known trap containers in the
+   *  case where the element is inside a Shadow DOM.
    * @returns {number} Index of the container in either `state.containers` or
    *  `state.containerGroups` (the order/length of these lists are the same); -1
    *  if the element isn't found.
    */
-  var findContainerIndex = function findContainerIndex(element) {
+  var findContainerIndex = function findContainerIndex(element, event) {
+    var composedPath = typeof (event === null || event === void 0 ? void 0 : event.composedPath) === 'function' ? event.composedPath() : undefined;
     // NOTE: search `containerGroups` because it's possible a group contains no tabbable
     //  nodes, but still contains focusable nodes (e.g. if they all have `tabindex=-1`)
     //  and we still need to find the element in there
     return state.containerGroups.findIndex(function (_ref) {
       var container = _ref.container,
         tabbableNodes = _ref.tabbableNodes;
-      return container.contains(element) ||
-      // fall back to explicit tabbable search which will take into consideration any
+      return container.contains(element) || ( // fall back to explicit tabbable search which will take into consideration any
       //  web components if the `tabbableOptions.getShadowRoot` option was used for
       //  the trap, enabling shadow DOM support in tabbable (`Node.contains()` doesn't
       //  look inside web components even if open)
-      tabbableNodes.find(function (node) {
+      composedPath === null || composedPath === void 0 ? void 0 : composedPath.includes(container)) || tabbableNodes.find(function (node) {
         return node === element;
       });
     });
@@ -48596,8 +48604,8 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
     if (node === false) {
       return false;
     }
-    if (node === undefined) {
-      // option not specified: use fallback options
+    if (node === undefined || !Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["c" /* isFocusable */])(node, config.tabbableOptions)) {
+      // option not specified nor focusable: use fallback options
       if (findContainerIndex(doc.activeElement) >= 0) {
         node = doc.activeElement;
       } else {
@@ -48615,17 +48623,44 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
   };
   var updateTabbableNodes = function updateTabbableNodes() {
     state.containerGroups = state.containers.map(function (container) {
-      var tabbableNodes = Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["d" /* tabbable */])(container, config.tabbableOptions);
+      var tabbableNodes = Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["e" /* tabbable */])(container, config.tabbableOptions);
 
       // NOTE: if we have tabbable nodes, we must have focusable nodes; focusable nodes
-      //  are a superset of tabbable nodes
+      //  are a superset of tabbable nodes since nodes with negative `tabindex` attributes
+      //  are focusable but not tabbable
       var focusableNodes = Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["a" /* focusable */])(container, config.tabbableOptions);
+      var firstTabbableNode = tabbableNodes.length > 0 ? tabbableNodes[0] : undefined;
+      var lastTabbableNode = tabbableNodes.length > 0 ? tabbableNodes[tabbableNodes.length - 1] : undefined;
+      var firstDomTabbableNode = focusableNodes.find(function (node) {
+        return Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["d" /* isTabbable */])(node);
+      });
+      var lastDomTabbableNode = focusableNodes.slice().reverse().find(function (node) {
+        return Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["d" /* isTabbable */])(node);
+      });
+      var posTabIndexesFound = !!tabbableNodes.find(function (node) {
+        return Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["b" /* getTabIndex */])(node) > 0;
+      });
       return {
         container: container,
         tabbableNodes: tabbableNodes,
         focusableNodes: focusableNodes,
-        firstTabbableNode: tabbableNodes.length > 0 ? tabbableNodes[0] : null,
-        lastTabbableNode: tabbableNodes.length > 0 ? tabbableNodes[tabbableNodes.length - 1] : null,
+        /** True if at least one node with positive `tabindex` was found in this container. */
+        posTabIndexesFound: posTabIndexesFound,
+        /** First tabbable node in container, __tabindex__ order; `undefined` if none. */
+        firstTabbableNode: firstTabbableNode,
+        /** Last tabbable node in container, __tabindex__ order; `undefined` if none. */
+        lastTabbableNode: lastTabbableNode,
+        // NOTE: DOM order is NOT NECESSARILY "document position" order, but figuring that out
+        //  would require more than just https://developer.mozilla.org/en-US/docs/Web/API/Node/compareDocumentPosition
+        //  because that API doesn't work with Shadow DOM as well as it should (@see
+        //  https://github.com/whatwg/dom/issues/320) and since this first/last is only needed, so far,
+        //  to address an edge case related to positive tabindex support, this seems like a much easier,
+        //  "close enough most of the time" alternative for positive tabindexes which should generally
+        //  be avoided anyway...
+        /** First tabbable node in container, __DOM__ order; `undefined` if none. */
+        firstDomTabbableNode: firstDomTabbableNode,
+        /** Last tabbable node in container, __DOM__ order; `undefined` if none. */
+        lastDomTabbableNode: lastDomTabbableNode,
         /**
          * Finds the __tabbable__ node that follows the given node in the specified direction,
          *  in this container, if any.
@@ -48636,30 +48671,24 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
          */
         nextTabbableNode: function nextTabbableNode(node) {
           var forward = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-          // NOTE: If tabindex is positive (in order to manipulate the tab order separate
-          //  from the DOM order), this __will not work__ because the list of focusableNodes,
-          //  while it contains tabbable nodes, does not sort its nodes in any order other
-          //  than DOM order, because it can't: Where would you place focusable (but not
-          //  tabbable) nodes in that order? They have no order, because they aren't tabbale...
-          // Support for positive tabindex is already broken and hard to manage (possibly
-          //  not supportable, TBD), so this isn't going to make things worse than they
-          //  already are, and at least makes things better for the majority of cases where
-          //  tabindex is either 0/unset or negative.
-          // FYI, positive tabindex issue: https://github.com/focus-trap/focus-trap/issues/375
-          var nodeIdx = focusableNodes.findIndex(function (n) {
-            return n === node;
-          });
+          var nodeIdx = tabbableNodes.indexOf(node);
           if (nodeIdx < 0) {
-            return undefined;
-          }
-          if (forward) {
-            return focusableNodes.slice(nodeIdx + 1).find(function (n) {
-              return Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["c" /* isTabbable */])(n, config.tabbableOptions);
+            // either not tabbable nor focusable, or was focused but not tabbable (negative tabindex):
+            //  since `node` should at least have been focusable, we assume that's the case and mimic
+            //  what browsers do, which is set focus to the next node in __document position order__,
+            //  regardless of positive tabindexes, if any -- and for reasons explained in the NOTE
+            //  above related to `firstDomTabbable` and `lastDomTabbable` properties, we fall back to
+            //  basic DOM order
+            if (forward) {
+              return focusableNodes.slice(focusableNodes.indexOf(node) + 1).find(function (el) {
+                return Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["d" /* isTabbable */])(el);
+              });
+            }
+            return focusableNodes.slice(0, focusableNodes.indexOf(node)).reverse().find(function (el) {
+              return Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["d" /* isTabbable */])(el);
             });
           }
-          return focusableNodes.slice(0, nodeIdx).reverse().find(function (n) {
-            return Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["c" /* isTabbable */])(n, config.tabbableOptions);
-          });
+          return tabbableNodes[nodeIdx + (forward ? 1 : -1)];
         }
       };
     });
@@ -48671,6 +48700,19 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
     if (state.tabbableGroups.length <= 0 && !getNodeForOption('fallbackFocus') // returning false not supported for this option
     ) {
       throw new Error('Your focus-trap must have at least one container with at least one tabbable node in it at all times');
+    }
+
+    // NOTE: Positive tabindexes are only properly supported in single-container traps because
+    //  doing it across multiple containers where tabindexes could be all over the place
+    //  would require Tabbable to support multiple containers, would require additional
+    //  specialized Shadow DOM support, and would require Tabbable's multi-container support
+    //  to look at those containers in document position order rather than user-provided
+    //  order (as they are treated in Focus-trap, for legacy reasons). See discussion on
+    //  https://github.com/focus-trap/focus-trap/issues/375 for more details.
+    if (state.containerGroups.find(function (g) {
+      return g.posTabIndexesFound;
+    }) && state.containerGroups.length > 1) {
+      throw new Error("At least one node with a positive tabindex was found in one of your focus-trap's multiple containers. Positive tabindexes are only supported in single-container focus-traps.");
     }
   };
   var tryFocus = function tryFocus(node) {
@@ -48687,6 +48729,7 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
     node.focus({
       preventScroll: !!config.preventScroll
     });
+    // NOTE: focus() API does not trigger focusIn event so set MRU node manually
     state.mostRecentlyFocusedNode = node;
     if (isSelectableInput(node)) {
       node.select();
@@ -48697,11 +48740,113 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
     return node ? node : node === false ? false : previousActiveElement;
   };
 
+  /**
+   * Finds the next node (in either direction) where focus should move according to a
+   *  keyboard focus-in event.
+   * @param {Object} params
+   * @param {Node} [params.target] Known target __from which__ to navigate, if any.
+   * @param {KeyboardEvent|FocusEvent} [params.event] Event to use if `target` isn't known (event
+   *  will be used to determine the `target`). Ignored if `target` is specified.
+   * @param {boolean} [params.isBackward] True if focus should move backward.
+   * @returns {Node|undefined} The next node, or `undefined` if a next node couldn't be
+   *  determined given the current state of the trap.
+   */
+  var findNextNavNode = function findNextNavNode(_ref2) {
+    var target = _ref2.target,
+      event = _ref2.event,
+      _ref2$isBackward = _ref2.isBackward,
+      isBackward = _ref2$isBackward === void 0 ? false : _ref2$isBackward;
+    target = target || getActualTarget(event);
+    updateTabbableNodes();
+    var destinationNode = null;
+    if (state.tabbableGroups.length > 0) {
+      // make sure the target is actually contained in a group
+      // NOTE: the target may also be the container itself if it's focusable
+      //  with tabIndex='-1' and was given initial focus
+      var containerIndex = findContainerIndex(target, event);
+      var containerGroup = containerIndex >= 0 ? state.containerGroups[containerIndex] : undefined;
+      if (containerIndex < 0) {
+        // target not found in any group: quite possible focus has escaped the trap,
+        //  so bring it back into...
+        if (isBackward) {
+          // ...the last node in the last group
+          destinationNode = state.tabbableGroups[state.tabbableGroups.length - 1].lastTabbableNode;
+        } else {
+          // ...the first node in the first group
+          destinationNode = state.tabbableGroups[0].firstTabbableNode;
+        }
+      } else if (isBackward) {
+        // REVERSE
+
+        // is the target the first tabbable node in a group?
+        var startOfGroupIndex = findIndex(state.tabbableGroups, function (_ref3) {
+          var firstTabbableNode = _ref3.firstTabbableNode;
+          return target === firstTabbableNode;
+        });
+        if (startOfGroupIndex < 0 && (containerGroup.container === target || Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["c" /* isFocusable */])(target, config.tabbableOptions) && !Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["d" /* isTabbable */])(target, config.tabbableOptions) && !containerGroup.nextTabbableNode(target, false))) {
+          // an exception case where the target is either the container itself, or
+          //  a non-tabbable node that was given focus (i.e. tabindex is negative
+          //  and user clicked on it or node was programmatically given focus)
+          //  and is not followed by any other tabbable node, in which
+          //  case, we should handle shift+tab as if focus were on the container's
+          //  first tabbable node, and go to the last tabbable node of the LAST group
+          startOfGroupIndex = containerIndex;
+        }
+        if (startOfGroupIndex >= 0) {
+          // YES: then shift+tab should go to the last tabbable node in the
+          //  previous group (and wrap around to the last tabbable node of
+          //  the LAST group if it's the first tabbable node of the FIRST group)
+          var destinationGroupIndex = startOfGroupIndex === 0 ? state.tabbableGroups.length - 1 : startOfGroupIndex - 1;
+          var destinationGroup = state.tabbableGroups[destinationGroupIndex];
+          destinationNode = Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["b" /* getTabIndex */])(target) >= 0 ? destinationGroup.lastTabbableNode : destinationGroup.lastDomTabbableNode;
+        } else if (!isTabEvent(event)) {
+          // user must have customized the nav keys so we have to move focus manually _within_
+          //  the active group: do this based on the order determined by tabbable()
+          destinationNode = containerGroup.nextTabbableNode(target, false);
+        }
+      } else {
+        // FORWARD
+
+        // is the target the last tabbable node in a group?
+        var lastOfGroupIndex = findIndex(state.tabbableGroups, function (_ref4) {
+          var lastTabbableNode = _ref4.lastTabbableNode;
+          return target === lastTabbableNode;
+        });
+        if (lastOfGroupIndex < 0 && (containerGroup.container === target || Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["c" /* isFocusable */])(target, config.tabbableOptions) && !Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["d" /* isTabbable */])(target, config.tabbableOptions) && !containerGroup.nextTabbableNode(target))) {
+          // an exception case where the target is the container itself, or
+          //  a non-tabbable node that was given focus (i.e. tabindex is negative
+          //  and user clicked on it or node was programmatically given focus)
+          //  and is not followed by any other tabbable node, in which
+          //  case, we should handle tab as if focus were on the container's
+          //  last tabbable node, and go to the first tabbable node of the FIRST group
+          lastOfGroupIndex = containerIndex;
+        }
+        if (lastOfGroupIndex >= 0) {
+          // YES: then tab should go to the first tabbable node in the next
+          //  group (and wrap around to the first tabbable node of the FIRST
+          //  group if it's the last tabbable node of the LAST group)
+          var _destinationGroupIndex = lastOfGroupIndex === state.tabbableGroups.length - 1 ? 0 : lastOfGroupIndex + 1;
+          var _destinationGroup = state.tabbableGroups[_destinationGroupIndex];
+          destinationNode = Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["b" /* getTabIndex */])(target) >= 0 ? _destinationGroup.firstTabbableNode : _destinationGroup.firstDomTabbableNode;
+        } else if (!isTabEvent(event)) {
+          // user must have customized the nav keys so we have to move focus manually _within_
+          //  the active group: do this based on the order determined by tabbable()
+          destinationNode = containerGroup.nextTabbableNode(target);
+        }
+      }
+    } else {
+      // no groups available
+      // NOTE: the fallbackFocus option does not support returning false to opt-out
+      destinationNode = getNodeForOption('fallbackFocus');
+    }
+    return destinationNode;
+  };
+
   // This needs to be done on mousedown and touchstart instead of click
   // so that it precedes the focus event.
   var checkPointerDown = function checkPointerDown(e) {
     var target = getActualTarget(e);
-    if (findContainerIndex(target) >= 0) {
+    if (findContainerIndex(target, e) >= 0) {
       // allow the click since it ocurred inside the trap
       return;
     }
@@ -48732,9 +48877,12 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
   };
 
   // In case focus escapes the trap for some strange reason, pull it back in.
-  var checkFocusIn = function checkFocusIn(e) {
-    var target = getActualTarget(e);
-    var targetContained = findContainerIndex(target) >= 0;
+  // NOTE: the focusIn event is NOT cancelable, so if focus escapes, it may cause unexpected
+  //  scrolling if the node that got focused was out of view; there's nothing we can do to
+  //  prevent that from happening by the time we discover that focus escaped
+  var checkFocusIn = function checkFocusIn(event) {
+    var target = getActualTarget(event);
+    var targetContained = findContainerIndex(target, event) >= 0;
 
     // In Firefox when you Tab out of an iframe the Document is briefly focused.
     if (targetContained || target instanceof Document) {
@@ -48743,9 +48891,88 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
       }
     } else {
       // escaped! pull it back in to where it just left
-      e.stopImmediatePropagation();
-      tryFocus(state.mostRecentlyFocusedNode || getInitialFocusNode());
+      event.stopImmediatePropagation();
+
+      // focus will escape if the MRU node had a positive tab index and user tried to nav forward;
+      //  it will also escape if the MRU node had a 0 tab index and user tried to nav backward
+      //  toward a node with a positive tab index
+      var nextNode; // next node to focus, if we find one
+      var navAcrossContainers = true;
+      if (state.mostRecentlyFocusedNode) {
+        if (Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["b" /* getTabIndex */])(state.mostRecentlyFocusedNode) > 0) {
+          // MRU container index must be >=0 otherwise we wouldn't have it as an MRU node...
+          var mruContainerIdx = findContainerIndex(state.mostRecentlyFocusedNode);
+          // there MAY not be any tabbable nodes in the container if there are at least 2 containers
+          //  and the MRU node is focusable but not tabbable (focus-trap requires at least 1 container
+          //  with at least one tabbable node in order to function, so this could be the other container
+          //  with nothing tabbable in it)
+          var tabbableNodes = state.containerGroups[mruContainerIdx].tabbableNodes;
+          if (tabbableNodes.length > 0) {
+            // MRU tab index MAY not be found if the MRU node is focusable but not tabbable
+            var mruTabIdx = tabbableNodes.findIndex(function (node) {
+              return node === state.mostRecentlyFocusedNode;
+            });
+            if (mruTabIdx >= 0) {
+              if (config.isKeyForward(state.recentNavEvent)) {
+                if (mruTabIdx + 1 < tabbableNodes.length) {
+                  nextNode = tabbableNodes[mruTabIdx + 1];
+                  navAcrossContainers = false;
+                }
+                // else, don't wrap within the container as focus should move to next/previous
+                //  container
+              } else {
+                if (mruTabIdx - 1 >= 0) {
+                  nextNode = tabbableNodes[mruTabIdx - 1];
+                  navAcrossContainers = false;
+                }
+                // else, don't wrap within the container as focus should move to next/previous
+                //  container
+              }
+              // else, don't find in container order without considering direction too
+            }
+          }
+          // else, no tabbable nodes in that container (which means we must have at least one other
+          //  container with at least one tabbable node in it, otherwise focus-trap would've thrown
+          //  an error the last time updateTabbableNodes() was run): find next node among all known
+          //  containers
+        } else {
+          // check to see if there's at least one tabbable node with a positive tab index inside
+          //  the trap because focus seems to escape when navigating backward from a tabbable node
+          //  with tabindex=0 when this is the case (instead of wrapping to the tabbable node with
+          //  the greatest positive tab index like it should)
+          if (!state.containerGroups.some(function (g) {
+            return g.tabbableNodes.some(function (n) {
+              return Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["b" /* getTabIndex */])(n) > 0;
+            });
+          })) {
+            // no containers with tabbable nodes with positive tab indexes which means the focus
+            //  escaped for some other reason and we should just execute the fallback to the
+            //  MRU node or initial focus node, if any
+            navAcrossContainers = false;
+          }
+        }
+      } else {
+        // no MRU node means we're likely in some initial condition when the trap has just
+        //  been activated and initial focus hasn't been given yet, in which case we should
+        //  fall through to trying to focus the initial focus node, which is what should
+        //  happen below at this point in the logic
+        navAcrossContainers = false;
+      }
+      if (navAcrossContainers) {
+        nextNode = findNextNavNode({
+          // move FROM the MRU node, not event-related node (which will be the node that is
+          //  outside the trap causing the focus escape we're trying to fix)
+          target: state.mostRecentlyFocusedNode,
+          isBackward: config.isKeyBackward(state.recentNavEvent)
+        });
+      }
+      if (nextNode) {
+        tryFocus(nextNode);
+      } else {
+        tryFocus(state.mostRecentlyFocusedNode || getInitialFocusNode());
+      }
     }
+    state.recentNavEvent = undefined; // clear
   };
 
   // Hijack key nav events on the first and last focusable nodes of the trap,
@@ -48754,89 +48981,11 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
   // kind of need to capture the action at the keydown phase.
   var checkKeyNav = function checkKeyNav(event) {
     var isBackward = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-    var target = getActualTarget(event);
-    updateTabbableNodes();
-    var destinationNode = null;
-    if (state.tabbableGroups.length > 0) {
-      // make sure the target is actually contained in a group
-      // NOTE: the target may also be the container itself if it's focusable
-      //  with tabIndex='-1' and was given initial focus
-      var containerIndex = findContainerIndex(target);
-      var containerGroup = containerIndex >= 0 ? state.containerGroups[containerIndex] : undefined;
-      if (containerIndex < 0) {
-        // target not found in any group: quite possible focus has escaped the trap,
-        //  so bring it back into...
-        if (isBackward) {
-          // ...the last node in the last group
-          destinationNode = state.tabbableGroups[state.tabbableGroups.length - 1].lastTabbableNode;
-        } else {
-          // ...the first node in the first group
-          destinationNode = state.tabbableGroups[0].firstTabbableNode;
-        }
-      } else if (isBackward) {
-        // REVERSE
-
-        // is the target the first tabbable node in a group?
-        var startOfGroupIndex = findIndex(state.tabbableGroups, function (_ref2) {
-          var firstTabbableNode = _ref2.firstTabbableNode;
-          return target === firstTabbableNode;
-        });
-        if (startOfGroupIndex < 0 && (containerGroup.container === target || Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["b" /* isFocusable */])(target, config.tabbableOptions) && !Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["c" /* isTabbable */])(target, config.tabbableOptions) && !containerGroup.nextTabbableNode(target, false))) {
-          // an exception case where the target is either the container itself, or
-          //  a non-tabbable node that was given focus (i.e. tabindex is negative
-          //  and user clicked on it or node was programmatically given focus)
-          //  and is not followed by any other tabbable node, in which
-          //  case, we should handle shift+tab as if focus were on the container's
-          //  first tabbable node, and go to the last tabbable node of the LAST group
-          startOfGroupIndex = containerIndex;
-        }
-        if (startOfGroupIndex >= 0) {
-          // YES: then shift+tab should go to the last tabbable node in the
-          //  previous group (and wrap around to the last tabbable node of
-          //  the LAST group if it's the first tabbable node of the FIRST group)
-          var destinationGroupIndex = startOfGroupIndex === 0 ? state.tabbableGroups.length - 1 : startOfGroupIndex - 1;
-          var destinationGroup = state.tabbableGroups[destinationGroupIndex];
-          destinationNode = destinationGroup.lastTabbableNode;
-        } else if (!isTabEvent(event)) {
-          // user must have customized the nav keys so we have to move focus manually _within_
-          //  the active group: do this based on the order determined by tabbable()
-          destinationNode = containerGroup.nextTabbableNode(target, false);
-        }
-      } else {
-        // FORWARD
-
-        // is the target the last tabbable node in a group?
-        var lastOfGroupIndex = findIndex(state.tabbableGroups, function (_ref3) {
-          var lastTabbableNode = _ref3.lastTabbableNode;
-          return target === lastTabbableNode;
-        });
-        if (lastOfGroupIndex < 0 && (containerGroup.container === target || Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["b" /* isFocusable */])(target, config.tabbableOptions) && !Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["c" /* isTabbable */])(target, config.tabbableOptions) && !containerGroup.nextTabbableNode(target))) {
-          // an exception case where the target is the container itself, or
-          //  a non-tabbable node that was given focus (i.e. tabindex is negative
-          //  and user clicked on it or node was programmatically given focus)
-          //  and is not followed by any other tabbable node, in which
-          //  case, we should handle tab as if focus were on the container's
-          //  last tabbable node, and go to the first tabbable node of the FIRST group
-          lastOfGroupIndex = containerIndex;
-        }
-        if (lastOfGroupIndex >= 0) {
-          // YES: then tab should go to the first tabbable node in the next
-          //  group (and wrap around to the first tabbable node of the FIRST
-          //  group if it's the last tabbable node of the LAST group)
-          var _destinationGroupIndex = lastOfGroupIndex === state.tabbableGroups.length - 1 ? 0 : lastOfGroupIndex + 1;
-          var _destinationGroup = state.tabbableGroups[_destinationGroupIndex];
-          destinationNode = _destinationGroup.firstTabbableNode;
-        } else if (!isTabEvent(event)) {
-          // user must have customized the nav keys so we have to move focus manually _within_
-          //  the active group: do this based on the order determined by tabbable()
-          destinationNode = containerGroup.nextTabbableNode(target);
-        }
-      }
-    } else {
-      // no groups available
-      // NOTE: the fallbackFocus option does not support returning false to opt-out
-      destinationNode = getNodeForOption('fallbackFocus');
-    }
+    state.recentNavEvent = event;
+    var destinationNode = findNextNavNode({
+      event: event,
+      isBackward: isBackward
+    });
     if (destinationNode) {
       if (isTabEvent(event)) {
         // since tab natively moves focus, we wouldn't have a destination node unless we
@@ -48862,7 +49011,7 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
   };
   var checkClick = function checkClick(e) {
     var target = getActualTarget(e);
-    if (findContainerIndex(target) >= 0) {
+    if (findContainerIndex(target, e) >= 0) {
       return;
     }
     if (valueOrHandler(config.clickOutsideDeactivates, e)) {
@@ -48924,6 +49073,43 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
   };
 
   //
+  // MUTATION OBSERVER
+  //
+
+  var checkDomRemoval = function checkDomRemoval(mutations) {
+    var isFocusedNodeRemoved = mutations.some(function (mutation) {
+      var removedNodes = Array.from(mutation.removedNodes);
+      return removedNodes.some(function (node) {
+        return node === state.mostRecentlyFocusedNode;
+      });
+    });
+
+    // If the currently focused is removed then browsers will move focus to the
+    // <body> element. If this happens, try to move focus back into the trap.
+    if (isFocusedNodeRemoved) {
+      tryFocus(getInitialFocusNode());
+    }
+  };
+
+  // Use MutationObserver - if supported - to detect if focused node is removed
+  // from the DOM.
+  var mutationObserver = typeof window !== 'undefined' && 'MutationObserver' in window ? new MutationObserver(checkDomRemoval) : undefined;
+  var updateObservedNodes = function updateObservedNodes() {
+    if (!mutationObserver) {
+      return;
+    }
+    mutationObserver.disconnect();
+    if (state.active && !state.paused) {
+      state.containers.map(function (container) {
+        mutationObserver.observe(container, {
+          subtree: true,
+          childList: true
+        });
+      });
+    }
+  };
+
+  //
   // TRAP DEFINITION
   //
 
@@ -48953,6 +49139,7 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
           updateTabbableNodes();
         }
         addListeners();
+        updateObservedNodes();
         onPostActivate === null || onPostActivate === void 0 ? void 0 : onPostActivate();
       };
       if (checkCanFocusTrap) {
@@ -48976,6 +49163,7 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
       removeListeners();
       state.active = false;
       state.paused = false;
+      updateObservedNodes();
       activeFocusTraps.deactivateTrap(trapStack, trap);
       var onDeactivate = getOption(options, 'onDeactivate');
       var onPostDeactivate = getOption(options, 'onPostDeactivate');
@@ -49006,6 +49194,7 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
       state.paused = true;
       onPause === null || onPause === void 0 ? void 0 : onPause();
       removeListeners();
+      updateObservedNodes();
       onPostPause === null || onPostPause === void 0 ? void 0 : onPostPause();
       return this;
     },
@@ -49019,6 +49208,7 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
       onUnpause === null || onUnpause === void 0 ? void 0 : onUnpause();
       updateTabbableNodes();
       addListeners();
+      updateObservedNodes();
       onPostUnpause === null || onPostUnpause === void 0 ? void 0 : onPostUnpause();
       return this;
     },
@@ -49030,6 +49220,7 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
       if (state.active) {
         updateTabbableNodes();
       }
+      updateObservedNodes();
       return this;
     }
   };
@@ -49049,11 +49240,12 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return focusable; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return isFocusable; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return isTabbable; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return tabbable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return getTabIndex; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return isFocusable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return isTabbable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return tabbable; });
 /*!
-* tabbable 6.1.1
+* tabbable 6.2.0
 * @license MIT, https://github.com/focus-trap/tabbable/blob/master/LICENSE
 */
 // NOTE: separate `:not()` selectors has broader browser support than the newer
@@ -49233,7 +49425,27 @@ var getCandidatesIteratively = function getCandidatesIteratively(elements, inclu
   }
   return candidates;
 };
-var getTabindex = function getTabindex(node, isScope) {
+
+/**
+ * @private
+ * Determines if the node has an explicitly specified `tabindex` attribute.
+ * @param {HTMLElement} node
+ * @returns {boolean} True if so; false if not.
+ */
+var hasTabIndex = function hasTabIndex(node) {
+  return !isNaN(parseInt(node.getAttribute('tabindex'), 10));
+};
+
+/**
+ * Determine the tab index of a given node.
+ * @param {HTMLElement} node
+ * @returns {number} Tab order (negative, 0, or positive number).
+ * @throws {Error} If `node` is falsy.
+ */
+var getTabIndex = function getTabIndex(node) {
+  if (!node) {
+    throw new Error('No node provided');
+  }
   if (node.tabIndex < 0) {
     // in Chrome, <details/>, <audio controls/> and <video controls/> elements get a default
     // `tabIndex` of -1 when the 'tabindex' attribute isn't specified in the DOM,
@@ -49242,15 +49454,27 @@ var getTabindex = function getTabindex(node, isScope) {
     // order, consider their tab index to be 0.
     // Also browsers do not return `tabIndex` correctly for contentEditable nodes;
     // so if they don't have a tabindex attribute specifically set, assume it's 0.
-    //
-    // isScope is positive for custom element with shadow root or slot that by default
-    // have tabIndex -1, but need to be sorted by document order in order for their
-    // content to be inserted in the correct position
-    if ((isScope || /^(AUDIO|VIDEO|DETAILS)$/.test(node.tagName) || isContentEditable(node)) && isNaN(parseInt(node.getAttribute('tabindex'), 10))) {
+    if ((/^(AUDIO|VIDEO|DETAILS)$/.test(node.tagName) || isContentEditable(node)) && !hasTabIndex(node)) {
       return 0;
     }
   }
   return node.tabIndex;
+};
+
+/**
+ * Determine the tab index of a given node __for sort order purposes__.
+ * @param {HTMLElement} node
+ * @param {boolean} [isScope] True for a custom element with shadow root or slot that, by default,
+ *  has tabIndex -1, but needs to be sorted by document order in order for its content to be
+ *  inserted into the correct sort position.
+ * @returns {number} Tab order (negative, 0, or positive number).
+ */
+var getSortOrderTabIndex = function getSortOrderTabIndex(node, isScope) {
+  var tabIndex = getTabIndex(node);
+  if (tabIndex < 0 && isScope && !hasTabIndex(node)) {
+    return 0;
+  }
+  return tabIndex;
 };
 var sortOrderedTabbables = function sortOrderedTabbables(a, b) {
   return a.tabIndex === b.tabIndex ? a.documentOrder - b.documentOrder : a.tabIndex - b.tabIndex;
@@ -49494,7 +49718,7 @@ var isNodeMatchingSelectorFocusable = function isNodeMatchingSelectorFocusable(o
   return true;
 };
 var isNodeMatchingSelectorTabbable = function isNodeMatchingSelectorTabbable(options, node) {
-  if (isNonTabbableRadio(node) || getTabindex(node) < 0 || !isNodeMatchingSelectorFocusable(options, node)) {
+  if (isNonTabbableRadio(node) || getTabIndex(node) < 0 || !isNodeMatchingSelectorFocusable(options, node)) {
     return false;
   }
   return true;
@@ -49519,7 +49743,7 @@ var sortByOrder = function sortByOrder(candidates) {
   candidates.forEach(function (item, i) {
     var isScope = !!item.scopeParent;
     var element = isScope ? item.scopeParent : item;
-    var candidateTabindex = getTabindex(element, isScope);
+    var candidateTabindex = getSortOrderTabIndex(element, isScope);
     var elements = isScope ? sortByOrder(item.candidates) : element;
     if (candidateTabindex === 0) {
       isScope ? regularTabbables.push.apply(regularTabbables, elements) : regularTabbables.push(element);
@@ -49538,32 +49762,32 @@ var sortByOrder = function sortByOrder(candidates) {
     return acc;
   }, []).concat(regularTabbables);
 };
-var tabbable = function tabbable(el, options) {
+var tabbable = function tabbable(container, options) {
   options = options || {};
   var candidates;
   if (options.getShadowRoot) {
-    candidates = getCandidatesIteratively([el], options.includeContainer, {
+    candidates = getCandidatesIteratively([container], options.includeContainer, {
       filter: isNodeMatchingSelectorTabbable.bind(null, options),
       flatten: false,
       getShadowRoot: options.getShadowRoot,
       shadowRootFilter: isValidShadowRootTabbable
     });
   } else {
-    candidates = getCandidates(el, options.includeContainer, isNodeMatchingSelectorTabbable.bind(null, options));
+    candidates = getCandidates(container, options.includeContainer, isNodeMatchingSelectorTabbable.bind(null, options));
   }
   return sortByOrder(candidates);
 };
-var focusable = function focusable(el, options) {
+var focusable = function focusable(container, options) {
   options = options || {};
   var candidates;
   if (options.getShadowRoot) {
-    candidates = getCandidatesIteratively([el], options.includeContainer, {
+    candidates = getCandidatesIteratively([container], options.includeContainer, {
       filter: isNodeMatchingSelectorFocusable.bind(null, options),
       flatten: true,
       getShadowRoot: options.getShadowRoot
     });
   } else {
-    candidates = getCandidates(el, options.includeContainer, isNodeMatchingSelectorFocusable.bind(null, options));
+    candidates = getCandidates(container, options.includeContainer, isNodeMatchingSelectorFocusable.bind(null, options));
   }
   return candidates;
 };
