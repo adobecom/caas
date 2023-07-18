@@ -187,7 +187,10 @@ const Card = (props) => {
     let detailText = prettyDate || label;
     if (modifiedDate && detailsTextOption === 'modifiedDate') {
         const localModifiedDate = new Date(modifiedDate);
-        detailText = lastModified.replace('{date}', localModifiedDate.toLocaleDateString());
+        // detailText = lastModified.replace('{date}', localModifiedDate.toLocaleDateString());
+        detailText = lastModified
+            && lastModified.replace('{date}', localModifiedDate.toLocaleDateString())
+            || localModifiedDate.toLocaleDateString();
     }
 
     /**
@@ -256,12 +259,17 @@ const Card = (props) => {
     const addParams = new URLSearchParams(additionalParams);
     const overlay = (additionalParams && addParams.keys().next().value) ? `${overlayLink}?${addParams.toString()}` : overlayLink;
 
+    // Card styles
     const isOneHalf = cardStyle === '1-2';
+    const isThreeFourths = cardStyle === '3-4';
+    const isHalfHeight = cardStyle === 'half-height';
     const isProduct = cardStyle === 'product';
 
+    // Card elements to show
     const showHeader = !isProduct;
-    const showText = isOneHalf || isProduct;
+    const showText = isOneHalf || isProduct || isThreeFourths;
     const showFooter = isOneHalf || isProduct;
+    const showLogo = !isHalfHeight;
 
     return (
         <div
@@ -308,7 +316,8 @@ const Card = (props) => {
                     onFocus={onFocus}
                     className="consonant-Card-videoIco" />
                 }
-                {logoSrc &&
+                {showLogo &&
+                logoSrc &&
                 <div
                     style={({
                         backgroundColor: logoBg,
@@ -362,7 +371,7 @@ const Card = (props) => {
                         onFocus={onFocus} />
                 ))}
             </div>
-            {(renderOverlay || hideCTA)
+            {(renderOverlay || hideCTA || isHalfHeight)
             && <LinkBlocker target={linkBlockerTarget} link={overlay} />}
         </div>
     );

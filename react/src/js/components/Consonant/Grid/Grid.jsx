@@ -242,7 +242,7 @@ const Grid = (props) => {
                                 renderOverlay={renderCardsOverlay}
                                 onFocus={() => scrollCardIntoView(card.id)} />
                         );
-                    case CARD_STYLES.HALF_HEIGHT:
+                    case CARD_STYLES.HALF_HEIGHT: // *** Has been disabled ***
                         return (
                             <HalfHeightCard
                                 lh={`Card ${cardNumber} | ${cleanTitle(title)} | ${id}`}

@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 7/9/2023, 21:41:31
+ * Chimera UI Libraries - Build 7/17/2023, 13:03:23
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -1648,7 +1648,7 @@ var CARD_STYLES = exports.CARD_STYLES = {
     WIDE: '1:2-DISABLED',
     SQUARE: '3:4-DISABLED',
     FULL: 'full-card-DISABLED',
-    HALF_HEIGHT: 'half-height',
+    HALF_HEIGHT: 'half-height-DISABLED',
     DOUBLE_WIDE: 'double-wide',
     CUSTOM: 'custom-card',
     PRODUCT: 'product-DISABLED',
@@ -8206,6 +8206,7 @@ var Grid = function Grid(props) {
                             return scrollCardIntoView(card.id);
                         } }));
                 case _constants.CARD_STYLES.HALF_HEIGHT:
+                    // *** Has been disabled ***
                     return _react2.default.createElement(_HalfHeight2.default, _extends({
                         lh: 'Card ' + cardNumber + ' | ' + cleanTitle(title) + ' | ' + id,
                         key: card.id
@@ -52991,7 +52992,8 @@ var Card = function Card(props) {
     var detailText = prettyDate || label;
     if (modifiedDate && detailsTextOption === 'modifiedDate') {
         var localModifiedDate = new Date(modifiedDate);
-        detailText = lastModified.replace('{date}', localModifiedDate.toLocaleDateString());
+        // detailText = lastModified.replace('{date}', localModifiedDate.toLocaleDateString());
+        detailText = lastModified && lastModified.replace('{date}', localModifiedDate.toLocaleDateString()) || localModifiedDate.toLocaleDateString();
     }
 
     /**
@@ -53055,12 +53057,17 @@ var Card = function Card(props) {
     var addParams = new URLSearchParams(additionalParams);
     var overlay = additionalParams && addParams.keys().next().value ? overlayLink + '?' + addParams.toString() : overlayLink;
 
+    // Card styles
     var isOneHalf = cardStyle === '1-2';
+    var isThreeFourths = cardStyle === '3-4';
+    var isHalfHeight = cardStyle === 'half-height';
     var isProduct = cardStyle === 'product';
 
+    // Card elements to show
     var showHeader = !isProduct;
-    var showText = isOneHalf || isProduct;
+    var showText = isOneHalf || isProduct || isThreeFourths;
     var showFooter = isOneHalf || isProduct;
+    var showLogo = !isHalfHeight;
 
     return _react2.default.createElement(
         'div',
@@ -53111,7 +53118,7 @@ var Card = function Card(props) {
                 videoURL: videoURL,
                 onFocus: onFocus,
                 className: 'consonant-Card-videoIco' }),
-            logoSrc && _react2.default.createElement(
+            showLogo && logoSrc && _react2.default.createElement(
                 'div',
                 {
                     style: {
@@ -53130,7 +53137,7 @@ var Card = function Card(props) {
             'div',
             {
                 className: 'consonant-Card-inner' },
-            detailText && _react2.default.createElement(
+            !detailText && _react2.default.createElement(
                 'span',
                 {
                     'data-testid': 'consonant-Card-label',
@@ -53164,7 +53171,7 @@ var Card = function Card(props) {
                     onFocus: onFocus });
             })
         ),
-        (renderOverlay || hideCTA) && _react2.default.createElement(_LinkBlocker2.default, { target: linkBlockerTarget, link: overlay })
+        (renderOverlay || hideCTA || isHalfHeight) && _react2.default.createElement(_LinkBlocker2.default, { target: linkBlockerTarget, link: overlay })
     );
 };
 

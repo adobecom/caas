@@ -1,5 +1,5 @@
-[data-card-style = '3-4'] .consonant {
-    &-Card {
+[data-card-style = '3-4'] {
+    .consonant-Card {
         // position: relative;
         // display: flex;
         // flex-direction: column;
@@ -9,7 +9,7 @@
         // flex: 1 1 0;
         // min-width: @consonantCardMinWidth;
         // max-width: @consonantCardMaxWidth;
-        // height: @consonantCardHeight;
+        height: @consonantCardHeight;
         // padding: 0;
         // text-align: left;
         // border: 1px solid @consonantGray300;
@@ -40,15 +40,16 @@
         // }
 
         &-header {
-            position: relative;
-            height: @consonant-ThreeFourthCard-imgHeight;
             background-color: @consonantGray300;
+            height: @consonant-ThreeFourthCard-imgHeight;
+            overflow: hidden;
+            position: relative;
             // background-position: 50% 50%;
             // background-repeat: no-repeat;
             // background-size: cover;
 
             img {
-                width: 100%;
+                min-width: 100%;
                 min-height: 100%;
             }
         }
@@ -222,5 +223,14 @@
         //         .focus-pseudo-element;
         //     }
         // }
+    }
+
+    &.consonant-CardsGrid--4up .consonant-Card {
+        height: 384px;
+
+        .consonant-Card-header {
+            height: auto;
+            min-height: 276px;
+        }
     }
 }

@@ -224,7 +224,7 @@ export const CARD_STYLES = {
     WIDE: '1:2-DISABLED',
     SQUARE: '3:4-DISABLED',
     FULL: 'full-card-DISABLED',
-    HALF_HEIGHT: 'half-height',
+    HALF_HEIGHT: 'half-height-DISABLED',
     DOUBLE_WIDE: 'double-wide',
     CUSTOM: 'custom-card',
     PRODUCT: 'product-DISABLED',
