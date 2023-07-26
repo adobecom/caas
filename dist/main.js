@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 7/14/2023, 14:16:29
+ * Chimera UI Libraries - Build 7/26/2023, 13:28:03
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -50262,8 +50262,10 @@ var OneHalfCard = function OneHalfCard(props) {
             'div',
             {
                 'data-testid': 'consonant-OneHalfCard-img',
-                className: 'consonant-OneHalfCard-img' },
-            _react2.default.createElement('img', { src: image, alt: altText, 'aria-label': altText, loading: 'lazy' }),
+                className: 'consonant-OneHalfCard-img',
+                style: { backgroundImage: 'url("' + image + '")' },
+                role: altText && 'img',
+                'aria-label': altText },
             hasBanner && !disableBanners && _react2.default.createElement(
                 'span',
                 {
@@ -56374,11 +56376,13 @@ var JsonProcessor = function () {
                     disableBookmarkIco: onlyShowBookmarks,
                     hideCtaId: hideCtaIds.some(function (i) {
                         return i === card.id;
-                    }),
+                    })
+                }, hideCtaTags.length && hideCtaTags[0] !== '' ? {
                     hideCtaTags: hideCtaTags.some(function (tag) {
                         var re = new RegExp(tag);
                         return (0, _Helpers.hasTag)(re, card.tags);
-                    }),
+                    })
+                } : { hideCtaTags: false }, {
                     initial: {
                         title: (0, _general.getByPath)(card, 'contentArea.title', ''),
                         description: (0, _general.getByPath)(card, 'contentArea.description', ''),
