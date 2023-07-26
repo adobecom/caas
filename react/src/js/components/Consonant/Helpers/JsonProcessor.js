@@ -78,10 +78,13 @@ export default class JsonProcessor {
             isBookmarked: bookmarkedCardIds.some(i => i === card.id),
             disableBookmarkIco: onlyShowBookmarks,
             hideCtaId: hideCtaIds.some(i => i === card.id),
-            hideCtaTags: hideCtaTags.some((tag) => {
-                const re = new RegExp(tag);
-                return hasTag(re, card.tags);
-            }),
+            ...((hideCtaTags.length && hideCtaTags[0] !== '')) ?
+                {
+                    hideCtaTags: hideCtaTags.some((tag) => {
+                        const re = new RegExp(tag);
+                        return hasTag(re, card.tags);
+                    }),
+                } : { hideCtaTags: false },
             initial: {
                 title: getByPath(card, 'contentArea.title', ''),
                 description: getByPath(card, 'contentArea.description', ''),
