@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 7/26/2023, 14:00:02
+ * Chimera UI Libraries - Build 7/27/2023, 15:21:30
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -1632,7 +1632,8 @@ var DEFAULT_CONFIG = exports.DEFAULT_CONFIG = {
             noResultsDescription: 'We couldn\u2019t find any results for your {query}.{break}\n            Check your spelling or try broadening your search.'
         }
     },
-    language: 'en'
+    language: 'en',
+    headers: []
 };
 
 /**
@@ -6432,6 +6433,7 @@ var Container = function Container(props) {
     var sortEnabled = getConfig('sort', 'enabled');
     var cardStyle = getConfig('collection', 'cardStyle');
     var title = getConfig('collection', 'i18n.title');
+    var headers = getConfig('headers', '');
 
     /**
      **** Constants ****
@@ -7205,7 +7207,8 @@ var Container = function Container(props) {
             var endPoint = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : collectionEndpoint;
 
             return window.fetch(endPoint, {
-                credentials: 'include'
+                credentials: 'include',
+                headers: headers
             }).then(function (resp) {
                 var ok = resp.ok,
                     status = resp.status,
