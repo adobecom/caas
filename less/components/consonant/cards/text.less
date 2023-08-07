@@ -1,32 +1,36 @@
-.consonant {
-    &-Wapper {
-        max-width: 1200px;
-    }
+// .consonant {
+//     &-Wapper {
+//         max-width: 1200px;
+//     }
 
-    &-TextCard {
-        position: relative;
-        display: flex;
-        flex-direction: column;
+//     &-TextCard {
 
-        .full-width;
+.consonant-CardsGrid.text-card .consonant {
+    &-Card {
+        // position: relative;
+        // display: flex;
+        // flex-direction: column;
 
-        flex: 1 1 0;
-        min-width: @consonantCardMinWidth;
-        max-width: @consonantCardMaxWidth;
-        padding-bottom: 7px;
-        text-align: left;
-        border: 1px solid @consonantGray300;
-        border-radius: 4px;
-        background-color: transparent;
-        overflow: hidden;
+        // .full-width;
+
+        // flex: 1 1 0;
+        height: auto;
+        // min-width: @consonantCardMinWidth;
+        // max-width: @consonantCardMaxWidth;
+        // padding-bottom: 7px;
+        // text-align: left;
+        // border: 1px solid @consonantGray300;
+        // border-radius: 4px;
+        // background-color: transparent;
+        // overflow: hidden;
 
         .card-hover;
         .card-hover-img;
 
-        &-inner {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
+        &-content {
+            // display: flex;
+            // flex-direction: column;
+            // flex-grow: 1;
             padding: 16px;
             border-bottom-left-radius: 4px;
             border-bottom-right-radius: 4px;
@@ -41,6 +45,7 @@
             max-height: 64px;
             border-top-left-radius: 4px;
             border-top-right-radius: 4px;
+            background-image: none !important;
         }
 
         &-videoIco {
@@ -61,7 +66,7 @@
             img {
                 width: 48px;
                 height: 48px;
-                object-fit: contain;
+                object-fit: cover;
                 user-select: none;
                 border: solid 1px #ccc;
             }
@@ -88,10 +93,10 @@
 
             .font(1.125rem, 1.375rem, 700, @consonantGray900);
 
-            text-decoration: none;
-            word-break: break-word;
-            -webkit-line-clamp: 2;
-            overflow: hidden;
+            // text-decoration: none;
+            // word-break: break-word;
+            // -webkit-line-clamp: 2;
+            // overflow: hidden;
         }
 
         &-text {
@@ -194,7 +199,7 @@
         @media @consonant-tablet-up {
             padding-bottom: 0;
 
-            &-inner {
+            &-content {
                 padding-bottom: 24px;
             }
         }

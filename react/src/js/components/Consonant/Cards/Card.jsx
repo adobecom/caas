@@ -260,15 +260,16 @@ const Card = (props) => {
     const overlay = (additionalParams && addParams.keys().next().value) ? `${overlayLink}?${addParams.toString()}` : overlayLink;
 
     // Card styles
-    const isOneHalf = cardStyle === '1-2';
-    const isThreeFourths = cardStyle === '3-4';
+    const isOneHalf = cardStyle === 'one-half';
+    // const isThreeFourths = cardStyle === 'three-fourths';
     const isHalfHeight = cardStyle === 'half-height';
     const isProduct = cardStyle === 'product';
+    const isText = cardStyle === 'text-card';
 
     // Card elements to show
     const showHeader = !isProduct;
-    const showText = isOneHalf || isProduct || isThreeFourths;
-    const showFooter = isOneHalf || isProduct;
+    const showText = isOneHalf || isProduct || isText;
+    const showFooter = isOneHalf || isProduct || isText;
     const showLogo = !isHalfHeight;
 
     return (
@@ -281,8 +282,10 @@ const Card = (props) => {
             {showHeader &&
             <div
                 data-testid="consonant-Card-header"
-                className="consonant-Card-header">
-                <img src={image} alt={altText} aria-label={altText} loading="lazy" />
+                className="consonant-Card-header"
+                style={{ backgroundImage: `url("${image}")` }}
+                role={altText && 'img'}
+                aria-label={altText}>
                 {hasBanner && !disableBanners &&
                 <span
                     data-testid="consonant-Card-banner"
@@ -325,8 +328,8 @@ const Card = (props) => {
                     })}
                     className="consonant-Card-logo">
                     <img
-                        src={logoSrc}
-                        alt={logoAlt}
+                        src={isText ? image : logoSrc}
+                        alt={isText ? altText : logoAlt}
                         loading="lazy"
                         width="32" />
                 </div>
@@ -334,7 +337,7 @@ const Card = (props) => {
             </div>
             }
             <div
-                className="consonant-Card-inner">
+                className="consonant-Card-content">
                 {detailText &&
                 <span
                     data-testid="consonant-Card-label"
@@ -346,7 +349,8 @@ const Card = (props) => {
                     role="heading"
                     aria-label={headingAria}
                     aria-level={headingLevel}
-                    className="consonant-Card-title">
+                    className="consonant-Card-title"
+                    title={title}>
                     {isProduct && mnemonic && <img src={mnemonic} alt="mnemonic" loading="lazy" />}
                     {title}
                 </p>

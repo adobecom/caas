@@ -1,5 +1,16 @@
 
 
+## [0.6.38](https://github.com/adobecom/caas/compare/0.6.37...0.6.38) (2023-07-27)
+
+## [0.6.37](https://github.com/adobecom/caas/compare/0.6.36...0.6.37) (2023-07-27)
+
+## [0.6.36](https://github.com/adobecom/caas/compare/0.6.35...0.6.36) (2023-07-24)
+
+
+### Bug Fixes
+
+* Sets cards images as background images (MWPW-133908) ([d303afe](https://github.com/adobecom/caas/commit/d303afe1950b2767b9f30dd4273fc889704ce716))
+
 ## [0.6.35](https://github.com/adobecom/caas/compare/0.6.34...0.6.35) (2023-06-30)
 
 

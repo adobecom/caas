@@ -11,16 +11,16 @@ import {
 } from 'prop-types';
 import parseHTML from 'html-react-parser';
 
-import FullCard from '../Cards/Full';
+// import FullCard from '../Cards/Full';
 import { cardType } from '../types/card';
 import { getByPath } from '../Helpers/general';
 import { useConfig } from '../Helpers/hooks';
-import ThreeFourthCard from '../Cards/ThreeFourth';
+// import ThreeFourthCard from '../Cards/ThreeFourth';
 // import OneHalfCard from '../Cards/OneHalf';
-import HalfHeightCard from '../Cards/HalfHeight';
+// import HalfHeightCard from '../Cards/HalfHeight';
 import DoubleWideCard from '../Cards/DoubleWide';
-import ProductCard from '../Cards/Product';
-import TextCard from '../Cards/Text';
+// import ProductCard from '../Cards/Product';
+// import TextCard from '../Cards/Text';
 import Card from '../Cards/Card';
 
 import {
@@ -81,7 +81,9 @@ const Grid = (props) => {
      **** Authored Configs ****
      */
     const getConfig = useConfig();
-    const collectionStyleOverride = getConfig('collection', 'cardStyle').replace(':', '-');
+    const collectionStyleOverride = getConfig('collection', 'cardStyle')
+        .replace('1:2', 'one-half')
+        .replace('3:4', 'three-fourths');
     const cardsGridLayout = getConfig('collection', 'layout.type');
     const cardsGridGutter = getConfig('collection', 'layout.gutter');
     const renderCardsBorders = getConfig('collection', 'setCardBorders');
@@ -210,7 +212,7 @@ const Grid = (props) => {
             ref={forwardedRef}
             data-card-style={collectionStyleOverride}
             data-testid="consonant-CardsGrid"
-            className={gridClass}
+            className={`${collectionStyleOverride} ${gridClass}`}
             aria-live={isAriaLiveActive ? 'polite' : 'off'}>
             {cardsToshow.map((card, index) => {
                 const cardStyleOverride = getByPath(card, 'styles.typeOverride');
@@ -220,39 +222,39 @@ const Grid = (props) => {
                 const hideCTA = getHideCta(card, collectionButtonStyle);
 
                 switch (cardStyle) {
-                    case CARD_STYLES.FULL: // *** Has been disabled ***
-                        return (
-                            <FullCard
-                                lh={`Card ${cardNumber} | ${cleanTitle(title)} | ${id}`}
-                                key={card.id}
-                                {...card}
-                                bannerMap={bannerMap}
-                                renderBorder={renderCardsBorders}
-                                renderOverlay={renderCardsOverlay}
-                                onFocus={() => scrollCardIntoView(card.id)} />
-                        );
-                    case CARD_STYLES.SQUARE: // *** Has been disabled ***
-                        return (
-                            <ThreeFourthCard
-                                lh={`Card ${cardNumber} | ${cleanTitle(title)} | ${id}`}
-                                key={card.id}
-                                {...card}
-                                bannerMap={bannerMap}
-                                renderBorder={renderCardsBorders}
-                                renderOverlay={renderCardsOverlay}
-                                onFocus={() => scrollCardIntoView(card.id)} />
-                        );
-                    case CARD_STYLES.HALF_HEIGHT: // *** Has been disabled ***
-                        return (
-                            <HalfHeightCard
-                                lh={`Card ${cardNumber} | ${cleanTitle(title)} | ${id}`}
-                                key={card.id}
-                                {...card}
-                                bannerMap={bannerMap}
-                                renderBorder={renderCardsBorders}
-                                renderOverlay={renderCardsOverlay}
-                                onFocus={() => scrollCardIntoView(card.id)} />
-                        );
+                    // case CARD_STYLES.FULL: // *** Has been disabled ***
+                    //     return (
+                    //         <FullCard
+                    //             lh={`Card ${cardNumber} | ${cleanTitle(title)} | ${id}`}
+                    //             key={card.id}
+                    //             {...card}
+                    //             bannerMap={bannerMap}
+                    //             renderBorder={renderCardsBorders}
+                    //             renderOverlay={renderCardsOverlay}
+                    //             onFocus={() => scrollCardIntoView(card.id)} />
+                    //     );
+                    // case CARD_STYLES.SQUARE: // *** Has been disabled ***
+                    //     return (
+                    //         <ThreeFourthCard
+                    //             lh={`Card ${cardNumber} | ${cleanTitle(title)} | ${id}`}
+                    //             key={card.id}
+                    //             {...card}
+                    //             bannerMap={bannerMap}
+                    //             renderBorder={renderCardsBorders}
+                    //             renderOverlay={renderCardsOverlay}
+                    //             onFocus={() => scrollCardIntoView(card.id)} />
+                    //     );
+                    // case CARD_STYLES.HALF_HEIGHT: // *** Has been disabled ***
+                    //     return (
+                    //         <HalfHeightCard
+                    //             lh={`Card ${cardNumber} | ${cleanTitle(title)} | ${id}`}
+                    //             key={card.id}
+                    //             {...card}
+                    //             bannerMap={bannerMap}
+                    //             renderBorder={renderCardsBorders}
+                    //             renderOverlay={renderCardsOverlay}
+                    //             onFocus={() => scrollCardIntoView(card.id)} />
+                    //     );
                     case CARD_STYLES.DOUBLE_WIDE:
                         return (
                             <DoubleWideCard
@@ -264,32 +266,32 @@ const Grid = (props) => {
                                 renderOverlay={renderCardsOverlay}
                                 onFocus={() => scrollCardIntoView(card.id)} />
                         );
-                    case CARD_STYLES.PRODUCT: // *** Has been disabled ***
-                        return (
-                            <ProductCard
-                                lh={`Card ${index} | ${cleanTitle(title)} | ${id}`}
-                                key={card.id}
-                                renderBorder={renderCardsBorders}
-                                {...card}
-                                renderOverlay={renderCardsOverlay}
-                                hideCTA={hideCTA}
-                                onFocus={() => scrollCardIntoView(card.id)} />
-                        );
-                    case CARD_STYLES.TEXT:
-                        return (
-                            <TextCard
-                                lh={`Card ${cardNumber} | ${cleanTitle(title)} | ${id}`}
-                                key={card.id}
-                                {...card}
-                                bannerMap={bannerMap}
-                                onClick={onCardBookmark}
-                                dateFormat={dateFormat}
-                                locale={locale}
-                                renderBorder={renderCardsBorders}
-                                renderOverlay={renderCardsOverlay}
-                                hideCTA={hideCTA}
-                                onFocus={() => scrollCardIntoView(card.id)} />
-                        );
+                    // case CARD_STYLES.PRODUCT: // *** Has been disabled ***
+                    //     return (
+                    //         <ProductCard
+                    //             lh={`Card ${index} | ${cleanTitle(title)} | ${id}`}
+                    //             key={card.id}
+                    //             renderBorder={renderCardsBorders}
+                    //             {...card}
+                    //             renderOverlay={renderCardsOverlay}
+                    //             hideCTA={hideCTA}
+                    //             onFocus={() => scrollCardIntoView(card.id)} />
+                    //     );
+                    // case CARD_STYLES.TEXT:
+                    //     return (
+                    //         <TextCard
+                    //             lh={`Card ${cardNumber} | ${cleanTitle(title)} | ${id}`}
+                    //             key={card.id}
+                    //             {...card}
+                    //             bannerMap={bannerMap}
+                    //             onClick={onCardBookmark}
+                    //             dateFormat={dateFormat}
+                    //             locale={locale}
+                    //             renderBorder={renderCardsBorders}
+                    //             renderOverlay={renderCardsOverlay}
+                    //             hideCTA={hideCTA}
+                    //             onFocus={() => scrollCardIntoView(card.id)} />
+                    //     );
                     case CARD_STYLES.CUSTOM:
                         return parseHTML(customCard(card));
                     default:
