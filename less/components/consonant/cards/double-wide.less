@@ -3,26 +3,33 @@
 - .consonant-DoubleWideCard--noTextInfo;
 */
 
-.consonant {
-    &-DoubleWideCard {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
+// .consonant {
+//     &-DoubleWideCard {
+
+.consonant-CardsGrid.double-wide {
+    .consonant-Card {
+        // position: relative;
+        // display: flex;
+        // flex-direction: column;
+        // justify-content: flex-end;
         min-width: @consonant-DoubleWideCard-mobileMinWidth;
         max-width: @consonant-DoubleWideCard-maxWidth;
         height: @consonantCardHeight;
 
-        .no-font;
+        // .no-font;
 
-        border: 1px solid @consonantGray300;
-        border-radius: 4px;
-        overflow: hidden;
+        // border: 1px solid @consonantGray300;
+        // border-radius: 4px;
+        // overflow: hidden;
 
-        &-img {
+        &-header {
             position: relative;
             height: @consonant-DoubleWideCard-imgHeight;
-            background-position: 50% 0;
+            // background-position: 50% 0;
+            // background-size: cover;
+            overflow: hidden;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
             background-size: cover;
         }
 
@@ -30,7 +37,7 @@
             .video-button-styles;
         }
 
-        &-inner {
+        &-content {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
@@ -38,6 +45,7 @@
             text-decoration: none;
             background-color: @consonantBaseColor;
             outline: 0;
+            width: 100%;
 
             &:hover,
             &:active {

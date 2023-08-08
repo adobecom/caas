@@ -261,14 +261,15 @@ const Card = (props) => {
 
     // Card styles
     const isOneHalf = cardStyle === 'one-half';
-    // const isThreeFourths = cardStyle === 'three-fourths';
+    const isThreeFourths = cardStyle === 'three-fourths';
+    const isDoubleWide = cardStyle === 'double-wide';
     const isHalfHeight = cardStyle === 'half-height';
     const isProduct = cardStyle === 'product';
     const isText = cardStyle === 'text-card';
 
     // Card elements to show
     const showHeader = !isProduct;
-    const showText = isOneHalf || isProduct || isText;
+    const showText = isOneHalf || isProduct || isText || isDoubleWide;
     const showFooter = isOneHalf || isProduct || isText;
     const showLogo = !isHalfHeight;
 
@@ -374,6 +375,9 @@ const Card = (props) => {
                         right={extendFooterData(footerItem.right)}
                         onFocus={onFocus} />
                 ))}
+                {(isThreeFourths || isDoubleWide)
+                    && !renderOverlay
+                    && <LinkBlocker target={linkBlockerTarget} link={overlay} />}
             </div>
             {(renderOverlay || hideCTA || isHalfHeight)
             && <LinkBlocker target={linkBlockerTarget} link={overlay} />}

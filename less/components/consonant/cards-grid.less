@@ -100,7 +100,7 @@
             }
 
             .consonant-ThreeFourthCard .consonant-ThreeFourthCard-img,
-            .three-fourths .consonant-Card-header {
+            &.three-fourths .consonant-Card-header {
                 min-height: @consonant-CardsGrid-smallerCardImgThreeFourthHeight;
             }
 
@@ -135,6 +135,15 @@
             .consonant-HalfHeightCard {
                 height: @consonant-OneHalfCard-height;
             }
+
+            &.one-half .consonant-Card {
+                height: auto;
+
+                .consonant-Card-header {
+                    min-height: @consonant-CardsGrid-smallerCardImgOneHalfHeight;
+                    max-height: @consonant-CardsGrid-smallerCardImgOneHalfHeight;
+                }
+            }
         }
 
         &--5up {
@@ -145,7 +154,8 @@
             .consonant-HalfHeightCard,
             .consonant-ProductCard,
             .consonant-TextCard,
-            .consonant-FullCard {
+            .consonant-FullCard,
+            .consonant-Card {
                 min-width: @consonant-CardsGrid-smallestCardMinWidth;
                 max-width: @consonant-CardsGrid-smallestCardMaxWidth;
                 height: @consonant-CardsGrid-smallestCardHeight;
@@ -191,6 +201,15 @@
 
             .consonant-HalfHeightCard {
                 height: @consonant-OneHalfCard-height;
+            }
+
+            &.one-half .consonant-Card {
+                height: auto;
+
+                .consonant-Card-header {
+                    min-height: @consonant-CardsGrid-smallestCardImgOneHalfHeight;
+                    max-height: @consonant-CardsGrid-smallestCardImgOneHalfHeight;
+                }
             }
         }
 
