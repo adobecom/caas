@@ -309,7 +309,7 @@ describe('Hide CTA(s):', async () => {
     it('Test floodgate card appears', async () => {
         const cloneConfig = structuredClone(config);
         cloneConfig.headers = [['x-adobe-floodgate', 'pink']];
-        cloneConfig.collection.endpoint = 'https://14257-chimera-stage.adobeioruntime.net/api/v1/web/chimera-0.0.1/collection?originSelection=doccloud&contentTypeTags=&collectionTags=&excludeContentWithTags=&language=en&country=us&complexQuery=&excludeIds=&currentEntityId=&featuredCards=6c43fa56-7f27-39ae-af30-9fb18e0e5050&environment=&draft=false&size=100000&flatFile=false';
+        cloneConfig.collection.endpoint = 'https://14257-chimera-sanrai.adobeioruntime.net/api/v1/web/chimera-0.0.1/collection?originSelection=doccloud&contentTypeTags=&collectionTags=&excludeContentWithTags=&language=en&country=us&complexQuery=&excludeIds=&currentEntityId=&featuredCards=6c43fa56-7f27-39ae-af30-9fb18e0e5050&environment=&draft=false&size=100000&flatFile=false';
         const state = btoa(JSON.stringify(cloneConfig));
         const url = `${serverPath}/html/e2e/floodgate-on.html?state=${state}`;
         await browser.url(url);
@@ -321,7 +321,7 @@ describe('Hide CTA(s):', async () => {
     it('Test floodgate card does not appear', async () => {
         const cloneConfig = structuredClone(config);
         cloneConfig.headers = [[]];
-        cloneConfig.collection.endpoint = 'https://14257-chimera-stage.adobeioruntime.net/api/v1/web/chimera-0.0.1/collection?originSelection=doccloud&contentTypeTags=&collectionTags=&excludeContentWithTags=&language=en&country=us&complexQuery=&excludeIds=&currentEntityId=&featuredCards=6c43fa56-7f27-39ae-af30-9fb18e0e5050&environment=&draft=false&size=100000&flatFile=false';
+        cloneConfig.collection.endpoint = 'https://14257-chimera-sanrai.adobeioruntime.net/api/v1/web/chimera-0.0.1/collection?originSelection=doccloud&contentTypeTags=&collectionTags=&excludeContentWithTags=&language=en&country=us&complexQuery=&excludeIds=&currentEntityId=&featuredCards=6c43fa56-7f27-39ae-af30-9fb18e0e5050&environment=&draft=false&size=100000&flatFile=false';
         const state = btoa(JSON.stringify(cloneConfig));
         const url = `${serverPath}/html/e2e/floodgate-off.html?state=${state}`;
         await browser.url(url);
