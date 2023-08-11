@@ -16,7 +16,7 @@
         justify-content: center;
         width: 100%;
         max-width: 100%;
-        grid-template-columns: repeat(auto-fit, minmax(@consonantCardMinWidth, max-content));
+        grid-template-columns: repeat(auto-fit, minmax(@consonantCardMinWidth, 1fr));
 
         /* Spacing variations */
 
@@ -43,19 +43,11 @@
         /* Cards variations */
 
         &--2up {
-            grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-mobileMinWidth, max-content));
+            grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-mobileMinWidth, 1fr));
 
-            .consonant-ThreeFourthCard,
-            .consonant-OneHalfCard,
-            .consonant-HalfHeightCard,
-            .consonant-DoubleWideCard,
-            .consonant-ProductCard,
-            .consonant-TextCard,
-            .consonant-FullCard,
             .consonant-Card {
                 max-width: @consonant-DoubleWideCard-maxWidth;
 
-                &-inner,
                 &-content {
                     width: @consonant-DoubleWideCard-maxWidth;
                     max-width: 100%;
@@ -64,14 +56,7 @@
         }
 
         &--3up {
-            .consonant-ThreeFourthCard,
-            .consonant-OneHalfCard,
-            .consonant-HalfHeightCard,
-            .consonant-ProductCard,
-            .consonant-TextCard,
-            .consonant-FullCard,
             .consonant-Card {
-                &-inner,
                 &-content {
                     width: @consonantCardMaxWidth;
                     max-width: 100%;
@@ -80,61 +65,63 @@
         }
 
         &--4up {
-            grid-template-columns: repeat(auto-fit, minmax(@consonant-CardsGrid-smallerCardMinWidth, max-content));
+            grid-template-columns: repeat(auto-fit, minmax(@consonant-CardsGrid-smallerCardMinWidth, 1fr));
 
-            .consonant-ThreeFourthCard,
-            .consonant-OneHalfCard,
-            .consonant-HalfHeightCard,
-            .consonant-ProductCard,
-            .consonant-TextCard,
             .consonant-Card {
                 min-width: @consonant-CardsGrid-smallerCardMinWidth;
                 max-width: @consonant-CardsGrid-smallerCardMaxWidth;
                 height: @consonant-CardsGrid-smallerCardheight;
 
-                &-inner,
                 &-content {
                     width: @consonant-CardsGrid-smallerCardMaxWidth;
                     max-width: 100%;
                 }
             }
 
-            .consonant-ThreeFourthCard .consonant-ThreeFourthCard-img,
-            &.three-fourths .consonant-Card-header {
-                min-height: @consonant-CardsGrid-smallerCardImgThreeFourthHeight;
-            }
-
-            // .consonant-ThreeFourthCard > a > .consonant-ThreeFourthCard-text {
-            //     display: none;
+            // &.three-fourths .consonant-Card-header {
+            //     min-height: @consonant-CardsGrid-smallerCardImgThreeFourthHeight;
             // }
 
-            .consonant-ThreeFourthCard > a > .consonant-ThreeFourthCard-title {
-                margin-bottom: 0;
-                max-height: 1.375rem * 2;
+            // &.three-fourths .consonant-Card-title {
+            //     margin-bottom: 0;
+            //     max-height: 1.375rem * 2;
 
-                .line-clamp(2);
+            //     .line-clamp(2);
 
-                &:first-child {
-                    max-height: 1.375rem * 3;
+            //     &:first-child {
+            //         max-height: 1.375rem * 3;
 
-                    .line-clamp(3);
-                }
-            }
+            //         .line-clamp(3);
+            //     }
+            // }
 
-            .consonant-ProductCard,
-            .consonant-TextCard,
-            .consonant-OneHalfCard {
-                height: auto;
-            }
+            // .consonant-ThreeFourthCard > a > .consonant-ThreeFourthCard-title {
+            //     margin-bottom: 0;
+            //     max-height: 1.375rem * 2;
 
-            .consonant-OneHalfCard .consonant-OneHalfCard-img {
-                min-height: @consonant-CardsGrid-smallerCardImgOneHalfHeight;
-                max-height: @consonant-CardsGrid-smallerCardImgOneHalfHeight;
-            }
+            //     .line-clamp(2);
 
-            .consonant-HalfHeightCard {
-                height: @consonant-OneHalfCard-height;
-            }
+            //     &:first-child {
+            //         max-height: 1.375rem * 3;
+
+            //         .line-clamp(3);
+            //     }
+            // }
+
+            // .consonant-ProductCard,
+            // .consonant-TextCard,
+            // .consonant-OneHalfCard {
+            //     height: auto;
+            // }
+
+            // .consonant-OneHalfCard .consonant-OneHalfCard-img {
+            //     min-height: @consonant-CardsGrid-smallerCardImgOneHalfHeight;
+            //     max-height: @consonant-CardsGrid-smallerCardImgOneHalfHeight;
+            // }
+
+            // .consonant-HalfHeightCard {
+            //     height: @consonant-OneHalfCard-height;
+            // }
 
             &.one-half .consonant-Card {
                 height: auto;
@@ -147,61 +134,61 @@
         }
 
         &--5up {
-            grid-template-columns: repeat(auto-fit, minmax(@consonant-CardsGrid-smallestCardMinWidth, max-content));
+            grid-template-columns: repeat(auto-fit, minmax(@consonant-CardsGrid-smallestCardMinWidth, 1fr));
 
-            .consonant-ThreeFourthCard,
-            .consonant-OneHalfCard,
-            .consonant-HalfHeightCard,
-            .consonant-ProductCard,
-            .consonant-TextCard,
-            .consonant-FullCard,
+            // .consonant-ThreeFourthCard,
+            // .consonant-OneHalfCard,
+            // .consonant-HalfHeightCard,
+            // .consonant-ProductCard,
+            // .consonant-TextCard,
+            // .consonant-FullCard,
             .consonant-Card {
                 min-width: @consonant-CardsGrid-smallestCardMinWidth;
                 max-width: @consonant-CardsGrid-smallestCardMaxWidth;
                 height: @consonant-CardsGrid-smallestCardHeight;
 
-                &-inner,
+                // &-inner,
                 &-content {
                     width: @consonant-CardsGrid-smallestCardMaxWidth;
                     max-width: 100%;
                 }
             }
 
-            .consonant-ThreeFourthCard .consonant-ThreeFourthCard-img {
-                min-height: @consonant-CardsGrid-smallestCardImgThreeFourthHeight;
-            }
+            // .consonant-ThreeFourthCard .consonant-ThreeFourthCard-img {
+            //     min-height: @consonant-CardsGrid-smallestCardImgThreeFourthHeight;
+            // }
 
-            .consonant-ThreeFourthCard > a > .consonant-ThreeFourthCard-text {
-                display: none;
-            }
+            // .consonant-ThreeFourthCard > a > .consonant-ThreeFourthCard-text {
+            //     display: none;
+            // }
 
-            .consonant-ThreeFourthCard > a > .consonant-ThreeFourthCard-title {
-                margin-bottom: 0;
-                max-height: 1.375rem * 2;
+            // .consonant-ThreeFourthCard > a > .consonant-ThreeFourthCard-title {
+            //     margin-bottom: 0;
+            //     max-height: 1.375rem * 2;
 
-                .line-clamp(2);
+            //     .line-clamp(2);
 
-                &:first-child {
-                    max-height: 1.375rem * 3;
+            //     &:first-child {
+            //         max-height: 1.375rem * 3;
 
-                    .line-clamp(3);
-                }
-            }
+            //         .line-clamp(3);
+            //     }
+            // }
 
-            .consonant-ProductCard,
-            .consonant-TextCard,
-            .consonant-OneHalfCard {
-                height: auto;
-            }
+            // .consonant-ProductCard,
+            // .consonant-TextCard,
+            // .consonant-OneHalfCard {
+            //     height: auto;
+            // }
 
-            .consonant-OneHalfCard .consonant-OneHalfCard-img {
-                min-height: @consonant-CardsGrid-smallestCardImgOneHalfHeight;
-                max-height: @consonant-CardsGrid-smallestCardImgOneHalfHeight;
-            }
+            // .consonant-OneHalfCard .consonant-OneHalfCard-img {
+            //     min-height: @consonant-CardsGrid-smallestCardImgOneHalfHeight;
+            //     max-height: @consonant-CardsGrid-smallestCardImgOneHalfHeight;
+            // }
 
-            .consonant-HalfHeightCard {
-                height: @consonant-OneHalfCard-height;
-            }
+            // .consonant-HalfHeightCard {
+            //     height: @consonant-OneHalfCard-height;
+            // }
 
             &.one-half .consonant-Card {
                 height: auto;
@@ -213,35 +200,58 @@
             }
         }
 
-        &--3up&--doubleWideCards,
-        &--4up&--doubleWideCards,
-        &--5up&--doubleWideCards {
-            grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-mobileMinWidth, max-content));
+        // &--3up&--doubleWideCards,
+        // &--4up&--doubleWideCards,
+        // &--5up&--doubleWideCards {
+        //     grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-mobileMinWidth, 1fr));
 
-            .consonant-DoubleWideCard-inner,
-            .consonant-DoubleWideCard-content {
-                width: @consonant-DoubleWideCard-maxWidth;
-                max-width: 100%;
-            }
-        }
+        //     .consonant-DoubleWideCard-inner,
+        //     .consonant-DoubleWideCard-content {
+        //         width: @consonant-DoubleWideCard-maxWidth;
+        //         max-width: 100%;
+        //     }
+        // }
+
+        //     @media @consonant-680px-up {
+        //         &--2up {
+        //             grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-desktopMinWidth, 1fr));
+
+        //             .consonant-ThreeFourthCard,
+        //             .consonant-OneHalfCard,
+        //             .consonant-HalfHeightCard,
+        //             .consonant-DoubleWideCard,
+        //             .consonant-FullCard {
+        //                 min-width: @consonant-DoubleWideCard-desktopMinWidth;
+        //             }
+        //         }
+
+        //         &--3up&--doubleWideCards,
+        //         &--4up&--doubleWideCards,
+        //         &--5up&--doubleWideCards {
+        //             grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-desktopMinWidth, 1fr));
+        //         }
+        //     }
+        // }
 
         @media @consonant-680px-up {
             &--2up {
-                grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-desktopMinWidth, max-content));
+                grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-desktopMinWidth, 1fr));
 
-                .consonant-ThreeFourthCard,
-                .consonant-OneHalfCard,
-                .consonant-HalfHeightCard,
-                .consonant-DoubleWideCard,
-                .consonant-FullCard {
+                // .consonant-ThreeFourthCard,
+                // .consonant-OneHalfCard,
+                // .consonant-HalfHeightCard,
+                // .consonant-DoubleWideCard,
+                .consonant-Card {
                     min-width: @consonant-DoubleWideCard-desktopMinWidth;
                 }
             }
 
-            &--3up&--doubleWideCards,
-            &--4up&--doubleWideCards,
-            &--5up&--doubleWideCards {
-                grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-desktopMinWidth, max-content));
+            &--3up,
+            &--4up,
+            &--5up {
+                &.double-wide {
+                    grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-desktopMinWidth, 1fr));
+                }
             }
         }
     }

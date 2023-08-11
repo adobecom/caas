@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 8/7/2023, 21:37:45
+ * Chimera UI Libraries - Build 8/11/2023, 09:52:59
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -7530,16 +7530,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-// import FullCard from '../Cards/Full';
-
-// import ThreeFourthCard from '../Cards/ThreeFourth';
-// import OneHalfCard from '../Cards/OneHalf';
-// import HalfHeightCard from '../Cards/HalfHeight';
-// import DoubleWideCard from '../Cards/DoubleWide';
-// import ProductCard from '../Cards/Product';
-// import TextCard from '../Cards/Text';
-
-
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
@@ -7764,17 +7754,6 @@ var Grid = function Grid(props) {
             var hideCTA = getHideCta(card, collectionButtonStyle);
 
             switch (cardStyle) {
-                // case CARD_STYLES.DOUBLE_WIDE:
-                //     return (
-                //         <DoubleWideCard
-                //             lh={`Card ${cardNumber} | ${cleanTitle(title)} | ${id}`}
-                //             key={card.id}
-                //             {...card}
-                //             bannerMap={bannerMap}
-                //             renderBorder={renderCardsBorders}
-                //             renderOverlay={renderCardsOverlay}
-                //             onFocus={() => scrollCardIntoView(card.id)} />
-                //     );
                 case _constants.CARD_STYLES.CUSTOM:
                     return (0, _htmlReactParser2.default)(customCard(card));
                 default:
@@ -46372,10 +46351,11 @@ var Card = function Card(props) {
     var isHalfHeight = cardStyle === 'half-height';
     var isProduct = cardStyle === 'product';
     var isText = cardStyle === 'text-card';
+    var isFull = cardStyle === 'full-card';
 
     // Card elements to show
     var showHeader = !isProduct;
-    var showText = isOneHalf || isProduct || isText || isDoubleWide;
+    var showText = isOneHalf || isProduct || isText || isThreeFourths || isDoubleWide;
     var showFooter = isOneHalf || isProduct || isText;
     var showLogo = !isHalfHeight;
 
@@ -46483,7 +46463,7 @@ var Card = function Card(props) {
                     right: extendFooterData(footerItem.right),
                     onFocus: onFocus });
             }),
-            (isThreeFourths || isDoubleWide) && _react2.default.createElement(_LinkBlocker2.default, { target: linkBlockerTarget, link: overlay })
+            (isThreeFourths || isDoubleWide || isFull) && !renderOverlay && _react2.default.createElement(_LinkBlocker2.default, { target: linkBlockerTarget, link: overlay })
         ),
         (renderOverlay || hideCTA || isHalfHeight) && _react2.default.createElement(_LinkBlocker2.default, { target: linkBlockerTarget, link: overlay })
     );

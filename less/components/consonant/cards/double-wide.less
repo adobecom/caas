@@ -3,131 +3,136 @@
 - .consonant-DoubleWideCard--noTextInfo;
 */
 
-// .consonant {
-//     &-DoubleWideCard {
+.consonant-CardsGrid {
+    &.double-wide {
+        .consonant-Card {
+            // position: relative;
+            // display: flex;
+            // flex-direction: column;
+            // justify-content: flex-end;
+            min-width: @consonant-DoubleWideCard-mobileMinWidth;
+            max-width: @consonant-DoubleWideCard-maxWidth;
+            height: @consonantCardHeight;
 
-.consonant-CardsGrid.double-wide {
-    .consonant-Card {
-        // position: relative;
-        // display: flex;
-        // flex-direction: column;
-        // justify-content: flex-end;
-        min-width: @consonant-DoubleWideCard-mobileMinWidth;
-        max-width: @consonant-DoubleWideCard-maxWidth;
-        height: @consonantCardHeight;
+            // .no-font;
 
-        // .no-font;
+            // border: 1px solid @consonantGray300;
+            // border-radius: 4px;
+            // overflow: hidden;
 
-        // border: 1px solid @consonantGray300;
-        // border-radius: 4px;
-        // overflow: hidden;
-
-        &-header {
-            position: relative;
-            height: @consonant-DoubleWideCard-imgHeight;
-            // background-position: 50% 0;
-            // background-size: cover;
-            overflow: hidden;
-            background-position: 50% 50%;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-
-        &-videoIco {
-            .video-button-styles;
-        }
-
-        &-content {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 16px 24px 28px;
-            text-decoration: none;
-            background-color: @consonantBaseColor;
-            outline: 0;
-            width: 100%;
-
-            &:hover,
-            &:active {
-                text-decoration: none;
+            &-header {
+                position: relative;
+                height: @consonant-DoubleWideCard-imgHeight;
+                // background-position: 50% 0;
+                // background-size: cover;
+                overflow: hidden;
+                background-color: @consonantGray300;
+                background-position: 50% 0;
+                background-repeat: no-repeat;
+                background-size: cover;
             }
 
-            &:empty {
+            &-videoIco {
+                .video-button-styles;
+            }
+
+            &-content {
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                padding: 16px 24px 28px;
+                text-decoration: none;
+                background-color: @consonantBaseColor;
+                outline: 0;
+                width: 100%;
+
+                &:hover,
+                &:active {
+                    text-decoration: none;
+                }
+
+                &:empty {
+                    display: none;
+                }
+            }
+
+            &-title {
+                margin: 0 0 5px;
+                padding: 0;
+
+                .font(1.125rem, 1.375rem, 700, @consonantGray900);
+                .line-clamp(1);
+
+                :only-child {
+                    margin-bottom: 0;
+                }
+            }
+
+            &-label {
+                display: block;
+                margin-bottom: 8px;
+
+                .font(0.875rem, 1.3125rem, 400, @consonantGray800);
+                .line-clamp(1);
+
+                :only-child {
+                    margin-bottom: 0;
+                }
+            }
+
+            &-text {
+                .no-margin;
+
+                padding: 0;
+
+                .font(0.875rem, 1.3125rem, 400, @consonantGray700);
+                .line-clamp(2);
+            }
+
+            &--contentTop {
+                flex-direction: column-reverse;
+            }
+
+            &--contentTop &-img {
+                flex-grow: 1;
+            }
+
+            &--contentTop &-inner {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                padding-top: 24px;
+                background-color: transparent;
+                z-index: 1;
+            }
+
+            &--noTextInfo &-img {
+                height: 100%;
+            }
+
+            &--noTextInfo &-inner {
                 display: none;
             }
-        }
 
-        &-title {
-            margin: 0 0 5px;
-            padding: 0;
-
-            .font(1.125rem, 1.375rem, 700, @consonantGray900);
-            .line-clamp(1);
-
-            :only-child {
-                margin-bottom: 0;
+            &.consonant-u-noBorders {
+                border: 0;
             }
-        }
 
-        &-label {
-            display: block;
-            margin-bottom: 8px;
+            @media @consonant-desktop-up {
+                min-width: @consonant-DoubleWideCard-desktopMinWidth;
 
-            .font(0.875rem, 1.3125rem, 400, @consonantGray800);
-            .line-clamp(1);
+                &-inner {
+                    outline: 0;
 
-            :only-child {
-                margin-bottom: 0;
-            }
-        }
-
-        &-text {
-            .no-margin;
-
-            padding: 0;
-
-            .font(0.875rem, 1.3125rem, 400, @consonantGray700);
-            .line-clamp(2);
-        }
-
-        &--contentTop {
-            flex-direction: column-reverse;
-        }
-
-        &--contentTop &-img {
-            flex-grow: 1;
-        }
-
-        &--contentTop &-inner {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            padding-top: 24px;
-            background-color: transparent;
-            z-index: 1;
-        }
-
-        &--noTextInfo &-img {
-            height: 100%;
-        }
-
-        &--noTextInfo &-inner {
-            display: none;
-        }
-
-        &.consonant-u-noBorders {
-            border: 0;
-        }
-
-        @media @consonant-desktop-up {
-            min-width: @consonant-DoubleWideCard-desktopMinWidth;
-
-            &-inner {
-                outline: 0;
-
-                .focus-pseudo-element;
+                    .focus-pseudo-element;
+                }
             }
         }
     }
+
+    // &--4up.double-wide {
+
+    // }
 }
+

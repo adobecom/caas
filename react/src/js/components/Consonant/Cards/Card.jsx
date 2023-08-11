@@ -112,7 +112,6 @@ const Card = (props) => {
                 startTime,
                 endTime,
             },
-
         },
         overlays: {
             banner: {
@@ -266,10 +265,11 @@ const Card = (props) => {
     const isHalfHeight = cardStyle === 'half-height';
     const isProduct = cardStyle === 'product';
     const isText = cardStyle === 'text-card';
+    const isFull = cardStyle === 'full-card';
 
     // Card elements to show
     const showHeader = !isProduct;
-    const showText = isOneHalf || isProduct || isText || isDoubleWide;
+    const showText = isOneHalf || isProduct || isText || isThreeFourths || isDoubleWide;
     const showFooter = isOneHalf || isProduct || isText;
     const showLogo = !isHalfHeight;
 
@@ -375,7 +375,7 @@ const Card = (props) => {
                         right={extendFooterData(footerItem.right)}
                         onFocus={onFocus} />
                 ))}
-                {(isThreeFourths || isDoubleWide)
+                {(isThreeFourths || isDoubleWide || isFull)
                     && !renderOverlay
                     && <LinkBlocker target={linkBlockerTarget} link={overlay} />}
             </div>

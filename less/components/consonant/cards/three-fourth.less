@@ -1,176 +1,230 @@
-.consonant-CardsGrid.three-fourths {
-    .consonant-Card {
-        height: @consonantCardHeight;
+.consonant-CardsGrid {
+    &.three-fourths {
+        .consonant-Card {
+            height: @consonantCardHeight;
 
-        &-header {
-            background-color: @consonantGray300;
-            height: @consonant-ThreeFourthCard-imgHeight;
-            overflow: hidden;
-            position: relative;
-            background-position: 50% 50%;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
+            .card-hover;
+            .card-hover-header;
 
-        &-videoIco {
-            .video-button-styles;
-        }
-
-        &-logo {
-            position: absolute;
-            display: block;
-            bottom: 16px;
-            left: 0;
-            padding: 7px 24px;
-            border: 1px solid transparent;
-            border-top-right-radius: 4px;
-            border-bottom-right-radius: 4px;
-            z-index: 1;
-
-            .no-font;
-
-            img {
-                width: auto;
-                height: auto;
-                max-width: @consonantCardLogoImgMaxWidth;
-                max-height: @consonant-cardLogoImgMaxHeight;
-                object-fit: contain;
-                user-select: none;
+            &-header {
+                background-color: @consonantGray300;
+                height: @consonant-ThreeFourthCard-imgHeight;
+                overflow: hidden;
+                position: relative;
+                background-position: 50% 50%;
+                background-repeat: no-repeat;
+                background-size: cover;
             }
-        }
 
-        &-label {
-            display: block;
-            max-width: 100%;
-            max-height: 1rem;
-            margin-bottom: 4px;
-
-            .font(@color: @consonantGray800);
-
-            text-decoration: none;
-
-            .line-clamp(1);
-
-            &:empty {
-                display: none;
+            &-videoIco {
+                .video-button-styles;
             }
-        }
 
-        &-title {
-            max-height: 1.375rem * 2;
-            margin: 0 0 7px;
+            &-logo {
+                position: absolute;
+                display: block;
+                bottom: 16px;
+                left: 0;
+                padding: 7px 24px;
+                border: 1px solid transparent;
+                border-top-right-radius: 4px;
+                border-bottom-right-radius: 4px;
+                z-index: 1;
+                background-color: #fff;
 
-            .font(1.125rem, 1.375rem, 700, @consonantGray900);
+                .no-font;
 
-            text-decoration: none;
-            word-break: break-word;
+                img {
+                    width: auto;
+                    height: auto;
+                    max-width: @consonantCardLogoImgMaxWidth;
+                    max-height: @consonant-cardLogoImgMaxHeight;
+                    object-fit: contain;
+                    user-select: none;
+                }
+            }
 
-            .line-clamp(2);
+            &-label {
+                display: block;
+                max-width: 100%;
+                max-height: 1rem;
+                margin-bottom: 4px;
 
-            &:only-child {
-                max-height: 1.375rem * 4;
+                .font(@color: @consonantGray800);
+
+                text-decoration: none;
+
+                .line-clamp(1);
+
+                &:empty {
+                    display: none;
+                }
+            }
+
+            &-title {
+                max-height: 1.375rem * 2;
+                margin: 0 0 7px;
+
+                .font(1.125rem, 1.375rem, 700, @consonantGray900);
+
+                text-decoration: none;
+                word-break: break-word;
+
+                .line-clamp(2);
+
+                &:only-child {
+                    max-height: 1.375rem * 4;
+
+                    .line-clamp(4);
+                }
+
+                &:empty {
+                    display: none;
+                }
+            }
+
+            &-label + &-title:last-child {
+                max-height: 1.375rem * 3;
+
+                .line-clamp(3);
+            }
+
+            &-text {
+                max-height: 1rem * 2;
+                margin: 0;
+                padding: 0;
+
+                .font();
+                .line-clamp(2);
+
+                &:empty {
+                    display: none;
+                }
+
+                &:only-child {
+                    max-height: 1rem * 5;
+
+                    .line-clamp(5);
+                }
+            }
+
+            .consonant-Card-label + .consonant-Card-text:last-child {
+                max-height: 1rem * 4;
 
                 .line-clamp(4);
             }
 
-            &:empty {
-                display: none;
-            }
-        }
+            .consonant-Card-label + .consonant-Card-title + .consonant-Card-text {
+                max-height: 1rem;
 
-        &-label + &-title:last-child {
-            max-height: 1.375rem * 3;
-
-            .line-clamp(3);
-        }
-
-        &-text {
-            max-height: 1rem * 2;
-            margin: 0;
-            padding: 0;
-
-            .font();
-            .line-clamp(2);
-
-            &:empty {
-                display: none;
+                .line-clamp(1);
             }
 
-            &:only-child {
-                max-height: 1rem * 5;
+            &-banner {
+                position: absolute;
+                display: flex;
+                justify-content: flex-start;
+                max-width: 56%;
+                max-height: 70%;
+                top: 24px;
+                right: 0;
+                padding: 8px 13px 7px;
 
-                .line-clamp(5);
-            }
-        }
+                .font(0.75rem, 1.0625rem, 700, @consonantBaseColor);
 
-        &-label + &-text:last-child {
-            max-height: 1rem * 4;
+                letter-spacing: 0.72px;
+                text-transform: uppercase;
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+                z-index: 1;
+                background-color: @consonantBlue600;
+                user-select: none;
+                overflow-y: auto;
 
-            .line-clamp(4);
-        }
+                &IconWrapper {
+                    margin-right: 4px;
 
-        &-label + &-title + &-text {
-            max-height: 1rem;
-
-            .line-clamp(1);
-        }
-
-        &-banner {
-            position: absolute;
-            display: flex;
-            justify-content: flex-start;
-            max-width: 56%;
-            max-height: 70%;
-            top: 24px;
-            right: 0;
-            padding: 8px 13px 7px;
-
-            .font(0.75rem, 1.0625rem, 700, @consonantBaseColor);
-
-            letter-spacing: 0.72px;
-            text-transform: uppercase;
-            border-top-left-radius: 4px;
-            border-bottom-left-radius: 4px;
-            z-index: 1;
-            background-color: @consonantBlue600;
-            user-select: none;
-            overflow-y: auto;
-
-            &IconWrapper {
-                margin-right: 4px;
-
-                img {
-                    width: 8px;
-                    height: 8px;
+                    img {
+                        width: 8px;
+                        height: 8px;
+                    }
                 }
             }
+
+            &-badge {
+                position: absolute;
+                display: block;
+                max-width: 36%;
+                max-height: 50%;
+                top: 24px;
+                left: 24px;
+                padding: 4px 11px;
+
+                .font(0.75rem, 1rem, 400, @consonantGray700);
+
+                border: 1px solid @consonantGray600;
+                border-radius: 4px;
+                background-color: @consonantBaseColor;
+                overflow-y: auto;
+                z-index: 1;
+            }
         }
 
-        &-badge {
-            position: absolute;
-            display: block;
-            max-width: 36%;
-            max-height: 50%;
-            top: 24px;
-            left: 24px;
-            padding: 4px 11px;
+        // .consonant-Card:has(.consonant-CardsGrid--4up) {
+        //     height: 384px;
 
-            .font(0.75rem, 1rem, 400, @consonantGray700);
+        //     .consonant-Card-header {
+        //         height: auto;
+        //         min-height: 276px;
+        //     }
 
-            border: 1px solid @consonantGray600;
-            border-radius: 4px;
-            background-color: @consonantBaseColor;
-            overflow-y: auto;
-            z-index: 1;
+        //     .consonant-Card-text {
+        //         display: none important;
+        //     }
+        // }
+    }
+
+    &--4up {
+        &.three-fourths {
+            .consonant-Card {
+                height: 384px;
+            }
         }
     }
 
-    &.consonant-CardsGrid--4up .consonant-Card {
-        height: 384px;
+    &--5up {
+        &.three-fourths {
+            .consonant-Card {
+                height: 344px;
+            }
+        }
+    }
 
-        .consonant-Card-header {
-            height: auto;
-            min-height: 276px;
+    &--4up,
+    &--5up {
+        &.three-fourths {
+            .consonant-Card {
+                .consonant-Card-header {
+                    min-height: @consonant-CardsGrid-smallestCardImgThreeFourthHeight;
+                }
+
+                .consonant-Card-title {
+                    margin-bottom: 0;
+                    max-height: 1.375rem * 2;
+
+                    .line-clamp(2);
+
+                    &:first-child {
+                        max-height: 1.375rem * 3;
+
+                        .line-clamp(3);
+                    }
+                }
+
+                .consonant-Card-text {
+                    display: none !important;
+                }
+            }
         }
     }
 }
