@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 8/12/2023, 24:46:06
+ * Chimera UI Libraries - Build 8/12/2023, 09:19:04
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -169,7 +169,7 @@ if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var store = __webpack_require__(40)('wks');
+var store = __webpack_require__(41)('wks');
 var uid = __webpack_require__(33);
 var Symbol = __webpack_require__(9).Symbol;
 var USE_SYMBOL = typeof Symbol == 'function';
@@ -1603,6 +1603,7 @@ var DEFAULT_CONFIG = exports.DEFAULT_CONFIG = {
     },
     featuredCards: [],
     hideCtaIds: [],
+    hideCtaTags: [],
     header: {
         enabled: false
     },
@@ -2358,414 +2359,6 @@ var cardType = exports.cardType = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.RenderTotalResults = exports.RenderDisplayMsg = exports.HighlightSearchField = undefined;
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _cuid = __webpack_require__(69);
-
-var _cuid2 = _interopRequireDefault(_cuid);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * Handles highlighting search results on search
- * @param {String} text - Search Text
- * @param {String} value - Values to highlight
- * @returns {String []} - HTML with text highlighting
- */
-var HighlightSearchField = exports.HighlightSearchField = function HighlightSearchField(text, value) {
-    var parts = text.split(new RegExp('(' + value + ')', 'gi'));
-    return parts.map(function (part) {
-        return part.toLowerCase() === value ? _react2.default.createElement(
-            'span',
-            {
-                'data-testid': 'consonant-SearchResult',
-                className: 'consonant-SearchResult',
-                key: (0, _cuid2.default)() },
-            part
-        ) : part;
-    });
-};
-
-/**
- * Handles generating HTML for errors
- * @param {String} text - Error Text
- * @param {String} value - Values to modify
- * @returns {String []} - HTML to render users on page error
- */
-var RenderDisplayMsg = exports.RenderDisplayMsg = function RenderDisplayMsg(text, value) {
-    var arr = text.split(new RegExp('({query}|{break})', 'gi')).filter(function (item) {
-        return item;
-    });
-    return arr.map(function (item) {
-        switch (item.toLowerCase()) {
-            case '{query}':
-                return _react2.default.createElement(
-                    'strong',
-                    {
-                        key: (0, _cuid2.default)() },
-                    value
-                );
-            case '{break}':
-                return _react2.default.createElement('br', {
-                    key: (0, _cuid2.default)() });
-            default:
-                return _react2.default.createElement(
-                    'span',
-                    {
-                        key: (0, _cuid2.default)() },
-                    item
-                );
-        }
-    });
-};
-
-/**
- * Handles generating HTML for total results text
- * @param {String} text - Text
- * @param {String} value - Values to modify
- * @returns {String []} - HTML to render total results text
- */
-var RenderTotalResults = exports.RenderTotalResults = function RenderTotalResults(text, value) {
-    var arr = text.split(new RegExp('({total})', 'gi')).filter(function (item) {
-        return item;
-    });
-    return arr.map(function (item) {
-        return item.toLowerCase() === '{total}' ? _react2.default.createElement(
-            'strong',
-            { key: (0, _cuid2.default)() },
-            value
-        ) : _react2.default.createElement(
-            'span',
-            { key: (0, _cuid2.default)() },
-            item
-        );
-    });
-};
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var core = __webpack_require__(3);
-var global = __webpack_require__(9);
-var SHARED = '__core-js_shared__';
-var store = global[SHARED] || (global[SHARED] = {});
-
-(module.exports = function (key, value) {
-  return store[key] || (store[key] = value !== undefined ? value : {});
-})('versions', []).push({
-  version: core.version,
-  mode: __webpack_require__(27) ? 'pure' : 'global',
-  copyright: '© 2020 Denis Pushkarev (zloirock.ru)'
-});
-
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports) {
-
-exports.f = Object.getOwnPropertySymbols;
-
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-var anObject = __webpack_require__(11);
-var dPs = __webpack_require__(78);
-var enumBugKeys = __webpack_require__(54);
-var IE_PROTO = __webpack_require__(53)('IE_PROTO');
-var Empty = function () { /* empty */ };
-var PROTOTYPE = 'prototype';
-
-// Create object with fake `null` prototype: use iframe Object with cleared prototype
-var createDict = function () {
-  // Thrash, waste and sodomy: IE GC bug
-  var iframe = __webpack_require__(50)('iframe');
-  var i = enumBugKeys.length;
-  var lt = '<';
-  var gt = '>';
-  var iframeDocument;
-  iframe.style.display = 'none';
-  __webpack_require__(79).appendChild(iframe);
-  iframe.src = 'javascript:'; // eslint-disable-line no-script-url
-  // createDict = iframe.contentWindow.Object;
-  // html.removeChild(iframe);
-  iframeDocument = iframe.contentWindow.document;
-  iframeDocument.open();
-  iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
-  iframeDocument.close();
-  createDict = iframeDocument.F;
-  while (i--) delete createDict[PROTOTYPE][enumBugKeys[i]];
-  return createDict();
-};
-
-module.exports = Object.create || function create(O, Properties) {
-  var result;
-  if (O !== null) {
-    Empty[PROTOTYPE] = anObject(O);
-    result = new Empty();
-    Empty[PROTOTYPE] = null;
-    // add "__proto__" for Object.getPrototypeOf polyfill
-    result[IE_PROTO] = O;
-  } else result = createDict();
-  return Properties === undefined ? result : dPs(result, Properties);
-};
-
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var def = __webpack_require__(13).f;
-var has = __webpack_require__(23);
-var TAG = __webpack_require__(4)('toStringTag');
-
-module.exports = function (it, tag, stat) {
-  if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
-};
-
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-var has = __webpack_require__(23);
-var toObject = __webpack_require__(14);
-var IE_PROTO = __webpack_require__(53)('IE_PROTO');
-var ObjectProto = Object.prototype;
-
-module.exports = Object.getPrototypeOf || function (O) {
-  O = toObject(O);
-  if (has(O, IE_PROTO)) return O[IE_PROTO];
-  if (typeof O.constructor == 'function' && O instanceof O.constructor) {
-    return O.constructor.prototype;
-  } return O instanceof Object ? ObjectProto : null;
-};
-
-
-/***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var META = __webpack_require__(33)('meta');
-var isObject = __webpack_require__(8);
-var has = __webpack_require__(23);
-var setDesc = __webpack_require__(13).f;
-var id = 0;
-var isExtensible = Object.isExtensible || function () {
-  return true;
-};
-var FREEZE = !__webpack_require__(15)(function () {
-  return isExtensible(Object.preventExtensions({}));
-});
-var setMeta = function (it) {
-  setDesc(it, META, { value: {
-    i: 'O' + ++id, // object ID
-    w: {}          // weak collections IDs
-  } });
-};
-var fastKey = function (it, create) {
-  // return primitive with prefix
-  if (!isObject(it)) return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
-  if (!has(it, META)) {
-    // can't set metadata to uncaught frozen object
-    if (!isExtensible(it)) return 'F';
-    // not necessary to add metadata
-    if (!create) return 'E';
-    // add missing metadata
-    setMeta(it);
-  // return object ID
-  } return it[META].i;
-};
-var getWeak = function (it, create) {
-  if (!has(it, META)) {
-    // can't set metadata to uncaught frozen object
-    if (!isExtensible(it)) return true;
-    // not necessary to add metadata
-    if (!create) return false;
-    // add missing metadata
-    setMeta(it);
-  // return hash weak collections IDs
-  } return it[META].w;
-};
-// add metadata on freeze-family methods calling
-var onFreeze = function (it) {
-  if (FREEZE && meta.NEED && isExtensible(it) && !has(it, META)) setMeta(it);
-  return it;
-};
-var meta = module.exports = {
-  KEY: META,
-  NEED: false,
-  fastKey: fastKey,
-  getWeak: getWeak,
-  onFreeze: onFreeze
-};
-
-
-/***/ }),
-/* 46 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// Forced replacement prototype accessors methods
-module.exports = __webpack_require__(27) || !__webpack_require__(15)(function () {
-  var K = Math.random();
-  // In FF throws only define methods
-  // eslint-disable-next-line no-undef, no-useless-call
-  __defineSetter__.call(null, K, function () { /* empty */ });
-  delete __webpack_require__(9)[K];
-});
-
-
-/***/ }),
-/* 47 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var classof = __webpack_require__(36);
-var builtinExec = RegExp.prototype.exec;
-
- // `RegExpExec` abstract operation
-// https://tc39.github.io/ecma262/#sec-regexpexec
-module.exports = function (R, S) {
-  var exec = R.exec;
-  if (typeof exec === 'function') {
-    var result = exec.call(R, S);
-    if (typeof result !== 'object') {
-      throw new TypeError('RegExp exec method returned something other than an Object or null');
-    }
-    return result;
-  }
-  if (classof(R) !== 'RegExp') {
-    throw new TypeError('RegExp#exec called on incompatible receiver');
-  }
-  return builtinExec.call(R, S);
-};
-
-
-/***/ }),
-/* 48 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-__webpack_require__(188);
-var redefine = __webpack_require__(26);
-var hide = __webpack_require__(22);
-var fails = __webpack_require__(15);
-var defined = __webpack_require__(21);
-var wks = __webpack_require__(4);
-var regexpExec = __webpack_require__(62);
-
-var SPECIES = wks('species');
-
-var REPLACE_SUPPORTS_NAMED_GROUPS = !fails(function () {
-  // #replace needs built-in support for named groups.
-  // #match works fine because it just return the exec results, even if it has
-  // a "grops" property.
-  var re = /./;
-  re.exec = function () {
-    var result = [];
-    result.groups = { a: '7' };
-    return result;
-  };
-  return ''.replace(re, '$<a>') !== '7';
-});
-
-var SPLIT_WORKS_WITH_OVERWRITTEN_EXEC = (function () {
-  // Chrome 51 has a buggy "split" implementation when RegExp#exec !== nativeExec
-  var re = /(?:)/;
-  var originalExec = re.exec;
-  re.exec = function () { return originalExec.apply(this, arguments); };
-  var result = 'ab'.split(re);
-  return result.length === 2 && result[0] === 'a' && result[1] === 'b';
-})();
-
-module.exports = function (KEY, length, exec) {
-  var SYMBOL = wks(KEY);
-
-  var DELEGATES_TO_SYMBOL = !fails(function () {
-    // String methods call symbol-named RegEp methods
-    var O = {};
-    O[SYMBOL] = function () { return 7; };
-    return ''[KEY](O) != 7;
-  });
-
-  var DELEGATES_TO_EXEC = DELEGATES_TO_SYMBOL ? !fails(function () {
-    // Symbol-named RegExp methods call .exec
-    var execCalled = false;
-    var re = /a/;
-    re.exec = function () { execCalled = true; return null; };
-    if (KEY === 'split') {
-      // RegExp[@@split] doesn't call the regex's exec method, but first creates
-      // a new one. We need to return the patched regex when creating the new one.
-      re.constructor = {};
-      re.constructor[SPECIES] = function () { return re; };
-    }
-    re[SYMBOL]('');
-    return !execCalled;
-  }) : undefined;
-
-  if (
-    !DELEGATES_TO_SYMBOL ||
-    !DELEGATES_TO_EXEC ||
-    (KEY === 'replace' && !REPLACE_SUPPORTS_NAMED_GROUPS) ||
-    (KEY === 'split' && !SPLIT_WORKS_WITH_OVERWRITTEN_EXEC)
-  ) {
-    var nativeRegExpMethod = /./[SYMBOL];
-    var fns = exec(
-      defined,
-      SYMBOL,
-      ''[KEY],
-      function maybeCallNative(nativeMethod, regexp, str, arg2, forceStringMethod) {
-        if (regexp.exec === regexpExec) {
-          if (DELEGATES_TO_SYMBOL && !forceStringMethod) {
-            // The native String method already delegates to @@method (this
-            // polyfilled function), leasing to infinite recursion.
-            // We avoid it by directly calling the native @@method method.
-            return { done: true, value: nativeRegExpMethod.call(regexp, str, arg2) };
-          }
-          return { done: true, value: nativeMethod.call(str, regexp, arg2) };
-        }
-        return { done: false };
-      }
-    );
-    var strfn = fns[0];
-    var rxfn = fns[1];
-
-    redefine(String.prototype, KEY, strfn);
-    hide(RegExp.prototype, SYMBOL, length == 2
-      // 21.2.5.8 RegExp.prototype[@@replace](string, replaceValue)
-      // 21.2.5.11 RegExp.prototype[@@split](string, limit)
-      ? function (string, arg) { return rxfn.call(string, this, arg); }
-      // 21.2.5.6 RegExp.prototype[@@match](string)
-      // 21.2.5.9 RegExp.prototype[@@search](string)
-      : function (string) { return rxfn.call(string, this); }
-    );
-  }
-};
-
-
-/***/ }),
-/* 49 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 exports.getFeaturedCards = exports.getRandomSort = exports.getUpdatedCardBookmarkData = exports.processCards = exports.getCardsMatchingSearch = exports.getEventSort = exports.getDateDescSort = exports.getDateAscSort = exports.getFeaturedSort = exports.getModifiedAscSort = exports.getModifiedDescSort = exports.getTitleDescSort = exports.getTitleAscSort = exports.hasTag = exports.getCardsMatchingQuery = exports.highlightCard = exports.getFilteredCards = exports.getActivePanels = exports.getActiveFilterIds = exports.getBookmarkedCards = exports.getCollectionCards = exports.getTotalPages = exports.getNumCardsToShow = exports.shouldDisplayPaginator = undefined;
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
@@ -2776,7 +2369,7 @@ var _immer = __webpack_require__(269);
 
 var _immer2 = _interopRequireDefault(_immer);
 
-var _rendering = __webpack_require__(39);
+var _rendering = __webpack_require__(40);
 
 var _general = __webpack_require__(6);
 
@@ -3384,6 +2977,414 @@ var getFeaturedCards = exports.getFeaturedCards = function getFeaturedCards(ids,
 };
 
 /***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.RenderTotalResults = exports.RenderDisplayMsg = exports.HighlightSearchField = undefined;
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _cuid = __webpack_require__(69);
+
+var _cuid2 = _interopRequireDefault(_cuid);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Handles highlighting search results on search
+ * @param {String} text - Search Text
+ * @param {String} value - Values to highlight
+ * @returns {String []} - HTML with text highlighting
+ */
+var HighlightSearchField = exports.HighlightSearchField = function HighlightSearchField(text, value) {
+    var parts = text.split(new RegExp('(' + value + ')', 'gi'));
+    return parts.map(function (part) {
+        return part.toLowerCase() === value ? _react2.default.createElement(
+            'span',
+            {
+                'data-testid': 'consonant-SearchResult',
+                className: 'consonant-SearchResult',
+                key: (0, _cuid2.default)() },
+            part
+        ) : part;
+    });
+};
+
+/**
+ * Handles generating HTML for errors
+ * @param {String} text - Error Text
+ * @param {String} value - Values to modify
+ * @returns {String []} - HTML to render users on page error
+ */
+var RenderDisplayMsg = exports.RenderDisplayMsg = function RenderDisplayMsg(text, value) {
+    var arr = text.split(new RegExp('({query}|{break})', 'gi')).filter(function (item) {
+        return item;
+    });
+    return arr.map(function (item) {
+        switch (item.toLowerCase()) {
+            case '{query}':
+                return _react2.default.createElement(
+                    'strong',
+                    {
+                        key: (0, _cuid2.default)() },
+                    value
+                );
+            case '{break}':
+                return _react2.default.createElement('br', {
+                    key: (0, _cuid2.default)() });
+            default:
+                return _react2.default.createElement(
+                    'span',
+                    {
+                        key: (0, _cuid2.default)() },
+                    item
+                );
+        }
+    });
+};
+
+/**
+ * Handles generating HTML for total results text
+ * @param {String} text - Text
+ * @param {String} value - Values to modify
+ * @returns {String []} - HTML to render total results text
+ */
+var RenderTotalResults = exports.RenderTotalResults = function RenderTotalResults(text, value) {
+    var arr = text.split(new RegExp('({total})', 'gi')).filter(function (item) {
+        return item;
+    });
+    return arr.map(function (item) {
+        return item.toLowerCase() === '{total}' ? _react2.default.createElement(
+            'strong',
+            { key: (0, _cuid2.default)() },
+            value
+        ) : _react2.default.createElement(
+            'span',
+            { key: (0, _cuid2.default)() },
+            item
+        );
+    });
+};
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var core = __webpack_require__(3);
+var global = __webpack_require__(9);
+var SHARED = '__core-js_shared__';
+var store = global[SHARED] || (global[SHARED] = {});
+
+(module.exports = function (key, value) {
+  return store[key] || (store[key] = value !== undefined ? value : {});
+})('versions', []).push({
+  version: core.version,
+  mode: __webpack_require__(27) ? 'pure' : 'global',
+  copyright: '© 2020 Denis Pushkarev (zloirock.ru)'
+});
+
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports) {
+
+exports.f = Object.getOwnPropertySymbols;
+
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
+var anObject = __webpack_require__(11);
+var dPs = __webpack_require__(78);
+var enumBugKeys = __webpack_require__(54);
+var IE_PROTO = __webpack_require__(53)('IE_PROTO');
+var Empty = function () { /* empty */ };
+var PROTOTYPE = 'prototype';
+
+// Create object with fake `null` prototype: use iframe Object with cleared prototype
+var createDict = function () {
+  // Thrash, waste and sodomy: IE GC bug
+  var iframe = __webpack_require__(50)('iframe');
+  var i = enumBugKeys.length;
+  var lt = '<';
+  var gt = '>';
+  var iframeDocument;
+  iframe.style.display = 'none';
+  __webpack_require__(79).appendChild(iframe);
+  iframe.src = 'javascript:'; // eslint-disable-line no-script-url
+  // createDict = iframe.contentWindow.Object;
+  // html.removeChild(iframe);
+  iframeDocument = iframe.contentWindow.document;
+  iframeDocument.open();
+  iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
+  iframeDocument.close();
+  createDict = iframeDocument.F;
+  while (i--) delete createDict[PROTOTYPE][enumBugKeys[i]];
+  return createDict();
+};
+
+module.exports = Object.create || function create(O, Properties) {
+  var result;
+  if (O !== null) {
+    Empty[PROTOTYPE] = anObject(O);
+    result = new Empty();
+    Empty[PROTOTYPE] = null;
+    // add "__proto__" for Object.getPrototypeOf polyfill
+    result[IE_PROTO] = O;
+  } else result = createDict();
+  return Properties === undefined ? result : dPs(result, Properties);
+};
+
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var def = __webpack_require__(13).f;
+var has = __webpack_require__(23);
+var TAG = __webpack_require__(4)('toStringTag');
+
+module.exports = function (it, tag, stat) {
+  if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
+};
+
+
+/***/ }),
+/* 45 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
+var has = __webpack_require__(23);
+var toObject = __webpack_require__(14);
+var IE_PROTO = __webpack_require__(53)('IE_PROTO');
+var ObjectProto = Object.prototype;
+
+module.exports = Object.getPrototypeOf || function (O) {
+  O = toObject(O);
+  if (has(O, IE_PROTO)) return O[IE_PROTO];
+  if (typeof O.constructor == 'function' && O instanceof O.constructor) {
+    return O.constructor.prototype;
+  } return O instanceof Object ? ObjectProto : null;
+};
+
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var META = __webpack_require__(33)('meta');
+var isObject = __webpack_require__(8);
+var has = __webpack_require__(23);
+var setDesc = __webpack_require__(13).f;
+var id = 0;
+var isExtensible = Object.isExtensible || function () {
+  return true;
+};
+var FREEZE = !__webpack_require__(15)(function () {
+  return isExtensible(Object.preventExtensions({}));
+});
+var setMeta = function (it) {
+  setDesc(it, META, { value: {
+    i: 'O' + ++id, // object ID
+    w: {}          // weak collections IDs
+  } });
+};
+var fastKey = function (it, create) {
+  // return primitive with prefix
+  if (!isObject(it)) return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
+  if (!has(it, META)) {
+    // can't set metadata to uncaught frozen object
+    if (!isExtensible(it)) return 'F';
+    // not necessary to add metadata
+    if (!create) return 'E';
+    // add missing metadata
+    setMeta(it);
+  // return object ID
+  } return it[META].i;
+};
+var getWeak = function (it, create) {
+  if (!has(it, META)) {
+    // can't set metadata to uncaught frozen object
+    if (!isExtensible(it)) return true;
+    // not necessary to add metadata
+    if (!create) return false;
+    // add missing metadata
+    setMeta(it);
+  // return hash weak collections IDs
+  } return it[META].w;
+};
+// add metadata on freeze-family methods calling
+var onFreeze = function (it) {
+  if (FREEZE && meta.NEED && isExtensible(it) && !has(it, META)) setMeta(it);
+  return it;
+};
+var meta = module.exports = {
+  KEY: META,
+  NEED: false,
+  fastKey: fastKey,
+  getWeak: getWeak,
+  onFreeze: onFreeze
+};
+
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Forced replacement prototype accessors methods
+module.exports = __webpack_require__(27) || !__webpack_require__(15)(function () {
+  var K = Math.random();
+  // In FF throws only define methods
+  // eslint-disable-next-line no-undef, no-useless-call
+  __defineSetter__.call(null, K, function () { /* empty */ });
+  delete __webpack_require__(9)[K];
+});
+
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var classof = __webpack_require__(36);
+var builtinExec = RegExp.prototype.exec;
+
+ // `RegExpExec` abstract operation
+// https://tc39.github.io/ecma262/#sec-regexpexec
+module.exports = function (R, S) {
+  var exec = R.exec;
+  if (typeof exec === 'function') {
+    var result = exec.call(R, S);
+    if (typeof result !== 'object') {
+      throw new TypeError('RegExp exec method returned something other than an Object or null');
+    }
+    return result;
+  }
+  if (classof(R) !== 'RegExp') {
+    throw new TypeError('RegExp#exec called on incompatible receiver');
+  }
+  return builtinExec.call(R, S);
+};
+
+
+/***/ }),
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+__webpack_require__(188);
+var redefine = __webpack_require__(26);
+var hide = __webpack_require__(22);
+var fails = __webpack_require__(15);
+var defined = __webpack_require__(21);
+var wks = __webpack_require__(4);
+var regexpExec = __webpack_require__(62);
+
+var SPECIES = wks('species');
+
+var REPLACE_SUPPORTS_NAMED_GROUPS = !fails(function () {
+  // #replace needs built-in support for named groups.
+  // #match works fine because it just return the exec results, even if it has
+  // a "grops" property.
+  var re = /./;
+  re.exec = function () {
+    var result = [];
+    result.groups = { a: '7' };
+    return result;
+  };
+  return ''.replace(re, '$<a>') !== '7';
+});
+
+var SPLIT_WORKS_WITH_OVERWRITTEN_EXEC = (function () {
+  // Chrome 51 has a buggy "split" implementation when RegExp#exec !== nativeExec
+  var re = /(?:)/;
+  var originalExec = re.exec;
+  re.exec = function () { return originalExec.apply(this, arguments); };
+  var result = 'ab'.split(re);
+  return result.length === 2 && result[0] === 'a' && result[1] === 'b';
+})();
+
+module.exports = function (KEY, length, exec) {
+  var SYMBOL = wks(KEY);
+
+  var DELEGATES_TO_SYMBOL = !fails(function () {
+    // String methods call symbol-named RegEp methods
+    var O = {};
+    O[SYMBOL] = function () { return 7; };
+    return ''[KEY](O) != 7;
+  });
+
+  var DELEGATES_TO_EXEC = DELEGATES_TO_SYMBOL ? !fails(function () {
+    // Symbol-named RegExp methods call .exec
+    var execCalled = false;
+    var re = /a/;
+    re.exec = function () { execCalled = true; return null; };
+    if (KEY === 'split') {
+      // RegExp[@@split] doesn't call the regex's exec method, but first creates
+      // a new one. We need to return the patched regex when creating the new one.
+      re.constructor = {};
+      re.constructor[SPECIES] = function () { return re; };
+    }
+    re[SYMBOL]('');
+    return !execCalled;
+  }) : undefined;
+
+  if (
+    !DELEGATES_TO_SYMBOL ||
+    !DELEGATES_TO_EXEC ||
+    (KEY === 'replace' && !REPLACE_SUPPORTS_NAMED_GROUPS) ||
+    (KEY === 'split' && !SPLIT_WORKS_WITH_OVERWRITTEN_EXEC)
+  ) {
+    var nativeRegExpMethod = /./[SYMBOL];
+    var fns = exec(
+      defined,
+      SYMBOL,
+      ''[KEY],
+      function maybeCallNative(nativeMethod, regexp, str, arg2, forceStringMethod) {
+        if (regexp.exec === regexpExec) {
+          if (DELEGATES_TO_SYMBOL && !forceStringMethod) {
+            // The native String method already delegates to @@method (this
+            // polyfilled function), leasing to infinite recursion.
+            // We avoid it by directly calling the native @@method method.
+            return { done: true, value: nativeRegExpMethod.call(regexp, str, arg2) };
+          }
+          return { done: true, value: nativeMethod.call(str, regexp, arg2) };
+        }
+        return { done: false };
+      }
+    );
+    var strfn = fns[0];
+    var rxfn = fns[1];
+
+    redefine(String.prototype, KEY, strfn);
+    hide(RegExp.prototype, SYMBOL, length == 2
+      // 21.2.5.8 RegExp.prototype[@@replace](string, replaceValue)
+      // 21.2.5.11 RegExp.prototype[@@split](string, limit)
+      ? function (string, arg) { return rxfn.call(string, this, arg); }
+      // 21.2.5.6 RegExp.prototype[@@match](string)
+      // 21.2.5.9 RegExp.prototype[@@search](string)
+      : function (string) { return rxfn.call(string, this); }
+    );
+  }
+};
+
+
+/***/ }),
 /* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3425,7 +3426,7 @@ module.exports = function (key) {
 /* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var shared = __webpack_require__(40)('keys');
+var shared = __webpack_require__(41)('keys');
 var uid = __webpack_require__(33);
 module.exports = function (key) {
   return shared[key] || (shared[key] = uid(key));
@@ -4891,7 +4892,7 @@ module.exports.f = function getOwnPropertyNames(it) {
 
 // all object keys, includes non-enumerable and symbols
 var gOPN = __webpack_require__(56);
-var gOPS = __webpack_require__(41);
+var gOPS = __webpack_require__(42);
 var anObject = __webpack_require__(11);
 var Reflect = __webpack_require__(9).Reflect;
 module.exports = Reflect && Reflect.ownKeys || function ownKeys(it) {
@@ -5161,7 +5162,7 @@ if (!USE_NATIVE) {
 }
 
 $export($export.G + $export.W + $export.F * !USE_NATIVE, { Promise: $Promise });
-__webpack_require__(43)($Promise, PROMISE);
+__webpack_require__(44)($Promise, PROMISE);
 __webpack_require__(180)(PROMISE);
 Wrapper = __webpack_require__(3)[PROMISE];
 
@@ -5946,7 +5947,7 @@ var _contexts = __webpack_require__(110);
 
 var _consonant = __webpack_require__(109);
 
-var _Helpers = __webpack_require__(49);
+var _Helpers = __webpack_require__(39);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5963,6 +5964,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     featuredCards: [{}],
     filterPanel: {},
     hideCtaIds: [{}],
+    hideCtaTags: [{}],
     sort: {},
     pagination: {},
     bookmarks: {},
@@ -6000,6 +6002,7 @@ var Container = function Container(props) {
     var defaultSortOption = (0, _consonant.getDefaultSortOption)(config, defaultSort);
     var featuredCards = getConfig('featuredCards', '').toString().replace(/\[|\]/g, '').replace(/`/g, '').split(',');
     var hideCtaIds = getConfig('hideCtaIds', '').toString().replace(/\[|\]/g, '').replace(/`/g, '').split(',');
+    var hideCtaTags = getConfig('hideCtaTags', '').toString().replace(/\[|\]/g, '').replace(/`/g, '').split(',');
     var leftPanelSearchPlaceholder = getConfig('search', 'i18n.leftFilterPanel.searchPlaceholderText');
     var topPanelSearchPlaceholder = getConfig('search', 'i18n.topFilterPanel.searchPlaceholderText');
     var searchPlaceholderText = getConfig('search', 'i18n.filterInfo.searchPlaceholderText');
@@ -6819,7 +6822,7 @@ var Container = function Container(props) {
                 setIsFirstLoad(true);
                 if (!(0, _general.getByPath)(payload, 'cards.length')) return;
 
-                var _removeDuplicateCards = new _JsonProcessor2.default(payload.cards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds),
+                var _removeDuplicateCards = new _JsonProcessor2.default(payload.cards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags),
                     _removeDuplicateCards2 = _removeDuplicateCards.processedCards,
                     processedCards = _removeDuplicateCards2 === undefined ? [] : _removeDuplicateCards2;
 
@@ -7722,7 +7725,7 @@ var Grid = function Grid(props) {
      * @returns {bool} - whether a cta should be hidden
      */
     var getHideCta = function getHideCta(card, style) {
-        if (card.hideCtaId || style === 'hidden') return true;
+        if (card.hideCtaId || card.hideCtaTags || style === 'hidden') return true;
         return false;
     };
 
@@ -8884,7 +8887,7 @@ __webpack_require__(52)('includes');
 /* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(40)('native-function-to-string', Function.toString);
+module.exports = __webpack_require__(41)('native-function-to-string', Function.toString);
 
 
 /***/ }),
@@ -8917,7 +8920,7 @@ module.exports = __webpack_require__(3).Object.assign;
 // 19.1.2.1 Object.assign(target, source, ...)
 var DESCRIPTORS = __webpack_require__(10);
 var getKeys = __webpack_require__(30);
-var gOPS = __webpack_require__(41);
+var gOPS = __webpack_require__(42);
 var pIE = __webpack_require__(35);
 var toObject = __webpack_require__(14);
 var IObject = __webpack_require__(51);
@@ -9090,8 +9093,8 @@ var redefine = __webpack_require__(26);
 var hide = __webpack_require__(22);
 var Iterators = __webpack_require__(55);
 var $iterCreate = __webpack_require__(136);
-var setToStringTag = __webpack_require__(43);
-var getPrototypeOf = __webpack_require__(44);
+var setToStringTag = __webpack_require__(44);
+var getPrototypeOf = __webpack_require__(45);
 var ITERATOR = __webpack_require__(4)('iterator');
 var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
 var FF_ITERATOR = '@@iterator';
@@ -9160,9 +9163,9 @@ module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCE
 
 "use strict";
 
-var create = __webpack_require__(42);
+var create = __webpack_require__(43);
 var descriptor = __webpack_require__(32);
-var setToStringTag = __webpack_require__(43);
+var setToStringTag = __webpack_require__(44);
 var IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
@@ -9290,10 +9293,10 @@ var has = __webpack_require__(23);
 var DESCRIPTORS = __webpack_require__(10);
 var $export = __webpack_require__(2);
 var redefine = __webpack_require__(26);
-var META = __webpack_require__(45).KEY;
+var META = __webpack_require__(46).KEY;
 var $fails = __webpack_require__(15);
-var shared = __webpack_require__(40);
-var setToStringTag = __webpack_require__(43);
+var shared = __webpack_require__(41);
+var setToStringTag = __webpack_require__(44);
 var uid = __webpack_require__(33);
 var wks = __webpack_require__(4);
 var wksExt = __webpack_require__(90);
@@ -9306,10 +9309,10 @@ var toObject = __webpack_require__(14);
 var toIObject = __webpack_require__(18);
 var toPrimitive = __webpack_require__(31);
 var createDesc = __webpack_require__(32);
-var _create = __webpack_require__(42);
+var _create = __webpack_require__(43);
 var gOPNExt = __webpack_require__(91);
 var $GOPD = __webpack_require__(25);
-var $GOPS = __webpack_require__(41);
+var $GOPS = __webpack_require__(42);
 var $DP = __webpack_require__(13);
 var $keys = __webpack_require__(30);
 var gOPD = $GOPD.f;
@@ -9552,7 +9555,7 @@ module.exports = function (name) {
 
 // all enumerable object keys, includes symbols
 var getKeys = __webpack_require__(30);
-var gOPS = __webpack_require__(41);
+var gOPS = __webpack_require__(42);
 var pIE = __webpack_require__(35);
 module.exports = function (it) {
   var result = getKeys(it);
@@ -9573,7 +9576,7 @@ module.exports = function (it) {
 
 var $export = __webpack_require__(2);
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-$export($export.S, 'Object', { create: __webpack_require__(42) });
+$export($export.S, 'Object', { create: __webpack_require__(43) });
 
 
 /***/ }),
@@ -9615,7 +9618,7 @@ __webpack_require__(16)('getOwnPropertyDescriptor', function () {
 
 // 19.1.2.9 Object.getPrototypeOf(O)
 var toObject = __webpack_require__(14);
-var $getPrototypeOf = __webpack_require__(44);
+var $getPrototypeOf = __webpack_require__(45);
 
 __webpack_require__(16)('getPrototypeOf', function () {
   return function getPrototypeOf(it) {
@@ -9655,7 +9658,7 @@ __webpack_require__(16)('getOwnPropertyNames', function () {
 
 // 19.1.2.5 Object.freeze(O)
 var isObject = __webpack_require__(8);
-var meta = __webpack_require__(45).onFreeze;
+var meta = __webpack_require__(46).onFreeze;
 
 __webpack_require__(16)('freeze', function ($freeze) {
   return function freeze(it) {
@@ -9670,7 +9673,7 @@ __webpack_require__(16)('freeze', function ($freeze) {
 
 // 19.1.2.17 Object.seal(O)
 var isObject = __webpack_require__(8);
-var meta = __webpack_require__(45).onFreeze;
+var meta = __webpack_require__(46).onFreeze;
 
 __webpack_require__(16)('seal', function ($seal) {
   return function seal(it) {
@@ -9685,7 +9688,7 @@ __webpack_require__(16)('seal', function ($seal) {
 
 // 19.1.2.15 Object.preventExtensions(O)
 var isObject = __webpack_require__(8);
-var meta = __webpack_require__(45).onFreeze;
+var meta = __webpack_require__(46).onFreeze;
 
 __webpack_require__(16)('preventExtensions', function ($preventExtensions) {
   return function preventExtensions(it) {
@@ -9833,7 +9836,7 @@ var aFunction = __webpack_require__(28);
 var $defineProperty = __webpack_require__(13);
 
 // B.2.2.2 Object.prototype.__defineGetter__(P, getter)
-__webpack_require__(10) && $export($export.P + __webpack_require__(46), 'Object', {
+__webpack_require__(10) && $export($export.P + __webpack_require__(47), 'Object', {
   __defineGetter__: function __defineGetter__(P, getter) {
     $defineProperty.f(toObject(this), P, { get: aFunction(getter), enumerable: true, configurable: true });
   }
@@ -9852,7 +9855,7 @@ var aFunction = __webpack_require__(28);
 var $defineProperty = __webpack_require__(13);
 
 // B.2.2.3 Object.prototype.__defineSetter__(P, setter)
-__webpack_require__(10) && $export($export.P + __webpack_require__(46), 'Object', {
+__webpack_require__(10) && $export($export.P + __webpack_require__(47), 'Object', {
   __defineSetter__: function __defineSetter__(P, setter) {
     $defineProperty.f(toObject(this), P, { set: aFunction(setter), enumerable: true, configurable: true });
   }
@@ -9868,11 +9871,11 @@ __webpack_require__(10) && $export($export.P + __webpack_require__(46), 'Object'
 var $export = __webpack_require__(2);
 var toObject = __webpack_require__(14);
 var toPrimitive = __webpack_require__(31);
-var getPrototypeOf = __webpack_require__(44);
+var getPrototypeOf = __webpack_require__(45);
 var getOwnPropertyDescriptor = __webpack_require__(25).f;
 
 // B.2.2.4 Object.prototype.__lookupGetter__(P)
-__webpack_require__(10) && $export($export.P + __webpack_require__(46), 'Object', {
+__webpack_require__(10) && $export($export.P + __webpack_require__(47), 'Object', {
   __lookupGetter__: function __lookupGetter__(P) {
     var O = toObject(this);
     var K = toPrimitive(P, true);
@@ -9893,11 +9896,11 @@ __webpack_require__(10) && $export($export.P + __webpack_require__(46), 'Object'
 var $export = __webpack_require__(2);
 var toObject = __webpack_require__(14);
 var toPrimitive = __webpack_require__(31);
-var getPrototypeOf = __webpack_require__(44);
+var getPrototypeOf = __webpack_require__(45);
 var getOwnPropertyDescriptor = __webpack_require__(25).f;
 
 // B.2.2.5 Object.prototype.__lookupSetter__(P)
-__webpack_require__(10) && $export($export.P + __webpack_require__(46), 'Object', {
+__webpack_require__(10) && $export($export.P + __webpack_require__(47), 'Object', {
   __lookupSetter__: function __lookupSetter__(P) {
     var O = toObject(this);
     var K = toPrimitive(P, true);
@@ -9943,7 +9946,7 @@ $export($export.S + $export.F, 'Object', { define: define });
 
 var $export = __webpack_require__(2);
 var define = __webpack_require__(93);
-var create = __webpack_require__(42);
+var create = __webpack_require__(43);
 
 $export($export.S + $export.F, 'Object', {
   make: function (proto, mixin) {
@@ -10302,10 +10305,10 @@ module.exports = function (it, str) {
 var anObject = __webpack_require__(11);
 var toLength = __webpack_require__(19);
 var advanceStringIndex = __webpack_require__(61);
-var regExpExec = __webpack_require__(47);
+var regExpExec = __webpack_require__(48);
 
 // @@match logic
-__webpack_require__(48)('match', 1, function (defined, MATCH, $match, maybeCallNative) {
+__webpack_require__(49)('match', 1, function (defined, MATCH, $match, maybeCallNative) {
   return [
     // `String.prototype.match` method
     // https://tc39.github.io/ecma262/#sec-string.prototype.match
@@ -10378,7 +10381,7 @@ var toObject = __webpack_require__(14);
 var toLength = __webpack_require__(19);
 var toInteger = __webpack_require__(34);
 var advanceStringIndex = __webpack_require__(61);
-var regExpExec = __webpack_require__(47);
+var regExpExec = __webpack_require__(48);
 var max = Math.max;
 var min = Math.min;
 var floor = Math.floor;
@@ -10390,7 +10393,7 @@ var maybeToString = function (it) {
 };
 
 // @@replace logic
-__webpack_require__(48)('replace', 2, function (defined, REPLACE, $replace, maybeCallNative) {
+__webpack_require__(49)('replace', 2, function (defined, REPLACE, $replace, maybeCallNative) {
   return [
     // `String.prototype.replace` method
     // https://tc39.github.io/ecma262/#sec-string.prototype.replace
@@ -10511,10 +10514,10 @@ module.exports = function (it, str) {
 
 var anObject = __webpack_require__(11);
 var sameValue = __webpack_require__(89);
-var regExpExec = __webpack_require__(47);
+var regExpExec = __webpack_require__(48);
 
 // @@search logic
-__webpack_require__(48)('search', 1, function (defined, SEARCH, $search, maybeCallNative) {
+__webpack_require__(49)('search', 1, function (defined, SEARCH, $search, maybeCallNative) {
   return [
     // `String.prototype.search` method
     // https://tc39.github.io/ecma262/#sec-string.prototype.search
@@ -10563,7 +10566,7 @@ var anObject = __webpack_require__(11);
 var speciesConstructor = __webpack_require__(57);
 var advanceStringIndex = __webpack_require__(61);
 var toLength = __webpack_require__(19);
-var callRegExpExec = __webpack_require__(47);
+var callRegExpExec = __webpack_require__(48);
 var regexpExec = __webpack_require__(62);
 var fails = __webpack_require__(15);
 var $min = Math.min;
@@ -10577,7 +10580,7 @@ var MAX_UINT32 = 0xffffffff;
 var SUPPORTS_Y = !fails(function () { RegExp(MAX_UINT32, 'y'); });
 
 // @@split logic
-__webpack_require__(48)('split', 2, function (defined, SPLIT, $split, maybeCallNative) {
+__webpack_require__(49)('split', 2, function (defined, SPLIT, $split, maybeCallNative) {
   var internalSplit;
   if (
     'abbc'[$SPLIT](/(b)*/)[1] == 'c' ||
@@ -43477,7 +43480,7 @@ var _Grid = __webpack_require__(111);
 
 var _Grid2 = _interopRequireDefault(_Grid);
 
-var _rendering = __webpack_require__(39);
+var _rendering = __webpack_require__(40);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -46104,7 +46107,7 @@ var _prettyFormat2 = _interopRequireDefault(_prettyFormat);
 
 var _constants = __webpack_require__(17);
 
-var _Helpers = __webpack_require__(49);
+var _Helpers = __webpack_require__(39);
 
 var _general = __webpack_require__(6);
 
@@ -47951,7 +47954,7 @@ exports.defineIsUpcoming = exports.defineIsOnDemandScheduled = exports.defineIsO
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _Helpers = __webpack_require__(49);
+var _Helpers = __webpack_require__(39);
 
 var _general = __webpack_require__(6);
 
@@ -51244,7 +51247,7 @@ var _classnames = __webpack_require__(5);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _rendering = __webpack_require__(39);
+var _rendering = __webpack_require__(40);
 
 var _hooks = __webpack_require__(7);
 
@@ -51803,7 +51806,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Helpers = __webpack_require__(49);
+var _Helpers = __webpack_require__(39);
 
 var _constants = __webpack_require__(17);
 
@@ -52102,7 +52105,7 @@ var _SearchIcon2 = _interopRequireDefault(_SearchIcon);
 
 var _Group = __webpack_require__(295);
 
-var _rendering = __webpack_require__(39);
+var _rendering = __webpack_require__(40);
 
 var _general = __webpack_require__(6);
 
@@ -54278,6 +54281,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _general = __webpack_require__(6);
 
+var _Helpers = __webpack_require__(39);
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
@@ -54346,13 +54351,14 @@ var JsonProcessor = function () {
          * @param {*} onlyShowBookmarks
          * @param {*} bookmarkedCardIds
          * @param {*} hideCtaIds
+         * @param {*} hideCtaTags
          * @return {*}
          * @memberof JsonProcessor
          */
 
     }, {
         key: 'addCardMetaData',
-        value: function addCardMetaData(truncateTextQty, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds) {
+        value: function addCardMetaData(truncateTextQty, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags) {
             this.processedCards = this.processedCards.map(function (card) {
                 return _extends({}, card, {
                     description: (0, _general.truncateString)((0, _general.getByPath)(card, 'contentArea.description', ''), truncateTextQty),
@@ -54362,7 +54368,13 @@ var JsonProcessor = function () {
                     disableBookmarkIco: onlyShowBookmarks,
                     hideCtaId: hideCtaIds.some(function (i) {
                         return i === card.id;
-                    }),
+                    })
+                }, hideCtaTags.length && hideCtaTags[0] !== '' ? {
+                    hideCtaTags: hideCtaTags.some(function (tag) {
+                        var re = new RegExp(tag);
+                        return (0, _Helpers.hasTag)(re, card.tags);
+                    })
+                } : { hideCtaTags: false }, {
                     initial: {
                         title: (0, _general.getByPath)(card, 'contentArea.title', ''),
                         description: (0, _general.getByPath)(card, 'contentArea.description', ''),
@@ -54409,7 +54421,7 @@ var _config = __webpack_require__(20);
 
 var _Info = __webpack_require__(310);
 
-var _rendering = __webpack_require__(39);
+var _rendering = __webpack_require__(40);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

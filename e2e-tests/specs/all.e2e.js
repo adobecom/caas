@@ -291,7 +291,19 @@ describe('Hide CTA(s):', async () => {
         await browser.setTimeout({ script: 50000 });
         for await (const oneCTA of $$('.consonant-Card .consonant-BtnInfobit--cta')) {
             expect(await oneCTA.isDisplayed()).toEqual(false);
-          }
+        }
+    });
+    it('MWPW-134272: Cards with "hide CTA tags" should be hidden while others are still visible', async () => {
+        const cloneConfig = structuredClone(config);
+        cloneConfig.hideCtaTags = ['adobe-com-enterprise:topic/digital-foundation'];
+        const state = btoa(JSON.stringify(cloneConfig));
+        const url = `${serverPath}/html/e2e/MWPW-126169.html?state=${state}`;
+        await browser.url(url);
+        await browser.setTimeout({ script: 50000 });
+        const taggedCta = await $('#ad83970f-c987-3c86-846f-4edaec827fb1 .consonant-BtnInfobit--cta').isDisplayed();
+        const untaggedCta = await $('#ac578dee-f01b-3ea0-a282-2116619e4251 .consonant-BtnInfobit--cta').isDisplayed();
+        expect(taggedCta).toEqual(false);
+        expect(untaggedCta).toEqual(true);
     });
 });
 

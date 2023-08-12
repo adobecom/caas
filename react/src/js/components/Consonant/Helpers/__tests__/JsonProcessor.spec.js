@@ -5,7 +5,13 @@ import JsonProcessor from '../JsonProcessor';
 describe('utils/JsonProcessor', () => {
     describe('addCardMetaData', () => {
         PROPS.addCardMetaData.forEach(({
-            cards, truncateTextQty, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, expectedValue,
+            cards,
+            truncateTextQty,
+            onlyShowBookmarks,
+            bookmarkedCardIds,
+            hideCtaIds,
+            hideCtaTags,
+            expectedValue,
         }) => {
             test('should add card metadata', () => {
                 const jsonProcessor = new JsonProcessor(cards);
@@ -15,6 +21,7 @@ describe('utils/JsonProcessor', () => {
                     onlyShowBookmarks,
                     bookmarkedCardIds,
                     hideCtaIds,
+                    hideCtaTags,
                 );
 
                 expect(processedCards).toEqual(expectedValue);
