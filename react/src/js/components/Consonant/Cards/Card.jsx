@@ -271,6 +271,8 @@ const Card = (props) => {
     const showHeader = !isProduct;
     const showText = isOneHalf || isProduct || isText || isThreeFourths || isDoubleWide;
     const showFooter = isOneHalf || isProduct || isText;
+    const showBadge = !isProduct && !isText;
+    const showLabel = !isProduct && !isText;
     const showLogo = !isHalfHeight;
 
     return (
@@ -308,7 +310,8 @@ const Card = (props) => {
                     <span>{bannerDescriptionToUse}</span>
                 </span>
                 }
-                {badgeText &&
+                {showBadge &&
+                badgeText &&
                 <span
                     className="consonant-Card-badge">
                     {badgeText}
@@ -339,7 +342,8 @@ const Card = (props) => {
             }
             <div
                 className="consonant-Card-content">
-                {detailText &&
+                {showLabel &&
+                detailText &&
                 <span
                     data-testid="consonant-Card-label"
                     className="consonant-Card-label">

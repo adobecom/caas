@@ -78,51 +78,6 @@
                 }
             }
 
-            // &.three-fourths .consonant-Card-header {
-            //     min-height: @consonant-CardsGrid-smallerCardImgThreeFourthHeight;
-            // }
-
-            // &.three-fourths .consonant-Card-title {
-            //     margin-bottom: 0;
-            //     max-height: 1.375rem * 2;
-
-            //     .line-clamp(2);
-
-            //     &:first-child {
-            //         max-height: 1.375rem * 3;
-
-            //         .line-clamp(3);
-            //     }
-            // }
-
-            // .consonant-ThreeFourthCard > a > .consonant-ThreeFourthCard-title {
-            //     margin-bottom: 0;
-            //     max-height: 1.375rem * 2;
-
-            //     .line-clamp(2);
-
-            //     &:first-child {
-            //         max-height: 1.375rem * 3;
-
-            //         .line-clamp(3);
-            //     }
-            // }
-
-            // .consonant-ProductCard,
-            // .consonant-TextCard,
-            // .consonant-OneHalfCard {
-            //     height: auto;
-            // }
-
-            // .consonant-OneHalfCard .consonant-OneHalfCard-img {
-            //     min-height: @consonant-CardsGrid-smallerCardImgOneHalfHeight;
-            //     max-height: @consonant-CardsGrid-smallerCardImgOneHalfHeight;
-            // }
-
-            // .consonant-HalfHeightCard {
-            //     height: @consonant-OneHalfCard-height;
-            // }
-
             &.one-half .consonant-Card {
                 height: auto;
 
@@ -136,59 +91,16 @@
         &--5up {
             grid-template-columns: repeat(auto-fit, minmax(@consonant-CardsGrid-smallestCardMinWidth, 1fr));
 
-            // .consonant-ThreeFourthCard,
-            // .consonant-OneHalfCard,
-            // .consonant-HalfHeightCard,
-            // .consonant-ProductCard,
-            // .consonant-TextCard,
-            // .consonant-FullCard,
             .consonant-Card {
                 min-width: @consonant-CardsGrid-smallestCardMinWidth;
                 max-width: @consonant-CardsGrid-smallestCardMaxWidth;
                 height: @consonant-CardsGrid-smallestCardHeight;
 
-                // &-inner,
                 &-content {
                     width: @consonant-CardsGrid-smallestCardMaxWidth;
                     max-width: 100%;
                 }
             }
-
-            // .consonant-ThreeFourthCard .consonant-ThreeFourthCard-img {
-            //     min-height: @consonant-CardsGrid-smallestCardImgThreeFourthHeight;
-            // }
-
-            // .consonant-ThreeFourthCard > a > .consonant-ThreeFourthCard-text {
-            //     display: none;
-            // }
-
-            // .consonant-ThreeFourthCard > a > .consonant-ThreeFourthCard-title {
-            //     margin-bottom: 0;
-            //     max-height: 1.375rem * 2;
-
-            //     .line-clamp(2);
-
-            //     &:first-child {
-            //         max-height: 1.375rem * 3;
-
-            //         .line-clamp(3);
-            //     }
-            // }
-
-            // .consonant-ProductCard,
-            // .consonant-TextCard,
-            // .consonant-OneHalfCard {
-            //     height: auto;
-            // }
-
-            // .consonant-OneHalfCard .consonant-OneHalfCard-img {
-            //     min-height: @consonant-CardsGrid-smallestCardImgOneHalfHeight;
-            //     max-height: @consonant-CardsGrid-smallestCardImgOneHalfHeight;
-            // }
-
-            // .consonant-HalfHeightCard {
-            //     height: @consonant-OneHalfCard-height;
-            // }
 
             &.one-half .consonant-Card {
                 height: auto;
@@ -200,47 +112,10 @@
             }
         }
 
-        // &--3up&--doubleWideCards,
-        // &--4up&--doubleWideCards,
-        // &--5up&--doubleWideCards {
-        //     grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-mobileMinWidth, 1fr));
-
-        //     .consonant-DoubleWideCard-inner,
-        //     .consonant-DoubleWideCard-content {
-        //         width: @consonant-DoubleWideCard-maxWidth;
-        //         max-width: 100%;
-        //     }
-        // }
-
-        //     @media @consonant-680px-up {
-        //         &--2up {
-        //             grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-desktopMinWidth, 1fr));
-
-        //             .consonant-ThreeFourthCard,
-        //             .consonant-OneHalfCard,
-        //             .consonant-HalfHeightCard,
-        //             .consonant-DoubleWideCard,
-        //             .consonant-FullCard {
-        //                 min-width: @consonant-DoubleWideCard-desktopMinWidth;
-        //             }
-        //         }
-
-        //         &--3up&--doubleWideCards,
-        //         &--4up&--doubleWideCards,
-        //         &--5up&--doubleWideCards {
-        //             grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-desktopMinWidth, 1fr));
-        //         }
-        //     }
-        // }
-
         @media @consonant-680px-up {
             &--2up {
                 grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-desktopMinWidth, 1fr));
 
-                // .consonant-ThreeFourthCard,
-                // .consonant-OneHalfCard,
-                // .consonant-HalfHeightCard,
-                // .consonant-DoubleWideCard,
                 .consonant-Card {
                     min-width: @consonant-DoubleWideCard-desktopMinWidth;
                 }

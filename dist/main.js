@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 8/11/2023, 09:52:59
+ * Chimera UI Libraries - Build 8/12/2023, 24:46:06
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -1675,15 +1675,8 @@ var DEFAULT_SHOW_ITEMS_PER_PAGE = exports.DEFAULT_SHOW_ITEMS_PER_PAGE = 8;
  * @type {Object}
  */
 var CARD_STYLES = exports.CARD_STYLES = {
-    WIDE: '1:2-DISABLED',
-    SQUARE: '3:4-DISABLED',
-    FULL: 'full-card-DISABLED',
-    HALF_HEIGHT: 'half-height-DISABLED',
-    DOUBLE_WIDE: 'double-wide',
-    CUSTOM: 'custom-card',
-    PRODUCT: 'product-DISABLED',
-    TEXT: 'text-card-DISABLED',
-    CARD: 'card'
+    CARD: 'card',
+    CUSTOM: 'custom-card'
 };
 
 /**
@@ -46357,6 +46350,8 @@ var Card = function Card(props) {
     var showHeader = !isProduct;
     var showText = isOneHalf || isProduct || isText || isThreeFourths || isDoubleWide;
     var showFooter = isOneHalf || isProduct || isText;
+    var showBadge = !isProduct && !isText;
+    var showLabel = !isProduct && !isText;
     var showLogo = !isHalfHeight;
 
     return _react2.default.createElement(
@@ -46400,7 +46395,7 @@ var Card = function Card(props) {
                     bannerDescriptionToUse
                 )
             ),
-            badgeText && _react2.default.createElement(
+            showBadge && badgeText && _react2.default.createElement(
                 'span',
                 {
                     className: 'consonant-Card-badge' },
@@ -46429,7 +46424,7 @@ var Card = function Card(props) {
             'div',
             {
                 className: 'consonant-Card-content' },
-            detailText && _react2.default.createElement(
+            showLabel && detailText && _react2.default.createElement(
                 'span',
                 {
                     'data-testid': 'consonant-Card-label',
