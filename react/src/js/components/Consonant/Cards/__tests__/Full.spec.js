@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-import Card from '../Full';
+import Card from '../Card';
 
 import { DEFAULT_PROPS_FULL } from '../../Testing/Constants/Card';
 
@@ -24,7 +24,7 @@ describe('Consonant/Card/Full-Card', () => {
             },
         } = renderCard();
 
-        const bannerElement = screen.getByTestId('consonant-FullCard-banner');
+        const bannerElement = screen.getByTestId('consonant-Card-banner');
         const bannerIconElement = screen.getByTestId('consonant-Card-bannerImg');
 
         expect(bannerElement).toHaveStyle({

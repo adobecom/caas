@@ -39,7 +39,7 @@ describe('Consonant/Container/Bookmarks', () => {
 
         const [bookmarkButton] = screen.queryAllByTestId('consonant-BookmarkInfobit');
 
-        expect(screen.queryAllByTestId('consonant-OneHalfCard')).toHaveLength(resultsPerPage);
+        expect(screen.queryAllByTestId('consonant-Card')).toHaveLength(resultsPerPage);
 
         const [saveBookmarkButton] = screen.queryAllByTestId('consonant-BookmarkInfobit');
 
@@ -48,11 +48,11 @@ describe('Consonant/Container/Bookmarks', () => {
         fireEvent.click(saveBookmarkButton);
         fireEvent.click(bookmarkButton);
 
-        expect(screen.queryAllByTestId('consonant-OneHalfCard')).toHaveLength(10);
+        expect(screen.queryAllByTestId('consonant-Card')).toHaveLength(10);
 
         fireEvent.click(bookmarkButton);
 
-        expect(screen.queryAllByTestId('consonant-OneHalfCard')).toHaveLength(resultsPerPage);
+        expect(screen.queryAllByTestId('consonant-Card')).toHaveLength(resultsPerPage);
 
         const [unsaveBookmarkButton] = screen.queryAllByTestId('consonant-BookmarkInfobit');
 
@@ -61,11 +61,11 @@ describe('Consonant/Container/Bookmarks', () => {
         fireEvent.click(unsaveBookmarkButton);
         fireEvent.click(bookmarkButton);
 
-        expect(screen.queryAllByTestId('consonant-OneHalfCard')).toHaveLength(10);
+        expect(screen.queryAllByTestId('consonant-Card')).toHaveLength(10);
 
         fireEvent.click(bookmarkButton);
 
-        expect(screen.queryAllByTestId('consonant-OneHalfCard')).toHaveLength(resultsPerPage);
+        expect(screen.queryAllByTestId('consonant-Card')).toHaveLength(resultsPerPage);
     });
 
     test('Should not show bookmarked cards if a user did not save any cards', async () => {

@@ -354,6 +354,7 @@ const Card = (props) => {
                     role="heading"
                     aria-label={headingAria}
                     aria-level={headingLevel}
+                    data-testid="consonant-Card-title"
                     className="consonant-Card-title"
                     title={title}>
                     {isProduct && mnemonic && <img src={mnemonic} alt="mnemonic" loading="lazy" />}
@@ -363,6 +364,7 @@ const Card = (props) => {
                     showText &&
                     description &&
                     <p
+                        data-testid="consonant-Card-text"
                         className="consonant-Card-text">
                         {description}
                     </p>

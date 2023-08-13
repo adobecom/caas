@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 8/12/2023, 09:19:04
+ * Chimera UI Libraries - Build 8/13/2023, 09:50:09
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -46440,6 +46440,7 @@ var Card = function Card(props) {
                     role: 'heading',
                     'aria-label': headingAria,
                     'aria-level': headingLevel,
+                    'data-testid': 'consonant-Card-title',
                     className: 'consonant-Card-title',
                     title: title },
                 isProduct && mnemonic && _react2.default.createElement('img', { src: mnemonic, alt: 'mnemonic', loading: 'lazy' }),
@@ -46448,6 +46449,7 @@ var Card = function Card(props) {
             showText && description && _react2.default.createElement(
                 'p',
                 {
+                    'data-testid': 'consonant-Card-text',
                     className: 'consonant-Card-text' },
                 description
             ),

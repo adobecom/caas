@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-import Card from '../ThreeFourth';
+import Card from '../Card';
 
 import { DEFAULT_PROPS_1_1 } from '../../Testing/Constants/Card';
 
@@ -24,7 +24,7 @@ describe('Consonant/Card/1:1', () => {
             },
         } = renderCard();
 
-        const bannerElement = screen.getByTestId('consonant-ThreeFourthCard-banner');
+        const bannerElement = screen.getByTestId('consonant-Card-banner');
         const bannerIconElement = screen.getByTestId('consonant-Card-bannerImg');
 
         expect(bannerElement).toHaveStyle({
@@ -61,7 +61,7 @@ describe('Consonant/Card/1:1', () => {
             },
         });
 
-        const labelElement = screen.queryByTestId('consonant-ThreeFourthCard-label');
+        const labelElement = screen.queryByTestId('consonant-Card-label');
 
         expect(labelElement).not.toBeNull();
     });
@@ -91,7 +91,7 @@ describe('Consonant/Card/1:1', () => {
             },
         });
 
-        const labelElement = screen.queryByTestId('consonant-ThreeFourthCard-label');
+        const labelElement = screen.queryByTestId('consonant-Card-label');
 
         expect(labelElement)
             .toBeNull();

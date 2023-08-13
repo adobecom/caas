@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chimera: Content Browser</title>
+    <link rel="icon" href="https://www.adobe.com/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" class="rel-css" href="" type="text/css">
+    <style>
+    footer,header{position:fixed;left:0}.app-menu-button,.card-info{position:absolute;cursor:pointer}.app-menu-button,.card-info,h3.setting-heading,h3.setting-heading.advanced,header .info{cursor:pointer}body{font-family:adobe-clean-ux,adobe-clean,Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;padding:0;margin:0}.hidden{display:none!important}header{width:240px;margin:0;padding:16px 12px;z-index:9;background-color:#202020;color:#eee;bottom:-2px;top:0;overflow-y:auto;box-shadow:2px 2px 5px #666;transition:left .3s linear;font-size:14px}.app-menu-button{right:0;top:5px;font-weight:300;letter-spacing:1.5px;background:0 0;color:#ccc;font-size:20px;border:none}.app-menu-button:hover{color:#f33}body.collapsed header{left:-212px;overflow:hidden}body.collapsed header .app-menu-button{transform:rotate(180deg)}body.collapsed header>div{visibility:hidden}header h1{margin:-10px 0 10px;height:auto;line-height:.85;letter-spacing:-1.5px;padding:10px 0 16px;font-family:Arial,Helvetica,sans-serif}header h1 em{font-size:22px;display:inline-block;font-weight:300;font-style:normal;color:#bbb}h3.setting-heading{font-weight:300;font-size:16px;margin:0;display:block;padding:10px 0}h3.setting-heading:before{content:"> "}h3.setting-heading:hover{color:#fff;background:#050505;background:linear-gradient(45deg,#444,#000);text-shadow:1px 1px 3px #000}header .label{display:flex;justify-content:space-between}header .info{border:1px solid #999;width:18px;text-align:center;border-radius:50%;height:18px;line-height:1.125;font-size:14px;color:#eee;font-weight:600}header .info:hover{color:#fff;background-color:#000;border-color:#ddd}#advanced-settings,#basic-settings,#ui-settings{height:0;margin:0 5px 0 10px;padding:0 5px;background:#303030;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-start;border-top:none;box-shadow:none;font-size:14px}body:not(.no-source) #advanced-settings,body:not(.no-source) #basic-settings,body:not(.no-source) #ui-settings{transition:height 250ms linear}#advanced-settings>div,#basic-settings>div,#ui-settings>div{margin:0 10px 0 2px;font-weight:300}header input[type=number],header input[type=text],header select{background:#505050;border:1px solid #999;border-radius:3px;width:100%;margin:5px 0 12px 2px;color:#eee;height:28px}header input[type=checkbox]{height:16px}header input[type=text]{padding-left:5px}body.basic-settings #basic-settings{height:412px;padding-bottom:12px}.no-source #source{animation-name:flash_border;animation-duration:4s;animation-timing-function:linear;animation-iteration-count:infinite;-webkit-animation-name:flash_border;-webkit-animation-duration:4s;-webkit-animation-timing-function:linear;-webkit-animation-iteration-count:infinite;-moz-animation-name:flash_border;-moz-animation-duration:4s;-moz-animation-timing-function:linear;-moz-animation-iteration-count:infinite}@keyframes flash_border{0%,100%{border-color:#999}50%{border-color:red}}#basic-settings select option{padding:6px}.options div{display:block}#basic-settings b{font-weight:300}body.ui-settings #ui-settings{height:408px;padding-bottom:12px}body.advanced-settings #advanced-settings{height:530px;padding-bottom:12px}#advanced-settings button{background:#1473e6;width:82px;color:#fff;padding:6px;border-radius:5px;border:1px solid #1473e6;margin-top:18px;margin-left:10px}#advanced-settings button:hover{background:#0d66d0}#advanced-settings hr{width:100%;border-color:#666;margin:12px 0}body #advanced-settings button{border-radius:16px;width:100px;margin:10px auto;display:block}.setting-heading.advanced span{color:#ff5050;font-weight:600;font-size:24px;vertical-align:middle;padding-left:2px;display:none}body.advanced-override .setting-heading.advanced span{display:inline}body.consonant-u-themeLight,body.consonant-u-themeLight footer{background-color:#f5f5f5}body.consonant-u-themeDark,body.consonant-u-themeDark footer{background-color:#323232}body.consonant-u-themeDarkest,body.consonant-u-themeDarkest footer{background-color:#1e1e1e}body.consonant-u-themeDark footer,body.consonant-u-themeDark footer a,body.consonant-u-themeDarkest footer,body.consonant-u-themeDarkest footer a{color:#ccc;font-weight:300}footer{margin:0 40px;text-align:right;bottom:0;right:0;font-size:14px;background-color:#fff;z-index:2}footer p{margin:8px 0}footer a{color:#666}.consonant-Wrapper--withLeftFilter .consonant-Wrapper-inner{margin:0!important}.card-info{z-index:9;top:0;right:2px;font-size:15px;font-weight:800;text-align:center;padding:0 8px;line-height:1.25!important;opacity:.3}.card-info-modal,.source-code-modal{top:0;z-index:10;position:fixed;display:grid;left:0}.card-info:hover{opacity:1}.card-info-modal{bottom:0;right:0;background:#000000AA;align-items:center;justify-content:center}.card-info-content{background:#fff;min-width:380px;min-height:180px;padding:0 0 20px;font-size:16px;border:1px solid #666;box-shadow:0 0 12px #000;border-radius:4px}.card-info-content>div{padding:10px 20px 5px;font-weight:600}.card-info-heading{text-align:center;font-weight:700;background:#333;color:#fff;padding:6px;margin-bottom:10px}.card-info-content button.card-info-close{margin:20px auto 0;display:block;padding:6px 20px;font-size:15px;border:1px solid #ccc}.card-info-content div span{display:block;color:#666;font-weight:400}.source-code-modal{right:0;background:#000000AA;height:100%;align-items:center;justify-content:center}#video-video-modal,.leftBottom{position:relative}.source-code-content{background:#fff;padding:0 40px 40px;font-size:16px;border:1px solid #666;box-shadow:0 0 12px #000;border-radius:4px;font-weight:300;position:relative;width:80%;max-width:1280px;margin:0 auto}.source-code-content button.modal-close{position:absolute;right:0;font-size:18px;font-family:sans-serif;border-radius:50%;padding:5px 10px;font-weight:400;border-radius:unset;border:1px solid #999;cursor:pointer}.source-code-content textarea.jscode,p.code{font-family:'Courier New',Courier,monospace}.source-code-content h2 span{font-weight:300;font-size:16px;color:#999}.source-code-content p{margin-bottom:5px;margin-top:5px}.source-code-content span.secuence{font-size:28px;font-weight:300;padding-right:7px}p.code{white-space:pre-line;font-size:12px;margin-left:28px}.source-code-content textarea.jscode{width:95%;border-color:#ddd;max-height:60%;margin-left:28px;font-size:12px}.source-code-content button.source-code-close{margin:25px auto 0;display:block;padding:6px 20px;font-size:15px;border:1px solid #ccc}.source-code-content .blue,.source-code-content .green,tt{font-weight:600;font-family:'Courier New',Courier,monospace}.source-code-content .blue{color:#00f}.source-code-content .green{color:green}.dexter-Modal_overlay.is-Open{position:fixed;top:64px;left:0;right:0;height:100vh;z-index:9;display:grid;justify-content:center}.dexter-Modal_overlay.is-Open div#video-video-modal{width:600px;height:400px;margin-top:25vh}.dexter-Modal_overlay.is-Open iframe{width:640px;height:360px}.dexter-Modal .dexter-CloseButton{border:3px solid transparent;border-radius:50%;height:24px;position:absolute;width:24px;z-index:1;right:-3.5rem;top:-1.5rem}.dexter-Modal .dexter-CloseButton .dexter-CloseButton_icon.spectrum-close-circle-dark:after{content:"";height:44px;left:-13px;position:absolute;top:-13px;width:44px;background:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NCIgaGVpZ2h0PSI0NCI+PHBhdGggZD0iTTI5IDE1YTEwIDEwIDAgMSAwIDAgMTQuMTJBMTAgMTAgMCAwIDAgMjkgMTVabS0zLjExIDExLjc0YS41LjUgMCAwIDEtLjcxIDBMMjIgMjMuNTZsLTMuMTggMy4xOGEuNS41IDAgMCAxLS43MSAwbC0uODUtLjg1YS41LjUgMCAwIDEgMC0uNzFMMjAuNDQgMjJsLTMuMTgtMy4xOGEuNS41IDAgMCAxIDAtLjcxbC44NS0uODVhLjUuNSAwIDAgMSAuNzEgMEwyMiAyMC40NGwzLjE4LTMuMThhLjUuNSAwIDAgMSAuNzEgMGwuODUuODVhLjUuNSAwIDAgMSAwIC43MUwyMy41NSAyMmwzLjE4IDMuMThhLjUuNSAwIDAgMSAwIC43MVoiIGZpbGw9IiM3MDcwNzAiLz48L3N2Zz4=")}.leftBottom{margin:40px 15px 30px;bottom:0;padding-top:10px}.leftBottom button{display:block;margin:0 0 15px;background:#505050;border:1px solid #999;border-radius:3px;color:#eee;width:100%;height:28px;text-align:left;padding-left:30px}.app-version{top:initial;bottom:0;left:0;right:10px;text-align:right;background:linear-gradient(90deg,#282828,transparent);position:fixed;width:240px;padding:5px 12px 5px 0;font-size:12px;color:#aaa;font-weight:200}header button span{font-size:16px;padding-right:2px}#output{margin:20px 40px 20px 250px}body.collapsed #output{margin:50px 40px}body:not(.no-source) #output{transition:margin-left .3s linear}.splash,body.headless footer,body.headless header{display:none}body.no-source .splash{display:block;text-align:center;margin-top:20%;color:#aaa}body.no-source .splash div{padding:30px;border:1px solid #ccc;border-radius:10px;display:inline-block}body.headless #output{margin:50px auto;max-width:1440px}
+    </style>
+
+<body class="no-source">
+    <header>
+        <div class="app-version"></div>
+        <h1>
+            Chimera <em>Content Browser</em>
+        </h1>
+        <button class="app-menu-button" title="Toggle Sidebar">&lt;</button>
+        <h3 class="setting-heading basic">Basic Settings </h3>
+        <div id="basic-settings">
+            <div class="source-selector">
+                Source<br>
+                <select id="source" title="Select the source of these cards">
+                    <option value="" selected>Select...</option>
+                    <option value="bacom">Business Adobe</option>
+                    <option value="doccloud">Document Cloud</option>
+                    <option value="experienceleague">Experience League</option>
+                    <option value="gravity">Gravity</option>
+                    <option value="hawks">Hawks</option>
+                    <option value="magento">Magento</option>
+                    <option value="marketo">Marketo</option>
+                    <option value="milo">Milo</option>
+                    <option value="northstar">Northstar</option>
+                    <option value="workfront">Workfront</option>
+                </select>
+            </div>
+            <div class="collection-title">
+                Collection Title<br>
+                <input class="collectionTitle" type="text">
+            </div>
+            <div class="style">
+                Card Style<br>
+                <select disabled>
+                    <option value="1:2">1/2 Card</option>
+                    <option value="3:4">3/4 Card</option>
+                    <option value="half-height">1/2 Height Card</option>
+                    <option value="full-card">Full Card</option>
+                    <option value="double-wide">Double Width Card</option>
+                    <option value="product">Product Card</option>
+                    <option value="text-card">Text Card</option>
+                </select>
+            </div>
+            <div class="container">
+                Container<br>
+                <select disabled>
+                    <option value="1200MaxWidth">1200px Grid</option>
+                    <option value="1600MaxWidth">1600px Grid</option>
+                    <option value="83Percent">83% Grid</option>
+                    <option value="carousel">Carousel</option>
+                </select>
+            </div>
+            <div class="pagination">
+                Pagination<br>
+                <select disabled>
+                    <option value="none">None</option>
+                    <option value="paginator">Paginator</option>
+                    <option value="loadMore">Load More</option>
+                </select>
+            </div>
+            <div class="filters">
+                Filters<br>
+                <select disabled>
+                    <option value="none">None</option>
+                    <option value="left">Show on Left</option>
+                    <option value="top">Show on Top</option>
+                </select>
+                <div class="search hidden">
+                    <input type="checkbox" id="cb_search" class="show-search" disabled></input>
+                    <label for="cb_search">Show Search</label>
+                </div>
+            </div>
+        </div>
+        <h3 class="setting-heading ui">UI Settings</h3>
+        <div id="ui-settings">
+            <div>
+                Theme<br>
+                <select id="theme">
+                    <option value="">Lightest Theme</option>
+                    <option value="Light">Light Theme</option>
+                    <option value="Dark">Dark Theme</option>
+                    <option value="Darkest">Darkest Theme</option>
+                </select>
+            </div>
+            <div>
+                Card Width<br>
+                <select id="card-width">
+                    <option value="2up">2up</option>
+                    <option value="3up">3up</option>
+                    <option value="4up">4up</option>
+                    <option value="5up">5up</option>
+                </select>
+            </div>
+            <div>
+                Card Border<br>
+                <select id="card-border">
+                    <option value="true">Show</option>
+                    <option value="false">Hide</option>
+                </select>
+            </div>
+            <div>
+                Button Style<br>
+                <select id="button-style">
+                    <option value="primary">Primary</option>
+                    <option value="call-to-action">Call to Action</option>
+                    <option value="link">Link</option>
+                    <option value="hidden">Hide CTAs</option>
+                </select>
+            </div>
+            <div class="cards-per-page">
+                Cards Per Page<br>
+                <input type="number">
+            </div>
+            <div class="max-results">
+                Max Results<br>
+                <input type="number">
+            </div>
+        </div>
+        <h3 class="setting-heading advanced">
+            Advanced <span title="Target campaign override">*</span>
+        </h3>
+        <div id="advanced-settings">
+            <div>
+                Filter Logic<br>
+                <select id="filter-logic">
+                    <option value="or">OR - Match Any filter</option>
+                    <option value="and">AND - Match All filters</option>
+                    <option value="xor">XOR - One filter at a time</option>
+                </select>
+            </div>
+            <div>
+                Sort by<br>
+                <select id="default-sort">
+                    <option value="featured">Featured</option>
+                    <option value="dateDesc">Date: (Newest to Oldest)</option>
+                    <option value="dateAsc">Date: (Oldest to Newest)</option>
+                    <option value="dateModifiedDes">Date: (Last Modified, Newest to Oldest)</option>
+                    <option value="dateModifiedAsc">Date: (Last Modified,Oldest to Newest)</option>
+                    <option value="eventSort">Events: (Live, Upcoming, OnDemand)</option>
+                    <option value="titleAsc">Title: (A - Z)</option>
+                    <option value="titleDesc">Title: (Z - A)</option>
+                    <option value="random">Random</option>
+                </select>
+            </div>
+        </div>
+    </header>
+    <div id="output">
+        <div class="splash">
+            <div>
+                <p>Please select a <b>Source</b> for the Card Collection data.</p>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p class="references">
+            Related Links:
+            <a
+                href="https://wiki.corp.adobe.com/pages/viewpage.action?spaceKey=javelin&title=Help+and+Troubleshooting#HelpandTroubleshooting-ContentLibrary">Help
+                and Troubleshooting</a>
+            |
+            <a href="./activity.html">Target Activity Check</a>
+            |
+            <a href="https://experience.adobe.com/#/@adobe-corpnew/custom-apps/14257-chidlookupservice/#/id-lookup">ID Look Up Tool</a>
+        </p>
+    </footer>
+    <script type="text/javascript" src="https://www.adobe.com/special/chimera/latest/dist/dexter/react.umd.js"></script>
+    <script type="text/javascript" src="https://www.adobe.com/special/chimera/latest/dist/dexter/react.dom.umd.js"></script>
+
+    <script type="module">
+/**
+ * Javascript for Chimera Content Browser
+ **/
+
+ !async function () {
+    const appVersion = "0.0.1"; // Last Updated: 08.12.2023
+    document.querySelector(".app-version").textContent = `Version ${appVersion}`;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const DEBUG = urlParams.get("debug") === "true";
+    let debugParam = "";
+
+    // Environment (dev|stage|prod)
+    // const envFromUrl = urlParams.get("env");
+    // if (envFromUrl) sessionStorage.setItem('gh_chimeraEnvironment', envFromUrl);
+
+    // const chimeraEnvironment = sessionStorage.getItem('gh_chimeraEnvironment');
+    // const server = (!chimeraEnvironment || chimeraEnvironment === "prod") ? ""
+    //     : chimeraEnvironment === "stage" ? "stage."
+    //         : "dev";
+
+    let source = urlParams.get("source") || "bacom";
+    if (source) document.getElementById("source").value = source;
+
+    // Chimera remote JavaScript
+    const head = document.getElementsByTagName("head")[0];
+    const script = document.createElement('script');
+    script.onload = function () {
+        if (DEBUG) console.log("[DEBUG] Remote script loaded");
+        getContent(source);
+    };
+
+    // The "host=name" url param allows to poing to your local machine assuming
+    // you have caas running under http://${host}.corp.adobe.com:5000
+    // const host = urlParams.get("host") || urlParams.get("local") || "";
+
+    const selectedCSS = '../dist/app.css';
+    document.querySelector('.rel-css').setAttribute("href", selectedCSS);
+
+    const selectedJS = '../dist/main.min.js';
+    script.src = selectedJS;
+    head.appendChild(script);
+
+    // debuging flags
+    if (DEBUG) {
+        debugParam = "&debug=true";
+        console.log("[DEBUG] *** Runing on debuging mode ***");
+    }
+
+    // headless option
+    // if ( urlParams.get("mode") === "headless"){
+    //     document.body.classList.add("headless")
+    // }
+
+    // localStorage settings
+    // needed by the BrowserLibrary App before creating the config oject
+
+    let collectionTitle = sessionStorage.getItem('gh_collectionTitle') || "";
+    document.querySelector(".collectionTitle").value = collectionTitle;
+
+    // let environment = sessionStorage.getItem('gh_chimeraEnvironment') || "stage";
+    // document.getElementById("environment").value = environment;
+
+    let sourceDatabase = sessionStorage.getItem('gh_sourceDatabase') || "draft";
+    const draftDB = sourceDatabase === "draft" ? "true" : "";
+
+    let filterLogic = sessionStorage.getItem('gh_filterLogic') || "or";
+    document.getElementById("filter-logic").value = filterLogic;
+
+    let defaultSort = sessionStorage.getItem('gh_defaultSort') || "dateDesc";
+    document.getElementById("default-sort").value = defaultSort;
+
+    let cardWidth = sessionStorage.getItem('gh_cardWidth') || "4up";
+    document.getElementById("card-width").value = cardWidth;
+
+    let cardBorder = sessionStorage.getItem('gh_cardBorder') || "true";
+    document.getElementById("card-border").value = cardBorder === "true" ? "true" : "false";
+
+    let buttonStyle = sessionStorage.getItem('gh_buttonStyle') || "call-to-action";
+    document.getElementById("button-style").value = buttonStyle;
+
+    let cardsPerPage = sessionStorage.getItem('gh_cardsPerPage') || 8;
+    document.querySelector(".cards-per-page input").value = cardsPerPage;
+
+    let maxResults = sessionStorage.getItem('gh_maxResults') || 300;
+    document.querySelector(".max-results input").value = maxResults;
+
+    let theme = sessionStorage.getItem('gh_theme') || "";
+    if (theme) document.body.classList.add(`consonant-u-theme${theme}`);
+    document.getElementById("theme").value = theme;
+
+
+    let collection = 'collection';
+
+    // URL params values
+    // needed by the BrowserLibrary App before creating the config oject
+    // let source = urlParams.get("source") || "bacom";
+    // if (source) document.getElementById("source").value = source;
+
+    let endPoint = `https://www.adobe.com/chimera-api/${collection}?contentSource=&originSelection=${source}&contentTypeTags=&collectionTags=&excludeContentWithTags=caas%3Aevents&language=en&country=us&complexQuery=&excludeIds=&currentEntityId=55214dea-5481-3515-a4b9-dbf51c378e62&featuredCards=&environment=&draft=${draftDB}&size=${maxResults}`;
+
+    let container = urlParams.get("c") || "1200MaxWidth";
+    if (container) document.querySelector(".container select").value = container;
+
+    let cardStyle = urlParams.get("cs") || "1:2";
+    if (cardStyle.length) document.querySelector(".style select").value = cardStyle.replace("%3A", ":");
+
+    let showPaginator = urlParams.get("p") || "false";
+    let paginationType = urlParams.get("pt") || "paginator";
+    if (showPaginator == "true") {
+        document.querySelector(".pagination select").value = paginationType;
+    }
+
+    let showFilters = urlParams.get("f") || "none";
+    document.querySelector(".filters select").value = showFilters;
+    if (showFilters !== "none") {
+        document.querySelector(".search").classList.remove("hidden");
+    }
+
+    let showSearchBox = urlParams.get("s") || "false";
+    document.querySelector(".search input").checked = showSearchBox == "true";
+
+    cardWidth =  urlParams.get("cw") || cardWidth;
+
+    // main config object
+    // needed by the BrowserLibrary App
+    const config = {
+        "collection": {
+            "mode": "lightest",
+            "layout": {
+                "type": cardWidth,
+                "gutter": "4x",
+                "container": container
+            },
+            "button": {
+                "style": buttonStyle
+            },
+            "resultsPerPage": cardsPerPage,
+            "endpoint": endPoint,
+            "fallbackEndpoint": "",
+            "totalCardsToShow": maxResults,
+            "cardStyle": cardStyle.replace("full\\u002Dcard', 'full-card")
+                .replace("half\\u002Dheight', 'half-height")
+                .replace("double\\u002Dwide', 'double-wide"),
+            "showTotalResults": "true",
+            "i18n": {
+                "prettyDateIntervalFormat": "{ddd}, {LLL} {dd} | {timeRange} {timeZone}",
+                "totalResultsText": "{total} results",
+                "title": collectionTitle,
+                "titleHeadingLevel": "h3",
+                "cardTitleAccessibilityLevel": "",
+                "onErrorTitle": "Sorry there was a system error.",
+                "onErrorDescription": "Please try reloading the page or try coming back to the page another time."
+            },
+            "setCardBorders": cardBorder,
+            "useOverlayLinks": "false",
+            "collectionButtonStyle": buttonStyle,
+            "banner": {
+                "register": {
+                    "description": "Sign Up",
+                    "url": "#registration"
+                },
+                "upcoming": {
+                    "description": "Upcoming"
+                },
+                "live": {
+                    "description": "Live"
+                },
+                "onDemand": {
+                    "description": "On Demand"
+                }
+            },
+            "useLightText": "false",
+            "disableBanners": "false",
+            "reservoir": {
+                "sample": "3",
+                "pool": "1000"
+            }
+        },
+        "hideCtaIds": [],
+        "filterPanel": {
+            "enabled": showFilters != 'none',
+            "eventFilter": "not\u002Dtimed",
+            "type": showFilters,
+            "showEmptyFilters": "true",
+            "filters": [{ "openedOnLoad": false, "id": "caas:content-type", "items": [{ "label": "Application", "id": "caas:content-type/application" }, { "label": "Article", "id": "caas:content-type/article" }, { "label": "Blog", "id": "caas:content-type/blog" }, { "label": "Certification", "id": "caas:content-type/certification" }, { "label": "Consulting", "id": "caas:content-type/consulting" }, { "label": "Course", "id": "caas:content-type/course" }, { "label": "Customer Story", "id": "caas:content-type/customer-story" }, { "label": "Demo", "id": "caas:content-type/demo" }, { "label": "Document", "id": "caas:content-type/document" }, { "label": "Documentation", "id": "caas:content-type/documentation" }, { "label": "Event", "id": "caas:content-type/event" }, { "label": "Event Session", "id": "caas:content-type/event-session" }, { "label": "Event Speaker", "id": "caas:content-type/event-speaker" }, { "label": "Guide", "id": "caas:content-type/guide" }, { "label": "Infographic", "id": "caas:content-type/infographic" }, { "label": "Partner", "id": "caas:content-type/partner" }, { "label": "Podcast", "id": "caas:content-type/podcast" }, { "label": "Product", "id": "caas:content-type/product" }, { "label": "Product Tour", "id": "caas:content-type/product-tour" }, { "label": "Promotion", "id": "caas:content-type/promotion" }, { "label": "Quiz", "id": "caas:content-type/quiz" }, { "label": "Report", "id": "caas:content-type/report" }, { "label": "Solution", "id": "caas:content-type/solution" }, { "label": "Template", "id": "caas:content-type/template" }, { "label": "Tutorial", "id": "caas:content-type/tutorial" }, { "label": "Video", "id": "caas:content-type/video" }, { "label": "Webinar", "id": "caas:content-type/webinar" }, { "label": "eBook", "id": "caas:content-type/ebook" }], "group": "Content Type" }, { "openedOnLoad": false, "id": "caas:business-unit", "items": [{ "label": "Commerce Cloud", "id": "caas:business-unit/commerce-cloud" }, { "label": "Creative Cloud", "id": "caas:business-unit/creative-cloud" }, { "label": "Document Cloud", "id": "caas:business-unit/document-cloud" }, { "label": "Experience Cloud", "id": "caas:business-unit/experience-cloud" }], "group": "Business Unit" }, { "openedOnLoad": false, "id": "caas:journey-phase", "items": [{ "label": "Acceleration", "id": "caas:journey-phase/acceleration" }, { "label": "Acquisition", "id": "caas:journey-phase/acquisition" }, { "label": "Discover", "id": "caas:journey-phase/discover" }, { "label": "Evaluate", "id": "caas:journey-phase/evaluate" }, { "label": "Expansion", "id": "caas:journey-phase/expansion" }, { "label": "Explore", "id": "caas:journey-phase/explore" }, { "label": "Retention", "id": "caas:journey-phase/retention" }, { "label": "Use Re-invest", "id": "caas:journey-phase/use-re-invest" }], "group": "Journey Phase" }, { "openedOnLoad": false, "id": "caas:role", "items": [{ "label": "Advertising", "id": "caas:role/advertising" }, { "label": "Commerce", "id": "caas:role/commerce" }, { "label": "Compliance Evaluator", "id": "caas:role/compliance-evaluator" }, { "label": "Decision Maker", "id": "caas:role/decision-maker" }, { "label": "Digital", "id": "caas:role/digital" }, { "label": "Feature Evaluator", "id": "caas:role/feature-evaluator" }, { "label": "IT", "id": "caas:role/it" }, { "label": "Marketing", "id": "caas:role/marketing" }, { "label": "Sales", "id": "caas:role/sales" }, { "label": "Vision Leader", "id": "caas:role/vision-leader" }], "group": "Role" }, { "openedOnLoad": false, "id": "caas:industry", "items": [{ "label": "Advertising", "id": "caas:industry/advertising" }, { "label": "Aviation", "id": "caas:industry/aviation" }, { "label": "Education", "id": "caas:industry/education" }, { "label": "Energy & Utilities", "id": "caas:industry/energy-utilities" }, { "label": "Financial Services", "id": "caas:industry/financial-services" }, { "label": "Food & Beverage", "id": "caas:industry/food-and-beverage" }, { "label": "Government", "id": "caas:industry/government" }, { "label": "Healthcare", "id": "caas:industry/healthcare" }, { "label": "High Tech", "id": "caas:industry/high-tech" }, { "label": "Life Sciences", "id": "caas:industry/life-sciences" }, { "label": "Logistics & Transportation", "id": "caas:industry/logistics-transportation" }, { "label": "Manufacturing", "id": "caas:industry/manufacturing" }, { "label": "Media & Entertainment", "id": "caas:industry/media-and-entertainment" }, { "label": "Non-profit", "id": "caas:industry/non-profit" }, { "label": "Pharmaceuticals", "id": "caas:industry/pharmaceuticals" }, { "label": "Print & Publishing", "id": "caas:industry/print-publishing" }, { "label": "Professional Services", "id": "caas:industry/professional-services" }, { "label": "Retail", "id": "caas:industry/retail" }, { "label": "Technology Software & Services", "id": "caas:industry/technology-software-services" }, { "label": "Telecommunications", "id": "caas:industry/telecommunications" }, { "label": "Travel & Hospitality", "id": "caas:industry/travel-and-hospitality" }], "group": "Industry" }, { "openedOnLoad": false, "id": "caas:products", "items": [{ "label": "Acrobat", "id": "caas:products/acrobat" }, { "label": "Adobe Advertising Cloud", "id": "caas:products/adobe-advertising-cloud" }, { "label": "Adobe Analytics", "id": "caas:products/adobe-analytics" }, { "label": "Adobe Audience Manager", "id": "caas:products/adobe-audience-manager" }, { "label": "Adobe Campaign", "id": "caas:products/adobe-campaign" }, { "label": "Adobe Commerce", "id": "caas:products/adobe-commerce" }, { "label": "Adobe Commerce Cloud", "id": "caas:products/adobe-commerce-cloud" }, { "label": "Adobe Creative Cloud", "id": "caas:products/adobe-creative-cloud" }, { "label": "Adobe Document Cloud", "id": "caas:products/adobe-document-cloud" }, { "label": "Adobe Experience Cloud", "id": "caas:products/adobe-experience-cloud" }, { "label": "Adobe Experience Manager", "id": "caas:products/adobe-experience-manager" }, { "label": "Adobe Experience Platform", "id": "caas:products/adobe-experience-platform" }, { "label": "Adobe Fonts", "id": "caas:products/adobe-fonts" }, { "label": "Adobe Fresco", "id": "caas:products/adobe-fresco" }, { "label": "Adobe Primetime", "id": "caas:products/adobe-primetime" }, { "label": "Adobe Scan", "id": "caas:products/adobe-scan" }, { "label": "Adobe Sensei", "id": "caas:products/adobe-sensei" }, { "label": "Adobe Sign", "id": "caas:products/adobe-sign" }, { "label": "Adobe Spark", "id": "caas:products/adobe-spark" }, { "label": "Adobe Stock", "id": "caas:products/adobe-stock" }, { "label": "Adobe Target", "id": "caas:products/adobe-target" }, { "label": "Adobe Workfront", "id": "caas:products/workfront" }, { "label": "Adobe Workfront", "id": "caas:products/adobe-workfront" }, { "label": "Aero", "id": "caas:products/aero" }, { "label": "After Effects", "id": "caas:products/after-effects" }, { "label": "Animate", "id": "caas:products/animate" }, { "label": "Audition", "id": "caas:products/audition" }, { "label": "Behance", "id": "caas:products/behance" }, { "label": "Bridge", "id": "caas:products/bridge" }, { "label": "Capture", "id": "caas:products/capture" }, { "label": "Character Animator", "id": "caas:products/character-animator" }, { "label": "Creative Cloud", "id": "caas:products/creative-cloud" }, { "label": "Creative Cloud Express", "id": "caas:products/creative-cloud-express" }, { "label": "Creative Cloud Libraries", "id": "caas:products/creative-cloud-libraries" }, { "label": "Dimension", "id": "caas:products/dimension" }, { "label": "Illustrator", "id": "caas:products/illustrator" }, { "label": "InDesign", "id": "caas:products/indesign" }, { "label": "Lightroom", "id": "caas:products/lightroom" }, { "label": "Lightroom Classic", "id": "caas:products/lightroom-classic" }, { "label": "Lightroom on mobile", "id": "caas:products/lightroom-on-mobile" }, { "label": "Magento Business Intelligence", "id": "caas:products/magento-business-intelligence" }, { "label": "Magento Commerce", "id": "caas:products/magento-commerce" }, { "label": "Magento Order Management", "id": "caas:products/magento-order-management" }, { "label": "Marketo Engage & Bizible", "id": "caas:products/marketo-engage-bizible" }, { "label": "Medium by Adobe", "id": "caas:products/medium-by-adobe" }, { "label": "Not Product Specific", "id": "caas:products/not-product-specific" }, { "label": "PDF API", "id": "caas:products/pdf-api" }, { "label": "PDF SDK", "id": "caas:products/pdf-sdk" }, { "label": "Photoshop", "id": "caas:products/photoshop" }, { "label": "Photoshop Camera", "id": "caas:products/photoshop-camera" }, { "label": "Photoshop Express", "id": "caas:products/photoshop-express" }, { "label": "Portfolio", "id": "caas:products/portfolio" }, { "label": "Premiere Express", "id": "caas:products/premiere-express" }, { "label": "Premiere Pro", "id": "caas:products/premiere-pro" }, { "label": "Premiere Rush", "id": "caas:products/premiere-rush" }, { "label": "Preview", "id": "caas:products/preview" }, { "label": "Reader", "id": "caas:products/reader" }, { "label": "Substance", "id": "caas:products/substance" }, { "label": "Substance 3D Assets", "id": "caas:products/substance-3d-assets" }, { "label": "Substance 3D Designer", "id": "caas:products/substance-3d-designer" }, { "label": "Substance 3D Modeler", "id": "caas:products/substance-3d-modeler" }, { "label": "Substance 3D Painter", "id": "caas:products/substance-3d-painter" }, { "label": "Substance 3D Sampler", "id": "caas:products/substance-3d-sampler" }, { "label": "Substance 3D Stager", "id": "caas:products/substance-3d-stager" }, { "label": "Substance Alchemist", "id": "caas:products/substance-alchemist" }, { "label": "Substance Painter", "id": "caas:products/substance-painter" }, { "label": "Substance Source", "id": "caas:products/substance-source" }, { "label": "XD", "id": "caas:products/xd" }], "group": "Products" }, { "openedOnLoad": false, "id": "caas:product-categories", "items": [{ "label": "3D and AR", "id": "caas:product-categories/3d-and-ar" }, { "label": "Acrobat and PDF", "id": "caas:product-categories/acrobat-and-pdf" }, { "label": "Graphic Design", "id": "caas:product-categories/graphic-design" }, { "label": "Illustration", "id": "caas:product-categories/illustration" }, { "label": "Photo", "id": "caas:product-categories/photo" }, { "label": "Social Media", "id": "caas:product-categories/social-media" }, { "label": "UI and UX", "id": "caas:product-categories/ui-and-ux" }, { "label": "Video", "id": "caas:product-categories/video" }], "group": "Product Categories" }],
+            "filterLogic": filterLogic,
+            "i18n": {
+                "leftPanel": {
+                    "header": "Refine Your Results",
+                    "clearAllFiltersText": "Clear All",
+                    "mobile": {
+                        "filtersBtnLabel": "Filters",
+                        "panel": {
+                            "header": "Filter by",
+                            "totalResultsText": "{total} results",
+                            "applyBtnText": "Apply",
+                            "clearFilterText": "Clear",
+                            "doneBtnText": "Done"
+                        },
+                        "group": {
+                            "totalResultsText": "{total} results",
+                            "applyBtnText": "Apply",
+                            "clearFilterText": "Clear",
+                            "doneBtnText": "Done"
+                        }
+                    }
+                },
+                "topPanel": {
+                    "groupLabel": "Filters:",
+                    "clearAllFiltersText": "Clear All",
+                    "moreFiltersBtnText": "More Filters +",
+                    "mobile": {
+                        "group": {
+                            "totalResultsText": "{total} results",
+                            "applyBtnText": "Apply",
+                            "clearFilterText": "Clear",
+                            "doneBtnText": "Done"
+                        }
+                    }
+                }
+            }
+        },
+        "sort": {
+            "enabled": "true",
+            "defaultSort": defaultSort,
+            "options": []
+        },
+        "pagination": {
+            "animationStyle": "paged",
+            "enabled": showPaginator,
+            "resultsQuantityShown": "true",
+            "loadMoreButton": {
+                "style": "primary",
+                "useThemeThree": "false"
+            },
+            "type": paginationType,
+            "i18n": {
+                "loadMore": {
+                    "btnText": "Load More",
+                    "resultsQuantityText": "{start} of {end} displayed"
+                },
+                "paginator": {
+                    "resultsQuantityText": "{start} - {end} of {total} results",
+                    "prevLabel": "Prev",
+                    "nextLabel": "Next"
+                }
+            }
+        },
+        "bookmarks": {
+            "showOnCards": "false",
+            "leftFilterPanel": {
+                "bookmarkOnlyCollection": "false",
+                "showBookmarksFilter": "false",
+                "selectBookmarksIcon": "",
+                "unselectBookmarksIcon": ""
+            },
+            "i18n": {
+                "leftFilterPanel": {
+                    "filterTitle": "My favorites"
+                },
+                "card": {
+                    "saveText": "Save Card",
+                    "unsaveText": "Unsave Card"
+                }
+            }
+        },
+        "search": {
+            "enabled": showSearchBox,
+            "searchFields": [],
+            "i18n": {
+                "noResultsTitle": "No Results Found",
+                "noResultsDescription": "Try checking your spelling or broadening your search.",
+                "leftFilterPanel": {
+                    "searchTitle": "Search",
+                    "searchPlaceholderText": "Search Here"
+                },
+                "topFilterPanel": {
+                    "searchPlaceholderText": "Search Here"
+                },
+                "filterInfo": {
+                    "searchPlaceholderText": "Search Here"
+                }
+            }
+        },
+        "language": "en",
+        "country": "US",
+        "analytics": {
+            "trackImpressions": "",
+            "collectionIdentifier": ""
+        },
+        "target": {
+            "enabled": "false",
+        }
+    };
+
+    /***  Start BrowserLibrary App Functions ***/
+
+    /* Panel settings */
+    const activePanel = sessionStorage.getItem('gh_activePanel') || "basic";
+    document.body.classList.add(`${activePanel}-settings`);
+
+    function getContent(source) {
+        if (source) {
+            if (DEBUG) console.log("Getting collection...", config)
+            if (window.BOOMR_mq) window.BOOMR_mq = '';
+
+            const consonantCardCollection = new ConsonantCardCollection(config, document.getElementById("output"));
+            document.body.classList.remove("no-source");
+            document.querySelector(".style select").disabled = false;
+            document.querySelector(".container select").disabled = false;
+            document.querySelector(".pagination select").disabled = false;
+            document.querySelector(".filters select").disabled = false;
+            document.querySelector("#cb_search").disabled = false;
+            if (container === "carousel") {
+                document.querySelector("#basic-settings").classList.add("carousel");
+            }
+        }
+    }
+
+    function refreshUI() {
+        document.location = `${document.location.pathname}?&source=${source}&cs=${cardStyle}&c=${container}&f=${showFilters}&p=${showPaginator}&pt=${paginationType}&s=${showSearchBox}&b=${cardBorder}${debugParam}`;
+    }
+
+    /* Event listeners */
+    document.querySelector(".app-menu-button").addEventListener("click", () => {
+        document.body.classList.toggle('collapsed');
+    });
+
+    document.getElementById("source").addEventListener("change", () => {
+        source = document.getElementById("source").value;
+        refreshUI();
+    });
+
+    document.querySelector(".collection-title").addEventListener("change", () => {
+        sessionStorage.setItem('gh_collectionTitle',  document.querySelector(".collectionTitle").value);
+        refreshUI();
+    });
+
+    document.querySelector(".style select").addEventListener("change", () => {
+        if (!source) return;
+        cardStyle = document.querySelector(".style select").value;
+        refreshUI();
+    });
+
+    document.querySelector(".container select").addEventListener("change", (e) => {
+        if (!source) return;
+        container = document.querySelector(".container select").value;
+        if (container == "carousel") {
+            showFilters = "none";
+            showSearchBox = "false";
+            cardStyle = "half-height";
+        }
+        refreshUI();
+    });
+
+    document.querySelector(".pagination select").addEventListener("change", () => {
+        if (!source) return;
+        paginationType = document.querySelector(".pagination select").value;
+        switch (paginationType) {
+            case 'paginator':
+                showPaginator = "true";
+                break;
+            case 'loadMore':
+                showPaginator = "true";
+                break;
+            default:
+                showPaginator = "false";
+                paginationType = "paginator";; // default
+        }
+        refreshUI();
+    });
+
+    document.querySelector(".filters select").addEventListener("change", () => {
+        if ((!source) || container == "carousel") return;
+        showFilters = document.querySelector(".filters select").value;
+        urlParams.set("f", showFilters );
+        window.history.pushState({}, "", `?${urlParams}`);
+        refreshUI();
+    });
+
+    document.querySelector("#cb_search").addEventListener("change", () => {
+        if ((!source) || container == "carousel") return;
+        showSearchBox = document.querySelector("#cb_search").checked;
+        refreshUI();
+    });
+
+    document.querySelectorAll(".reset").forEach(heading => {
+        heading.addEventListener("click", () => {
+            sessionStorage.clear();
+            if (!source) return;
+            document.location = document.location.pathname;
+        });
+    });
+
+    // UI Settings
+    document.getElementById("theme").addEventListener("change", () => {
+        sessionStorage.setItem('gh_theme', document.getElementById("theme").value);
+        refreshUI();
+    });
+
+    document.getElementById("card-width").addEventListener("change", () => {
+        sessionStorage.setItem('gh_cardWidth', document.getElementById("card-width").value);
+        refreshUI();
+    });
+
+    document.getElementById("card-border").addEventListener("change", () => {
+        sessionStorage.setItem('gh_cardBorder', document.getElementById("card-border").value);
+        refreshUI();
+    });
+
+    document.getElementById("button-style").addEventListener("change", () => {
+        sessionStorage.setItem('gh_buttonStyle', document.getElementById("button-style").value);
+        refreshUI();
+    });
+
+    document.querySelector(".cards-per-page input").addEventListener("change", () => {
+        sessionStorage.setItem('gh_cardsPerPage', document.querySelector(".cards-per-page input").value);
+        refreshUI();
+    });
+
+    document.querySelector(".max-results input").addEventListener("change", () => {
+        sessionStorage.setItem('gh_maxResults', document.querySelector(".max-results input").value);
+        refreshUI();
+    });
+
+    //  Advanced Settings
+    document.getElementById("filter-logic").addEventListener("change", () => {
+        sessionStorage.setItem('gh_filterLogic', document.getElementById("filter-logic").value);
+        refreshUI();
+    });
+
+    document.getElementById("default-sort").addEventListener("change", () => {
+        sessionStorage.setItem('gh_defaultSort', document.getElementById("default-sort").value);
+        refreshUI();
+    });
+
+    document.querySelectorAll(".info").forEach((item) => {
+        item.addEventListener("click", () => {
+            alert(item.getAttribute('title'))
+        });
+    });
+
+    // Left Rail
+    document.querySelectorAll(".setting-heading").forEach(heading => {
+        heading.addEventListener("click", (e) => {
+            if (!source) return;
+            const target = e.target.classList.value.replace("setting-heading", "").trim();
+            if (document.body.classList.contains(`${target}-settings`)) {
+                document.body.classList.toggle(`${target}-settings`);
+            } else {
+                document.body.classList.remove("basic-settings", "ui-settings", "advanced-settings");
+                document.body.classList.toggle(`${target}-settings`);
+                sessionStorage.setItem('gh_activePanel', target);
+            }
+        });
+    });
+
+    // In debug mode export the config object to make it available to the console
+    if (DEBUG) window.config = config;
+
+}();
+
+
+    </script>
+    
+
+</body>
+</html>

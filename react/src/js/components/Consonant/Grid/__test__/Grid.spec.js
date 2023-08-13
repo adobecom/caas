@@ -13,7 +13,7 @@ describe('Consonant/Grid', () => {
     test('should render 1 card if on page 1 and 1 card rendered per page', () => {
         renderCardsGrid({ page: 1 });
 
-        const cardElementList = screen.queryAllByTestId('consonant-OneHalfCard');
+        const cardElementList = screen.queryAllByTestId('consonant-Card');
 
         expect(cardElementList).toHaveLength(1);
     });
@@ -22,7 +22,7 @@ describe('Consonant/Grid', () => {
             props: { cards },
         } = renderCardsGrid({ resultsPerPage: Number.MAX_SAFE_INTEGER }, { pagination: { type: 'loadMore' } });
 
-        const threeByTwoCards = screen.queryAllByTestId('consonant-OneHalfCard');
+        const threeByTwoCards = screen.queryAllByTestId('consonant-Card');
         const oneByOneCards = screen.queryAllByTestId('consonant-ThreeFourthCard');
         const fullCards = screen.queryAllByTestId('consonant-FullCard');
 
@@ -31,7 +31,7 @@ describe('Consonant/Grid', () => {
     });
     test('should load analytics onto cards', () => {
         renderCardsGrid({ resultsPerPage: Number.MAX_SAFE_INTEGER }, { pagination: { type: 'loadMore' } });
-        const fullCards = screen.queryAllByTestId('consonant-OneHalfCard');
+        const fullCards = screen.queryAllByTestId('consonant-Card');
         fullCards.forEach((card, index) => {
             expect(card).toHaveAttribute('daa-lh', GRID_ANALYTICS[index]);
         });

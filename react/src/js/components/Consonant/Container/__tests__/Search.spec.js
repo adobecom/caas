@@ -110,6 +110,6 @@ describe('Consonant/Container/Search', () => {
 
         await waitFor(() => screen.getByTestId('consonant-CardsGrid'));
 
-        expect(screen.queryAllByTestId('consonant-OneHalfCard')).toHaveLength(1);
+        expect(screen.queryAllByTestId('consonant-Card')).toHaveLength(1);
     });
 });
