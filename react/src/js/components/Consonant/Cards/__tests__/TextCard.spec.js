@@ -84,22 +84,20 @@ describe('Consonant/Card/Text', () => {
         expect(cardTitle).toHaveTextContent('Card title');
     });
 
-    // test('should be able to render the card description text', () => {
-    //     renderCard({
-    //         contentArea: {
-    //             title: 'Card title',
-    //             description: 'Card description text',
-    //             detailText: 'detail label',
-    //             dateDetailText: {
-    //                 startTime: undefined,
-    //             },
-    //         },
-    //         styles: {
-    //             "typeOverride": 'text-card',
-    //         },
-    //     });
+    test('should be able to render the card description text', () => {
+        renderCard({
+            cardStyle: 'text-card',
+            contentArea: {
+                title: 'Card title',
+                description: 'Card description text',
+                detailText: 'detail label',
+                dateDetailText: {
+                    startTime: undefined,
+                },
+            },
+        });
 
-    //     const cardText = screen.getByTestId('consonant-Card-text');
-    //     expect(cardText).toHaveTextContent('Card description text');
-    // });
+        const cardText = screen.getByTestId('consonant-Card-text');
+        expect(cardText).toHaveTextContent('Card description text');
+    });
 });
