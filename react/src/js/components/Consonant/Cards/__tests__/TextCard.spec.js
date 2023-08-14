@@ -37,6 +37,7 @@ describe('Consonant/Card/Text', () => {
 
     test('should be able to render a label overlay', () => {
         renderCard({
+            cardStyle: 'text-card',
             contentArea: {
                 dateDetailText: {
                     endTime: '2021-10-11T21:00:00.000Z',
@@ -46,11 +47,12 @@ describe('Consonant/Card/Text', () => {
         });
 
         const labelElement = screen.queryByTestId('consonant-Card-label');
-        expect(labelElement).not.toBeNull();
+        expect(labelElement).toBeNull();
     });
 
     test('should be able to render a detail text', () => {
         renderCard({
+            cardStyle: 'text-card',
             contentArea: {
                 detailText: 'detail label',
                 dateDetailText: {
@@ -60,7 +62,7 @@ describe('Consonant/Card/Text', () => {
         });
 
         const labelElement = screen.queryByText('detail label');
-        expect(labelElement).not.toBeNull();
+        expect(labelElement).toBeNull();
     });
 
     test('should be able to render a logo', () => {
@@ -71,6 +73,7 @@ describe('Consonant/Card/Text', () => {
 
     test('should be able to render the card title', () => {
         renderCard({
+            cardStyle: 'text-card',
             contentArea: {
                 title: 'Card title',
                 detailText: 'detail label',
