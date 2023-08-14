@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 8/13/2023, 11:23:53
+ * Chimera UI Libraries - Build 8/14/2023, 09:05:01
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -46353,9 +46353,10 @@ var Card = function Card(props) {
     var showHeader = !isProduct;
     var showText = isOneHalf || isProduct || isText || isThreeFourths || isDoubleWide;
     var showFooter = isOneHalf || isProduct || isText;
+    var showLogo = !isHalfHeight;
     var showBadge = !isProduct && !isText;
     var showLabel = !isProduct && !isText;
-    var showLogo = !isHalfHeight;
+    var showVideoButton = !isProduct && !isText;
 
     return _react2.default.createElement(
         'div',
@@ -46404,7 +46405,7 @@ var Card = function Card(props) {
                     className: 'consonant-Card-badge' },
                 badgeText
             ),
-            videoURL && _react2.default.createElement(_videoButton2.default, {
+            showVideoButton && videoURL && _react2.default.createElement(_videoButton2.default, {
                 videoURL: videoURL,
                 onFocus: onFocus,
                 className: 'consonant-Card-videoIco' }),

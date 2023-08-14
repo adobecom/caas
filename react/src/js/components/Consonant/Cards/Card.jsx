@@ -271,9 +271,10 @@ const Card = (props) => {
     const showHeader = !isProduct;
     const showText = isOneHalf || isProduct || isText || isThreeFourths || isDoubleWide;
     const showFooter = isOneHalf || isProduct || isText;
+    const showLogo = !isHalfHeight;
     const showBadge = !isProduct && !isText;
     const showLabel = !isProduct && !isText;
-    const showLogo = !isHalfHeight;
+    const showVideoButton = !isProduct && !isText;
 
     return (
         <div
@@ -317,7 +318,8 @@ const Card = (props) => {
                     {badgeText}
                 </span>
                 }
-                {videoURL &&
+                {showVideoButton &&
+                videoURL &&
                 <VideoButton
                     videoURL={videoURL}
                     onFocus={onFocus}
