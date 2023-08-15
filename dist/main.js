@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 8/14/2023, 09:05:01
+ * Chimera UI Libraries - Build 8/14/2023, 19:19:04
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -46351,12 +46351,12 @@ var Card = function Card(props) {
 
     // Card elements to show
     var showHeader = !isProduct;
-    var showText = isOneHalf || isProduct || isText || isThreeFourths || isDoubleWide;
-    var showFooter = isOneHalf || isProduct || isText;
+    var showBadge = isOneHalf || isThreeFourths || isFull;
     var showLogo = !isHalfHeight;
-    var showBadge = !isProduct && !isText;
     var showLabel = !isProduct && !isText;
     var showVideoButton = !isProduct && !isText;
+    var showText = !isHalfHeight && !isFull;
+    var showFooter = isOneHalf || isProduct || isText;
 
     return _react2.default.createElement(
         'div',
