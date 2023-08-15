@@ -22,7 +22,9 @@ describe('Consonant/Card/Full-Card', () => {
                     },
                 },
             },
-        } = renderCard();
+        } = renderCard({
+            cardStyle: 'full-card',
+        });
 
         const bannerElement = screen.getByTestId('consonant-Card-banner');
         const bannerIconElement = screen.getByTestId('consonant-Card-bannerImg');
@@ -43,13 +45,17 @@ describe('Consonant/Card/Full-Card', () => {
                     },
                 },
             },
-        } = renderCard();
+        } = renderCard({
+            cardStyle: 'full-card',
+        });
 
         const badgeElement = screen.queryByText(someBadgeText);
         expect(badgeElement).not.toBeNull();
     });
     test('should be able to render a logo overlay', () => {
-        renderCard();
+        renderCard({
+            cardStyle: 'full-card',
+        });
         const logoAltText = screen.getByAltText('logo-alt-text');
         expect(logoAltText).not.toBeNull();
     });

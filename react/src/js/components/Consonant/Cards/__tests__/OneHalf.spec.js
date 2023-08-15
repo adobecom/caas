@@ -22,7 +22,9 @@ describe('Consonant/Card/3:2', () => {
                     },
                 },
             },
-        } = renderCard();
+        } = renderCard({
+            cardStyle: 'one-half',
+        });
 
         const bannerElement = screen.getByTestId('consonant-Card-banner');
         const bannerIconElement = screen.getByTestId('consonant-Card-bannerImg');
@@ -43,7 +45,9 @@ describe('Consonant/Card/3:2', () => {
                     },
                 },
             },
-        } = renderCard();
+        } = renderCard({
+            cardStyle: 'one-half',
+        });
 
         const badgeElement = screen.queryByText(someBadgeText);
         expect(badgeElement).not.toBeNull();
@@ -65,6 +69,7 @@ describe('Consonant/Card/3:2', () => {
 
     test('should be able to render a detail text', () => {
         renderCard({
+            cardStyle: 'one-half',
             contentArea: {
                 detailText: 'detail label',
                 dateDetailText: {
@@ -78,7 +83,9 @@ describe('Consonant/Card/3:2', () => {
     });
 
     test('should be able to render a logo', () => {
-        renderCard();
+        renderCard({
+            cardStyle: 'one-half',
+        });
         const logoAltText = screen.getByAltText('logo-alt-text');
         expect(logoAltText).not.toBeNull();
     });

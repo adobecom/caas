@@ -22,7 +22,9 @@ describe('Consonant/Card/1:1', () => {
                     },
                 },
             },
-        } = renderCard();
+        } = renderCard({
+            cardStyle: 'three-fourths',
+        });
 
         const bannerElement = screen.getByTestId('consonant-Card-banner');
         const bannerIconElement = screen.getByTestId('consonant-Card-bannerImg');
@@ -44,7 +46,9 @@ describe('Consonant/Card/1:1', () => {
                     },
                 },
             },
-        } = renderCard();
+        } = renderCard({
+            cardStyle: 'three-fourths',
+        });
 
         const badgeElement = screen.queryByText(someBadgeText);
 
@@ -68,6 +72,7 @@ describe('Consonant/Card/1:1', () => {
 
     test('should renders with detail text in label ', () => {
         renderCard({
+            cardStyle: 'three-fourths',
             contentArea: {
                 detailText: 'datail label',
                 dateDetailText: {
@@ -83,6 +88,7 @@ describe('Consonant/Card/1:1', () => {
 
     test('If No Detail Text or startTime is authored, then card label should not appear ', () => {
         renderCard({
+            cardStyle: 'three-fourths',
             contentArea: {
                 detailText: null,
                 dateDetailText: {
