@@ -83,11 +83,11 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16.13.1
+      - name: Chrome
+        uses: browser-actions/setup-chrome@v1
+      - run: chrome --version
       - name: Install
         run: npm ci
-      - name: Add caas to /etc/hosts
-        run: |
-          sudo echo "127.0.0.1 caas.corp.adobe.com" | sudo tee -a /etc/hosts
       - name: E2E
         run: npm run test:e2e-prod
 #  run-accessibility-checks:
