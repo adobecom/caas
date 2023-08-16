@@ -314,7 +314,7 @@ describe('Hide CTA(s):', async () => {
         const url = `${serverPath}/html/e2e/floodgate-on.html?state=${state}`;
         await browser.url(url);
         await browser.setTimeout({ script: 50000 });
-        const cardTitle = await $('#\\36 85a7780-b8b9-34f4-99b1-9189081ed472 .consonant-OneHalfCard-title').getText();
+        const cardTitle = await $('#\\32 tcmicr .consonant-OneHalfCard-title').getText();
         expect(cardTitle).toEqual('Floodgate Headline');
     });
 
@@ -326,7 +326,7 @@ describe('Hide CTA(s):', async () => {
         const url = `${serverPath}/html/e2e/floodgate-off.html?state=${state}`;
         await browser.url(url);
         await browser.setTimeout({ script: 50000 });
-        const cardTitle = await $('#\\36 85a7780-b8b9-34f4-99b1-9189081ed472 .consonant-OneHalfCard-title').isExisting();
+        const cardTitle = await $('#\\32 tcmicr .consonant-OneHalfCard-title').isExisting();
         expect(cardTitle).toBe(false);
     });
 });
