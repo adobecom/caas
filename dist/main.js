@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 8/17/2023, 11:49:49
+ * Chimera UI Libraries - Build 8/17/2023, 14:27:14
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6793,6 +6793,61 @@ var Container = function Container(props) {
 
         setLoading(true);
 
+        function convertSpectraToCards(spectra) {
+            spectra.map(function (card) {
+                card.showCard = {};
+                card.tags = card.data && card.data.metadata && card.data.metadata.topics;
+                card.contentArea = {
+                    dateDetailText: {
+                        startTime: '',
+                        endTime: ''
+                    },
+                    title: card.data && card.data.metadata && card.data.metadata.title
+                };
+
+                card.styles = {
+                    typeOverride: '',
+                    backgroundImage: card.data && card.data.metadata.images.thumbnail && card.data.metadata.images.thumbnail
+                };
+
+                card.overlays = {
+                    banner: {
+                        description: '',
+                        fontColor: '',
+                        backgroundColor: '',
+                        icon: ''
+                    },
+                    videoButton: {
+                        url: ''
+                    },
+                    logo: {
+                        src: '',
+                        alt: '',
+                        backgroundColor: '',
+                        borderColor: ''
+                    },
+                    label: {
+                        description: ''
+                    }
+                };
+
+                card.footer = [{
+                    divider: false,
+                    left: [],
+                    center: [],
+                    right: [{
+                        type: 'button',
+                        style: 'primary',
+                        text: 'Read More',
+                        href: card.data.urls.helpx
+                    }]
+                }];
+
+                card.cardDate = card.data.modifiedOn;
+                return card;
+            });
+        }
+
         /**
          * @func getCards
          * @desc wraps fetch with function to make it reusable
@@ -6806,6 +6861,7 @@ var Container = function Container(props) {
             // Spectra ML behavior
             if (endPoint.includes('cchome')) {
                 console.log('Using Spectra');
+
                 return window.fetch(endPoint, {
                     method: 'POST',
                     headers: {
@@ -6841,15 +6897,15 @@ var Container = function Container(props) {
                 }).then(function (payload) {
                     setLoading(false);
                     setIsFirstLoad(true);
-                    if (!(0, _general.getByPath)(payload, 'cards.length') && !(0, _general.getByPath)(payload, 'recommendations.length')) return;
 
-                    var payloadCards = payload.cards || payload.recommendations;
+                    var response = convertSpectraToCards(payload);
 
-                    var _removeDuplicateCards = new _JsonProcessor2.default(payloadCards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags),
+                    if (!(0, _general.getByPath)(response, 'cards.length')) return;
+
+                    var _removeDuplicateCards = new _JsonProcessor2.default(response).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags),
                         _removeDuplicateCards2 = _removeDuplicateCards.processedCards,
                         processedCards = _removeDuplicateCards2 === undefined ? [] : _removeDuplicateCards2;
 
-                    console.log('***', processedCards);
                     if (payload.isHashed) {
                         var TAG_HASH_LENGTH = 6;
                         var _iteratorNormalCompletion = true;
@@ -6970,6 +7026,7 @@ var Container = function Container(props) {
             }).then(function (payload) {
                 setLoading(false);
                 setIsFirstLoad(true);
+
                 if (!(0, _general.getByPath)(payload, 'cards.length')) return;
 
                 var _removeDuplicateCards3 = new _JsonProcessor2.default(payload.cards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags),

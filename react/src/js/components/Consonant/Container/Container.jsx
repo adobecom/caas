@@ -754,6 +754,67 @@ const Container = (props) => {
 
         setLoading(true);
 
+        function convertSpectraToCards(spectra) {
+            spectra.map((card) => {
+                card.showCard = {};
+                card.tags = card.data && card.data.metadata && card.data.metadata.topics;
+                card.contentArea = {
+                    dateDetailText: {
+                        startTime: '',
+                        endTime: '',
+                    },
+                    title: card.data && card.data.metadata && card.data.metadata.title,
+                };
+
+                card.styles = {
+                    typeOverride: '',
+                    backgroundImage: card.data
+                        && card.data.metadata.images.thumbnail
+                        && card.data.metadata.images.thumbnail,
+                };
+
+                card.overlays = {
+                    banner: {
+                        description: '',
+                        fontColor: '',
+                        backgroundColor: '',
+                        icon: '',
+                    },
+                    videoButton: {
+                        url: '',
+                    },
+                    logo: {
+                        src: '',
+                        alt: '',
+                        backgroundColor: '',
+                        borderColor: '',
+                    },
+                    label: {
+                        description: '',
+                    },
+                };
+
+                card.footer = [
+                    {
+                        divider: false,
+                        left: [],
+                        center: [],
+                        right: [
+                            {
+                                type: 'button',
+                                style: 'primary',
+                                text: 'Read More',
+                                href: card.data.urls.helpx,
+                            },
+                        ],
+                    },
+                ];
+
+                card.cardDate = card.data.modifiedOn;
+                return card;
+            });
+        }
+
         /**
          * @func getCards
          * @desc wraps fetch with function to make it reusable
@@ -765,6 +826,7 @@ const Container = (props) => {
             // Spectra ML behavior
             if (endPoint.includes('cchome')) {
                 console.log('Using Spectra');
+
                 return window.fetch(endPoint, {
                     method: 'POST',
                     headers: {
@@ -803,11 +865,12 @@ const Container = (props) => {
                     .then((payload) => {
                         setLoading(false);
                         setIsFirstLoad(true);
-                        if (!getByPath(payload, 'cards.length') &&
-                            !getByPath(payload, 'recommendations.length')) return;
 
-                        const payloadCards = payload.cards || payload.recommendations;
-                        const { processedCards = [] } = new JsonProcessor(payloadCards)
+                        const response = convertSpectraToCards(payload);
+
+                        if (!getByPath(response, 'cards.length')) return;
+
+                        const { processedCards = [] } = new JsonProcessor(response)
                             .removeDuplicateCards()
                             .addCardMetaData(
                                 TRUNCATE_TEXT_QTY,
@@ -816,7 +879,6 @@ const Container = (props) => {
                                 hideCtaIds,
                                 hideCtaTags,
                             );
-                        console.log('***', processedCards);
                         if (payload.isHashed) {
                             const TAG_HASH_LENGTH = 6;
                             for (const group of authoredFilters) {
@@ -892,6 +954,7 @@ const Container = (props) => {
                 .then((payload) => {
                     setLoading(false);
                     setIsFirstLoad(true);
+
                     if (!getByPath(payload, 'cards.length')) return;
 
                     const { processedCards = [] } = new JsonProcessor(payload.cards)
