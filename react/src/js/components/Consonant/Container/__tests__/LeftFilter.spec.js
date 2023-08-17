@@ -120,7 +120,7 @@ describe('Consonant/Container/Left Filter', () => {
 
         await waitFor(() => screen.getByTestId('consonant-CardsGrid'));
 
-        expect(screen.queryAllByTestId('consonant-OneHalfCard')).toHaveLength(1);
+        expect(screen.queryAllByTestId('consonant-Card')).toHaveLength(1);
 
         const [firstFilter] = screen.queryAllByTestId('consonant-LeftFilter');
 

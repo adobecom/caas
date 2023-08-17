@@ -2,182 +2,163 @@
 - consonant-HalfHeightCard--labelTop;
 */
 
-.consonant {
-    &-HalfHeightCard {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        min-width: @consonantCardMinWidth;
-        max-width: @consonantCardMaxWidth;
-        height: @consonant-OneHalfCard-height;
+.consonant-CardsGrid {
+    &.half-height {
+        .consonant-Card {
+            height: @consonant-OneHalfCard-height;
 
-        .no-font;
+            &-header {
+                z-index: 0;
+                height: 100%;
+                background-color: @consonantGray300;
+                background-position: 50% 0;
+                background-repeat: no-repeat;
+                background-size: cover;
 
-        text-decoration: none;
-        border: 1px solid @consonantGray300;
-        border-radius: 4px;
-        overflow: hidden;
-        outline: 0;
+                &:after {
+                    content: '';
+                    position: absolute;
 
-        .card-hover;
+                    .position-absolute-0;
 
-        &:hover,
-        &:active {
-            text-decoration: none;
-        }
-
-        &-img {
-            position: absolute;
-
-            .position-absolute-0;
-
-            background-position: 50% 0;
-            background-size: cover;
-            z-index: 0;
-
-            &:after {
-                content: '';
-                position: absolute;
-
-                .position-absolute-0;
-
-                background:
-                    transparent
-                    linear-gradient(
-                        180deg,
-                        rgba(0, 0, 0, 0.1) 10%,
-                        rgba(0, 0, 0, 0.8) 80%
-                    ) 0 0% no-repeat;
-                z-index: 1;
+                    background:
+                        transparent
+                        linear-gradient(
+                            180deg,
+                            rgba(0, 0, 0, 0.1) 10%,
+                            rgba(0, 0, 0, 0.8) 80%
+                        ) 0 0% no-repeat;
+                    z-index: 1;
+                    opacity: 1;
+                }
             }
-        }
 
-        &-inner .consonant-videoButton-wrapper {
-            top: -118px;
-            background: transparent;
-            position: absolute;
-            height: 208px;
-            left: 0;
-            right: 0;
+            &-content .consonant-videoButton-wrapper {
+                top: -118px;
+                background: transparent;
+                position: absolute;
+                height: 208px;
+                left: 0;
+                right: 0;
+
+                &:focus {
+                    .consonant-HalfHeightCard-videoIco {
+                        transform: scale(1.1);
+                        background: transparent url(@consonantCardPlayIcoHoverData) no-repeat 0 0;
+                        transition: transform @consonantTransitionTime @consonantTransitionFunc;
+                    }
+                }
+            }
 
             &:focus {
                 .consonant-HalfHeightCard-videoIco {
                     transform: scale(1.1);
-                    background: transparent url(@consonantCardPlayIcoHoverData) no-repeat 0 0;
                     transition: transform @consonantTransitionTime @consonantTransitionFunc;
+                    outline: 2px solid @consonantFocusedColor;
                 }
             }
-        }
 
-        &:focus {
-            .consonant-HalfHeightCard-videoIco {
-                transform: scale(1.1);
-                transition: transform @consonantTransitionTime @consonantTransitionFunc;
-                outline: 2px solid @consonantFocusedColor;
+            &-videoIco {
+                .video-button-styles;
+
+                top: 75px;
+                left: 24px;
+                right: auto;
             }
-        }
 
-        &-videoIco {
-            .video-button-styles;
-
-            top: 75px;
-            left: 24px;
-            right: auto;
-        }
-
-        &-inner {
-            display: flex;
-            position: relative;
-            flex-direction: column;
-            padding: 8px 24px 32px;
-            text-decoration: none;
-        }
-
-        &-title {
-            margin: 0 0 5px;
-            max-height: 1.25rem * 2;
-            padding: 0;
-
-            .font(1rem, 1.25rem, 700, @consonantBaseColor);
-            .line-clamp(2);
-
-            :only-child {
-                margin-bottom: 0;
+            &-content {
+                position: absolute;
+                text-decoration: none;
+                bottom: 0;
+                background-color: transparent;
+                flex-direction: column-reverse;
             }
-        }
 
-        &-label {
-            display: block;
-            max-height: 1.3125rem;
-
-            .font(0.875rem, 1.3125rem, 400, @consonantBaseColor);
-            .line-clamp(1);
-        }
-
-        &-banner {
-            position: absolute;
-            display: flex;
-            justify-content: flex-start;
-            max-width: 56%;
-            max-height: 31%;
-            top: 16px;
-            right: 0;
-            padding: 8px 13px 7px;
-
-            .font(0.75rem, 1.0625rem, 700, @consonantBaseColor);
-
-            letter-spacing: 0.72px;
-            text-transform: uppercase;
-            border-top-left-radius: 4px;
-            border-bottom-left-radius: 4px;
-            z-index: 1;
-            background-color: @consonantBlue600;
-            user-select: none;
-            overflow-y: auto;
-
-            &IconWrapper {
-                margin-right: 4px;
-
-                & img {
-                    width: 8px;
-                    height: 8px;
-                }
-            }
-        }
-
-        &--labelTop &-inner {
-            flex-direction: column-reverse;
-        }
-
-        &--labelTop &-label {
-            margin-bottom: 8px;
-
-            :only-child {
-                margin-bottom: 0;
-            }
-        }
-
-        &--labelTop &-title {
-            margin-bottom: 0;
-        }
-
-        &.consonant-u-noBorders {
-            border: 0;
-        }
-
-        @media @consonant-600px-up {
             &-title {
-                max-height: 1.375rem * 2;
+                margin: 0 0 5px;
+                max-height: 1.25rem * 2;
+                padding: 0;
 
-                .font(1.125rem, 1.375rem, 700, @consonantBaseColor);
+                .font(1rem, 1.25rem, 700, @consonantBaseColor);
+                .line-clamp(2);
+
+                :only-child {
+                    margin-bottom: 0;
+                }
             }
-        }
 
-        @media @consonant-desktop-up {
-            outline: 0;
+            &-label {
+                display: block;
+                max-height: 1.3125rem;
 
-            .focus-pseudo-element;
+                .font(0.875rem, 1.3125rem, 400, @consonantBaseColor);
+                .line-clamp(1);
+            }
+
+            &-banner {
+                position: absolute;
+                display: flex;
+                justify-content: flex-start;
+                max-width: 56%;
+                max-height: 31%;
+                top: 16px;
+                right: 0;
+                padding: 8px 13px 7px;
+
+                .font(0.75rem, 1.0625rem, 700, @consonantBaseColor);
+
+                letter-spacing: 0.72px;
+                text-transform: uppercase;
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+                z-index: 1;
+                background-color: @consonantBlue600;
+                user-select: none;
+                overflow-y: auto;
+
+                &IconWrapper {
+                    margin-right: 4px;
+
+                    & img {
+                        width: 8px;
+                        height: 8px;
+                    }
+                }
+            }
+
+            &--labelTop &-content {
+                flex-direction: column-reverse;
+            }
+
+            &--labelTop &-label {
+                margin-bottom: 8px;
+
+                :only-child {
+                    margin-bottom: 0;
+                }
+            }
+
+            &--labelTop &-title {
+                margin-bottom: 0;
+            }
+
+            &.consonant-u-noBorders {
+                border: 0;
+            }
+
+            @media @consonant-600px-up {
+                &-title {
+                    max-height: 1.375rem * 2;
+
+                    .font(1.125rem, 1.375rem, 700, @consonantBaseColor);
+                }
+            }
+
+            @media @consonant-desktop-up {
+                outline: 0;
+
+                .focus-pseudo-element;
+            }
         }
     }
 }

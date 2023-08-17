@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-import Card from '../ThreeFourth';
+import Card from '../Card';
 
 import { DEFAULT_PROPS_1_1 } from '../../Testing/Constants/Card';
 
@@ -22,9 +22,11 @@ describe('Consonant/Card/1:1', () => {
                     },
                 },
             },
-        } = renderCard();
+        } = renderCard({
+            cardStyle: 'three-fourths',
+        });
 
-        const bannerElement = screen.getByTestId('consonant-ThreeFourthCard-banner');
+        const bannerElement = screen.getByTestId('consonant-Card-banner');
         const bannerIconElement = screen.getByTestId('consonant-Card-bannerImg');
 
         expect(bannerElement).toHaveStyle({
@@ -44,7 +46,9 @@ describe('Consonant/Card/1:1', () => {
                     },
                 },
             },
-        } = renderCard();
+        } = renderCard({
+            cardStyle: 'three-fourths',
+        });
 
         const badgeElement = screen.queryByText(someBadgeText);
 
@@ -61,13 +65,14 @@ describe('Consonant/Card/1:1', () => {
             },
         });
 
-        const labelElement = screen.queryByTestId('consonant-ThreeFourthCard-label');
+        const labelElement = screen.queryByTestId('consonant-Card-label');
 
         expect(labelElement).not.toBeNull();
     });
 
     test('should renders with detail text in label ', () => {
         renderCard({
+            cardStyle: 'three-fourths',
             contentArea: {
                 detailText: 'datail label',
                 dateDetailText: {
@@ -83,6 +88,7 @@ describe('Consonant/Card/1:1', () => {
 
     test('If No Detail Text or startTime is authored, then card label should not appear ', () => {
         renderCard({
+            cardStyle: 'three-fourths',
             contentArea: {
                 detailText: null,
                 dateDetailText: {
@@ -91,7 +97,7 @@ describe('Consonant/Card/1:1', () => {
             },
         });
 
-        const labelElement = screen.queryByTestId('consonant-ThreeFourthCard-label');
+        const labelElement = screen.queryByTestId('consonant-Card-label');
 
         expect(labelElement)
             .toBeNull();

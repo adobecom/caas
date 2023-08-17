@@ -1,201 +1,115 @@
-.consonant {
-    &-OneHalfCard {
-        position: relative;
-        display: flex;
-        flex-direction: column;
+.consonant-CardsGrid {
+    &.one-half {
+        .consonant-Card {
+            .card-hover;
+            .card-hover-header;
 
-        .full-width;
-
-        flex: 1 1 0;
-        min-width: @consonantCardMinWidth;
-        max-width: @consonantCardMaxWidth;
-        height: @consonantCardHeight;
-        padding-bottom: 7px;
-        text-align: left;
-        border: 1px solid @consonantGray300;
-        border-radius: 4px;
-        background-color: @consonantBaseColor;
-        overflow: hidden;
-
-        .card-hover;
-        .card-hover-img;
-
-        &-inner {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            padding: 20px 24px 24px;
-            border-bottom-left-radius: 4px;
-            border-bottom-right-radius: 4px;
-            background-color: @consonantBaseColor;
-        }
-
-        &-img {
-            flex-grow: 1;
-            position: relative;
-            width: 100%;
-            min-height: @consonant-OneHalfCard-imgHeigh;
-            max-height: @consonant-OneHalfCard-imgHeigh;
-            background-color: @consonantGray300;
-            background-position: 50% 50%;
-            background-repeat: no-repeat;
-            background-size: cover;
-            border-top-left-radius: 4px;
-            border-top-right-radius: 4px;
-            text-align: center;
-            overflow: hidden;
-        }
-
-        &-videoIco {
-            .video-button-styles;
-        }
-
-        &-logo {
-            position: absolute;
-            display: block;
-            bottom: 16px;
-            left: 0;
-            padding: 7px 24px;
-            border: 1px solid transparent;
-            border-top-right-radius: 4px;
-            border-bottom-right-radius: 4px;
-            background-color: @consonantWhite;
-            z-index: 1;
-
-            .no-font;
-
-            img {
-                width: auto;
-                height: auto;
-                max-width: @consonantCardLogoImgMaxWidth;
-                max-height: @consonant-cardLogoImgMaxHeight;
-                object-fit: contain;
-                user-select: none;
+            &-header {
+                position: relative;
+                width: 100%;
+                height: @consonant-OneHalfCard-imgHeigh;
+                background-color: @consonantGray300;
+                background-position: 50% 50%;
+                background-repeat: no-repeat;
+                background-size: cover;
+                border-top-left-radius: 4px;
+                border-top-right-radius: 4px;
+                overflow: hidden;
             }
-        }
 
-        &-label {
-            display: block;
-            max-width: 100%;
-            margin-bottom: 4px;
-
-            .font(@color: @consonantGray800);
-
-            text-decoration: none;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-        }
-
-        &-title {
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            max-height: 1.375rem * 2;
-            margin: 0 0 7px;
-
-            .font(1.125rem, 1.375rem, 700, @consonantGray900);
-
-            text-decoration: none;
-            word-break: break-word;
-            -webkit-line-clamp: 2;
-            overflow: hidden;
-        }
-
-        &-text {
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            max-height: 1.3125rem * 3;
-            margin: 0 0 14px;
-            padding: 0;
-
-            .font(0.875rem, 1.3125rem, 400, @consonantGray700);
-
-            -webkit-line-clamp: 3;
-            overflow: hidden;
-
-            &:empty {
-                display: none;
+            &-videoIco {
+                .video-button-styles;
             }
-        }
 
-        &-label + &-title + p {
-            max-height: 1rem * 3;
-            line-height: 1rem;
-        }
+            &-logo {
+                position: absolute;
+                display: block;
+                bottom: 16px;
+                left: 0;
+                padding: 7px 24px;
+                border: 1px solid transparent;
+                border-top-right-radius: 4px;
+                border-bottom-right-radius: 4px;
+                background-color: @consonantWhite;
+                z-index: 1;
 
-        &-banner {
-            position: absolute;
-            display: flex;
-            justify-content: flex-start;
-            max-width: 56%;
-            max-height: 70%;
-            top: 24px;
-            right: 0;
-            padding: 8px 13px;
-
-            .font(0.75rem, 1.0625rem, 700, @consonantBaseColor);
-
-            letter-spacing: 0.72px;
-            text-transform: uppercase;
-            border-top-left-radius: 4px;
-            border-bottom-left-radius: 4px;
-            z-index: 1;
-            background-color: @consonantBlue600;
-            user-select: none;
-            overflow-y: auto;
-
-            &IconWrapper {
-                margin-right: 4px;
+                .no-font;
 
                 img {
-                    width: 8px;
-                    height: 8px;
+                    width: auto;
+                    height: auto;
+                    max-width: @consonantCardLogoImgMaxWidth;
+                    max-height: @consonant-cardLogoImgMaxHeight;
+                    object-fit: contain;
+                    user-select: none;
                 }
             }
-        }
 
-        &-badge {
-            position: absolute;
-            display: block;
-            max-width: 36%;
-            max-height: 50%;
-            top: 24px;
-            left: 24px;
-            padding: 4px 11px;
+            &-label {
+                display: block;
+                max-width: 100%;
+                margin-bottom: 4px;
 
-            .font(0.75rem, 1rem, 400, @consonantGray700);
+                .font(@color: @consonantGray800);
 
-            border: 1px solid @consonantGray600;
-            border-radius: 4px;
-            background-color: @consonantBaseColor;
-            overflow-y: auto;
-            z-index: 1;
-        }
+                text-decoration: none;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
 
-        &.consonant-u-noBorders {
-            border: 0;
-        }
+            &-banner {
+                position: absolute;
+                display: flex;
+                justify-content: flex-start;
+                max-width: 56%;
+                max-height: 70%;
+                top: 24px;
+                right: 0;
+                padding: 8px 13px;
 
-        &.consonant-hide-cta {
-            .consonant-OneHalfCard-title + p {
-                max-height: initial;
-                -webkit-line-clamp: 7;
-                margin: 0;
+                .font(0.75rem, 1.0625rem, 700, @consonantBaseColor);
+
+                letter-spacing: 0.72px;
+                text-transform: uppercase;
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+                z-index: 1;
+                background-color: @consonantBlue600;
+                user-select: none;
+                overflow-y: auto;
+
+                &IconWrapper {
+                    margin-right: 4px;
+
+                    img {
+                        width: 8px;
+                        height: 8px;
+                    }
+                }
+            }
+
+            &-badge {
+                position: absolute;
+                display: block;
+                max-width: 36%;
+                max-height: 50%;
+                top: 24px;
+                left: 24px;
+                padding: 4px 11px;
+
+                .font(0.75rem, 1rem, 400, @consonantGray700);
+
+                border: 1px solid @consonantGray600;
+                border-radius: 4px;
+                background-color: @consonantBaseColor;
+                overflow-y: auto;
+                z-index: 1;
             }
         }
 
-        @media @consonant-IE11-only {
-            flex-grow: 0;
-            flex-shrink: 0;
-            flex-basis: @consonantCardMinWidth;
-        }
-
-        @media @consonant-tablet-up {
-            padding-bottom: 0;
-
-            &-inner {
-                padding-bottom: 24px;
-            }
+        &.consonant-CardsGrid--3up .consonant-Card-header img {
+            max-width: 380px;
         }
     }
 }

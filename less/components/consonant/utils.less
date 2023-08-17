@@ -117,8 +117,10 @@
     }
 }
 
-.card-hover-img {
-    [class *= "-img"] {
+// .card-hover-img,
+.card-hover-header {
+    // [class *= "-img"],
+    [class *= "-header"] {
         position: relative;
 
         &:after {
@@ -136,7 +138,8 @@
         }
     }
 
-    &:hover [class *= "-img"]:after {
+    // &:hover [class *= "-img"]:after,
+    &:hover [class *= "-header"]:after {
         opacity: 1;
     }
 }

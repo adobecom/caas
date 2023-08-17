@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-import Card from '../OneHalf';
+import Card from '../Card';
 
 import { DEFAULT_PROPS_3_2 } from '../../Testing/Constants/Card';
 
@@ -22,9 +22,11 @@ describe('Consonant/Card/3:2', () => {
                     },
                 },
             },
-        } = renderCard();
+        } = renderCard({
+            cardStyle: 'one-half',
+        });
 
-        const bannerElement = screen.getByTestId('consonant-OneHalfCard-banner');
+        const bannerElement = screen.getByTestId('consonant-Card-banner');
         const bannerIconElement = screen.getByTestId('consonant-Card-bannerImg');
 
         expect(bannerElement).toHaveStyle({
@@ -43,7 +45,9 @@ describe('Consonant/Card/3:2', () => {
                     },
                 },
             },
-        } = renderCard();
+        } = renderCard({
+            cardStyle: 'one-half',
+        });
 
         const badgeElement = screen.queryByText(someBadgeText);
         expect(badgeElement).not.toBeNull();
@@ -59,12 +63,13 @@ describe('Consonant/Card/3:2', () => {
             },
         });
 
-        const labelElement = screen.queryByTestId('consonant-OneHalfCard-label');
+        const labelElement = screen.queryByTestId('consonant-Card-label');
         expect(labelElement).not.toBeNull();
     });
 
     test('should be able to render a detail text', () => {
         renderCard({
+            cardStyle: 'one-half',
             contentArea: {
                 detailText: 'detail label',
                 dateDetailText: {
@@ -78,7 +83,9 @@ describe('Consonant/Card/3:2', () => {
     });
 
     test('should be able to render a logo', () => {
-        renderCard();
+        renderCard({
+            cardStyle: 'one-half',
+        });
         const logoAltText = screen.getByAltText('logo-alt-text');
         expect(logoAltText).not.toBeNull();
     });

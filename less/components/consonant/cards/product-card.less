@@ -1,114 +1,51 @@
-.consonant {
-    &-ProductCard {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        min-height: 222px;
+.consonant-CardsGrid {
+    &.product {
+        .consonant-Card {
+            height: auto;
+            min-height: 222px;
 
-        .full-width;
-
-        flex: 1 1 0;
-        min-width: @consonantCardMinWidth;
-        max-width: @consonantCardMaxWidth;
-        text-align: left;
-        border: 1px solid @consonantGray300;
-        border-radius: 4px;
-        background-color: @consonantBaseColor;
-        overflow: hidden;
-
-        .card-hover;
-
-        .consonant-BtnInfobit:first-child {
-            margin-left: 0;
-        }
-
-        .consonant-CardFooter--divider:last-child {
-            padding-top: 20px;
-        }
-
-        &-inner {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            padding: 16px 16px 20px;
-            border-radius: 4px;
-            background-color: @consonantBaseColor;
-            text-decoration: none;
-        }
-
-        &-img {
-            width: 32px;
-            height: 32px;
-            margin-right: 20px;
-            background-color: @consonantWhite;
-            background-position: 50% 50%;
-            background-repeat: no-repeat;
-            background-size: cover;
-            border-radius: 4px;
-        }
-
-        &-img--missing {
-            width: 0;
-            margin-right: 0;
-        }
-
-        &-videoIco {
-            .video-button-styles;
-        }
-
-        &-row {
-            display: flex;
-            flex-direction: row;
-            margin-bottom: 16px;
-            align-items: center;
-        }
-
-        &-title {
-            flex: 1;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            max-height: 1.375rem * 2;
-            margin: 0 0;
-            .font(1.125rem, 1, 700, @consonantGray900);
-
-            text-decoration: none;
-            word-break: break-word;
-            -webkit-line-clamp: 2;
-            overflow: hidden;
-        }
-
-        &-text {
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            max-height: 1.3125rem * 3;
-            margin: 0 0 20px;
-            padding: 0;
-
-            .font(0.875rem, 1.3125rem, 400, @consonantGray700);
-
-            overflow: hidden;
-
-            &:empty {
-                display: none;
+            &-content {
+                padding: 16px 16px 20px;
             }
-        }
 
-        &.consonant-u-noBorders {
-            border: 0;
-        }
-
-        &.consonant-hide-cta {
-            .consonant-ProductCard-text {
-                max-height: initial;
-                -webkit-line-clamp: 7;
-                margin: 0;
+            &-videoIco {
+                .video-button-styles;
             }
-        }
 
-        @media @consonant-IE11-only {
-            flex-grow: 0;
-            flex-shrink: 0;
-            flex-basis: @consonantCardMinWidth;
+            &-row {
+                display: flex;
+                flex-direction: row;
+                margin-bottom: 16px;
+                align-items: center;
+            }
+
+            &-title {
+                flex: 1;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                max-height: 1.375rem * 2;
+                margin: 0 0 16px;
+                text-decoration: none;
+                word-break: break-word;
+                -webkit-line-clamp: 2;
+                overflow: hidden;
+            }
+
+            &-text {
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                max-height: 1.3125rem * 3;
+                margin: 0 0 20px;
+                padding: 0;
+
+                .font(0.875rem, 1.3125rem, 400, @consonantGray700);
+
+                overflow: hidden;
+
+                &:empty {
+                    display: none;
+                }
+            }
         }
     }
 }

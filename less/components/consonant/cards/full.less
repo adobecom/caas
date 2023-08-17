@@ -1,200 +1,176 @@
-.consonant {
-    &-FullCard {
-        display: flex;
-        flex-direction: column;
+.consonant-CardsGrid {
+    &.full-card {
+        .consonant-Card {
+            height: @consonantCardHeight;
 
-        .full-width;
-
-        position: relative;
-        flex: 1 1 0;
-        min-width: @consonantCardMinWidth;
-        max-width: @consonantCardMaxWidth;
-        height: @consonantCardHeight;
-        padding: 0;
-        text-align: left;
-        border: 1px solid @consonantGray300;
-        border-radius: 4px;
-        background-color: @consonantBaseColor;
-        overflow: hidden;
-
-        &-inner {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            min-height: @consonant-FullCard-innerMinHeight;
-            margin-top: auto;
-            padding: 0 24px 24px;
-            text-decoration: none;
-            background:
-                transparent
-                linear-gradient(
-                    180deg,
-                    rgba(0, 0, 0, 0) 0%,
-                    rgba(0, 0, 0, 0.501) 36%,
-                    rgba(0, 0, 0, 0.701) 100%
-                ) 0% 0% no-repeat padding-box;
-            outline: 0;
-
-            &:before {
-                content: '';
+            &-content {
                 position: absolute;
-                right: 24px;
-                bottom: 32px;
-                width: 12px;
-                height: 12px;
-                border: 1px solid @consonantBaseColor;
-                box-shadow: 1px 1px 0 0 @consonantBaseColor;
-                border-top: 0;
-                border-left: 0;
-                transform: rotate(-45deg);
-            }
-
-            &:hover,
-            &:active {
+                bottom: 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                min-height: @consonant-FullCard-innerMinHeight;
+                margin-top: auto;
+                padding: 0 24px 24px;
                 text-decoration: none;
-            }
-        }
-
-        &-img {
-            position: absolute;
-            width: 100%;
-            height: auto;
-            max-height: none;
-            background-color: @consonantGray300;
-            background-position: 50% 50%;
-            background-repeat: no-repeat;
-            background-size: cover;
-            z-index: 0;
-
-            .position-absolute-0;
-        }
-
-        &-videoIco {
-            .video-button-styles;
-
-            bottom: 124px;
-        }
-
-        &-logo {
-            position: absolute;
-            display: block;
-            bottom: 124px;
-            left: 0;
-            padding: 7px 24px;
-            border-width: 1px;
-            border-style: solid;
-            border-color: transparent;
-            border-top-right-radius: 4px;
-            border-bottom-right-radius: 4px;
-            z-index: 3;
-
-            .no-font;
-
-            img {
-                width: auto;
-                height: auto;
-                max-width: @consonantCardLogoImgMaxWidth;
-                max-height: @consonant-cardLogoImgMaxHeight;
-                object-fit: contain;
-                user-select: none;
-            }
-        }
-
-        &-label {
-            display: block;
-            max-width: 100%;
-            margin-bottom: 5px;
-
-            .font(@color: @consonantBaseColor);
-
-            text-decoration: none;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        &-title {
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            max-height: 1.375rem * 2;
-            margin: 0;
-            padding-right: 24px;
-
-            .font(1.125rem, 1.375rem, 700, @consonantBaseColor);
-
-            text-decoration: none;
-            word-break: break-word;
-            -webkit-line-clamp: 2;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        &-banner {
-            position: absolute;
-            display: flex;
-            justify-content: flex-start;
-            max-width: 56%;
-            max-height: 70%;
-            top: 24px;
-            right: 0;
-            padding: 8px 13px 7px;
-
-            .font(0.75rem, 1.0625rem, 700, @consonantBaseColor);
-
-            letter-spacing: 0.72px;
-            text-transform: uppercase;
-            border-top-left-radius: 4px;
-            border-bottom-left-radius: 4px;
-            z-index: 1;
-            background-color: @consonantBlue600;
-            user-select: none;
-            overflow-y: auto;
-
-            &IconWrapper {
-                margin-right: 4px;
-
-                & img {
-                    width: 8px;
-                    height: 8px;
-                }
-            }
-        }
-
-        &-badge {
-            position: absolute;
-            display: block;
-            max-width: 36%;
-            max-height: 50%;
-            top: 24px;
-            left: 24px;
-            padding: 4px 11px;
-
-            .font(0.75rem, 1rem, 400, @consonantGray700);
-
-            border: 1px solid @consonantGray600;
-            border-radius: 4px;
-            background-color: @consonantBaseColor;
-            overflow-y: auto;
-            z-index: 1;
-        }
-
-        &.consonant-u-noBorders {
-            border: 0;
-        }
-
-        @media @consonant-IE11-only {
-            flex-grow: 0;
-            flex-shrink: 0;
-            flex-basis: @consonantCardMinWidth;
-        }
-
-        @media @consonant-desktop-up {
-            &-inner {
+                background:
+                    transparent
+                    linear-gradient(
+                        180deg,
+                        rgba(0, 0, 0, 0) 0%,
+                        rgba(0, 0, 0, 0.501) 36%,
+                        rgba(0, 0, 0, 0.701) 100%
+                    ) 0% 0% no-repeat padding-box;
                 outline: 0;
 
-                .focus-pseudo-element;
+                &:before {
+                    content: '';
+                    position: absolute;
+                    right: 24px;
+                    bottom: 32px;
+                    width: 12px;
+                    height: 12px;
+                    border: 1px solid @consonantBaseColor;
+                    box-shadow: 1px 1px 0 0 @consonantBaseColor;
+                    border-top: 0;
+                    border-left: 0;
+                    transform: rotate(-45deg);
+                }
+
+                &:hover,
+                &:active {
+                    text-decoration: none;
+                }
+            }
+
+            &-header {
+                position: absolute !important;
+                width: 100%;
+                height: auto;
+                max-height: none;
+                background-color: @consonantGray300;
+                background-position: 50% 50%;
+                background-repeat: no-repeat;
+                background-size: cover;
+                z-index: 0;
+
+                .position-absolute-0;
+
+                img {
+                    min-width: 100%;
+                    min-height: 100%;
+                }
+            }
+
+            &-videoIco {
+                .video-button-styles;
+
+                bottom: 124px;
+            }
+
+            &-logo {
+                position: absolute;
+                display: block;
+                bottom: 124px;
+                left: 0;
+                padding: 7px 24px;
+                border-width: 1px;
+                border-style: solid;
+                border-color: transparent;
+                border-top-right-radius: 4px;
+                border-bottom-right-radius: 4px;
+                background-color: @consonantWhite;
+                z-index: 3;
+
+                .no-font;
+
+                img {
+                    width: auto;
+                    height: auto;
+                    max-width: @consonantCardLogoImgMaxWidth;
+                    max-height: @consonant-cardLogoImgMaxHeight;
+                    object-fit: contain;
+                    user-select: none;
+                }
+            }
+
+            &-label {
+                display: block;
+                max-width: 100%;
+                margin-bottom: 5px;
+
+                .font(@color: @consonantBaseColor);
+
+                text-decoration: none;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                z-index: 1;
+            }
+
+            &-title {
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                max-height: 1.375rem * 2;
+                margin: 0;
+                padding-right: 24px;
+
+                .font(1.125rem, 1.375rem, 700, @consonantBaseColor);
+
+                text-decoration: none;
+                word-break: break-word;
+                -webkit-line-clamp: 2;
+                overflow: hidden;
+                z-index: 1;
+            }
+
+            &-banner {
+                position: absolute;
+                display: flex;
+                justify-content: flex-start;
+                max-width: 56%;
+                max-height: 70%;
+                top: 24px;
+                right: 0;
+                padding: 8px 13px 7px;
+
+                .font(0.75rem, 1.0625rem, 700, @consonantBaseColor);
+
+                letter-spacing: 0.72px;
+                text-transform: uppercase;
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+                z-index: 1;
+                background-color: @consonantBlue600;
+                user-select: none;
+                overflow-y: auto;
+
+                &IconWrapper {
+                    margin-right: 4px;
+
+                    & img {
+                        width: 8px;
+                        height: 8px;
+                    }
+                }
+            }
+
+            &-badge {
+                position: absolute;
+                display: block;
+                max-width: 36%;
+                max-height: 50%;
+                top: 24px;
+                left: 24px;
+                padding: 4px 11px;
+
+                .font(0.75rem, 1rem, 400, @consonantGray700);
+
+                border: 1px solid @consonantGray600;
+                border-radius: 4px;
+                background-color: @consonantBaseColor;
+                overflow-y: auto;
+                z-index: 1;
             }
         }
     }
