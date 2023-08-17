@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 8/16/2023, 12:20:24
+ * Chimera UI Libraries - Build 8/17/2023, 08:05:54
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6771,6 +6771,11 @@ var Container = function Container(props) {
         var collectionEndpoint = getConfig('collection', 'endpoint');
         var fallbackEndpoint = getConfig('collection', 'fallbackEndpoint');
 
+        // SPECTRA ML
+        if (collectionEndpoint.includes('originSelection=spectra')) {
+            collectionEndpoint = 'https://cchome-dev.adobe.io/ucs/v3/users/me/surfaces/community/contents/recommendations/context/discussions?locale=en-US';
+        }
+
         var r = new RegExp('^(?:[a-z]+:)?//', 'i');
         var collectionEndpointURI = void 0;
         if (r.test(collectionEndpoint)) {
@@ -6796,6 +6801,146 @@ var Container = function Container(props) {
         function getCards() {
             var endPoint = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : collectionEndpoint;
 
+            // Spectra ML behavior
+            if (endPoint.includes('cchome')) {
+                console.log('Using Spectra');
+                return window.fetch(endPoint, {
+                    method: 'POST',
+                    headers: {
+                        Authorization: 'Bearer eyJhbGciOiJSUzI1NiIsIng1dSI6Imltc19uYTEta2V5LWF0LTEuY2VyIiwia2lkIjoiaW1zX25hMS1rZXktYXQtMSIsIml0dCI6ImF0In0.eyJpZCI6IjE2OTIyMzAwMDc4NzZfYWRlMzcyZDYtZWRlMi00ZTJhLWIyMTAtMzczM2FhZjhkNDQxX3V3MiIsInR5cGUiOiJhY2Nlc3NfdG9rZW4iLCJjbGllbnRfaWQiOiJhZG9iZWRvdGNvbTIiLCJ1c2VyX2lkIjoiNDFCMjk3MTI1NEQxNENFMzBBNEM5OEE0QGFkb2JlLmNvbSIsImFzIjoiaW1zLW5hMSIsImFhX2lkIjoiNDFCMjk3MTI1NEQxNENFMzBBNEM5OEE0QGFkb2JlLmNvbSIsImN0cCI6MCwiZmciOiJYV05CVFNVRlhQUDc0UDRPR01RVjM3QUFWVT09PT09PSIsInNpZCI6IjE2OTA1ODQ5MDg3NzdfNjI4MzI4NTQtZGIzNC00NzU1LWE0NTUtMjc5MzUzNjA0YmZmX3V3MiIsIm1vaSI6ImM0NWE1OWI5IiwicGJhIjoiTG93U2VjIiwiZXhwaXJlc19pbiI6Ijg2NDAwMDAwIiwic2NvcGUiOiJBZG9iZUlELG9wZW5pZCxnbmF2LHJlYWRfb3JnYW5pemF0aW9ucyxhZGRpdGlvbmFsX2luZm8ucHJvamVjdGVkUHJvZHVjdENvbnRleHQsYWRkaXRpb25hbF9pbmZvLnJvbGVzIiwiY3JlYXRlZF9hdCI6IjE2OTIyMzAwMDc4NzYifQ.ZATDjcsu6KWv1i9p5-QV03WwEI0YgUbYB_25yBSxtdW3oL537vtXQObY0sgGxN8rj_a7nrbOWr9ug2uP6aiZR6tcIJvEeCSeB9Fle37R5QrIhqPQW8ZcEPka0AY34Q9zeAVcYPOS1xaNqjCQB3PWEty0WwERv0moqwqFXFE617X0QP9ebnNvBWHRArzEYk-IWs7c2ooXhaDqCitT3kam-cS6JFyrMXoCGUoaurrOzdMea22pMo6EqScWhlj1teJO6epDrDBSl6TPVDu9zGmr00PBir5poFADzpO_Qg2q-FleN0U_TAfFwR_HDqRvjFCDjqG13XWEimvhG2VpSD3bIA',
+                        'x-api-key': 'CCHomeWeb1',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        input: 'I am trying to color an image in 3 different colors and make it even for each color. The problem is how to do that because selection tool doesnt allow me to do so. Also the middle of the image has an emblem and i need to leave that untouched. Is there any way to do this? Image of what i am trying to color is posted.',
+                        fiCode: 'photoshop_cc',
+                        metadataImportance: 0.25,
+                        cleaning: 'no',
+                        limit: 10
+                    })
+                }).then(function (resp) {
+                    var ok = resp.ok,
+                        status = resp.status,
+                        statusText = resp.statusText,
+                        url = resp.url;
+
+
+                    if (ok) {
+                        return resp.json().then(function (json) {
+                            var validData = !!Object.keys(json).length;
+
+                            if (validData) return json;
+
+                            return Promise.reject(new Error('no valid reponse data'));
+                        });
+                    }
+
+                    return Promise.reject(new Error(status + ': ' + statusText + ', failure for call to ' + url));
+                }).then(function (payload) {
+                    setLoading(false);
+                    setIsFirstLoad(true);
+                    if (!(0, _general.getByPath)(payload, 'cards.length')) return;
+
+                    var _removeDuplicateCards = new _JsonProcessor2.default(payload.cards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags),
+                        _removeDuplicateCards2 = _removeDuplicateCards.processedCards,
+                        processedCards = _removeDuplicateCards2 === undefined ? [] : _removeDuplicateCards2;
+
+                    if (payload.isHashed) {
+                        var TAG_HASH_LENGTH = 6;
+                        var _iteratorNormalCompletion = true;
+                        var _didIteratorError = false;
+                        var _iteratorError = undefined;
+
+                        try {
+                            for (var _iterator = authoredFilters[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                                var group = _step.value;
+
+                                group.id = rollingHash(group.id, TAG_HASH_LENGTH);
+                                var _iteratorNormalCompletion2 = true;
+                                var _didIteratorError2 = false;
+                                var _iteratorError2 = undefined;
+
+                                try {
+                                    for (var _iterator2 = group.items[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                                        var filterItem = _step2.value;
+
+                                        var _getParentChild = getParentChild(filterItem.id),
+                                            _getParentChild2 = _slicedToArray(_getParentChild, 2),
+                                            parent = _getParentChild2[0],
+                                            child = _getParentChild2[1];
+
+                                        filterItem.id = rollingHash(parent, TAG_HASH_LENGTH) + '/' + rollingHash(child, TAG_HASH_LENGTH);
+                                    }
+                                } catch (err) {
+                                    _didIteratorError2 = true;
+                                    _iteratorError2 = err;
+                                } finally {
+                                    try {
+                                        if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                                            _iterator2.return();
+                                        }
+                                    } finally {
+                                        if (_didIteratorError2) {
+                                            throw _iteratorError2;
+                                        }
+                                    }
+                                }
+                            }
+                        } catch (err) {
+                            _didIteratorError = true;
+                            _iteratorError = err;
+                        } finally {
+                            try {
+                                if (!_iteratorNormalCompletion && _iterator.return) {
+                                    _iterator.return();
+                                }
+                            } finally {
+                                if (_didIteratorError) {
+                                    throw _iteratorError;
+                                }
+                            }
+                        }
+                    }
+                    setFilters(function () {
+                        return authoredFilters;
+                    });
+
+                    var transitions = (0, _general.getTransitions)(processedCards);
+                    if (sortOption.sort.toLowerCase() === 'eventsort') {
+                        while (transitions.size() > 0) {
+                            setTimeout(function () {
+                                nextTransition();
+                            }, transitions.dequeue().priority + _constants.ONE_SECOND_DELAY);
+                        }
+                    }
+
+                    setCards(processedCards);
+                    if (!showEmptyFilters) {
+                        setFilters(function (prevFilters) {
+                            return removeEmptyFilters(prevFilters, processedCards);
+                        });
+                    }
+                    setTimeout(function () {
+                        if (!scrollElementRef.current) return;
+                        if (processedCards.length === 0) return;
+                        if (currentPage === 1) return;
+                        var cardsToshow = processedCards.slice(0, resultsPerPage * currentPage);
+                        var getLastPageID = resultsPerPage * currentPage - resultsPerPage;
+                        if (cardsToshow.length < getLastPageID) return;
+                        var lastID = scrollElementRef.current.children[getLastPageID];
+                        lastID.scrollIntoView();
+                    }, 100);
+                }).catch(function () {
+                    if (endPoint === collectionEndpoint && fallbackEndpoint) {
+                        getCards(fallbackEndpoint);
+                        return;
+                    }
+                    setLoading(false);
+                    setApiFailure(true);
+                });
+            }
+
+            // Defaut behavior
             return window.fetch(endPoint, {
                 credentials: 'include',
                 headers: headers
@@ -6822,62 +6967,62 @@ var Container = function Container(props) {
                 setIsFirstLoad(true);
                 if (!(0, _general.getByPath)(payload, 'cards.length')) return;
 
-                var _removeDuplicateCards = new _JsonProcessor2.default(payload.cards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags),
-                    _removeDuplicateCards2 = _removeDuplicateCards.processedCards,
-                    processedCards = _removeDuplicateCards2 === undefined ? [] : _removeDuplicateCards2;
+                var _removeDuplicateCards3 = new _JsonProcessor2.default(payload.cards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags),
+                    _removeDuplicateCards4 = _removeDuplicateCards3.processedCards,
+                    processedCards = _removeDuplicateCards4 === undefined ? [] : _removeDuplicateCards4;
 
                 if (payload.isHashed) {
                     var TAG_HASH_LENGTH = 6;
-                    var _iteratorNormalCompletion = true;
-                    var _didIteratorError = false;
-                    var _iteratorError = undefined;
+                    var _iteratorNormalCompletion3 = true;
+                    var _didIteratorError3 = false;
+                    var _iteratorError3 = undefined;
 
                     try {
-                        for (var _iterator = authoredFilters[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                            var group = _step.value;
+                        for (var _iterator3 = authoredFilters[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                            var group = _step3.value;
 
                             group.id = rollingHash(group.id, TAG_HASH_LENGTH);
-                            var _iteratorNormalCompletion2 = true;
-                            var _didIteratorError2 = false;
-                            var _iteratorError2 = undefined;
+                            var _iteratorNormalCompletion4 = true;
+                            var _didIteratorError4 = false;
+                            var _iteratorError4 = undefined;
 
                             try {
-                                for (var _iterator2 = group.items[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                                    var filterItem = _step2.value;
+                                for (var _iterator4 = group.items[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+                                    var filterItem = _step4.value;
 
-                                    var _getParentChild = getParentChild(filterItem.id),
-                                        _getParentChild2 = _slicedToArray(_getParentChild, 2),
-                                        parent = _getParentChild2[0],
-                                        child = _getParentChild2[1];
+                                    var _getParentChild3 = getParentChild(filterItem.id),
+                                        _getParentChild4 = _slicedToArray(_getParentChild3, 2),
+                                        parent = _getParentChild4[0],
+                                        child = _getParentChild4[1];
 
                                     filterItem.id = rollingHash(parent, TAG_HASH_LENGTH) + '/' + rollingHash(child, TAG_HASH_LENGTH);
                                 }
                             } catch (err) {
-                                _didIteratorError2 = true;
-                                _iteratorError2 = err;
+                                _didIteratorError4 = true;
+                                _iteratorError4 = err;
                             } finally {
                                 try {
-                                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                                        _iterator2.return();
+                                    if (!_iteratorNormalCompletion4 && _iterator4.return) {
+                                        _iterator4.return();
                                     }
                                 } finally {
-                                    if (_didIteratorError2) {
-                                        throw _iteratorError2;
+                                    if (_didIteratorError4) {
+                                        throw _iteratorError4;
                                     }
                                 }
                             }
                         }
                     } catch (err) {
-                        _didIteratorError = true;
-                        _iteratorError = err;
+                        _didIteratorError3 = true;
+                        _iteratorError3 = err;
                     } finally {
                         try {
-                            if (!_iteratorNormalCompletion && _iterator.return) {
-                                _iterator.return();
+                            if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                                _iterator3.return();
                             }
                         } finally {
-                            if (_didIteratorError) {
-                                throw _iteratorError;
+                            if (_didIteratorError3) {
+                                throw _iteratorError3;
                             }
                         }
                     }
@@ -6920,6 +7065,7 @@ var Container = function Container(props) {
                 setApiFailure(true);
             });
         }
+
         /**
          * @func getVisitorData
          * @desc wraps fetching Visitor API data in a function for reuse, also if

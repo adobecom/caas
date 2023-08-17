@@ -732,6 +732,11 @@ const Container = (props) => {
         let collectionEndpoint = getConfig('collection', 'endpoint');
         const fallbackEndpoint = getConfig('collection', 'fallbackEndpoint');
 
+        // SPECTRA ML
+        if (collectionEndpoint.includes('originSelection=spectra')) {
+            collectionEndpoint = 'https://cchome-dev.adobe.io/ucs/v3/users/me/surfaces/community/contents/recommendations/context/discussions?locale=en-US';
+        }
+
         const r = new RegExp('^(?:[a-z]+:)?//', 'i');
         let collectionEndpointURI;
         if (r.test(collectionEndpoint)) {
@@ -755,6 +760,106 @@ const Container = (props) => {
          * @returns {Void} - an updated state
          */
         function getCards(endPoint = collectionEndpoint) {
+            // Spectra ML behavior
+            if (endPoint.includes('cchome')) {
+                console.log('Using Spectra');
+                return window.fetch(endPoint, {
+                    method: 'POST',
+                    headers: {
+                        Authorization: 'Bearer eyJhbGciOiJSUzI1NiIsIng1dSI6Imltc19uYTEta2V5LWF0LTEuY2VyIiwia2lkIjoiaW1zX25hMS1rZXktYXQtMSIsIml0dCI6ImF0In0.eyJpZCI6IjE2OTIyMzAwMDc4NzZfYWRlMzcyZDYtZWRlMi00ZTJhLWIyMTAtMzczM2FhZjhkNDQxX3V3MiIsInR5cGUiOiJhY2Nlc3NfdG9rZW4iLCJjbGllbnRfaWQiOiJhZG9iZWRvdGNvbTIiLCJ1c2VyX2lkIjoiNDFCMjk3MTI1NEQxNENFMzBBNEM5OEE0QGFkb2JlLmNvbSIsImFzIjoiaW1zLW5hMSIsImFhX2lkIjoiNDFCMjk3MTI1NEQxNENFMzBBNEM5OEE0QGFkb2JlLmNvbSIsImN0cCI6MCwiZmciOiJYV05CVFNVRlhQUDc0UDRPR01RVjM3QUFWVT09PT09PSIsInNpZCI6IjE2OTA1ODQ5MDg3NzdfNjI4MzI4NTQtZGIzNC00NzU1LWE0NTUtMjc5MzUzNjA0YmZmX3V3MiIsIm1vaSI6ImM0NWE1OWI5IiwicGJhIjoiTG93U2VjIiwiZXhwaXJlc19pbiI6Ijg2NDAwMDAwIiwic2NvcGUiOiJBZG9iZUlELG9wZW5pZCxnbmF2LHJlYWRfb3JnYW5pemF0aW9ucyxhZGRpdGlvbmFsX2luZm8ucHJvamVjdGVkUHJvZHVjdENvbnRleHQsYWRkaXRpb25hbF9pbmZvLnJvbGVzIiwiY3JlYXRlZF9hdCI6IjE2OTIyMzAwMDc4NzYifQ.ZATDjcsu6KWv1i9p5-QV03WwEI0YgUbYB_25yBSxtdW3oL537vtXQObY0sgGxN8rj_a7nrbOWr9ug2uP6aiZR6tcIJvEeCSeB9Fle37R5QrIhqPQW8ZcEPka0AY34Q9zeAVcYPOS1xaNqjCQB3PWEty0WwERv0moqwqFXFE617X0QP9ebnNvBWHRArzEYk-IWs7c2ooXhaDqCitT3kam-cS6JFyrMXoCGUoaurrOzdMea22pMo6EqScWhlj1teJO6epDrDBSl6TPVDu9zGmr00PBir5poFADzpO_Qg2q-FleN0U_TAfFwR_HDqRvjFCDjqG13XWEimvhG2VpSD3bIA',
+                        'x-api-key': 'CCHomeWeb1',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        input: 'I am trying to color an image in 3 different colors and make it even for each color. The problem is how to do that because selection tool doesnt allow me to do so. Also the middle of the image has an emblem and i need to leave that untouched. Is there any way to do this? Image of what i am trying to color is posted.',
+                        fiCode: 'photoshop_cc',
+                        metadataImportance: 0.25,
+                        cleaning: 'no',
+                        limit: 10,
+                    }),
+                })
+                    .then((resp) => {
+                        const {
+                            ok,
+                            status,
+                            statusText,
+                            url,
+                        } = resp;
+
+                        if (ok) {
+                            return resp.json().then((json) => {
+                                const validData = !!Object.keys(json).length;
+
+                                if (validData) return json;
+
+                                return Promise.reject(new Error('no valid reponse data'));
+                            });
+                        }
+
+                        return Promise.reject(new Error(`${status}: ${statusText}, failure for call to ${url}`));
+                    })
+                    .then((payload) => {
+                        setLoading(false);
+                        setIsFirstLoad(true);
+                        if (!getByPath(payload, 'cards.length')) return;
+
+                        const { processedCards = [] } = new JsonProcessor(payload.cards)
+                            .removeDuplicateCards()
+                            .addCardMetaData(
+                                TRUNCATE_TEXT_QTY,
+                                onlyShowBookmarks,
+                                bookmarkedCardIds,
+                                hideCtaIds,
+                                hideCtaTags,
+                            );
+                        if (payload.isHashed) {
+                            const TAG_HASH_LENGTH = 6;
+                            for (const group of authoredFilters) {
+                                group.id = rollingHash(group.id, TAG_HASH_LENGTH);
+                                for (const filterItem of group.items) {
+                                    const [parent, child] = getParentChild(filterItem.id);
+                                    filterItem.id = `${rollingHash(parent, TAG_HASH_LENGTH)}/${rollingHash(child, TAG_HASH_LENGTH)}`;
+                                }
+                            }
+                        }
+                        setFilters(() => authoredFilters);
+
+                        const transitions = getTransitions(processedCards);
+                        if (sortOption.sort.toLowerCase() === 'eventsort') {
+                            while (transitions.size() > 0) {
+                                setTimeout(() => {
+                                    nextTransition();
+                                }, transitions.dequeue().priority + ONE_SECOND_DELAY);
+                            }
+                        }
+
+                        setCards(processedCards);
+                        if (!showEmptyFilters) {
+                            setFilters(prevFilters =>
+                                removeEmptyFilters(prevFilters, processedCards));
+                        }
+                        setTimeout(() => {
+                            if (!scrollElementRef.current) return;
+                            if (processedCards.length === 0) return;
+                            if (currentPage === 1) return;
+                            const cardsToshow = processedCards
+                                .slice(0, resultsPerPage * currentPage);
+                            const getLastPageID = (resultsPerPage * currentPage) - resultsPerPage;
+                            if (cardsToshow.length < getLastPageID) return;
+                            const lastID = scrollElementRef.current.children[getLastPageID];
+                            lastID.scrollIntoView();
+                        }, 100);
+                    }).catch(() => {
+                        if (endPoint === collectionEndpoint && fallbackEndpoint) {
+                            getCards(fallbackEndpoint);
+                            return;
+                        }
+                        setLoading(false);
+                        setApiFailure(true);
+                    });
+            }
+
+            // Defaut behavior
             return window.fetch(endPoint, {
                 credentials: 'include',
                 headers,
@@ -837,6 +942,7 @@ const Container = (props) => {
                     setApiFailure(true);
                 });
         }
+
         /**
          * @func getVisitorData
          * @desc wraps fetching Visitor API data in a function for reuse, also if
