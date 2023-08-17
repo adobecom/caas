@@ -87,7 +87,7 @@ const defaultProps = {
  *   <Card {...props}/>
  * )
  */
-const Card = (props) => {
+const Card = (props = {}) => {
     const {
         id,
         footer,

@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 8/17/2023, 08:05:54
+ * Chimera UI Libraries - Build 8/17/2023, 11:49:49
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6772,8 +6772,10 @@ var Container = function Container(props) {
         var fallbackEndpoint = getConfig('collection', 'fallbackEndpoint');
 
         // SPECTRA ML
+        var isSpectra = false;
         if (collectionEndpoint.includes('originSelection=spectra')) {
-            collectionEndpoint = 'https://cchome-dev.adobe.io/ucs/v3/users/me/surfaces/community/contents/recommendations/context/discussions?locale=en-US';
+            isSpectra = true;
+            collectionEndpoint = 'https://cchome.adobe.io/ucs/v3/users/me/surfaces/community/contents/recommendations/context/discussions?locale=en-US';
         }
 
         var r = new RegExp('^(?:[a-z]+:)?//', 'i');
@@ -6784,7 +6786,7 @@ var Container = function Container(props) {
             collectionEndpointURI = new URL(collectionEndpoint, window.location.origin);
         }
 
-        if (!fallbackEndpoint) {
+        if (!fallbackEndpoint && !isSpectra) {
             collectionEndpointURI.searchParams.set('flatFile', false);
             collectionEndpoint = collectionEndpointURI.toString();
         }
@@ -6807,12 +6809,12 @@ var Container = function Container(props) {
                 return window.fetch(endPoint, {
                     method: 'POST',
                     headers: {
-                        Authorization: 'Bearer eyJhbGciOiJSUzI1NiIsIng1dSI6Imltc19uYTEta2V5LWF0LTEuY2VyIiwia2lkIjoiaW1zX25hMS1rZXktYXQtMSIsIml0dCI6ImF0In0.eyJpZCI6IjE2OTIyMzAwMDc4NzZfYWRlMzcyZDYtZWRlMi00ZTJhLWIyMTAtMzczM2FhZjhkNDQxX3V3MiIsInR5cGUiOiJhY2Nlc3NfdG9rZW4iLCJjbGllbnRfaWQiOiJhZG9iZWRvdGNvbTIiLCJ1c2VyX2lkIjoiNDFCMjk3MTI1NEQxNENFMzBBNEM5OEE0QGFkb2JlLmNvbSIsImFzIjoiaW1zLW5hMSIsImFhX2lkIjoiNDFCMjk3MTI1NEQxNENFMzBBNEM5OEE0QGFkb2JlLmNvbSIsImN0cCI6MCwiZmciOiJYV05CVFNVRlhQUDc0UDRPR01RVjM3QUFWVT09PT09PSIsInNpZCI6IjE2OTA1ODQ5MDg3NzdfNjI4MzI4NTQtZGIzNC00NzU1LWE0NTUtMjc5MzUzNjA0YmZmX3V3MiIsIm1vaSI6ImM0NWE1OWI5IiwicGJhIjoiTG93U2VjIiwiZXhwaXJlc19pbiI6Ijg2NDAwMDAwIiwic2NvcGUiOiJBZG9iZUlELG9wZW5pZCxnbmF2LHJlYWRfb3JnYW5pemF0aW9ucyxhZGRpdGlvbmFsX2luZm8ucHJvamVjdGVkUHJvZHVjdENvbnRleHQsYWRkaXRpb25hbF9pbmZvLnJvbGVzIiwiY3JlYXRlZF9hdCI6IjE2OTIyMzAwMDc4NzYifQ.ZATDjcsu6KWv1i9p5-QV03WwEI0YgUbYB_25yBSxtdW3oL537vtXQObY0sgGxN8rj_a7nrbOWr9ug2uP6aiZR6tcIJvEeCSeB9Fle37R5QrIhqPQW8ZcEPka0AY34Q9zeAVcYPOS1xaNqjCQB3PWEty0WwERv0moqwqFXFE617X0QP9ebnNvBWHRArzEYk-IWs7c2ooXhaDqCitT3kam-cS6JFyrMXoCGUoaurrOzdMea22pMo6EqScWhlj1teJO6epDrDBSl6TPVDu9zGmr00PBir5poFADzpO_Qg2q-FleN0U_TAfFwR_HDqRvjFCDjqG13XWEimvhG2VpSD3bIA',
+                        Authorization: 'Bearer eyJhbGciOiJSUzI1NiIsIng1dSI6Imltc19uYTEta2V5LWF0LTEuY2VyIiwia2lkIjoiaW1zX25hMS1rZXktYXQtMSIsIml0dCI6ImF0In0.eyJpZCI6IjE2OTIyOTM4Njg0OTlfMDZkZDM4NzctNDNiNC00YjYyLWJhNjQtMTNkNmU1ZmRjNWRlX3V3MiIsInR5cGUiOiJhY2Nlc3NfdG9rZW4iLCJjbGllbnRfaWQiOiJhZG9iZWRvdGNvbTIiLCJ1c2VyX2lkIjoiQzYxRjJDQTc1NDg5RTdENjBBNEM5OEE3QGFkb2JlLmNvbSIsImFzIjoiaW1zLW5hMSIsImFhX2lkIjoiQzYxRjJDQTc1NDg5RTdENjBBNEM5OEE3QGFkb2JlLmNvbSIsImN0cCI6MCwiZmciOiJYV1BFREgyRlhQUDc0UDRPR01RVjM3QUFWVT09PT09PSIsInNpZCI6IjE2OTIyODY0NjQxNDVfZmJjZjVmOTgtOTRjYy00NjIzLTkzOGEtMDAwZDNhMzQxY2E3X3V3MiIsIm1vaSI6IjYyMGUyMmM3IiwicGJhIjoiTG93U2VjIiwiZXhwaXJlc19pbiI6Ijg2NDAwMDAwIiwiY3JlYXRlZF9hdCI6IjE2OTIyOTM4Njg0OTkiLCJzY29wZSI6IkFkb2JlSUQsb3BlbmlkLGduYXYscmVhZF9vcmdhbml6YXRpb25zLGFkZGl0aW9uYWxfaW5mby5wcm9qZWN0ZWRQcm9kdWN0Q29udGV4dCxhZGRpdGlvbmFsX2luZm8ucm9sZXMifQ.B9TnX-RdFzHr3DVD25hXiA6pa7OWgm9Q408YxzYXBzj6_uNDPv9zPGGsH-L6OOqHOcvyXVY9CvS-TCRYDBfC9d3i1T_mMEhJYorICbHgsukL_QLi4OVzmcWir5GG4jpnYKI4g5nJMvetgCbrzt26a2gfdSvTTGfjAycHOT2h3wIEdh5or75KBgPD7EYME0xKM6cnCGc5x7dwGoUbffjvB2Rc8w5O9GkL8Urvgi3Luo1Ny-TRO59trq2mnjNVXn5s_fQGiFES54-jH0O_jQ4NeefxidXFzHe3DTH31rSCuy3Gua611GbzOap-yx_E4b967Et45vFs8VZB4S9AKSZaWA',
                         'x-api-key': 'CCHomeWeb1',
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        input: 'I am trying to color an image in 3 different colors and make it even for each color. The problem is how to do that because selection tool doesnt allow me to do so. Also the middle of the image has an emblem and i need to leave that untouched. Is there any way to do this? Image of what i am trying to color is posted.',
+                        input: 'I am trying to color an image in 3 different colors and make it even for each color. The problem is how to do that because selection tool doesnt allow me to do so. Is there any way to do this? Image of what i am trying to color is posted.',
                         fiCode: 'photoshop_cc',
                         metadataImportance: 0.25,
                         cleaning: 'no',
@@ -6839,12 +6841,15 @@ var Container = function Container(props) {
                 }).then(function (payload) {
                     setLoading(false);
                     setIsFirstLoad(true);
-                    if (!(0, _general.getByPath)(payload, 'cards.length')) return;
+                    if (!(0, _general.getByPath)(payload, 'cards.length') && !(0, _general.getByPath)(payload, 'recommendations.length')) return;
 
-                    var _removeDuplicateCards = new _JsonProcessor2.default(payload.cards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags),
+                    var payloadCards = payload.cards || payload.recommendations;
+
+                    var _removeDuplicateCards = new _JsonProcessor2.default(payloadCards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags),
                         _removeDuplicateCards2 = _removeDuplicateCards.processedCards,
                         processedCards = _removeDuplicateCards2 === undefined ? [] : _removeDuplicateCards2;
 
+                    console.log('***', processedCards);
                     if (payload.isHashed) {
                         var TAG_HASH_LENGTH = 6;
                         var _iteratorNormalCompletion = true;
@@ -46333,7 +46338,8 @@ var defaultProps = {
  *   <Card {...props}/>
  * )
  */
-var Card = function Card(props) {
+var Card = function Card() {
+    var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var id = props.id,
         footer = props.footer,
         lh = props.lh,
@@ -54528,7 +54534,7 @@ var JsonProcessor = function () {
                         title: (0, _general.getByPath)(card, 'contentArea.title', ''),
                         description: (0, _general.getByPath)(card, 'contentArea.description', ''),
                         bannerText: (0, _general.getByPath)(card, 'overlays.banner.description', ''),
-                        dateDetailText: (0, _general.getByPath)(card, 'contentArea.dateTetailText', ''),
+                        dateDetailText: (0, _general.getByPath)(card, 'contentArea.dateDetailText', ''),
                         detailText: (0, _general.getByPath)(card, 'contentArea.detailText', '')
                     }
                 });

@@ -89,7 +89,7 @@ export default class JsonProcessor {
                 title: getByPath(card, 'contentArea.title', ''),
                 description: getByPath(card, 'contentArea.description', ''),
                 bannerText: getByPath(card, 'overlays.banner.description', ''),
-                dateDetailText: getByPath(card, 'contentArea.dateTetailText', ''),
+                dateDetailText: getByPath(card, 'contentArea.dateDetailText', ''),
                 detailText: getByPath(card, 'contentArea.detailText', ''),
             },
         }));
