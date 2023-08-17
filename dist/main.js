@@ -1,9 +1,5 @@
 /*!
-<<<<<<< HEAD
- * Chimera UI Libraries - Build 8/15/2023, 11:45:44
-=======
- * Chimera UI Libraries - Build 8/16/2023, 12:20:24
->>>>>>> MWPW-134627
+ * Chimera UI Libraries - Build 8/16/2023, 20:52:28
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -46173,7 +46169,6 @@ var defaultProps = {
     tags: []
 };
 
-<<<<<<< HEAD
 /**
  * 1/2 image aspect ratio card
  *
@@ -46191,25 +46186,6 @@ var defaultProps = {
  * return (
  *   <Card {...props}/>
  * )
-=======
-/**
- * 1/2 image aspect ratio card
- *
- * @component
- * @example
- * const props= {
-    id: String,
-    styles: Object,
-    contentArea: Object,
-    overlays: Object,
-    renderBorder: Boolean,
-    renderOverlay: Boolean,
-    overlayLink: String,
- * }
- * return (
- *   <Card {...props}/>
- * )
->>>>>>> MWPW-134627
  */
 var Card = function Card(props) {
     var id = props.id,
@@ -46275,17 +46251,10 @@ var Card = function Card(props) {
     var detailsTextOption = getConfig('collection', 'detailsTextOption');
     var lastModified = getConfig('collection', 'i18n.lastModified');
 
-<<<<<<< HEAD
     /**
      * Class name for the card:
      * whether card border should be rendered or no;
      * @type {String}
-=======
-    /**
-     * Class name for the card:
-     * whether card border should be rendered or no;
-     * @type {String}
->>>>>>> MWPW-134627
      */
     var cardClassName = (0, _classnames2.default)({
         'consonant-Card': true,
@@ -46293,7 +46262,6 @@ var Card = function Card(props) {
         'consonant-hide-cta': hideCTA
     });
 
-<<<<<<< HEAD
     /**
      * Formatted date string
      * @type {String}
@@ -46303,17 +46271,6 @@ var Card = function Card(props) {
     /**
      * Detail text
      * @type {String}
-=======
-    /**
-     * Formatted date string
-     * @type {String}
-     */
-    var prettyDate = startTime ? (0, _prettyFormat2.default)(startTime, endTime, locale, i18nFormat) : '';
-
-    /**
-     * Detail text
-     * @type {String}
->>>>>>> MWPW-134627
      */
     var detailText = prettyDate || label;
     if (modifiedDate && detailsTextOption === 'modifiedDate') {
@@ -46322,7 +46279,6 @@ var Card = function Card(props) {
         detailText = lastModified && lastModified.replace('{date}', localModifiedDate.toLocaleDateString()) || localModifiedDate.toLocaleDateString();
     }
 
-<<<<<<< HEAD
     /**
      * isGated
      * @type {Boolean}
@@ -46333,18 +46289,6 @@ var Card = function Card(props) {
      * Extends infobits with the configuration data
      * @param {Array} data - Array of the infobits
      * @return {Array} - Array of the infobits with the configuration data added
-=======
-    /**
-     * isGated
-     * @type {Boolean}
-     */
-    var isGated = (0, _Helpers.hasTag)(/caas:gated/, tags);
-
-    /**
-     * Extends infobits with the configuration data
-     * @param {Array} data - Array of the infobits
-     * @return {Array} - Array of the infobits with the configuration data added
->>>>>>> MWPW-134627
      */
     function extendFooterData(data) {
         if (!data) return [];
