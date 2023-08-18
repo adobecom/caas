@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 8/17/2023, 14:27:14
+ * Chimera UI Libraries - Build 8/18/2023, 09:51:42
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6793,60 +6793,68 @@ var Container = function Container(props) {
 
         setLoading(true);
 
-        function convertSpectraToCards(spectra) {
-            spectra.map(function (card) {
-                card.showCard = {};
-                card.tags = card.data && card.data.metadata && card.data.metadata.topics;
-                card.contentArea = {
-                    dateDetailText: {
-                        startTime: '',
-                        endTime: ''
-                    },
-                    title: card.data && card.data.metadata && card.data.metadata.title
-                };
+        // function convertSpectraToCards(spectra) {
+        //     console.log('convertSpectraToCards()', spectra.recommendations);
 
-                card.styles = {
-                    typeOverride: '',
-                    backgroundImage: card.data && card.data.metadata.images.thumbnail && card.data.metadata.images.thumbnail
-                };
+        //     return spectra.recommendations.map((card) => {
+        //         card.showCard = {};
+        //         card.tags = card.data && card.data.metadata && card.data.metadata.topics;
+        //         card.contentArea = {
+        //             dateDetailText: {
+        //                 startTime: '',
+        //                 endTime: '',
+        //             },
+        //             title: card.data && card.data.metadata && card.data.metadata.title,
+        //         };
 
-                card.overlays = {
-                    banner: {
-                        description: '',
-                        fontColor: '',
-                        backgroundColor: '',
-                        icon: ''
-                    },
-                    videoButton: {
-                        url: ''
-                    },
-                    logo: {
-                        src: '',
-                        alt: '',
-                        backgroundColor: '',
-                        borderColor: ''
-                    },
-                    label: {
-                        description: ''
-                    }
-                };
+        //         card.styles = {
+        //             typeOverride: '',
+        //             backgroundImage: card.data
+        //                 && card.data.metadata.images.thumbnail
+        //                 && card.data.metadata.images.thumbnail,
+        //         };
 
-                card.footer = [{
-                    divider: false,
-                    left: [],
-                    center: [],
-                    right: [{
-                        type: 'button',
-                        style: 'primary',
-                        text: 'Read More',
-                        href: card.data.urls.helpx
-                    }]
-                }];
+        //         card.overlays = {
+        //             banner: {
+        //                 description: '',
+        //                 fontColor: '',
+        //                 backgroundColor: '',
+        //                 icon: '',
+        //             },
+        //             videoButton: {
+        //                 url: '',
+        //             },
+        //             logo: {
+        //                 src: '',
+        //                 alt: '',
+        //                 backgroundColor: '',
+        //                 borderColor: '',
+        //             },
+        //             label: {
+        //                 description: '',
+        //             },
+        //         };
 
-                card.cardDate = card.data.modifiedOn;
-                return card;
-            });
-        }
+        //         card.footer = [
+        //             {
+        //                 divider: false,
+        //                 left: [],
+        //                 center: [],
+        //                 right: [
+        //                     {
+        //                         type: 'button',
+        //                         style: 'primary',
+        //                         text: 'Read More',
+        //                         href: card.data.urls.helpx,
+        //                     },
+        //                 ],
+        //             },
+        //         ];
+
+        //         card.cardDate = card.data.modifiedOn;
+        //         return card;
+        //     });
+        // }
 
         /**
          * @func getCards
@@ -6861,16 +6869,19 @@ var Container = function Container(props) {
             // Spectra ML behavior
             if (endPoint.includes('cchome')) {
                 console.log('Using Spectra');
+                var spectraInput = localStorage.getItem('spectra-input');
+                var token = 'eyJhbGciOiJSUzI1NiIsIng1dSI6Imltc19uYTEta2V5LWF0LTEuY2VyIiwia2lkIjoiaW1zX25hMS1rZXktYXQtMSIsIml0dCI6ImF0In0.eyJpZCI6IjE2OTIzNzI5ODg2NDRfZmRhOGRjOTQtNDIyOC00ZGIxLTgxMjEtZjcyMDM0YjkzZDdhX3V3MiIsInR5cGUiOiJhY2Nlc3NfdG9rZW4iLCJjbGllbnRfaWQiOiJhZG9iZWRvdGNvbTIiLCJ1c2VyX2lkIjoiQzYxRjJDQTc1NDg5RTdENjBBNEM5OEE3QGFkb2JlLmNvbSIsImFzIjoiaW1zLW5hMSIsImFhX2lkIjoiQzYxRjJDQTc1NDg5RTdENjBBNEM5OEE3QGFkb2JlLmNvbSIsImN0cCI6MCwiZmciOiJYV1JXUlRRNVhQUDc0UDRPR01RVjNYQUFBTT09PT09PSIsInNpZCI6IjE2OTIyODY0NjQxNDVfZmJjZjVmOTgtOTRjYy00NjIzLTkzOGEtMDAwZDNhMzQxY2E3X3V3MiIsIm1vaSI6ImNlMDE3MmUyIiwicGJhIjoiTG93U2VjIiwiZXhwaXJlc19pbiI6Ijg2NDAwMDAwIiwiY3JlYXRlZF9hdCI6IjE2OTIzNzI5ODg2NDQiLCJzY29wZSI6IkFkb2JlSUQsb3BlbmlkLGduYXYscmVhZF9vcmdhbml6YXRpb25zLGFkZGl0aW9uYWxfaW5mby5wcm9qZWN0ZWRQcm9kdWN0Q29udGV4dCxhZGRpdGlvbmFsX2luZm8ucm9sZXMifQ.ej-Tv-RVI180vJwM-DKCM90H7Zm-5IhCgmwmNGRPayGukD2HDA8DHFmZv37DbsotU6sDsavb1iqPiAsCLk3RyGiZ9RB63GE_FV41M82NwmZD0lYRVm-u2EBuoy095FfibWYiW7fPgRP95MhAuYEmfGVFacsu-d9Mgs7EgHjBV9Lsa_qdB3Ge8z35i7yJUn4oJP5ehoqImd_QN8dj98LHrrEh30yUw62n26Y52Qm20DIOhVPUQPm37R-BKLoObTkVUdkx26udpYKpHoepXSDCe738lU91ipiKX8GnTPGeh3-9Tvb5tbsGc3aQN3fA-PkcHRckoXx0MwbAYYJwtNi0PQ';
+                // const token = window.imslib.getAccessToken();
 
                 return window.fetch(endPoint, {
                     method: 'POST',
                     headers: {
-                        Authorization: 'Bearer eyJhbGciOiJSUzI1NiIsIng1dSI6Imltc19uYTEta2V5LWF0LTEuY2VyIiwia2lkIjoiaW1zX25hMS1rZXktYXQtMSIsIml0dCI6ImF0In0.eyJpZCI6IjE2OTIyOTM4Njg0OTlfMDZkZDM4NzctNDNiNC00YjYyLWJhNjQtMTNkNmU1ZmRjNWRlX3V3MiIsInR5cGUiOiJhY2Nlc3NfdG9rZW4iLCJjbGllbnRfaWQiOiJhZG9iZWRvdGNvbTIiLCJ1c2VyX2lkIjoiQzYxRjJDQTc1NDg5RTdENjBBNEM5OEE3QGFkb2JlLmNvbSIsImFzIjoiaW1zLW5hMSIsImFhX2lkIjoiQzYxRjJDQTc1NDg5RTdENjBBNEM5OEE3QGFkb2JlLmNvbSIsImN0cCI6MCwiZmciOiJYV1BFREgyRlhQUDc0UDRPR01RVjM3QUFWVT09PT09PSIsInNpZCI6IjE2OTIyODY0NjQxNDVfZmJjZjVmOTgtOTRjYy00NjIzLTkzOGEtMDAwZDNhMzQxY2E3X3V3MiIsIm1vaSI6IjYyMGUyMmM3IiwicGJhIjoiTG93U2VjIiwiZXhwaXJlc19pbiI6Ijg2NDAwMDAwIiwiY3JlYXRlZF9hdCI6IjE2OTIyOTM4Njg0OTkiLCJzY29wZSI6IkFkb2JlSUQsb3BlbmlkLGduYXYscmVhZF9vcmdhbml6YXRpb25zLGFkZGl0aW9uYWxfaW5mby5wcm9qZWN0ZWRQcm9kdWN0Q29udGV4dCxhZGRpdGlvbmFsX2luZm8ucm9sZXMifQ.B9TnX-RdFzHr3DVD25hXiA6pa7OWgm9Q408YxzYXBzj6_uNDPv9zPGGsH-L6OOqHOcvyXVY9CvS-TCRYDBfC9d3i1T_mMEhJYorICbHgsukL_QLi4OVzmcWir5GG4jpnYKI4g5nJMvetgCbrzt26a2gfdSvTTGfjAycHOT2h3wIEdh5or75KBgPD7EYME0xKM6cnCGc5x7dwGoUbffjvB2Rc8w5O9GkL8Urvgi3Luo1Ny-TRO59trq2mnjNVXn5s_fQGiFES54-jH0O_jQ4NeefxidXFzHe3DTH31rSCuy3Gua611GbzOap-yx_E4b967Et45vFs8VZB4S9AKSZaWA',
+                        Authorization: 'Bearer ' + token,
                         'x-api-key': 'CCHomeWeb1',
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        input: 'I am trying to color an image in 3 different colors and make it even for each color. The problem is how to do that because selection tool doesnt allow me to do so. Is there any way to do this? Image of what i am trying to color is posted.',
+                        input: spectraInput,
                         fiCode: 'photoshop_cc',
                         metadataImportance: 0.25,
                         cleaning: 'no',
@@ -6882,6 +6893,7 @@ var Container = function Container(props) {
                         statusText = resp.statusText,
                         url = resp.url;
 
+                    console.log('resp', resp);
 
                     if (ok) {
                         return resp.json().then(function (json) {
@@ -6895,18 +6907,87 @@ var Container = function Container(props) {
 
                     return Promise.reject(new Error(status + ': ' + statusText + ', failure for call to ' + url));
                 }).then(function (payload) {
+                    // console.log('*** payload', payload);
+                    // return convertSpectraToCards(payload);
+
+                    var payloadCards = {};
+                    payloadCards.filters = [];
+                    payloadCards.cards = payload.recommendations.map(function (card) {
+                        console.log('**** card.id', card.id);
+                        card.showCard = {};
+                        card.tags = card.data && card.data.metadata && card.data.metadata.topics || [];
+                        console.log('**** card.tags', card.tags);
+                        card.contentArea = {
+                            dateDetailText: {
+                                startTime: '',
+                                endTime: ''
+                            },
+                            title: card.data && card.data.metadata && card.data.metadata.title || 'AutoTitle: ' + card.id.replace('/', '-') + ')}'
+                        };
+                        console.log('**** card.contentArea', card.contentArea);
+
+                        card.styles = {
+                            typeOverride: '',
+                            backgroundAltText: '',
+                            backgroundImage: card.data && card.data.metadata && card.data.metadata.images && card.data.metadata.images.thumbnail || ''
+                        };
+                        console.log('**** card.styles', card.styles);
+
+                        card.overlays = {
+                            banner: {
+                                description: '',
+                                fontColor: '',
+                                backgroundColor: '',
+                                icon: ''
+                            },
+                            videoButton: {
+                                url: ''
+                            },
+                            logo: {
+                                src: '',
+                                alt: '',
+                                backgroundColor: '',
+                                borderColor: ''
+                            },
+                            label: {
+                                description: ''
+                            }
+                        };
+                        console.log('**** card.overlays', card.overlays);
+
+                        card.footer = [{
+                            divider: false,
+                            left: [],
+                            center: [],
+                            right: [{
+                                type: 'button',
+                                style: 'primary',
+                                text: 'Read More',
+                                href: card.data && card.data.urls && card.data.urls.helpx || '#'
+                            }]
+                        }];
+                        console.log('**** card.footer', card.footer);
+
+                        card.cardDate = card.data.modifiedOn;
+                        console.log('**** card.cardDate', card.cardDate);
+
+                        return card;
+                    });
+
+                    console.log('*** payload 1', payloadCards);
+
                     setLoading(false);
                     setIsFirstLoad(true);
 
-                    var response = convertSpectraToCards(payload);
+                    if (!(0, _general.getByPath)(payloadCards, 'cards.length')) return;
 
-                    if (!(0, _general.getByPath)(response, 'cards.length')) return;
-
-                    var _removeDuplicateCards = new _JsonProcessor2.default(response).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags),
+                    var _removeDuplicateCards = new _JsonProcessor2.default(payloadCards.cards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags),
                         _removeDuplicateCards2 = _removeDuplicateCards.processedCards,
                         processedCards = _removeDuplicateCards2 === undefined ? [] : _removeDuplicateCards2;
 
-                    if (payload.isHashed) {
+                    console.log('*** processedCards', processedCards);
+
+                    if (payloadCards.isHashed) {
                         var TAG_HASH_LENGTH = 6;
                         var _iteratorNormalCompletion = true;
                         var _didIteratorError = false;
@@ -7002,6 +7083,8 @@ var Container = function Container(props) {
             }
 
             // Defaut behavior
+            console.log('NOT Using Spectra');
+
             return window.fetch(endPoint, {
                 credentials: 'include',
                 headers: headers
@@ -7024,6 +7107,7 @@ var Container = function Container(props) {
 
                 return Promise.reject(new Error(status + ': ' + statusText + ', failure for call to ' + url));
             }).then(function (payload) {
+                console.log('*** payload 2', payload);
                 setLoading(false);
                 setIsFirstLoad(true);
 
@@ -7032,6 +7116,8 @@ var Container = function Container(props) {
                 var _removeDuplicateCards3 = new _JsonProcessor2.default(payload.cards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags),
                     _removeDuplicateCards4 = _removeDuplicateCards3.processedCards,
                     processedCards = _removeDuplicateCards4 === undefined ? [] : _removeDuplicateCards4;
+
+                console.log('*** processedCards', processedCards);
 
                 if (payload.isHashed) {
                     var TAG_HASH_LENGTH = 6;
