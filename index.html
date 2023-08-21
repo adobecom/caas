@@ -74,7 +74,7 @@
                     }
                 },
                 resultsPerPage: '5',
-                endpoint: location.hostname === "localhost" ? "../../mock-json/all-art-board-15-cards-show.json" : "../../caas/mock-json/all-art-board-15-cards-show.json",
+                endpoint: location.hostname === "localhost" ? "../../mock-json/spectra-ml.json" : "../../caas/mock-json/all-art-board-15-cards-show.json",
                 totalCardsToShow: '55',
                 cardStyle: "1:2", // available options: "1:2", "3:4", "full-card", "half-height", "custom-card", "product", "double-wide";
                 showTotalResults: 'true',
@@ -94,97 +94,91 @@
             featuredCards: ['c7d34f39-397c-3727-9dff-5d0d9d8cf731'],
             filterPanel: {
                 enabled: 'true',
-                type: 'top',
+                type: 'left',
                 eventFilter: 'all',
                 showEmptyFilters: true,
                 filters: [
                     {
-                        "group": "By Solution",
-                        "id": "adobe-com-enterprise:topic",
+                        "group": "tools",
+                        "id": "tools",
                         "items": [
                             {
-                                "label": "Business Continuity",
-                                "id": "adobe-com-enterprise:topic/business-continuity"
+                                "id": "layers",
+                                "label": "Layers"
                             },
                             {
-                                "label": "Creativity and Design",
-                                "id": "adobe-com-enterprise:topic/creativity-design"
+                                "id": "adjustments",
+                                "label": "Adjustments"
                             },
                             {
-                                "label": "Customer Intelligence",
-                                "id": "adobe-com-enterprise:topic/customer-intelligence"
-                            },
-                            {
-                                "label": "Data Management Platform",
-                                "id": "adobe-com-enterprise:topic/data-management-platform"
-                            },
-                            {
-                                "label": "Digital Foundation",
-                                "id": "adobe-com-enterprise:topic/digital-foundation"
-                            },
-                            {
-                                "label": "Digital Trends",
-                                "id": "adobe-com-enterprise:topic/digital-trends"
-                            },
-                            {
-                                "label": "Document Management",
-                                "id": "adobe-com-enterprise:topic/document-management"
-                            },
-                            {
-                                "label": "Marketing Automation",
-                                "id": "adobe-com-enterprise:topic/marketing-automation"
-                            },
-                            {
-                                "label": "Personalization",
-                                "id": "adobe-com-enterprise:topic/personalization"
-                            },
-                            {
-                                "label": "Stock",
-                                "id": "adobe-com-enterprise:topic/Stock"
+                                "id": "color",
+                                "label": "Color"
                             }
                         ]
                     },
                     {
-                        "group": "Availability",
-                        "id": "adobe-com-enterprise:availability",
+                        "group": "topics",
+                        "id": "topics",
                         "items": [
                             {
-                                "label": "On-Demand",
-                                "id": "adobe-com-enterprise:availability/on-demand"
+                                "id": "content-marketing-and-design",
+                                "label": "Content marketing and design"
                             },
                             {
-                                "label": "Upcoming",
-                                "id": "adobe-com-enterprise:availability/upcoming"
+                                "id": "flyer-design",
+                                "label": "Flyer design"
+                            },
+                            {
+                                "id": "pages",
+                                "label": "Pages"
+                            },
+                            {
+                                "id": "compositing",
+                                "label": "Compositing"
+                            },
+                            {
+                                "id": "layouts",
+                                "label": "Layout"
+                            },
+                            {
+                                "id": "social-media",
+                                "label": "Social media graphics"
+                            },
+                            {
+                                "id": "background",
+                                "label": "Background"
+                            },
+                            {
+                                "id": "replacing-backgrounds",
+                                "label": "Replacing backgrounds"
+                            },
+                            {
+                                "id": "colorize",
+                                "label": "Colorize"
+                            },
+                            {
+                                "id": "creative-effects",
+                                "label": "Creative effects"
+                            },
+                            {
+                                "id": "enhancing-color",
+                                "label": "Enhancing color"
+                            },
+                            {
+                                "id": "selections",
+                                "label": "Selections"
                             }
                         ]
                     },
                     {
-                        "group": "Duration",
-                        "id": "adobe-com-enterprise:duration",
-                        "items": [
-                            {
-                                "label": "Long",
-                                "id": "adobe-com-enterprise:duration/long"
-                            },
-                            {
-                                "label": "Short",
-                                "id": "adobe-com-enterprise:duration/short"
-                            }
-                        ]
+                        "group": "tasks",
+                        "id": "tasks",
+                        "items": []
                     },
                     {
-                        "group": "Rating",
-                        "id": "adobe-com-enterprise:rating",
-                        "items": [
-                            {
-                                "label": "5",
-                                "id": "adobe-com-enterprise:rating/5"
-                            },
-                            {
-                                "label": "4",
-                                "id": "adobe-com-enterprise:rating/4"
-                            }
-                        ]
+                        "group": "creativeFields",
+                        "id": "creativeFields",
+                        "items": []
                     }
                 ],
                 filterLogic: 'or',
@@ -340,5 +334,10 @@
         max-height: 439px;
     }
 </style>
+
+<script>
+    let a = fetch("https://14257-chimera-sanrai.adobeioruntime.net/api/v1/web/chimera-0.0.1/service-token");
+    console.log(a);
+</script>
 
 </html>

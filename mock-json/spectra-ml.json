@@ -1,0 +1,2677 @@
+{
+    "cards": [
+        {
+            "id": "photoshop/how-to/make-a-flyer",
+            "score": 0.7569898366928101,
+            "dataType": "ututs",
+            "data": {
+                "aemId": "photoshop/how-to/make-a-flyer",
+                "modifiedOn": "2023-08-10T06:17:29.268Z",
+                "surfaces": {
+                    "ids": {
+                        "helpJson": {
+                            "versions": [
+                                1
+                            ],
+                            "live": "394f7df6-ab01-340b-92e3-8ab477bc69c9"
+                        }
+                    }
+                },
+                "tutorialUUID": "a4ce4609-d007-347a-80d8-c58acc701b96",
+                "locale": "en_US",
+                "createdOn": "2018-08-21T20:21:40.100Z",
+                "urls": {
+                    "lowUrl": "https://creativecloud.adobe.com/learn?action=open&aem_id=photoshop/how-to/make-a-flyer",
+                    "helpx": "https://helpx.adobe.com/photoshop/how-to/make-a-flyer.html",
+                    "helpxIframe": "https://helpx.adobe.com/photoshop/how-to/make-a-flyer.cc-home.html",
+                    "low_url": "https://creativecloud.adobe.com/learn?action=open&aem_id=photoshop/how-to/make-a-flyer"
+                },
+                "metadata": {
+                    "images": {
+                        "thumbnail": "https://helpx.adobe.com/content/dam/help/en/photoshop/how-to/make-flyer_297x176.jpg",
+                        "hero": "https://helpx.adobe.com/content/dam/help/en/photoshop/how-to/5435-make-flyer_1408x792.jpg"
+                    },
+                    "durationInSeconds": "300",
+                    "level": "beginner",
+                    "topics": [
+                        "content-marketing-and-design",
+                        "flyer-design",
+                        "pages"
+                    ],
+                    "publishedOn": "2023-05-24T04:50:35.354Z",
+                    "taxonomy": {
+                        "tools": [
+                            {
+                                "enName": "Layer > Arrange",
+                                "name": "Layer > Arrange",
+                                "internalId": "layer-arrange",
+                                "id": "6500ae8856b7475e9d403a14f355e181",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Layer > Smart Objects",
+                                "name": "Layer > Smart Objects",
+                                "internalId": "layer-smart-objects",
+                                "id": "8bb9a3cb69124801a47b4f07fec6f679",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Layer > Ungroup Layers",
+                                "name": "Layer > Ungroup Layers",
+                                "internalId": "layer-ungroup-layers",
+                                "id": "655a3d26337b468ea5e45024f3d53275",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Layers",
+                                "name": "Layers",
+                                "internalId": "layers",
+                                "id": "7bf6af64c9374df388b8bce29e45d8af",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Select > Modify",
+                                "name": "Select > Modify",
+                                "internalId": "select-modify",
+                                "id": "d789dc94b9864e3a87295da4ba1eb2ba",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Select > Reselect",
+                                "name": "Select > Reselect",
+                                "internalId": "select-reselect",
+                                "id": "abd8bdfba13a4527857330429a35ca0e",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Select > Save Selection",
+                                "name": "Select > Save Selection",
+                                "internalId": "select-save-selection",
+                                "id": "e36e95d5f18141648d76449db5e5a0d7",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Select > Select and Mask",
+                                "name": "Select > Select and Mask",
+                                "internalId": "select-select-and-mask",
+                                "id": "a1ee10ed7e57475faa57ecb0b1513b32",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Select > Similar",
+                                "name": "Select > Similar",
+                                "internalId": "select-similar",
+                                "id": "e72710c28f174438be2cbcc1f3414282",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Select > Sky",
+                                "name": "Select > Sky",
+                                "internalId": "select-sky",
+                                "id": "407d87fd79dd438eba408f434da3be8e",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Select > Subject",
+                                "name": "Select > Subject",
+                                "internalId": "select-subject",
+                                "id": "dd13765145d04dd98ee1cf1ccf4c95b4",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Select > Transform Selection",
+                                "name": "Select > Transform Selection",
+                                "internalId": "select-transform-selection",
+                                "id": "4cfa5b0a835a4c83bcbf3c5930218b62",
+                                "toolType": "menu"
+                            }
+                        ],
+                        "topics": [
+                            {
+                                "enName": "Content marketing and design",
+                                "name": "Content marketing and design",
+                                "internalId": "content-marketing-and-design",
+                                "id": "ad98647b96ab42d8b14aa4ea01de6e25"
+                            },
+                            {
+                                "enName": "Flyer design",
+                                "name": "Flyer design",
+                                "internalId": "flyer-design",
+                                "id": "1f0a20e29bea495f9d25b90baa2550b2"
+                            },
+                            {
+                                "enName": "Pages",
+                                "name": "Pages",
+                                "internalId": "pages",
+                                "id": "6b1c2903d7cc42d4854d909438ca52c9"
+                            }
+                        ],
+                        "tasks": [
+                            {
+                                "enName": "Brand collateral design",
+                                "name": "Brand collateral design",
+                                "internalId": "brand-collateral-design",
+                                "id": "e0ce00a83cd44153b317b32ed9d7485e"
+                            },
+                            {
+                                "enName": "Create layers",
+                                "name": "Create layers",
+                                "internalId": "create-layers",
+                                "id": "da21eace082b41969591de417219a204"
+                            },
+                            {
+                                "enName": "Edit in Photoshop",
+                                "name": "Edit in Photoshop",
+                                "internalId": "edit-in-photoshop",
+                                "id": "d01016c7c8094e1ba4eaee2ccd7e0b00"
+                            },
+                            {
+                                "enName": "Flyer templates",
+                                "name": "Flyer templates",
+                                "internalId": "flyer-templates",
+                                "id": "8e1a5025f7d848ada69c0f12b1f43846"
+                            },
+                            {
+                                "enName": "Lay out content",
+                                "name": "Lay out content",
+                                "internalId": "lay-out-content",
+                                "id": "4d5373705d2142008caaadecd75c4466"
+                            },
+                            {
+                                "enName": "Photoshop templates",
+                                "name": "Photoshop templates",
+                                "internalId": "photoshop-templates",
+                                "id": "fdb52dd69ada4bf694ffe2d259d99f81"
+                            }
+                        ],
+                        "creativeFields": [
+                            {
+                                "enName": "Photography",
+                                "name": "Photography",
+                                "internalId": "photography",
+                                "id": "f14741181f3c4b3b8b0218d8bbd24d3a"
+                            }
+                        ]
+                    },
+                    "title": "Create a flyer",
+                    "platforms": [
+                        "cc-learn",
+                        "ccx",
+                        "help_learn",
+                        "helpx"
+                    ],
+                    "mediaTypes": [
+                        "project"
+                    ],
+                    "application": {
+                        "sapCode": "PHSP",
+                        "fiCode": "photoshop_cc"
+                    },
+                    "creativeFields": [
+                        "photography"
+                    ]
+                }
+            },
+            "showCard": {},
+            "tags": [
+                {
+                    "id": "content-marketing-and-design",
+                    "label": "content-marketing-and-design"
+                },
+                {
+                    "id": "flyer-design",
+                    "label": "flyer-design"
+                },
+                {
+                    "id": "pages",
+                    "label": "pages"
+                }
+            ],
+            "contentArea": {
+                "dateDetailText": {
+                    "startTime": "",
+                    "endTime": ""
+                },
+                "title": "Create a flyer"
+            },
+            "styles": {
+                "typeOverride": "",
+                "backgroundImage": "https://helpx.adobe.com/content/dam/help/en/photoshop/how-to/make-flyer_297x176.jpg"
+            },
+            "overlays": {
+                "banner": {
+                    "description": "",
+                    "fontColor": "",
+                    "backgroundColor": "",
+                    "icon": ""
+                },
+                "videoButton": {
+                    "url": ""
+                },
+                "logo": {
+                    "src": "",
+                    "alt": "",
+                    "backgroundColor": "",
+                    "borderColor": ""
+                },
+                "label": {
+                    "description": ""
+                }
+            },
+            "footer": [
+                {
+                    "divider": false,
+                    "left": [],
+                    "center": [],
+                    "right": [
+                        {
+                            "type": "button",
+                            "style": "primary",
+                            "text": "Read More",
+                            "href": "https://helpx.adobe.com/photoshop/how-to/make-a-flyer.html"
+                        }
+                    ]
+                }
+            ],
+            "cardDate": "2023-08-10T06:17:29.268Z"
+        },
+        {
+            "id": "photoshop/how-to/add-text-pictures",
+            "score": 0.7512567043304443,
+            "dataType": "ututs",
+            "data": {
+                "aemId": "photoshop/how-to/add-text-pictures",
+                "modifiedOn": "2023-08-10T06:02:21.175Z",
+                "surfaces": {
+                    "ids": {
+                        "helpJson": {
+                            "versions": [
+                                1
+                            ],
+                            "live": "f3651db0-da80-36a1-8f48-80d6af0ef051"
+                        }
+                    }
+                },
+                "tutorialUUID": "4b346ec8-bab7-3115-a8e0-753e4e2b4a4d",
+                "locale": "en_US",
+                "createdOn": "2018-08-20T22:52:55.944Z",
+                "urls": {
+                    "lowUrl": "https://creativecloud.adobe.com/learn?action=open&aem_id=photoshop/how-to/add-text-pictures",
+                    "helpx": "https://helpx.adobe.com/photoshop/how-to/add-text-pictures.html",
+                    "helpxIframe": "https://helpx.adobe.com/photoshop/how-to/add-text-pictures.cc-home.html",
+                    "low_url": "https://creativecloud.adobe.com/learn?action=open&aem_id=photoshop/how-to/add-text-pictures"
+                },
+                "metadata": {
+                    "images": {
+                        "thumbnail": "https://helpx.adobe.com/content/dam/help/en/photoshop/how-to/add-text-pictures-v2_297x176.jpg",
+                        "hero": "https://helpx.adobe.com/content/dam/help/en/photoshop/how-to/add-text-pictures-v2_900x506.jpg"
+                    },
+                    "durationInSeconds": "300",
+                    "level": "beginner",
+                    "topics": [
+                        "compositing",
+                        "layouts",
+                        "social-media"
+                    ],
+                    "publishedOn": "2023-05-24T04:50:49.509Z",
+                    "taxonomy": {
+                        "tools": [
+                            {
+                                "enName": "Image > Apply Data Set",
+                                "name": "Image > Apply Data Set",
+                                "internalId": "image-apply-data-set",
+                                "id": "af8dd424306144668862b2c6659f5213",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Image > Apply Image",
+                                "name": "Image > Apply Image",
+                                "internalId": "image-apply-image",
+                                "id": "ac03b3efd0f54c48be3d3ac5790c9084",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Image > Auto Color",
+                                "name": "Image > Auto Color",
+                                "internalId": "image-auto-color",
+                                "id": "b53a60a2eb84410895437e2bc4c1469e",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Image > Auto Contrast",
+                                "name": "Image > Auto Contrast",
+                                "internalId": "image-auto-contrast",
+                                "id": "45d11e6f27614f349ca06a12958c9da3",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Image > Auto Tone",
+                                "name": "Image > Auto Tone",
+                                "internalId": "image-auto-tone",
+                                "id": "a3461a7b70414bd7bccf45aeda37b466",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Image > Reveal All",
+                                "name": "Image > Reveal All",
+                                "internalId": "image-reveal-all",
+                                "id": "9d5d2d8c633f4f84942ed37f3a2577f7",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Select > Reselect",
+                                "name": "Select > Reselect",
+                                "internalId": "select-reselect",
+                                "id": "abd8bdfba13a4527857330429a35ca0e",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Select > Select and Mask",
+                                "name": "Select > Select and Mask",
+                                "internalId": "select-select-and-mask",
+                                "id": "a1ee10ed7e57475faa57ecb0b1513b32",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Select > Similar",
+                                "name": "Select > Similar",
+                                "internalId": "select-similar",
+                                "id": "e72710c28f174438be2cbcc1f3414282",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Select > Sky",
+                                "name": "Select > Sky",
+                                "internalId": "select-sky",
+                                "id": "407d87fd79dd438eba408f434da3be8e",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Select > Subject",
+                                "name": "Select > Subject",
+                                "internalId": "select-subject",
+                                "id": "dd13765145d04dd98ee1cf1ccf4c95b4",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Select > Transform Selection",
+                                "name": "Select > Transform Selection",
+                                "internalId": "select-transform-selection",
+                                "id": "4cfa5b0a835a4c83bcbf3c5930218b62",
+                                "toolType": "menu"
+                            }
+                        ],
+                        "topics": [
+                            {
+                                "enName": "Compositing",
+                                "name": "Compositing",
+                                "internalId": "compositing",
+                                "id": "d1dc61ee99ef467b92ef8692ee0dcb84"
+                            },
+                            {
+                                "enName": "Layout",
+                                "name": "Layout",
+                                "internalId": "layouts",
+                                "id": "f3975b5fc0f246f1ace91516607d250e"
+                            },
+                            {
+                                "enName": "Social media graphics",
+                                "name": "Social media graphics",
+                                "internalId": "social-media",
+                                "id": "058148b95a584a6faacb6d8877b2f85f"
+                            }
+                        ],
+                        "tasks": [
+                            {
+                                "enName": "Add images",
+                                "name": "Add images",
+                                "internalId": "add-images",
+                                "id": "245663726ea3401786265731124f6485"
+                            },
+                            {
+                                "enName": "Create Facebook profile cover",
+                                "name": "Create Facebook profile cover",
+                                "internalId": "create-facebook-profile-cover",
+                                "id": "1bcbb1baa4aa4928886ceeea797c5312"
+                            },
+                            {
+                                "enName": "Create social media post",
+                                "name": "Create social media post",
+                                "internalId": "create-social-media-post",
+                                "id": "6cba5247921b407faee753acaa7680a8"
+                            },
+                            {
+                                "enName": "Edit social media post",
+                                "name": "Edit social media post",
+                                "internalId": "edit-social-media-post",
+                                "id": "e758c247217647b2bc3104266e0d45ea"
+                            },
+                            {
+                                "enName": "Preview social media post",
+                                "name": "Preview social media post",
+                                "internalId": "preview-social-media-post",
+                                "id": "f3cd54a69b3b475bbdd84149322def29"
+                            },
+                            {
+                                "enName": "Share on social media",
+                                "name": "Share on social media",
+                                "internalId": "share-on-social-media",
+                                "id": "001b669cd2d3429d9976d29fa37fb6cb"
+                            }
+                        ],
+                        "creativeFields": [
+                            {
+                                "enName": "Photography",
+                                "name": "Photography",
+                                "internalId": "photography",
+                                "id": "f14741181f3c4b3b8b0218d8bbd24d3a"
+                            }
+                        ]
+                    },
+                    "title": "Create an image for social media",
+                    "platforms": [
+                        "cc-learn",
+                        "ccx",
+                        "help_learn",
+                        "helpx"
+                    ],
+                    "mediaTypes": [
+                        "project"
+                    ],
+                    "application": {
+                        "sapCode": "PHSP",
+                        "fiCode": "photoshop_cc"
+                    },
+                    "creativeFields": [
+                        "photography"
+                    ]
+                }
+            },
+            "showCard": {},
+            "tags": [
+                {
+                    "id": "compositing",
+                    "label": "compositing"
+                },
+                {
+                    "id": "layouts",
+                    "label": "layouts"
+                },
+                {
+                    "id": "social-media",
+                    "label": "social-media"
+                }
+            ],
+            "contentArea": {
+                "dateDetailText": {
+                    "startTime": "",
+                    "endTime": ""
+                },
+                "title": "Create an image for social media"
+            },
+            "styles": {
+                "typeOverride": "",
+                "backgroundImage": "https://helpx.adobe.com/content/dam/help/en/photoshop/how-to/add-text-pictures-v2_297x176.jpg"
+            },
+            "overlays": {
+                "banner": {
+                    "description": "",
+                    "fontColor": "",
+                    "backgroundColor": "",
+                    "icon": ""
+                },
+                "videoButton": {
+                    "url": ""
+                },
+                "logo": {
+                    "src": "",
+                    "alt": "",
+                    "backgroundColor": "",
+                    "borderColor": ""
+                },
+                "label": {
+                    "description": ""
+                }
+            },
+            "footer": [
+                {
+                    "divider": false,
+                    "left": [],
+                    "center": [],
+                    "right": [
+                        {
+                            "type": "button",
+                            "style": "primary",
+                            "text": "Read More",
+                            "href": "https://helpx.adobe.com/photoshop/how-to/add-text-pictures.html"
+                        }
+                    ]
+                }
+            ],
+            "cardDate": "2023-08-10T06:02:21.175Z"
+        },
+        {
+            "id": "photoshop/how-to/photoshop-for-beginners",
+            "score": 0.7507455945014954,
+            "dataType": "ututs",
+            "data": {
+                "aemId": "photoshop/how-to/photoshop-for-beginners",
+                "modifiedOn": "2023-08-10T06:24:04.580Z",
+                "surfaces": {
+                    "ids": {
+                        "helpJson": {
+                            "versions": [
+                                1
+                            ],
+                            "live": "0aedad2c-f6bf-3041-b766-e4a3390ddb39"
+                        }
+                    }
+                },
+                "tutorialUUID": "05ff23ce-0af1-3d44-88de-15a84517d1a3",
+                "locale": "en_US",
+                "createdOn": "2018-08-21T20:21:39.836Z",
+                "urls": {
+                    "lowUrl": "https://creativecloud.adobe.com/learn?action=open&aem_id=photoshop/how-to/photoshop-for-beginners",
+                    "helpx": "https://helpx.adobe.com/photoshop/how-to/photoshop-for-beginners.html",
+                    "helpxIframe": "https://helpx.adobe.com/photoshop/how-to/photoshop-for-beginners.cc-home.html",
+                    "low_url": "https://creativecloud.adobe.com/learn?action=open&aem_id=photoshop/how-to/photoshop-for-beginners"
+                },
+                "metadata": {
+                    "images": {
+                        "thumbnail": "https://helpx.adobe.com/content/dam/help/en/photoshop/how-to/photoshop-for-beginners_297x176.jpg",
+                        "hero": "https://helpx.adobe.com/content/dam/help/en/photoshop/how-to/photoshop-for-beginners_1800x1012.jpg"
+                    },
+                    "durationInSeconds": "360",
+                    "level": "beginner",
+                    "topics": [
+                        "background",
+                        "compositing",
+                        "replacing-backgrounds"
+                    ],
+                    "publishedOn": "2023-05-24T04:50:28.056Z",
+                    "taxonomy": {
+                        "tools": [
+                            {
+                                "enName": "Adjustments",
+                                "name": "Adjustments",
+                                "internalId": "adjustments",
+                                "id": "70e9bf38fc174e8faf055b915b82de19",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Color",
+                                "name": "Color",
+                                "internalId": "color",
+                                "id": "03106f4bbd894c5980f6cecd759be642",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "File > Export",
+                                "name": "File > Export",
+                                "internalId": "file-export",
+                                "id": "3a8b3472a1b34c1da530b6ccf88f796a",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "File > Export > Export As",
+                                "name": "File > Export > Export As",
+                                "internalId": "file-export-export-as",
+                                "id": "fbd0e1d1f2fc49c986c2478781056ab4",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "File > Export > Export Preferences",
+                                "name": "File > Export > Export Preferences",
+                                "internalId": "file-export-export-preferences",
+                                "id": "0d606a21878e49ff9dc11477b70671f0",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "File > Save",
+                                "name": "File > Save",
+                                "internalId": "file-save",
+                                "id": "2cdcd5679a4f41988bbb5e4d810b2d4c",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Info",
+                                "name": "Info",
+                                "internalId": "info",
+                                "id": "50409f750f784027a62fc76f2d074683",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Layer > Create Clipping Mask",
+                                "name": "Layer > Create Clipping Mask",
+                                "internalId": "layer-create-clipping-mask",
+                                "id": "99fa1c5cd89c4f759d09dcfe865e712b",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Layers",
+                                "name": "Layers",
+                                "internalId": "layers",
+                                "id": "7bf6af64c9374df388b8bce29e45d8af",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Libraries",
+                                "name": "Libraries",
+                                "internalId": "libraries",
+                                "id": "559c58627c724d358e3bbe1c040b5c64",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Move Tool",
+                                "name": "Move Tool",
+                                "internalId": "move-tool",
+                                "id": "944cf8e449d44ebc822cce0eadd97bf5",
+                                "toolType": "tool"
+                            },
+                            {
+                                "enName": "Paths",
+                                "name": "Paths",
+                                "internalId": "paths",
+                                "id": "1a50f719b6db418fa0319b9c8c915d58",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Preview",
+                                "name": "Preview",
+                                "internalId": "preview",
+                                "id": "74a235b2dd814563b4e35b168b83b1c9",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Properties",
+                                "name": "Properties",
+                                "internalId": "properties",
+                                "id": "d450517ad35d4aa397e0bc2838d0cda5",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Quick Selection Tool",
+                                "name": "Quick Selection Tool",
+                                "internalId": "quick-selection-tool",
+                                "id": "d34cdfa6db244a769a18ec2e4aefb44f",
+                                "toolType": "tool"
+                            },
+                            {
+                                "enName": "Select > Select and Mask",
+                                "name": "Select > Select and Mask",
+                                "internalId": "select-select-and-mask",
+                                "id": "a1ee10ed7e57475faa57ecb0b1513b32",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Select and Mask",
+                                "name": "Select and Mask",
+                                "internalId": "select-and-mask",
+                                "id": "43ddf385671d4db29f4dde56a5c80594",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Tools",
+                                "name": "Tools",
+                                "internalId": "tools",
+                                "id": "091e6e838bd4464385c0c41adfb0bc76",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Type Tool",
+                                "name": "Type Tool",
+                                "internalId": "type-tool",
+                                "id": "ca75be94d5ed4ca99ebbc47a1dc6dd4f",
+                                "toolType": "tool"
+                            },
+                            {
+                                "enName": "Window > Adjustments",
+                                "name": "Window > Adjustments",
+                                "internalId": "window-adjustments",
+                                "id": "3ca737536d3d4b09818e44ad152bae05",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Window > Layers",
+                                "name": "Window > Layers",
+                                "internalId": "window-layers",
+                                "id": "98f473888e5f4454958f6a871aeee758",
+                                "toolType": "menu"
+                            }
+                        ],
+                        "topics": [
+                            {
+                                "enName": "Background",
+                                "name": "Background",
+                                "internalId": "background",
+                                "id": "0c1f977660ae483aab0f4fdd8e3f08fd"
+                            },
+                            {
+                                "enName": "Compositing",
+                                "name": "Compositing",
+                                "internalId": "compositing",
+                                "id": "d1dc61ee99ef467b92ef8692ee0dcb84"
+                            },
+                            {
+                                "enName": "Replacing backgrounds",
+                                "name": "Replacing backgrounds",
+                                "internalId": "replacing-backgrounds",
+                                "id": "64a1f10a60814b1793bf805b2e419a89"
+                            }
+                        ],
+                        "tasks": [
+                            {
+                                "enName": "Add images",
+                                "name": "Add images",
+                                "internalId": "add-images",
+                                "id": "245663726ea3401786265731124f6485"
+                            },
+                            {
+                                "enName": "Edit in Photoshop",
+                                "name": "Edit in Photoshop",
+                                "internalId": "edit-in-photoshop",
+                                "id": "d01016c7c8094e1ba4eaee2ccd7e0b00"
+                            },
+                            {
+                                "enName": "Edit part of a photo",
+                                "name": "Edit part of a photo",
+                                "internalId": "edit-part-of-a-photo",
+                                "id": "cba63d3092d5471693cd6a5ddc79d277"
+                            },
+                            {
+                                "enName": "Export to Photoshop",
+                                "name": "Export to Photoshop",
+                                "internalId": "export-to-photoshop",
+                                "id": "bedc58c410e64c6dbd48dc9d4b3c9a20"
+                            },
+                            {
+                                "enName": "Open in Photoshop",
+                                "name": "Open in Photoshop",
+                                "internalId": "open-in-photoshop",
+                                "id": "77e8b2658c504a6baab6a08554e997fa"
+                            },
+                            {
+                                "enName": "Place image",
+                                "name": "Place image",
+                                "internalId": "place-image",
+                                "id": "2a56b1c516a7405c9ea6f73de6060859"
+                            }
+                        ],
+                        "creativeFields": [
+                            {
+                                "enName": "Graphic design",
+                                "name": "Graphic design",
+                                "internalId": "graphic-design",
+                                "id": "c42a4f725de6414facbd08326ec4cc7f"
+                            },
+                            {
+                                "enName": "Photography",
+                                "name": "Photography",
+                                "internalId": "photography",
+                                "id": "f14741181f3c4b3b8b0218d8bbd24d3a"
+                            }
+                        ]
+                    },
+                    "title": "Master these fundamental tools",
+                    "platforms": [
+                        "cc-learn",
+                        "ccx",
+                        "help_learn",
+                        "helpx"
+                    ],
+                    "mediaTypes": [
+                        "visualize"
+                    ],
+                    "application": {
+                        "sapCode": "PHSP",
+                        "fiCode": "photoshop_cc"
+                    },
+                    "creativeFields": [
+                        "graphic-design",
+                        "photography"
+                    ]
+                }
+            },
+            "showCard": {},
+            "tags": [
+                {
+                    "id": "background",
+                    "label": "background"
+                },
+                {
+                    "id": "compositing",
+                    "label": "compositing"
+                },
+                {
+                    "id": "replacing-backgrounds",
+                    "label": "replacing-backgrounds"
+                }
+            ],
+            "contentArea": {
+                "dateDetailText": {
+                    "startTime": "",
+                    "endTime": ""
+                },
+                "title": "Master these fundamental tools"
+            },
+            "styles": {
+                "typeOverride": "",
+                "backgroundImage": "https://helpx.adobe.com/content/dam/help/en/photoshop/how-to/photoshop-for-beginners_297x176.jpg"
+            },
+            "overlays": {
+                "banner": {
+                    "description": "",
+                    "fontColor": "",
+                    "backgroundColor": "",
+                    "icon": ""
+                },
+                "videoButton": {
+                    "url": ""
+                },
+                "logo": {
+                    "src": "",
+                    "alt": "",
+                    "backgroundColor": "",
+                    "borderColor": ""
+                },
+                "label": {
+                    "description": ""
+                }
+            },
+            "footer": [
+                {
+                    "divider": false,
+                    "left": [],
+                    "center": [],
+                    "right": [
+                        {
+                            "type": "button",
+                            "style": "primary",
+                            "text": "Read More",
+                            "href": "https://helpx.adobe.com/photoshop/how-to/photoshop-for-beginners.html"
+                        }
+                    ]
+                }
+            ],
+            "cardDate": "2023-08-10T06:24:04.580Z"
+        },
+        {
+            "id": "photoshop/using/replace-colors",
+            "score": 0.7497227191925049,
+            "dataType": "ututs",
+            "data": {
+                "aemId": "photoshop/using/replace-colors",
+                "modifiedOn": "2023-04-24T05:21:32.517Z",
+                "surfaces": {
+                    "ids": {
+                        "helpJson": {
+                            "versions": [
+                                1
+                            ],
+                            "live": "65e9f395-8aa5-35c7-b38a-d4c09a9228e4"
+                        }
+                    }
+                },
+                "tutorialUUID": "265a1331-9428-3053-9f8a-c56b974fe0eb",
+                "locale": "en_US",
+                "createdOn": "2021-08-17T03:57:18.730Z",
+                "urls": {
+                    "lowUrl": null,
+                    "helpx": "https://helpx.adobe.com/photoshop/using/replace-colors.html",
+                    "helpxIframe": "https://helpx.adobe.com/photoshop/using/replace-colors.cc-home.html"
+                },
+                "metadata": {
+                    "level": "any",
+                    "topics": [
+                        "colorize",
+                        "image_adjustments",
+                        "color"
+                    ],
+                    "publishedOn": "2023-04-23T19:28:52.602Z",
+                    "taxonomy": {
+                        "topics": [
+                            {
+                                "enName": "Colorize",
+                                "name": "Colorize",
+                                "internalId": "colorize",
+                                "id": "88d6520b6502425fa625f35dc1f4d4b2"
+                            }
+                        ],
+                        "tasks": [
+                            {
+                                "enName": "Change color",
+                                "name": "Change color",
+                                "internalId": "change-color",
+                                "id": "785ea207a5d34d9f9adbafcc930347b4"
+                            }
+                        ]
+                    },
+                    "title": "Replace object colors in 3 simple ways",
+                    "platforms": [
+                        "help_using"
+                    ],
+                    "mediaTypes": [],
+                    "application": {
+                        "sapCode": "PHSP",
+                        "fiCode": "photoshop_cc"
+                    },
+                    "creativeFields": []
+                }
+            },
+            "showCard": {},
+            "tags": [
+                {
+                    "id": "colorize",
+                    "label": "colorize"
+                },
+                {
+                    "id": "image_adjustments",
+                    "label": "image_adjustments"
+                },
+                {
+                    "id": "color",
+                    "label": "color"
+                }
+            ],
+            "contentArea": {
+                "dateDetailText": {
+                    "startTime": "",
+                    "endTime": ""
+                },
+                "title": "Replace object colors in 3 simple ways"
+            },
+            "styles": {
+                "typeOverride": ""
+            },
+            "overlays": {
+                "banner": {
+                    "description": "",
+                    "fontColor": "",
+                    "backgroundColor": "",
+                    "icon": ""
+                },
+                "videoButton": {
+                    "url": ""
+                },
+                "logo": {
+                    "src": "",
+                    "alt": "",
+                    "backgroundColor": "",
+                    "borderColor": ""
+                },
+                "label": {
+                    "description": ""
+                }
+            },
+            "footer": [
+                {
+                    "divider": false,
+                    "left": [],
+                    "center": [],
+                    "right": [
+                        {
+                            "type": "button",
+                            "style": "primary",
+                            "text": "Read More",
+                            "href": "https://helpx.adobe.com/photoshop/using/replace-colors.html"
+                        }
+                    ]
+                }
+            ],
+            "cardDate": "2023-04-24T05:21:32.517Z"
+        },
+        {
+            "id": "photoshop/how-to/graphic-design-basics",
+            "score": 0.7470863461494446,
+            "dataType": "ututs",
+            "data": {
+                "aemId": "photoshop/how-to/graphic-design-basics",
+                "modifiedOn": "2023-08-10T06:14:01.854Z",
+                "surfaces": {
+                    "ids": {
+                        "helpJson": {
+                            "versions": [
+                                1
+                            ],
+                            "live": "0fd22f67-d0fc-3f73-aa40-4cf6863d09bf"
+                        }
+                    }
+                },
+                "tutorialUUID": "0d739941-926a-3342-905a-0622c1884dc1",
+                "locale": "en_US",
+                "createdOn": "2018-08-21T20:21:39.869Z",
+                "urls": {
+                    "lowUrl": "https://creativecloud.adobe.com/learn?action=open&aem_id=photoshop/how-to/graphic-design-basics",
+                    "helpx": "https://helpx.adobe.com/photoshop/how-to/graphic-design-basics.html",
+                    "helpxIframe": "https://helpx.adobe.com/photoshop/how-to/graphic-design-basics.cc-home.html",
+                    "low_url": "https://creativecloud.adobe.com/learn?action=open&aem_id=photoshop/how-to/graphic-design-basics"
+                },
+                "metadata": {
+                    "images": {
+                        "thumbnail": "https://helpx.adobe.com/content/dam/help/en/photoshop/how-to/5407-graphic-design-basics_297x176.jpg",
+                        "hero": "https://helpx.adobe.com/content/dam/help/en/photoshop/how-to/5407-graphic-design-basics_1408x792.jpg"
+                    },
+                    "durationInSeconds": "1380",
+                    "level": "beginner",
+                    "topics": [
+                        "compositing",
+                        "creative-effects",
+                        "layers"
+                    ],
+                    "publishedOn": "2023-05-24T04:50:37.475Z",
+                    "taxonomy": {
+                        "tools": [
+                            {
+                                "enName": "File > New",
+                                "name": "File > New",
+                                "internalId": "file-new",
+                                "id": "255a6b5a15634247b190778f4bd97913",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "File > Print",
+                                "name": "File > Print",
+                                "internalId": "file-print",
+                                "id": "c6ee3abf8fbc486e80dfa907829fcfb7",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Layer > Matting",
+                                "name": "Layer > Matting",
+                                "internalId": "layer-matting",
+                                "id": "0572003253ff4c2b936351279b4cc421",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Layer > New",
+                                "name": "Layer > New",
+                                "internalId": "layer-new",
+                                "id": "2537c7256e514ef78b1b4a75219a23ba",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Layer > New > Layer",
+                                "name": "Layer > New > Layer",
+                                "internalId": "layer-new-layer",
+                                "id": "d79e500534084a8da471aed868686b14",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Layers",
+                                "name": "Layers",
+                                "internalId": "layers",
+                                "id": "7bf6af64c9374df388b8bce29e45d8af",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Layers > Layer Mask",
+                                "name": "Layers > Layer Mask",
+                                "internalId": "layers-layer-mask",
+                                "id": "b733e2c1602b402ba836725e7958cd34",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Layers > New Layer",
+                                "name": "Layers > New Layer",
+                                "internalId": "layers-new-layer",
+                                "id": "c6593c663936443aa94236d784542f28",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Select > All",
+                                "name": "Select > All",
+                                "internalId": "select-all",
+                                "id": "b2732704de4743b69788e50e7d68606f",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Select > Sky",
+                                "name": "Select > Sky",
+                                "internalId": "select-sky",
+                                "id": "407d87fd79dd438eba408f434da3be8e",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Shapes",
+                                "name": "Shapes",
+                                "internalId": "shapes",
+                                "id": "22e596f9dce749c8831c703435478710",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Type > Panels",
+                                "name": "Type > Panels",
+                                "internalId": "type-panels",
+                                "id": "1bd25b8ba60f4ea188e8e0076b62f60c",
+                                "toolType": "menu"
+                            }
+                        ],
+                        "topics": [
+                            {
+                                "enName": "Compositing",
+                                "name": "Compositing",
+                                "internalId": "compositing",
+                                "id": "d1dc61ee99ef467b92ef8692ee0dcb84"
+                            },
+                            {
+                                "enName": "Creative effects",
+                                "name": "Creative effects",
+                                "internalId": "creative-effects",
+                                "id": "96a0db0625324adfaaee16dde4533dac"
+                            },
+                            {
+                                "enName": "Layers",
+                                "name": "Layers",
+                                "internalId": "layers",
+                                "id": "0605b453f31c407fb6cb3132755c41ac"
+                            }
+                        ],
+                        "tasks": [
+                            {
+                                "enName": "Add design elements",
+                                "name": "Add design elements",
+                                "internalId": "add-design-elements",
+                                "id": "6071e6400f734ce885a343dcda1a377f"
+                            },
+                            {
+                                "enName": "Apply graphic styles",
+                                "name": "Apply graphic styles",
+                                "internalId": "apply-graphic-styles",
+                                "id": "48d1ee8e899c4390a3ccbdec9e34adfa"
+                            },
+                            {
+                                "enName": "Create layers",
+                                "name": "Create layers",
+                                "internalId": "create-layers",
+                                "id": "da21eace082b41969591de417219a204"
+                            },
+                            {
+                                "enName": "Create vector graphics",
+                                "name": "Create vector graphics",
+                                "internalId": "create-vector-graphics",
+                                "id": "6891efbc090f4b6cb870c9c7792de46c"
+                            },
+                            {
+                                "enName": "Illustration templates",
+                                "name": "Illustration templates",
+                                "internalId": "illustration-templates",
+                                "id": "c713f9a2e63a491eb187e684630e57b9"
+                            },
+                            {
+                                "enName": "Photoshop templates",
+                                "name": "Photoshop templates",
+                                "internalId": "photoshop-templates",
+                                "id": "fdb52dd69ada4bf694ffe2d259d99f81"
+                            }
+                        ],
+                        "creativeFields": [
+                            {
+                                "enName": "Graphic design",
+                                "name": "Graphic design",
+                                "internalId": "graphic-design",
+                                "id": "c42a4f725de6414facbd08326ec4cc7f"
+                            },
+                            {
+                                "enName": "Photography",
+                                "name": "Photography",
+                                "internalId": "photography",
+                                "id": "f14741181f3c4b3b8b0218d8bbd24d3a"
+                            }
+                        ]
+                    },
+                    "title": "Create your first design",
+                    "platforms": [
+                        "cc-learn",
+                        "ccx",
+                        "help_learn",
+                        "helpx"
+                    ],
+                    "mediaTypes": [
+                        "project"
+                    ],
+                    "application": {
+                        "sapCode": "PHSP",
+                        "fiCode": "photoshop_cc"
+                    },
+                    "creativeFields": [
+                        "graphic-design",
+                        "photography"
+                    ]
+                }
+            },
+            "showCard": {},
+            "tags": [
+                {
+                    "id": "compositing",
+                    "label": "compositing"
+                },
+                {
+                    "id": "creative-effects",
+                    "label": "creative-effects"
+                },
+                {
+                    "id": "layers",
+                    "label": "layers"
+                }
+            ],
+            "contentArea": {
+                "dateDetailText": {
+                    "startTime": "",
+                    "endTime": ""
+                },
+                "title": "Create your first design"
+            },
+            "styles": {
+                "typeOverride": "",
+                "backgroundImage": "https://helpx.adobe.com/content/dam/help/en/photoshop/how-to/5407-graphic-design-basics_297x176.jpg"
+            },
+            "overlays": {
+                "banner": {
+                    "description": "",
+                    "fontColor": "",
+                    "backgroundColor": "",
+                    "icon": ""
+                },
+                "videoButton": {
+                    "url": ""
+                },
+                "logo": {
+                    "src": "",
+                    "alt": "",
+                    "backgroundColor": "",
+                    "borderColor": ""
+                },
+                "label": {
+                    "description": ""
+                }
+            },
+            "footer": [
+                {
+                    "divider": false,
+                    "left": [],
+                    "center": [],
+                    "right": [
+                        {
+                            "type": "button",
+                            "style": "primary",
+                            "text": "Read More",
+                            "href": "https://helpx.adobe.com/photoshop/how-to/graphic-design-basics.html"
+                        }
+                    ]
+                }
+            ],
+            "cardDate": "2023-08-10T06:14:01.854Z"
+        },
+        {
+            "id": "photoshop/using/mix-colors",
+            "score": 0.7433259189128876,
+            "dataType": "ututs",
+            "data": {
+                "aemId": "photoshop/using/mix-colors",
+                "modifiedOn": "2023-05-24T07:30:35.167Z",
+                "surfaces": {
+                    "ids": {
+                        "helpJson": {
+                            "versions": [
+                                1
+                            ],
+                            "live": "936b3d00-139e-3861-a5fe-073a9d023f03"
+                        }
+                    }
+                },
+                "tutorialUUID": "0b4fe57a-d731-3211-883e-b40315be4c72",
+                "locale": "en_US",
+                "createdOn": "2022-11-16T06:28:47.568Z",
+                "urls": {
+                    "lowUrl": null,
+                    "helpx": "https://helpx.adobe.com/photoshop/using/mix-colors.html",
+                    "helpxIframe": "https://helpx.adobe.com/photoshop/using/mix-colors.cc-home.html"
+                },
+                "metadata": {
+                    "level": "any",
+                    "topics": [
+                        "adjustments",
+                        "colorize",
+                        "enhancing-color",
+                        "image_adjustments",
+                        "color"
+                    ],
+                    "publishedOn": "2023-05-24T04:45:52.154Z",
+                    "taxonomy": {
+                        "tools": [
+                            {
+                                "enName": "Adjustments",
+                                "name": "Adjustments",
+                                "internalId": "adjustments",
+                                "id": "70e9bf38fc174e8faf055b915b82de19",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Adjustments > Selective Color",
+                                "name": "Adjustments > Selective Color",
+                                "internalId": "adjustments-selective-color",
+                                "id": "698aec762aea42e1bc51b28a296fa2da",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Color",
+                                "name": "Color",
+                                "internalId": "color",
+                                "id": "03106f4bbd894c5980f6cecd759be642",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Image > Adjustments",
+                                "name": "Image > Adjustments",
+                                "internalId": "image-adjustments",
+                                "id": "7d00cf5ec245498698cec331a1149c3b",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Image > Adjustments > Selective Color",
+                                "name": "Image > Adjustments > Selective Color",
+                                "internalId": "image-adjustments-selective-color",
+                                "id": "aff3bf36bc2c4fbb889cf2af95e6d1a1",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Info",
+                                "name": "Info",
+                                "internalId": "info",
+                                "id": "50409f750f784027a62fc76f2d074683",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Layer > New",
+                                "name": "Layer > New",
+                                "internalId": "layer-new",
+                                "id": "2537c7256e514ef78b1b4a75219a23ba",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Layer > New Adjustment Layer",
+                                "name": "Layer > New Adjustment Layer",
+                                "internalId": "layer-new-adjustment-layer",
+                                "id": "6226662a954540278be61d5ca13dda0a",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Layer > New Adjustment Layer > Selective Color",
+                                "name": "Layer > New Adjustment Layer > Selective Color",
+                                "internalId": "layer-new-adjustment-layer-selective-color",
+                                "id": "0088e30c35f64efdba0fc15074d1c693",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Layers",
+                                "name": "Layers",
+                                "internalId": "layers",
+                                "id": "7bf6af64c9374df388b8bce29e45d8af",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Options",
+                                "name": "Options",
+                                "internalId": "options",
+                                "id": "868ba48739fc4a869b26afb690272169",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Properties",
+                                "name": "Properties",
+                                "internalId": "properties",
+                                "id": "d450517ad35d4aa397e0bc2838d0cda5",
+                                "toolType": "panel"
+                            }
+                        ],
+                        "topics": [
+                            {
+                                "enName": "Adjustments",
+                                "name": "Adjustments",
+                                "internalId": "adjustments",
+                                "id": "8ab1e36558ab4a628cbea11845c30f7a"
+                            },
+                            {
+                                "enName": "Colorize",
+                                "name": "Colorize",
+                                "internalId": "colorize",
+                                "id": "88d6520b6502425fa625f35dc1f4d4b2"
+                            },
+                            {
+                                "enName": "Enhancing color",
+                                "name": "Enhancing color",
+                                "internalId": "enhancing-color",
+                                "id": "5787885378d549d8a9049ba42a7702f3"
+                            }
+                        ],
+                        "tasks": [
+                            {
+                                "enName": "Adjust color balance",
+                                "name": "Adjust color balance",
+                                "internalId": "adjust-color-balance",
+                                "id": "457028a2229f42aab1532a10b5e2927a"
+                            },
+                            {
+                                "enName": "Color adjustments",
+                                "name": "Color adjustments",
+                                "internalId": "color-adjustments",
+                                "id": "7694d52b6567424cbcfe27ed96f3c4d2"
+                            },
+                            {
+                                "enName": "Color correction",
+                                "name": "Color correction",
+                                "internalId": "color-correction",
+                                "id": "016fc36497254f0eb885772687bea6de"
+                            },
+                            {
+                                "enName": "Edit color",
+                                "name": "Edit color",
+                                "internalId": "edit-color",
+                                "id": "9c80b0aa68c44db8b74681b683c6fb0b"
+                            },
+                            {
+                                "enName": "Fix discoloration",
+                                "name": "Fix discoloration",
+                                "internalId": "fix-discoloration",
+                                "id": "97780ee08eba458fab9a12211e088095"
+                            },
+                            {
+                                "enName": "Manage color",
+                                "name": "Manage color",
+                                "internalId": "manage-color",
+                                "id": "e59416068e9e4d008591c81d638f23fe"
+                            }
+                        ],
+                        "creativeFields": [
+                            {
+                                "enName": "Graphic design",
+                                "name": "Graphic design",
+                                "internalId": "graphic-design",
+                                "id": "c42a4f725de6414facbd08326ec4cc7f"
+                            },
+                            {
+                                "enName": "Photography",
+                                "name": "Photography",
+                                "internalId": "photography",
+                                "id": "f14741181f3c4b3b8b0218d8bbd24d3a"
+                            }
+                        ]
+                    },
+                    "title": "Make selective color adjustments",
+                    "platforms": [
+                        "help_using"
+                    ],
+                    "mediaTypes": [],
+                    "application": {
+                        "sapCode": "PHSP",
+                        "fiCode": "photoshop_cc"
+                    },
+                    "creativeFields": [
+                        "graphic-design",
+                        "photography"
+                    ]
+                }
+            },
+            "showCard": {},
+            "tags": [
+                {
+                    "id": "adjustments",
+                    "label": "adjustments"
+                },
+                {
+                    "id": "colorize",
+                    "label": "colorize"
+                },
+                {
+                    "id": "enhancing-color",
+                    "label": "enhancing-color"
+                },
+                {
+                    "id": "image_adjustments",
+                    "label": "image_adjustments"
+                },
+                {
+                    "id": "color",
+                    "label": "color"
+                }
+            ],
+            "contentArea": {
+                "dateDetailText": {
+                    "startTime": "",
+                    "endTime": ""
+                },
+                "title": "Make selective color adjustments"
+            },
+            "styles": {
+                "typeOverride": ""
+            },
+            "overlays": {
+                "banner": {
+                    "description": "",
+                    "fontColor": "",
+                    "backgroundColor": "",
+                    "icon": ""
+                },
+                "videoButton": {
+                    "url": ""
+                },
+                "logo": {
+                    "src": "",
+                    "alt": "",
+                    "backgroundColor": "",
+                    "borderColor": ""
+                },
+                "label": {
+                    "description": ""
+                }
+            },
+            "footer": [
+                {
+                    "divider": false,
+                    "left": [],
+                    "center": [],
+                    "right": [
+                        {
+                            "type": "button",
+                            "style": "primary",
+                            "text": "Read More",
+                            "href": "https://helpx.adobe.com/photoshop/using/mix-colors.html"
+                        }
+                    ]
+                }
+            ],
+            "cardDate": "2023-05-24T07:30:35.167Z"
+        },
+        {
+            "id": "photoshop/how-to/in-app/change-the-color-of-objects",
+            "score": 0.7401965260505676,
+            "dataType": "ututs",
+            "data": {
+                "aemId": "photoshop/how-to/in-app/change-the-color-of-objects",
+                "modifiedOn": "2022-04-26T15:40:25.881Z",
+                "surfaces": {
+                    "inAppPanels": {
+                        "versions": [
+                            2
+                        ],
+                        "live": "eb878bbe-9576-335b-8805-c3b38a6a11c2"
+                    },
+                    "ids": {
+                        "inAppPanels": {
+                            "versions": [
+                                2
+                            ],
+                            "live": "eb878bbe-9576-335b-8805-c3b38a6a11c2"
+                        }
+                    }
+                },
+                "tutorialUUID": "6dc39d1b-ddfa-3d5c-ad99-32b84905b120",
+                "locale": "en_US",
+                "createdOn": "2020-09-11T18:24:30.751Z",
+                "urls": {
+                    "lowUrl": "https://creativecloud.adobe.com/learn?action=open&aem_id=photoshop/how-to/in-app/change-the-color-of-objects",
+                    "helpx": null,
+                    "helpxIframe": null,
+                    "low_url": "https://creativecloud.adobe.com/learn?action=open&aem_id=photoshop/how-to/in-app/change-the-color-of-objects"
+                },
+                "metadata": {
+                    "images": {
+                        "thumbnail": "https://cc-cdn.adobe.com/graceland/change-the-color-of-objects/shirtsthumbnail.jpg",
+                        "hero": "https://cc-cdn.adobe.com/graceland/change-the-color-of-objects/herov3.jpg"
+                    },
+                    "durationInSeconds": "70",
+                    "level": "intermediate",
+                    "topics": [
+                        "Color",
+                        "Selections"
+                    ],
+                    "taxonomy": {
+                        "tools": [
+                            {
+                                "enName": "Layer > New Fill Layer",
+                                "name": "Layer > New Fill Layer",
+                                "archived": false,
+                                "internalId": "layer-new-fill-layer",
+                                "id": "6d00a205abdc4a3e90e2836635408038",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Layer > New Fill Layer > Solid Color",
+                                "name": "Layer > New Fill Layer > Solid Color",
+                                "archived": false,
+                                "internalId": "layer-new-fill-layer-solid-color",
+                                "id": "768c9e58ce1c4c5983e143d50d6ffb7e",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Quick Selection Tool",
+                                "name": "Quick Selection Tool",
+                                "archived": false,
+                                "internalId": "quick-selection-tool",
+                                "id": "d34cdfa6db244a769a18ec2e4aefb44f",
+                                "toolType": "tool"
+                            },
+                            {
+                                "enName": "Color Picker",
+                                "name": "Color Picker",
+                                "archived": false,
+                                "internalId": "color-picker",
+                                "id": "a6260819f7b247adab14326d8b2a981e",
+                                "toolType": "panel"
+                            }
+                        ],
+                        "topics": [
+                            {
+                                "enName": "Color",
+                                "name": "Color",
+                                "archived": false,
+                                "internalId": "color",
+                                "id": "0b866e9c90384a2a8a4feefa187d13f4",
+                                "toolType": ""
+                            },
+                            {
+                                "enName": "Selections",
+                                "name": "Selections",
+                                "archived": false,
+                                "internalId": "selections",
+                                "id": "f22fa5991a7345c0a639f887f6ae6cac",
+                                "toolType": ""
+                            }
+                        ],
+                        "tasks": [
+                            {
+                                "enName": "Change color",
+                                "name": "Change color",
+                                "archived": false,
+                                "internalId": "change-color",
+                                "id": "785ea207a5d34d9f9adbafcc930347b4",
+                                "toolType": ""
+                            },
+                            {
+                                "enName": "Fill color",
+                                "name": "Fill color",
+                                "archived": false,
+                                "internalId": "fill-color",
+                                "id": "0f381e8d653441ff9fdbc46569324813",
+                                "toolType": ""
+                            },
+                            {
+                                "enName": "Make selection",
+                                "name": "Make selection",
+                                "archived": false,
+                                "internalId": "make-selection",
+                                "id": "7b638e0b29b5410cbe44e4138c85d670",
+                                "toolType": ""
+                            },
+                            {
+                                "enName": "Change blend modes",
+                                "name": "Change blend modes",
+                                "archived": false,
+                                "internalId": "change-blend-modes",
+                                "id": "f65dc7acd12145bc95452e6a81f09110",
+                                "toolType": ""
+                            }
+                        ],
+                        "creativeFields": [
+                            {
+                                "enName": "Photography",
+                                "name": "Photography",
+                                "archived": false,
+                                "internalId": "photography",
+                                "id": "f14741181f3c4b3b8b0218d8bbd24d3a",
+                                "toolType": ""
+                            },
+                            {
+                                "enName": "Graphic design",
+                                "name": "Graphic design",
+                                "archived": false,
+                                "internalId": "graphic-design",
+                                "id": "c42a4f725de6414facbd08326ec4cc7f",
+                                "toolType": ""
+                            }
+                        ]
+                    },
+                    "title": "Change the color of an object",
+                    "platforms": [
+                        "in-app"
+                    ],
+                    "mediaTypes": [
+                        "HandsOn"
+                    ],
+                    "application": {
+                        "sapCode": "PHSP",
+                        "fiCode": "photoshop_cc"
+                    },
+                    "creativeFields": [
+                        "photography",
+                        "graphic-design"
+                    ]
+                }
+            },
+            "showCard": {},
+            "tags": [
+                {
+                    "id": "Color",
+                    "label": "Color"
+                },
+                {
+                    "id": "Selections",
+                    "label": "Selections"
+                }
+            ],
+            "contentArea": {
+                "dateDetailText": {
+                    "startTime": "",
+                    "endTime": ""
+                },
+                "title": "Change the color of an object"
+            },
+            "styles": {
+                "typeOverride": "",
+                "backgroundImage": "https://cc-cdn.adobe.com/graceland/change-the-color-of-objects/shirtsthumbnail.jpg"
+            },
+            "overlays": {
+                "banner": {
+                    "description": "",
+                    "fontColor": "",
+                    "backgroundColor": "",
+                    "icon": ""
+                },
+                "videoButton": {
+                    "url": ""
+                },
+                "logo": {
+                    "src": "",
+                    "alt": "",
+                    "backgroundColor": "",
+                    "borderColor": ""
+                },
+                "label": {
+                    "description": ""
+                }
+            },
+            "footer": [
+                {
+                    "divider": false,
+                    "left": [],
+                    "center": [],
+                    "right": [
+                        {
+                            "type": "button",
+                            "style": "primary",
+                            "text": "Read More",
+                            "href": null
+                        }
+                    ]
+                }
+            ],
+            "cardDate": "2022-04-26T15:40:25.881Z"
+        },
+        {
+            "id": "photoshop/how-to/in-app/introduction-to-selections",
+            "score": 0.7383921146392822,
+            "dataType": "ututs",
+            "data": {
+                "aemId": "photoshop/how-to/in-app/introduction-to-selections",
+                "modifiedOn": "2023-08-10T06:15:47.087Z",
+                "surfaces": {
+                    "inAppPanels": {
+                        "versions": [
+                            2
+                        ],
+                        "live": "0c6bd6d5-1b6c-3247-bda1-119b2a136b7f"
+                    },
+                    "ids": {
+                        "inAppPanels": {
+                            "versions": [
+                                2
+                            ],
+                            "live": "0c6bd6d5-1b6c-3247-bda1-119b2a136b7f"
+                        },
+                        "helpHandson": {
+                            "versions": [
+                                1
+                            ],
+                            "live": "a4bd9129-de05-308d-9394-2bfa589fd148"
+                        }
+                    }
+                },
+                "tutorialUUID": "3e3f801c-fe67-33bd-87fd-9d1bc738563f",
+                "locale": "en_US",
+                "createdOn": "2022-04-26T15:51:24.466Z",
+                "urls": {
+                    "lowUrl": "https://creativecloud.adobe.com/learn?action=open&aem_id=photoshop/how-to/in-app/introduction-to-selections",
+                    "helpx": null,
+                    "helpxIframe": null,
+                    "low_url": "https://creativecloud.adobe.com/learn?action=open&aem_id=photoshop/how-to/in-app/introduction-to-selections"
+                },
+                "metadata": {
+                    "images": {
+                        "thumbnail": "https://cc-cdn.adobe.com/graceland/introduction-to-selections/selectionstutorialthumbnail.jpg",
+                        "hero": "https://cc-cdn.adobe.com/graceland/introduction-to-selections/selectionstutorialhero.jpg"
+                    },
+                    "durationInSeconds": "290",
+                    "level": "beginner",
+                    "topics": [
+                        "Selections",
+                        "Adjustment layer",
+                        "Adjustments",
+                        "Layers",
+                        "Get started"
+                    ],
+                    "taxonomy": {
+                        "tools": [
+                            {
+                                "enName": "Rectangular Marquee Tool",
+                                "name": "Rectangular Marquee Tool",
+                                "archived": false,
+                                "internalId": "rectangular-marquee-tool",
+                                "id": "b642cd143b5147cfb7efcb321718474d",
+                                "toolType": "tool"
+                            },
+                            {
+                                "enName": "Lasso Tool",
+                                "name": "Lasso Tool",
+                                "archived": false,
+                                "internalId": "lasso-tool",
+                                "id": "3e254c85bc2e4dd2b884580b87009427",
+                                "toolType": "tool"
+                            },
+                            {
+                                "enName": "Eyedropper Tool",
+                                "name": "Eyedropper Tool",
+                                "archived": false,
+                                "internalId": "eyedropper-tool",
+                                "id": "7ab42f94730d4460971d8ab7e8ec87ec",
+                                "toolType": "tool"
+                            },
+                            {
+                                "enName": "Object Selection Tool",
+                                "name": "Object Selection Tool",
+                                "archived": false,
+                                "internalId": "object-selection-tool",
+                                "id": "12c387aed0574660af6910da51ffeee4",
+                                "toolType": "tool"
+                            },
+                            {
+                                "enName": "Object Selection Options Bar",
+                                "name": "Object Selection Options Bar",
+                                "archived": false,
+                                "internalId": "object-selection-options-bar",
+                                "id": "95983a8bef4f4f07b0ef6b0247e6e7b9",
+                                "toolType": "tool"
+                            },
+                            {
+                                "enName": "Edit > Fill",
+                                "name": "Edit > Fill",
+                                "archived": false,
+                                "internalId": "edit-fill",
+                                "id": "2c6fd121adfb417281af3f121b02e907",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Select > Deselect",
+                                "name": "Select > Deselect",
+                                "archived": false,
+                                "internalId": "select-deselect",
+                                "id": "9c2dc46074b04b19a254e0da460eb4f7",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Select > Subject",
+                                "name": "Select > Subject",
+                                "archived": false,
+                                "internalId": "select-subject",
+                                "id": "dd13765145d04dd98ee1cf1ccf4c95b4",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Layers",
+                                "name": "Layers",
+                                "archived": false,
+                                "internalId": "layers",
+                                "id": "7bf6af64c9374df388b8bce29e45d8af",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Layer > New Adjustment Layer > BrightnessContrast",
+                                "name": "Layer > New Adjustment Layer > BrightnessContrast",
+                                "archived": false,
+                                "internalId": "layer-new-adjustment-layer-brightnesscontrast",
+                                "id": "34640c7049ee45ed9f6c5711a665fa6c",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Layer > New Adjustment Layer > HueSaturation",
+                                "name": "Layer > New Adjustment Layer > HueSaturation",
+                                "archived": false,
+                                "internalId": "layer-new-adjustment-layer-huesaturation",
+                                "id": "772a3b026ddf403e978c1c934298a89d",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Layer > New Adjustment Layer > Color Balance",
+                                "name": "Layer > New Adjustment Layer > Color Balance",
+                                "archived": false,
+                                "internalId": "layer-new-adjustment-layer-color-balance",
+                                "id": "dbe98db9e7da44a7ac9faa1fccef9444",
+                                "toolType": "menu"
+                            }
+                        ],
+                        "topics": [
+                            {
+                                "enName": "Selections",
+                                "name": "Selections",
+                                "archived": false,
+                                "internalId": "selections",
+                                "id": "f22fa5991a7345c0a639f887f6ae6cac",
+                                "toolType": ""
+                            },
+                            {
+                                "enName": "Adjustment layer",
+                                "name": "Adjustment layer",
+                                "archived": false,
+                                "internalId": "adjustment-layer",
+                                "id": "bbd60fc356f44fffbfadab25190dca28",
+                                "toolType": ""
+                            },
+                            {
+                                "enName": "Adjustments",
+                                "name": "Adjustments",
+                                "archived": false,
+                                "internalId": "adjustments",
+                                "id": "8ab1e36558ab4a628cbea11845c30f7a",
+                                "toolType": ""
+                            },
+                            {
+                                "enName": "Layers",
+                                "name": "Layers",
+                                "archived": false,
+                                "internalId": "layers",
+                                "id": "0605b453f31c407fb6cb3132755c41ac",
+                                "toolType": ""
+                            },
+                            {
+                                "enName": "Get started",
+                                "name": "Get started",
+                                "archived": false,
+                                "internalId": "get-started",
+                                "id": "d02c57c7e5bf44719d9cbafcd45bde37",
+                                "toolType": ""
+                            }
+                        ],
+                        "tasks": [
+                            {
+                                "enName": "Sample color from image",
+                                "name": "Sample color from image",
+                                "archived": false,
+                                "internalId": "sample-color-from-image",
+                                "id": "229572d4653c4c4197384912dfd9a79c",
+                                "toolType": ""
+                            },
+                            {
+                                "enName": "Fill layer with color",
+                                "name": "Fill layer with color",
+                                "archived": false,
+                                "internalId": "fill-layer-with-color",
+                                "id": "b4654865b6b94067b23c613008bdfd92",
+                                "toolType": ""
+                            },
+                            {
+                                "enName": "Select layer",
+                                "name": "Select layer",
+                                "archived": false,
+                                "internalId": "select-layer",
+                                "id": "50c7f9d9d73943e3875a7f1ea7a6041e",
+                                "toolType": ""
+                            },
+                            {
+                                "enName": "Use selection with layer mask",
+                                "name": "Use selection with layer mask",
+                                "archived": false,
+                                "internalId": "use-selection-with-layer-mask",
+                                "id": "50a72ca28468462dbfbef764989ed84d",
+                                "toolType": ""
+                            },
+                            {
+                                "enName": "Refine selection",
+                                "name": "Refine selection",
+                                "archived": false,
+                                "internalId": "refine-selection",
+                                "id": "7c25d025c4044b798f6b7737c8638e86",
+                                "toolType": ""
+                            },
+                            {
+                                "enName": "Adjust brightness",
+                                "name": "Adjust brightness",
+                                "archived": false,
+                                "internalId": "adjust-brightness",
+                                "id": "f2dc629e02464e4f926f69f3b4b6d032",
+                                "toolType": ""
+                            },
+                            {
+                                "enName": "Adjust hue",
+                                "name": "Adjust hue",
+                                "archived": false,
+                                "internalId": "adjust-hue",
+                                "id": "5256568c7f834139b35804843b257f29",
+                                "toolType": ""
+                            },
+                            {
+                                "enName": "Make selection",
+                                "name": "Make selection",
+                                "archived": false,
+                                "internalId": "make-selection",
+                                "id": "7b638e0b29b5410cbe44e4138c85d670",
+                                "toolType": ""
+                            },
+                            {
+                                "enName": "Make local adjustments",
+                                "name": "Make local adjustments",
+                                "archived": false,
+                                "internalId": "make-local-adjustments",
+                                "id": "f8a441e6613e4f638aa152270d2da956",
+                                "toolType": ""
+                            }
+                        ],
+                        "creativeFields": [
+                            {
+                                "enName": "Graphic design",
+                                "name": "Graphic design",
+                                "archived": false,
+                                "internalId": "graphic-design",
+                                "id": "c42a4f725de6414facbd08326ec4cc7f",
+                                "toolType": ""
+                            },
+                            {
+                                "enName": "Photography",
+                                "name": "Photography",
+                                "archived": false,
+                                "internalId": "photography",
+                                "id": "f14741181f3c4b3b8b0218d8bbd24d3a",
+                                "toolType": ""
+                            },
+                            {
+                                "enName": "Painting & illustration",
+                                "name": "Painting & illustration",
+                                "archived": false,
+                                "internalId": "painting-illustration",
+                                "id": "2125ef2fee804e1ba65a4197d2600eef",
+                                "toolType": ""
+                            }
+                        ]
+                    },
+                    "title": "Get to know selections",
+                    "platforms": [
+                        "in-app"
+                    ],
+                    "mediaTypes": [
+                        "HandsOn"
+                    ],
+                    "application": {
+                        "sapCode": "PHSP",
+                        "fiCode": "photoshop_cc"
+                    },
+                    "creativeFields": [
+                        "graphic-design",
+                        "photography",
+                        "painting-illustration"
+                    ]
+                }
+            },
+            "showCard": {},
+            "tags": [
+                {
+                    "id": "Selections",
+                    "label": "Selections"
+                },
+                {
+                    "id": "Adjustment layer",
+                    "label": "Adjustment layer"
+                },
+                {
+                    "id": "Adjustments",
+                    "label": "Adjustments"
+                },
+                {
+                    "id": "Layers",
+                    "label": "Layers"
+                },
+                {
+                    "id": "Get started",
+                    "label": "Get started"
+                }
+            ],
+            "contentArea": {
+                "dateDetailText": {
+                    "startTime": "",
+                    "endTime": ""
+                },
+                "title": "Get to know selections"
+            },
+            "styles": {
+                "typeOverride": "",
+                "backgroundImage": "https://cc-cdn.adobe.com/graceland/introduction-to-selections/selectionstutorialthumbnail.jpg"
+            },
+            "overlays": {
+                "banner": {
+                    "description": "",
+                    "fontColor": "",
+                    "backgroundColor": "",
+                    "icon": ""
+                },
+                "videoButton": {
+                    "url": ""
+                },
+                "logo": {
+                    "src": "",
+                    "alt": "",
+                    "backgroundColor": "",
+                    "borderColor": ""
+                },
+                "label": {
+                    "description": ""
+                }
+            },
+            "footer": [
+                {
+                    "divider": false,
+                    "left": [],
+                    "center": [],
+                    "right": [
+                        {
+                            "type": "button",
+                            "style": "primary",
+                            "text": "Read More",
+                            "href": null
+                        }
+                    ]
+                }
+            ],
+            "cardDate": "2023-08-10T06:15:47.087Z"
+        },
+        {
+            "id": "photoshop/using/colorize-skate-ps-brand",
+            "score": 0.7346107065677643,
+            "dataType": "ututs",
+            "data": {
+                "aemId": "photoshop/using/colorize-skate-ps-brand",
+                "modifiedOn": "2023-05-24T07:15:25.007Z",
+                "surfaces": {
+                    "ids": {
+                        "helpJson": {
+                            "versions": [
+                                1
+                            ],
+                            "live": "3783806a-6cf5-3fef-948d-3c32efa951c1"
+                        }
+                    }
+                },
+                "tutorialUUID": "0efe5423-5004-3d67-9828-8a9715d66052",
+                "locale": "en_US",
+                "createdOn": "2022-08-31T19:47:01.389Z",
+                "urls": {
+                    "lowUrl": null,
+                    "helpx": "https://helpx.adobe.com/photoshop/using/colorize-skate-ps-brand.html",
+                    "helpxIframe": "https://helpx.adobe.com/photoshop/using/colorize-skate-ps-brand.cc-home.html"
+                },
+                "metadata": {
+                    "level": "any",
+                    "topics": [
+                        "color",
+                        "colorize",
+                        "enhancing-color"
+                    ],
+                    "publishedOn": "2023-05-24T04:46:16.288Z",
+                    "taxonomy": {
+                        "tools": [
+                            {
+                                "enName": "Adjustments",
+                                "name": "Adjustments",
+                                "internalId": "adjustments",
+                                "id": "70e9bf38fc174e8faf055b915b82de19",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Brush Tool",
+                                "name": "Brush Tool",
+                                "internalId": "brush-tool",
+                                "id": "04d82e4abe2c4b05bb1a6ceebdd32e1e",
+                                "toolType": "tool"
+                            },
+                            {
+                                "enName": "Brushes",
+                                "name": "Brushes",
+                                "internalId": "brushes",
+                                "id": "f156f45899964cac8259b9c5948a862c",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Color",
+                                "name": "Color",
+                                "internalId": "color",
+                                "id": "03106f4bbd894c5980f6cecd759be642",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Color Picker",
+                                "name": "Color Picker",
+                                "internalId": "color-picker",
+                                "id": "a6260819f7b247adab14326d8b2a981e",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "File > Export",
+                                "name": "File > Export",
+                                "internalId": "file-export",
+                                "id": "3a8b3472a1b34c1da530b6ccf88f796a",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "File > Export > Export As",
+                                "name": "File > Export > Export As",
+                                "internalId": "file-export-export-as",
+                                "id": "fbd0e1d1f2fc49c986c2478781056ab4",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Filter > Neural Filters",
+                                "name": "Filter > Neural Filters",
+                                "internalId": "filter-neural-filters",
+                                "id": "762cfe68bea4485183a4feb9bf719ca1",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Layers",
+                                "name": "Layers",
+                                "internalId": "layers",
+                                "id": "7bf6af64c9374df388b8bce29e45d8af",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Neural Filters",
+                                "name": "Neural Filters",
+                                "internalId": "neural-filters-tool",
+                                "id": "f062b8eabe694c119d7faa17eabaa3ba",
+                                "toolType": "tool"
+                            },
+                            {
+                                "enName": "Notes",
+                                "name": "Notes",
+                                "internalId": "notes",
+                                "id": "ae915efa5f7c4533aee167b8af6de04d",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Options",
+                                "name": "Options",
+                                "internalId": "options",
+                                "id": "868ba48739fc4a869b26afb690272169",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Preview",
+                                "name": "Preview",
+                                "internalId": "preview",
+                                "id": "74a235b2dd814563b4e35b168b83b1c9",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Tools",
+                                "name": "Tools",
+                                "internalId": "tools",
+                                "id": "091e6e838bd4464385c0c41adfb0bc76",
+                                "toolType": "panel"
+                            }
+                        ],
+                        "topics": [
+                            {
+                                "enName": "Color",
+                                "name": "Color",
+                                "internalId": "color",
+                                "id": "0b866e9c90384a2a8a4feefa187d13f4"
+                            },
+                            {
+                                "enName": "Colorize",
+                                "name": "Colorize",
+                                "internalId": "colorize",
+                                "id": "88d6520b6502425fa625f35dc1f4d4b2"
+                            },
+                            {
+                                "enName": "Enhancing color",
+                                "name": "Enhancing color",
+                                "internalId": "enhancing-color",
+                                "id": "5787885378d549d8a9049ba42a7702f3"
+                            }
+                        ],
+                        "tasks": [
+                            {
+                                "enName": "Adjust white balance",
+                                "name": "Adjust white balance",
+                                "internalId": "adjust-white-balance",
+                                "id": "d42ac964b5a24ecda62235df86c0055c"
+                            },
+                            {
+                                "enName": "Change color",
+                                "name": "Change color",
+                                "internalId": "change-color",
+                                "id": "785ea207a5d34d9f9adbafcc930347b4"
+                            },
+                            {
+                                "enName": "Color adjustments",
+                                "name": "Color adjustments",
+                                "internalId": "color-adjustments",
+                                "id": "7694d52b6567424cbcfe27ed96f3c4d2"
+                            },
+                            {
+                                "enName": "Color correction",
+                                "name": "Color correction",
+                                "internalId": "color-correction",
+                                "id": "016fc36497254f0eb885772687bea6de"
+                            },
+                            {
+                                "enName": "Colorize photo",
+                                "name": "Colorize photo",
+                                "internalId": "colorize-photo",
+                                "id": "cb36f37653b0423aaeaf91c612bb1341"
+                            },
+                            {
+                                "enName": "Edit color",
+                                "name": "Edit color",
+                                "internalId": "edit-color",
+                                "id": "9c80b0aa68c44db8b74681b683c6fb0b"
+                            }
+                        ],
+                        "creativeFields": [
+                            {
+                                "enName": "Photography",
+                                "name": "Photography",
+                                "internalId": "photography",
+                                "id": "f14741181f3c4b3b8b0218d8bbd24d3a"
+                            }
+                        ]
+                    },
+                    "title": "Colorize Photos",
+                    "platforms": [
+                        "help_using"
+                    ],
+                    "mediaTypes": [],
+                    "application": {
+                        "sapCode": "PHSP",
+                        "fiCode": "photoshop_cc"
+                    },
+                    "creativeFields": [
+                        "photography"
+                    ]
+                }
+            },
+            "showCard": {},
+            "tags": [
+                {
+                    "id": "color",
+                    "label": "color"
+                },
+                {
+                    "id": "colorize",
+                    "label": "colorize"
+                },
+                {
+                    "id": "enhancing-color",
+                    "label": "enhancing-color"
+                }
+            ],
+            "contentArea": {
+                "dateDetailText": {
+                    "startTime": "",
+                    "endTime": ""
+                },
+                "title": "Colorize Photos"
+            },
+            "styles": {
+                "typeOverride": ""
+            },
+            "overlays": {
+                "banner": {
+                    "description": "",
+                    "fontColor": "",
+                    "backgroundColor": "",
+                    "icon": ""
+                },
+                "videoButton": {
+                    "url": ""
+                },
+                "logo": {
+                    "src": "",
+                    "alt": "",
+                    "backgroundColor": "",
+                    "borderColor": ""
+                },
+                "label": {
+                    "description": ""
+                }
+            },
+            "footer": [
+                {
+                    "divider": false,
+                    "left": [],
+                    "center": [],
+                    "right": [
+                        {
+                            "type": "button",
+                            "style": "primary",
+                            "text": "Read More",
+                            "href": "https://helpx.adobe.com/photoshop/using/colorize-skate-ps-brand.html"
+                        }
+                    ]
+                }
+            ],
+            "cardDate": "2023-05-24T07:15:25.007Z"
+        },
+        {
+            "id": "photoshop/how-to/selection-tools",
+            "score": 0.7339999079704285,
+            "dataType": "ututs",
+            "data": {
+                "aemId": "photoshop/how-to/selection-tools",
+                "modifiedOn": "2022-04-19T18:10:06.672Z",
+                "surfaces": {
+                    "ids": {
+                        "helpJson": {
+                            "versions": [
+                                1
+                            ],
+                            "live": "2802d1db-706a-3430-850c-1ecbe1db9fc8"
+                        }
+                    }
+                },
+                "tutorialUUID": "a1b211eb-3c54-3025-a6ee-053a406b3314",
+                "locale": "en_US",
+                "createdOn": "2018-08-29T18:29:02.024Z",
+                "urls": {
+                    "lowUrl": "https://creativecloud.adobe.com/learn?action=open&aem_id=photoshop/how-to/selection-tools",
+                    "helpx": "https://helpx.adobe.com/photoshop/how-to/selection-tools.html",
+                    "helpxIframe": "https://helpx.adobe.com/photoshop/how-to/selection-tools.cc-home.html",
+                    "low_url": "https://creativecloud.adobe.com/learn?action=open&aem_id=photoshop/how-to/selection-tools"
+                },
+                "metadata": {
+                    "images": {
+                        "thumbnail": "https://helpx.adobe.com/content/dam/help/en/photoshop/how-to/selection-tools_297x176.jpg",
+                        "hero": "https://helpx.adobe.com/content/dam/help/en/photoshop/how-to/selection-tools_1000x560.jpg"
+                    },
+                    "durationInSeconds": "300",
+                    "level": "beginner",
+                    "topics": [
+                        "selections"
+                    ],
+                    "publishedOn": "2022-01-21T01:10:55.179Z",
+                    "taxonomy": {
+                        "tools": [
+                            {
+                                "enName": "Select > Deselect",
+                                "name": "Select > Deselect",
+                                "internalId": "select-deselect",
+                                "id": "7d71fc72384748f1a7eaf07f07daf864",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Filter > Stylize > Oil Paint",
+                                "name": "Filter > Stylize > Oil Paint",
+                                "internalId": "filter-stylize-oil-paint",
+                                "id": "d037f7a0e0b24984828a34e121bee811",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Select > Deselect",
+                                "name": "Select > Deselect",
+                                "internalId": "select-deselect",
+                                "id": "9c2dc46074b04b19a254e0da460eb4f7",
+                                "toolType": "menu"
+                            },
+                            {
+                                "enName": "Layers",
+                                "name": "Layers",
+                                "internalId": "layers",
+                                "id": "418ad0d2e93a402c8406da70a1e36754",
+                                "toolType": "panel"
+                            },
+                            {
+                                "enName": "Rectangular Marquee Tool",
+                                "name": "Rectangular Marquee Tool",
+                                "internalId": "rectangular-marquee-tool",
+                                "id": "b642cd143b5147cfb7efcb321718474d",
+                                "toolType": "tool"
+                            },
+                            {
+                                "enName": "Quick Selection Tool",
+                                "name": "Quick Selection Tool",
+                                "internalId": "quick-selection-tool",
+                                "id": "d34cdfa6db244a769a18ec2e4aefb44f",
+                                "toolType": "tool"
+                            }
+                        ],
+                        "topics": [
+                            {
+                                "enName": "Selections",
+                                "name": "Selections",
+                                "internalId": "selections",
+                                "id": "f22fa5991a7345c0a639f887f6ae6cac"
+                            }
+                        ],
+                        "tasks": [
+                            {
+                                "enName": "Make selection",
+                                "name": "Make selection",
+                                "internalId": "make-selection",
+                                "id": "7b638e0b29b5410cbe44e4138c85d670"
+                            },
+                            {
+                                "enName": "Reorder layers",
+                                "name": "Reorder layers",
+                                "internalId": "reorder-layers",
+                                "id": "8320a45c48c1428dbc9c8b9b549fde0e"
+                            },
+                            {
+                                "enName": "Create layer mask",
+                                "name": "Create layer mask",
+                                "internalId": "create-layer-mask",
+                                "id": "da09dab0fe7d4cf39db1de182007bfd8"
+                            },
+                            {
+                                "enName": "Create layers",
+                                "name": "Create layers",
+                                "internalId": "create-layers",
+                                "id": "da21eace082b41969591de417219a204"
+                            }
+                        ],
+                        "creativeFields": [
+                            {
+                                "enName": "Graphic design",
+                                "name": "Graphic design",
+                                "internalId": "graphic-design",
+                                "id": "c42a4f725de6414facbd08326ec4cc7f"
+                            },
+                            {
+                                "enName": "Photography",
+                                "name": "Photography",
+                                "internalId": "photography",
+                                "id": "f14741181f3c4b3b8b0218d8bbd24d3a"
+                            }
+                        ]
+                    },
+                    "title": "What are selections and why do you need them?",
+                    "platforms": [
+                        "cc-learn",
+                        "ccx",
+                        "helpx",
+                        "help_learn"
+                    ],
+                    "mediaTypes": [
+                        "project"
+                    ],
+                    "application": {
+                        "sapCode": "PHSP",
+                        "fiCode": "photoshop_cc"
+                    },
+                    "creativeFields": [
+                        "graphic-design",
+                        "photography"
+                    ]
+                }
+            },
+            "showCard": {},
+            "tags": [
+                {
+                    "id": "selections",
+                    "label": "selections"
+                }
+            ],
+            "contentArea": {
+                "dateDetailText": {
+                    "startTime": "",
+                    "endTime": ""
+                },
+                "title": "What are selections and why do you need them?"
+            },
+            "styles": {
+                "typeOverride": "",
+                "backgroundImage": "https://helpx.adobe.com/content/dam/help/en/photoshop/how-to/selection-tools_297x176.jpg"
+            },
+            "overlays": {
+                "banner": {
+                    "description": "",
+                    "fontColor": "",
+                    "backgroundColor": "",
+                    "icon": ""
+                },
+                "videoButton": {
+                    "url": ""
+                },
+                "logo": {
+                    "src": "",
+                    "alt": "",
+                    "backgroundColor": "",
+                    "borderColor": ""
+                },
+                "label": {
+                    "description": ""
+                }
+            },
+            "footer": [
+                {
+                    "divider": false,
+                    "left": [],
+                    "center": [],
+                    "right": [
+                        {
+                            "type": "button",
+                            "style": "primary",
+                            "text": "Read More",
+                            "href": "https://helpx.adobe.com/photoshop/how-to/selection-tools.html"
+                        }
+                    ]
+                }
+            ],
+            "cardDate": "2022-04-19T18:10:06.672Z"
+        }
+    ]
+}
