@@ -890,7 +890,7 @@ const Container = (props) => {
                                 },
                                 title: card.data
                                     && card.data.metadata
-                                    && card.data.metadata.title || `AutoTitle: ${card.id.replace('/', '-')})}`,
+                                    && card.data.metadata.title || `AutoTitle: ${card.id.replace('/', '-')}`,
                             };
                             // // console.log('**** card.contentArea', card.contentArea);
 
