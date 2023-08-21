@@ -829,13 +829,13 @@ const Container = (props) => {
             if (endPoint.includes('cchome')) {
                 console.log('Using Spectra');
                 const spectraInput = localStorage.getItem('spectra-input');
-                const token = 'eyJhbGciOiJSUzI1NiIsIng1dSI6Imltc19uYTEta2V5LWF0LTEuY2VyIiwia2lkIjoiaW1zX25hMS1rZXktYXQtMSIsIml0dCI6ImF0In0.eyJpZCI6IjE2OTIzNzI5ODg2NDRfZmRhOGRjOTQtNDIyOC00ZGIxLTgxMjEtZjcyMDM0YjkzZDdhX3V3MiIsInR5cGUiOiJhY2Nlc3NfdG9rZW4iLCJjbGllbnRfaWQiOiJhZG9iZWRvdGNvbTIiLCJ1c2VyX2lkIjoiQzYxRjJDQTc1NDg5RTdENjBBNEM5OEE3QGFkb2JlLmNvbSIsImFzIjoiaW1zLW5hMSIsImFhX2lkIjoiQzYxRjJDQTc1NDg5RTdENjBBNEM5OEE3QGFkb2JlLmNvbSIsImN0cCI6MCwiZmciOiJYV1JXUlRRNVhQUDc0UDRPR01RVjNYQUFBTT09PT09PSIsInNpZCI6IjE2OTIyODY0NjQxNDVfZmJjZjVmOTgtOTRjYy00NjIzLTkzOGEtMDAwZDNhMzQxY2E3X3V3MiIsIm1vaSI6ImNlMDE3MmUyIiwicGJhIjoiTG93U2VjIiwiZXhwaXJlc19pbiI6Ijg2NDAwMDAwIiwiY3JlYXRlZF9hdCI6IjE2OTIzNzI5ODg2NDQiLCJzY29wZSI6IkFkb2JlSUQsb3BlbmlkLGduYXYscmVhZF9vcmdhbml6YXRpb25zLGFkZGl0aW9uYWxfaW5mby5wcm9qZWN0ZWRQcm9kdWN0Q29udGV4dCxhZGRpdGlvbmFsX2luZm8ucm9sZXMifQ.ej-Tv-RVI180vJwM-DKCM90H7Zm-5IhCgmwmNGRPayGukD2HDA8DHFmZv37DbsotU6sDsavb1iqPiAsCLk3RyGiZ9RB63GE_FV41M82NwmZD0lYRVm-u2EBuoy095FfibWYiW7fPgRP95MhAuYEmfGVFacsu-d9Mgs7EgHjBV9Lsa_qdB3Ge8z35i7yJUn4oJP5ehoqImd_QN8dj98LHrrEh30yUw62n26Y52Qm20DIOhVPUQPm37R-BKLoObTkVUdkx26udpYKpHoepXSDCe738lU91ipiKX8GnTPGeh3-9Tvb5tbsGc3aQN3fA-PkcHRckoXx0MwbAYYJwtNi0PQ';
+                const spectraToken = localStorage.getItem('spectra-token');
                 // const token = window.imslib.getAccessToken();
 
                 return window.fetch(endPoint, {
                     method: 'POST',
                     headers: {
-                        Authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${spectraToken}`,
                         'x-api-key': 'CCHomeWeb1',
                         'Content-Type': 'application/json',
                     },
