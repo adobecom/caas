@@ -921,7 +921,9 @@ const Container = (props) => {
                                     borderColor: '',
                                 },
                                 label: {
-                                    description: '',
+                                    description: card.data
+                                    && card.data.creativeFields
+                                    && card.data.creativeFields[0].replaceAll('-', ' ') || '',
                                 },
                             };
                             // console.log('**** card.overlays', card.overlays);
