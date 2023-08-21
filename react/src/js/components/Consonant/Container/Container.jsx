@@ -830,6 +830,9 @@ const Container = (props) => {
                 // console.log('Using Spectra');
                 const spectraInput = localStorage.getItem('spectra-input');
                 const spectraToken = localStorage.getItem('spectra-token');
+                const spectraFiCode = localStorage.getItem('spectra-ficode') || 'photoahop_cc';
+                const spectraLimit = localStorage.getItem('spectra-limit' || 50);
+
                 // const token = window.imslib.getAccessToken();
 
                 return window.fetch(endPoint, {
@@ -841,10 +844,10 @@ const Container = (props) => {
                     },
                     body: JSON.stringify({
                         input: spectraInput,
-                        fiCode: 'photoshop_cc',
+                        fiCode: spectraFiCode,
                         metadataImportance: 0.25,
                         cleaning: 'no',
-                        limit: 50,
+                        limit: spectraLimit,
                     }),
                 })
                     .then((resp) => {

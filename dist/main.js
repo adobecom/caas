@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 8/21/2023, 11:13:00
+ * Chimera UI Libraries - Build 8/21/2023, 14:23:17
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6868,9 +6868,12 @@ var Container = function Container(props) {
 
             // Spectra ML behavior
             if (endPoint.includes('cchome')) {
-                console.log('Using Spectra');
+                // console.log('Using Spectra');
                 var spectraInput = localStorage.getItem('spectra-input');
                 var spectraToken = localStorage.getItem('spectra-token');
+                var spectraFiCode = localStorage.getItem('spectra-ficode') || 'photoahop_cc';
+                var spectraLimit = localStorage.getItem('spectra-limit' || 50);
+
                 // const token = window.imslib.getAccessToken();
 
                 return window.fetch(endPoint, {
@@ -6882,10 +6885,10 @@ var Container = function Container(props) {
                     },
                     body: JSON.stringify({
                         input: spectraInput,
-                        fiCode: 'photoshop_cc',
+                        fiCode: spectraFiCode,
                         metadataImportance: 0.25,
                         cleaning: 'no',
-                        limit: 50
+                        limit: spectraLimit
                     })
                 }).then(function (resp) {
                     var ok = resp.ok,
@@ -6893,7 +6896,6 @@ var Container = function Container(props) {
                         statusText = resp.statusText,
                         url = resp.url;
 
-                    console.log('resp', resp);
 
                     if (ok) {
                         return resp.json().then(function (json) {
@@ -6913,10 +6915,10 @@ var Container = function Container(props) {
                     var payloadCards = {};
                     payloadCards.filters = [];
                     payloadCards.cards = payload.recommendations.map(function (card) {
-                        console.log('**** card.id', card.id);
+                        // // console.log('**** card.id', card.id);
                         card.showCard = {};
                         card.tags = card.data && card.data.metadata && card.data.metadata.topics || [];
-                        console.log('**** card.tags', card.tags);
+                        // // console.log('**** card.tags', card.tags);
                         card.contentArea = {
                             dateDetailText: {
                                 startTime: '',
@@ -6924,14 +6926,14 @@ var Container = function Container(props) {
                             },
                             title: card.data && card.data.metadata && card.data.metadata.title || 'AutoTitle: ' + card.id.replace('/', '-') + ')}'
                         };
-                        console.log('**** card.contentArea', card.contentArea);
+                        // // console.log('**** card.contentArea', card.contentArea);
 
                         card.styles = {
                             typeOverride: '',
                             backgroundAltText: '',
                             backgroundImage: card.data && card.data.metadata && card.data.metadata.images && card.data.metadata.images.thumbnail || ''
                         };
-                        console.log('**** card.styles', card.styles);
+                        // console.log('**** card.styles', card.styles);
 
                         card.overlays = {
                             banner: {
@@ -6953,7 +6955,7 @@ var Container = function Container(props) {
                                 description: ''
                             }
                         };
-                        console.log('**** card.overlays', card.overlays);
+                        // console.log('**** card.overlays', card.overlays);
 
                         card.footer = [{
                             divider: false,
@@ -6966,15 +6968,15 @@ var Container = function Container(props) {
                                 href: card.data && card.data.urls && card.data.urls.helpx || '#'
                             }]
                         }];
-                        console.log('**** card.footer', card.footer);
+                        // console.log('**** card.footer', card.footer);
 
                         card.cardDate = card.data.modifiedOn;
-                        console.log('**** card.cardDate', card.cardDate);
+                        // console.log('**** card.cardDate', card.cardDate);
 
                         return card;
                     });
 
-                    console.log('*** payload 1', payloadCards);
+                    // console.log('*** payload 1', payloadCards);
 
                     setLoading(false);
                     setIsFirstLoad(true);
@@ -6984,8 +6986,7 @@ var Container = function Container(props) {
                     var _removeDuplicateCards = new _JsonProcessor2.default(payloadCards.cards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags),
                         _removeDuplicateCards2 = _removeDuplicateCards.processedCards,
                         processedCards = _removeDuplicateCards2 === undefined ? [] : _removeDuplicateCards2;
-
-                    console.log('*** processedCards', processedCards);
+                    // console.log('*** processedCards', processedCards);
 
                     if (payloadCards.isHashed) {
                         var TAG_HASH_LENGTH = 6;
@@ -7083,7 +7084,7 @@ var Container = function Container(props) {
             }
 
             // Defaut behavior
-            console.log('NOT Using Spectra');
+            // console.log('NOT Using Spectra');
 
             return window.fetch(endPoint, {
                 credentials: 'include',
@@ -7107,7 +7108,7 @@ var Container = function Container(props) {
 
                 return Promise.reject(new Error(status + ': ' + statusText + ', failure for call to ' + url));
             }).then(function (payload) {
-                console.log('*** payload 2', payload);
+                // console.log('*** payload 2', payload);
                 setLoading(false);
                 setIsFirstLoad(true);
 
@@ -7116,8 +7117,7 @@ var Container = function Container(props) {
                 var _removeDuplicateCards3 = new _JsonProcessor2.default(payload.cards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags),
                     _removeDuplicateCards4 = _removeDuplicateCards3.processedCards,
                     processedCards = _removeDuplicateCards4 === undefined ? [] : _removeDuplicateCards4;
-
-                console.log('*** processedCards', processedCards);
+                // console.log('*** processedCards', processedCards);
 
                 if (payload.isHashed) {
                     var TAG_HASH_LENGTH = 6;
