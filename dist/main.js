@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 8/19/2023, 24:57:43
+ * Chimera UI Libraries - Build 8/21/2023, 11:13:00
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6885,7 +6885,7 @@ var Container = function Container(props) {
                         fiCode: 'photoshop_cc',
                         metadataImportance: 0.25,
                         cleaning: 'no',
-                        limit: 10
+                        limit: 50
                     })
                 }).then(function (resp) {
                     var ok = resp.ok,

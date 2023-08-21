@@ -827,7 +827,7 @@ const Container = (props) => {
         function getCards(endPoint = collectionEndpoint) {
             // Spectra ML behavior
             if (endPoint.includes('cchome')) {
-                console.log('Using Spectra');
+                // console.log('Using Spectra');
                 const spectraInput = localStorage.getItem('spectra-input');
                 const spectraToken = localStorage.getItem('spectra-token');
                 // const token = window.imslib.getAccessToken();
@@ -844,7 +844,7 @@ const Container = (props) => {
                         fiCode: 'photoshop_cc',
                         metadataImportance: 0.25,
                         cleaning: 'no',
-                        limit: 10,
+                        limit: 50,
                     }),
                 })
                     .then((resp) => {
@@ -854,7 +854,6 @@ const Container = (props) => {
                             statusText,
                             url,
                         } = resp;
-                        console.log('resp', resp);
 
                         if (ok) {
                             return resp.json().then((json) => {
@@ -875,12 +874,12 @@ const Container = (props) => {
                         const payloadCards = {};
                         payloadCards.filters = [];
                         payloadCards.cards = payload.recommendations.map((card) => {
-                            console.log('**** card.id', card.id);
+                            // // console.log('**** card.id', card.id);
                             card.showCard = {};
                             card.tags = card.data
                                 && card.data.metadata
                                 && card.data.metadata.topics || [];
-                            console.log('**** card.tags', card.tags);
+                            // // console.log('**** card.tags', card.tags);
                             card.contentArea = {
                                 dateDetailText: {
                                     startTime: '',
@@ -890,7 +889,7 @@ const Container = (props) => {
                                     && card.data.metadata
                                     && card.data.metadata.title || `AutoTitle: ${card.id.replace('/', '-')})}`,
                             };
-                            console.log('**** card.contentArea', card.contentArea);
+                            // // console.log('**** card.contentArea', card.contentArea);
 
                             card.styles = {
                                 typeOverride: '',
@@ -900,7 +899,7 @@ const Container = (props) => {
                                     && card.data.metadata.images
                                     && card.data.metadata.images.thumbnail || '',
                             };
-                            console.log('**** card.styles', card.styles);
+                            // console.log('**** card.styles', card.styles);
 
                             card.overlays = {
                                 banner: {
@@ -922,7 +921,7 @@ const Container = (props) => {
                                     description: '',
                                 },
                             };
-                            console.log('**** card.overlays', card.overlays);
+                            // console.log('**** card.overlays', card.overlays);
 
                             card.footer = [
                                 {
@@ -941,15 +940,15 @@ const Container = (props) => {
                                     ],
                                 },
                             ];
-                            console.log('**** card.footer', card.footer);
+                            // console.log('**** card.footer', card.footer);
 
                             card.cardDate = card.data.modifiedOn;
-                            console.log('**** card.cardDate', card.cardDate);
+                            // console.log('**** card.cardDate', card.cardDate);
 
                             return card;
                         });
 
-                        console.log('*** payload 1', payloadCards);
+                        // console.log('*** payload 1', payloadCards);
 
                         setLoading(false);
                         setIsFirstLoad(true);
@@ -965,7 +964,7 @@ const Container = (props) => {
                                 hideCtaIds,
                                 hideCtaTags,
                             );
-                        console.log('*** processedCards', processedCards);
+                        // console.log('*** processedCards', processedCards);
 
                         if (payloadCards.isHashed) {
                             const TAG_HASH_LENGTH = 6;
@@ -1016,7 +1015,7 @@ const Container = (props) => {
             }
 
             // Defaut behavior
-            console.log('NOT Using Spectra');
+            // console.log('NOT Using Spectra');
 
             return window.fetch(endPoint, {
                 credentials: 'include',
@@ -1043,7 +1042,7 @@ const Container = (props) => {
                     return Promise.reject(new Error(`${status}: ${statusText}, failure for call to ${url}`));
                 })
                 .then((payload) => {
-                    console.log('*** payload 2', payload);
+                    // console.log('*** payload 2', payload);
                     setLoading(false);
                     setIsFirstLoad(true);
 
@@ -1058,7 +1057,7 @@ const Container = (props) => {
                             hideCtaIds,
                             hideCtaTags,
                         );
-                    console.log('*** processedCards', processedCards);
+                    // console.log('*** processedCards', processedCards);
 
                     if (payload.isHashed) {
                         const TAG_HASH_LENGTH = 6;
