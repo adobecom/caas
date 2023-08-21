@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 8/21/2023, 14:23:17
+ * Chimera UI Libraries - Build 8/21/2023, 14:56:26
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6872,7 +6872,7 @@ var Container = function Container(props) {
                 var spectraInput = localStorage.getItem('spectra-input');
                 var spectraToken = localStorage.getItem('spectra-token');
                 var spectraFiCode = localStorage.getItem('spectra-ficode') || 'photoahop_cc';
-                var spectraLimit = localStorage.getItem('spectra-limit' || 50);
+                var spectraLimit = localStorage.getItem('spectra-limit');
 
                 // const token = window.imslib.getAccessToken();
 
@@ -6888,7 +6888,7 @@ var Container = function Container(props) {
                         fiCode: spectraFiCode,
                         metadataImportance: 0.25,
                         cleaning: 'no',
-                        limit: spectraLimit
+                        limit: 50
                     })
                 }).then(function (resp) {
                     var ok = resp.ok,

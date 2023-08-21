@@ -831,7 +831,7 @@ const Container = (props) => {
                 const spectraInput = localStorage.getItem('spectra-input');
                 const spectraToken = localStorage.getItem('spectra-token');
                 const spectraFiCode = localStorage.getItem('spectra-ficode') || 'photoahop_cc';
-                const spectraLimit = localStorage.getItem('spectra-limit' || 50);
+                const spectraLimit = localStorage.getItem('spectra-limit');
 
                 // const token = window.imslib.getAccessToken();
 
@@ -847,7 +847,7 @@ const Container = (props) => {
                         fiCode: spectraFiCode,
                         metadataImportance: 0.25,
                         cleaning: 'no',
-                        limit: spectraLimit,
+                        limit: 50,
                     }),
                 })
                     .then((resp) => {
