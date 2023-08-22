@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 8/21/2023, 15:55:21
+ * Chimera UI Libraries - Build 8/22/2023, 09:03:13
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6924,7 +6924,8 @@ var Container = function Container(props) {
                                 startTime: '',
                                 endTime: ''
                             },
-                            title: card.data && card.data.metadata && card.data.metadata.title || 'AutoTitle: ' + card.id.replace('/', '-')
+                            title: card.data && card.data.metadata && card.data.metadata.title || 'AutoTitle: ' + card.id.replace('/', '-'),
+                            detailText: card.data && card.data.creativeFields && card.data.creativeFields[0].replaceAll('-', ' ') || ''
                         };
                         // // console.log('**** card.contentArea', card.contentArea);
 
@@ -6952,7 +6953,7 @@ var Container = function Container(props) {
                                 borderColor: ''
                             },
                             label: {
-                                description: card.data && card.data.creativeFields && card.data.creativeFields[0].replaceAll('-', ' ') || ''
+                                description: ''
                             }
                         };
                         // console.log('**** card.overlays', card.overlays);

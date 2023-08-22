@@ -891,6 +891,12 @@ const Container = (props) => {
                                 title: card.data
                                     && card.data.metadata
                                     && card.data.metadata.title || `AutoTitle: ${card.id.replace('/', '-')}`,
+                                detailText: card.data
+                                    && card.data.creativeFields
+                                    && card.data.creativeFields.map((field) => {
+                                        const word = field.replaceAll('-', ' ');
+                                        return word.charAt(0).toUpperCase() + word.slice(1);
+                                    }).join(', ') || '',
                             };
                             // // console.log('**** card.contentArea', card.contentArea);
 
@@ -921,9 +927,7 @@ const Container = (props) => {
                                     borderColor: '',
                                 },
                                 label: {
-                                    description: card.data
-                                    && card.data.creativeFields
-                                    && card.data.creativeFields[0].replaceAll('-', ' ') || '',
+                                    description: '',
                                 },
                             };
                             // console.log('**** card.overlays', card.overlays);
