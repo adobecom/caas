@@ -911,7 +911,8 @@ const Container = (props) => {
                                 backgroundImage: card.data
                                     && card.data.metadata
                                     && card.data.metadata.images
-                                    && card.data.metadata.images.thumbnail || '',
+                                    && card.data.metadata.images.thumbnail || card.data
+                                    && card.data.image || 'https://business.adobe.com/resources/webinars/media_1a3e41cd963cf926804101e849bfcd6d107e275c0.jpeg',
                             };
                             // console.log('**** card.styles', card.styles);
 
@@ -949,11 +950,20 @@ const Container = (props) => {
                                             text: 'Read More',
                                             href: card.data
                                                 && card.data.urls
-                                                && card.data.urls.helpx || '#',
+                                                && card.data.urls.helpx || card.data
+                                                && card.data.siteUrl || '#',
                                         },
                                     ],
                                 },
                             ];
+                            card.overlayLink = card.data
+                                && card.data.urls
+                                && card.data.urls.helpx || card.data
+                                && card.data.siteUrl || '#';
+                            card.ctaLink = card.data
+                                && card.data.urls
+                                && card.data.urls.helpx || card.data
+                                && card.data.siteUrl || '#';
                             // console.log('**** card.footer', card.footer);
 
                             card.cardDate = card.data.modifiedOn;

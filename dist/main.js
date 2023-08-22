@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 8/22/2023, 13:37:53
+ * Chimera UI Libraries - Build 8/22/2023, 13:56:34
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6937,7 +6937,7 @@ var Container = function Container(props) {
                         card.styles = {
                             typeOverride: '',
                             backgroundAltText: '',
-                            backgroundImage: card.data && card.data.metadata && card.data.metadata.images && card.data.metadata.images.thumbnail || ''
+                            backgroundImage: card.data && card.data.metadata && card.data.metadata.images && card.data.metadata.images.thumbnail || card.data && card.data.image || 'https://business.adobe.com/resources/webinars/media_1a3e41cd963cf926804101e849bfcd6d107e275c0.jpeg'
                         };
                         // console.log('**** card.styles', card.styles);
 
@@ -6971,9 +6971,11 @@ var Container = function Container(props) {
                                 type: 'button',
                                 style: 'primary',
                                 text: 'Read More',
-                                href: card.data && card.data.urls && card.data.urls.helpx || '#'
+                                href: card.data && card.data.urls && card.data.urls.helpx || card.data && card.data.siteUrl || '#'
                             }]
                         }];
+                        card.overlayLink = card.data && card.data.urls && card.data.urls.helpx || card.data && card.data.siteUrl || '#';
+                        card.ctaLink = card.data && card.data.urls && card.data.urls.helpx || card.data && card.data.siteUrl || '#';
                         // console.log('**** card.footer', card.footer);
 
                         card.cardDate = card.data.modifiedOn;
