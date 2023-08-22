@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 8/22/2023, 09:03:13
+ * Chimera UI Libraries - Build 8/22/2023, 13:37:53
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6024,6 +6024,8 @@ var Container = function Container(props) {
     var cardStyle = getConfig('collection', 'cardStyle');
     var title = getConfig('collection', 'i18n.title');
     var headers = getConfig('headers', '');
+    var spectra = getConfig('spectra', '');
+    var spectraToken = null;
 
     /**
      **** Constants ****
@@ -6869,12 +6871,11 @@ var Container = function Container(props) {
             // Spectra ML behavior
             if (endPoint.includes('cchome')) {
                 // console.log('Using Spectra');
-                var spectraInput = localStorage.getItem('spectra-input');
-                var spectraToken = localStorage.getItem('spectra-token');
-                var spectraFiCode = localStorage.getItem('spectra-ficode') || 'photoahop_cc';
-                var spectraLimit = localStorage.getItem('spectra-limit');
-
-                // const token = window.imslib.getAccessToken();
+                var spectraInput = spectra.input || localStorage.getItem('spectra-input');
+                var spectraFiCode = spectra.fiCode || localStorage.getItem('spectra-ficode') || 'photoshop_cc';
+                var spectraLimit = spectra.limit || localStorage.getItem('spectra-limit');
+                var spectraImportance = spectra.metadataImportance || 0.25;
+                var spectraCleaning = spectra.cleaning || 'no';
 
                 return window.fetch(endPoint, {
                     method: 'POST',
@@ -6886,9 +6887,9 @@ var Container = function Container(props) {
                     body: JSON.stringify({
                         input: spectraInput,
                         fiCode: spectraFiCode,
-                        metadataImportance: 0.25,
-                        cleaning: 'no',
-                        limit: 50
+                        metadataImportance: spectraImportance,
+                        cleaning: spectraCleaning,
+                        limit: spectraLimit
                     })
                 }).then(function (resp) {
                     var ok = resp.ok,
@@ -6924,9 +6925,13 @@ var Container = function Container(props) {
                                 startTime: '',
                                 endTime: ''
                             },
-                            title: card.data && card.data.metadata && card.data.metadata.title || 'AutoTitle: ' + card.id.replace('/', '-'),
-                            detailText: card.data && card.data.creativeFields && card.data.creativeFields[0].replaceAll('-', ' ') || ''
+                            title: card.data && card.data.metadata && card.data.metadata.title || card.data && card.data.title && card.data.title.long || card.id.charAt(0).toUpperCase() + card.id.slice(1).replaceAll('-', ' '),
+                            detailText: card.data && card.data.creativeFields && card.data.creativeFields.map(function (field) {
+                                var word = field.replaceAll('-', ' ');
+                                return word.charAt(0).toUpperCase() + word.slice(1);
+                            }).join(', ') || ''
                         };
+                        // card.id.charAt(0).toUpperCase()+card.id.slice(1).replaceAll('-', ' ')
                         // // console.log('**** card.contentArea', card.contentArea);
 
                         card.styles = {
@@ -7299,8 +7304,18 @@ var Container = function Container(props) {
             visitorRetry();
         }
 
-        if (!targetEnabled) {
+        if (!targetEnabled && !collectionEndpoint.includes('cchome')) {
             getCards();
+        } else if (!targetEnabled && collectionEndpoint.includes('cchome')) {
+            fetch('https://14257-chimera-sanrai.adobeioruntime.net/api/v1/web/chimera-0.0.1/service-token').then(function (x) {
+                return x.json();
+            })
+            // eslint-disable-next-line no-return-assign
+            .then(function (data) {
+                return spectraToken = data.imsServiceToken;
+            }).then(function (data) {
+                return getCards();
+            });
         }
     }, [visibleStamp, hasFetched]);
 

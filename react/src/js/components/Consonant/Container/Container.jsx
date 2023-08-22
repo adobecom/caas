@@ -147,6 +147,8 @@ const Container = (props) => {
     const cardStyle = getConfig('collection', 'cardStyle');
     const title = getConfig('collection', 'i18n.title');
     const headers = getConfig('headers', '');
+    const spectra = getConfig('spectra', '');
+    let spectraToken = null;
 
     /**
      **** Constants ****
@@ -828,12 +830,11 @@ const Container = (props) => {
             // Spectra ML behavior
             if (endPoint.includes('cchome')) {
                 // console.log('Using Spectra');
-                const spectraInput = localStorage.getItem('spectra-input');
-                const spectraToken = localStorage.getItem('spectra-token');
-                const spectraFiCode = localStorage.getItem('spectra-ficode') || 'photoahop_cc';
-                const spectraLimit = localStorage.getItem('spectra-limit');
-
-                // const token = window.imslib.getAccessToken();
+                const spectraInput = spectra.input || localStorage.getItem('spectra-input');
+                const spectraFiCode = spectra.fiCode || localStorage.getItem('spectra-ficode') || 'photoshop_cc';
+                const spectraLimit = spectra.limit || localStorage.getItem('spectra-limit');
+                const spectraImportance = spectra.metadataImportance || 0.25;
+                const spectraCleaning = spectra.cleaning || 'no';
 
                 return window.fetch(endPoint, {
                     method: 'POST',
@@ -845,9 +846,9 @@ const Container = (props) => {
                     body: JSON.stringify({
                         input: spectraInput,
                         fiCode: spectraFiCode,
-                        metadataImportance: 0.25,
-                        cleaning: 'no',
-                        limit: 50,
+                        metadataImportance: spectraImportance,
+                        cleaning: spectraCleaning,
+                        limit: spectraLimit,
                     }),
                 })
                     .then((resp) => {
@@ -890,7 +891,10 @@ const Container = (props) => {
                                 },
                                 title: card.data
                                     && card.data.metadata
-                                    && card.data.metadata.title || `AutoTitle: ${card.id.replace('/', '-')}`,
+                                    && card.data.metadata.title || card.data
+                                    && card.data.title
+                                    && card.data.title.long ||
+                                    card.id.charAt(0).toUpperCase() + card.id.slice(1).replaceAll('-', ' '),
                                 detailText: card.data
                                     && card.data.creativeFields
                                     && card.data.creativeFields.map((field) => {
@@ -898,6 +902,7 @@ const Container = (props) => {
                                         return word.charAt(0).toUpperCase() + word.slice(1);
                                     }).join(', ') || '',
                             };
+                            // card.id.charAt(0).toUpperCase()+card.id.slice(1).replaceAll('-', ' ')
                             // // console.log('**** card.contentArea', card.contentArea);
 
                             card.styles = {
@@ -1196,8 +1201,13 @@ const Container = (props) => {
             visitorRetry();
         }
 
-        if (!targetEnabled) {
+        if (!targetEnabled && !collectionEndpoint.includes('cchome')) {
             getCards();
+        } else if (!targetEnabled && collectionEndpoint.includes('cchome')) {
+            fetch('https://14257-chimera-sanrai.adobeioruntime.net/api/v1/web/chimera-0.0.1/service-token')
+                .then(x => x.json())
+                // eslint-disable-next-line no-return-assign
+                .then(data => spectraToken = data.imsServiceToken).then(data => getCards());
         }
     }, [visibleStamp, hasFetched]);
 

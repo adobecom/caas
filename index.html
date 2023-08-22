@@ -74,7 +74,7 @@
                     }
                 },
                 resultsPerPage: '5',
-                endpoint: location.hostname === "localhost" ? "../../mock-json/all-art-board-15-cards-show.json" : "../../caas/mock-json/all-art-board-15-cards-show.json",
+                endpoint: "https://cchome-stage.adobe.io/ucs/v3/users/me/surfaces/community/contents/recommendations/context/discussions?locale=en-US",
                 totalCardsToShow: '55',
                 cardStyle: "1:2", // available options: "1:2", "3:4", "full-card", "half-height", "custom-card", "product", "double-wide";
                 showTotalResults: 'true',
@@ -296,7 +296,15 @@
             },
             customCard: ["data", "return `<div class=customCard><div class=backgroundImg></div> <section><label>PHOTO EDITING</label><p><b>Transform a landscape with Sky Replacement.</b></p></div></section> </div>`"],
             onCardSaved: function(){},
-            onCardUnsaved: function(){}
+            onCardUnsaved: function(){},
+            spectra: {
+                input: "I am trying to color an image in 3 different colors and make it even for each color. The problem is how to do that because selection tool doesnt allow me to do so. Also the middle of the image has an emblem and i need to leave that untouched. Is there any way to do this? Image of what i am trying to color is posted.",
+                fiCode: "photoshop_cc",
+                metadataImportance: 0.25,
+                limit: 9,
+                cleaning: "no",
+                locale: "en-US"
+            }
         };
         const consonantCardCollection = new ConsonantCardCollection(config, document.getElementById("someDivId"));
     </script>
