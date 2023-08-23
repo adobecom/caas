@@ -3,6 +3,7 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const webpack = require('webpack');
+const packageJson = require('./package.json');
 
 const extractStyles = new ExtractTextPlugin({
     filename: './app.css', // this is output name for file
@@ -22,7 +23,7 @@ const plugins = [
     extractStyles,
     listStyles,
     new webpack.BannerPlugin({
-        banner: `Chimera UI Libraries - Build ${date}
+        banner: `Chimera UI Libraries - Build ${packageJson.version} (${date})
         `,
         entryOnly: true,
     }),
