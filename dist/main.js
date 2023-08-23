@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 8/22/2023, 13:56:34
+ * Chimera UI Libraries - Build 0.6.39 (8/23/2023, 12:43:49)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -5867,7 +5867,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); /* eslint-disable */
+
 
 var _react = __webpack_require__(0);
 
@@ -6869,7 +6870,7 @@ var Container = function Container(props) {
             var endPoint = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : collectionEndpoint;
 
             // Spectra ML behavior
-            if (endPoint.includes('cchome')) {
+            if (spectra.endpoint === 'ucs') {
                 // console.log('Using Spectra');
                 var spectraInput = spectra.input || localStorage.getItem('spectra-input');
                 var spectraFiCode = spectra.fiCode || localStorage.getItem('spectra-ficode') || 'photoshop_cc';
@@ -7089,6 +7090,163 @@ var Container = function Container(props) {
                     setLoading(false);
                     setApiFailure(true);
                 });
+            } else if (spectra.endpoint === 'uci') {
+                // console.log('Using Spectra');
+                var _spectraInput = spectra.input || localStorage.getItem('spectra-input');
+                var _spectraFiCode = spectra.fiCode || localStorage.getItem('spectra-ficode') || 'photoshop_cc';
+                var _spectraLimit = spectra.limit || localStorage.getItem('spectra-limit');
+                var _spectraImportance = spectra.metadataImportance || 0.25;
+                var _spectraCleaning = spectra.cleaning || 'no';
+
+                return window.fetch('https://cchome-dev.adobe.io/int/v1/models', {
+                    method: 'POST',
+                    headers: {
+                        'x-api-key': 'CCHomeWeb1',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        endpoint: 'acom-recom-v1',
+                        contentType: 'application/json',
+                        payload: {
+                            data: {
+                                input: _spectraInput,
+                                fi_code: _spectraFiCode,
+                                metadata_importance: _spectraImportance,
+                                cleaning: _spectraCleaning,
+                                num_items: _spectraLimit
+                            }
+                        }
+                    })
+                }).then(function (resp) {
+                    return resp.json();
+                }).then(function (a) {
+                    var ids = a.data.map(function (item) {
+                        return item.content_id;
+                    });
+                    return window.fetch('https://14257-chimera.adobeioruntime.net/api/v1/web/chimera-0.0.1/collection?featuredCards=' + ids);
+                }).then(function (resp) {
+                    var ok = resp.ok,
+                        status = resp.status,
+                        statusText = resp.statusText,
+                        url = resp.url;
+
+
+                    if (ok) {
+                        return resp.json().then(function (json) {
+                            var validData = !!Object.keys(json).length;
+
+                            if (validData) return json;
+
+                            return Promise.reject(new Error('no valid reponse data'));
+                        });
+                    }
+
+                    return Promise.reject(new Error(status + ': ' + statusText + ', failure for call to ' + url));
+                }).then(function (payload) {
+                    // console.log('*** payload 2', payload);
+                    setLoading(false);
+                    setIsFirstLoad(true);
+
+                    if (!(0, _general.getByPath)(payload, 'cards.length')) return;
+
+                    var _removeDuplicateCards3 = new _JsonProcessor2.default(payload.cards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags),
+                        _removeDuplicateCards4 = _removeDuplicateCards3.processedCards,
+                        processedCards = _removeDuplicateCards4 === undefined ? [] : _removeDuplicateCards4;
+                    // console.log('*** processedCards', processedCards);
+
+                    if (payload.isHashed) {
+                        var TAG_HASH_LENGTH = 6;
+                        var _iteratorNormalCompletion3 = true;
+                        var _didIteratorError3 = false;
+                        var _iteratorError3 = undefined;
+
+                        try {
+                            for (var _iterator3 = authoredFilters[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                                var group = _step3.value;
+
+                                group.id = rollingHash(group.id, TAG_HASH_LENGTH);
+                                var _iteratorNormalCompletion4 = true;
+                                var _didIteratorError4 = false;
+                                var _iteratorError4 = undefined;
+
+                                try {
+                                    for (var _iterator4 = group.items[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+                                        var filterItem = _step4.value;
+
+                                        var _getParentChild3 = getParentChild(filterItem.id),
+                                            _getParentChild4 = _slicedToArray(_getParentChild3, 2),
+                                            parent = _getParentChild4[0],
+                                            child = _getParentChild4[1];
+
+                                        filterItem.id = rollingHash(parent, TAG_HASH_LENGTH) + '/' + rollingHash(child, TAG_HASH_LENGTH);
+                                    }
+                                } catch (err) {
+                                    _didIteratorError4 = true;
+                                    _iteratorError4 = err;
+                                } finally {
+                                    try {
+                                        if (!_iteratorNormalCompletion4 && _iterator4.return) {
+                                            _iterator4.return();
+                                        }
+                                    } finally {
+                                        if (_didIteratorError4) {
+                                            throw _iteratorError4;
+                                        }
+                                    }
+                                }
+                            }
+                        } catch (err) {
+                            _didIteratorError3 = true;
+                            _iteratorError3 = err;
+                        } finally {
+                            try {
+                                if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                                    _iterator3.return();
+                                }
+                            } finally {
+                                if (_didIteratorError3) {
+                                    throw _iteratorError3;
+                                }
+                            }
+                        }
+                    }
+                    setFilters(function () {
+                        return authoredFilters;
+                    });
+
+                    var transitions = (0, _general.getTransitions)(processedCards);
+                    if (sortOption.sort.toLowerCase() === 'eventsort') {
+                        while (transitions.size() > 0) {
+                            setTimeout(function () {
+                                nextTransition();
+                            }, transitions.dequeue().priority + _constants.ONE_SECOND_DELAY);
+                        }
+                    }
+
+                    setCards(processedCards);
+                    if (!showEmptyFilters) {
+                        setFilters(function (prevFilters) {
+                            return removeEmptyFilters(prevFilters, processedCards);
+                        });
+                    }
+                    setTimeout(function () {
+                        if (!scrollElementRef.current) return;
+                        if (processedCards.length === 0) return;
+                        if (currentPage === 1) return;
+                        var cardsToshow = processedCards.slice(0, resultsPerPage * currentPage);
+                        var getLastPageID = resultsPerPage * currentPage - resultsPerPage;
+                        if (cardsToshow.length < getLastPageID) return;
+                        var lastID = scrollElementRef.current.children[getLastPageID];
+                        lastID.scrollIntoView();
+                    }, 100);
+                }).catch(function () {
+                    if (endPoint === collectionEndpoint && fallbackEndpoint) {
+                        getCards(fallbackEndpoint);
+                        return;
+                    }
+                    setLoading(false);
+                    setApiFailure(true);
+                });
             }
 
             // Defaut behavior
@@ -7122,63 +7280,63 @@ var Container = function Container(props) {
 
                 if (!(0, _general.getByPath)(payload, 'cards.length')) return;
 
-                var _removeDuplicateCards3 = new _JsonProcessor2.default(payload.cards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags),
-                    _removeDuplicateCards4 = _removeDuplicateCards3.processedCards,
-                    processedCards = _removeDuplicateCards4 === undefined ? [] : _removeDuplicateCards4;
+                var _removeDuplicateCards5 = new _JsonProcessor2.default(payload.cards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags),
+                    _removeDuplicateCards6 = _removeDuplicateCards5.processedCards,
+                    processedCards = _removeDuplicateCards6 === undefined ? [] : _removeDuplicateCards6;
                 // console.log('*** processedCards', processedCards);
 
                 if (payload.isHashed) {
                     var TAG_HASH_LENGTH = 6;
-                    var _iteratorNormalCompletion3 = true;
-                    var _didIteratorError3 = false;
-                    var _iteratorError3 = undefined;
+                    var _iteratorNormalCompletion5 = true;
+                    var _didIteratorError5 = false;
+                    var _iteratorError5 = undefined;
 
                     try {
-                        for (var _iterator3 = authoredFilters[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-                            var group = _step3.value;
+                        for (var _iterator5 = authoredFilters[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+                            var group = _step5.value;
 
                             group.id = rollingHash(group.id, TAG_HASH_LENGTH);
-                            var _iteratorNormalCompletion4 = true;
-                            var _didIteratorError4 = false;
-                            var _iteratorError4 = undefined;
+                            var _iteratorNormalCompletion6 = true;
+                            var _didIteratorError6 = false;
+                            var _iteratorError6 = undefined;
 
                             try {
-                                for (var _iterator4 = group.items[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-                                    var filterItem = _step4.value;
+                                for (var _iterator6 = group.items[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+                                    var filterItem = _step6.value;
 
-                                    var _getParentChild3 = getParentChild(filterItem.id),
-                                        _getParentChild4 = _slicedToArray(_getParentChild3, 2),
-                                        parent = _getParentChild4[0],
-                                        child = _getParentChild4[1];
+                                    var _getParentChild5 = getParentChild(filterItem.id),
+                                        _getParentChild6 = _slicedToArray(_getParentChild5, 2),
+                                        parent = _getParentChild6[0],
+                                        child = _getParentChild6[1];
 
                                     filterItem.id = rollingHash(parent, TAG_HASH_LENGTH) + '/' + rollingHash(child, TAG_HASH_LENGTH);
                                 }
                             } catch (err) {
-                                _didIteratorError4 = true;
-                                _iteratorError4 = err;
+                                _didIteratorError6 = true;
+                                _iteratorError6 = err;
                             } finally {
                                 try {
-                                    if (!_iteratorNormalCompletion4 && _iterator4.return) {
-                                        _iterator4.return();
+                                    if (!_iteratorNormalCompletion6 && _iterator6.return) {
+                                        _iterator6.return();
                                     }
                                 } finally {
-                                    if (_didIteratorError4) {
-                                        throw _iteratorError4;
+                                    if (_didIteratorError6) {
+                                        throw _iteratorError6;
                                     }
                                 }
                             }
                         }
                     } catch (err) {
-                        _didIteratorError3 = true;
-                        _iteratorError3 = err;
+                        _didIteratorError5 = true;
+                        _iteratorError5 = err;
                     } finally {
                         try {
-                            if (!_iteratorNormalCompletion3 && _iterator3.return) {
-                                _iterator3.return();
+                            if (!_iteratorNormalCompletion5 && _iterator5.return) {
+                                _iterator5.return();
                             }
                         } finally {
-                            if (_didIteratorError3) {
-                                throw _iteratorError3;
+                            if (_didIteratorError5) {
+                                throw _iteratorError5;
                             }
                         }
                     }

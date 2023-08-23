@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, {
     Fragment,
     useEffect,
@@ -828,7 +829,7 @@ const Container = (props) => {
          */
         function getCards(endPoint = collectionEndpoint) {
             // Spectra ML behavior
-            if (endPoint.includes('cchome')) {
+            if (spectra.endpoint === 'ucs') {
                 // console.log('Using Spectra');
                 const spectraInput = spectra.input || localStorage.getItem('spectra-input');
                 const spectraFiCode = spectra.fiCode || localStorage.getItem('spectra-ficode') || 'photoshop_cc';
@@ -1029,6 +1030,124 @@ const Container = (props) => {
                         }, 100);
                     })
                     .catch(() => {
+                        if (endPoint === collectionEndpoint && fallbackEndpoint) {
+                            getCards(fallbackEndpoint);
+                            return;
+                        }
+                        setLoading(false);
+                        setApiFailure(true);
+                    });
+            }
+
+            else if (spectra.endpoint === 'uci') {
+                // console.log('Using Spectra');
+                const spectraInput = spectra.input || localStorage.getItem('spectra-input');
+                const spectraFiCode = spectra.fiCode || localStorage.getItem('spectra-ficode') || 'photoshop_cc';
+                const spectraLimit = spectra.limit || localStorage.getItem('spectra-limit');
+                const spectraImportance = spectra.metadataImportance || 0.25;
+                const spectraCleaning = spectra.cleaning || 'no';
+
+                return window.fetch('https://cchome-dev.adobe.io/int/v1/models', {
+                    method: 'POST',
+                    headers: {
+                        'x-api-key': 'CCHomeWeb1',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        endpoint: 'acom-recom-v1',
+                        contentType: 'application/json',
+                        payload: {
+                            data: {
+                                input: spectraInput,
+                                fi_code: spectraFiCode,
+                                metadata_importance: spectraImportance,
+                                cleaning: spectraCleaning,
+                                num_items: spectraLimit,
+                            },
+                        },
+                    }),
+                })
+                    .then((resp) => {
+                        return resp.json();
+                    })
+                    .then(a => {
+                        let ids = a.data.map(item => item.content_id);
+                        return window.fetch('https://14257-chimera.adobeioruntime.net/api/v1/web/chimera-0.0.1/collection?featuredCards=' + ids)
+                    })
+                    .then((resp) => {
+                        const {
+                            ok,
+                            status,
+                            statusText,
+                            url,
+                        } = resp;
+
+                        if (ok) {
+                            return resp.json().then((json) => {
+                                const validData = !!Object.keys(json).length;
+
+                                if (validData) return json;
+
+                                return Promise.reject(new Error('no valid reponse data'));
+                            });
+                        }
+
+                        return Promise.reject(new Error(`${status}: ${statusText}, failure for call to ${url}`));
+                    })
+                    .then((payload) => {
+                        // console.log('*** payload 2', payload);
+                        setLoading(false);
+                        setIsFirstLoad(true);
+
+                        if (!getByPath(payload, 'cards.length')) return;
+
+                        const { processedCards = [] } = new JsonProcessor(payload.cards)
+                            .removeDuplicateCards()
+                            .addCardMetaData(
+                                TRUNCATE_TEXT_QTY,
+                                onlyShowBookmarks,
+                                bookmarkedCardIds,
+                                hideCtaIds,
+                                hideCtaTags,
+                            );
+                        // console.log('*** processedCards', processedCards);
+
+                        if (payload.isHashed) {
+                            const TAG_HASH_LENGTH = 6;
+                            for (const group of authoredFilters) {
+                                group.id = rollingHash(group.id, TAG_HASH_LENGTH);
+                                for (const filterItem of group.items) {
+                                    const [parent, child] = getParentChild(filterItem.id);
+                                    filterItem.id = `${rollingHash(parent, TAG_HASH_LENGTH)}/${rollingHash(child, TAG_HASH_LENGTH)}`;
+                                }
+                            }
+                        }
+                        setFilters(() => authoredFilters);
+
+                        const transitions = getTransitions(processedCards);
+                        if (sortOption.sort.toLowerCase() === 'eventsort') {
+                            while (transitions.size() > 0) {
+                                setTimeout(() => {
+                                    nextTransition();
+                                }, transitions.dequeue().priority + ONE_SECOND_DELAY);
+                            }
+                        }
+
+                        setCards(processedCards);
+                        if (!showEmptyFilters) {
+                            setFilters(prevFilters => removeEmptyFilters(prevFilters, processedCards));
+                        }
+                        setTimeout(() => {
+                            if (!scrollElementRef.current) return;
+                            if (processedCards.length === 0) return;
+                            if (currentPage === 1) return;
+                            const cardsToshow = processedCards.slice(0, resultsPerPage * currentPage);
+                            const getLastPageID = (resultsPerPage * currentPage) - resultsPerPage;
+                            if (cardsToshow.length < getLastPageID) return;
+                            const lastID = scrollElementRef.current.children[getLastPageID];
+                            lastID.scrollIntoView();
+                        }, 100);
+                    }).catch(() => {
                         if (endPoint === collectionEndpoint && fallbackEndpoint) {
                             getCards(fallbackEndpoint);
                             return;
