@@ -1,5 +1,14 @@
 
 
+# [0.7.0](https://github.com/adobecom/caas/compare/0.6.39...0.7.0) (2023-08-17)
+
+
+### Features
+
+* add ability to get search query from url ([dc1d6f2](https://github.com/adobecom/caas/commit/dc1d6f25b1a905c5c3e943a4175c21eb6e2aa90c))
+* unit tests ([894986b](https://github.com/adobecom/caas/commit/894986b7ec16000950656ef27381d07b707c760d))
+* unit tests part deux ([61de03c](https://github.com/adobecom/caas/commit/61de03c462f32e924edb91aa42cb82a7ab7e39e9))
+
 ## [0.6.39](https://github.com/adobecom/caas/compare/0.6.38...0.6.39) (2023-08-09)
 
 ## [0.6.38](https://github.com/adobecom/caas/compare/0.6.37...0.6.38) (2023-07-27)

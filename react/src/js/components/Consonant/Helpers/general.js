@@ -128,12 +128,22 @@ export const sortByKey = (iterable, keyFunc) =>
         return 0;
     });
 
+const allowedChars = /[a-zA-Z0-9\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF\s.]/g;
+
 /**
  * Returns cleaned up text
+ * don't allow urls
  * @param {String} text - The text so sanitize
  * @return {String} - The cleaned up text
  */
-export const sanitizeText = text => text.toLowerCase().trim();
+export const sanitizeText = (text) => {
+    if (!text) return '';
+    let sanitized = text.toLowerCase().trim();
+    // remove any invalid chars
+    const matchedAllowedChars = sanitized.match(allowedChars);
+    sanitized = matchedAllowedChars ? matchedAllowedChars.join('') : '';
+    return sanitized;
+};
 
 /**
  * For a given object, applies a function to key in that object

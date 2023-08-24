@@ -691,6 +691,10 @@ const Container = (props) => {
                 })),
             };
         }));
+        const urlSearchValue = urlState[searchPrefix];
+        if (urlSearchValue) {
+            setSearchQuery(urlSearchValue[0]);
+        }
     }, []);
 
     useEffect(() => {

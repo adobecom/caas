@@ -58,11 +58,11 @@ describe('Consonant/Container/Search', () => {
 
         const searchInput = screen.getByTestId('consonant-Search-input');
 
-        expect(searchInput.value).toEqual('');
-
-        fireEvent.change(searchInput, { target: { value: 'Search string' } });
-
         expect(searchInput.value).toEqual('Search string');
+
+        fireEvent.change(searchInput, { target: { value: 'Search string new' } });
+
+        expect(searchInput.value).toEqual('Search string new');
     });
     test('Should be able to change search values without sorting', async () => {
         const configToUse = config;
@@ -73,11 +73,11 @@ describe('Consonant/Container/Search', () => {
 
         const searchInput = screen.getByTestId('consonant-Search-input');
 
-        expect(searchInput.value).toEqual('');
+        expect(searchInput.value).toEqual('Search string new');
 
-        fireEvent.change(searchInput, { target: { value: 'Search string' } });
+        fireEvent.change(searchInput, { target: { value: 'Search string newer' } });
 
-        expect(searchInput.value).toEqual('Search string');
+        expect(searchInput.value).toEqual('Search string newer');
     });
     test('Clicking the search input should not change the typed search value', async () => {
         const configToUse = config;
@@ -90,21 +90,22 @@ describe('Consonant/Container/Search', () => {
 
         const searchInput = screen.getByTestId('consonant-Search-input');
 
-        expect(searchInput.value).toEqual('');
+        expect(searchInput.value).toEqual('Search string newer');
 
-        fireEvent.change(searchInput, { target: { value: 'Search string' } });
         fireEvent.click(searchInput);
 
-        expect(searchInput.value).toEqual('Search string');
+        expect(searchInput.value).toEqual('Search string newer');
     });
     test('Should be able to search through cards', async () => {
         const configToUse = config;
         configToUse.filterPanel.filterLogic = 'xor';
         await act(async () => render(<Container config={configToUse} />));
 
-        await waitFor(() => screen.getByTestId('consonant-CardsGrid'));
-
         const searchInput = screen.getByTestId('consonant-Search-input');
+        
+        fireEvent.change(searchInput, { target: { value: '' } });
+
+        await waitFor(() => screen.getByTestId('consonant-CardsGrid'));
 
         fireEvent.change(searchInput, { target: { value: 'Some Title 5' } });
 
