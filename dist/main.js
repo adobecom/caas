@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 8/16/2023, 20:57:56
+ * Chimera UI Libraries - Build 8/24/2023, 14:26:28
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -50208,7 +50208,7 @@ var OneHalfCard = function OneHalfCard(props) {
      * isGated
      * @type {Boolean}
      */
-    var isGated = (0, _Helpers.hasTag)(/caas:gated/, tags);
+    var isGated = (0, _Helpers.hasTag)(/7ed3/, tags);
 
     /**
      * Extends infobits with the configuration data
@@ -52209,7 +52209,7 @@ var HalfHeightCard = function HalfHeightCard(props) {
         lazyLoadedImage = _useLazyLoading2[0];
 
     var isRegistered = (0, _hooks.useRegistered)(false);
-    var isGated = (0, _Helpers.hasTag)(/caas:gated/, tags) || (0, _Helpers.hasTag)(/caas:card-style\/half-height-featured/, tags);
+    var isGated = (0, _Helpers.hasTag)(/7ed3/, tags) || (0, _Helpers.hasTag)(/1j6zgcx\/3bhv/, tags);
 
     if (isGated && !isRegistered) {
         bannerDescriptionToUse = bannerMap.register.description;
@@ -53098,7 +53098,7 @@ var TextCard = function TextCard(props) {
      * isGated
      * @type {Boolean}
      */
-    var isGated = (0, _Helpers.hasTag)(/caas:gated/, tags);
+    var isGated = (0, _Helpers.hasTag)(/7ed3/, tags);
 
     /**
      * Extends infobits with the configuration data
