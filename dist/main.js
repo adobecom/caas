@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 8/29/2023, 14:47:37
+ * Chimera UI Libraries - Build 8/24/2023, 14:26:28
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6399,7 +6399,6 @@ var Container = function Container(props) {
     var getConfig = (0, _consonant.makeConfigGetter)(config);
     var filterGroupPrefix = 'ch_';
     var searchPrefix = 'sh_';
-    var CARD_HASH_LENGTH = 10;
 
     /**
      **** Authored Configs ****
@@ -7244,6 +7243,11 @@ var Container = function Container(props) {
                 setLoading(false);
                 setIsFirstLoad(true);
                 if (!(0, _general.getByPath)(payload, 'cards.length')) return;
+
+                var _removeDuplicateCards = new _JsonProcessor2.default(payload.cards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags),
+                    _removeDuplicateCards2 = _removeDuplicateCards.processedCards,
+                    processedCards = _removeDuplicateCards2 === undefined ? [] : _removeDuplicateCards2;
+
                 if (payload.isHashed) {
                     var TAG_HASH_LENGTH = 6;
                     var _iteratorNormalCompletion = true;
@@ -7255,13 +7259,13 @@ var Container = function Container(props) {
                             var group = _step.value;
 
                             group.id = rollingHash(group.id, TAG_HASH_LENGTH);
-                            var _iteratorNormalCompletion3 = true;
-                            var _didIteratorError3 = false;
-                            var _iteratorError3 = undefined;
+                            var _iteratorNormalCompletion2 = true;
+                            var _didIteratorError2 = false;
+                            var _iteratorError2 = undefined;
 
                             try {
-                                for (var _iterator3 = group.items[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-                                    var filterItem = _step3.value;
+                                for (var _iterator2 = group.items[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                                    var filterItem = _step2.value;
 
                                     var _getParentChild = getParentChild(filterItem.id),
                                         _getParentChild2 = _slicedToArray(_getParentChild, 2),
@@ -7271,16 +7275,16 @@ var Container = function Container(props) {
                                     filterItem.id = rollingHash(parent, TAG_HASH_LENGTH) + '/' + rollingHash(child, TAG_HASH_LENGTH);
                                 }
                             } catch (err) {
-                                _didIteratorError3 = true;
-                                _iteratorError3 = err;
+                                _didIteratorError2 = true;
+                                _iteratorError2 = err;
                             } finally {
                                 try {
-                                    if (!_iteratorNormalCompletion3 && _iterator3.return) {
-                                        _iterator3.return();
+                                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                                        _iterator2.return();
                                     }
                                 } finally {
-                                    if (_didIteratorError3) {
-                                        throw _iteratorError3;
+                                    if (_didIteratorError2) {
+                                        throw _iteratorError2;
                                     }
                                 }
                             }
@@ -7299,51 +7303,7 @@ var Container = function Container(props) {
                             }
                         }
                     }
-
-                    featuredCards = featuredCards.map(function (id) {
-                        return rollingHash(id, CARD_HASH_LENGTH);
-                    });
-                    hideCtaIds = hideCtaIds.map(function (id) {
-                        return rollingHash(id, CARD_HASH_LENGTH);
-                    });
-                    var temp = [];
-                    var _iteratorNormalCompletion2 = true;
-                    var _didIteratorError2 = false;
-                    var _iteratorError2 = undefined;
-
-                    try {
-                        for (var _iterator2 = hideCtaTags[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                            var tag = _step2.value;
-
-                            var _getParentChild3 = getParentChild(tag),
-                                _getParentChild4 = _slicedToArray(_getParentChild3, 2),
-                                parent = _getParentChild4[0],
-                                child = _getParentChild4[1];
-
-                            temp.push(rollingHash(parent, TAG_HASH_LENGTH) + '/' + rollingHash(child, TAG_HASH_LENGTH));
-                        }
-                    } catch (err) {
-                        _didIteratorError2 = true;
-                        _iteratorError2 = err;
-                    } finally {
-                        try {
-                            if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                                _iterator2.return();
-                            }
-                        } finally {
-                            if (_didIteratorError2) {
-                                throw _iteratorError2;
-                            }
-                        }
-                    }
-
-                    hideCtaTags = temp;
                 }
-
-                var _removeDuplicateCards = new _JsonProcessor2.default(payload.cards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags),
-                    _removeDuplicateCards2 = _removeDuplicateCards.processedCards,
-                    processedCards = _removeDuplicateCards2 === undefined ? [] : _removeDuplicateCards2;
-
                 setFilters(function () {
                     return authoredFilters;
                 });
@@ -50248,7 +50208,7 @@ var OneHalfCard = function OneHalfCard(props) {
      * isGated
      * @type {Boolean}
      */
-    var isGated = (0, _Helpers.hasTag)(/caas:gated/, tags);
+    var isGated = (0, _Helpers.hasTag)(/7ed3/, tags);
 
     /**
      * Extends infobits with the configuration data
@@ -52249,7 +52209,7 @@ var HalfHeightCard = function HalfHeightCard(props) {
         lazyLoadedImage = _useLazyLoading2[0];
 
     var isRegistered = (0, _hooks.useRegistered)(false);
-    var isGated = (0, _Helpers.hasTag)(/caas:gated/, tags) || (0, _Helpers.hasTag)(/caas:card-style\/half-height-featured/, tags);
+    var isGated = (0, _Helpers.hasTag)(/7ed3/, tags) || (0, _Helpers.hasTag)(/1j6zgcx\/3bhv/, tags);
 
     if (isGated && !isRegistered) {
         bannerDescriptionToUse = bannerMap.register.description;
@@ -53138,7 +53098,7 @@ var TextCard = function TextCard(props) {
      * isGated
      * @type {Boolean}
      */
-    var isGated = (0, _Helpers.hasTag)(/caas:gated/, tags);
+    var isGated = (0, _Helpers.hasTag)(/7ed3/, tags);
 
     /**
      * Extends infobits with the configuration data
