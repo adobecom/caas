@@ -189,7 +189,7 @@ const TextCard = (props) => {
      * isGated
      * @type {Boolean}
      */
-    const isGated = hasTag(/caas:gated/, tags);
+    const isGated = hasTag(/7ed3/, tags);
 
     /**
      * Extends infobits with the configuration data

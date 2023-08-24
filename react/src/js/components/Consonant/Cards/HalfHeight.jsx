@@ -170,7 +170,7 @@ const HalfHeightCard = (props) => {
      */
     const [lazyLoadedImage] = useLazyLoading(imageRef, image);
     const isRegistered = useRegistered(false);
-    const isGated = hasTag(/caas:gated/, tags) || hasTag(/caas:card-style\/half-height-featured/, tags);
+    const isGated = hasTag(/7ed3/, tags) || hasTag(/1j6zgcx\/3bhv/, tags);
 
     if (isGated && !isRegistered) {
         bannerDescriptionToUse = bannerMap.register.description;

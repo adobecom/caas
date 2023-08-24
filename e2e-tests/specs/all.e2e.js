@@ -248,7 +248,7 @@ const config = {
 let serverPath = 'https://adobecom.github.io/caas';
 const args = process.argv.slice(2);
 if (args.includes('env=LOCAL')) {
-    serverPath = `http://localhost:${PORT}`;
+    serverPath = `http://caas.corp.adobe.com:${PORT}`;
     config.collection.endpoint = '../../mock-json/smoke.json';
 }
 
@@ -304,6 +304,30 @@ describe('Hide CTA(s):', async () => {
         const untaggedCta = await $('#ac578dee-f01b-3ea0-a282-2116619e4251 .consonant-BtnInfobit--cta').isDisplayed();
         expect(taggedCta).toEqual(false);
         expect(untaggedCta).toEqual(true);
+    });
+
+    it('Test floodgate card appears', async () => {
+        const cloneConfig = structuredClone(config);
+        cloneConfig.headers = [['x-adobe-floodgate', 'pink']];
+        cloneConfig.collection.endpoint = 'https://14257-chimera-stage.adobeioruntime.net/api/v1/web/chimera-0.0.1/collection?originSelection=doccloud&contentTypeTags=&collectionTags=&excludeContentWithTags=&language=en&country=us&complexQuery=&excludeIds=&currentEntityId=&featuredCards=6c43fa56-7f27-39ae-af30-9fb18e0e5050&environment=&draft=false&size=100000&flatFile=false';
+        const state = btoa(JSON.stringify(cloneConfig));
+        const url = `${serverPath}/html/e2e/floodgate-on.html?state=${state}`;
+        await browser.url(url);
+        await browser.setTimeout({ script: 50000 });
+        const cardTitle = await $('#\\36 85a7780-b8b9-34f4-99b1-9189081ed472 .consonant-OneHalfCard-title').getText();
+        expect(cardTitle).toEqual('Floodgate Headline');
+    });
+
+    it('Test floodgate card does not appear', async () => {
+        const cloneConfig = structuredClone(config);
+        cloneConfig.headers = [[]];
+        cloneConfig.collection.endpoint = 'https://14257-chimera-stage.adobeioruntime.net/api/v1/web/chimera-0.0.1/collection?originSelection=doccloud&contentTypeTags=&collectionTags=&excludeContentWithTags=&language=en&country=us&complexQuery=&excludeIds=&currentEntityId=&featuredCards=6c43fa56-7f27-39ae-af30-9fb18e0e5050&environment=&draft=false&size=100000&flatFile=false';
+        const state = btoa(JSON.stringify(cloneConfig));
+        const url = `${serverPath}/html/e2e/floodgate-off.html?state=${state}`;
+        await browser.url(url);
+        await browser.setTimeout({ script: 50000 });
+        const cardTitle = await $('#\\36 85a7780-b8b9-34f4-99b1-9189081ed472 .consonant-OneHalfCard-title').isExisting();
+        expect(cardTitle).toBe(false);
     });
 });
 
