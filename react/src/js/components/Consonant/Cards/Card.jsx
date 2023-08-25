@@ -325,7 +325,7 @@ const Card = (props) => {
                     className="consonant-Card-videoIco" />
                 }
                 {showLogo &&
-                logoSrc &&
+                (logoSrc || (isText && image)) &&
                 <div
                     style={({
                         backgroundColor: logoBg,
