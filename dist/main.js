@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 8/24/2023, 14:00:23
+ * Chimera UI Libraries - Build 0.7.1 (8/24/2023, 18:29:57)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -46295,7 +46295,7 @@ var Card = function Card(props) {
      * isGated
      * @type {Boolean}
      */
-    var isGated = (0, _Helpers.hasTag)(/caas:gated/, tags);
+    var isGated = (0, _Helpers.hasTag)(/7ed3/, tags) || (0, _Helpers.hasTag)(/1j6zgcx\/3bhv/, tags);
 
     /**
      * Extends infobits with the configuration data
