@@ -14,7 +14,7 @@ import prettyFormatDate from '../Helpers/prettyFormat';
 import { INFOBIT_TYPE } from '../Helpers/constants';
 import { hasTag } from '../Helpers/Helpers';
 import { getEventBanner, getLinkTarget } from '../Helpers/general';
-import { useConfig } from '../Helpers/hooks';
+import { useConfig, useRegistered } from '../Helpers/hooks';
 import {
     stylesType,
     contentAreaType,
@@ -147,6 +147,8 @@ const Card = (props) => {
     let bannerIconToUse = bannerIcon;
     let bannerFontColorToUse = bannerFontColor;
     let bannerDescriptionToUse = bannerDescription;
+    let videoURLToUse = videoURL;
+    let gateVideo = false;
 
     const getConfig = useConfig();
 
@@ -161,6 +163,7 @@ const Card = (props) => {
     const additionalParams = getConfig('collection', 'additionalRequestParams');
     const detailsTextOption = getConfig('collection', 'detailsTextOption');
     const lastModified = getConfig('collection', 'i18n.lastModified');
+    const registrationUrl = getConfig('collection', 'banner.register.url');
 
     /**
      * Class name for the card:
@@ -197,6 +200,13 @@ const Card = (props) => {
      * @type {Boolean}
      */
     const isGated = hasTag(/7ed3/, tags) || hasTag(/1j6zgcx\/3bhv/, tags);
+
+    /**
+     * isRegistered
+     * @type {Boolean}
+     */
+    const isRegistered = useRegistered(false);
+
 
     /**
      * Extends infobits with the configuration data
@@ -237,7 +247,14 @@ const Card = (props) => {
         });
     }
 
-    if (startDate && endDate) {
+    if (isGated && !isRegistered) {
+        bannerDescriptionToUse = bannerMap.register.description;
+        bannerIconToUse = '';
+        bannerBackgroundColorToUse = bannerMap.register.backgroundColor;
+        bannerFontColorToUse = bannerMap.register.fontColor;
+        videoURLToUse = registrationUrl;
+        gateVideo = true;
+    } else if (startDate && endDate) {
         const eventBanner = getEventBanner(startDate, endDate, bannerMap);
         bannerBackgroundColorToUse = eventBanner.backgroundColor;
         bannerDescriptionToUse = eventBanner.description;
@@ -320,7 +337,8 @@ const Card = (props) => {
                 {showVideoButton &&
                 videoURL &&
                 <VideoButton
-                    videoURL={videoURL}
+                    videoURL={videoURLToUse}
+                    gateVideo={gateVideo}
                     onFocus={onFocus}
                     className="consonant-Card-videoIco" />
                 }
@@ -331,8 +349,10 @@ const Card = (props) => {
                         backgroundColor: logoBg,
                         borderColor: logoBorderBg,
                     })}
+                    data-testid="consonant-Card-logo"
                     className="consonant-Card-logo">
                     <img
+                        // the text card uses the image as logo
                         src={isText ? image : logoSrc}
                         alt={isText ? altText : logoAlt}
                         loading="lazy"
