@@ -9,6 +9,8 @@ import setup from '../../Testing/Utils/Settings';
 
 const renderCard = setup(Card, DEFAULT_PROPS_3_2);
 
+const cardStyle = 'text-card';
+
 describe('Consonant/Card/Text', () => {
     test('should be able to render a banner overlay', () => {
         const {
@@ -37,7 +39,7 @@ describe('Consonant/Card/Text', () => {
 
     test('should be able to render a label overlay', () => {
         renderCard({
-            cardStyle: 'text-card',
+            cardStyle,
             contentArea: {
                 dateDetailText: {
                     endTime: '2021-10-11T21:00:00.000Z',
@@ -52,7 +54,7 @@ describe('Consonant/Card/Text', () => {
 
     test('should be able to render a detail text', () => {
         renderCard({
-            cardStyle: 'text-card',
+            cardStyle,
             contentArea: {
                 detailText: 'detail label',
                 dateDetailText: {
@@ -65,15 +67,15 @@ describe('Consonant/Card/Text', () => {
         expect(labelElement).toBeNull();
     });
 
-    test('should be able to render a logo', () => {
+    test('should be able to render a logo image', () => {
         renderCard();
-        const logoAltText = screen.queryByTestId('consonant-Card-bannerImg');
+        const logoAltText = screen.queryByTestId('consonant-Card-logo');
         expect(logoAltText).not.toBeNull();
     });
 
     test('should be able to render the card title', () => {
         renderCard({
-            cardStyle: 'text-card',
+            cardStyle,
             contentArea: {
                 title: 'Card title',
                 detailText: 'detail label',
@@ -89,7 +91,7 @@ describe('Consonant/Card/Text', () => {
 
     test('should be able to render the card description text', () => {
         renderCard({
-            cardStyle: 'text-card',
+            cardStyle,
             contentArea: {
                 title: 'Card title',
                 description: 'Card description text',
@@ -102,5 +104,19 @@ describe('Consonant/Card/Text', () => {
 
         const cardText = screen.getByTestId('consonant-Card-text');
         expect(cardText).toHaveTextContent('Card description text');
+    });
+
+    test('should be able to render the lock icon on gated cards', () => {
+        renderCard({
+            cardStyle,
+            tags: [
+                {
+                    id: '/7ed3',
+                },
+            ],
+        });
+
+        const gatedIcon = screen.getByTestId('consonant-GatedInfobit');
+        expect(gatedIcon).not.toBeNull();
     });
 });
