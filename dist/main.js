@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.7.1 (8/24/2023, 20:59:45)
+ * Chimera UI Libraries - Build 0.7.1 (8/28/2023, 08:45:57)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -46248,6 +46248,8 @@ var Card = function Card(props) {
     var bannerIconToUse = bannerIcon;
     var bannerFontColorToUse = bannerFontColor;
     var bannerDescriptionToUse = bannerDescription;
+    var videoURLToUse = videoURL;
+    var gateVideo = false;
 
     var getConfig = (0, _hooks.useConfig)();
 
@@ -46262,6 +46264,7 @@ var Card = function Card(props) {
     var additionalParams = getConfig('collection', 'additionalRequestParams');
     var detailsTextOption = getConfig('collection', 'detailsTextOption');
     var lastModified = getConfig('collection', 'i18n.lastModified');
+    var registrationUrl = getConfig('collection', 'banner.register.url');
 
     /**
      * Class name for the card:
@@ -46296,6 +46299,12 @@ var Card = function Card(props) {
      * @type {Boolean}
      */
     var isGated = (0, _Helpers.hasTag)(/7ed3/, tags) || (0, _Helpers.hasTag)(/1j6zgcx\/3bhv/, tags);
+
+    /**
+     * isRegistered
+     * @type {Boolean}
+     */
+    var isRegistered = (0, _hooks.useRegistered)(false);
 
     /**
      * Extends infobits with the configuration data
@@ -46333,7 +46342,14 @@ var Card = function Card(props) {
         });
     }
 
-    if (startDate && endDate) {
+    if (isGated && !isRegistered) {
+        bannerDescriptionToUse = bannerMap.register.description;
+        bannerIconToUse = '';
+        bannerBackgroundColorToUse = bannerMap.register.backgroundColor;
+        bannerFontColorToUse = bannerMap.register.fontColor;
+        videoURLToUse = registrationUrl;
+        gateVideo = true;
+    } else if (startDate && endDate) {
         var eventBanner = (0, _general.getEventBanner)(startDate, endDate, bannerMap);
         bannerBackgroundColorToUse = eventBanner.backgroundColor;
         bannerDescriptionToUse = eventBanner.description;
@@ -46418,18 +46434,21 @@ var Card = function Card(props) {
                 badgeText
             ),
             showVideoButton && videoURL && _react2.default.createElement(_videoButton2.default, {
-                videoURL: videoURL,
+                videoURL: videoURLToUse,
+                gateVideo: gateVideo,
                 onFocus: onFocus,
                 className: 'consonant-Card-videoIco' }),
-            showLogo && logoSrc && _react2.default.createElement(
+            showLogo && (logoSrc || isText && image) && _react2.default.createElement(
                 'div',
                 {
                     style: {
                         backgroundColor: logoBg,
                         borderColor: logoBorderBg
                     },
+                    'data-testid': 'consonant-Card-logo',
                     className: 'consonant-Card-logo' },
                 _react2.default.createElement('img', {
+                    // the text card uses the image as logo
                     src: isText ? image : logoSrc,
                     alt: isText ? altText : logoAlt,
                     loading: 'lazy',
