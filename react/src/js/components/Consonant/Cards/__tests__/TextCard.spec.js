@@ -114,6 +114,11 @@ describe('Consonant/Card/Text', () => {
                     id: '/7ed3',
                 },
             ],
+            bannerMap: {
+                register: {
+                    description: 'Register',
+                },
+            },
         });
 
         const gatedIcon = screen.getByTestId('consonant-GatedInfobit');
