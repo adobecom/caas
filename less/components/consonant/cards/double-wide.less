@@ -56,6 +56,30 @@
                 }
             }
 
+            &-logo {
+                position: absolute;
+                display: block;
+                bottom: 16px;
+                left: 0;
+                padding: 7px 24px;
+                border: 1px solid transparent;
+                border-top-right-radius: 4px;
+                border-bottom-right-radius: 4px;
+                background-color: @consonantWhite;
+                z-index: 1;
+
+                .no-font;
+
+                img {
+                    width: auto;
+                    height: auto;
+                    max-width: @consonantCardLogoImgMaxWidth;
+                    max-height: @consonant-cardLogoImgMaxHeight;
+                    object-fit: contain;
+                    user-select: none;
+                }
+            }
+
             &-label {
                 display: block;
                 margin-bottom: 8px;
@@ -65,6 +89,37 @@
 
                 :only-child {
                     margin-bottom: 0;
+                }
+            }
+
+            &-banner {
+                position: absolute;
+                display: flex;
+                justify-content: flex-start;
+                max-width: 56%;
+                max-height: 70%;
+                top: 24px;
+                right: 0;
+                padding: 8px 13px;
+
+                .font(0.75rem, 1.0625rem, 700, @consonantBaseColor);
+
+                letter-spacing: 0.72px;
+                text-transform: uppercase;
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+                z-index: 1;
+                background-color: @consonantBlue600;
+                user-select: none;
+                overflow-y: auto;
+
+                &IconWrapper {
+                    margin-right: 4px;
+
+                    img {
+                        width: 8px;
+                        height: 8px;
+                    }
                 }
             }
 
