@@ -92,6 +92,7 @@ const Container = (props) => {
     const getConfig = makeConfigGetter(config);
     const filterGroupPrefix = 'ch_';
     const searchPrefix = 'sh_';
+    const CARD_HASH_LENGTH = 10;
 
     /**
      **** Authored Configs ****
@@ -111,17 +112,17 @@ const Container = (props) => {
     const sortOptions = getConfig('sort', 'options');
     const defaultSort = getConfig('sort', 'defaultSort');
     const defaultSortOption = getDefaultSortOption(config, defaultSort);
-    const featuredCards = getConfig('featuredCards', '')
+    let featuredCards = getConfig('featuredCards', '')
         .toString()
         .replace(/\[|\]/g, '')
         .replace(/`/g, '')
         .split(',');
-    const hideCtaIds = getConfig('hideCtaIds', '')
+    let hideCtaIds = getConfig('hideCtaIds', '')
         .toString()
         .replace(/\[|\]/g, '')
         .replace(/`/g, '')
         .split(',');
-    const hideCtaTags = getConfig('hideCtaTags', '')
+    let hideCtaTags = getConfig('hideCtaTags', '')
         .toString()
         .replace(/\[|\]/g, '')
         .replace(/`/g, '')
@@ -787,6 +788,24 @@ const Container = (props) => {
                     setLoading(false);
                     setIsFirstLoad(true);
                     if (!getByPath(payload, 'cards.length')) return;
+                    if (payload.isHashed) {
+                        const TAG_HASH_LENGTH = 6;
+                        for (const group of authoredFilters) {
+                            group.id = rollingHash(group.id, TAG_HASH_LENGTH);
+                            for (const filterItem of group.items) {
+                                const [parent, child] = getParentChild(filterItem.id);
+                                filterItem.id = `${rollingHash(parent, TAG_HASH_LENGTH)}/${rollingHash(child, TAG_HASH_LENGTH)}`;
+                            }
+                        }
+                        featuredCards = featuredCards.map(id => rollingHash(id, CARD_HASH_LENGTH));
+                        hideCtaIds = hideCtaIds.map(id => rollingHash(id, CARD_HASH_LENGTH));
+                        const temp = [];
+                        for (const tag of hideCtaTags) {
+                            const [parent, child] = getParentChild(tag);
+                            temp.push(`${rollingHash(parent, TAG_HASH_LENGTH)}/${rollingHash(child, TAG_HASH_LENGTH)}`);
+                        }
+                        hideCtaTags = temp;
+                    }
 
                     const { processedCards = [] } = new JsonProcessor(payload.cards)
                         .removeDuplicateCards()
@@ -797,16 +816,6 @@ const Container = (props) => {
                             hideCtaIds,
                             hideCtaTags,
                         );
-                    if (payload.isHashed) {
-                        const TAG_HASH_LENGTH = 6;
-                        for (const group of authoredFilters) {
-                            group.id = rollingHash(group.id, TAG_HASH_LENGTH);
-                            for (const filterItem of group.items) {
-                                const [parent, child] = getParentChild(filterItem.id);
-                                filterItem.id = `${rollingHash(parent, TAG_HASH_LENGTH)}/${rollingHash(child, TAG_HASH_LENGTH)}`;
-                            }
-                        }
-                    }
                     setFilters(() => authoredFilters);
 
                     const transitions = getTransitions(processedCards);
