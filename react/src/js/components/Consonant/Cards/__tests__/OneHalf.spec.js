@@ -9,6 +9,8 @@ import setup from '../../Testing/Utils/Settings';
 
 const renderCard = setup(Card, DEFAULT_PROPS_3_2);
 
+const cardStyle = 'one-half';
+
 describe('Consonant/Card/3:2', () => {
     test('should be able to render a banner overlay', () => {
         const {
@@ -23,7 +25,7 @@ describe('Consonant/Card/3:2', () => {
                 },
             },
         } = renderCard({
-            cardStyle: 'one-half',
+            cardStyle,
         });
 
         const bannerElement = screen.getByTestId('consonant-Card-banner');
@@ -36,6 +38,7 @@ describe('Consonant/Card/3:2', () => {
         expect(bannerElement).toHaveTextContent(bannerDescription);
         expect(bannerIconElement).toHaveAttribute('src', bannerIcon);
     });
+
     test('should be able to render a badge overlay', () => {
         const {
             props: {
@@ -46,7 +49,7 @@ describe('Consonant/Card/3:2', () => {
                 },
             },
         } = renderCard({
-            cardStyle: 'one-half',
+            cardStyle,
         });
 
         const badgeElement = screen.queryByText(someBadgeText);
@@ -55,6 +58,7 @@ describe('Consonant/Card/3:2', () => {
 
     test('should be able to render a label overlay', () => {
         renderCard({
+            cardStyle,
             contentArea: {
                 dateDetailText: {
                     endTime: '2021-10-11T21:00:00.000Z',
@@ -67,9 +71,17 @@ describe('Consonant/Card/3:2', () => {
         expect(labelElement).not.toBeNull();
     });
 
+    test('should be able to render a logo', () => {
+        renderCard({
+            cardStyle,
+        });
+        const logoAltText = screen.getByAltText('logo-alt-text');
+        expect(logoAltText).not.toBeNull();
+    });
+
     test('should be able to render a detail text', () => {
         renderCard({
-            cardStyle: 'one-half',
+            cardStyle,
             contentArea: {
                 detailText: 'detail label',
                 dateDetailText: {
@@ -82,11 +94,68 @@ describe('Consonant/Card/3:2', () => {
         expect(labelElement).not.toBeNull();
     });
 
-    test('should be able to render a logo', () => {
+    test('should be able to render the lock icon on gated cards', () => {
         renderCard({
-            cardStyle: 'one-half',
+            cardStyle,
+            tags: [
+                {
+                    id: '/7ed3',
+                },
+            ],
+            bannerMap: {
+                register: {
+                    description: 'Register',
+                },
+            },
         });
-        const logoAltText = screen.getByAltText('logo-alt-text');
-        expect(logoAltText).not.toBeNull();
+
+        const gatedIcon = screen.getByTestId('consonant-GatedInfobit');
+        expect(gatedIcon).not.toBeNull();
+    });
+
+    test('should be able to render a CTA button', () => {
+        renderCard({
+            cardStyle,
+            footer: [{
+                right: [{
+                    type: 'button',
+                    href: 'https://milo.adobe.com',
+                }],
+            }],
+        });
+        const ctaLinkBtn = screen.getByTestId('consonant-BtnInfobit');
+        expect(ctaLinkBtn).not.toBeNull();
+    });
+
+    test('should be able to render a CTA link', () => {
+        renderCard({
+            cardStyle,
+            footer: [{
+                right: [{
+                    type: 'link',
+                    href: 'https://milo.adobe.com',
+                }],
+            }],
+        });
+        const ctaLinkLink = screen.getByTestId('consonant-LinkInfobit');
+        expect(ctaLinkLink).not.toBeNull();
+    });
+
+    test('should be able to render a Date interval', () => {
+        renderCard({
+            cardStyle,
+            footer: [{
+                left: [
+                    {},
+                    {
+                        type: 'date-interval',
+                        endTime: '2021-08-19T23:23:00.000-07:00',
+                        startTime: '2021-08-19T22:22:00.000-07:00',
+                    },
+                ],
+            }],
+        });
+        const dateinterval = screen.getByTestId('consonant-DateIntervalInfobit');
+        expect(dateinterval).not.toBeNull();
     });
 });
