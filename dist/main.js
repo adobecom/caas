@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 8/24/2023, 14:26:28
+ * Chimera UI Libraries - Build 0.7.1 (8/30/2023, 14:04:41)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -50226,7 +50226,7 @@ var OneHalfCard = function OneHalfCard(props) {
                 if (isGated) {
                     copy.type = _constants.INFOBIT_TYPE.GATED;
                 }
-                return _extends({}, infobit, {
+                return _extends({}, copy, {
                     cardId: id,
                     disableBookmarkIco: disableBookmarkIco,
                     isBookmarked: isBookmarked,

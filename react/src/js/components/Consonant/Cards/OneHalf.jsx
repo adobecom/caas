@@ -210,7 +210,7 @@ const OneHalfCard = (props) => {
                     copy.type = INFOBIT_TYPE.GATED;
                 }
                 return {
-                    ...infobit,
+                    ...copy,
                     cardId: id,
                     disableBookmarkIco,
                     isBookmarked,
