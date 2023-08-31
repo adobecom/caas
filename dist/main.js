@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 8/16/2023, 20:52:28
+ * Chimera UI Libraries - Build 8/31/2023, 08:31:46
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -46236,12 +46236,15 @@ var Card = function Card(props) {
     var bannerIconToUse = bannerIcon;
     var bannerFontColorToUse = bannerFontColor;
     var bannerDescriptionToUse = bannerDescription;
+    var videoURLToUse = videoURL;
+    var gateVideo = false;
 
     var getConfig = (0, _hooks.useConfig)();
 
     /**
      **** Authored Configs ****
      */
+    var registrationUrl = getConfig('collection', 'banner.register.url');
     var i18nFormat = getConfig('collection', 'i18n.prettyDateIntervalFormat');
     var locale = getConfig('language', '');
     var disableBanners = getConfig('collection', 'disableBanners');
@@ -46283,7 +46286,8 @@ var Card = function Card(props) {
      * isGated
      * @type {Boolean}
      */
-    var isGated = (0, _Helpers.hasTag)(/caas:gated/, tags);
+    // const isGated = hasTag(/caas:gated/, tags);
+    var isGated = (0, _Helpers.hasTag)(/caas:gated/, tags) || (0, _Helpers.hasTag)(/caas:card-style\/half-height-featured/, tags) || (0, _Helpers.hasTag)(/7ed3/, tags) || (0, _Helpers.hasTag)(/1j6zgcx\/3bhv/, tags);
 
     /**
      * Extends infobits with the configuration data
@@ -46301,7 +46305,7 @@ var Card = function Card(props) {
                 if (isGated) {
                     copy.type = _constants.INFOBIT_TYPE.GATED;
                 }
-                return _extends({}, infobit, {
+                return _extends({}, copy, {
                     cardId: id,
                     disableBookmarkIco: disableBookmarkIco,
                     isBookmarked: isBookmarked,
@@ -46321,15 +46325,37 @@ var Card = function Card(props) {
         });
     }
 
-    if (startDate && endDate) {
+    // if (startDate && endDate) {
+    //     const eventBanner = getEventBanner(startDate, endDate, bannerMap);
+    //     bannerBackgroundColorToUse = eventBanner.backgroundColor;
+    //     bannerDescriptionToUse = eventBanner.description;
+    //     bannerFontColorToUse = eventBanner.fontColor;
+    //     bannerIconToUse = eventBanner.icon;
+    // }
+
+    var isRegistered = (0, _hooks.useRegistered)(false);
+
+    if (isGated && !isRegistered) {
+        bannerDescriptionToUse = bannerMap.register.description;
+        bannerIconToUse = '';
+        bannerBackgroundColorToUse = bannerMap.register.backgroundColor;
+        bannerFontColorToUse = bannerMap.register.fontColor;
+        videoURLToUse = registrationUrl;
+        gateVideo = true;
+    } else if (startDate && endDate) {
         var eventBanner = (0, _general.getEventBanner)(startDate, endDate, bannerMap);
         bannerBackgroundColorToUse = eventBanner.backgroundColor;
         bannerDescriptionToUse = eventBanner.description;
         bannerFontColorToUse = eventBanner.fontColor;
         bannerIconToUse = eventBanner.icon;
+        var now = (0, _general.getCurrentDate)();
+        if ((0, _general.isDateBeforeInterval)(now, startDate)) {
+            detailText = (0, _prettyFormat2.default)(startDate, endDate, locale, i18nFormat);
+        }
     }
+
     var hasBanner = bannerDescriptionToUse && bannerFontColorToUse && bannerBackgroundColorToUse;
-    var headingAria = videoURL || label || detailText || description || logoSrc || badgeText || hasBanner && !disableBanners ? '' : title;
+    var headingAria = videoURLToUse || label || detailText || description || logoSrc || badgeText || hasBanner && !disableBanners ? '' : title;
 
     var ariaText = title;
     if (hasBanner && !disableBanners) {
@@ -46405,8 +46431,9 @@ var Card = function Card(props) {
                     className: 'consonant-Card-badge' },
                 badgeText
             ),
-            showVideoButton && videoURL && _react2.default.createElement(_videoButton2.default, {
-                videoURL: videoURL,
+            showVideoButton && videoURLToUse && _react2.default.createElement(_videoButton2.default, {
+                videoURL: videoURLToUse,
+                gateVideo: gateVideo,
                 onFocus: onFocus,
                 className: 'consonant-Card-videoIco' }),
             showLogo && logoSrc && _react2.default.createElement(

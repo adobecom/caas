@@ -13,8 +13,8 @@ import CardFooter from './CardFooter/CardFooter';
 import prettyFormatDate from '../Helpers/prettyFormat';
 import { INFOBIT_TYPE } from '../Helpers/constants';
 import { hasTag } from '../Helpers/Helpers';
-import { getEventBanner, getLinkTarget } from '../Helpers/general';
-import { useConfig } from '../Helpers/hooks';
+import { getEventBanner, getLinkTarget, isDateBeforeInterval, getCurrentDate } from '../Helpers/general';
+import { useConfig, useRegistered } from '../Helpers/hooks';
 import {
     stylesType,
     contentAreaType,
@@ -147,12 +147,15 @@ const Card = (props) => {
     let bannerIconToUse = bannerIcon;
     let bannerFontColorToUse = bannerFontColor;
     let bannerDescriptionToUse = bannerDescription;
+    let videoURLToUse = videoURL;
+    let gateVideo = false;
 
     const getConfig = useConfig();
 
     /**
      **** Authored Configs ****
      */
+    const registrationUrl = getConfig('collection', 'banner.register.url');
     const i18nFormat = getConfig('collection', 'i18n.prettyDateIntervalFormat');
     const locale = getConfig('language', '');
     const disableBanners = getConfig('collection', 'disableBanners');
@@ -196,8 +199,11 @@ const Card = (props) => {
      * isGated
      * @type {Boolean}
      */
-    const isGated = hasTag(/caas:gated/, tags);
-
+    // const isGated = hasTag(/caas:gated/, tags);
+    const isGated = hasTag(/caas:gated/, tags)
+        || hasTag(/caas:card-style\/half-height-featured/, tags)
+        || hasTag(/7ed3/, tags)
+        || hasTag(/1j6zgcx\/3bhv/, tags);
 
     /**
      * Extends infobits with the configuration data
@@ -216,7 +222,7 @@ const Card = (props) => {
                     copy.type = INFOBIT_TYPE.GATED;
                 }
                 return {
-                    ...infobit,
+                    ...copy,
                     cardId: id,
                     disableBookmarkIco,
                     isBookmarked,
@@ -238,15 +244,38 @@ const Card = (props) => {
         });
     }
 
-    if (startDate && endDate) {
+    // if (startDate && endDate) {
+    //     const eventBanner = getEventBanner(startDate, endDate, bannerMap);
+    //     bannerBackgroundColorToUse = eventBanner.backgroundColor;
+    //     bannerDescriptionToUse = eventBanner.description;
+    //     bannerFontColorToUse = eventBanner.fontColor;
+    //     bannerIconToUse = eventBanner.icon;
+    // }
+
+    const isRegistered = useRegistered(false);
+
+
+    if (isGated && !isRegistered) {
+        bannerDescriptionToUse = bannerMap.register.description;
+        bannerIconToUse = '';
+        bannerBackgroundColorToUse = bannerMap.register.backgroundColor;
+        bannerFontColorToUse = bannerMap.register.fontColor;
+        videoURLToUse = registrationUrl;
+        gateVideo = true;
+    } else if (startDate && endDate) {
         const eventBanner = getEventBanner(startDate, endDate, bannerMap);
         bannerBackgroundColorToUse = eventBanner.backgroundColor;
         bannerDescriptionToUse = eventBanner.description;
         bannerFontColorToUse = eventBanner.fontColor;
         bannerIconToUse = eventBanner.icon;
+        const now = getCurrentDate();
+        if (isDateBeforeInterval(now, startDate)) {
+            detailText = prettyFormatDate(startDate, endDate, locale, i18nFormat);
+        }
     }
+
     const hasBanner = bannerDescriptionToUse && bannerFontColorToUse && bannerBackgroundColorToUse;
-    const headingAria = (videoURL ||
+    const headingAria = (videoURLToUse ||
         label || detailText || description || logoSrc || badgeText || (hasBanner && !disableBanners)) ? '' : title;
 
     let ariaText = title;
@@ -319,9 +348,10 @@ const Card = (props) => {
                 </span>
                 }
                 {showVideoButton &&
-                videoURL &&
+                videoURLToUse &&
                 <VideoButton
-                    videoURL={videoURL}
+                    videoURL={videoURLToUse}
+                    gateVideo={gateVideo}
                     onFocus={onFocus}
                     className="consonant-Card-videoIco" />
                 }
