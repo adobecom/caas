@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.7.2 (8/30/2023, 14:32:26)
+ * Chimera UI Libraries - Build 0.7.2 (8/31/2023, 20:46:21)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -46338,7 +46338,7 @@ var Card = function Card(props) {
      * isGated
      * @type {Boolean}
      */
-    var isGated = (0, _Helpers.hasTag)(/7ed3/, tags) || (0, _Helpers.hasTag)(/1j6zgcx\/3bhv/, tags);
+    var isGated = (0, _Helpers.hasTag)(/caas:gated/, tags) || (0, _Helpers.hasTag)(/caas:card-style\/half-height-featured/, tags) || (0, _Helpers.hasTag)(/7ed3/, tags) || (0, _Helpers.hasTag)(/1j6zgcx\/3bhv/, tags);
 
     /**
      * isRegistered
@@ -46382,32 +46382,6 @@ var Card = function Card(props) {
         });
     }
 
-    if (isGated && !isRegistered) {
-        bannerDescriptionToUse = bannerMap.register.description;
-        bannerIconToUse = '';
-        bannerBackgroundColorToUse = bannerMap.register.backgroundColor;
-        bannerFontColorToUse = bannerMap.register.fontColor;
-        videoURLToUse = registrationUrl;
-        gateVideo = true;
-    } else if (startDate && endDate) {
-        var eventBanner = (0, _general.getEventBanner)(startDate, endDate, bannerMap);
-        bannerBackgroundColorToUse = eventBanner.backgroundColor;
-        bannerDescriptionToUse = eventBanner.description;
-        bannerFontColorToUse = eventBanner.fontColor;
-        bannerIconToUse = eventBanner.icon;
-    }
-    var hasBanner = bannerDescriptionToUse && bannerFontColorToUse && bannerBackgroundColorToUse;
-    var headingAria = videoURL || label || detailText || description || logoSrc || badgeText || hasBanner && !disableBanners ? '' : title;
-
-    var ariaText = title;
-    if (hasBanner && !disableBanners) {
-        ariaText = bannerDescriptionToUse + ' | ' + ariaText;
-    }
-
-    var linkBlockerTarget = (0, _general.getLinkTarget)(overlayLink);
-    var addParams = new URLSearchParams(additionalParams);
-    var overlay = additionalParams && addParams.keys().next().value ? overlayLink + '?' + addParams.toString() : overlayLink;
-
     // Card styles
     var isOneHalf = cardStyle === 'one-half';
     var isThreeFourths = cardStyle === 'three-fourths';
@@ -46425,6 +46399,52 @@ var Card = function Card(props) {
     var showVideoButton = !isProduct && !isText;
     var showText = !isHalfHeight && !isFull;
     var showFooter = isOneHalf || isProduct || isText;
+
+    // if (isGated && !isRegistered) {
+    //     bannerDescriptionToUse = bannerMap.register.description;
+    //     bannerIconToUse = '';
+    //     bannerBackgroundColorToUse = bannerMap.register.backgroundColor;
+    //     bannerFontColorToUse = bannerMap.register.fontColor;
+    //     videoURLToUse = registrationUrl;
+    //     gateVideo = true;
+    // } else if (startDate && endDate) {
+    //     const eventBanner = getEventBanner(startDate, endDate, bannerMap);
+    //     bannerBackgroundColorToUse = eventBanner.backgroundColor;
+    //     bannerDescriptionToUse = eventBanner.description;
+    //     bannerFontColorToUse = eventBanner.fontColor;
+    //     bannerIconToUse = eventBanner.icon;
+    // }
+
+    if (isOneHalf && isGated && !isRegistered) {
+        bannerDescriptionToUse = bannerMap.register.description;
+        bannerIconToUse = '';
+        bannerBackgroundColorToUse = bannerMap.register.backgroundColor;
+        bannerFontColorToUse = bannerMap.register.fontColor;
+        videoURLToUse = registrationUrl;
+        gateVideo = true;
+    } else if (startDate && endDate) {
+        var eventBanner = (0, _general.getEventBanner)(startDate, endDate, bannerMap);
+        bannerBackgroundColorToUse = eventBanner.backgroundColor;
+        bannerDescriptionToUse = eventBanner.description;
+        bannerFontColorToUse = eventBanner.fontColor;
+        bannerIconToUse = eventBanner.icon;
+        var now = (0, _general.getCurrentDate)();
+        if ((0, _general.isDateBeforeInterval)(now, startDate)) {
+            detailText = (0, _prettyFormat2.default)(startDate, endDate, locale, i18nFormat);
+        }
+    }
+
+    var hasBanner = bannerDescriptionToUse && bannerFontColorToUse && bannerBackgroundColorToUse;
+    var headingAria = videoURL || label || detailText || description || logoSrc || badgeText || hasBanner && !disableBanners ? '' : title;
+
+    var ariaText = title;
+    if (hasBanner && !disableBanners) {
+        ariaText = bannerDescriptionToUse + ' | ' + ariaText;
+    }
+
+    var linkBlockerTarget = (0, _general.getLinkTarget)(overlayLink);
+    var addParams = new URLSearchParams(additionalParams);
+    var overlay = additionalParams && addParams.keys().next().value ? overlayLink + '?' + addParams.toString() : overlayLink;
 
     return _react2.default.createElement(
         'div',
