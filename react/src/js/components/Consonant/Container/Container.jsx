@@ -466,6 +466,7 @@ const Container = (props) => {
     const resetFiltersSearchAndBookmarks = () => {
         clearAllFilters();
         setSearchQuery('');
+        clearUrlState();
         setShowBookmarks(false);
     };
 
@@ -671,10 +672,9 @@ const Container = (props) => {
     }, []);
 
     /**
-     * Sets filters from url as tate
+     * Sets filters from url as state
      * @returns {Void} - an updated state
      */
-
     useEffect(() => {
         setFilters(origin => origin.map((filter) => {
             const { group, items } = filter;
@@ -818,7 +818,20 @@ const Container = (props) => {
                             hideCtaIds,
                             hideCtaTags,
                         );
-                    setFilters(() => authoredFilters);
+                    setFilters(() => authoredFilters.map((filter) => {
+                        const { group, items } = filter;
+                        const urlStateValue = urlState[filterGroupPrefix + group];
+                        if (!urlStateValue) return filter;
+                        const urlStateArray = urlStateValue.split(',');
+                        return {
+                            ...filter,
+                            opened: true,
+                            items: items.map(item => ({
+                                ...item,
+                                selected: urlStateArray.includes(String(item.label)),
+                            })),
+                        };
+                    }));
 
                     const transitions = getTransitions(processedCards);
                     if (sortOption.sort.toLowerCase() === 'eventsort') {

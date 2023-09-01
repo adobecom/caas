@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.7.3 (8/31/2023, 21:55:40)
+ * Chimera UI Libraries - Build 0.8.0 (9/1/2023, 14:24:14)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6464,6 +6464,7 @@ var Container = function Container(props) {
     var resetFiltersSearchAndBookmarks = function resetFiltersSearchAndBookmarks() {
         clearAllFilters();
         setSearchQuery('');
+        clearUrlState();
         setShowBookmarks(false);
     };
 
@@ -6701,10 +6702,9 @@ var Container = function Container(props) {
     }, []);
 
     /**
-     * Sets filters from url as tate
+     * Sets filters from url as state
      * @returns {Void} - an updated state
      */
-
     (0, _react.useEffect)(function () {
         setFilters(function (origin) {
             return origin.map(function (filter) {
@@ -6937,7 +6937,22 @@ var Container = function Container(props) {
                     processedCards = _removeDuplicateCards2 === undefined ? [] : _removeDuplicateCards2;
 
                 setFilters(function () {
-                    return authoredFilters;
+                    return authoredFilters.map(function (filter) {
+                        var group = filter.group,
+                            items = filter.items;
+
+                        var urlStateValue = urlState[filterGroupPrefix + group];
+                        if (!urlStateValue) return filter;
+                        var urlStateArray = urlStateValue.split(',');
+                        return _extends({}, filter, {
+                            opened: true,
+                            items: items.map(function (item) {
+                                return _extends({}, item, {
+                                    selected: urlStateArray.includes(String(item.label))
+                                });
+                            })
+                        });
+                    });
                 });
 
                 var transitions = (0, _general.getTransitions)(processedCards);
@@ -46401,21 +46416,6 @@ var Card = function Card(props) {
     var showVideoButton = !isProduct && !isText;
     var showText = !isHalfHeight && !isFull;
     var showFooter = isOneHalf || isProduct || isText;
-
-    // if (isGated && !isRegistered) {
-    //     bannerDescriptionToUse = bannerMap.register.description;
-    //     bannerIconToUse = '';
-    //     bannerBackgroundColorToUse = bannerMap.register.backgroundColor;
-    //     bannerFontColorToUse = bannerMap.register.fontColor;
-    //     videoURLToUse = registrationUrl;
-    //     gateVideo = true;
-    // } else if (startDate && endDate) {
-    //     const eventBanner = getEventBanner(startDate, endDate, bannerMap);
-    //     bannerBackgroundColorToUse = eventBanner.backgroundColor;
-    //     bannerDescriptionToUse = eventBanner.description;
-    //     bannerFontColorToUse = eventBanner.fontColor;
-    //     bannerIconToUse = eventBanner.icon;
-    // }
 
     if (isHalfHeight && isGated && !isRegistered) {
         bannerDescriptionToUse = bannerMap.register.description;
