@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.7.3 (8/31/2023, 20:53:31)
+ * Chimera UI Libraries - Build 0.7.3 (8/31/2023, 21:55:40)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -46417,7 +46417,7 @@ var Card = function Card(props) {
     //     bannerIconToUse = eventBanner.icon;
     // }
 
-    if (isOneHalf && isGated && !isRegistered) {
+    if (isHalfHeight && isGated && !isRegistered) {
         bannerDescriptionToUse = bannerMap.register.description;
         bannerIconToUse = '';
         bannerBackgroundColorToUse = bannerMap.register.backgroundColor;

@@ -283,7 +283,7 @@ const Card = (props) => {
     //     bannerIconToUse = eventBanner.icon;
     // }
 
-    if (isOneHalf && isGated && !isRegistered) {
+    if (isHalfHeight && isGated && !isRegistered) {
         bannerDescriptionToUse = bannerMap.register.description;
         bannerIconToUse = '';
         bannerBackgroundColorToUse = bannerMap.register.backgroundColor;
