@@ -1,6 +1,6 @@
 {
   "name": "CaaS",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "private": false,
   "description": "",
   "scripts": {
@@ -8,7 +8,7 @@
     "build": "webpack",
     "postbuild": "minify dist/main.js > dist/main.min.js",
     "lint": "eslint react/src/js/components/Consonant --fix",
-    "release": "release-it --ci",
+    "release": "HUSKY_SKIP_HOOKS=1 release-it --ci",
     "test:coverage": "jest --coverage",
     "test:unit": "jest",
     "test:e2e-local": "wdio run wdio.conf.js env=LOCAL",
@@ -99,6 +99,7 @@
     "eslint-plugin-react": "^7.18.3",
     "eslint-plugin-react-hooks": "^4.1.2",
     "extract-text-webpack-plugin": "^3.0.1",
+    "husky": "^4.3.8",
     "ignore-loader": "^0.1.2",
     "inject-loader": "^3.0.1",
     "jest": "^24.0.0",

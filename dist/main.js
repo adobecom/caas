@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.7.2 (8/31/2023, 20:46:21)
+ * Chimera UI Libraries - Build 0.7.3 (8/31/2023, 20:53:31)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6910,7 +6910,9 @@ var Container = function Container(props) {
                                 parent = _getParentChild4[0],
                                 child = _getParentChild4[1];
 
-                            temp.push(rollingHash(parent, TAG_HASH_LENGTH) + '/' + rollingHash(child, TAG_HASH_LENGTH));
+                            if (parent !== '' && child !== '') {
+                                temp.push(rollingHash(parent, TAG_HASH_LENGTH) + '/' + rollingHash(child, TAG_HASH_LENGTH));
+                            }
                         }
                     } catch (err) {
                         _didIteratorError2 = true;

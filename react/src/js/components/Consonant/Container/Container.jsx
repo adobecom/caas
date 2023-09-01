@@ -802,7 +802,9 @@ const Container = (props) => {
                         const temp = [];
                         for (const tag of hideCtaTags) {
                             const [parent, child] = getParentChild(tag);
-                            temp.push(`${rollingHash(parent, TAG_HASH_LENGTH)}/${rollingHash(child, TAG_HASH_LENGTH)}`);
+                            if (parent !== '' && child !== '') {
+                                temp.push(`${rollingHash(parent, TAG_HASH_LENGTH)}/${rollingHash(child, TAG_HASH_LENGTH)}`);
+                            }
                         }
                         hideCtaTags = temp;
                     }
