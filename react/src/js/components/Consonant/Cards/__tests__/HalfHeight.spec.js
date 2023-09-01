@@ -48,15 +48,6 @@ describe('Consonant/Card/1:1', () => {
         expect(labelElement).not.toBeNull();
     });
 
-    test('should be able to render a card title', () => {
-        renderCard({
-            cardStyle,
-        });
-
-        const labelElement = screen.queryByTestId('consonant-Card-title');
-        expect(labelElement).not.toBeNull();
-    });
-
     test('should be able to render a detail text', () => {
         renderCard({
             cardStyle,
@@ -69,6 +60,15 @@ describe('Consonant/Card/1:1', () => {
         });
 
         const labelElement = screen.queryByText('detail label');
+        expect(labelElement).not.toBeNull();
+    });
+
+    test('should be able to render a card title', () => {
+        renderCard({
+            cardStyle,
+        });
+
+        const labelElement = screen.queryByTestId('consonant-Card-title');
         expect(labelElement).not.toBeNull();
     });
 });

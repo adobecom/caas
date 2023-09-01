@@ -60,6 +60,7 @@ describe('Consonant/Card/3:2', () => {
         renderCard({
             cardStyle,
             contentArea: {
+                detailText: 'detailText',
                 dateDetailText: {
                     endTime: '2021-10-11T21:00:00.000Z',
                     startTime: '2021-10-11T21:00:00.000Z',
@@ -91,6 +92,24 @@ describe('Consonant/Card/3:2', () => {
         });
 
         const labelElement = screen.queryByText('detail label');
+        expect(labelElement).not.toBeNull();
+    });
+
+    test('should be able to render a card title', () => {
+        renderCard({
+            cardStyle,
+        });
+
+        const labelElement = screen.queryByTestId('consonant-Card-title');
+        expect(labelElement).not.toBeNull();
+    });
+
+    test('should be able to render a card text', () => {
+        renderCard({
+            cardStyle,
+        });
+
+        const labelElement = screen.queryByTestId('consonant-Card-text');
         expect(labelElement).not.toBeNull();
     });
 

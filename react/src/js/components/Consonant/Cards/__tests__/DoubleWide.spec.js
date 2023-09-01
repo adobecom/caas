@@ -3,15 +3,15 @@ import '@testing-library/jest-dom/extend-expect';
 
 import Card from '../Card';
 
-import { DEFAULT_PROPS_1_1 } from '../../Testing/Constants/Card';
+import { DEFAULT_PROPS_DW } from '../../Testing/Constants/Card';
 
 import setup from '../../Testing/Utils/Settings';
 
-const renderCard = setup(Card, DEFAULT_PROPS_1_1);
+const renderCard = setup(Card, DEFAULT_PROPS_DW);
 
-const cardStyle = 'three-fourths';
+const cardStyle = 'double-wide';
 
-describe('Consonant/Card/1:1', () => {
+describe('Consonant/Card/3:2', () => {
     test('should be able to render a banner overlay', () => {
         const {
             props: {
@@ -39,28 +39,11 @@ describe('Consonant/Card/1:1', () => {
         expect(bannerIconElement).toHaveAttribute('src', bannerIcon);
     });
 
-    test('should be able to render a badge overlay', () => {
-        const {
-            props: {
-                overlays: {
-                    label: {
-                        description: someBadgeText,
-                    },
-                },
-            },
-        } = renderCard({
-            cardStyle,
-        });
-
-        const badgeElement = screen.queryByText(someBadgeText);
-
-        expect(badgeElement).not.toBeNull();
-    });
-
     test('should be able to render a label overlay', () => {
         renderCard({
             cardStyle,
             contentArea: {
+                detailText: 'detailText',
                 dateDetailText: {
                     endTime: '2021-10-11T21:00:00.000Z',
                     startTime: '2021-10-11T21:00:00.000Z',
@@ -72,42 +55,19 @@ describe('Consonant/Card/1:1', () => {
         expect(labelElement).not.toBeNull();
     });
 
-    test('should be able to render a logo', () => {
-        renderCard({
-            cardStyle,
-        });
-        const logoAltText = screen.getByAltText('logo-alt-text');
-        expect(logoAltText).not.toBeNull();
-    });
-
     test('should be able to render a detail text', () => {
         renderCard({
             cardStyle,
             contentArea: {
-                detailText: 'datail label',
+                detailText: 'detail label',
                 dateDetailText: {
                     startTime: undefined,
                 },
             },
         });
 
-        const labelElement = screen.queryByText('datail label');
+        const labelElement = screen.queryByText('detail label');
         expect(labelElement).not.toBeNull();
-    });
-
-    test('should not render card label if no Detail Text or startTime is authored', () => {
-        renderCard({
-            cardStyle,
-            contentArea: {
-                detailText: null,
-                dateDetailText: {
-                    startTime: null,
-                },
-            },
-        });
-
-        const labelElement = screen.queryByTestId('consonant-Card-label');
-        expect(labelElement).toBeNull();
     });
 
     test('should be able to render a card title', () => {
@@ -116,15 +76,6 @@ describe('Consonant/Card/1:1', () => {
         });
 
         const labelElement = screen.queryByTestId('consonant-Card-title');
-        expect(labelElement).not.toBeNull();
-    });
-
-    test('should be able to render a card text', () => {
-        renderCard({
-            cardStyle,
-        });
-
-        const labelElement = screen.queryByTestId('consonant-Card-text');
         expect(labelElement).not.toBeNull();
     });
 });

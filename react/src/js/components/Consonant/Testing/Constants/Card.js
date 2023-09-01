@@ -47,3 +47,8 @@ export const DEFAULT_PROPS_FULL = {
     ...CARD_PROPS,
     bannerMap: {},
 };
+
+export const DEFAULT_PROPS_DW = {
+    ...CARD_PROPS,
+    bannerMap: {},
+};
