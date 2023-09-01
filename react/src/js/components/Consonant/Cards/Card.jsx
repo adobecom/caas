@@ -268,21 +268,6 @@ const Card = (props) => {
     const showText = !isHalfHeight && !isFull;
     const showFooter = isOneHalf || isProduct || isText;
 
-    // if (isGated && !isRegistered) {
-    //     bannerDescriptionToUse = bannerMap.register.description;
-    //     bannerIconToUse = '';
-    //     bannerBackgroundColorToUse = bannerMap.register.backgroundColor;
-    //     bannerFontColorToUse = bannerMap.register.fontColor;
-    //     videoURLToUse = registrationUrl;
-    //     gateVideo = true;
-    // } else if (startDate && endDate) {
-    //     const eventBanner = getEventBanner(startDate, endDate, bannerMap);
-    //     bannerBackgroundColorToUse = eventBanner.backgroundColor;
-    //     bannerDescriptionToUse = eventBanner.description;
-    //     bannerFontColorToUse = eventBanner.fontColor;
-    //     bannerIconToUse = eventBanner.icon;
-    // }
-
     if (isHalfHeight && isGated && !isRegistered) {
         bannerDescriptionToUse = bannerMap.register.description;
         bannerIconToUse = '';
