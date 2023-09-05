@@ -1,5 +1,16 @@
 
 
+# [0.8.0](https://github.com/adobecom/caas/compare/0.7.3...0.8.0) (2023-09-01)
+
+
+### Features
+
+* **mwpw-135383:** deep linking filters && clear all for search url ([a14b3ce](https://github.com/adobecom/caas/commit/a14b3ce571bf9a04f323188ae68086829ea77371))
+
+## [0.7.3](https://github.com/adobecom/caas/compare/0.7.2...0.7.3) (2023-08-31)
+
+## [0.7.2](https://github.com/adobecom/caas/compare/0.7.1...0.7.2) (2023-08-30)
+
 ## [0.7.1](https://github.com/adobecom/caas/compare/0.7.0...0.7.1) (2023-08-24)
 
 # [0.7.0](https://github.com/adobecom/caas/compare/0.6.39...0.7.0) (2023-08-17)

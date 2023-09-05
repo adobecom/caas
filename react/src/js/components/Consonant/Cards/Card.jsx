@@ -13,7 +13,7 @@ import CardFooter from './CardFooter/CardFooter';
 import prettyFormatDate from '../Helpers/prettyFormat';
 import { INFOBIT_TYPE } from '../Helpers/constants';
 import { hasTag } from '../Helpers/Helpers';
-import { getEventBanner, getLinkTarget } from '../Helpers/general';
+import { getEventBanner, getLinkTarget, isDateBeforeInterval, getCurrentDate } from '../Helpers/general';
 import { useConfig, useRegistered } from '../Helpers/hooks';
 import {
     stylesType,
@@ -199,7 +199,10 @@ const Card = (props) => {
      * isGated
      * @type {Boolean}
      */
-    const isGated = hasTag(/7ed3/, tags) || hasTag(/1j6zgcx\/3bhv/, tags);
+    const isGated = hasTag(/caas:gated/, tags)
+        || hasTag(/caas:card-style\/half-height-featured/, tags)
+        || hasTag(/7ed3/, tags)
+        || hasTag(/1j6zgcx\/3bhv/, tags);
 
     /**
      * isRegistered
@@ -247,33 +250,6 @@ const Card = (props) => {
         });
     }
 
-    if (isGated && !isRegistered) {
-        bannerDescriptionToUse = bannerMap.register.description;
-        bannerIconToUse = '';
-        bannerBackgroundColorToUse = bannerMap.register.backgroundColor;
-        bannerFontColorToUse = bannerMap.register.fontColor;
-        videoURLToUse = registrationUrl;
-        gateVideo = true;
-    } else if (startDate && endDate) {
-        const eventBanner = getEventBanner(startDate, endDate, bannerMap);
-        bannerBackgroundColorToUse = eventBanner.backgroundColor;
-        bannerDescriptionToUse = eventBanner.description;
-        bannerFontColorToUse = eventBanner.fontColor;
-        bannerIconToUse = eventBanner.icon;
-    }
-    const hasBanner = bannerDescriptionToUse && bannerFontColorToUse && bannerBackgroundColorToUse;
-    const headingAria = (videoURL ||
-        label || detailText || description || logoSrc || badgeText || (hasBanner && !disableBanners)) ? '' : title;
-
-    let ariaText = title;
-    if (hasBanner && !disableBanners) {
-        ariaText = `${bannerDescriptionToUse} | ${ariaText}`;
-    }
-
-    const linkBlockerTarget = getLinkTarget(overlayLink);
-    const addParams = new URLSearchParams(additionalParams);
-    const overlay = (additionalParams && addParams.keys().next().value) ? `${overlayLink}?${addParams.toString()}` : overlayLink;
-
     // Card styles
     const isOneHalf = cardStyle === 'one-half';
     const isThreeFourths = cardStyle === 'three-fourths';
@@ -291,6 +267,38 @@ const Card = (props) => {
     const showVideoButton = !isProduct && !isText;
     const showText = !isHalfHeight && !isFull;
     const showFooter = isOneHalf || isProduct || isText;
+
+    if (isHalfHeight && isGated && !isRegistered) {
+        bannerDescriptionToUse = bannerMap.register.description;
+        bannerIconToUse = '';
+        bannerBackgroundColorToUse = bannerMap.register.backgroundColor;
+        bannerFontColorToUse = bannerMap.register.fontColor;
+        videoURLToUse = registrationUrl;
+        gateVideo = true;
+    } else if (startDate && endDate) {
+        const eventBanner = getEventBanner(startDate, endDate, bannerMap);
+        bannerBackgroundColorToUse = eventBanner.backgroundColor;
+        bannerDescriptionToUse = eventBanner.description;
+        bannerFontColorToUse = eventBanner.fontColor;
+        bannerIconToUse = eventBanner.icon;
+        const now = getCurrentDate();
+        if (isDateBeforeInterval(now, startDate)) {
+            detailText = prettyFormatDate(startDate, endDate, locale, i18nFormat);
+        }
+    }
+
+    const hasBanner = bannerDescriptionToUse && bannerFontColorToUse && bannerBackgroundColorToUse;
+    const headingAria = (videoURL ||
+        label || detailText || description || logoSrc || badgeText || (hasBanner && !disableBanners)) ? '' : title;
+
+    let ariaText = title;
+    if (hasBanner && !disableBanners) {
+        ariaText = `${bannerDescriptionToUse} | ${ariaText}`;
+    }
+
+    const linkBlockerTarget = getLinkTarget(overlayLink);
+    const addParams = new URLSearchParams(additionalParams);
+    const overlay = (additionalParams && addParams.keys().next().value) ? `${overlayLink}?${addParams.toString()}` : overlayLink;
 
     return (
         <div

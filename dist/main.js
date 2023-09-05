@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.7.1 (8/28/2023, 08:45:57)
+ * Chimera UI Libraries - Build 0.8.0 (9/1/2023, 14:24:14)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -5989,6 +5989,7 @@ var Container = function Container(props) {
     var getConfig = (0, _consonant.makeConfigGetter)(config);
     var filterGroupPrefix = 'ch_';
     var searchPrefix = 'sh_';
+    var CARD_HASH_LENGTH = 10;
 
     /**
      **** Authored Configs ****
@@ -6463,6 +6464,7 @@ var Container = function Container(props) {
     var resetFiltersSearchAndBookmarks = function resetFiltersSearchAndBookmarks() {
         clearAllFilters();
         setSearchQuery('');
+        clearUrlState();
         setShowBookmarks(false);
     };
 
@@ -6700,10 +6702,9 @@ var Container = function Container(props) {
     }, []);
 
     /**
-     * Sets filters from url as tate
+     * Sets filters from url as state
      * @returns {Void} - an updated state
      */
-
     (0, _react.useEffect)(function () {
         setFilters(function (origin) {
             return origin.map(function (filter) {
@@ -6833,11 +6834,6 @@ var Container = function Container(props) {
                 setLoading(false);
                 setIsFirstLoad(true);
                 if (!(0, _general.getByPath)(payload, 'cards.length')) return;
-
-                var _removeDuplicateCards = new _JsonProcessor2.default(payload.cards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags),
-                    _removeDuplicateCards2 = _removeDuplicateCards.processedCards,
-                    processedCards = _removeDuplicateCards2 === undefined ? [] : _removeDuplicateCards2;
-
                 if (payload.isHashed) {
                     var TAG_HASH_LENGTH = 6;
                     var _iteratorNormalCompletion = true;
@@ -6849,13 +6845,13 @@ var Container = function Container(props) {
                             var group = _step.value;
 
                             group.id = rollingHash(group.id, TAG_HASH_LENGTH);
-                            var _iteratorNormalCompletion2 = true;
-                            var _didIteratorError2 = false;
-                            var _iteratorError2 = undefined;
+                            var _iteratorNormalCompletion3 = true;
+                            var _didIteratorError3 = false;
+                            var _iteratorError3 = undefined;
 
                             try {
-                                for (var _iterator2 = group.items[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                                    var filterItem = _step2.value;
+                                for (var _iterator3 = group.items[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                                    var filterItem = _step3.value;
 
                                     var _getParentChild = getParentChild(filterItem.id),
                                         _getParentChild2 = _slicedToArray(_getParentChild, 2),
@@ -6865,16 +6861,16 @@ var Container = function Container(props) {
                                     filterItem.id = rollingHash(parent, TAG_HASH_LENGTH) + '/' + rollingHash(child, TAG_HASH_LENGTH);
                                 }
                             } catch (err) {
-                                _didIteratorError2 = true;
-                                _iteratorError2 = err;
+                                _didIteratorError3 = true;
+                                _iteratorError3 = err;
                             } finally {
                                 try {
-                                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                                        _iterator2.return();
+                                    if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                                        _iterator3.return();
                                     }
                                 } finally {
-                                    if (_didIteratorError2) {
-                                        throw _iteratorError2;
+                                    if (_didIteratorError3) {
+                                        throw _iteratorError3;
                                     }
                                 }
                             }
@@ -6893,9 +6889,70 @@ var Container = function Container(props) {
                             }
                         }
                     }
+
+                    featuredCards = featuredCards.map(function (id) {
+                        return rollingHash(id, CARD_HASH_LENGTH);
+                    });
+                    hideCtaIds = hideCtaIds.map(function (id) {
+                        return rollingHash(id, CARD_HASH_LENGTH);
+                    });
+                    var temp = [];
+                    var _iteratorNormalCompletion2 = true;
+                    var _didIteratorError2 = false;
+                    var _iteratorError2 = undefined;
+
+                    try {
+                        for (var _iterator2 = hideCtaTags[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                            var tag = _step2.value;
+
+                            var _getParentChild3 = getParentChild(tag),
+                                _getParentChild4 = _slicedToArray(_getParentChild3, 2),
+                                parent = _getParentChild4[0],
+                                child = _getParentChild4[1];
+
+                            if (parent !== '' && child !== '') {
+                                temp.push(rollingHash(parent, TAG_HASH_LENGTH) + '/' + rollingHash(child, TAG_HASH_LENGTH));
+                            }
+                        }
+                    } catch (err) {
+                        _didIteratorError2 = true;
+                        _iteratorError2 = err;
+                    } finally {
+                        try {
+                            if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                                _iterator2.return();
+                            }
+                        } finally {
+                            if (_didIteratorError2) {
+                                throw _iteratorError2;
+                            }
+                        }
+                    }
+
+                    hideCtaTags = temp;
                 }
+
+                var _removeDuplicateCards = new _JsonProcessor2.default(payload.cards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags),
+                    _removeDuplicateCards2 = _removeDuplicateCards.processedCards,
+                    processedCards = _removeDuplicateCards2 === undefined ? [] : _removeDuplicateCards2;
+
                 setFilters(function () {
-                    return authoredFilters;
+                    return authoredFilters.map(function (filter) {
+                        var group = filter.group,
+                            items = filter.items;
+
+                        var urlStateValue = urlState[filterGroupPrefix + group];
+                        if (!urlStateValue) return filter;
+                        var urlStateArray = urlStateValue.split(',');
+                        return _extends({}, filter, {
+                            opened: true,
+                            items: items.map(function (item) {
+                                return _extends({}, item, {
+                                    selected: urlStateArray.includes(String(item.label))
+                                });
+                            })
+                        });
+                    });
                 });
 
                 var transitions = (0, _general.getTransitions)(processedCards);
@@ -46298,7 +46355,7 @@ var Card = function Card(props) {
      * isGated
      * @type {Boolean}
      */
-    var isGated = (0, _Helpers.hasTag)(/7ed3/, tags) || (0, _Helpers.hasTag)(/1j6zgcx\/3bhv/, tags);
+    var isGated = (0, _Helpers.hasTag)(/caas:gated/, tags) || (0, _Helpers.hasTag)(/caas:card-style\/half-height-featured/, tags) || (0, _Helpers.hasTag)(/7ed3/, tags) || (0, _Helpers.hasTag)(/1j6zgcx\/3bhv/, tags);
 
     /**
      * isRegistered
@@ -46342,32 +46399,6 @@ var Card = function Card(props) {
         });
     }
 
-    if (isGated && !isRegistered) {
-        bannerDescriptionToUse = bannerMap.register.description;
-        bannerIconToUse = '';
-        bannerBackgroundColorToUse = bannerMap.register.backgroundColor;
-        bannerFontColorToUse = bannerMap.register.fontColor;
-        videoURLToUse = registrationUrl;
-        gateVideo = true;
-    } else if (startDate && endDate) {
-        var eventBanner = (0, _general.getEventBanner)(startDate, endDate, bannerMap);
-        bannerBackgroundColorToUse = eventBanner.backgroundColor;
-        bannerDescriptionToUse = eventBanner.description;
-        bannerFontColorToUse = eventBanner.fontColor;
-        bannerIconToUse = eventBanner.icon;
-    }
-    var hasBanner = bannerDescriptionToUse && bannerFontColorToUse && bannerBackgroundColorToUse;
-    var headingAria = videoURL || label || detailText || description || logoSrc || badgeText || hasBanner && !disableBanners ? '' : title;
-
-    var ariaText = title;
-    if (hasBanner && !disableBanners) {
-        ariaText = bannerDescriptionToUse + ' | ' + ariaText;
-    }
-
-    var linkBlockerTarget = (0, _general.getLinkTarget)(overlayLink);
-    var addParams = new URLSearchParams(additionalParams);
-    var overlay = additionalParams && addParams.keys().next().value ? overlayLink + '?' + addParams.toString() : overlayLink;
-
     // Card styles
     var isOneHalf = cardStyle === 'one-half';
     var isThreeFourths = cardStyle === 'three-fourths';
@@ -46385,6 +46416,37 @@ var Card = function Card(props) {
     var showVideoButton = !isProduct && !isText;
     var showText = !isHalfHeight && !isFull;
     var showFooter = isOneHalf || isProduct || isText;
+
+    if (isHalfHeight && isGated && !isRegistered) {
+        bannerDescriptionToUse = bannerMap.register.description;
+        bannerIconToUse = '';
+        bannerBackgroundColorToUse = bannerMap.register.backgroundColor;
+        bannerFontColorToUse = bannerMap.register.fontColor;
+        videoURLToUse = registrationUrl;
+        gateVideo = true;
+    } else if (startDate && endDate) {
+        var eventBanner = (0, _general.getEventBanner)(startDate, endDate, bannerMap);
+        bannerBackgroundColorToUse = eventBanner.backgroundColor;
+        bannerDescriptionToUse = eventBanner.description;
+        bannerFontColorToUse = eventBanner.fontColor;
+        bannerIconToUse = eventBanner.icon;
+        var now = (0, _general.getCurrentDate)();
+        if ((0, _general.isDateBeforeInterval)(now, startDate)) {
+            detailText = (0, _prettyFormat2.default)(startDate, endDate, locale, i18nFormat);
+        }
+    }
+
+    var hasBanner = bannerDescriptionToUse && bannerFontColorToUse && bannerBackgroundColorToUse;
+    var headingAria = videoURL || label || detailText || description || logoSrc || badgeText || hasBanner && !disableBanners ? '' : title;
+
+    var ariaText = title;
+    if (hasBanner && !disableBanners) {
+        ariaText = bannerDescriptionToUse + ' | ' + ariaText;
+    }
+
+    var linkBlockerTarget = (0, _general.getLinkTarget)(overlayLink);
+    var addParams = new URLSearchParams(additionalParams);
+    var overlay = additionalParams && addParams.keys().next().value ? overlayLink + '?' + addParams.toString() : overlayLink;
 
     return _react2.default.createElement(
         'div',
