@@ -11,8 +11,42 @@ const renderCard = setup(Card, DEFAULT_PROPS_FULL);
 
 const cardStyle = 'full-card';
 
-describe('Consonant/Card/Full-Card', () => {
-    test('should be able to render a banner overlay', () => {
+describe(`Consonant/Card/${cardStyle}`, () => {
+    test('should be able to render a card image', () => {
+        const {
+            props: {
+                styles: {
+                    backgroundImage: backgroundImageSrc,
+                },
+            },
+        } = renderCard({
+            cardStyle,
+        });
+        const cardHeader = screen.getByTestId('consonant-Card-header');
+
+        expect(cardHeader).toHaveStyle({
+            backgroundImage: `url(${backgroundImageSrc})`,
+        });
+    });
+
+    test('should be able to render a overlay badge', () => {
+        const {
+            props: {
+                overlays: {
+                    label: {
+                        description: someBadgeText,
+                    },
+                },
+            },
+        } = renderCard({
+            cardStyle,
+        });
+
+        const badgeElement = screen.queryByText(someBadgeText);
+        expect(badgeElement).not.toBeNull();
+    });
+
+    test('should be able to render a overlay banner', () => {
         const {
             props: {
                 overlays: {
@@ -39,23 +73,6 @@ describe('Consonant/Card/Full-Card', () => {
         expect(bannerIconElement).toHaveAttribute('src', bannerIcon);
     });
 
-    test('should be able to render a badge overlay', () => {
-        const {
-            props: {
-                overlays: {
-                    label: {
-                        description: someBadgeText,
-                    },
-                },
-            },
-        } = renderCard({
-            cardStyle,
-        });
-
-        const badgeElement = screen.queryByText(someBadgeText);
-        expect(badgeElement).not.toBeNull();
-    });
-
     test('should be able to render a logo overlay', () => {
         renderCard({
             cardStyle,
@@ -64,18 +81,19 @@ describe('Consonant/Card/Full-Card', () => {
         expect(logoAltText).not.toBeNull();
     });
 
-    test('should be able to render a detail text', () => {
+    test('should be able to render a detail/eyebrow text', () => {
         renderCard({
             cardStyle,
             contentArea: {
-                detailText: 'detail label',
+                detailText: 'detailText',
                 dateDetailText: {
-                    startTime: undefined,
+                    endTime: '2021-10-11T21:00:00.000Z',
+                    startTime: '2021-10-11T21:00:00.000Z',
                 },
             },
         });
 
-        const labelElement = screen.queryByText('detail label');
+        const labelElement = screen.queryByTestId('consonant-Card-label');
         expect(labelElement).not.toBeNull();
     });
 

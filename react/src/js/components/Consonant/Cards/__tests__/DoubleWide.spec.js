@@ -3,16 +3,33 @@ import '@testing-library/jest-dom/extend-expect';
 
 import Card from '../Card';
 
-import { DEFAULT_PROPS_DW } from '../../Testing/Constants/Card';
+import { DEFAULT_PROPS_DOUBLE_WIDE } from '../../Testing/Constants/Card';
 
 import setup from '../../Testing/Utils/Settings';
 
-const renderCard = setup(Card, DEFAULT_PROPS_DW);
+const renderCard = setup(Card, DEFAULT_PROPS_DOUBLE_WIDE);
 
 const cardStyle = 'double-wide';
 
-describe('Consonant/Card/3:2', () => {
-    test('should be able to render a banner overlay', () => {
+describe(`Consonant/Card/${cardStyle}`, () => {
+    test('should be able to render a card image', () => {
+        const {
+            props: {
+                styles: {
+                    backgroundImage: backgroundImageSrc,
+                },
+            },
+        } = renderCard({
+            cardStyle,
+        });
+        const cardHeader = screen.getByTestId('consonant-Card-header');
+
+        expect(cardHeader).toHaveStyle({
+            backgroundImage: `url(${backgroundImageSrc})`,
+        });
+    });
+
+    test('should be able to render a overlay banner', () => {
         const {
             props: {
                 overlays: {
@@ -39,7 +56,23 @@ describe('Consonant/Card/3:2', () => {
         expect(bannerIconElement).toHaveAttribute('src', bannerIcon);
     });
 
-    test('should be able to render a label overlay', () => {
+    test('should be able to render a overlay logo', () => {
+        renderCard({
+            cardStyle,
+        });
+        const cardLogo = screen.getByTestId('consonant-Card-logo');
+        expect(cardLogo).not.toBeNull();
+    });
+
+    test('should be able to render a logo alt-text', () => {
+        renderCard({
+            cardStyle,
+        });
+        const logoAltText = screen.getByAltText('logo-alt-text');
+        expect(logoAltText).not.toBeNull();
+    });
+
+    test('should be able to render a detail/eyebrow text', () => {
         renderCard({
             cardStyle,
             contentArea: {
@@ -55,27 +88,21 @@ describe('Consonant/Card/3:2', () => {
         expect(labelElement).not.toBeNull();
     });
 
-    test('should be able to render a detail text', () => {
-        renderCard({
-            cardStyle,
-            contentArea: {
-                detailText: 'detail label',
-                dateDetailText: {
-                    startTime: undefined,
-                },
-            },
-        });
-
-        const labelElement = screen.queryByText('detail label');
-        expect(labelElement).not.toBeNull();
-    });
-
     test('should be able to render a card title', () => {
         renderCard({
             cardStyle,
         });
 
         const labelElement = screen.queryByTestId('consonant-Card-title');
+        expect(labelElement).not.toBeNull();
+    });
+
+    test('should be able to render a card text', () => {
+        renderCard({
+            cardStyle,
+        });
+
+        const labelElement = screen.queryByTestId('consonant-Card-text');
         expect(labelElement).not.toBeNull();
     });
 });

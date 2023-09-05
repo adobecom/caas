@@ -3,15 +3,15 @@ import '@testing-library/jest-dom/extend-expect';
 
 import Card from '../Card';
 
-import { DEFAULT_PROPS_3_2 } from '../../Testing/Constants/Card';
+import { DEFAULT_PROPS_PRODUCT } from '../../Testing/Constants/Card';
 
 import setup from '../../Testing/Utils/Settings';
 
-const renderCard = setup(Card, DEFAULT_PROPS_3_2);
+const renderCard = setup(Card, DEFAULT_PROPS_PRODUCT);
 
 const cardStyle = 'product';
 
-describe('Consonant/Card/3:2', () => {
+describe(`Consonant/Card/${cardStyle}`, () => {
     test('should be able to render a card title', () => {
         renderCard({
             cardStyle,

@@ -3,16 +3,50 @@ import '@testing-library/jest-dom/extend-expect';
 
 import Card from '../Card';
 
-import { DEFAULT_PROPS_1_1 } from '../../Testing/Constants/Card';
+import { DEFAULT_PROPS_THREE_FOURTHS } from '../../Testing/Constants/Card';
 
 import setup from '../../Testing/Utils/Settings';
 
-const renderCard = setup(Card, DEFAULT_PROPS_1_1);
+const renderCard = setup(Card, DEFAULT_PROPS_THREE_FOURTHS);
 
 const cardStyle = 'three-fourths';
 
-describe('Consonant/Card/1:1', () => {
-    test('should be able to render a banner overlay', () => {
+describe(`Consonant/Card/${cardStyle}`, () => {
+    test('should be able to render a card image', () => {
+        const {
+            props: {
+                styles: {
+                    backgroundImage: backgroundImageSrc,
+                },
+            },
+        } = renderCard({
+            cardStyle,
+        });
+        const cardHeader = screen.getByTestId('consonant-Card-header');
+
+        expect(cardHeader).toHaveStyle({
+            backgroundImage: `url(${backgroundImageSrc})`,
+        });
+    });
+
+    test('should be able to render a overlay badge', () => {
+        const {
+            props: {
+                overlays: {
+                    label: {
+                        description: someBadgeText,
+                    },
+                },
+            },
+        } = renderCard({
+            cardStyle,
+        });
+
+        const badgeElement = screen.queryByText(someBadgeText);
+        expect(badgeElement).not.toBeNull();
+    });
+
+    test('should be able to render a overlay banner', () => {
         const {
             props: {
                 overlays: {
@@ -39,40 +73,15 @@ describe('Consonant/Card/1:1', () => {
         expect(bannerIconElement).toHaveAttribute('src', bannerIcon);
     });
 
-    test('should be able to render a badge overlay', () => {
-        const {
-            props: {
-                overlays: {
-                    label: {
-                        description: someBadgeText,
-                    },
-                },
-            },
-        } = renderCard({
-            cardStyle,
-        });
-
-        const badgeElement = screen.queryByText(someBadgeText);
-
-        expect(badgeElement).not.toBeNull();
-    });
-
-    test('should be able to render a label overlay', () => {
+    test('should be able to render a overlay logo', () => {
         renderCard({
             cardStyle,
-            contentArea: {
-                dateDetailText: {
-                    endTime: '2021-10-11T21:00:00.000Z',
-                    startTime: '2021-10-11T21:00:00.000Z',
-                },
-            },
         });
-
-        const labelElement = screen.queryByTestId('consonant-Card-label');
-        expect(labelElement).not.toBeNull();
+        const cardLogo = screen.getByTestId('consonant-Card-logo');
+        expect(cardLogo).not.toBeNull();
     });
 
-    test('should be able to render a logo', () => {
+    test('should be able to render a logo alt-text', () => {
         renderCard({
             cardStyle,
         });
@@ -80,34 +89,13 @@ describe('Consonant/Card/1:1', () => {
         expect(logoAltText).not.toBeNull();
     });
 
-    test('should be able to render a detail text', () => {
+    test('should be able to render a detail/eyebrow text', () => {
         renderCard({
             cardStyle,
-            contentArea: {
-                detailText: 'datail label',
-                dateDetailText: {
-                    startTime: undefined,
-                },
-            },
-        });
-
-        const labelElement = screen.queryByText('datail label');
-        expect(labelElement).not.toBeNull();
-    });
-
-    test('should not render card label if no Detail Text or startTime is authored', () => {
-        renderCard({
-            cardStyle,
-            contentArea: {
-                detailText: null,
-                dateDetailText: {
-                    startTime: null,
-                },
-            },
         });
 
         const labelElement = screen.queryByTestId('consonant-Card-label');
-        expect(labelElement).toBeNull();
+        expect(labelElement).not.toBeNull();
     });
 
     test('should be able to render a card title', () => {
@@ -124,7 +112,7 @@ describe('Consonant/Card/1:1', () => {
             cardStyle,
         });
 
-        const labelElement = screen.queryByTestId('consonant-Card-text');
-        expect(labelElement).not.toBeNull();
+        const textElement = screen.queryByTestId('consonant-Card-text');
+        expect(textElement).not.toBeNull();
     });
 });

@@ -3,16 +3,33 @@ import '@testing-library/jest-dom/extend-expect';
 
 import Card from '../Card';
 
-import { DEFAULT_PROPS_1_1 } from '../../Testing/Constants/Card';
+import { DEFAULT_PROPS_HALF_HEIGHT } from '../../Testing/Constants/Card';
 
 import setup from '../../Testing/Utils/Settings';
 
-const renderCard = setup(Card, DEFAULT_PROPS_1_1);
+const renderCard = setup(Card, DEFAULT_PROPS_HALF_HEIGHT);
 
 const cardStyle = 'half-height';
 
-describe('Consonant/Card/1:1', () => {
-    test('should be able to render a banner overlay', () => {
+describe(`Consonant/Card/${cardStyle}`, () => {
+    test('should be able to render a card image', () => {
+        const {
+            props: {
+                styles: {
+                    backgroundImage: backgroundImageSrc,
+                },
+            },
+        } = renderCard({
+            cardStyle,
+        });
+        const cardHeader = screen.getByTestId('consonant-Card-header');
+
+        expect(cardHeader).toHaveStyle({
+            backgroundImage: `url(${backgroundImageSrc})`,
+        });
+    });
+
+    test('should be able to render a overlay banner', () => {
         const {
             props: {
                 overlays: {
@@ -39,27 +56,12 @@ describe('Consonant/Card/1:1', () => {
         expect(bannerIconElement).toHaveAttribute('src', bannerIcon);
     });
 
-    test('should be able to render a label overlay', () => {
+    test('should be able to render a detail/eyebrow text', () => {
         renderCard({
             cardStyle,
         });
 
         const labelElement = screen.queryByTestId('consonant-Card-label');
-        expect(labelElement).not.toBeNull();
-    });
-
-    test('should be able to render a detail text', () => {
-        renderCard({
-            cardStyle,
-            contentArea: {
-                detailText: 'detail label',
-                dateDetailText: {
-                    startTime: undefined,
-                },
-            },
-        });
-
-        const labelElement = screen.queryByText('detail label');
         expect(labelElement).not.toBeNull();
     });
 

@@ -27,7 +27,7 @@ const CARD_PROPS = {
     ctaLink,
 };
 
-export const DEFAULT_PROPS_3_2 = {
+export const DEFAULT_PROPS_ONE_HALF = {
     ...CARD_PROPS,
     bannerMap: {},
     footer,
@@ -38,7 +38,12 @@ export const DEFAULT_PROPS_3_2 = {
     onClick: jest.fn(),
 };
 
-export const DEFAULT_PROPS_1_1 = {
+export const DEFAULT_PROPS_THREE_FOURTHS = {
+    ...CARD_PROPS,
+    bannerMap: {},
+};
+
+export const DEFAULT_PROPS_HALF_HEIGHT = {
     ...CARD_PROPS,
     bannerMap: {},
 };
@@ -48,7 +53,17 @@ export const DEFAULT_PROPS_FULL = {
     bannerMap: {},
 };
 
-export const DEFAULT_PROPS_DW = {
+export const DEFAULT_PROPS_DOUBLE_WIDE = {
     ...CARD_PROPS,
     bannerMap: {},
+};
+
+export const DEFAULT_PROPS_PRODUCT = {
+    ...CARD_PROPS,
+    footer,
+};
+
+export const DEFAULT_PROPS_TEXT = {
+    ...CARD_PROPS,
+    footer,
 };
