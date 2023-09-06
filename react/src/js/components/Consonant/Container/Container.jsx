@@ -458,6 +458,7 @@ const Container = (props) => {
     const resetFiltersSearchAndBookmarks = () => {
         clearAllFilters();
         setSearchQuery('');
+        clearUrlState();
         setShowBookmarks(false);
     };
 
@@ -794,8 +795,20 @@ const Container = (props) => {
                             }
                         }
                     }
-                    setFilters(() => authoredFilters);
-
+                    setFilters(() => authoredFilters.map((filter) => {
+                        const { group, items } = filter;
+                        const urlStateValue = urlState[filterGroupPrefix + group];
+                        if (!urlStateValue) return filter;
+                        const urlStateArray = urlStateValue.split(',');
+                        return {
+                            ...filter,
+                            opened: true,
+                            items: items.map(item => ({
+                                ...item,
+                                selected: urlStateArray.includes(String(item.label)),
+                            })),
+                        };
+                    }));
                     const transitions = getTransitions(processedCards);
                     if (sortOption.sort.toLowerCase() === 'eventsort') {
                         while (transitions.size() > 0) {
