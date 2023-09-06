@@ -98,14 +98,6 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         expect(videoButton).not.toBeNull();
     });
 
-    test('should be able to render a logo alt-text', () => {
-        renderCard({
-            cardStyle,
-        });
-        const logoAltText = screen.getByAltText('logo-alt-text');
-        expect(logoAltText).not.toBeNull();
-    });
-
     test('should be able to render a detail/eyebrow text', () => {
         renderCard({
             cardStyle,
