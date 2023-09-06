@@ -288,7 +288,7 @@ const Card = (props) => {
     }
 
     const hasBanner = bannerDescriptionToUse && bannerFontColorToUse && bannerBackgroundColorToUse;
-    const headingAria = (videoURL ||
+    const headingAria = (videoURLToUse ||
         label || detailText || description || logoSrc || badgeText || (hasBanner && !disableBanners)) ? '' : title;
 
     let ariaText = title;
@@ -343,7 +343,7 @@ const Card = (props) => {
                 </span>
                 }
                 {showVideoButton &&
-                videoURL &&
+                videoURLToUse &&
                 <VideoButton
                     videoURL={videoURLToUse}
                     gateVideo={gateVideo}

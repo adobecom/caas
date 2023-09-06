@@ -54,6 +54,7 @@ const VideoButton = ({
         <Fragment>
             <button
                 className="consonant-videoButton-wrapper"
+                data-testid="consonant-videoButton-wrapper"
                 daa-ll="play"
                 aria-label="Play"
                 onClick={handleShowModal}>

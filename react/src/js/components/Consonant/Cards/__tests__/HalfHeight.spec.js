@@ -56,6 +56,15 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         expect(bannerIconElement).toHaveAttribute('src', bannerIcon);
     });
 
+    test('should be able to render a overlay video player button', () => {
+        renderCard({
+            cardStyle,
+        });
+
+        const videoButton = screen.queryByTestId('consonant-videoButton-wrapper');
+        expect(videoButton).not.toBeNull();
+    });
+
     test('should be able to render a detail/eyebrow text', () => {
         renderCard({
             cardStyle,
