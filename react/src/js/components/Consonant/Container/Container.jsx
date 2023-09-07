@@ -458,7 +458,11 @@ const Container = (props) => {
     const resetFiltersSearchAndBookmarks = () => {
         clearAllFilters();
         setSearchQuery('');
+        const urlParams = new URLSearchParams(window.location.search);
         clearUrlState();
+        urlParams.forEach((value, key) => {
+            if (key.indexOf(filterGroupPrefix) === -1) setUrlState(key, value);
+        });
         setShowBookmarks(false);
     };
 
