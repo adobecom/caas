@@ -1,5 +1,12 @@
 
 
+## [0.8.2](https://github.com/adobecom/caas/compare/0.8.1...0.8.2) (2023-09-08)
+
+
+### Bug Fixes
+
+* **mwpw-136157:** fixing bug released on 0.8.0 ([2adfaaa](https://github.com/adobecom/caas/commit/2adfaaa16f93b865cf369e04a5287296b334d796))
+
 ## [0.8.1](https://github.com/adobecom/caas/compare/0.8.0...0.8.1) (2023-09-06)
 
 

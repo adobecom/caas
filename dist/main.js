@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.8.1 (9/6/2023, 12:33:10)
+ * Chimera UI Libraries - Build 0.8.2 (9/12/2023, 13:28:14)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6472,7 +6472,11 @@ var Container = function Container(props) {
     var resetFiltersSearchAndBookmarks = function resetFiltersSearchAndBookmarks() {
         clearAllFilters();
         setSearchQuery('');
+        var urlParams = new URLSearchParams(window.location.search);
         clearUrlState();
+        urlParams.forEach(function (value, key) {
+            if (key.indexOf(filterGroupPrefix) === -1) setUrlState(key, value);
+        });
         setShowBookmarks(false);
     };
 
