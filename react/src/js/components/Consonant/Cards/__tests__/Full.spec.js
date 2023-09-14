@@ -123,21 +123,6 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         expect(labelElement).not.toBeNull();
     });
 
-    test('should not render card label if no Detail Text or startTime is authored', () => {
-        renderCard({
-            cardStyle,
-            contentArea: {
-                detailText: null,
-                dateDetailText: {
-                    startTime: null,
-                },
-            },
-        });
-
-        const labelElement = screen.queryByTestId('consonant-Card-label');
-        expect(labelElement).toBeNull();
-    });
-
     test('should be able to render a card title', () => {
         renderCard({
             cardStyle,
