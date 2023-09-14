@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.8.0 (9/5/2023, 23:44:01)
+ * Chimera UI Libraries - Build 0.8.0 (9/13/2023, 18:32:11)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -46411,8 +46411,8 @@ var Card = function Card(props) {
     // Card elements to show
     var showHeader = !isProduct;
     var showBadge = isOneHalf || isThreeFourths || isFull;
-    var showLogo = !isHalfHeight;
-    var showLabel = !isProduct && !isText;
+    var showLogo = isOneHalf || isThreeFourths || isFull || isText;
+    var showLabel = isOneHalf || isThreeFourths || isHalfHeight || isFull;
     var showVideoButton = !isProduct && !isText;
     var showText = !isHalfHeight && !isFull;
     var showFooter = isOneHalf || isProduct || isText;
@@ -46492,7 +46492,8 @@ var Card = function Card(props) {
             showBadge && badgeText && _react2.default.createElement(
                 'span',
                 {
-                    className: 'consonant-Card-badge' },
+                    className: 'consonant-Card-badge',
+                    'data-testid': 'consonant-Card-badge' },
                 badgeText
             ),
             showVideoButton && videoURLToUse && _react2.default.createElement(_videoButton2.default, {
@@ -46722,7 +46723,8 @@ var CardFooter = function CardFooter(props) {
     return _react2.default.createElement(
         'div',
         {
-            className: footerClassName },
+            className: footerClassName,
+            'data-testid': 'consonant-Card-footer' },
         _react2.default.createElement(
             'div',
             {

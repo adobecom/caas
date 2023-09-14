@@ -12,6 +12,15 @@ const renderCard = setup(Card, DEFAULT_PROPS_DOUBLE_WIDE);
 const cardStyle = 'double-wide';
 
 describe(`Consonant/Card/${cardStyle}`, () => {
+    test('should be able to render a card header', () => {
+        renderCard({
+            cardStyle,
+        });
+
+        const headerElement = screen.queryByTestId('consonant-Card-header');
+        expect(headerElement).not.toBeNull();
+    });
+
     test('should be able to render a card image', () => {
         const {
             props: {
@@ -56,22 +65,6 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         expect(bannerIconElement).toHaveAttribute('src', bannerIcon);
     });
 
-    test('should be able to render a overlay logo', () => {
-        renderCard({
-            cardStyle,
-        });
-        const cardLogo = screen.getByTestId('consonant-Card-logo');
-        expect(cardLogo).not.toBeNull();
-    });
-
-    test('should be able to render a logo alt-text', () => {
-        renderCard({
-            cardStyle,
-        });
-        const logoAltText = screen.getByAltText('logo-alt-text');
-        expect(logoAltText).not.toBeNull();
-    });
-
     test('should be able to render a overlay video player button', () => {
         renderCard({
             cardStyle,
@@ -81,7 +74,7 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         expect(videoButton).not.toBeNull();
     });
 
-    test('should be able to render a detail/eyebrow text', () => {
+    test('should not render a detail/eyebrow text', () => {
         renderCard({
             cardStyle,
             contentArea: {
@@ -94,7 +87,7 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         });
 
         const labelElement = screen.queryByTestId('consonant-Card-label');
-        expect(labelElement).not.toBeNull();
+        expect(labelElement).toBeNull();
     });
 
     test('should be able to render a card title', () => {
@@ -113,5 +106,32 @@ describe(`Consonant/Card/${cardStyle}`, () => {
 
         const labelElement = screen.queryByTestId('consonant-Card-text');
         expect(labelElement).not.toBeNull();
+    });
+
+    test('should not render a card badge', () => {
+        renderCard({
+            cardStyle,
+        });
+
+        const cardBadge = screen.queryByTestId('consonant-Card-badge');
+        expect(cardBadge).toBeNull();
+    });
+
+    test('should not render a overlay logo', () => {
+        renderCard({
+            cardStyle,
+        });
+
+        const cardLogo = screen.queryByTestId('consonant-Card-logo');
+        expect(cardLogo).toBeNull();
+    });
+
+    test('should not render a card footer', () => {
+        renderCard({
+            cardStyle,
+        });
+
+        const cardFooter = screen.queryByTestId('consonant-Card-footer');
+        expect(cardFooter).toBeNull();
     });
 });

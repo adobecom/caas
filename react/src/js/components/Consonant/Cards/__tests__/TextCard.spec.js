@@ -12,6 +12,15 @@ const renderCard = setup(Card, DEFAULT_PROPS_TEXT);
 const cardStyle = 'text-card';
 
 describe(`Consonant/Card/${cardStyle}`, () => {
+    test('should be able to render a card header', () => {
+        renderCard({
+            cardStyle,
+        });
+
+        const headerElement = screen.queryByTestId('consonant-Card-header');
+        expect(headerElement).not.toBeNull();
+    });
+
     test('should be able to render a overlay banner', () => {
         const {
             props: {
@@ -39,10 +48,12 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         expect(bannerIconElement).toHaveAttribute('src', bannerIcon);
     });
 
-    test('should be able to render a logo image', () => {
-        renderCard();
-        const logoAltText = screen.queryByTestId('consonant-Card-logo');
-        expect(logoAltText).not.toBeNull();
+    test('should be able to render a overlay logo', () => {
+        renderCard({
+            cardStyle,
+        });
+        const cardLogo = screen.getByTestId('consonant-Card-logo');
+        expect(cardLogo).not.toBeNull();
     });
 
     test('should be able to render a card title', () => {
@@ -61,6 +72,15 @@ describe(`Consonant/Card/${cardStyle}`, () => {
 
         const labelElement = screen.queryByTestId('consonant-Card-text');
         expect(labelElement).not.toBeNull();
+    });
+    
+    test('should be able to render a card footer', () => {
+        renderCard({
+            cardStyle,
+        });
+
+        const cardFooter = screen.queryByTestId('consonant-Card-footer');
+        expect(cardFooter).not.toBeNull();
     });
 
     test('should be able to render the lock icon on gated cards', () => {
@@ -108,5 +128,39 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         });
         const ctaLinkLink = screen.getByTestId('consonant-LinkInfobit');
         expect(ctaLinkLink).not.toBeNull();
+    });
+
+    test('should be able to render a Date interval', () => {
+        renderCard({
+            cardStyle,
+            footer: [{
+                left: [
+                    {},
+                    {
+                        type: 'date-interval',
+                        endTime: '2021-08-19T23:23:00.000-07:00',
+                        startTime: '2021-08-19T22:22:00.000-07:00',
+                    },
+                ],
+            }],
+        });
+        const dateinterval = screen.getByTestId('consonant-DateIntervalInfobit');
+        expect(dateinterval).not.toBeNull();
+    });
+
+    test('should not render a detail/eyebrow text', () => {
+        renderCard({
+            cardStyle,
+            contentArea: {
+                detailText: 'detailText',
+                dateDetailText: {
+                    endTime: '2021-10-11T21:00:00.000Z',
+                    startTime: '2021-10-11T21:00:00.000Z',
+                },
+            },
+        });
+
+        const labelElement = screen.queryByTestId('consonant-Card-label');
+        expect(labelElement).toBeNull();
     });
 });

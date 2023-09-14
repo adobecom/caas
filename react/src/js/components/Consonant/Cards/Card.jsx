@@ -262,8 +262,8 @@ const Card = (props) => {
     // Card elements to show
     const showHeader = !isProduct;
     const showBadge = isOneHalf || isThreeFourths || isFull;
-    const showLogo = !isHalfHeight;
-    const showLabel = !isProduct && !isText;
+    const showLogo = isOneHalf || isThreeFourths || isFull || isText;
+    const showLabel = isOneHalf || isThreeFourths || isHalfHeight || isFull;
     const showVideoButton = !isProduct && !isText;
     const showText = !isHalfHeight && !isFull;
     const showFooter = isOneHalf || isProduct || isText;
@@ -338,7 +338,8 @@ const Card = (props) => {
                 {showBadge &&
                 badgeText &&
                 <span
-                    className="consonant-Card-badge">
+                    className="consonant-Card-badge"
+                    data-testid="consonant-Card-badge">
                     {badgeText}
                 </span>
                 }

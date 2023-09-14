@@ -12,6 +12,16 @@ const renderCard = setup(Card, DEFAULT_PROPS_HALF_HEIGHT);
 const cardStyle = 'half-height';
 
 describe(`Consonant/Card/${cardStyle}`, () => {
+
+    test('should be able to render a card header', () => {
+        renderCard({
+            cardStyle,
+        });
+
+        const headerElement = screen.queryByTestId('consonant-Card-header');
+        expect(headerElement).not.toBeNull();
+    });
+
     test('should be able to render a card image', () => {
         const {
             props: {
@@ -81,5 +91,49 @@ describe(`Consonant/Card/${cardStyle}`, () => {
 
         const labelElement = screen.queryByTestId('consonant-Card-title');
         expect(labelElement).not.toBeNull();
+    });
+
+    test('should not render a overlay badge', () => {
+        const {
+            props: {
+                overlays: {
+                    label: {
+                        description: someBadgeText,
+                    },
+                },
+            },
+        } = renderCard({
+            cardStyle,
+        });
+
+        const badgeElement = screen.queryByText(someBadgeText);
+        expect(badgeElement).toBeNull();
+    });
+
+    test('should not render a overlay logo', () => {
+        renderCard({
+            cardStyle,
+        });
+
+        const cardLogo = screen.queryByTestId('consonant-Card-logo');
+        expect(cardLogo).toBeNull();
+    });
+    
+    test('should not render a card text', () => {
+        renderCard({
+            cardStyle,
+        });
+
+        const textElement = screen.queryByTestId('consonant-Card-text');
+        expect(textElement).toBeNull();
+    });
+
+    test('should not render a card footer', () => {
+        renderCard({
+            cardStyle,
+        });
+
+        const cardFooter = screen.queryByTestId('consonant-Card-footer');
+        expect(cardFooter).toBeNull();
     });
 });

@@ -12,6 +12,15 @@ const renderCard = setup(Card, DEFAULT_PROPS_ONE_HALF);
 const cardStyle = 'one-half';
 
 describe(`Consonant/Card/${cardStyle}`, () => {
+    test('should be able to render a card header', () => {
+        renderCard({
+            cardStyle,
+        });
+
+        const headerElement = screen.queryByTestId('consonant-Card-header');
+        expect(headerElement).not.toBeNull();
+    });
+
     test('should be able to render a card image', () => {
         const {
             props: {
@@ -145,6 +154,15 @@ describe(`Consonant/Card/${cardStyle}`, () => {
 
         const labelElement = screen.queryByTestId('consonant-Card-text');
         expect(labelElement).not.toBeNull();
+    });
+
+    test('should be able to render a card footer', () => {
+        renderCard({
+            cardStyle,
+        });
+
+        const cardFooter = screen.queryByTestId('consonant-Card-footer');
+        expect(cardFooter).not.toBeNull();
     });
 
     test('should be able to render the lock icon on gated cards', () => {

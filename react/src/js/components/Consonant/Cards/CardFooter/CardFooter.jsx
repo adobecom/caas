@@ -85,7 +85,8 @@ const CardFooter = (props) => {
 
     return (
         <div
-            className={footerClassName}>
+            className={footerClassName}
+            data-testid="consonant-Card-footer">
             <div
                 className={rowClassName}
                 data-cells={dataCells}>

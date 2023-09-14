@@ -12,6 +12,15 @@ const renderCard = setup(Card, DEFAULT_PROPS_FULL);
 const cardStyle = 'full-card';
 
 describe(`Consonant/Card/${cardStyle}`, () => {
+    test('should be able to render a card header', () => {
+        renderCard({
+            cardStyle,
+        });
+
+        const headerElement = screen.queryByTestId('consonant-Card-header');
+        expect(headerElement).not.toBeNull();
+    });
+
     test('should be able to render a card image', () => {
         const {
             props: {
@@ -88,7 +97,7 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         const logoAltText = screen.getByAltText('logo-alt-text');
         expect(logoAltText).not.toBeNull();
     });
-    
+
     test('should be able to render a overlay video player button', () => {
         renderCard({
             cardStyle,
@@ -114,6 +123,21 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         expect(labelElement).not.toBeNull();
     });
 
+    test('should not render card label if no Detail Text or startTime is authored', () => {
+        renderCard({
+            cardStyle,
+            contentArea: {
+                detailText: null,
+                dateDetailText: {
+                    startTime: null,
+                },
+            },
+        });
+
+        const labelElement = screen.queryByTestId('consonant-Card-label');
+        expect(labelElement).toBeNull();
+    });
+
     test('should be able to render a card title', () => {
         renderCard({
             cardStyle,
@@ -121,5 +145,23 @@ describe(`Consonant/Card/${cardStyle}`, () => {
 
         const labelElement = screen.queryByTestId('consonant-Card-title');
         expect(labelElement).not.toBeNull();
+    });
+
+    test('should not render a card text', () => {
+        renderCard({
+            cardStyle,
+        });
+
+        const labelElement = screen.queryByTestId('consonant-Card-text');
+        expect(labelElement).toBeNull();
+    });
+
+    test('should not render a card footer', () => {
+        renderCard({
+            cardStyle,
+        });
+
+        const cardFooter = screen.queryByTestId('consonant-Card-footer');
+        expect(cardFooter).toBeNull();
     });
 });
