@@ -267,6 +267,8 @@ const Card = (props) => {
     const showVideoButton = !isProduct && !isText;
     const showText = !isHalfHeight && !isFull;
     const showFooter = isOneHalf || isProduct || isText;
+    const showFooterLeft = !isProduct;
+    const showFooterCenter = !isProduct;
 
     if (isHalfHeight && isGated && !isRegistered) {
         bannerDescriptionToUse = bannerMap.register.description;
@@ -344,6 +346,7 @@ const Card = (props) => {
                 }
                 {showVideoButton &&
                 videoURL &&
+                !isHalfHeight &&
                 <VideoButton
                     videoURL={videoURLToUse}
                     gateVideo={gateVideo}
@@ -371,6 +374,16 @@ const Card = (props) => {
             }
             <div
                 className="consonant-Card-content">
+                {showVideoButton &&
+                videoURL &&
+                isHalfHeight &&
+                <VideoButton
+                    videoURL={videoURLToUse}
+                    gateVideo={gateVideo}
+                    onFocus={onFocus}
+                    className="consonant-Card-videoIco" />
+                }
+
                 {showLabel &&
                 detailText &&
                 <span
@@ -405,9 +418,10 @@ const Card = (props) => {
                         divider={footerItem.divider}
                         isFluid={footerItem.isFluid}
                         key={cuid()}
-                        left={extendFooterData(footerItem.left)}
-                        center={extendFooterData(footerItem.center)}
+                        left={showFooterLeft ? extendFooterData(footerItem.left) : []}
+                        center={showFooterCenter ? extendFooterData(footerItem.center) : []}
                         right={extendFooterData(footerItem.right)}
+                        cardStyle={cardStyle}
                         onFocus={onFocus} />
                 ))}
                 {(isThreeFourths || isDoubleWide || isFull)

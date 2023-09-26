@@ -31,31 +31,42 @@
                     z-index: 1;
                     opacity: 1;
                 }
+
+                // .consonant-videoButton-wrapper {
+                //     // top: -118px;
+                //     background: transparent;
+                //     position: absolute;
+                //     height: 208px;
+                //     left: 0;
+                //     right: 0;
+                //     z-index: 2;
+
+                //     .consonant-Card-videoIco {
+                //         .video-button-styles;
+
+                //         top: 75px;
+                //         left: 24px;
+                //         right: auto;
+                //     }
+
+                //     .consonant-Card-videoIco:focus {
+                //         .consonant-Card-videoIco {
+                //             transform: scale(1.1);
+                //             background: transparent url(@consonantCardPlayIcoHoverData) no-repeat 0 0;
+                //             transition: transform @consonantTransitionTime @consonantTransitionFunc;
+                //         }
+                //     }
+                // }
             }
 
-            &-content .consonant-videoButton-wrapper {
+            &-videoButton-wrapper {
                 top: -118px;
                 background: transparent;
                 position: absolute;
                 height: 208px;
                 left: 0;
                 right: 0;
-
-                &:focus {
-                    .consonant-HalfHeightCard-videoIco {
-                        transform: scale(1.1);
-                        background: transparent url(@consonantCardPlayIcoHoverData) no-repeat 0 0;
-                        transition: transform @consonantTransitionTime @consonantTransitionFunc;
-                    }
-                }
-            }
-
-            &:focus {
-                .consonant-HalfHeightCard-videoIco {
-                    transform: scale(1.1);
-                    transition: transform @consonantTransitionTime @consonantTransitionFunc;
-                    outline: 2px solid @consonantFocusedColor;
-                }
+                z-index: 2;
             }
 
             &-videoIco {
@@ -66,12 +77,19 @@
                 right: auto;
             }
 
+            &-videoIco:focus {
+                transform: scale(1.1);
+                transition: transform @consonantTransitionTime @consonantTransitionFunc;
+                outline: 2px solid @consonantFocusedColor;
+            }
+
             &-content {
                 position: absolute;
                 text-decoration: none;
                 bottom: 0;
                 background-color: transparent;
                 flex-direction: column-reverse;
+                padding: 8px 24px 32px;
             }
 
             &-title {

@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.8.2 (9/12/2023, 13:28:14)
+ * Chimera UI Libraries - Build 0.8.3 (9/25/2023, 21:29:09)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -46422,6 +46422,8 @@ var Card = function Card(props) {
     var showVideoButton = !isProduct && !isText;
     var showText = !isHalfHeight && !isFull;
     var showFooter = isOneHalf || isProduct || isText;
+    var showFooterLeft = !isProduct;
+    var showFooterCenter = !isProduct;
 
     if (isHalfHeight && isGated && !isRegistered) {
         bannerDescriptionToUse = bannerMap.register.description;
@@ -46501,7 +46503,7 @@ var Card = function Card(props) {
                     className: 'consonant-Card-badge' },
                 badgeText
             ),
-            showVideoButton && videoURL && _react2.default.createElement(_videoButton2.default, {
+            showVideoButton && videoURL && !isHalfHeight && _react2.default.createElement(_videoButton2.default, {
                 videoURL: videoURLToUse,
                 gateVideo: gateVideo,
                 onFocus: onFocus,
@@ -46527,6 +46529,11 @@ var Card = function Card(props) {
             'div',
             {
                 className: 'consonant-Card-content' },
+            showVideoButton && videoURL && isHalfHeight && _react2.default.createElement(_videoButton2.default, {
+                videoURL: videoURLToUse,
+                gateVideo: gateVideo,
+                onFocus: onFocus,
+                className: 'consonant-Card-videoIco' }),
             showLabel && detailText && _react2.default.createElement(
                 'span',
                 {
@@ -46558,9 +46565,10 @@ var Card = function Card(props) {
                     divider: footerItem.divider,
                     isFluid: footerItem.isFluid,
                     key: (0, _cuid2.default)(),
-                    left: extendFooterData(footerItem.left),
-                    center: extendFooterData(footerItem.center),
+                    left: showFooterLeft ? extendFooterData(footerItem.left) : [],
+                    center: showFooterCenter ? extendFooterData(footerItem.center) : [],
                     right: extendFooterData(footerItem.right),
+                    cardStyle: cardStyle,
                     onFocus: onFocus });
             }),
             (isThreeFourths || isDoubleWide || isFull) && !renderOverlay && _react2.default.createElement(_LinkBlocker2.default, { target: linkBlockerTarget, link: overlay })
@@ -48509,7 +48517,7 @@ var VideoButton = function VideoButton(_ref) {
         _react2.default.createElement(
             'button',
             {
-                className: 'consonant-videoButton-wrapper',
+                className: 'consonant-Card-videoButton-wrapper',
                 'daa-ll': 'play',
                 'aria-label': 'Play',
                 onClick: handleShowModal },
