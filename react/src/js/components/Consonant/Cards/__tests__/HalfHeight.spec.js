@@ -118,7 +118,7 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         const cardLogo = screen.queryByTestId('consonant-Card-logo');
         expect(cardLogo).toBeNull();
     });
-    
+
     test('should not render a card text', () => {
         renderCard({
             cardStyle,

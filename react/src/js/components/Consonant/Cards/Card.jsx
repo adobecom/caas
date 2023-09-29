@@ -263,10 +263,12 @@ const Card = (props) => {
     const showHeader = !isProduct;
     const showBadge = isOneHalf || isThreeFourths || isFull;
     const showLogo = isOneHalf || isThreeFourths || isFull || isText;
-    const showLabel = isOneHalf || isThreeFourths || isHalfHeight || isFull;
+    const showLabel = !isProduct && !isText;
     const showVideoButton = !isProduct && !isText;
     const showText = !isHalfHeight && !isFull;
     const showFooter = isOneHalf || isProduct || isText;
+    const showFooterLeft = !isProduct;
+    const showFooterCenter = !isProduct;
 
     if (isHalfHeight && isGated && !isRegistered) {
         bannerDescriptionToUse = bannerMap.register.description;
@@ -288,7 +290,7 @@ const Card = (props) => {
     }
 
     const hasBanner = bannerDescriptionToUse && bannerFontColorToUse && bannerBackgroundColorToUse;
-    const headingAria = (videoURLToUse ||
+    const headingAria = (videoURL ||
         label || detailText || description || logoSrc || badgeText || (hasBanner && !disableBanners)) ? '' : title;
 
     let ariaText = title;
@@ -338,13 +340,13 @@ const Card = (props) => {
                 {showBadge &&
                 badgeText &&
                 <span
-                    className="consonant-Card-badge"
-                    data-testid="consonant-Card-badge">
+                    className="consonant-Card-badge">
                     {badgeText}
                 </span>
                 }
                 {showVideoButton &&
-                videoURLToUse &&
+                videoURL &&
+                !isHalfHeight &&
                 <VideoButton
                     videoURL={videoURLToUse}
                     gateVideo={gateVideo}
@@ -372,6 +374,16 @@ const Card = (props) => {
             }
             <div
                 className="consonant-Card-content">
+                {showVideoButton &&
+                videoURL &&
+                isHalfHeight &&
+                <VideoButton
+                    videoURL={videoURLToUse}
+                    gateVideo={gateVideo}
+                    onFocus={onFocus}
+                    className="consonant-Card-videoIco" />
+                }
+
                 {showLabel &&
                 detailText &&
                 <span
@@ -406,9 +418,10 @@ const Card = (props) => {
                         divider={footerItem.divider}
                         isFluid={footerItem.isFluid}
                         key={cuid()}
-                        left={extendFooterData(footerItem.left)}
-                        center={extendFooterData(footerItem.center)}
+                        left={showFooterLeft ? extendFooterData(footerItem.left) : []}
+                        center={showFooterCenter ? extendFooterData(footerItem.center) : []}
                         right={extendFooterData(footerItem.right)}
+                        cardStyle={cardStyle}
                         onFocus={onFocus} />
                 ))}
                 {(isThreeFourths || isDoubleWide || isFull)

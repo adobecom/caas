@@ -117,11 +117,15 @@ const Container = (props) => {
         .replace(/\[|\]/g, '')
         .replace(/`/g, '')
         .split(',');
+    // eslint-disable-next-line no-use-before-define,max-len
+    featuredCards = featuredCards.concat(featuredCards.map(id => rollingHash(id, CARD_HASH_LENGTH)));
     let hideCtaIds = getConfig('hideCtaIds', '')
         .toString()
         .replace(/\[|\]/g, '')
         .replace(/`/g, '')
         .split(',');
+    // eslint-disable-next-line no-use-before-define
+    hideCtaIds = hideCtaIds.concat(hideCtaIds.map(id => rollingHash(id, CARD_HASH_LENGTH)));
     let hideCtaTags = getConfig('hideCtaTags', '')
         .toString()
         .replace(/\[|\]/g, '')
@@ -466,7 +470,11 @@ const Container = (props) => {
     const resetFiltersSearchAndBookmarks = () => {
         clearAllFilters();
         setSearchQuery('');
+        const urlParams = new URLSearchParams(window.location.search);
         clearUrlState();
+        urlParams.forEach((value, key) => {
+            if (key.indexOf(filterGroupPrefix) === -1) setUrlState(key, value);
+        });
         setShowBookmarks(false);
     };
 
@@ -797,8 +805,6 @@ const Container = (props) => {
                                 filterItem.id = `${rollingHash(parent, TAG_HASH_LENGTH)}/${rollingHash(child, TAG_HASH_LENGTH)}`;
                             }
                         }
-                        featuredCards = featuredCards.map(id => rollingHash(id, CARD_HASH_LENGTH));
-                        hideCtaIds = hideCtaIds.map(id => rollingHash(id, CARD_HASH_LENGTH));
                         const temp = [];
                         for (const tag of hideCtaTags) {
                             const [parent, child] = getParentChild(tag);

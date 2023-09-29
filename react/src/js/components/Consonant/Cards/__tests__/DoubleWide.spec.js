@@ -74,7 +74,7 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         expect(videoButton).not.toBeNull();
     });
 
-    test('should not render a detail/eyebrow text', () => {
+    test('should be able to render a detail/eyebrow text', () => {
         renderCard({
             cardStyle,
             contentArea: {
@@ -87,7 +87,7 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         });
 
         const labelElement = screen.queryByTestId('consonant-Card-label');
-        expect(labelElement).toBeNull();
+        expect(labelElement).not.toBeNull();
     });
 
     test('should be able to render a card title', () => {

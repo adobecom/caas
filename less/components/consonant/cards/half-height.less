@@ -33,29 +33,14 @@
                 }
             }
 
-            &-content .consonant-videoButton-wrapper {
+            &-videoButton-wrapper {
                 top: -118px;
                 background: transparent;
                 position: absolute;
                 height: 208px;
                 left: 0;
                 right: 0;
-
-                &:focus {
-                    .consonant-HalfHeightCard-videoIco {
-                        transform: scale(1.1);
-                        background: transparent url(@consonantCardPlayIcoHoverData) no-repeat 0 0;
-                        transition: transform @consonantTransitionTime @consonantTransitionFunc;
-                    }
-                }
-            }
-
-            &:focus {
-                .consonant-HalfHeightCard-videoIco {
-                    transform: scale(1.1);
-                    transition: transform @consonantTransitionTime @consonantTransitionFunc;
-                    outline: 2px solid @consonantFocusedColor;
-                }
+                z-index: 2;
             }
 
             &-videoIco {
@@ -66,12 +51,19 @@
                 right: auto;
             }
 
+            &-videoIco:focus {
+                transform: scale(1.1);
+                transition: transform @consonantTransitionTime @consonantTransitionFunc;
+                outline: 2px solid @consonantFocusedColor;
+            }
+
             &-content {
                 position: absolute;
                 text-decoration: none;
                 bottom: 0;
                 background-color: transparent;
                 flex-direction: column-reverse;
+                padding: 8px 24px 32px;
             }
 
             &-title {
@@ -111,7 +103,7 @@
                 text-transform: uppercase;
                 border-top-left-radius: 4px;
                 border-bottom-left-radius: 4px;
-                z-index: 1;
+                z-index: 2;
                 background-color: @consonantBlue600;
                 user-select: none;
                 overflow-y: auto;

@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.8.0 (9/13/2023, 18:32:11)
+ * Chimera UI Libraries - Build 0.8.4 (9/28/2023, 21:17:46)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6010,7 +6010,15 @@ var Container = function Container(props) {
     var defaultSort = getConfig('sort', 'defaultSort');
     var defaultSortOption = (0, _consonant.getDefaultSortOption)(config, defaultSort);
     var featuredCards = getConfig('featuredCards', '').toString().replace(/\[|\]/g, '').replace(/`/g, '').split(',');
+    // eslint-disable-next-line no-use-before-define,max-len
+    featuredCards = featuredCards.concat(featuredCards.map(function (id) {
+        return rollingHash(id, CARD_HASH_LENGTH);
+    }));
     var hideCtaIds = getConfig('hideCtaIds', '').toString().replace(/\[|\]/g, '').replace(/`/g, '').split(',');
+    // eslint-disable-next-line no-use-before-define
+    hideCtaIds = hideCtaIds.concat(hideCtaIds.map(function (id) {
+        return rollingHash(id, CARD_HASH_LENGTH);
+    }));
     var hideCtaTags = getConfig('hideCtaTags', '').toString().replace(/\[|\]/g, '').replace(/`/g, '').split(',');
     var leftPanelSearchPlaceholder = getConfig('search', 'i18n.leftFilterPanel.searchPlaceholderText');
     var topPanelSearchPlaceholder = getConfig('search', 'i18n.topFilterPanel.searchPlaceholderText');
@@ -6464,7 +6472,11 @@ var Container = function Container(props) {
     var resetFiltersSearchAndBookmarks = function resetFiltersSearchAndBookmarks() {
         clearAllFilters();
         setSearchQuery('');
+        var urlParams = new URLSearchParams(window.location.search);
         clearUrlState();
+        urlParams.forEach(function (value, key) {
+            if (key.indexOf(filterGroupPrefix) === -1) setUrlState(key, value);
+        });
         setShowBookmarks(false);
     };
 
@@ -6890,12 +6902,6 @@ var Container = function Container(props) {
                         }
                     }
 
-                    featuredCards = featuredCards.map(function (id) {
-                        return rollingHash(id, CARD_HASH_LENGTH);
-                    });
-                    hideCtaIds = hideCtaIds.map(function (id) {
-                        return rollingHash(id, CARD_HASH_LENGTH);
-                    });
                     var temp = [];
                     var _iteratorNormalCompletion2 = true;
                     var _didIteratorError2 = false;
@@ -46412,10 +46418,12 @@ var Card = function Card(props) {
     var showHeader = !isProduct;
     var showBadge = isOneHalf || isThreeFourths || isFull;
     var showLogo = isOneHalf || isThreeFourths || isFull || isText;
-    var showLabel = isOneHalf || isThreeFourths || isHalfHeight || isFull;
+    var showLabel = !isProduct && !isText;
     var showVideoButton = !isProduct && !isText;
     var showText = !isHalfHeight && !isFull;
     var showFooter = isOneHalf || isProduct || isText;
+    var showFooterLeft = !isProduct;
+    var showFooterCenter = !isProduct;
 
     if (isHalfHeight && isGated && !isRegistered) {
         bannerDescriptionToUse = bannerMap.register.description;
@@ -46437,7 +46445,7 @@ var Card = function Card(props) {
     }
 
     var hasBanner = bannerDescriptionToUse && bannerFontColorToUse && bannerBackgroundColorToUse;
-    var headingAria = videoURLToUse || label || detailText || description || logoSrc || badgeText || hasBanner && !disableBanners ? '' : title;
+    var headingAria = videoURL || label || detailText || description || logoSrc || badgeText || hasBanner && !disableBanners ? '' : title;
 
     var ariaText = title;
     if (hasBanner && !disableBanners) {
@@ -46492,11 +46500,10 @@ var Card = function Card(props) {
             showBadge && badgeText && _react2.default.createElement(
                 'span',
                 {
-                    className: 'consonant-Card-badge',
-                    'data-testid': 'consonant-Card-badge' },
+                    className: 'consonant-Card-badge' },
                 badgeText
             ),
-            showVideoButton && videoURLToUse && _react2.default.createElement(_videoButton2.default, {
+            showVideoButton && videoURL && !isHalfHeight && _react2.default.createElement(_videoButton2.default, {
                 videoURL: videoURLToUse,
                 gateVideo: gateVideo,
                 onFocus: onFocus,
@@ -46522,6 +46529,11 @@ var Card = function Card(props) {
             'div',
             {
                 className: 'consonant-Card-content' },
+            showVideoButton && videoURL && isHalfHeight && _react2.default.createElement(_videoButton2.default, {
+                videoURL: videoURLToUse,
+                gateVideo: gateVideo,
+                onFocus: onFocus,
+                className: 'consonant-Card-videoIco' }),
             showLabel && detailText && _react2.default.createElement(
                 'span',
                 {
@@ -46553,9 +46565,10 @@ var Card = function Card(props) {
                     divider: footerItem.divider,
                     isFluid: footerItem.isFluid,
                     key: (0, _cuid2.default)(),
-                    left: extendFooterData(footerItem.left),
-                    center: extendFooterData(footerItem.center),
+                    left: showFooterLeft ? extendFooterData(footerItem.left) : [],
+                    center: showFooterCenter ? extendFooterData(footerItem.center) : [],
                     right: extendFooterData(footerItem.right),
+                    cardStyle: cardStyle,
                     onFocus: onFocus });
             }),
             (isThreeFourths || isDoubleWide || isFull) && !renderOverlay && _react2.default.createElement(_LinkBlocker2.default, { target: linkBlockerTarget, link: overlay })

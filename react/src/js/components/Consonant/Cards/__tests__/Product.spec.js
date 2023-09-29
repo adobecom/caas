@@ -30,25 +30,6 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         expect(labelElement).not.toBeNull();
     });
 
-    test('should be able to render the lock icon on gated cards', () => {
-        renderCard({
-            cardStyle,
-            tags: [
-                {
-                    id: '/7ed3',
-                },
-            ],
-            bannerMap: {
-                register: {
-                    description: 'Register',
-                },
-            },
-        });
-
-        const gatedIcon = screen.getByTestId('consonant-GatedInfobit');
-        expect(gatedIcon).not.toBeNull();
-    });
-
     test('should be able to render a CTA button', () => {
         renderCard({
             cardStyle,
@@ -143,5 +124,19 @@ describe(`Consonant/Card/${cardStyle}`, () => {
 
         const videoButton = screen.queryByTestId('consonant-videoButton-wrapper');
         expect(videoButton).toBeNull();
+    });
+
+    test('should not render the lock icon on gated cards', () => {
+        renderCard({
+            cardStyle,
+            tags: [
+                {
+                    id: '/7ed3',
+                },
+            ],
+        });
+
+        const gatedIcon = screen.queryByTestId('consonant-GatedInfobit');
+        expect(gatedIcon).toBeNull();
     });
 });

@@ -1,5 +1,29 @@
 
 
+## [0.8.4](https://github.com/adobecom/caas/compare/0.8.3...0.8.4) (2023-09-28)
+
+
+### Bug Fixes
+
+* fixes css inconsistencies after master-card merge [MWPW-134627] ([#102](https://github.com/adobecom/caas/issues/102)) ([f9ebeeb](https://github.com/adobecom/caas/commit/f9ebeeb54cc362737a4bac9a73de61bba99048eb))
+
+## [0.8.3](https://github.com/adobecom/caas/compare/0.8.2...0.8.3) (2023-09-25)
+
+## [0.8.2](https://github.com/adobecom/caas/compare/0.8.1...0.8.2) (2023-09-08)
+
+
+### Bug Fixes
+
+* **mwpw-136157:** fixing bug released on 0.8.0 ([2adfaaa](https://github.com/adobecom/caas/commit/2adfaaa16f93b865cf369e04a5287296b334d796))
+
+## [0.8.1](https://github.com/adobecom/caas/compare/0.8.0...0.8.1) (2023-09-06)
+
+
+### Bug Fixes
+
+* **mwpw-136002:** fixes featured card sort if toggled after initial page load ([ae1252f](https://github.com/adobecom/caas/commit/ae1252f12204c263dbd4c38d7f517cf32f5b4331))
+* **mwpw-136002:** fixes featured card sort if toggled after initial page load ([b7738ab](https://github.com/adobecom/caas/commit/b7738ab1c8a648856ca416a9e5661cbdbe74b8e7))
+
 # [0.8.0](https://github.com/adobecom/caas/compare/0.7.3...0.8.0) (2023-09-01)
 
 
