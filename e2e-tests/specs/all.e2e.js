@@ -242,7 +242,7 @@ const config = {
     analytics: {
         trackImpressions: 'true',
         collectionIdentifier: 'Some Identifier',
-    }
+    },
 };
 
 let serverPath = 'https://adobecom.github.io/caas';
@@ -252,68 +252,14 @@ if (args.includes('env=LOCAL')) {
     config.collection.endpoint = '../../mock-json/smoke.json';
 }
 
-describe('Hide CTA(s):', async () => {
-    it('CTA should exist', async () => {
-        const cloneConfig = structuredClone(config);
-        const state = btoa(JSON.stringify(cloneConfig));
-        const url = `${serverPath}/html/e2e/MWPW-126169.html?state=${state}`;
-        await browser.url(url);
-        await browser.setTimeout({ script: 50000 });
-        const buttonText = await $('#ac578dee-f01b-3ea0-a282-2116619e4251 .consonant-BtnInfobit--cta').getText();
-        expect(buttonText).toEqual('Read More');
-    });
-    it('MWPW-130075: Individual CTA should be hidden', async () => {
-        const cloneConfig = structuredClone(config);
-        cloneConfig.hideCtaIds = ['ac578dee-f01b-3ea0-a282-2116619e4251'];
-        const state = btoa(JSON.stringify(cloneConfig));
-        const url = `${serverPath}/html/e2e/MWPW-126169.html?state=${state}`;
-        await browser.url(url);
-        await browser.setTimeout({ script: 50000 });
-        const exists = await $('#ac578dee-f01b-3ea0-a282-2116619e4251 .consonant-BtnInfobit--cta').isDisplayed();
-        expect(exists).toEqual(false); 
-    });
-    it('MWPW-130075: Card with hidden CTA should be clickable', async () => {
-        const cloneConfig = structuredClone(config);
-        cloneConfig.hideCtaIds = ['ac578dee-f01b-3ea0-a282-2116619e4251'];
-        const state = btoa(JSON.stringify(cloneConfig));
-        const url = `${serverPath}/html/e2e/MWPW-126169.html?state=${state}`;
-        await browser.url(url);
-        await browser.setTimeout({ script: 50000 });
-        const hiddenCTA = await $('#ac578dee-f01b-3ea0-a282-2116619e4251 .consonant-LinkBlocker').isDisplayed();
-        expect(hiddenCTA).toEqual(true); 
-    });
-    it('MWPW-128711: ALL CTAs should be hidden', async () => {
-        const cloneConfig = structuredClone(config);
-        cloneConfig.collection.collectionButtonStyle = 'hidden';
-        const state = btoa(JSON.stringify(cloneConfig));
-        const url = `${serverPath}/html/e2e/MWPW-126169.html?state=${state}`;
-        await browser.url(url);
-        await browser.setTimeout({ script: 50000 });
-        for await (const oneCTA of $$('.consonant-Card .consonant-BtnInfobit--cta')) {
-            expect(await oneCTA.isDisplayed()).toEqual(false);
-        }
-    });
-    it('MWPW-134272: Cards with "hide CTA tags" should be hidden while others are still visible', async () => {
-        const cloneConfig = structuredClone(config);
-        cloneConfig.hideCtaTags = ['adobe-com-enterprise:topic/digital-foundation'];
-        const state = btoa(JSON.stringify(cloneConfig));
-        const url = `${serverPath}/html/e2e/MWPW-126169.html?state=${state}`;
-        await browser.url(url);
-        await browser.setTimeout({ script: 50000 });
-        const taggedCta = await $('#ad83970f-c987-3c86-846f-4edaec827fb1 .consonant-BtnInfobit--cta').isDisplayed();
-        const untaggedCta = await $('#ac578dee-f01b-3ea0-a282-2116619e4251 .consonant-BtnInfobit--cta').isDisplayed();
-        expect(taggedCta).toEqual(false);
-        expect(untaggedCta).toEqual(true);
-    });
-});
-
-describe('Carousel', async () => {
+describe('Carousel Behaviors', async () => {
     const cloneConfig = structuredClone(config);
     cloneConfig.collection.layout.container = 'carousel';
 
     const state = btoa(JSON.stringify(cloneConfig));
     const url = `${serverPath}/html/e2e/carousel.html?state=${state}`;
 
+    // example
     it('Carousel Title should exist', async () => {
         await browser.url(url);
         await browser.setTimeout({ script: 50000 });
@@ -321,6 +267,7 @@ describe('Carousel', async () => {
         await expect(title).toEqual('Lorem Ipsum');
     });
 
+    // example
     it('All cards should appear', async () => {
         await browser.url(url);
         await browser.setTimeout({ script: 50000 });
@@ -338,3 +285,133 @@ describe('Carousel', async () => {
     });
 });
 
+describe('Card Behaviors', async () => {
+    // checking if time has passed upcoming becomes live
+});
+
+// contains good examples of changing the config and seeing the results
+describe('CTA Behaviors', async () => {
+    /* it('CTA should exist', async () => {
+        const cloneConfig = structuredClone(config);
+        const state = btoa(JSON.stringify(cloneConfig));
+        const url = `${serverPath}/html/e2e/e2e-grid.html?state=${state}`;
+        await browser.url(url);
+        await browser.setTimeout({ script: 50000 });
+        const buttonText=await $('#ac578dee-f01b-3ea0-a282-2116619e4251 .consonant-BtnInfobit--cta')
+            .getText();
+        expect(buttonText).toEqual('Read More');
+    } */
+
+    it('MWPW-130075: Individual CTA should be hidden', async () => {
+        const cloneConfig = structuredClone(config);
+        cloneConfig.hideCtaIds = ['ac578dee-f01b-3ea0-a282-2116619e4251'];
+        const state = btoa(JSON.stringify(cloneConfig));
+        const url = `${serverPath}/html/e2e/e2e-grid.html?state=${state}`;
+        await browser.url(url);
+        await browser.setTimeout({ script: 50000 });
+        const exists = await $('#ac578dee-f01b-3ea0-a282-2116619e4251 .consonant-BtnInfobit--cta').isDisplayed();
+        expect(exists).toEqual(false);
+    });
+    it('MWPW-130075: Card with hidden CTA should be clickable', async () => {
+        const cloneConfig = structuredClone(config);
+        cloneConfig.hideCtaIds = ['ac578dee-f01b-3ea0-a282-2116619e4251'];
+        const state = btoa(JSON.stringify(cloneConfig));
+        const url = `${serverPath}/html/e2e/e2e-grid.html?state=${state}`;
+        await browser.url(url);
+        await browser.setTimeout({ script: 50000 });
+        const hiddenCTA = await $('#ac578dee-f01b-3ea0-a282-2116619e4251 .consonant-LinkBlocker').isDisplayed();
+        expect(hiddenCTA).toEqual(true);
+    });
+    it('MWPW-128711: ALL CTAs should be hidden', async () => {
+        const cloneConfig = structuredClone(config);
+        cloneConfig.collection.collectionButtonStyle = 'hidden';
+        const state = btoa(JSON.stringify(cloneConfig));
+        const url = `${serverPath}/html/e2e/e2e-grid.html?state=${state}`;
+        await browser.url(url);
+        await browser.setTimeout({ script: 50000 });
+        for await (const oneCTA of $$('.consonant-Card .consonant-BtnInfobit--cta')) {
+            expect(await oneCTA.isDisplayed()).toEqual(false);
+        }
+    });
+    it('MWPW-134272: Cards with "hide CTA tags" should be hidden while others are still visible', async () => {
+        const cloneConfig = structuredClone(config);
+        cloneConfig.hideCtaTags = ['adobe-com-enterprise:topic/digital-foundation'];
+        const state = btoa(JSON.stringify(cloneConfig));
+        const url = `${serverPath}/html/e2e/e2e-grid.html?state=${state}`;
+        await browser.url(url);
+        await browser.setTimeout({ script: 50000 });
+        const taggedCta = await $('#ad83970f-c987-3c86-846f-4edaec827fb1 .consonant-BtnInfobit--cta').isDisplayed();
+        const untaggedCta = await $('#ac578dee-f01b-3ea0-a282-2116619e4251 .consonant-BtnInfobit--cta').isDisplayed();
+        expect(taggedCta).toEqual(false);
+        expect(untaggedCta).toEqual(true);
+    });
+});
+
+// contains good examples of clicking behaviors
+describe('Filter and Search Behaviors', async () => {
+    const cloneConfig = structuredClone(config);
+    cloneConfig.filterPanel.enabled = true;
+    it('MWPW-137132: can filter results using both search terms and filters by url', async () => {
+        const state = btoa(JSON.stringify(cloneConfig));
+        const url = `${serverPath}/html/e2e/e2e-grid.html?state=${state}&&ch_Topic=Creativity%2520and%2520Design`;
+        await browser.url(url);
+        await browser.setTimeout({ script: 50000 });
+        const cardRes = await $('.consonant-LoadMore-text').getText();
+        expect(cardRes).toEqual('Showing 3 of 3 cards');
+    });
+    it('MWPW-136333: can use "clear all" to clear terms from url and grid', async () => {
+        const state = btoa(JSON.stringify(cloneConfig));
+        const url = `${serverPath}/html/e2e/e2e-grid.html?state=${state}&sh_=Ze&ch_Topic=Stock%252CPersonalization`;
+        await browser.url(url);
+        await browser.setTimeout({ script: 50000 });
+        const clearAll = await $('.consonant-LeftFilters-clearLink');
+        await clearAll.click();
+        const cardRes = await $('.consonant-LoadMore-text').getText();
+        expect(cardRes).toEqual('Showing 5 of 8 cards');
+        // const newUrl = await browser.getUrl();
+        // expect(newUrl).toEqual(`${serverPath}/html/e2e/e2e-grid.html?state=${state}`);
+    });
+    it('MWPW-137140: can clear search and still have filters selected', async () => {
+        const state = btoa(JSON.stringify(cloneConfig));
+        const url = `${serverPath}/html/e2e/e2e-grid.html?state=${state}&sh_=Ze&ch_Topic=Stock%252CPersonalization`;
+        await browser.url(url);
+        await browser.setTimeout({ script: 50000 });
+        const clearSearch = await $('.consonant-Search-inputClear');
+        await clearSearch.click();
+        const cardRes = await $('.consonant-LoadMore-text').getText();
+        expect(cardRes).toEqual('Showing 5 of 6 cards');
+        const newUrl = await browser.getUrl();
+        expect(newUrl.replaceAll('%3D', '=')).toEqual(`${serverPath}/html/e2e/e2e-grid.html?state=${state}&ch_Topic=Stock%252CPersonalization`);
+    });
+    it('MWPW-137141: can clear a singluar selected filter from checkbox and see the updated results', async () => {
+        const state = btoa(JSON.stringify(cloneConfig));
+        const url = `${serverPath}/html/e2e/e2e-grid.html?state=${state}&sh_=Ze&ch_Topic=Stock%252CPersonalization`;
+        await browser.url(url);
+        await browser.setTimeout({ script: 50000 });
+        const clearCheckbox = await $('.consonant-LeftFilter-itemsItemLabel=Stock');
+        await clearCheckbox.click();
+        const cardRes = await $('.consonant-LoadMore-text').getText();
+        expect(cardRes).toEqual('Showing 1 of 1 cards');
+        const newUrl = await browser.getUrl();
+        expect(newUrl.replaceAll('%3D', '=')).toEqual(`${serverPath}/html/e2e/e2e-grid.html?state=${state}&sh_=Ze&ch_Topic=Personalization`);
+    });
+    it('MWPW-137142 can clear all topics while preserving search terms', async () => {
+        const state = btoa(JSON.stringify(cloneConfig));
+        const url = `${serverPath}/html/e2e/e2e-grid.html?state=${state}&sh_=Ze&ch_Topic=Stock%252CPersonalization`;
+        await browser.url(url);
+        await browser.setTimeout({ script: 50000 });
+        const clearFilters = await $('.consonant-LeftFilter-itemBadge');
+        await clearFilters.click();
+        const cardRes = await $('.consonant-LoadMore-text').getText();
+        expect(cardRes).toEqual('Showing 3 of 3 cards');
+        const newUrl = await browser.getUrl();
+        expect(newUrl.replaceAll('%3D', '=')).toEqual(`${serverPath}/html/e2e/e2e-grid.html?state=${state}&sh_=Ze`);
+    });
+    // if you are on page 20 and then you set a new filter it should reset to page one
+});
+
+describe('Grid Behaviors', async () => {
+    // pagination and load more clicking behaviors
+    // clicking through grid
+    // 3 up 4 up stuff changing layouts
+});
