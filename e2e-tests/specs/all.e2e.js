@@ -368,8 +368,8 @@ describe('Filter and Search Behaviors', async () => {
         await clearAll.click();
         const cardRes = await $('.consonant-LoadMore-text').getText();
         expect(cardRes).toEqual('Showing 5 of 8 cards');
-        // const newUrl = await browser.getUrl();
-        // expect(newUrl).toEqual(`${serverPath}/html/e2e/e2e-grid.html?state=${state}`);
+        const newUrl = await browser.getUrl();
+        expect(newUrl.replaceAll('%3D', '=')).toEqual(`${serverPath}/html/e2e/e2e-grid.html?state=${state}`);
     });
     it('MWPW-137140: can clear search and still have filters selected', async () => {
         const state = btoa(JSON.stringify(cloneConfig));

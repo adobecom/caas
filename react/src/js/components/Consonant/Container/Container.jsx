@@ -441,8 +441,8 @@ const Container = (props) => {
         urlParams.forEach((value, key) => {
             const chFilter = key.toLowerCase().replace('ch_', '').replace(' ', '-');
             if (key.indexOf(filterGroupPrefix) !== 0
-                || !id.toLowerCase().includes(chFilter)
-                || !group.toLowerCase().includes(chFilter)) {
+                && !id.toLowerCase().includes(chFilter)
+                && !group.toLowerCase().includes(chFilter)) {
                 setUrlState(key, value.replace('%20', ' '));
             }
         });
@@ -476,7 +476,8 @@ const Container = (props) => {
         const urlParams = new URLSearchParams(window.location.search);
         clearUrlState();
         urlParams.forEach((value, key) => {
-            if (key.indexOf(filterGroupPrefix) === -1) setUrlState(key, value);
+            if (key.indexOf(filterGroupPrefix) === -1
+                && key.indexOf(searchPrefix) === -1) setUrlState(key, value);
         });
         setShowBookmarks(false);
     };

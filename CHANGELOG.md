@@ -1,5 +1,13 @@
 
 
+## [0.9.2](https://github.com/adobecom/caas/compare/0.9.1...0.9.2) (2023-10-17)
+
+
+### Bug Fixes
+
+* **mwpw-136323:** filter params were not removed with number and clear all was not clearing search ([81876e6](https://github.com/adobecom/caas/commit/81876e6360c765a8960f6ae885f5e464926b96d8))
+* **mwpw-136323:** updated e2e suite for these cases ([125be37](https://github.com/adobecom/caas/commit/125be37aa4925d9321d6f3fa4a510322c27dabad))
+
 ## [0.9.1](https://github.com/adobecom/caas/compare/0.9.0...0.9.1) (2023-10-13)
 
 # [0.9.0](https://github.com/adobecom/caas/compare/0.8.5...0.9.0) (2023-10-03)
