@@ -16,7 +16,7 @@
         justify-content: center;
         width: 100%;
         max-width: 100%;
-        grid-template-columns: repeat(auto-fit, minmax(@consonantCardMinWidth, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(@consonantCardMinWidth, max-content));
 
         /* Spacing variations */
 
@@ -43,7 +43,7 @@
         /* Cards variations */
 
         &--2up {
-            grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-mobileMinWidth, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-mobileMinWidth, max-content));
 
             .consonant-Card {
                 max-width: @consonant-DoubleWideCard-maxWidth;
@@ -65,7 +65,7 @@
         }
 
         &--4up {
-            grid-template-columns: repeat(auto-fit, minmax(@consonant-CardsGrid-smallerCardMinWidth, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(@consonant-CardsGrid-smallerCardMinWidth, max-content));
 
             .consonant-Card {
                 min-width: @consonant-CardsGrid-smallerCardMinWidth;
@@ -89,7 +89,7 @@
         }
 
         &--5up {
-            grid-template-columns: repeat(auto-fit, minmax(@consonant-CardsGrid-smallestCardMinWidth, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(@consonant-CardsGrid-smallestCardMinWidth, max-content));
 
             .consonant-Card {
                 min-width: @consonant-CardsGrid-smallestCardMinWidth;
@@ -114,7 +114,7 @@
 
         @media @consonant-680px-up {
             &--2up {
-                grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-desktopMinWidth, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-desktopMinWidth, max-content));
 
                 .consonant-Card {
                     min-width: @consonant-DoubleWideCard-desktopMinWidth;
@@ -125,7 +125,7 @@
             &--4up,
             &--5up {
                 &.double-wide {
-                    grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-desktopMinWidth, 1fr));
+                    grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-desktopMinWidth, max-content));
                 }
             }
         }
