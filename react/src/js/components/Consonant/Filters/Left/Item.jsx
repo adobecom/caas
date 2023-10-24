@@ -138,7 +138,9 @@ const Item = (props) => {
      * @param {ClickEvent} e
      * @listens ClickEvent
      */
-    const handleClear = () => onClearAll(id);
+    const handleClear = () => {
+        onClearAll(id, name);
+    };
 
     /**
      * Handles toggling the selected/unselected state of the left filter option

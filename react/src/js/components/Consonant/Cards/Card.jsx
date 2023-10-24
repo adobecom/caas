@@ -262,7 +262,7 @@ const Card = (props) => {
     // Card elements to show
     const showHeader = !isProduct;
     const showBadge = isOneHalf || isThreeFourths || isFull;
-    const showLogo = !isHalfHeight;
+    const showLogo = isOneHalf || isThreeFourths || isFull || isText;
     const showLabel = !isProduct && !isText;
     const showVideoButton = !isProduct && !isText;
     const showText = !isHalfHeight && !isFull;

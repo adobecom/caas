@@ -202,6 +202,24 @@
                     display: none !important;
                 }
             }
+
+            &-badge {
+                position: absolute;
+                display: block;
+                max-width: 36%;
+                max-height: 50%;
+                top: 24px;
+                left: 24px;
+                padding: 4px 11px;
+
+                .font(0.75rem, 1rem, 400, @consonantGray700);
+
+                border: 1px solid @consonantGray600;
+                border-radius: 4px;
+                background-color: @consonantBaseColor;
+                overflow-y: auto;
+                z-index: 1;
+            }
         }
     }
 

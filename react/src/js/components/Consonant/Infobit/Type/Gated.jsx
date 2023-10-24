@@ -4,7 +4,7 @@ import React from 'react';
  * Gated Icon svg
  */
 const Gated = () => (
-    <span className="consonant-GatedInfobit">
+    <span className="consonant-GatedInfobit" data-testid="consonant-GatedInfobit">
         <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 15 20" width="15">
             <path
                 fill="#747474"

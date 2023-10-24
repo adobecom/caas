@@ -35,6 +35,7 @@ const DateInterval = ({
     return (
         <span
             title={prettyDateInterval}
+            data-testid="consonant-DateIntervalInfobit"
             className="consonant-DateIntervalInfobit">
             {prettyDateInterval}
         </span>
