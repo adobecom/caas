@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.9.6 (10/24/2023, 11:59:21)
+ * Chimera UI Libraries - Build 0.9.7 (10/25/2023, 17:16:21)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -50075,7 +50075,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFocusTrap", function() { return createFocusTrap; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tabbable__ = __webpack_require__(285);
 /*!
-* focus-trap 7.4.0
+* focus-trap 7.2.0
 * @license MIT, https://github.com/focus-trap/focus-trap/blob/master/LICENSE
 */
 
@@ -50469,13 +50469,18 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
     if (valueOrHandler(config.clickOutsideDeactivates, e)) {
       // immediately deactivate the trap
       trap.deactivate({
+        // if, on deactivation, we should return focus to the node originally-focused
+        //  when the trap was activated (or the configured `setReturnFocus` node),
+        //  then assume it's also OK to return focus to the outside node that was
+        //  just clicked, causing deactivation, as long as that node is focusable;
+        //  if it isn't focusable, then return focus to the original node focused
+        //  on activation (or the configured `setReturnFocus` node)
         // NOTE: by setting `returnFocus: false`, deactivate() will do nothing,
         //  which will result in the outside click setting focus to the node
-        //  that was clicked (and if not focusable, to "nothing"); by setting
+        //  that was clicked, whether it's focusable or not; by setting
         //  `returnFocus: true`, we'll attempt to re-focus the node originally-focused
-        //  on activation (or the configured `setReturnFocus` node), whether the
-        //  outside click was on a focusable node or not
-        returnFocus: config.returnFocusOnDeactivate
+        //  on activation (or the configured `setReturnFocus` node)
+        returnFocus: config.returnFocusOnDeactivate && !Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["b" /* isFocusable */])(target, config.tabbableOptions)
       });
       return;
     }
@@ -50708,13 +50713,17 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
       state.active = true;
       state.paused = false;
       state.nodeFocusedBeforeActivation = doc.activeElement;
-      onActivate === null || onActivate === void 0 ? void 0 : onActivate();
+      if (onActivate) {
+        onActivate();
+      }
       var finishActivation = function finishActivation() {
         if (checkCanFocusTrap) {
           updateTabbableNodes();
         }
         addListeners();
-        onPostActivate === null || onPostActivate === void 0 ? void 0 : onPostActivate();
+        if (onPostActivate) {
+          onPostActivate();
+        }
       };
       if (checkCanFocusTrap) {
         checkCanFocusTrap(state.containers.concat()).then(finishActivation, finishActivation);
@@ -50742,13 +50751,17 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
       var onPostDeactivate = getOption(options, 'onPostDeactivate');
       var checkCanReturnFocus = getOption(options, 'checkCanReturnFocus');
       var returnFocus = getOption(options, 'returnFocus', 'returnFocusOnDeactivate');
-      onDeactivate === null || onDeactivate === void 0 ? void 0 : onDeactivate();
+      if (onDeactivate) {
+        onDeactivate();
+      }
       var finishDeactivation = function finishDeactivation() {
         delay(function () {
           if (returnFocus) {
             tryFocus(getReturnFocusNode(state.nodeFocusedBeforeActivation));
           }
-          onPostDeactivate === null || onPostDeactivate === void 0 ? void 0 : onPostDeactivate();
+          if (onPostDeactivate) {
+            onPostDeactivate();
+          }
         });
       };
       if (returnFocus && checkCanReturnFocus) {
@@ -50758,29 +50771,21 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
       finishDeactivation();
       return this;
     },
-    pause: function pause(pauseOptions) {
+    pause: function pause() {
       if (state.paused || !state.active) {
         return this;
       }
-      var onPause = getOption(pauseOptions, 'onPause');
-      var onPostPause = getOption(pauseOptions, 'onPostPause');
       state.paused = true;
-      onPause === null || onPause === void 0 ? void 0 : onPause();
       removeListeners();
-      onPostPause === null || onPostPause === void 0 ? void 0 : onPostPause();
       return this;
     },
-    unpause: function unpause(unpauseOptions) {
+    unpause: function unpause() {
       if (!state.paused || !state.active) {
         return this;
       }
-      var onUnpause = getOption(unpauseOptions, 'onUnpause');
-      var onPostUnpause = getOption(unpauseOptions, 'onPostUnpause');
       state.paused = false;
-      onUnpause === null || onUnpause === void 0 ? void 0 : onUnpause();
       updateTabbableNodes();
       addListeners();
-      onPostUnpause === null || onPostUnpause === void 0 ? void 0 : onPostUnpause();
       return this;
     },
     updateContainerElements: function updateContainerElements(containerElements) {
@@ -50814,66 +50819,17 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return isTabbable; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return tabbable; });
 /*!
-* tabbable 6.1.1
+* tabbable 6.0.1
 * @license MIT, https://github.com/focus-trap/tabbable/blob/master/LICENSE
 */
-// NOTE: separate `:not()` selectors has broader browser support than the newer
-//  `:not([inert], [inert] *)` (Feb 2023)
-// CAREFUL: JSDom does not support `:not([inert] *)` as a selector; using it causes
-//  the entire query to fail, resulting in no nodes found, which will break a lot
-//  of things... so we have to rely on JS to identify nodes inside an inert container
-var candidateSelectors = ['input:not([inert])', 'select:not([inert])', 'textarea:not([inert])', 'a[href]:not([inert])', 'button:not([inert])', '[tabindex]:not(slot):not([inert])', 'audio[controls]:not([inert])', 'video[controls]:not([inert])', '[contenteditable]:not([contenteditable="false"]):not([inert])', 'details>summary:first-of-type:not([inert])', 'details:not([inert])'];
+var candidateSelectors = ['input', 'select', 'textarea', 'a[href]', 'button', '[tabindex]:not(slot)', 'audio[controls]', 'video[controls]', '[contenteditable]:not([contenteditable="false"])', 'details>summary:first-of-type', 'details'];
 var candidateSelector = /* #__PURE__ */candidateSelectors.join(',');
 var NoElement = typeof Element === 'undefined';
 var matches = NoElement ? function () {} : Element.prototype.matches || Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
 var getRootNode = !NoElement && Element.prototype.getRootNode ? function (element) {
-  var _element$getRootNode;
-  return element === null || element === void 0 ? void 0 : (_element$getRootNode = element.getRootNode) === null || _element$getRootNode === void 0 ? void 0 : _element$getRootNode.call(element);
+  return element.getRootNode();
 } : function (element) {
-  return element === null || element === void 0 ? void 0 : element.ownerDocument;
-};
-
-/**
- * Determines if a node is inert or in an inert ancestor.
- * @param {Element} [node]
- * @param {boolean} [lookUp] If true and `node` is not inert, looks up at ancestors to
- *  see if any of them are inert. If false, only `node` itself is considered.
- * @returns {boolean} True if inert itself or by way of being in an inert ancestor.
- *  False if `node` is falsy.
- */
-var isInert = function isInert(node, lookUp) {
-  var _node$getAttribute;
-  if (lookUp === void 0) {
-    lookUp = true;
-  }
-  // CAREFUL: JSDom does not support inert at all, so we can't use the `HTMLElement.inert`
-  //  JS API property; we have to check the attribute, which can either be empty or 'true';
-  //  if it's `null` (not specified) or 'false', it's an active element
-  var inertAtt = node === null || node === void 0 ? void 0 : (_node$getAttribute = node.getAttribute) === null || _node$getAttribute === void 0 ? void 0 : _node$getAttribute.call(node, 'inert');
-  var inert = inertAtt === '' || inertAtt === 'true';
-
-  // NOTE: this could also be handled with `node.matches('[inert], :is([inert] *)')`
-  //  if it weren't for `matches()` not being a function on shadow roots; the following
-  //  code works for any kind of node
-  // CAREFUL: JSDom does not appear to support certain selectors like `:not([inert] *)`
-  //  so it likely would not support `:is([inert] *)` either...
-  var result = inert || lookUp && node && isInert(node.parentNode); // recursive
-
-  return result;
-};
-
-/**
- * Determines if a node's content is editable.
- * @param {Element} [node]
- * @returns True if it's content-editable; false if it's not or `node` is falsy.
- */
-var isContentEditable = function isContentEditable(node) {
-  var _node$getAttribute2;
-  // CAREFUL: JSDom does not support the `HTMLElement.isContentEditable` API so we have
-  //  to use the attribute directly to check for this, which can either be empty or 'true';
-  //  if it's `null` (not specified) or 'false', it's a non-editable element
-  var attValue = node === null || node === void 0 ? void 0 : (_node$getAttribute2 = node.getAttribute) === null || _node$getAttribute2 === void 0 ? void 0 : _node$getAttribute2.call(node, 'contenteditable');
-  return attValue === '' || attValue === 'true';
+  return element.ownerDocument;
 };
 
 /**
@@ -50883,11 +50839,6 @@ var isContentEditable = function isContentEditable(node) {
  * @returns {Element[]}
  */
 var getCandidates = function getCandidates(el, includeContainer, filter) {
-  // even if `includeContainer=false`, we still have to check it for inertness because
-  //  if it's inert, all its children are inert
-  if (isInert(el)) {
-    return [];
-  }
   var candidates = Array.prototype.slice.apply(el.querySelectorAll(candidateSelector));
   if (includeContainer && matches.call(el, candidateSelector)) {
     candidates.unshift(el);
@@ -50935,11 +50886,6 @@ var getCandidatesIteratively = function getCandidatesIteratively(elements, inclu
   var elementsToCheck = Array.from(elements);
   while (elementsToCheck.length) {
     var element = elementsToCheck.shift();
-    if (isInert(element, false)) {
-      // no need to look up since we're drilling down
-      // anything inside this container will also be inert
-      continue;
-    }
     if (element.tagName === 'SLOT') {
       // add shadow dom slot scope (slot itself cannot be focusable)
       var assigned = element.assignedElements();
@@ -50964,11 +50910,7 @@ var getCandidatesIteratively = function getCandidatesIteratively(elements, inclu
       var shadowRoot = element.shadowRoot ||
       // check for an undisclosed shadow
       typeof options.getShadowRoot === 'function' && options.getShadowRoot(element);
-
-      // no inert look up because we're already drilling down and checking for inertness
-      //  on the way down, so all containers to this root node should have already been
-      //  vetted as non-inert
-      var validShadowRoot = !isInert(shadowRoot, false) && (!options.shadowRootFilter || options.shadowRootFilter(element));
+      var validShadowRoot = !options.shadowRootFilter || options.shadowRootFilter(element);
       if (shadowRoot && validShadowRoot) {
         // add shadow dom scope IIF a shadow root node was given; otherwise, an undisclosed
         //  shadow exists, so look at light dom children as fallback BUT create a scope for any
@@ -51007,7 +50949,7 @@ var getTabindex = function getTabindex(node, isScope) {
     // isScope is positive for custom element with shadow root or slot that by default
     // have tabIndex -1, but need to be sorted by document order in order for their
     // content to be inserted in the correct position
-    if ((isScope || /^(AUDIO|VIDEO|DETAILS)$/.test(node.tagName) || isContentEditable(node)) && isNaN(parseInt(node.getAttribute('tabindex'), 10))) {
+    if ((isScope || /^(AUDIO|VIDEO|DETAILS)$/.test(node.tagName) || node.isContentEditable) && isNaN(parseInt(node.getAttribute('tabindex'), 10))) {
       return 0;
     }
   }
@@ -51067,7 +51009,7 @@ var isNonTabbableRadio = function isNonTabbableRadio(node) {
 
 // determines if a node is ultimately attached to the window's document
 var isNodeAttached = function isNodeAttached(node) {
-  var _nodeRoot;
+  var _nodeRootHost;
   // The root node is the shadow root if the node is in a shadow DOM; some document otherwise
   //  (but NOT _the_ document; see second 'If' comment below for more).
   // If rootNode is shadow root, it'll have a host, which is the element to which the shadow
@@ -51087,28 +51029,15 @@ var isNodeAttached = function isNodeAttached(node) {
   //  to ignore the rootNode at this point, and use `node.ownerDocument`. Otherwise,
   //  using `rootNode.contains(node)` will _always_ be true we'll get false-positives when
   //  node is actually detached.
-  // NOTE: If `nodeRootHost` or `node` happens to be the `document` itself (which is possible
-  //  if a tabbable/focusable node was quickly added to the DOM, focused, and then removed
-  //  from the DOM as in https://github.com/focus-trap/focus-trap-react/issues/905), then
-  //  `ownerDocument` will be `null`, hence the optional chaining on it.
-  var nodeRoot = node && getRootNode(node);
-  var nodeRootHost = (_nodeRoot = nodeRoot) === null || _nodeRoot === void 0 ? void 0 : _nodeRoot.host;
-
-  // in some cases, a detached node will return itself as the root instead of a document or
-  //  shadow root object, in which case, we shouldn't try to look further up the host chain
-  var attached = false;
-  if (nodeRoot && nodeRoot !== node) {
-    var _nodeRootHost, _nodeRootHost$ownerDo, _node$ownerDocument;
-    attached = !!((_nodeRootHost = nodeRootHost) !== null && _nodeRootHost !== void 0 && (_nodeRootHost$ownerDo = _nodeRootHost.ownerDocument) !== null && _nodeRootHost$ownerDo !== void 0 && _nodeRootHost$ownerDo.contains(nodeRootHost) || node !== null && node !== void 0 && (_node$ownerDocument = node.ownerDocument) !== null && _node$ownerDocument !== void 0 && _node$ownerDocument.contains(node));
-    while (!attached && nodeRootHost) {
-      var _nodeRoot2, _nodeRootHost2, _nodeRootHost2$ownerD;
-      // since it's not attached and we have a root host, the node MUST be in a nested shadow DOM,
-      //  which means we need to get the host's host and check if that parent host is contained
-      //  in (i.e. attached to) the document
-      nodeRoot = getRootNode(nodeRootHost);
-      nodeRootHost = (_nodeRoot2 = nodeRoot) === null || _nodeRoot2 === void 0 ? void 0 : _nodeRoot2.host;
-      attached = !!((_nodeRootHost2 = nodeRootHost) !== null && _nodeRootHost2 !== void 0 && (_nodeRootHost2$ownerD = _nodeRootHost2.ownerDocument) !== null && _nodeRootHost2$ownerD !== void 0 && _nodeRootHost2$ownerD.contains(nodeRootHost));
-    }
+  var nodeRootHost = getRootNode(node).host;
+  var attached = !!((_nodeRootHost = nodeRootHost) !== null && _nodeRootHost !== void 0 && _nodeRootHost.ownerDocument.contains(nodeRootHost) || node.ownerDocument.contains(node));
+  while (!attached && nodeRootHost) {
+    var _nodeRootHost2;
+    // since it's not attached and we have a root host, the node MUST be in a nested shadow DOM,
+    //  which means we need to get the host's host and check if that parent host is contained
+    //  in (i.e. attached to) the document
+    nodeRootHost = getRootNode(nodeRootHost).host;
+    attached = !!((_nodeRootHost2 = nodeRootHost) !== null && _nodeRootHost2 !== void 0 && _nodeRootHost2.ownerDocument.contains(nodeRootHost));
   }
   return attached;
 };
@@ -51243,11 +51172,7 @@ var isDisabledFromFieldset = function isDisabledFromFieldset(node) {
   return false;
 };
 var isNodeMatchingSelectorFocusable = function isNodeMatchingSelectorFocusable(options, node) {
-  if (node.disabled ||
-  // we must do an inert look up to filter out any elements inside an inert ancestor
-  //  because we're limited in the type of selectors we can use in JSDom (see related
-  //  note related to `candidateSelectors`)
-  isInert(node) || isHiddenInput(node) || isHidden(node, options) ||
+  if (node.disabled || isHiddenInput(node) || isHidden(node, options) ||
   // For a details element with a summary, the summary element gets the focus
   isDetailsWithSummary(node) || isDisabledFromFieldset(node)) {
     return false;
