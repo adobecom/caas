@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.10.0 (10/30/2023, 13:50:49)
+ * Chimera UI Libraries - Build 0.11.0 (10/31/2023, 14:14:09)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -48622,8 +48622,8 @@ var VideoButton = function VideoButton(_ref) {
         _react2.default.createElement(
             'button',
             {
-                className: 'consonant-videoButton-wrapper',
-                'data-testid': 'consonant-videoButton-wrapper',
+                className: 'consonant-Card-videoButton-wrapper',
+                'data-testid': 'consonant-Card-videoButton-wrapper',
                 'daa-ll': 'play',
                 'aria-label': 'Play',
                 onClick: handleShowModal },
