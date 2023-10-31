@@ -1,5 +1,12 @@
 
 
+# [0.11.0](https://github.com/adobecom/caas/compare/0.10.0...0.11.0) (2023-10-30)
+
+
+### Features
+
+* **mwpw-125698:** updating sample rate back to 1 ([4561e91](https://github.com/adobecom/caas/commit/4561e91fb3059fac64fe2fa94108b89ce368755c))
+
 # [0.10.0](https://github.com/adobecom/caas/compare/0.9.8...0.10.0) (2023-10-26)
 
 

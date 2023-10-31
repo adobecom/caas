@@ -1,5 +1,9 @@
 /*!
+<<<<<<< HEAD
  * Chimera UI Libraries - Build 0.10.0 (10/30/2023, 21:44:28)
+=======
+ * Chimera UI Libraries - Build 0.10.0 (10/30/2023, 13:50:49)
+>>>>>>> main
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -4390,7 +4394,7 @@ var logLana = exports.logLana = function logLana() {
         _ref2$e = _ref2.e,
         e = _ref2$e === undefined ? '' : _ref2$e,
         _ref2$sampleRate = _ref2.sampleRate,
-        sampleRate = _ref2$sampleRate === undefined ? 100 : _ref2$sampleRate;
+        sampleRate = _ref2$sampleRate === undefined ? 1 : _ref2$sampleRate;
 
     var msg = message + ' | referer: ' + window.location.href + ' | ' + (e.reason || e.error || e.message || e);
     window.lana.log(msg, {
