@@ -1,9 +1,5 @@
 /*!
-<<<<<<< HEAD
- * Chimera UI Libraries - Build 0.10.0 (10/30/2023, 21:44:28)
-=======
- * Chimera UI Libraries - Build 0.10.0 (10/30/2023, 13:50:49)
->>>>>>> main
+ * Chimera UI Libraries - Build 0.11.0 (10/31/2023, 09:21:48)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
