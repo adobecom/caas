@@ -1,209 +1,205 @@
 .consonant-CardsGrid {
-    &.three-fourths {
-        .consonant-Card {
-            height: @consonantCardHeight;
+    .consonant-Card.three-fourths {
+        height: @consonantCardHeight;
 
-            .card-hover;
-            .card-hover-header;
+        .card-hover;
+        .card-hover-header;
 
-            &-header {
-                background-color: @consonantGray300;
-                height: @consonant-ThreeFourthCard-imgHeight;
-                overflow: hidden;
-                position: relative;
-                background-position: 50% 50%;
-                background-repeat: no-repeat;
-                background-size: cover;
+        .consonant-Card-header {
+            background-color: @consonantGray300;
+            height: @consonant-ThreeFourthCard-imgHeight;
+            overflow: hidden;
+            position: relative;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+            background-size: cover;
 
-                button.consonant-Card-videoButton-wrapper {
-                    width: 100%;
-                    height: 100%;
-                    background-color: transparent;
-                }
+            button.consonant-Card-videoButton-wrapper {
+                width: 100%;
+                height: 100%;
+                background-color: transparent;
             }
+        }
 
-            &-videoIco {
-                .video-button-styles;
+        .consonant-Card-videoIco {
+            .video-button-styles;
+        }
+
+        .consonant-Card-logo {
+            position: absolute;
+            display: block;
+            bottom: 16px;
+            left: 0;
+            padding: 7px 24px;
+            border: 1px solid transparent;
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+            z-index: 1;
+            background-color: @consonantWhite;
+
+            .no-font;
+
+            img {
+                width: auto;
+                height: auto;
+                max-width: @consonantCardLogoImgMaxWidth;
+                max-height: @consonant-cardLogoImgMaxHeight;
+                object-fit: contain;
+                user-select: none;
             }
+        }
 
-            &-logo {
-                position: absolute;
-                display: block;
-                bottom: 16px;
-                left: 0;
-                padding: 7px 24px;
-                border: 1px solid transparent;
-                border-top-right-radius: 4px;
-                border-bottom-right-radius: 4px;
-                z-index: 1;
-                background-color: @consonantWhite;
+        .consonant-Card-label {
+            display: block;
+            max-width: 100%;
+            max-height: 1rem;
+            margin-bottom: 4px;
 
-                .no-font;
+            .font(@color: @consonantGray800);
 
-                img {
-                    width: auto;
-                    height: auto;
-                    max-width: @consonantCardLogoImgMaxWidth;
-                    max-height: @consonant-cardLogoImgMaxHeight;
-                    object-fit: contain;
-                    user-select: none;
-                }
+            text-decoration: none;
+
+            .line-clamp(1);
+
+            &:empty {
+                display: none;
             }
+        }
 
-            &-label {
-                display: block;
-                max-width: 100%;
-                max-height: 1rem;
-                margin-bottom: 4px;
+        .consonant-Card-content {
+            padding: 20px 20px 24px;
+        }
 
-                .font(@color: @consonantGray800);
+        .consonant-Card-title {
+            max-height: 1.375rem * 2;
+            margin: 0 0 7px;
 
-                text-decoration: none;
+            .font(1.125rem, 1.375rem, 700, @consonantGray900);
 
-                .line-clamp(1);
+            text-decoration: none;
+            word-break: break-word;
 
-                &:empty {
-                    display: none;
-                }
-            }
+            .line-clamp(2);
 
-            &-content {
-                padding: 20px 20px 24px;
-            }
-
-            &-title {
-                max-height: 1.375rem * 2;
-                margin: 0 0 7px;
-
-                .font(1.125rem, 1.375rem, 700, @consonantGray900);
-
-                text-decoration: none;
-                word-break: break-word;
-
-                .line-clamp(2);
-
-                &:only-child {
-                    max-height: 1.375rem * 4;
-
-                    .line-clamp(4);
-                }
-
-                &:empty {
-                    display: none;
-                }
-            }
-
-            &-label + &-title:last-child {
-                max-height: 1.375rem * 3;
-
-                .line-clamp(3);
-            }
-
-            &-text {
-                max-height: 1rem * 2;
-                margin: 0;
-                padding: 0;
-
-                .font();
-                .line-clamp(2);
-
-                &:empty {
-                    display: none;
-                }
-
-                &:only-child {
-                    max-height: 1rem * 5;
-
-                    .line-clamp(5);
-                }
-            }
-
-            .consonant-Card-label + .consonant-Card-text:last-child {
-                max-height: 1rem * 4;
+            &:only-child {
+                max-height: 1.375rem * 4;
 
                 .line-clamp(4);
             }
 
-            .consonant-Card-label + .consonant-Card-title + .consonant-Card-text {
-                max-height: 1rem;
+            &:empty {
+                display: none;
+            }
+        }
 
-                .line-clamp(1);
+        .consonant-Card-label + &-title:last-child {
+            max-height: 1.375rem * 3;
+
+            .line-clamp(3);
+        }
+
+        .consonant-Card-text {
+            max-height: 1rem * 2;
+            margin: 0;
+            padding: 0;
+
+            .font();
+            .line-clamp(2);
+
+            &:empty {
+                display: none;
             }
 
-            &-banner {
-                position: absolute;
-                display: flex;
-                justify-content: flex-start;
-                max-width: 56%;
-                max-height: 70%;
-                top: 24px;
-                right: 0;
-                padding: 8px 13px 7px;
+            &:only-child {
+                max-height: 1rem * 5;
 
-                .font(0.75rem, 1.0625rem, 700, @consonantBaseColor);
+                .line-clamp(5);
+            }
+        }
 
-                letter-spacing: 0.72px;
-                text-transform: uppercase;
-                border-top-left-radius: 4px;
-                border-bottom-left-radius: 4px;
-                z-index: 1;
-                background-color: @consonantBlue600;
-                user-select: none;
-                overflow-y: auto;
+        .consonant-Card-label + .consonant-Card-text:last-child {
+            max-height: 1rem * 4;
 
-                &IconWrapper {
-                    margin-right: 4px;
+            .line-clamp(4);
+        }
 
-                    img {
-                        width: 8px;
-                        height: 8px;
-                    }
+        .consonant-Card-label + .consonant-Card-title + .consonant-Card-text {
+            max-height: 1rem;
+
+            .line-clamp(1);
+        }
+
+        .consonant-Card-banner {
+            position: absolute;
+            display: flex;
+            justify-content: flex-start;
+            max-width: 56%;
+            max-height: 70%;
+            top: 24px;
+            right: 0;
+            padding: 8px 13px 7px;
+
+            .font(0.75rem, 1.0625rem, 700, @consonantBaseColor);
+
+            letter-spacing: 0.72px;
+            text-transform: uppercase;
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+            z-index: 1;
+            background-color: @consonantBlue600;
+            user-select: none;
+            overflow-y: auto;
+
+            &IconWrapper {
+                margin-right: 4px;
+
+                img {
+                    width: 8px;
+                    height: 8px;
                 }
             }
+        }
 
-            &-badge {
-                position: absolute;
-                display: block;
-                max-width: 36%;
-                max-height: 50%;
-                top: 24px;
-                left: 24px;
-                padding: 4px 11px;
+        .consonant-Card-badge {
+            position: absolute;
+            display: block;
+            max-width: 36%;
+            max-height: 50%;
+            top: 24px;
+            left: 24px;
+            padding: 4px 11px;
 
-                .font(0.75rem, 1rem, 400, @consonantGray700);
+            .font(0.75rem, 1rem, 400, @consonantGray700);
 
-                border: 1px solid @consonantGray600;
-                border-radius: 4px;
-                background-color: @consonantBaseColor;
-                overflow-y: auto;
-                z-index: 1;
-            }
+            border: 1px solid @consonantGray600;
+            border-radius: 4px;
+            background-color: @consonantBaseColor;
+            overflow-y: auto;
+            z-index: 1;
         }
     }
 
     &--4up,
     &--5up {
-        &.three-fourths {
-            .consonant-Card {
-                .consonant-Card-title {
-                    margin-bottom: 0;
-                    max-height: 1.375rem * 2;
+        .consonant-Card.three-fourths {
+            .consonant-Card-title {
+                margin-bottom: 0;
+                max-height: 1.375rem * 2;
 
-                    .line-clamp(2);
+                .line-clamp(2);
 
-                    &:first-child {
-                        max-height: 1.375rem * 3;
+                &:first-child {
+                    max-height: 1.375rem * 3;
 
-                        .line-clamp(3);
-                    }
-                }
-
-                .consonant-Card-text {
-                    display: none !important;
+                    .line-clamp(3);
                 }
             }
 
-            &-badge {
+            .consonant-Card-text {
+                display: none !important;
+            }
+
+            .consonant-Card-badge {
                 position: absolute;
                 display: block;
                 max-width: 36%;
@@ -224,28 +220,24 @@
     }
 
     &--4up {
-        &.three-fourths {
-            .consonant-Card {
-                height: 384px;
+        .consonant-Card.three-fourths {
+            height: 384px;
 
-                .consonant-Card-header {
-                    min-height: @consonant-CardsGrid-smallestCardImgThreeFourthHeight;
-                    height: @consonant-CardsGrid-smallerCardImgThreeFourthHeight;
-                }
+            .consonant-Card-header {
+                min-height: @consonant-CardsGrid-smallestCardImgThreeFourthHeight;
+                height: @consonant-CardsGrid-smallerCardImgThreeFourthHeight;
             }
         }
     }
 
     &--5up {
-        &.three-fourths {
-            .consonant-Card {
-                height: 344px;
-            }
+        .consonant-Card.three-fourths {
+            height: 344px;
+        }
 
-            .consonant-Card-header {
-                min-height: @consonant-CardsGrid-smallestCardImgThreeFourthHeight;
-                height: @consonant-CardsGrid-smallestCardImgThreeFourthHeight;
-            }
+        .consonant-Card-header {
+            min-height: @consonant-CardsGrid-smallestCardImgThreeFourthHeight;
+            height: @consonant-CardsGrid-smallestCardImgThreeFourthHeight;
         }
     }
 }

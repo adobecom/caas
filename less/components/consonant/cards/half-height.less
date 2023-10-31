@@ -3,154 +3,152 @@
 */
 
 .consonant-CardsGrid {
-    &.half-height {
-        .consonant-Card {
-            height: @consonant-OneHalfCard-height;
+    .consonant-Card.half-height {
+        height: @consonant-OneHalfCard-height;
 
-            &-header {
-                z-index: 0;
-                height: 100%;
-                background-color: @consonantGray300;
-                background-position: 50% 0;
-                background-repeat: no-repeat;
-                background-size: cover;
+        .consonant-Card-header {
+            z-index: 0;
+            height: 100%;
+            background-color: @consonantGray300;
+            background-position: 50% 0;
+            background-repeat: no-repeat;
+            background-size: cover;
 
-                &:after {
-                    content: '';
-                    position: absolute;
-
-                    .position-absolute-0;
-
-                    background:
-                        transparent
-                        linear-gradient(
-                            180deg,
-                            rgba(0, 0, 0, 0.1) 10%,
-                            rgba(0, 0, 0, 0.8) 80%
-                        ) 0 0% no-repeat;
-                    z-index: 1;
-                    opacity: 1;
-                }
-            }
-
-            &-videoButton-wrapper {
-                top: -118px;
-                background: transparent;
+            &:after {
+                content: '';
                 position: absolute;
-                height: 208px;
-                left: 0;
-                right: 0;
-                z-index: 2;
+
+                .position-absolute-0;
+
+                background:
+                    transparent
+                    linear-gradient(
+                        180deg,
+                        rgba(0, 0, 0, 0.1) 10%,
+                        rgba(0, 0, 0, 0.8) 80%
+                    ) 0 0% no-repeat;
+                z-index: 1;
+                opacity: 1;
             }
+        }
 
-            &-videoIco {
-                .video-button-styles;
+        .consonant-Card-videoButton-wrapper {
+            top: -118px;
+            background: transparent;
+            position: absolute;
+            height: 208px;
+            left: 0;
+            right: 0;
+            z-index: 2;
+        }
 
-                top: 75px;
-                left: 24px;
-                right: auto;
-            }
+        .consonant-Card-videoIco {
+            .video-button-styles;
 
-            &-videoIco:focus {
-                transform: scale(1.1);
-                transition: transform @consonantTransitionTime @consonantTransitionFunc;
-                outline: 2px solid @consonantFocusedColor;
-            }
+            top: 75px;
+            left: 24px;
+            right: auto;
+        }
 
-            &-content {
-                position: absolute;
-                text-decoration: none;
-                bottom: 0;
-                background-color: transparent;
-                flex-direction: column-reverse;
-                padding: 8px 24px 32px;
-            }
+        .consonant-Card-videoIco:focus {
+            transform: scale(1.1);
+            transition: transform @consonantTransitionTime @consonantTransitionFunc;
+            outline: 2px solid @consonantFocusedColor;
+        }
 
-            &-title {
-                margin: 0 0 5px;
-                max-height: 1.25rem * 2;
-                padding: 0;
+        .consonant-Card-content {
+            position: absolute;
+            text-decoration: none;
+            bottom: 0;
+            background-color: transparent;
+            flex-direction: column-reverse;
+            padding: 8px 24px 32px;
+        }
 
-                .font(1rem, 1.25rem, 700, @consonantBaseColor);
-                .line-clamp(2);
+        .consonant-Card-title {
+            margin: 0 0 5px;
+            max-height: 1.25rem * 2;
+            padding: 0;
 
-                :only-child {
-                    margin-bottom: 0;
-                }
-            }
+            .font(1rem, 1.25rem, 700, @consonantBaseColor);
+            .line-clamp(2);
 
-            &-label {
-                display: block;
-                max-height: 1.3125rem;
-
-                .font(0.875rem, 1.3125rem, 400, @consonantBaseColor);
-                .line-clamp(1);
-            }
-
-            &-banner {
-                position: absolute;
-                display: flex;
-                justify-content: flex-start;
-                max-width: 56%;
-                max-height: 31%;
-                top: 16px;
-                right: 0;
-                padding: 8px 13px 7px;
-
-                .font(0.75rem, 1.0625rem, 700, @consonantBaseColor);
-
-                letter-spacing: 0.72px;
-                text-transform: uppercase;
-                border-top-left-radius: 4px;
-                border-bottom-left-radius: 4px;
-                z-index: 2;
-                background-color: @consonantBlue600;
-                user-select: none;
-                overflow-y: auto;
-
-                &IconWrapper {
-                    margin-right: 4px;
-
-                    & img {
-                        width: 8px;
-                        height: 8px;
-                    }
-                }
-            }
-
-            &--labelTop &-content {
-                flex-direction: column-reverse;
-            }
-
-            &--labelTop &-label {
-                margin-bottom: 8px;
-
-                :only-child {
-                    margin-bottom: 0;
-                }
-            }
-
-            &--labelTop &-title {
+            :only-child {
                 margin-bottom: 0;
             }
+        }
 
-            &.consonant-u-noBorders {
-                border: 0;
-            }
+        .consonant-Card-label {
+            display: block;
+            max-height: 1.3125rem;
 
-            @media @consonant-600px-up {
-                &-title {
-                    max-height: 1.375rem * 2;
+            .font(0.875rem, 1.3125rem, 400, @consonantBaseColor);
+            .line-clamp(1);
+        }
 
-                    .font(1.125rem, 1.375rem, 700, @consonantBaseColor);
+        .consonant-Card-banner {
+            position: absolute;
+            display: flex;
+            justify-content: flex-start;
+            max-width: 56%;
+            max-height: 31%;
+            top: 16px;
+            right: 0;
+            padding: 8px 13px 7px;
+
+            .font(0.75rem, 1.0625rem, 700, @consonantBaseColor);
+
+            letter-spacing: 0.72px;
+            text-transform: uppercase;
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+            z-index: 2;
+            background-color: @consonantBlue600;
+            user-select: none;
+            overflow-y: auto;
+
+            &IconWrapper {
+                margin-right: 4px;
+
+                & img {
+                    width: 8px;
+                    height: 8px;
                 }
             }
+        }
 
-            @media @consonant-desktop-up {
-                outline: 0;
+        .consonant-Card--labelTop .consonant-Card-content {
+            flex-direction: column-reverse;
+        }
 
-                .focus-pseudo-element;
+        .consonant-Card--labelTop .consonant-Card-label {
+            margin-bottom: 8px;
+
+            :only-child {
+                margin-bottom: 0;
             }
+        }
+
+        .consonant-Card--labelTop .consonant-Card-title {
+            margin-bottom: 0;
+        }
+
+        .consonant-Card.consonant-u-noBorders {
+            border: 0;
+        }
+
+        @media @consonant-600px-up {
+            .consonant-Card-title {
+                max-height: 1.375rem * 2;
+
+                .font(1.125rem, 1.375rem, 700, @consonantBaseColor);
+            }
+        }
+
+        @media @consonant-desktop-up {
+            outline: 0;
+
+            .focus-pseudo-element;
         }
     }
 }

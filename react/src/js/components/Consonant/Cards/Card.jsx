@@ -305,7 +305,7 @@ const Card = (props) => {
     return (
         <div
             daa-lh={lh}
-            className={cardClassName}
+            className={`${cardStyle} ${cardClassName}`}
             aria-label={ariaText}
             data-testid="consonant-Card"
             id={id}>

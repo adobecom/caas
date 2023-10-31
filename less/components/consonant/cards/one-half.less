@@ -1,70 +1,21 @@
 .consonant-CardsGrid {
-    &.one-half {
-        .consonant-Card {
-            .card-hover;
-            .card-hover-header;
+    .consonant-Card.one-half {
+        .card-hover;
+        .card-hover-header;
 
-            &-header {
-                position: relative;
-                width: 100%;
-                height: @consonant-OneHalfCard-imgHeigh;
-                background-color: @consonantGray300;
-                background-position: 50% 50%;
-                background-repeat: no-repeat;
-                background-size: cover;
-                border-top-left-radius: 4px;
-                border-top-right-radius: 4px;
-                overflow: hidden;
+        .consonant-Card-header {
+            position: relative;
+            width: 100%;
+            height: @consonant-OneHalfCard-imgHeigh;
+            background-color: @consonantGray300;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+            background-size: cover;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            overflow: hidden;
 
-                button.consonant-Card-videoButton-wrapper {
-                    width: 100%;
-                    height: 100%;
-                    background-color: transparent;
-                }
-            }
-
-            &-videoIco {
-                .video-button-styles;
-            }
-
-            &-logo {
-                position: absolute;
-                display: block;
-                bottom: 16px;
-                left: 0;
-                padding: 7px 24px;
-                border: 1px solid transparent;
-                border-top-right-radius: 4px;
-                border-bottom-right-radius: 4px;
-                background-color: @consonantWhite;
-                z-index: 1;
-
-                .no-font;
-
-                img {
-                    width: auto;
-                    height: auto;
-                    max-width: @consonantCardLogoImgMaxWidth;
-                    max-height: @consonant-cardLogoImgMaxHeight;
-                    object-fit: contain;
-                    user-select: none;
-                }
-            }
-
-            &-label {
-                display: block;
-                max-width: 100%;
-                margin-bottom: 4px;
-
-                .font(@color: @consonantGray800);
-
-                text-decoration: none;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                overflow: hidden;
-            }
-
-            &-banner {
+            .consonant-Card-banner {
                 position: absolute;
                 display: flex;
                 justify-content: flex-start;
@@ -95,7 +46,7 @@
                 }
             }
 
-            &-badge {
+            .consonant-Card-badge {
                 position: absolute;
                 display: block;
                 max-width: 36%;
@@ -112,18 +63,70 @@
                 overflow-y: auto;
                 z-index: 1;
             }
+
+            .consonant-Card-logo {
+                position: absolute;
+                display: block;
+                bottom: 16px;
+                left: 0;
+                padding: 7px 24px;
+                border: 1px solid transparent;
+                border-top-right-radius: 4px;
+                border-bottom-right-radius: 4px;
+                background-color: @consonantWhite;
+                z-index: 1;
+
+                .no-font;
+
+                img {
+                    width: auto;
+                    height: auto;
+                    max-width: @consonantCardLogoImgMaxWidth;
+                    max-height: @consonant-cardLogoImgMaxHeight;
+                    object-fit: contain;
+                    user-select: none;
+                }
+            }
+
+            button.consonant-Card-videoButton-wrapper {
+                width: 100%;
+                height: 100%;
+                background-color: transparent;
+
+                .consonant-Card-videoIco {
+                    .video-button-styles;
+                }
+            }
         }
 
-        &.consonant-CardsGrid--3up .consonant-Card-header img {
-            max-width: 380px;
+        .consonant-Card-label {
+            display: block;
+            max-width: 100%;
+            margin-bottom: 4px;
+
+            .font(@color: @consonantGray800);
+
+            text-decoration: none;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
     }
 
     &--2up,
     &--3up {
-        &.one-half {
-            .consonant-Card {
-                height: @consonantCardHeight;
+        .consonant-Card.one-half {
+            height: @consonantCardHeight;
+        }
+    }
+
+    &--4up {
+        .consonant-Card.one-half {
+            height: auto;
+
+            .consonant-Card-header {
+                min-height: @consonant-CardsGrid-smallerCardImgOneHalfHeight;
+                max-height: @consonant-CardsGrid-smallerCardImgOneHalfHeight;
             }
         }
     }
