@@ -122,7 +122,7 @@ describe(`Consonant/Card/${cardStyle}`, () => {
             cardStyle,
         });
 
-        const videoButton = screen.queryByTestId('consonant-videoButton-wrapper');
+        const videoButton = screen.queryByTestId('consonant-Card-videoButton-wrapper');
         expect(videoButton).toBeNull();
     });
 
