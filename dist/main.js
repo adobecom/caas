@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.1 (11/21/2023, 16:51:38)
+ * Chimera UI Libraries - Build 0.11.1 (11/22/2023, 08:49:24)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6526,9 +6526,9 @@ var Container = function Container(props) {
         clearUrlState();
         // actually clear the url state
         urlParams.forEach(function (value, key) {
-            var chFilter = key.toLowerCase().replace('ch_', '').replace(' ', '-');
-            if (key.indexOf(filterGroupPrefix) !== 0 && !id.toLowerCase().includes(chFilter) || !group.toLowerCase().replace(' ', '-').includes(chFilter)) {
-                setUrlState(key, value.replace('%20', ' '));
+            var chFilter = key.toLowerCase().replace('ch_', '').replace(/ /g, '-');
+            if (key.indexOf(filterGroupPrefix) !== 0 && !id.toLowerCase().includes(chFilter) || !group.toLowerCase().replace(/ /g, '-').includes(chFilter)) {
+                setUrlState(key, value.replace(/%20/g, ' '));
             }
         });
     };
