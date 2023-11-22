@@ -57,6 +57,9 @@
 
         &--3up {
             .consonant-Card {
+                width: @consonantCardMaxWidth;
+                max-width: 100%;
+
                 &-content {
                     width: 100%;
                     max-width: 100%;
@@ -69,12 +72,14 @@
 
             .consonant-Card {
                 min-width: @consonant-CardsGrid-smallerCardMinWidth;
-                max-width: @consonant-CardsGrid-smallerCardMaxWidth;
+                width: @consonant-CardsGrid-smallerCardMaxWidth;
+                max-width: 100%;
                 height: @consonant-CardsGrid-smallerCardheight;
 
                 &-content {
                     width: 100%;
                     max-width: 100%;
+                    padding: 20px;
                 }
             }
         }
@@ -90,6 +95,7 @@
                 &-content {
                     width: 100%;
                     max-width: 100%;
+                    padding: 20px;
                 }
             }
 
