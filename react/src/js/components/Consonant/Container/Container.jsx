@@ -440,11 +440,11 @@ const Container = (props) => {
         clearUrlState();
         // actually clear the url state
         urlParams.forEach((value, key) => {
-            const chFilter = key.toLowerCase().replace('ch_', '').replace(' ', '-');
+            const chFilter = key.toLowerCase().replace('ch_', '').replace(/ /g, '-');
             if (key.indexOf(filterGroupPrefix) !== 0
                 && !id.toLowerCase().includes(chFilter)
-                || !group.toLowerCase().includes(chFilter)) {
-                setUrlState(key, value.replace('%20', ' '));
+                || !group.toLowerCase().replace(/ /g, '-').includes(chFilter)) {
+                setUrlState(key, value.replace(/%20/g, ' '));
             }
         });
     };

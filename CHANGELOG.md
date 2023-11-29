@@ -1,5 +1,12 @@
 
 
+## [0.11.2](https://github.com/adobecom/caas/compare/0.11.1...0.11.2) (2023-11-29)
+
+
+### Bug Fixes
+
+* **mwpw-138742:** filter-params removed from url when group name has a space ([#117](https://github.com/adobecom/caas/issues/117)) ([8879177](https://github.com/adobecom/caas/commit/8879177adfdb7d004dbb2d4d7eaf25d9d408367d))
+
 ## [0.11.1](https://github.com/adobecom/caas/compare/0.11.0...0.11.1) (2023-11-02)
 
 
