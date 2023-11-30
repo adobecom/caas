@@ -60,7 +60,7 @@
                 },
                 lazyLoad: false,
                 button: {
-                  style: "call-to-action", // Can be "primary", "call-to-action";
+                  style: "primary", // Can be "primary", "call-to-action";
                 },
                 banner: {
                     upcoming: {
@@ -77,9 +77,9 @@
                     }
                 },
                 resultsPerPage: '5',
-                endpoint: location.hostname === "localhost" ? "../../mock-json/all-art-board-15-cards-show.json" : "../../caas/mock-json/all-art-board-15-cards-show.json",
+                endpoint: location.hostname === "localhost" ? "../../mock-json/smoke.json" : "../../caas/mock-json/all-art-board-15-cards-show.json",
                 totalCardsToShow: '55',
-                cardStyle: "1:2", // available options: "1:2", "3:4", "full-card", "half-height", "custom-card", "product", "double-wide";
+                cardStyle: "custom-card", // available options: "1:2", "3:4", "full-card", "half-height", "custom-card", "product", "double-wide";
                 showTotalResults: 'true',
                 i18n: {
                     prettyDateIntervalFormat: '{LLL} {dd} | {timeRange} {timeZone}',
@@ -97,7 +97,7 @@
             featuredCards: ['c7d34f39-397c-3727-9dff-5d0d9d8cf731'],
             filterPanel: {
                 enabled: 'true',
-                type: 'top',
+                type: 'left',
                 eventFilter: 'all',
                 showEmptyFilters: true,
                 filters: [
@@ -244,7 +244,7 @@
             pagination: {
                 animationStyle: 'paged',
                 enabled: 'true',
-                type: 'loadMore',
+                type: 'paginator',
                 loadMoreButton: {
                   style: "primary", // Can be "primary", "over-background";
                   useThemeThree: "true", // Can be "true" or "false";
@@ -277,7 +277,7 @@
             },
             search: {
                 enabled: 'true',
-                searchFields: '["contentArea.title","contentArea.description","search.meta.author","overlays.banner.description", "foo.bar"]',
+                searchFields: '["contentArea.title"]',
                 i18n: {
                     noResultsTitle: 'No Results Found',
                     noResultsDescription: 'We could not find any results. {break} Try checking your spelling or broadening your search.',
@@ -298,7 +298,7 @@
                 trackImpressions: 'true',
                 collectionIdentifier: 'Some Identifier',
             },
-            customCard: ["data", "return `<div class=customCard><div class=backgroundImg></div> <section><label>PHOTO EDITING</label><p><b>Transform a landscape with Sky Replacement.</b></p></div></section> </div>`"],
+            customCard: ["data", "return `<h1> ${card.contentArea.title} </h1>`"],
             onCardSaved: function(){},
             onCardUnsaved: function(){}
         };
