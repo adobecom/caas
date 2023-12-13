@@ -8,14 +8,16 @@
             font-family: inherit;
         }
 
-        &-CardsGrid.one-half .consonant-Card-title,
-        &-CardsGrid.half-height .consonant-Card-title {
-            font-size: 15px;
-            line-height: initial;
-        }
+        &-CardsGrid .consonant-Card {
+            &.one-half .consonant-Card-title,
+            &.half-height .consonant-Card-title {
+                font-size: 15px;
+                line-height: initial;
+            }
 
-        &-CardsGrid.one-half .consonant-Card-text {
-            line-height: 1.275rem;
+            &.one-half .consonant-Card-text {
+                line-height: 1.275rem;
+            }
         }
     }
 }
