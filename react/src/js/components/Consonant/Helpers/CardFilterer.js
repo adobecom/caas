@@ -71,7 +71,7 @@ export default class CardFilterer {
      * @return {*} Chainable
      * @memberof CardFilterer
      */
-    searchCards(searchQuery, searchFields) {
+    searchCards(searchQuery, searchFields, cardStyle) {
         const query = searchQuery.trim().toLowerCase();
         const cardsMatchingSearch = getCardsMatchingSearch(
             searchQuery,
@@ -79,7 +79,7 @@ export default class CardFilterer {
             searchFields,
         );
 
-        if (query.length >= 3) {
+        if (query.length >= 3 && cardStyle !== 'custom-card') {
             this.filteredCards = cardsMatchingSearch
                 .map(card => searchFields.reduce((baseCard, searchField) => highlightCard(
                     baseCard,

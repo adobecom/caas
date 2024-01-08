@@ -1067,7 +1067,7 @@ const Container = (props) => {
         .keepCardsWithinDateRange()
         .filterCards(activeFilterIds, activePanels, filterLogic, FILTER_TYPES)
         .truncateList(totalCardLimit)
-        .searchCards(searchQuery, searchFields)
+        .searchCards(searchQuery, searchFields, cardStyle)
         .removeCards(inclusionIds);
 
     /**

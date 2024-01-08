@@ -5,6 +5,8 @@ import PROPS from '../TestingConstants/CardFilterer';
 
 import CardFilterer from '../CardFilterer';
 
+global.structuredClone = val => JSON.parse(JSON.stringify(val));
+
 describe('utils/CardFilterer', () => {
     describe('filterCards', () => {
         PROPS.filterCards.forEach(({

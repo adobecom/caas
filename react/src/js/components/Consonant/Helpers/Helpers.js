@@ -450,8 +450,9 @@ export const getFeaturedCards = (ids, cards) => {
     for (const id of ids) {
         for (const card of cards) {
             if (card.id === id) {
-                card.isFeatured = true;
-                ans.push(card);
+                const c = window.structuredClone(card);
+                c.isFeatured = true;
+                ans.push(c);
             }
         }
     }
