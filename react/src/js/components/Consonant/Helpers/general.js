@@ -464,7 +464,7 @@ export const isDateWithinInterval = (currentDate, startDate, endDate) => {
     const start = Date.parse(startDate);
     const end = Date.parse(endDate);
 
-    return (start <= curr && end >= curr);
+    return (start <= curr && end > curr);
 };
 
 export const isDateBeforeInterval = (currentDate, startDate) => {
