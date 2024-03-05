@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.10 (2/29/2024, 23:39:17)
+ * Chimera UI Libraries - Build 0.11.11 (3/5/2024, 08:03:57)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -837,7 +837,7 @@ var isDateWithinInterval = exports.isDateWithinInterval = function isDateWithinI
     var start = Date.parse(startDate);
     var end = Date.parse(endDate);
 
-    return start <= curr && end >= curr;
+    return start <= curr && end > curr;
 };
 
 var isDateBeforeInterval = exports.isDateBeforeInterval = function isDateBeforeInterval(currentDate, startDate) {
