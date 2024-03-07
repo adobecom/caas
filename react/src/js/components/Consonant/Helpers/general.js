@@ -474,16 +474,12 @@ export const isDateBeforeInterval = (currentDate, startDate) => {
     return curr < start;
 };
 
-let differential = 0;
-function incrementDifferential() {
-    differential += 1000;
-}
-setInterval(incrementDifferential, 1000);
 
 export const getCurrentDate = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const servertime = parseInt(urlParams.get('servertime'), 10);
-    const currDate = servertime ? new Date(servertime + differential) : new Date();
+    const timeSinceArrival = performance.now();
+    const currDate = servertime ? new Date(servertime + timeSinceArrival) : new Date();
     return currDate;
 };
 

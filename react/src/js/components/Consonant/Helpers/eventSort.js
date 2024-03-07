@@ -126,12 +126,6 @@ const defineIsUpcoming = (currentTime, startTimeMls) => {
     return false;
 };
 
-let differential = 0;
-function incrementDifferential() {
-    differential += 1000;
-}
-setInterval(incrementDifferential, 1000);
-
 /**
  * @func eventTiming
  * @desc First Sorts sessions by startDate, and then partitions them by category
@@ -165,7 +159,8 @@ function eventTiming(sessions = [], eventFilter) {
         If msAsNumber from urlState.servertime use this value, otherwise epoch
         from Date.now(). This is mainly an override for QA purposes.
     */
-    const curMs = overrideTime + differential || Date.now();
+    const timeSinceArrival = performance.now();
+    const curMs = overrideTime + timeSinceArrival || Date.now();
     // Stack per category
     const live = [];
     const notTimed = [];

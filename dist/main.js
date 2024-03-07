@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.12 (3/5/2024, 14:57:09)
+ * Chimera UI Libraries - Build 0.11.13 (3/7/2024, 14:26:38)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -847,16 +847,11 @@ var isDateBeforeInterval = exports.isDateBeforeInterval = function isDateBeforeI
     return curr < start;
 };
 
-var differential = 0;
-function incrementDifferential() {
-    differential += 1000;
-}
-setInterval(incrementDifferential, 1000);
-
 var getCurrentDate = exports.getCurrentDate = function getCurrentDate() {
     var urlParams = new URLSearchParams(window.location.search);
     var servertime = parseInt(urlParams.get('servertime'), 10);
-    var currDate = servertime ? new Date(servertime + differential) : new Date();
+    var timeSinceArrival = performance.now();
+    var currDate = servertime ? new Date(servertime + timeSinceArrival) : new Date();
     return currDate;
 };
 
@@ -48401,12 +48396,6 @@ var defineIsUpcoming = function defineIsUpcoming(currentTime, startTimeMls) {
     return false;
 };
 
-var differential = 0;
-function incrementDifferential() {
-    differential += 1000;
-}
-setInterval(incrementDifferential, 1000);
-
 /**
  * @func eventTiming
  * @desc First Sorts sessions by startDate, and then partitions them by category
@@ -48441,7 +48430,8 @@ function eventTiming() {
         If msAsNumber from urlState.servertime use this value, otherwise epoch
         from Date.now(). This is mainly an override for QA purposes.
     */
-    var curMs = overrideTime + differential || Date.now();
+    var timeSinceArrival = performance.now();
+    var curMs = overrideTime + timeSinceArrival || Date.now();
     // Stack per category
     var live = [];
     var notTimed = [];
