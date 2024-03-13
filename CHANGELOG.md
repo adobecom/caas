@@ -1,5 +1,13 @@
 
 
+## [0.11.15](https://github.com/adobecom/caas/compare/0.11.14...0.11.15) (2024-03-13)
+
+
+### Bug Fixes
+
+* **mwpw-131582:** final merge stuff ([9618601](https://github.com/adobecom/caas/commit/9618601b97c6016e787e8bf267b9daffafd742fc))
+* **mwpw-143449:** tagging the merge with the other ticket this fixes ([09776f9](https://github.com/adobecom/caas/commit/09776f92be2b2a9309c66795326596f2e64c0743))
+
 ## [0.11.14](https://github.com/adobecom/caas/compare/0.11.13...0.11.14) (2024-03-07)
 
 

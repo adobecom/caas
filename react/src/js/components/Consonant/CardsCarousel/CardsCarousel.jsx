@@ -236,9 +236,8 @@ function CardsCarousel({
                 onMouseMove={mouseMoveHandler}
                 onMouseLeave={mouseLeaveHandler}
                 onScroll={scrollHandler}
-                role="slider"
-                aria-valuenow={1}
-                tabIndex={0}
+                role="tab"
+                tabIndex={-1}
                 ref={carouselRef}>
                 <Grid
                     cards={cards}
