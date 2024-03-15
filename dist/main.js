@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.15 (3/13/2024, 16:32:28)
+ * Chimera UI Libraries - Build 0.11.18 (3/15/2024, 10:33:55)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -197,41 +197,58 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	'use strict';
 
 	var hasOwn = {}.hasOwnProperty;
-	var nativeCodeString = '[native code]';
 
-	function classNames() {
-		var classes = [];
+	function classNames () {
+		var classes = '';
 
 		for (var i = 0; i < arguments.length; i++) {
 			var arg = arguments[i];
-			if (!arg) continue;
-
-			var argType = typeof arg;
-
-			if (argType === 'string' || argType === 'number') {
-				classes.push(arg);
-			} else if (Array.isArray(arg)) {
-				if (arg.length) {
-					var inner = classNames.apply(null, arg);
-					if (inner) {
-						classes.push(inner);
-					}
-				}
-			} else if (argType === 'object') {
-				if (arg.toString !== Object.prototype.toString && !arg.toString.toString().includes('[native code]')) {
-					classes.push(arg.toString());
-					continue;
-				}
-
-				for (var key in arg) {
-					if (hasOwn.call(arg, key) && arg[key]) {
-						classes.push(key);
-					}
-				}
+			if (arg) {
+				classes = appendClass(classes, parseValue(arg));
 			}
 		}
 
-		return classes.join(' ');
+		return classes;
+	}
+
+	function parseValue (arg) {
+		if (typeof arg === 'string' || typeof arg === 'number') {
+			return arg;
+		}
+
+		if (typeof arg !== 'object') {
+			return '';
+		}
+
+		if (Array.isArray(arg)) {
+			return classNames.apply(null, arg);
+		}
+
+		if (arg.toString !== Object.prototype.toString && !arg.toString.toString().includes('[native code]')) {
+			return arg.toString();
+		}
+
+		var classes = '';
+
+		for (var key in arg) {
+			if (hasOwn.call(arg, key) && arg[key]) {
+				classes = appendClass(classes, key);
+			}
+		}
+
+		return classes;
+	}
+
+	function appendClass (value, newClass) {
+		if (!newClass) {
+			return value;
+		}
+	
+		if (value) {
+			return value + ' ' + newClass;
+		}
+	
+		return value + newClass;
 	}
 
 	if (typeof module !== 'undefined' && module.exports) {
@@ -41585,6 +41602,16 @@ class MinPriorityQueue extends PriorityQueue {
       this._heap = new MinHeap();
     }
   }
+
+  static from(entries) {
+    const queue = new MinPriorityQueue();
+
+    entries.forEach(([element, priority]) => {
+      queue.enqueue(element, priority);
+    });
+
+    return queue;
+  }
 }
 
 exports.MinPriorityQueue = MinPriorityQueue;
@@ -41887,6 +41914,16 @@ class MaxPriorityQueue extends PriorityQueue {
     if (!this._compare) {
       this._heap = new MaxHeap();
     }
+  }
+
+  static from(entries) {
+    const queue = new MaxPriorityQueue();
+
+    entries.forEach(([element, priority]) => {
+      queue.enqueue(element, priority);
+    });
+
+    return queue;
   }
 }
 
@@ -48179,29 +48216,1252 @@ exports.default = Gated;
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* WEBPACK VAR INJECTION */(function(process) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Immer", function() { return on; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "applyPatches", function() { return vn; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "castDraft", function() { return K; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "castImmutable", function() { return $; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createDraft", function() { return pn; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "current", function() { return D; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enableAllPlugins", function() { return J; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enableES5", function() { return T; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enableMapSet", function() { return C; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enablePatches", function() { return F; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "finishDraft", function() { return ln; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "immerable", function() { return L; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isDraft", function() { return t; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isDraftable", function() { return r; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "nothing", function() { return H; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "original", function() { return e; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "produce", function() { return an; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "produceWithPatches", function() { return fn; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setAutoFreeze", function() { return cn; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setUseProxies", function() { return sn; });
-function n(n){for(var t=arguments.length,r=Array(t>1?t-1:0),e=1;e<t;e++)r[e-1]=arguments[e];if("production"!==process.env.NODE_ENV){var i=Y[n],o=i?"function"==typeof i?i.apply(null,r):i:"unknown error nr: "+n;throw Error("[Immer] "+o)}throw Error("[Immer] minified error nr: "+n+(r.length?" "+r.map((function(n){return"'"+n+"'"})).join(","):"")+". Find the full error at: https://bit.ly/3cXEKWf")}function t(n){return!!n&&!!n[Q]}function r(n){return!!n&&(function(n){if(!n||"object"!=typeof n)return!1;var t=Object.getPrototypeOf(n);return!t||t===Object.prototype}(n)||Array.isArray(n)||!!n[L]||!!n.constructor[L]||s(n)||v(n))}function e(r){return t(r)||n(23,r),r[Q].t}function i(n,t,r){void 0===r&&(r=!1),0===o(n)?(r?Object.keys:Z)(n).forEach((function(e){r&&"symbol"==typeof e||t(e,n[e],n)})):n.forEach((function(r,e){return t(e,r,n)}))}function o(n){var t=n[Q];return t?t.i>3?t.i-4:t.i:Array.isArray(n)?1:s(n)?2:v(n)?3:0}function u(n,t){return 2===o(n)?n.has(t):Object.prototype.hasOwnProperty.call(n,t)}function a(n,t){return 2===o(n)?n.get(t):n[t]}function f(n,t,r){var e=o(n);2===e?n.set(t,r):3===e?(n.delete(t),n.add(r)):n[t]=r}function c(n,t){return n===t?0!==n||1/n==1/t:n!=n&&t!=t}function s(n){return X&&n instanceof Map}function v(n){return q&&n instanceof Set}function p(n){return n.o||n.t}function l(n){if(Array.isArray(n))return Array.prototype.slice.call(n);var t=nn(n);delete t[Q];for(var r=Z(t),e=0;e<r.length;e++){var i=r[e],o=t[i];!1===o.writable&&(o.writable=!0,o.configurable=!0),(o.get||o.set)&&(t[i]={configurable:!0,writable:!0,enumerable:o.enumerable,value:n[i]})}return Object.create(Object.getPrototypeOf(n),t)}function d(n,e){y(n)||t(n)||!r(n)||(o(n)>1&&(n.set=n.add=n.clear=n.delete=h),Object.freeze(n),e&&i(n,(function(n,t){return d(t,!0)}),!0))}function h(){n(2)}function y(n){return null==n||"object"!=typeof n||Object.isFrozen(n)}function b(t){var r=tn[t];return r||n(18,t),r}function m(n,t){tn[n]||(tn[n]=t)}function _(){return"production"===process.env.NODE_ENV||U||n(0),U}function j(n,t){t&&(b("Patches"),n.u=[],n.s=[],n.v=t)}function g(n){O(n),n.p.forEach(S),n.p=null}function O(n){n===U&&(U=n.l)}function w(n){return U={p:[],l:U,h:n,m:!0,_:0}}function S(n){var t=n[Q];0===t.i||1===t.i?t.j():t.g=!0}function P(t,e){e._=e.p.length;var i=e.p[0],o=void 0!==t&&t!==i;return e.h.O||b("ES5").S(e,t,o),o?(i[Q].P&&(g(e),n(4)),r(t)&&(t=M(e,t),e.l||x(e,t)),e.u&&b("Patches").M(i[Q],t,e.u,e.s)):t=M(e,i,[]),g(e),e.u&&e.v(e.u,e.s),t!==H?t:void 0}function M(n,t,r){if(y(t))return t;var e=t[Q];if(!e)return i(t,(function(i,o){return A(n,e,t,i,o,r)}),!0),t;if(e.A!==n)return t;if(!e.P)return x(n,e.t,!0),e.t;if(!e.I){e.I=!0,e.A._--;var o=4===e.i||5===e.i?e.o=l(e.k):e.o;i(3===e.i?new Set(o):o,(function(t,i){return A(n,e,o,t,i,r)})),x(n,o,!1),r&&n.u&&b("Patches").R(e,r,n.u,n.s)}return e.o}function A(e,i,o,a,c,s){if("production"!==process.env.NODE_ENV&&c===o&&n(5),t(c)){var v=M(e,c,s&&i&&3!==i.i&&!u(i.D,a)?s.concat(a):void 0);if(f(o,a,v),!t(v))return;e.m=!1}if(r(c)&&!y(c)){if(!e.h.N&&e._<1)return;M(e,c),i&&i.A.l||x(e,c)}}function x(n,t,r){void 0===r&&(r=!1),n.h.N&&n.m&&d(t,r)}function z(n,t){var r=n[Q];return(r?p(r):n)[t]}function I(n,t){if(t in n)for(var r=Object.getPrototypeOf(n);r;){var e=Object.getOwnPropertyDescriptor(r,t);if(e)return e;r=Object.getPrototypeOf(r)}}function E(n){n.P||(n.P=!0,n.l&&E(n.l))}function k(n){n.o||(n.o=l(n.t))}function R(n,t,r){var e=s(t)?b("MapSet").T(t,r):v(t)?b("MapSet").F(t,r):n.O?function(n,t){var r=Array.isArray(n),e={i:r?1:0,A:t?t.A:_(),P:!1,I:!1,D:{},l:t,t:n,k:null,o:null,j:null,C:!1},i=e,o=rn;r&&(i=[e],o=en);var u=Proxy.revocable(i,o),a=u.revoke,f=u.proxy;return e.k=f,e.j=a,f}(t,r):b("ES5").J(t,r);return(r?r.A:_()).p.push(e),e}function D(e){return t(e)||n(22,e),function n(t){if(!r(t))return t;var e,u=t[Q],c=o(t);if(u){if(!u.P&&(u.i<4||!b("ES5").K(u)))return u.t;u.I=!0,e=N(t,c),u.I=!1}else e=N(t,c);return i(e,(function(t,r){u&&a(u.t,t)===r||f(e,t,n(r))})),3===c?new Set(e):e}(e)}function N(n,t){switch(t){case 2:return new Map(n);case 3:return Array.from(n)}return l(n)}function T(){function r(n,t){var r=s[n];return r?r.enumerable=t:s[n]=r={configurable:!0,enumerable:t,get:function(){var t=this[Q];return"production"!==process.env.NODE_ENV&&f(t),rn.get(t,n)},set:function(t){var r=this[Q];"production"!==process.env.NODE_ENV&&f(r),rn.set(r,n,t)}},r}function e(n){for(var t=n.length-1;t>=0;t--){var r=n[t][Q];if(!r.P)switch(r.i){case 5:a(r)&&E(r);break;case 4:o(r)&&E(r)}}}function o(n){for(var t=n.t,r=n.k,e=Z(r),i=e.length-1;i>=0;i--){var o=e[i];if(o!==Q){var a=t[o];if(void 0===a&&!u(t,o))return!0;var f=r[o],s=f&&f[Q];if(s?s.t!==a:!c(f,a))return!0}}var v=!!t[Q];return e.length!==Z(t).length+(v?0:1)}function a(n){var t=n.k;if(t.length!==n.t.length)return!0;var r=Object.getOwnPropertyDescriptor(t,t.length-1);return!(!r||r.get)}function f(t){t.g&&n(3,JSON.stringify(p(t)))}var s={};m("ES5",{J:function(n,t){var e=Array.isArray(n),i=function(n,t){if(n){for(var e=Array(t.length),i=0;i<t.length;i++)Object.defineProperty(e,""+i,r(i,!0));return e}var o=nn(t);delete o[Q];for(var u=Z(o),a=0;a<u.length;a++){var f=u[a];o[f]=r(f,n||!!o[f].enumerable)}return Object.create(Object.getPrototypeOf(t),o)}(e,n),o={i:e?5:4,A:t?t.A:_(),P:!1,I:!1,D:{},l:t,t:n,k:i,o:null,g:!1,C:!1};return Object.defineProperty(i,Q,{value:o,writable:!0}),i},S:function(n,r,o){o?t(r)&&r[Q].A===n&&e(n.p):(n.u&&function n(t){if(t&&"object"==typeof t){var r=t[Q];if(r){var e=r.t,o=r.k,f=r.D,c=r.i;if(4===c)i(o,(function(t){t!==Q&&(void 0!==e[t]||u(e,t)?f[t]||n(o[t]):(f[t]=!0,E(r)))})),i(e,(function(n){void 0!==o[n]||u(o,n)||(f[n]=!1,E(r))}));else if(5===c){if(a(r)&&(E(r),f.length=!0),o.length<e.length)for(var s=o.length;s<e.length;s++)f[s]=!1;else for(var v=e.length;v<o.length;v++)f[v]=!0;for(var p=Math.min(o.length,e.length),l=0;l<p;l++)void 0===f[l]&&n(o[l])}}}}(n.p[0]),e(n.p))},K:function(n){return 4===n.i?o(n):a(n)}})}function F(){function e(n){if(!r(n))return n;if(Array.isArray(n))return n.map(e);if(s(n))return new Map(Array.from(n.entries()).map((function(n){return[n[0],e(n[1])]})));if(v(n))return new Set(Array.from(n).map(e));var t=Object.create(Object.getPrototypeOf(n));for(var i in n)t[i]=e(n[i]);return t}function f(n){return t(n)?e(n):n}var c="add";m("Patches",{$:function(t,r){return r.forEach((function(r){for(var i=r.path,u=r.op,f=t,s=0;s<i.length-1;s++)"object"!=typeof(f=a(f,i[s]))&&n(15,i.join("/"));var v=o(f),p=e(r.value),l=i[i.length-1];switch(u){case"replace":switch(v){case 2:return f.set(l,p);case 3:n(16);default:return f[l]=p}case c:switch(v){case 1:return f.splice(l,0,p);case 2:return f.set(l,p);case 3:return f.add(p);default:return f[l]=p}case"remove":switch(v){case 1:return f.splice(l,1);case 2:return f.delete(l);case 3:return f.delete(r.value);default:return delete f[l]}default:n(17,u)}})),t},R:function(n,t,r,e){switch(n.i){case 0:case 4:case 2:return function(n,t,r,e){var o=n.t,s=n.o;i(n.D,(function(n,i){var v=a(o,n),p=a(s,n),l=i?u(o,n)?"replace":c:"remove";if(v!==p||"replace"!==l){var d=t.concat(n);r.push("remove"===l?{op:l,path:d}:{op:l,path:d,value:p}),e.push(l===c?{op:"remove",path:d}:"remove"===l?{op:c,path:d,value:f(v)}:{op:"replace",path:d,value:f(v)})}}))}(n,t,r,e);case 5:case 1:return function(n,t,r,e){var i=n.t,o=n.D,u=n.o;if(u.length<i.length){var a=[u,i];i=a[0],u=a[1];var s=[e,r];r=s[0],e=s[1]}for(var v=0;v<i.length;v++)if(o[v]&&u[v]!==i[v]){var p=t.concat([v]);r.push({op:"replace",path:p,value:f(u[v])}),e.push({op:"replace",path:p,value:f(i[v])})}for(var l=i.length;l<u.length;l++){var d=t.concat([l]);r.push({op:c,path:d,value:f(u[l])})}i.length<u.length&&e.push({op:"replace",path:t.concat(["length"]),value:i.length})}(n,t,r,e);case 3:return function(n,t,r,e){var i=n.t,o=n.o,u=0;i.forEach((function(n){if(!o.has(n)){var i=t.concat([u]);r.push({op:"remove",path:i,value:n}),e.unshift({op:c,path:i,value:n})}u++})),u=0,o.forEach((function(n){if(!i.has(n)){var o=t.concat([u]);r.push({op:c,path:o,value:n}),e.unshift({op:"remove",path:o,value:n})}u++}))}(n,t,r,e)}},M:function(n,t,r,e){r.push({op:"replace",path:[],value:t}),e.push({op:"replace",path:[],value:n.t})}})}function C(){function t(n,t){function r(){this.constructor=n}a(n,t),n.prototype=(r.prototype=t.prototype,new r)}function e(n){n.o||(n.D=new Map,n.o=new Map(n.t))}function o(n){n.o||(n.o=new Set,n.t.forEach((function(t){if(r(t)){var e=R(n.A.h,t,n);n.p.set(t,e),n.o.add(e)}else n.o.add(t)})))}function u(t){t.g&&n(3,JSON.stringify(p(t)))}var a=function(n,t){return(a=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(n,t){n.__proto__=t}||function(n,t){for(var r in t)t.hasOwnProperty(r)&&(n[r]=t[r])})(n,t)},f=function(){function n(n,t){return this[Q]={i:2,l:t,A:t?t.A:_(),P:!1,I:!1,o:void 0,D:void 0,t:n,k:this,C:!1,g:!1},this}t(n,Map);var o=n.prototype;return Object.defineProperty(o,"size",{get:function(){return p(this[Q]).size}}),o.has=function(n){return p(this[Q]).has(n)},o.set=function(n,t){var r=this[Q];return u(r),p(r).has(n)&&p(r).get(n)===t||(e(r),E(r),r.D.set(n,!0),r.o.set(n,t),r.D.set(n,!0)),this},o.delete=function(n){if(!this.has(n))return!1;var t=this[Q];return u(t),e(t),E(t),t.D.set(n,!1),t.o.delete(n),!0},o.clear=function(){var n=this[Q];u(n),p(n).size&&(e(n),E(n),n.D=new Map,i(n.t,(function(t){n.D.set(t,!1)})),n.o.clear())},o.forEach=function(n,t){var r=this;p(this[Q]).forEach((function(e,i){n.call(t,r.get(i),i,r)}))},o.get=function(n){var t=this[Q];u(t);var i=p(t).get(n);if(t.I||!r(i))return i;if(i!==t.t.get(n))return i;var o=R(t.A.h,i,t);return e(t),t.o.set(n,o),o},o.keys=function(){return p(this[Q]).keys()},o.values=function(){var n,t=this,r=this.keys();return(n={})[V]=function(){return t.values()},n.next=function(){var n=r.next();return n.done?n:{done:!1,value:t.get(n.value)}},n},o.entries=function(){var n,t=this,r=this.keys();return(n={})[V]=function(){return t.entries()},n.next=function(){var n=r.next();if(n.done)return n;var e=t.get(n.value);return{done:!1,value:[n.value,e]}},n},o[V]=function(){return this.entries()},n}(),c=function(){function n(n,t){return this[Q]={i:3,l:t,A:t?t.A:_(),P:!1,I:!1,o:void 0,t:n,k:this,p:new Map,g:!1,C:!1},this}t(n,Set);var r=n.prototype;return Object.defineProperty(r,"size",{get:function(){return p(this[Q]).size}}),r.has=function(n){var t=this[Q];return u(t),t.o?!!t.o.has(n)||!(!t.p.has(n)||!t.o.has(t.p.get(n))):t.t.has(n)},r.add=function(n){var t=this[Q];return u(t),this.has(n)||(o(t),E(t),t.o.add(n)),this},r.delete=function(n){if(!this.has(n))return!1;var t=this[Q];return u(t),o(t),E(t),t.o.delete(n)||!!t.p.has(n)&&t.o.delete(t.p.get(n))},r.clear=function(){var n=this[Q];u(n),p(n).size&&(o(n),E(n),n.o.clear())},r.values=function(){var n=this[Q];return u(n),o(n),n.o.values()},r.entries=function(){var n=this[Q];return u(n),o(n),n.o.entries()},r.keys=function(){return this.values()},r[V]=function(){return this.values()},r.forEach=function(n,t){for(var r=this.values(),e=r.next();!e.done;)n.call(t,e.value,e.value,this),e=r.next()},n}();m("MapSet",{T:function(n,t){return new f(n,t)},F:function(n,t){return new c(n,t)}})}function J(){T(),C(),F()}function K(n){return n}function $(n){return n}var G,U,W="undefined"!=typeof Symbol&&"symbol"==typeof Symbol("x"),X="undefined"!=typeof Map,q="undefined"!=typeof Set,B="undefined"!=typeof Proxy&&void 0!==Proxy.revocable&&"undefined"!=typeof Reflect,H=W?Symbol.for("immer-nothing"):((G={})["immer-nothing"]=!0,G),L=W?Symbol.for("immer-draftable"):"__$immer_draftable",Q=W?Symbol.for("immer-state"):"__$immer_state",V="undefined"!=typeof Symbol&&Symbol.iterator||"@@iterator",Y={0:"Illegal state",1:"Immer drafts cannot have computed properties",2:"This object has been frozen and should not be mutated",3:function(n){return"Cannot use a proxy that has been revoked. Did you pass an object from inside an immer function to an async process? "+n},4:"An immer producer returned a new value *and* modified its draft. Either return a new value *or* modify the draft.",5:"Immer forbids circular references",6:"The first or second argument to `produce` must be a function",7:"The third argument to `produce` must be a function or undefined",8:"First argument to `createDraft` must be a plain object, an array, or an immerable object",9:"First argument to `finishDraft` must be a draft returned by `createDraft`",10:"The given draft is already finalized",11:"Object.defineProperty() cannot be used on an Immer draft",12:"Object.setPrototypeOf() cannot be used on an Immer draft",13:"Immer only supports deleting array indices",14:"Immer only supports setting array indices and the 'length' property",15:function(n){return"Cannot apply patch, path doesn't resolve: "+n},16:'Sets cannot have "replace" patches.',17:function(n){return"Unsupported patch operation: "+n},18:function(n){return"The plugin for '"+n+"' has not been loaded into Immer. To enable the plugin, import and call `enable"+n+"()` when initializing your application."},20:"Cannot use proxies if Proxy, Proxy.revocable or Reflect are not available",21:function(n){return"produce can only be called on things that are draftable: plain objects, arrays, Map, Set or classes that are marked with '[immerable]: true'. Got '"+n+"'"},22:function(n){return"'current' expects a draft, got: "+n},23:function(n){return"'original' expects a draft, got: "+n}},Z="undefined"!=typeof Reflect&&Reflect.ownKeys?Reflect.ownKeys:void 0!==Object.getOwnPropertySymbols?function(n){return Object.getOwnPropertyNames(n).concat(Object.getOwnPropertySymbols(n))}:Object.getOwnPropertyNames,nn=Object.getOwnPropertyDescriptors||function(n){var t={};return Z(n).forEach((function(r){t[r]=Object.getOwnPropertyDescriptor(n,r)})),t},tn={},rn={get:function(n,t){if(t===Q)return n;var e=p(n);if(!u(e,t))return function(n,t,r){var e,i=I(t,r);return i?"value"in i?i.value:null===(e=i.get)||void 0===e?void 0:e.call(n.k):void 0}(n,e,t);var i=e[t];return n.I||!r(i)?i:i===z(n.t,t)?(k(n),n.o[t]=R(n.A.h,i,n)):i},has:function(n,t){return t in p(n)},ownKeys:function(n){return Reflect.ownKeys(p(n))},set:function(n,t,r){var e=I(p(n),t);if(null==e?void 0:e.set)return e.set.call(n.k,r),!0;if(!n.P){var i=z(p(n),t),o=null==i?void 0:i[Q];if(o&&o.t===r)return n.o[t]=r,n.D[t]=!1,!0;if(c(r,i)&&(void 0!==r||u(n.t,t)))return!0;k(n),E(n)}return n.o[t]=r,n.D[t]=!0,!0},deleteProperty:function(n,t){return void 0!==z(n.t,t)||t in n.t?(n.D[t]=!1,k(n),E(n)):delete n.D[t],n.o&&delete n.o[t],!0},getOwnPropertyDescriptor:function(n,t){var r=p(n),e=Reflect.getOwnPropertyDescriptor(r,t);return e?{writable:!0,configurable:1!==n.i||"length"!==t,enumerable:e.enumerable,value:r[t]}:e},defineProperty:function(){n(11)},getPrototypeOf:function(n){return Object.getPrototypeOf(n.t)},setPrototypeOf:function(){n(12)}},en={};i(rn,(function(n,t){en[n]=function(){return arguments[0]=arguments[0][0],t.apply(this,arguments)}})),en.deleteProperty=function(t,r){return"production"!==process.env.NODE_ENV&&isNaN(parseInt(r))&&n(13),rn.deleteProperty.call(this,t[0],r)},en.set=function(t,r,e){return"production"!==process.env.NODE_ENV&&"length"!==r&&isNaN(parseInt(r))&&n(14),rn.set.call(this,t[0],r,e,t[0])};var on=function(){function e(n){this.O=B,this.N="production"!==process.env.NODE_ENV,"boolean"==typeof(null==n?void 0:n.useProxies)&&this.setUseProxies(n.useProxies),"boolean"==typeof(null==n?void 0:n.autoFreeze)&&this.setAutoFreeze(n.autoFreeze),this.produce=this.produce.bind(this),this.produceWithPatches=this.produceWithPatches.bind(this)}var i=e.prototype;return i.produce=function(t,e,i){if("function"==typeof t&&"function"!=typeof e){var o=e;e=t;var u=this;return function(n){var t=this;void 0===n&&(n=o);for(var r=arguments.length,i=Array(r>1?r-1:0),a=1;a<r;a++)i[a-1]=arguments[a];return u.produce(n,(function(n){var r;return(r=e).call.apply(r,[t,n].concat(i))}))}}var a;if("function"!=typeof e&&n(6),void 0!==i&&"function"!=typeof i&&n(7),r(t)){var f=w(this),c=R(this,t,void 0),s=!0;try{a=e(c),s=!1}finally{s?g(f):O(f)}return"undefined"!=typeof Promise&&a instanceof Promise?a.then((function(n){return j(f,i),P(n,f)}),(function(n){throw g(f),n})):(j(f,i),P(a,f))}if(!t||"object"!=typeof t){if((a=e(t))===H)return;return void 0===a&&(a=t),this.N&&d(a,!0),a}n(21,t)},i.produceWithPatches=function(n,t){var r,e,i=this;return"function"==typeof n?function(t){for(var r=arguments.length,e=Array(r>1?r-1:0),o=1;o<r;o++)e[o-1]=arguments[o];return i.produceWithPatches(t,(function(t){return n.apply(void 0,[t].concat(e))}))}:[this.produce(n,t,(function(n,t){r=n,e=t})),r,e]},i.createDraft=function(e){r(e)||n(8),t(e)&&(e=D(e));var i=w(this),o=R(this,e,void 0);return o[Q].C=!0,O(i),o},i.finishDraft=function(t,r){var e=t&&t[Q];"production"!==process.env.NODE_ENV&&(e&&e.C||n(9),e.I&&n(10));var i=e.A;return j(i,r),P(void 0,i)},i.setAutoFreeze=function(n){this.N=n},i.setUseProxies=function(t){t&&!B&&n(20),this.O=t},i.applyPatches=function(n,r){var e;for(e=r.length-1;e>=0;e--){var i=r[e];if(0===i.path.length&&"replace"===i.op){n=i.value;break}}var o=b("Patches").$;return t(n)?o(n,r):this.produce(n,(function(n){return o(n,r.slice(e+1))}))},e}(),un=new on,an=un.produce,fn=un.produceWithPatches.bind(un),cn=un.setAutoFreeze.bind(un),sn=un.setUseProxies.bind(un),vn=un.applyPatches.bind(un),pn=un.createDraft.bind(un),ln=un.finishDraft.bind(un);/* harmony default export */ __webpack_exports__["default"] = (an);
-//# sourceMappingURL=immer.esm.js.map
+/* WEBPACK VAR INJECTION */(function(process) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Immer", function() { return Immer2; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "applyPatches", function() { return applyPatches; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "castDraft", function() { return castDraft; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "castImmutable", function() { return castImmutable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createDraft", function() { return createDraft; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "current", function() { return current; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enableMapSet", function() { return enableMapSet; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enablePatches", function() { return enablePatches; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "finishDraft", function() { return finishDraft; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "freeze", function() { return freeze; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "immerable", function() { return DRAFTABLE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isDraft", function() { return isDraft; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isDraftable", function() { return isDraftable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "nothing", function() { return NOTHING; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "original", function() { return original; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "produce", function() { return produce; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "produceWithPatches", function() { return produceWithPatches; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setAutoFreeze", function() { return setAutoFreeze; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setUseStrictShallowCopy", function() { return setUseStrictShallowCopy; });
+var __defProp = Object.defineProperty;
+var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __propIsEnum = Object.prototype.propertyIsEnumerable;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __spreadValues = (a, b) => {
+  for (var prop in b || (b = {}))
+    if (__hasOwnProp.call(b, prop))
+      __defNormalProp(a, prop, b[prop]);
+  if (__getOwnPropSymbols)
+    for (var prop of __getOwnPropSymbols(b)) {
+      if (__propIsEnum.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    }
+  return a;
+};
 
+// src/utils/env.ts
+var NOTHING = Symbol.for("immer-nothing");
+var DRAFTABLE = Symbol.for("immer-draftable");
+var DRAFT_STATE = Symbol.for("immer-state");
+
+// src/utils/errors.ts
+var errors = process.env.NODE_ENV !== "production" ? [
+  // All error codes, starting by 0:
+  function(plugin) {
+    return `The plugin for '${plugin}' has not been loaded into Immer. To enable the plugin, import and call \`enable${plugin}()\` when initializing your application.`;
+  },
+  function(thing) {
+    return `produce can only be called on things that are draftable: plain objects, arrays, Map, Set or classes that are marked with '[immerable]: true'. Got '${thing}'`;
+  },
+  "This object has been frozen and should not be mutated",
+  function(data) {
+    return "Cannot use a proxy that has been revoked. Did you pass an object from inside an immer function to an async process? " + data;
+  },
+  "An immer producer returned a new value *and* modified its draft. Either return a new value *or* modify the draft.",
+  "Immer forbids circular references",
+  "The first or second argument to `produce` must be a function",
+  "The third argument to `produce` must be a function or undefined",
+  "First argument to `createDraft` must be a plain object, an array, or an immerable object",
+  "First argument to `finishDraft` must be a draft returned by `createDraft`",
+  function(thing) {
+    return `'current' expects a draft, got: ${thing}`;
+  },
+  "Object.defineProperty() cannot be used on an Immer draft",
+  "Object.setPrototypeOf() cannot be used on an Immer draft",
+  "Immer only supports deleting array indices",
+  "Immer only supports setting array indices and the 'length' property",
+  function(thing) {
+    return `'original' expects a draft, got: ${thing}`;
+  }
+  // Note: if more errors are added, the errorOffset in Patches.ts should be increased
+  // See Patches.ts for additional errors
+] : [];
+function die(error, ...args) {
+  if (process.env.NODE_ENV !== "production") {
+    const e = errors[error];
+    const msg = typeof e === "function" ? e.apply(null, args) : e;
+    throw new Error(`[Immer] ${msg}`);
+  }
+  throw new Error(
+    `[Immer] minified error nr: ${error}. Full error at: https://bit.ly/3cXEKWf`
+  );
+}
+
+// src/utils/common.ts
+var getPrototypeOf = Object.getPrototypeOf;
+function isDraft(value) {
+  return !!value && !!value[DRAFT_STATE];
+}
+function isDraftable(value) {
+  var _a;
+  if (!value)
+    return false;
+  return isPlainObject(value) || Array.isArray(value) || !!value[DRAFTABLE] || !!((_a = value.constructor) == null ? void 0 : _a[DRAFTABLE]) || isMap(value) || isSet(value);
+}
+var objectCtorString = Object.prototype.constructor.toString();
+function isPlainObject(value) {
+  if (!value || typeof value !== "object")
+    return false;
+  const proto = getPrototypeOf(value);
+  if (proto === null) {
+    return true;
+  }
+  const Ctor = Object.hasOwnProperty.call(proto, "constructor") && proto.constructor;
+  if (Ctor === Object)
+    return true;
+  return typeof Ctor == "function" && Function.toString.call(Ctor) === objectCtorString;
+}
+function original(value) {
+  if (!isDraft(value))
+    die(15, value);
+  return value[DRAFT_STATE].base_;
+}
+function each(obj, iter) {
+  if (getArchtype(obj) === 0 /* Object */) {
+    Reflect.ownKeys(obj).forEach((key) => {
+      iter(key, obj[key], obj);
+    });
+  } else {
+    obj.forEach((entry, index) => iter(index, entry, obj));
+  }
+}
+function getArchtype(thing) {
+  const state = thing[DRAFT_STATE];
+  return state ? state.type_ : Array.isArray(thing) ? 1 /* Array */ : isMap(thing) ? 2 /* Map */ : isSet(thing) ? 3 /* Set */ : 0 /* Object */;
+}
+function has(thing, prop) {
+  return getArchtype(thing) === 2 /* Map */ ? thing.has(prop) : Object.prototype.hasOwnProperty.call(thing, prop);
+}
+function get(thing, prop) {
+  return getArchtype(thing) === 2 /* Map */ ? thing.get(prop) : thing[prop];
+}
+function set(thing, propOrOldValue, value) {
+  const t = getArchtype(thing);
+  if (t === 2 /* Map */)
+    thing.set(propOrOldValue, value);
+  else if (t === 3 /* Set */) {
+    thing.add(value);
+  } else
+    thing[propOrOldValue] = value;
+}
+function is(x, y) {
+  if (x === y) {
+    return x !== 0 || 1 / x === 1 / y;
+  } else {
+    return x !== x && y !== y;
+  }
+}
+function isMap(target) {
+  return target instanceof Map;
+}
+function isSet(target) {
+  return target instanceof Set;
+}
+function latest(state) {
+  return state.copy_ || state.base_;
+}
+function shallowCopy(base, strict) {
+  if (isMap(base)) {
+    return new Map(base);
+  }
+  if (isSet(base)) {
+    return new Set(base);
+  }
+  if (Array.isArray(base))
+    return Array.prototype.slice.call(base);
+  if (!strict && isPlainObject(base)) {
+    if (!getPrototypeOf(base)) {
+      const obj = /* @__PURE__ */ Object.create(null);
+      return Object.assign(obj, base);
+    }
+    return __spreadValues({}, base);
+  }
+  const descriptors = Object.getOwnPropertyDescriptors(base);
+  delete descriptors[DRAFT_STATE];
+  let keys = Reflect.ownKeys(descriptors);
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
+    const desc = descriptors[key];
+    if (desc.writable === false) {
+      desc.writable = true;
+      desc.configurable = true;
+    }
+    if (desc.get || desc.set)
+      descriptors[key] = {
+        configurable: true,
+        writable: true,
+        // could live with !!desc.set as well here...
+        enumerable: desc.enumerable,
+        value: base[key]
+      };
+  }
+  return Object.create(getPrototypeOf(base), descriptors);
+}
+function freeze(obj, deep = false) {
+  if (isFrozen(obj) || isDraft(obj) || !isDraftable(obj))
+    return obj;
+  if (getArchtype(obj) > 1) {
+    obj.set = obj.add = obj.clear = obj.delete = dontMutateFrozenCollections;
+  }
+  Object.freeze(obj);
+  if (deep)
+    Object.entries(obj).forEach(([key, value]) => freeze(value, true));
+  return obj;
+}
+function dontMutateFrozenCollections() {
+  die(2);
+}
+function isFrozen(obj) {
+  return Object.isFrozen(obj);
+}
+
+// src/utils/plugins.ts
+var plugins = {};
+function getPlugin(pluginKey) {
+  const plugin = plugins[pluginKey];
+  if (!plugin) {
+    die(0, pluginKey);
+  }
+  return plugin;
+}
+function loadPlugin(pluginKey, implementation) {
+  if (!plugins[pluginKey])
+    plugins[pluginKey] = implementation;
+}
+
+// src/core/scope.ts
+var currentScope;
+function getCurrentScope() {
+  return currentScope;
+}
+function createScope(parent_, immer_) {
+  return {
+    drafts_: [],
+    parent_,
+    immer_,
+    // Whenever the modified draft contains a draft from another scope, we
+    // need to prevent auto-freezing so the unowned draft can be finalized.
+    canAutoFreeze_: true,
+    unfinalizedDrafts_: 0
+  };
+}
+function usePatchesInScope(scope, patchListener) {
+  if (patchListener) {
+    getPlugin("Patches");
+    scope.patches_ = [];
+    scope.inversePatches_ = [];
+    scope.patchListener_ = patchListener;
+  }
+}
+function revokeScope(scope) {
+  leaveScope(scope);
+  scope.drafts_.forEach(revokeDraft);
+  scope.drafts_ = null;
+}
+function leaveScope(scope) {
+  if (scope === currentScope) {
+    currentScope = scope.parent_;
+  }
+}
+function enterScope(immer2) {
+  return currentScope = createScope(currentScope, immer2);
+}
+function revokeDraft(draft) {
+  const state = draft[DRAFT_STATE];
+  if (state.type_ === 0 /* Object */ || state.type_ === 1 /* Array */)
+    state.revoke_();
+  else
+    state.revoked_ = true;
+}
+
+// src/core/finalize.ts
+function processResult(result, scope) {
+  scope.unfinalizedDrafts_ = scope.drafts_.length;
+  const baseDraft = scope.drafts_[0];
+  const isReplaced = result !== void 0 && result !== baseDraft;
+  if (isReplaced) {
+    if (baseDraft[DRAFT_STATE].modified_) {
+      revokeScope(scope);
+      die(4);
+    }
+    if (isDraftable(result)) {
+      result = finalize(scope, result);
+      if (!scope.parent_)
+        maybeFreeze(scope, result);
+    }
+    if (scope.patches_) {
+      getPlugin("Patches").generateReplacementPatches_(
+        baseDraft[DRAFT_STATE].base_,
+        result,
+        scope.patches_,
+        scope.inversePatches_
+      );
+    }
+  } else {
+    result = finalize(scope, baseDraft, []);
+  }
+  revokeScope(scope);
+  if (scope.patches_) {
+    scope.patchListener_(scope.patches_, scope.inversePatches_);
+  }
+  return result !== NOTHING ? result : void 0;
+}
+function finalize(rootScope, value, path) {
+  if (isFrozen(value))
+    return value;
+  const state = value[DRAFT_STATE];
+  if (!state) {
+    each(
+      value,
+      (key, childValue) => finalizeProperty(rootScope, state, value, key, childValue, path)
+    );
+    return value;
+  }
+  if (state.scope_ !== rootScope)
+    return value;
+  if (!state.modified_) {
+    maybeFreeze(rootScope, state.base_, true);
+    return state.base_;
+  }
+  if (!state.finalized_) {
+    state.finalized_ = true;
+    state.scope_.unfinalizedDrafts_--;
+    const result = state.copy_;
+    let resultEach = result;
+    let isSet2 = false;
+    if (state.type_ === 3 /* Set */) {
+      resultEach = new Set(result);
+      result.clear();
+      isSet2 = true;
+    }
+    each(
+      resultEach,
+      (key, childValue) => finalizeProperty(rootScope, state, result, key, childValue, path, isSet2)
+    );
+    maybeFreeze(rootScope, result, false);
+    if (path && rootScope.patches_) {
+      getPlugin("Patches").generatePatches_(
+        state,
+        path,
+        rootScope.patches_,
+        rootScope.inversePatches_
+      );
+    }
+  }
+  return state.copy_;
+}
+function finalizeProperty(rootScope, parentState, targetObject, prop, childValue, rootPath, targetIsSet) {
+  if (process.env.NODE_ENV !== "production" && childValue === targetObject)
+    die(5);
+  if (isDraft(childValue)) {
+    const path = rootPath && parentState && parentState.type_ !== 3 /* Set */ && // Set objects are atomic since they have no keys.
+    !has(parentState.assigned_, prop) ? rootPath.concat(prop) : void 0;
+    const res = finalize(rootScope, childValue, path);
+    set(targetObject, prop, res);
+    if (isDraft(res)) {
+      rootScope.canAutoFreeze_ = false;
+    } else
+      return;
+  } else if (targetIsSet) {
+    targetObject.add(childValue);
+  }
+  if (isDraftable(childValue) && !isFrozen(childValue)) {
+    if (!rootScope.immer_.autoFreeze_ && rootScope.unfinalizedDrafts_ < 1) {
+      return;
+    }
+    finalize(rootScope, childValue);
+    if ((!parentState || !parentState.scope_.parent_) && typeof prop !== "symbol" && Object.prototype.propertyIsEnumerable.call(targetObject, prop))
+      maybeFreeze(rootScope, childValue);
+  }
+}
+function maybeFreeze(scope, value, deep = false) {
+  if (!scope.parent_ && scope.immer_.autoFreeze_ && scope.canAutoFreeze_) {
+    freeze(value, deep);
+  }
+}
+
+// src/core/proxy.ts
+function createProxyProxy(base, parent) {
+  const isArray = Array.isArray(base);
+  const state = {
+    type_: isArray ? 1 /* Array */ : 0 /* Object */,
+    // Track which produce call this is associated with.
+    scope_: parent ? parent.scope_ : getCurrentScope(),
+    // True for both shallow and deep changes.
+    modified_: false,
+    // Used during finalization.
+    finalized_: false,
+    // Track which properties have been assigned (true) or deleted (false).
+    assigned_: {},
+    // The parent draft state.
+    parent_: parent,
+    // The base state.
+    base_: base,
+    // The base proxy.
+    draft_: null,
+    // set below
+    // The base copy with any updated values.
+    copy_: null,
+    // Called by the `produce` function.
+    revoke_: null,
+    isManual_: false
+  };
+  let target = state;
+  let traps = objectTraps;
+  if (isArray) {
+    target = [state];
+    traps = arrayTraps;
+  }
+  const { revoke, proxy } = Proxy.revocable(target, traps);
+  state.draft_ = proxy;
+  state.revoke_ = revoke;
+  return proxy;
+}
+var objectTraps = {
+  get(state, prop) {
+    if (prop === DRAFT_STATE)
+      return state;
+    const source = latest(state);
+    if (!has(source, prop)) {
+      return readPropFromProto(state, source, prop);
+    }
+    const value = source[prop];
+    if (state.finalized_ || !isDraftable(value)) {
+      return value;
+    }
+    if (value === peek(state.base_, prop)) {
+      prepareCopy(state);
+      return state.copy_[prop] = createProxy(value, state);
+    }
+    return value;
+  },
+  has(state, prop) {
+    return prop in latest(state);
+  },
+  ownKeys(state) {
+    return Reflect.ownKeys(latest(state));
+  },
+  set(state, prop, value) {
+    const desc = getDescriptorFromProto(latest(state), prop);
+    if (desc == null ? void 0 : desc.set) {
+      desc.set.call(state.draft_, value);
+      return true;
+    }
+    if (!state.modified_) {
+      const current2 = peek(latest(state), prop);
+      const currentState = current2 == null ? void 0 : current2[DRAFT_STATE];
+      if (currentState && currentState.base_ === value) {
+        state.copy_[prop] = value;
+        state.assigned_[prop] = false;
+        return true;
+      }
+      if (is(value, current2) && (value !== void 0 || has(state.base_, prop)))
+        return true;
+      prepareCopy(state);
+      markChanged(state);
+    }
+    if (state.copy_[prop] === value && // special case: handle new props with value 'undefined'
+    (value !== void 0 || prop in state.copy_) || // special case: NaN
+    Number.isNaN(value) && Number.isNaN(state.copy_[prop]))
+      return true;
+    state.copy_[prop] = value;
+    state.assigned_[prop] = true;
+    return true;
+  },
+  deleteProperty(state, prop) {
+    if (peek(state.base_, prop) !== void 0 || prop in state.base_) {
+      state.assigned_[prop] = false;
+      prepareCopy(state);
+      markChanged(state);
+    } else {
+      delete state.assigned_[prop];
+    }
+    if (state.copy_) {
+      delete state.copy_[prop];
+    }
+    return true;
+  },
+  // Note: We never coerce `desc.value` into an Immer draft, because we can't make
+  // the same guarantee in ES5 mode.
+  getOwnPropertyDescriptor(state, prop) {
+    const owner = latest(state);
+    const desc = Reflect.getOwnPropertyDescriptor(owner, prop);
+    if (!desc)
+      return desc;
+    return {
+      writable: true,
+      configurable: state.type_ !== 1 /* Array */ || prop !== "length",
+      enumerable: desc.enumerable,
+      value: owner[prop]
+    };
+  },
+  defineProperty() {
+    die(11);
+  },
+  getPrototypeOf(state) {
+    return getPrototypeOf(state.base_);
+  },
+  setPrototypeOf() {
+    die(12);
+  }
+};
+var arrayTraps = {};
+each(objectTraps, (key, fn) => {
+  arrayTraps[key] = function() {
+    arguments[0] = arguments[0][0];
+    return fn.apply(this, arguments);
+  };
+});
+arrayTraps.deleteProperty = function(state, prop) {
+  if (process.env.NODE_ENV !== "production" && isNaN(parseInt(prop)))
+    die(13);
+  return arrayTraps.set.call(this, state, prop, void 0);
+};
+arrayTraps.set = function(state, prop, value) {
+  if (process.env.NODE_ENV !== "production" && prop !== "length" && isNaN(parseInt(prop)))
+    die(14);
+  return objectTraps.set.call(this, state[0], prop, value, state[0]);
+};
+function peek(draft, prop) {
+  const state = draft[DRAFT_STATE];
+  const source = state ? latest(state) : draft;
+  return source[prop];
+}
+function readPropFromProto(state, source, prop) {
+  var _a;
+  const desc = getDescriptorFromProto(source, prop);
+  return desc ? `value` in desc ? desc.value : (
+    // This is a very special case, if the prop is a getter defined by the
+    // prototype, we should invoke it with the draft as context!
+    (_a = desc.get) == null ? void 0 : _a.call(state.draft_)
+  ) : void 0;
+}
+function getDescriptorFromProto(source, prop) {
+  if (!(prop in source))
+    return void 0;
+  let proto = getPrototypeOf(source);
+  while (proto) {
+    const desc = Object.getOwnPropertyDescriptor(proto, prop);
+    if (desc)
+      return desc;
+    proto = getPrototypeOf(proto);
+  }
+  return void 0;
+}
+function markChanged(state) {
+  if (!state.modified_) {
+    state.modified_ = true;
+    if (state.parent_) {
+      markChanged(state.parent_);
+    }
+  }
+}
+function prepareCopy(state) {
+  if (!state.copy_) {
+    state.copy_ = shallowCopy(
+      state.base_,
+      state.scope_.immer_.useStrictShallowCopy_
+    );
+  }
+}
+
+// src/core/immerClass.ts
+var Immer2 = class {
+  constructor(config) {
+    this.autoFreeze_ = true;
+    this.useStrictShallowCopy_ = false;
+    /**
+     * The `produce` function takes a value and a "recipe function" (whose
+     * return value often depends on the base state). The recipe function is
+     * free to mutate its first argument however it wants. All mutations are
+     * only ever applied to a __copy__ of the base state.
+     *
+     * Pass only a function to create a "curried producer" which relieves you
+     * from passing the recipe function every time.
+     *
+     * Only plain objects and arrays are made mutable. All other objects are
+     * considered uncopyable.
+     *
+     * Note: This function is __bound__ to its `Immer` instance.
+     *
+     * @param {any} base - the initial state
+     * @param {Function} recipe - function that receives a proxy of the base state as first argument and which can be freely modified
+     * @param {Function} patchListener - optional function that will be called with all the patches produced here
+     * @returns {any} a new state, or the initial state if nothing was modified
+     */
+    this.produce = (base, recipe, patchListener) => {
+      if (typeof base === "function" && typeof recipe !== "function") {
+        const defaultBase = recipe;
+        recipe = base;
+        const self = this;
+        return function curriedProduce(base2 = defaultBase, ...args) {
+          return self.produce(base2, (draft) => recipe.call(this, draft, ...args));
+        };
+      }
+      if (typeof recipe !== "function")
+        die(6);
+      if (patchListener !== void 0 && typeof patchListener !== "function")
+        die(7);
+      let result;
+      if (isDraftable(base)) {
+        const scope = enterScope(this);
+        const proxy = createProxy(base, void 0);
+        let hasError = true;
+        try {
+          result = recipe(proxy);
+          hasError = false;
+        } finally {
+          if (hasError)
+            revokeScope(scope);
+          else
+            leaveScope(scope);
+        }
+        usePatchesInScope(scope, patchListener);
+        return processResult(result, scope);
+      } else if (!base || typeof base !== "object") {
+        result = recipe(base);
+        if (result === void 0)
+          result = base;
+        if (result === NOTHING)
+          result = void 0;
+        if (this.autoFreeze_)
+          freeze(result, true);
+        if (patchListener) {
+          const p = [];
+          const ip = [];
+          getPlugin("Patches").generateReplacementPatches_(base, result, p, ip);
+          patchListener(p, ip);
+        }
+        return result;
+      } else
+        die(1, base);
+    };
+    this.produceWithPatches = (base, recipe) => {
+      if (typeof base === "function") {
+        return (state, ...args) => this.produceWithPatches(state, (draft) => base(draft, ...args));
+      }
+      let patches, inversePatches;
+      const result = this.produce(base, recipe, (p, ip) => {
+        patches = p;
+        inversePatches = ip;
+      });
+      return [result, patches, inversePatches];
+    };
+    if (typeof (config == null ? void 0 : config.autoFreeze) === "boolean")
+      this.setAutoFreeze(config.autoFreeze);
+    if (typeof (config == null ? void 0 : config.useStrictShallowCopy) === "boolean")
+      this.setUseStrictShallowCopy(config.useStrictShallowCopy);
+  }
+  createDraft(base) {
+    if (!isDraftable(base))
+      die(8);
+    if (isDraft(base))
+      base = current(base);
+    const scope = enterScope(this);
+    const proxy = createProxy(base, void 0);
+    proxy[DRAFT_STATE].isManual_ = true;
+    leaveScope(scope);
+    return proxy;
+  }
+  finishDraft(draft, patchListener) {
+    const state = draft && draft[DRAFT_STATE];
+    if (!state || !state.isManual_)
+      die(9);
+    const { scope_: scope } = state;
+    usePatchesInScope(scope, patchListener);
+    return processResult(void 0, scope);
+  }
+  /**
+   * Pass true to automatically freeze all copies created by Immer.
+   *
+   * By default, auto-freezing is enabled.
+   */
+  setAutoFreeze(value) {
+    this.autoFreeze_ = value;
+  }
+  /**
+   * Pass true to enable strict shallow copy.
+   *
+   * By default, immer does not copy the object descriptors such as getter, setter and non-enumrable properties.
+   */
+  setUseStrictShallowCopy(value) {
+    this.useStrictShallowCopy_ = value;
+  }
+  applyPatches(base, patches) {
+    let i;
+    for (i = patches.length - 1; i >= 0; i--) {
+      const patch = patches[i];
+      if (patch.path.length === 0 && patch.op === "replace") {
+        base = patch.value;
+        break;
+      }
+    }
+    if (i > -1) {
+      patches = patches.slice(i + 1);
+    }
+    const applyPatchesImpl = getPlugin("Patches").applyPatches_;
+    if (isDraft(base)) {
+      return applyPatchesImpl(base, patches);
+    }
+    return this.produce(
+      base,
+      (draft) => applyPatchesImpl(draft, patches)
+    );
+  }
+};
+function createProxy(value, parent) {
+  const draft = isMap(value) ? getPlugin("MapSet").proxyMap_(value, parent) : isSet(value) ? getPlugin("MapSet").proxySet_(value, parent) : createProxyProxy(value, parent);
+  const scope = parent ? parent.scope_ : getCurrentScope();
+  scope.drafts_.push(draft);
+  return draft;
+}
+
+// src/core/current.ts
+function current(value) {
+  if (!isDraft(value))
+    die(10, value);
+  return currentImpl(value);
+}
+function currentImpl(value) {
+  if (!isDraftable(value) || isFrozen(value))
+    return value;
+  const state = value[DRAFT_STATE];
+  let copy;
+  if (state) {
+    if (!state.modified_)
+      return state.base_;
+    state.finalized_ = true;
+    copy = shallowCopy(value, state.scope_.immer_.useStrictShallowCopy_);
+  } else {
+    copy = shallowCopy(value, true);
+  }
+  each(copy, (key, childValue) => {
+    set(copy, key, currentImpl(childValue));
+  });
+  if (state) {
+    state.finalized_ = false;
+  }
+  return copy;
+}
+
+// src/plugins/patches.ts
+function enablePatches() {
+  const errorOffset = 16;
+  if (process.env.NODE_ENV !== "production") {
+    errors.push(
+      'Sets cannot have "replace" patches.',
+      function(op) {
+        return "Unsupported patch operation: " + op;
+      },
+      function(path) {
+        return "Cannot apply patch, path doesn't resolve: " + path;
+      },
+      "Patching reserved attributes like __proto__, prototype and constructor is not allowed"
+    );
+  }
+  const REPLACE = "replace";
+  const ADD = "add";
+  const REMOVE = "remove";
+  function generatePatches_(state, basePath, patches, inversePatches) {
+    switch (state.type_) {
+      case 0 /* Object */:
+      case 2 /* Map */:
+        return generatePatchesFromAssigned(
+          state,
+          basePath,
+          patches,
+          inversePatches
+        );
+      case 1 /* Array */:
+        return generateArrayPatches(state, basePath, patches, inversePatches);
+      case 3 /* Set */:
+        return generateSetPatches(
+          state,
+          basePath,
+          patches,
+          inversePatches
+        );
+    }
+  }
+  function generateArrayPatches(state, basePath, patches, inversePatches) {
+    let { base_, assigned_ } = state;
+    let copy_ = state.copy_;
+    if (copy_.length < base_.length) {
+      ;
+      [base_, copy_] = [copy_, base_];
+      [patches, inversePatches] = [inversePatches, patches];
+    }
+    for (let i = 0; i < base_.length; i++) {
+      if (assigned_[i] && copy_[i] !== base_[i]) {
+        const path = basePath.concat([i]);
+        patches.push({
+          op: REPLACE,
+          path,
+          // Need to maybe clone it, as it can in fact be the original value
+          // due to the base/copy inversion at the start of this function
+          value: clonePatchValueIfNeeded(copy_[i])
+        });
+        inversePatches.push({
+          op: REPLACE,
+          path,
+          value: clonePatchValueIfNeeded(base_[i])
+        });
+      }
+    }
+    for (let i = base_.length; i < copy_.length; i++) {
+      const path = basePath.concat([i]);
+      patches.push({
+        op: ADD,
+        path,
+        // Need to maybe clone it, as it can in fact be the original value
+        // due to the base/copy inversion at the start of this function
+        value: clonePatchValueIfNeeded(copy_[i])
+      });
+    }
+    for (let i = copy_.length - 1; base_.length <= i; --i) {
+      const path = basePath.concat([i]);
+      inversePatches.push({
+        op: REMOVE,
+        path
+      });
+    }
+  }
+  function generatePatchesFromAssigned(state, basePath, patches, inversePatches) {
+    const { base_, copy_ } = state;
+    each(state.assigned_, (key, assignedValue) => {
+      const origValue = get(base_, key);
+      const value = get(copy_, key);
+      const op = !assignedValue ? REMOVE : has(base_, key) ? REPLACE : ADD;
+      if (origValue === value && op === REPLACE)
+        return;
+      const path = basePath.concat(key);
+      patches.push(op === REMOVE ? { op, path } : { op, path, value });
+      inversePatches.push(
+        op === ADD ? { op: REMOVE, path } : op === REMOVE ? { op: ADD, path, value: clonePatchValueIfNeeded(origValue) } : { op: REPLACE, path, value: clonePatchValueIfNeeded(origValue) }
+      );
+    });
+  }
+  function generateSetPatches(state, basePath, patches, inversePatches) {
+    let { base_, copy_ } = state;
+    let i = 0;
+    base_.forEach((value) => {
+      if (!copy_.has(value)) {
+        const path = basePath.concat([i]);
+        patches.push({
+          op: REMOVE,
+          path,
+          value
+        });
+        inversePatches.unshift({
+          op: ADD,
+          path,
+          value
+        });
+      }
+      i++;
+    });
+    i = 0;
+    copy_.forEach((value) => {
+      if (!base_.has(value)) {
+        const path = basePath.concat([i]);
+        patches.push({
+          op: ADD,
+          path,
+          value
+        });
+        inversePatches.unshift({
+          op: REMOVE,
+          path,
+          value
+        });
+      }
+      i++;
+    });
+  }
+  function generateReplacementPatches_(baseValue, replacement, patches, inversePatches) {
+    patches.push({
+      op: REPLACE,
+      path: [],
+      value: replacement === NOTHING ? void 0 : replacement
+    });
+    inversePatches.push({
+      op: REPLACE,
+      path: [],
+      value: baseValue
+    });
+  }
+  function applyPatches_(draft, patches) {
+    patches.forEach((patch) => {
+      const { path, op } = patch;
+      let base = draft;
+      for (let i = 0; i < path.length - 1; i++) {
+        const parentType = getArchtype(base);
+        let p = path[i];
+        if (typeof p !== "string" && typeof p !== "number") {
+          p = "" + p;
+        }
+        if ((parentType === 0 /* Object */ || parentType === 1 /* Array */) && (p === "__proto__" || p === "constructor"))
+          die(errorOffset + 3);
+        if (typeof base === "function" && p === "prototype")
+          die(errorOffset + 3);
+        base = get(base, p);
+        if (typeof base !== "object")
+          die(errorOffset + 2, path.join("/"));
+      }
+      const type = getArchtype(base);
+      const value = deepClonePatchValue(patch.value);
+      const key = path[path.length - 1];
+      switch (op) {
+        case REPLACE:
+          switch (type) {
+            case 2 /* Map */:
+              return base.set(key, value);
+            case 3 /* Set */:
+              die(errorOffset);
+            default:
+              return base[key] = value;
+          }
+        case ADD:
+          switch (type) {
+            case 1 /* Array */:
+              return key === "-" ? base.push(value) : base.splice(key, 0, value);
+            case 2 /* Map */:
+              return base.set(key, value);
+            case 3 /* Set */:
+              return base.add(value);
+            default:
+              return base[key] = value;
+          }
+        case REMOVE:
+          switch (type) {
+            case 1 /* Array */:
+              return base.splice(key, 1);
+            case 2 /* Map */:
+              return base.delete(key);
+            case 3 /* Set */:
+              return base.delete(patch.value);
+            default:
+              return delete base[key];
+          }
+        default:
+          die(errorOffset + 1, op);
+      }
+    });
+    return draft;
+  }
+  function deepClonePatchValue(obj) {
+    if (!isDraftable(obj))
+      return obj;
+    if (Array.isArray(obj))
+      return obj.map(deepClonePatchValue);
+    if (isMap(obj))
+      return new Map(
+        Array.from(obj.entries()).map(([k, v]) => [k, deepClonePatchValue(v)])
+      );
+    if (isSet(obj))
+      return new Set(Array.from(obj).map(deepClonePatchValue));
+    const cloned = Object.create(getPrototypeOf(obj));
+    for (const key in obj)
+      cloned[key] = deepClonePatchValue(obj[key]);
+    if (has(obj, DRAFTABLE))
+      cloned[DRAFTABLE] = obj[DRAFTABLE];
+    return cloned;
+  }
+  function clonePatchValueIfNeeded(obj) {
+    if (isDraft(obj)) {
+      return deepClonePatchValue(obj);
+    } else
+      return obj;
+  }
+  loadPlugin("Patches", {
+    applyPatches_,
+    generatePatches_,
+    generateReplacementPatches_
+  });
+}
+
+// src/plugins/mapset.ts
+function enableMapSet() {
+  class DraftMap extends Map {
+    constructor(target, parent) {
+      super();
+      this[DRAFT_STATE] = {
+        type_: 2 /* Map */,
+        parent_: parent,
+        scope_: parent ? parent.scope_ : getCurrentScope(),
+        modified_: false,
+        finalized_: false,
+        copy_: void 0,
+        assigned_: void 0,
+        base_: target,
+        draft_: this,
+        isManual_: false,
+        revoked_: false
+      };
+    }
+    get size() {
+      return latest(this[DRAFT_STATE]).size;
+    }
+    has(key) {
+      return latest(this[DRAFT_STATE]).has(key);
+    }
+    set(key, value) {
+      const state = this[DRAFT_STATE];
+      assertUnrevoked(state);
+      if (!latest(state).has(key) || latest(state).get(key) !== value) {
+        prepareMapCopy(state);
+        markChanged(state);
+        state.assigned_.set(key, true);
+        state.copy_.set(key, value);
+        state.assigned_.set(key, true);
+      }
+      return this;
+    }
+    delete(key) {
+      if (!this.has(key)) {
+        return false;
+      }
+      const state = this[DRAFT_STATE];
+      assertUnrevoked(state);
+      prepareMapCopy(state);
+      markChanged(state);
+      if (state.base_.has(key)) {
+        state.assigned_.set(key, false);
+      } else {
+        state.assigned_.delete(key);
+      }
+      state.copy_.delete(key);
+      return true;
+    }
+    clear() {
+      const state = this[DRAFT_STATE];
+      assertUnrevoked(state);
+      if (latest(state).size) {
+        prepareMapCopy(state);
+        markChanged(state);
+        state.assigned_ = /* @__PURE__ */ new Map();
+        each(state.base_, (key) => {
+          state.assigned_.set(key, false);
+        });
+        state.copy_.clear();
+      }
+    }
+    forEach(cb, thisArg) {
+      const state = this[DRAFT_STATE];
+      latest(state).forEach((_value, key, _map) => {
+        cb.call(thisArg, this.get(key), key, this);
+      });
+    }
+    get(key) {
+      const state = this[DRAFT_STATE];
+      assertUnrevoked(state);
+      const value = latest(state).get(key);
+      if (state.finalized_ || !isDraftable(value)) {
+        return value;
+      }
+      if (value !== state.base_.get(key)) {
+        return value;
+      }
+      const draft = createProxy(value, state);
+      prepareMapCopy(state);
+      state.copy_.set(key, draft);
+      return draft;
+    }
+    keys() {
+      return latest(this[DRAFT_STATE]).keys();
+    }
+    values() {
+      const iterator = this.keys();
+      return {
+        [Symbol.iterator]: () => this.values(),
+        next: () => {
+          const r = iterator.next();
+          if (r.done)
+            return r;
+          const value = this.get(r.value);
+          return {
+            done: false,
+            value
+          };
+        }
+      };
+    }
+    entries() {
+      const iterator = this.keys();
+      return {
+        [Symbol.iterator]: () => this.entries(),
+        next: () => {
+          const r = iterator.next();
+          if (r.done)
+            return r;
+          const value = this.get(r.value);
+          return {
+            done: false,
+            value: [r.value, value]
+          };
+        }
+      };
+    }
+    [(DRAFT_STATE, Symbol.iterator)]() {
+      return this.entries();
+    }
+  }
+  function proxyMap_(target, parent) {
+    return new DraftMap(target, parent);
+  }
+  function prepareMapCopy(state) {
+    if (!state.copy_) {
+      state.assigned_ = /* @__PURE__ */ new Map();
+      state.copy_ = new Map(state.base_);
+    }
+  }
+  class DraftSet extends Set {
+    constructor(target, parent) {
+      super();
+      this[DRAFT_STATE] = {
+        type_: 3 /* Set */,
+        parent_: parent,
+        scope_: parent ? parent.scope_ : getCurrentScope(),
+        modified_: false,
+        finalized_: false,
+        copy_: void 0,
+        base_: target,
+        draft_: this,
+        drafts_: /* @__PURE__ */ new Map(),
+        revoked_: false,
+        isManual_: false
+      };
+    }
+    get size() {
+      return latest(this[DRAFT_STATE]).size;
+    }
+    has(value) {
+      const state = this[DRAFT_STATE];
+      assertUnrevoked(state);
+      if (!state.copy_) {
+        return state.base_.has(value);
+      }
+      if (state.copy_.has(value))
+        return true;
+      if (state.drafts_.has(value) && state.copy_.has(state.drafts_.get(value)))
+        return true;
+      return false;
+    }
+    add(value) {
+      const state = this[DRAFT_STATE];
+      assertUnrevoked(state);
+      if (!this.has(value)) {
+        prepareSetCopy(state);
+        markChanged(state);
+        state.copy_.add(value);
+      }
+      return this;
+    }
+    delete(value) {
+      if (!this.has(value)) {
+        return false;
+      }
+      const state = this[DRAFT_STATE];
+      assertUnrevoked(state);
+      prepareSetCopy(state);
+      markChanged(state);
+      return state.copy_.delete(value) || (state.drafts_.has(value) ? state.copy_.delete(state.drafts_.get(value)) : (
+        /* istanbul ignore next */
+        false
+      ));
+    }
+    clear() {
+      const state = this[DRAFT_STATE];
+      assertUnrevoked(state);
+      if (latest(state).size) {
+        prepareSetCopy(state);
+        markChanged(state);
+        state.copy_.clear();
+      }
+    }
+    values() {
+      const state = this[DRAFT_STATE];
+      assertUnrevoked(state);
+      prepareSetCopy(state);
+      return state.copy_.values();
+    }
+    entries() {
+      const state = this[DRAFT_STATE];
+      assertUnrevoked(state);
+      prepareSetCopy(state);
+      return state.copy_.entries();
+    }
+    keys() {
+      return this.values();
+    }
+    [(DRAFT_STATE, Symbol.iterator)]() {
+      return this.values();
+    }
+    forEach(cb, thisArg) {
+      const iterator = this.values();
+      let result = iterator.next();
+      while (!result.done) {
+        cb.call(thisArg, result.value, result.value, this);
+        result = iterator.next();
+      }
+    }
+  }
+  function proxySet_(target, parent) {
+    return new DraftSet(target, parent);
+  }
+  function prepareSetCopy(state) {
+    if (!state.copy_) {
+      state.copy_ = /* @__PURE__ */ new Set();
+      state.base_.forEach((value) => {
+        if (isDraftable(value)) {
+          const draft = createProxy(value, state);
+          state.drafts_.set(value, draft);
+          state.copy_.add(draft);
+        } else {
+          state.copy_.add(value);
+        }
+      });
+    }
+  }
+  function assertUnrevoked(state) {
+    if (state.revoked_)
+      die(3, JSON.stringify(latest(state)));
+  }
+  loadPlugin("MapSet", { proxyMap_, proxySet_ });
+}
+
+// src/immer.ts
+var immer = new Immer2();
+var produce = immer.produce;
+var produceWithPatches = immer.produceWithPatches.bind(
+  immer
+);
+var setAutoFreeze = immer.setAutoFreeze.bind(immer);
+var setUseStrictShallowCopy = immer.setUseStrictShallowCopy.bind(immer);
+var applyPatches = immer.applyPatches.bind(immer);
+var createDraft = immer.createDraft.bind(immer);
+var finishDraft = immer.finishDraft.bind(immer);
+function castDraft(value) {
+  return value;
+}
+function castImmutable(value) {
+  return value;
+}
+
+//# sourceMappingURL=immer.legacy-esm.js.map
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(12)))
 
 /***/ }),
@@ -50222,31 +51482,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFocusTrap", function() { return createFocusTrap; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tabbable__ = __webpack_require__(286);
 /*!
-* focus-trap 7.4.0
+* focus-trap 7.5.4
 * @license MIT, https://github.com/focus-trap/focus-trap/blob/master/LICENSE
 */
 
 
-function ownKeys(object, enumerableOnly) {
-  var keys = Object.keys(object);
+function ownKeys(e, r) {
+  var t = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
-    var symbols = Object.getOwnPropertySymbols(object);
-    enumerableOnly && (symbols = symbols.filter(function (sym) {
-      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-    })), keys.push.apply(keys, symbols);
+    var o = Object.getOwnPropertySymbols(e);
+    r && (o = o.filter(function (r) {
+      return Object.getOwnPropertyDescriptor(e, r).enumerable;
+    })), t.push.apply(t, o);
   }
-  return keys;
+  return t;
 }
-function _objectSpread2(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = null != arguments[i] ? arguments[i] : {};
-    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
-      _defineProperty(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+function _objectSpread2(e) {
+  for (var r = 1; r < arguments.length; r++) {
+    var t = null != arguments[r] ? arguments[r] : {};
+    r % 2 ? ownKeys(Object(t), !0).forEach(function (r) {
+      _defineProperty(e, r, t[r]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) {
+      Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
     });
   }
-  return target;
+  return e;
 }
 function _defineProperty(obj, key, value) {
   key = _toPropertyKey(key);
@@ -50308,10 +51568,10 @@ var isSelectableInput = function isSelectableInput(node) {
   return node.tagName && node.tagName.toLowerCase() === 'input' && typeof node.select === 'function';
 };
 var isEscapeEvent = function isEscapeEvent(e) {
-  return e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27;
+  return (e === null || e === void 0 ? void 0 : e.key) === 'Escape' || (e === null || e === void 0 ? void 0 : e.key) === 'Esc' || (e === null || e === void 0 ? void 0 : e.keyCode) === 27;
 };
 var isTabEvent = function isTabEvent(e) {
-  return e.key === 'Tab' || e.keyCode === 9;
+  return (e === null || e === void 0 ? void 0 : e.key) === 'Tab' || (e === null || e === void 0 ? void 0 : e.keyCode) === 9;
 };
 
 // checks for TAB by default
@@ -50395,8 +51655,11 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
     //   container: HTMLElement,
     //   tabbableNodes: Array<HTMLElement>, // empty if none
     //   focusableNodes: Array<HTMLElement>, // empty if none
-    //   firstTabbableNode: HTMLElement|null,
-    //   lastTabbableNode: HTMLElement|null,
+    //   posTabIndexesFound: boolean,
+    //   firstTabbableNode: HTMLElement|undefined,
+    //   lastTabbableNode: HTMLElement|undefined,
+    //   firstDomTabbableNode: HTMLElement|undefined,
+    //   lastDomTabbableNode: HTMLElement|undefined,
     //   nextTabbableNode: (node: HTMLElement, forward: boolean) => HTMLElement|undefined
     // }>}
     containerGroups: [],
@@ -50413,7 +51676,9 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
     paused: false,
     // timer ID for when delayInitialFocus is true and initial focus in this trap
     //  has been delayed during activation
-    delayInitialFocusTimer: undefined
+    delayInitialFocusTimer: undefined,
+    // the most recent KeyboardEvent for the configured nav key (typically [SHIFT+]TAB), if any
+    recentNavEvent: undefined
   };
   var trap; // eslint-disable-line prefer-const -- some private functions reference it, and its methods reference private functions, so we must declare here and define later
 
@@ -50432,23 +51697,26 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
   /**
    * Finds the index of the container that contains the element.
    * @param {HTMLElement} element
+   * @param {Event} [event] If available, and `element` isn't directly found in any container,
+   *  the event's composed path is used to see if includes any known trap containers in the
+   *  case where the element is inside a Shadow DOM.
    * @returns {number} Index of the container in either `state.containers` or
    *  `state.containerGroups` (the order/length of these lists are the same); -1
    *  if the element isn't found.
    */
-  var findContainerIndex = function findContainerIndex(element) {
+  var findContainerIndex = function findContainerIndex(element, event) {
+    var composedPath = typeof (event === null || event === void 0 ? void 0 : event.composedPath) === 'function' ? event.composedPath() : undefined;
     // NOTE: search `containerGroups` because it's possible a group contains no tabbable
     //  nodes, but still contains focusable nodes (e.g. if they all have `tabindex=-1`)
     //  and we still need to find the element in there
     return state.containerGroups.findIndex(function (_ref) {
       var container = _ref.container,
         tabbableNodes = _ref.tabbableNodes;
-      return container.contains(element) ||
-      // fall back to explicit tabbable search which will take into consideration any
+      return container.contains(element) || ( // fall back to explicit tabbable search which will take into consideration any
       //  web components if the `tabbableOptions.getShadowRoot` option was used for
       //  the trap, enabling shadow DOM support in tabbable (`Node.contains()` doesn't
       //  look inside web components even if open)
-      tabbableNodes.find(function (node) {
+      composedPath === null || composedPath === void 0 ? void 0 : composedPath.includes(container)) || tabbableNodes.find(function (node) {
         return node === element;
       });
     });
@@ -50504,8 +51772,8 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
     if (node === false) {
       return false;
     }
-    if (node === undefined) {
-      // option not specified: use fallback options
+    if (node === undefined || !Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["c" /* isFocusable */])(node, config.tabbableOptions)) {
+      // option not specified nor focusable: use fallback options
       if (findContainerIndex(doc.activeElement) >= 0) {
         node = doc.activeElement;
       } else {
@@ -50523,17 +51791,44 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
   };
   var updateTabbableNodes = function updateTabbableNodes() {
     state.containerGroups = state.containers.map(function (container) {
-      var tabbableNodes = Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["d" /* tabbable */])(container, config.tabbableOptions);
+      var tabbableNodes = Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["e" /* tabbable */])(container, config.tabbableOptions);
 
       // NOTE: if we have tabbable nodes, we must have focusable nodes; focusable nodes
-      //  are a superset of tabbable nodes
+      //  are a superset of tabbable nodes since nodes with negative `tabindex` attributes
+      //  are focusable but not tabbable
       var focusableNodes = Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["a" /* focusable */])(container, config.tabbableOptions);
+      var firstTabbableNode = tabbableNodes.length > 0 ? tabbableNodes[0] : undefined;
+      var lastTabbableNode = tabbableNodes.length > 0 ? tabbableNodes[tabbableNodes.length - 1] : undefined;
+      var firstDomTabbableNode = focusableNodes.find(function (node) {
+        return Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["d" /* isTabbable */])(node);
+      });
+      var lastDomTabbableNode = focusableNodes.slice().reverse().find(function (node) {
+        return Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["d" /* isTabbable */])(node);
+      });
+      var posTabIndexesFound = !!tabbableNodes.find(function (node) {
+        return Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["b" /* getTabIndex */])(node) > 0;
+      });
       return {
         container: container,
         tabbableNodes: tabbableNodes,
         focusableNodes: focusableNodes,
-        firstTabbableNode: tabbableNodes.length > 0 ? tabbableNodes[0] : null,
-        lastTabbableNode: tabbableNodes.length > 0 ? tabbableNodes[tabbableNodes.length - 1] : null,
+        /** True if at least one node with positive `tabindex` was found in this container. */
+        posTabIndexesFound: posTabIndexesFound,
+        /** First tabbable node in container, __tabindex__ order; `undefined` if none. */
+        firstTabbableNode: firstTabbableNode,
+        /** Last tabbable node in container, __tabindex__ order; `undefined` if none. */
+        lastTabbableNode: lastTabbableNode,
+        // NOTE: DOM order is NOT NECESSARILY "document position" order, but figuring that out
+        //  would require more than just https://developer.mozilla.org/en-US/docs/Web/API/Node/compareDocumentPosition
+        //  because that API doesn't work with Shadow DOM as well as it should (@see
+        //  https://github.com/whatwg/dom/issues/320) and since this first/last is only needed, so far,
+        //  to address an edge case related to positive tabindex support, this seems like a much easier,
+        //  "close enough most of the time" alternative for positive tabindexes which should generally
+        //  be avoided anyway...
+        /** First tabbable node in container, __DOM__ order; `undefined` if none. */
+        firstDomTabbableNode: firstDomTabbableNode,
+        /** Last tabbable node in container, __DOM__ order; `undefined` if none. */
+        lastDomTabbableNode: lastDomTabbableNode,
         /**
          * Finds the __tabbable__ node that follows the given node in the specified direction,
          *  in this container, if any.
@@ -50544,30 +51839,24 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
          */
         nextTabbableNode: function nextTabbableNode(node) {
           var forward = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-          // NOTE: If tabindex is positive (in order to manipulate the tab order separate
-          //  from the DOM order), this __will not work__ because the list of focusableNodes,
-          //  while it contains tabbable nodes, does not sort its nodes in any order other
-          //  than DOM order, because it can't: Where would you place focusable (but not
-          //  tabbable) nodes in that order? They have no order, because they aren't tabbale...
-          // Support for positive tabindex is already broken and hard to manage (possibly
-          //  not supportable, TBD), so this isn't going to make things worse than they
-          //  already are, and at least makes things better for the majority of cases where
-          //  tabindex is either 0/unset or negative.
-          // FYI, positive tabindex issue: https://github.com/focus-trap/focus-trap/issues/375
-          var nodeIdx = focusableNodes.findIndex(function (n) {
-            return n === node;
-          });
+          var nodeIdx = tabbableNodes.indexOf(node);
           if (nodeIdx < 0) {
-            return undefined;
-          }
-          if (forward) {
-            return focusableNodes.slice(nodeIdx + 1).find(function (n) {
-              return Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["c" /* isTabbable */])(n, config.tabbableOptions);
+            // either not tabbable nor focusable, or was focused but not tabbable (negative tabindex):
+            //  since `node` should at least have been focusable, we assume that's the case and mimic
+            //  what browsers do, which is set focus to the next node in __document position order__,
+            //  regardless of positive tabindexes, if any -- and for reasons explained in the NOTE
+            //  above related to `firstDomTabbable` and `lastDomTabbable` properties, we fall back to
+            //  basic DOM order
+            if (forward) {
+              return focusableNodes.slice(focusableNodes.indexOf(node) + 1).find(function (el) {
+                return Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["d" /* isTabbable */])(el);
+              });
+            }
+            return focusableNodes.slice(0, focusableNodes.indexOf(node)).reverse().find(function (el) {
+              return Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["d" /* isTabbable */])(el);
             });
           }
-          return focusableNodes.slice(0, nodeIdx).reverse().find(function (n) {
-            return Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["c" /* isTabbable */])(n, config.tabbableOptions);
-          });
+          return tabbableNodes[nodeIdx + (forward ? 1 : -1)];
         }
       };
     });
@@ -50580,12 +51869,44 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
     ) {
       throw new Error('Your focus-trap must have at least one container with at least one tabbable node in it at all times');
     }
+
+    // NOTE: Positive tabindexes are only properly supported in single-container traps because
+    //  doing it across multiple containers where tabindexes could be all over the place
+    //  would require Tabbable to support multiple containers, would require additional
+    //  specialized Shadow DOM support, and would require Tabbable's multi-container support
+    //  to look at those containers in document position order rather than user-provided
+    //  order (as they are treated in Focus-trap, for legacy reasons). See discussion on
+    //  https://github.com/focus-trap/focus-trap/issues/375 for more details.
+    if (state.containerGroups.find(function (g) {
+      return g.posTabIndexesFound;
+    }) && state.containerGroups.length > 1) {
+      throw new Error("At least one node with a positive tabindex was found in one of your focus-trap's multiple containers. Positive tabindexes are only supported in single-container focus-traps.");
+    }
+  };
+
+  /**
+   * Gets the current activeElement. If it's a web-component and has open shadow-root
+   * it will recursively search inside shadow roots for the "true" activeElement.
+   *
+   * @param {Document | ShadowRoot} el
+   *
+   * @returns {HTMLElement} The element that currently has the focus
+   **/
+  var getActiveElement = function getActiveElement(el) {
+    var activeElement = el.activeElement;
+    if (!activeElement) {
+      return;
+    }
+    if (activeElement.shadowRoot && activeElement.shadowRoot.activeElement !== null) {
+      return getActiveElement(activeElement.shadowRoot);
+    }
+    return activeElement;
   };
   var tryFocus = function tryFocus(node) {
     if (node === false) {
       return;
     }
-    if (node === doc.activeElement) {
+    if (node === getActiveElement(document)) {
       return;
     }
     if (!node || !node.focus) {
@@ -50595,6 +51916,7 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
     node.focus({
       preventScroll: !!config.preventScroll
     });
+    // NOTE: focus() API does not trigger focusIn event so set MRU node manually
     state.mostRecentlyFocusedNode = node;
     if (isSelectableInput(node)) {
       node.select();
@@ -50605,11 +51927,113 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
     return node ? node : node === false ? false : previousActiveElement;
   };
 
+  /**
+   * Finds the next node (in either direction) where focus should move according to a
+   *  keyboard focus-in event.
+   * @param {Object} params
+   * @param {Node} [params.target] Known target __from which__ to navigate, if any.
+   * @param {KeyboardEvent|FocusEvent} [params.event] Event to use if `target` isn't known (event
+   *  will be used to determine the `target`). Ignored if `target` is specified.
+   * @param {boolean} [params.isBackward] True if focus should move backward.
+   * @returns {Node|undefined} The next node, or `undefined` if a next node couldn't be
+   *  determined given the current state of the trap.
+   */
+  var findNextNavNode = function findNextNavNode(_ref2) {
+    var target = _ref2.target,
+      event = _ref2.event,
+      _ref2$isBackward = _ref2.isBackward,
+      isBackward = _ref2$isBackward === void 0 ? false : _ref2$isBackward;
+    target = target || getActualTarget(event);
+    updateTabbableNodes();
+    var destinationNode = null;
+    if (state.tabbableGroups.length > 0) {
+      // make sure the target is actually contained in a group
+      // NOTE: the target may also be the container itself if it's focusable
+      //  with tabIndex='-1' and was given initial focus
+      var containerIndex = findContainerIndex(target, event);
+      var containerGroup = containerIndex >= 0 ? state.containerGroups[containerIndex] : undefined;
+      if (containerIndex < 0) {
+        // target not found in any group: quite possible focus has escaped the trap,
+        //  so bring it back into...
+        if (isBackward) {
+          // ...the last node in the last group
+          destinationNode = state.tabbableGroups[state.tabbableGroups.length - 1].lastTabbableNode;
+        } else {
+          // ...the first node in the first group
+          destinationNode = state.tabbableGroups[0].firstTabbableNode;
+        }
+      } else if (isBackward) {
+        // REVERSE
+
+        // is the target the first tabbable node in a group?
+        var startOfGroupIndex = findIndex(state.tabbableGroups, function (_ref3) {
+          var firstTabbableNode = _ref3.firstTabbableNode;
+          return target === firstTabbableNode;
+        });
+        if (startOfGroupIndex < 0 && (containerGroup.container === target || Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["c" /* isFocusable */])(target, config.tabbableOptions) && !Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["d" /* isTabbable */])(target, config.tabbableOptions) && !containerGroup.nextTabbableNode(target, false))) {
+          // an exception case where the target is either the container itself, or
+          //  a non-tabbable node that was given focus (i.e. tabindex is negative
+          //  and user clicked on it or node was programmatically given focus)
+          //  and is not followed by any other tabbable node, in which
+          //  case, we should handle shift+tab as if focus were on the container's
+          //  first tabbable node, and go to the last tabbable node of the LAST group
+          startOfGroupIndex = containerIndex;
+        }
+        if (startOfGroupIndex >= 0) {
+          // YES: then shift+tab should go to the last tabbable node in the
+          //  previous group (and wrap around to the last tabbable node of
+          //  the LAST group if it's the first tabbable node of the FIRST group)
+          var destinationGroupIndex = startOfGroupIndex === 0 ? state.tabbableGroups.length - 1 : startOfGroupIndex - 1;
+          var destinationGroup = state.tabbableGroups[destinationGroupIndex];
+          destinationNode = Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["b" /* getTabIndex */])(target) >= 0 ? destinationGroup.lastTabbableNode : destinationGroup.lastDomTabbableNode;
+        } else if (!isTabEvent(event)) {
+          // user must have customized the nav keys so we have to move focus manually _within_
+          //  the active group: do this based on the order determined by tabbable()
+          destinationNode = containerGroup.nextTabbableNode(target, false);
+        }
+      } else {
+        // FORWARD
+
+        // is the target the last tabbable node in a group?
+        var lastOfGroupIndex = findIndex(state.tabbableGroups, function (_ref4) {
+          var lastTabbableNode = _ref4.lastTabbableNode;
+          return target === lastTabbableNode;
+        });
+        if (lastOfGroupIndex < 0 && (containerGroup.container === target || Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["c" /* isFocusable */])(target, config.tabbableOptions) && !Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["d" /* isTabbable */])(target, config.tabbableOptions) && !containerGroup.nextTabbableNode(target))) {
+          // an exception case where the target is the container itself, or
+          //  a non-tabbable node that was given focus (i.e. tabindex is negative
+          //  and user clicked on it or node was programmatically given focus)
+          //  and is not followed by any other tabbable node, in which
+          //  case, we should handle tab as if focus were on the container's
+          //  last tabbable node, and go to the first tabbable node of the FIRST group
+          lastOfGroupIndex = containerIndex;
+        }
+        if (lastOfGroupIndex >= 0) {
+          // YES: then tab should go to the first tabbable node in the next
+          //  group (and wrap around to the first tabbable node of the FIRST
+          //  group if it's the last tabbable node of the LAST group)
+          var _destinationGroupIndex = lastOfGroupIndex === state.tabbableGroups.length - 1 ? 0 : lastOfGroupIndex + 1;
+          var _destinationGroup = state.tabbableGroups[_destinationGroupIndex];
+          destinationNode = Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["b" /* getTabIndex */])(target) >= 0 ? _destinationGroup.firstTabbableNode : _destinationGroup.firstDomTabbableNode;
+        } else if (!isTabEvent(event)) {
+          // user must have customized the nav keys so we have to move focus manually _within_
+          //  the active group: do this based on the order determined by tabbable()
+          destinationNode = containerGroup.nextTabbableNode(target);
+        }
+      }
+    } else {
+      // no groups available
+      // NOTE: the fallbackFocus option does not support returning false to opt-out
+      destinationNode = getNodeForOption('fallbackFocus');
+    }
+    return destinationNode;
+  };
+
   // This needs to be done on mousedown and touchstart instead of click
   // so that it precedes the focus event.
   var checkPointerDown = function checkPointerDown(e) {
     var target = getActualTarget(e);
-    if (findContainerIndex(target) >= 0) {
+    if (findContainerIndex(target, e) >= 0) {
       // allow the click since it ocurred inside the trap
       return;
     }
@@ -50640,9 +52064,12 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
   };
 
   // In case focus escapes the trap for some strange reason, pull it back in.
-  var checkFocusIn = function checkFocusIn(e) {
-    var target = getActualTarget(e);
-    var targetContained = findContainerIndex(target) >= 0;
+  // NOTE: the focusIn event is NOT cancelable, so if focus escapes, it may cause unexpected
+  //  scrolling if the node that got focused was out of view; there's nothing we can do to
+  //  prevent that from happening by the time we discover that focus escaped
+  var checkFocusIn = function checkFocusIn(event) {
+    var target = getActualTarget(event);
+    var targetContained = findContainerIndex(target, event) >= 0;
 
     // In Firefox when you Tab out of an iframe the Document is briefly focused.
     if (targetContained || target instanceof Document) {
@@ -50651,9 +52078,88 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
       }
     } else {
       // escaped! pull it back in to where it just left
-      e.stopImmediatePropagation();
-      tryFocus(state.mostRecentlyFocusedNode || getInitialFocusNode());
+      event.stopImmediatePropagation();
+
+      // focus will escape if the MRU node had a positive tab index and user tried to nav forward;
+      //  it will also escape if the MRU node had a 0 tab index and user tried to nav backward
+      //  toward a node with a positive tab index
+      var nextNode; // next node to focus, if we find one
+      var navAcrossContainers = true;
+      if (state.mostRecentlyFocusedNode) {
+        if (Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["b" /* getTabIndex */])(state.mostRecentlyFocusedNode) > 0) {
+          // MRU container index must be >=0 otherwise we wouldn't have it as an MRU node...
+          var mruContainerIdx = findContainerIndex(state.mostRecentlyFocusedNode);
+          // there MAY not be any tabbable nodes in the container if there are at least 2 containers
+          //  and the MRU node is focusable but not tabbable (focus-trap requires at least 1 container
+          //  with at least one tabbable node in order to function, so this could be the other container
+          //  with nothing tabbable in it)
+          var tabbableNodes = state.containerGroups[mruContainerIdx].tabbableNodes;
+          if (tabbableNodes.length > 0) {
+            // MRU tab index MAY not be found if the MRU node is focusable but not tabbable
+            var mruTabIdx = tabbableNodes.findIndex(function (node) {
+              return node === state.mostRecentlyFocusedNode;
+            });
+            if (mruTabIdx >= 0) {
+              if (config.isKeyForward(state.recentNavEvent)) {
+                if (mruTabIdx + 1 < tabbableNodes.length) {
+                  nextNode = tabbableNodes[mruTabIdx + 1];
+                  navAcrossContainers = false;
+                }
+                // else, don't wrap within the container as focus should move to next/previous
+                //  container
+              } else {
+                if (mruTabIdx - 1 >= 0) {
+                  nextNode = tabbableNodes[mruTabIdx - 1];
+                  navAcrossContainers = false;
+                }
+                // else, don't wrap within the container as focus should move to next/previous
+                //  container
+              }
+              // else, don't find in container order without considering direction too
+            }
+          }
+          // else, no tabbable nodes in that container (which means we must have at least one other
+          //  container with at least one tabbable node in it, otherwise focus-trap would've thrown
+          //  an error the last time updateTabbableNodes() was run): find next node among all known
+          //  containers
+        } else {
+          // check to see if there's at least one tabbable node with a positive tab index inside
+          //  the trap because focus seems to escape when navigating backward from a tabbable node
+          //  with tabindex=0 when this is the case (instead of wrapping to the tabbable node with
+          //  the greatest positive tab index like it should)
+          if (!state.containerGroups.some(function (g) {
+            return g.tabbableNodes.some(function (n) {
+              return Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["b" /* getTabIndex */])(n) > 0;
+            });
+          })) {
+            // no containers with tabbable nodes with positive tab indexes which means the focus
+            //  escaped for some other reason and we should just execute the fallback to the
+            //  MRU node or initial focus node, if any
+            navAcrossContainers = false;
+          }
+        }
+      } else {
+        // no MRU node means we're likely in some initial condition when the trap has just
+        //  been activated and initial focus hasn't been given yet, in which case we should
+        //  fall through to trying to focus the initial focus node, which is what should
+        //  happen below at this point in the logic
+        navAcrossContainers = false;
+      }
+      if (navAcrossContainers) {
+        nextNode = findNextNavNode({
+          // move FROM the MRU node, not event-related node (which will be the node that is
+          //  outside the trap causing the focus escape we're trying to fix)
+          target: state.mostRecentlyFocusedNode,
+          isBackward: config.isKeyBackward(state.recentNavEvent)
+        });
+      }
+      if (nextNode) {
+        tryFocus(nextNode);
+      } else {
+        tryFocus(state.mostRecentlyFocusedNode || getInitialFocusNode());
+      }
     }
+    state.recentNavEvent = undefined; // clear
   };
 
   // Hijack key nav events on the first and last focusable nodes of the trap,
@@ -50662,89 +52168,11 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
   // kind of need to capture the action at the keydown phase.
   var checkKeyNav = function checkKeyNav(event) {
     var isBackward = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-    var target = getActualTarget(event);
-    updateTabbableNodes();
-    var destinationNode = null;
-    if (state.tabbableGroups.length > 0) {
-      // make sure the target is actually contained in a group
-      // NOTE: the target may also be the container itself if it's focusable
-      //  with tabIndex='-1' and was given initial focus
-      var containerIndex = findContainerIndex(target);
-      var containerGroup = containerIndex >= 0 ? state.containerGroups[containerIndex] : undefined;
-      if (containerIndex < 0) {
-        // target not found in any group: quite possible focus has escaped the trap,
-        //  so bring it back into...
-        if (isBackward) {
-          // ...the last node in the last group
-          destinationNode = state.tabbableGroups[state.tabbableGroups.length - 1].lastTabbableNode;
-        } else {
-          // ...the first node in the first group
-          destinationNode = state.tabbableGroups[0].firstTabbableNode;
-        }
-      } else if (isBackward) {
-        // REVERSE
-
-        // is the target the first tabbable node in a group?
-        var startOfGroupIndex = findIndex(state.tabbableGroups, function (_ref2) {
-          var firstTabbableNode = _ref2.firstTabbableNode;
-          return target === firstTabbableNode;
-        });
-        if (startOfGroupIndex < 0 && (containerGroup.container === target || Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["b" /* isFocusable */])(target, config.tabbableOptions) && !Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["c" /* isTabbable */])(target, config.tabbableOptions) && !containerGroup.nextTabbableNode(target, false))) {
-          // an exception case where the target is either the container itself, or
-          //  a non-tabbable node that was given focus (i.e. tabindex is negative
-          //  and user clicked on it or node was programmatically given focus)
-          //  and is not followed by any other tabbable node, in which
-          //  case, we should handle shift+tab as if focus were on the container's
-          //  first tabbable node, and go to the last tabbable node of the LAST group
-          startOfGroupIndex = containerIndex;
-        }
-        if (startOfGroupIndex >= 0) {
-          // YES: then shift+tab should go to the last tabbable node in the
-          //  previous group (and wrap around to the last tabbable node of
-          //  the LAST group if it's the first tabbable node of the FIRST group)
-          var destinationGroupIndex = startOfGroupIndex === 0 ? state.tabbableGroups.length - 1 : startOfGroupIndex - 1;
-          var destinationGroup = state.tabbableGroups[destinationGroupIndex];
-          destinationNode = destinationGroup.lastTabbableNode;
-        } else if (!isTabEvent(event)) {
-          // user must have customized the nav keys so we have to move focus manually _within_
-          //  the active group: do this based on the order determined by tabbable()
-          destinationNode = containerGroup.nextTabbableNode(target, false);
-        }
-      } else {
-        // FORWARD
-
-        // is the target the last tabbable node in a group?
-        var lastOfGroupIndex = findIndex(state.tabbableGroups, function (_ref3) {
-          var lastTabbableNode = _ref3.lastTabbableNode;
-          return target === lastTabbableNode;
-        });
-        if (lastOfGroupIndex < 0 && (containerGroup.container === target || Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["b" /* isFocusable */])(target, config.tabbableOptions) && !Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["c" /* isTabbable */])(target, config.tabbableOptions) && !containerGroup.nextTabbableNode(target))) {
-          // an exception case where the target is the container itself, or
-          //  a non-tabbable node that was given focus (i.e. tabindex is negative
-          //  and user clicked on it or node was programmatically given focus)
-          //  and is not followed by any other tabbable node, in which
-          //  case, we should handle tab as if focus were on the container's
-          //  last tabbable node, and go to the first tabbable node of the FIRST group
-          lastOfGroupIndex = containerIndex;
-        }
-        if (lastOfGroupIndex >= 0) {
-          // YES: then tab should go to the first tabbable node in the next
-          //  group (and wrap around to the first tabbable node of the FIRST
-          //  group if it's the last tabbable node of the LAST group)
-          var _destinationGroupIndex = lastOfGroupIndex === state.tabbableGroups.length - 1 ? 0 : lastOfGroupIndex + 1;
-          var _destinationGroup = state.tabbableGroups[_destinationGroupIndex];
-          destinationNode = _destinationGroup.firstTabbableNode;
-        } else if (!isTabEvent(event)) {
-          // user must have customized the nav keys so we have to move focus manually _within_
-          //  the active group: do this based on the order determined by tabbable()
-          destinationNode = containerGroup.nextTabbableNode(target);
-        }
-      }
-    } else {
-      // no groups available
-      // NOTE: the fallbackFocus option does not support returning false to opt-out
-      destinationNode = getNodeForOption('fallbackFocus');
-    }
+    state.recentNavEvent = event;
+    var destinationNode = findNextNavNode({
+      event: event,
+      isBackward: isBackward
+    });
     if (destinationNode) {
       if (isTabEvent(event)) {
         // since tab natively moves focus, we wouldn't have a destination node unless we
@@ -50770,7 +52198,7 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
   };
   var checkClick = function checkClick(e) {
     var target = getActualTarget(e);
-    if (findContainerIndex(target) >= 0) {
+    if (findContainerIndex(target, e) >= 0) {
       return;
     }
     if (valueOrHandler(config.clickOutsideDeactivates, e)) {
@@ -50832,6 +52260,43 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
   };
 
   //
+  // MUTATION OBSERVER
+  //
+
+  var checkDomRemoval = function checkDomRemoval(mutations) {
+    var isFocusedNodeRemoved = mutations.some(function (mutation) {
+      var removedNodes = Array.from(mutation.removedNodes);
+      return removedNodes.some(function (node) {
+        return node === state.mostRecentlyFocusedNode;
+      });
+    });
+
+    // If the currently focused is removed then browsers will move focus to the
+    // <body> element. If this happens, try to move focus back into the trap.
+    if (isFocusedNodeRemoved) {
+      tryFocus(getInitialFocusNode());
+    }
+  };
+
+  // Use MutationObserver - if supported - to detect if focused node is removed
+  // from the DOM.
+  var mutationObserver = typeof window !== 'undefined' && 'MutationObserver' in window ? new MutationObserver(checkDomRemoval) : undefined;
+  var updateObservedNodes = function updateObservedNodes() {
+    if (!mutationObserver) {
+      return;
+    }
+    mutationObserver.disconnect();
+    if (state.active && !state.paused) {
+      state.containers.map(function (container) {
+        mutationObserver.observe(container, {
+          subtree: true,
+          childList: true
+        });
+      });
+    }
+  };
+
+  //
   // TRAP DEFINITION
   //
 
@@ -50855,13 +52320,14 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
       state.active = true;
       state.paused = false;
       state.nodeFocusedBeforeActivation = doc.activeElement;
-      onActivate === null || onActivate === void 0 ? void 0 : onActivate();
+      onActivate === null || onActivate === void 0 || onActivate();
       var finishActivation = function finishActivation() {
         if (checkCanFocusTrap) {
           updateTabbableNodes();
         }
         addListeners();
-        onPostActivate === null || onPostActivate === void 0 ? void 0 : onPostActivate();
+        updateObservedNodes();
+        onPostActivate === null || onPostActivate === void 0 || onPostActivate();
       };
       if (checkCanFocusTrap) {
         checkCanFocusTrap(state.containers.concat()).then(finishActivation, finishActivation);
@@ -50884,18 +52350,19 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
       removeListeners();
       state.active = false;
       state.paused = false;
+      updateObservedNodes();
       activeFocusTraps.deactivateTrap(trapStack, trap);
       var onDeactivate = getOption(options, 'onDeactivate');
       var onPostDeactivate = getOption(options, 'onPostDeactivate');
       var checkCanReturnFocus = getOption(options, 'checkCanReturnFocus');
       var returnFocus = getOption(options, 'returnFocus', 'returnFocusOnDeactivate');
-      onDeactivate === null || onDeactivate === void 0 ? void 0 : onDeactivate();
+      onDeactivate === null || onDeactivate === void 0 || onDeactivate();
       var finishDeactivation = function finishDeactivation() {
         delay(function () {
           if (returnFocus) {
             tryFocus(getReturnFocusNode(state.nodeFocusedBeforeActivation));
           }
-          onPostDeactivate === null || onPostDeactivate === void 0 ? void 0 : onPostDeactivate();
+          onPostDeactivate === null || onPostDeactivate === void 0 || onPostDeactivate();
         });
       };
       if (returnFocus && checkCanReturnFocus) {
@@ -50912,9 +52379,10 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
       var onPause = getOption(pauseOptions, 'onPause');
       var onPostPause = getOption(pauseOptions, 'onPostPause');
       state.paused = true;
-      onPause === null || onPause === void 0 ? void 0 : onPause();
+      onPause === null || onPause === void 0 || onPause();
       removeListeners();
-      onPostPause === null || onPostPause === void 0 ? void 0 : onPostPause();
+      updateObservedNodes();
+      onPostPause === null || onPostPause === void 0 || onPostPause();
       return this;
     },
     unpause: function unpause(unpauseOptions) {
@@ -50924,10 +52392,11 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
       var onUnpause = getOption(unpauseOptions, 'onUnpause');
       var onPostUnpause = getOption(unpauseOptions, 'onPostUnpause');
       state.paused = false;
-      onUnpause === null || onUnpause === void 0 ? void 0 : onUnpause();
+      onUnpause === null || onUnpause === void 0 || onUnpause();
       updateTabbableNodes();
       addListeners();
-      onPostUnpause === null || onPostUnpause === void 0 ? void 0 : onPostUnpause();
+      updateObservedNodes();
+      onPostUnpause === null || onPostUnpause === void 0 || onPostUnpause();
       return this;
     },
     updateContainerElements: function updateContainerElements(containerElements) {
@@ -50938,6 +52407,7 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
       if (state.active) {
         updateTabbableNodes();
       }
+      updateObservedNodes();
       return this;
     }
   };
@@ -50957,11 +52427,12 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return focusable; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return isFocusable; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return isTabbable; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return tabbable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return getTabIndex; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return isFocusable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return isTabbable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return tabbable; });
 /*!
-* tabbable 6.1.1
+* tabbable 6.2.0
 * @license MIT, https://github.com/focus-trap/tabbable/blob/master/LICENSE
 */
 // NOTE: separate `:not()` selectors has broader browser support than the newer
@@ -51141,7 +52612,27 @@ var getCandidatesIteratively = function getCandidatesIteratively(elements, inclu
   }
   return candidates;
 };
-var getTabindex = function getTabindex(node, isScope) {
+
+/**
+ * @private
+ * Determines if the node has an explicitly specified `tabindex` attribute.
+ * @param {HTMLElement} node
+ * @returns {boolean} True if so; false if not.
+ */
+var hasTabIndex = function hasTabIndex(node) {
+  return !isNaN(parseInt(node.getAttribute('tabindex'), 10));
+};
+
+/**
+ * Determine the tab index of a given node.
+ * @param {HTMLElement} node
+ * @returns {number} Tab order (negative, 0, or positive number).
+ * @throws {Error} If `node` is falsy.
+ */
+var getTabIndex = function getTabIndex(node) {
+  if (!node) {
+    throw new Error('No node provided');
+  }
   if (node.tabIndex < 0) {
     // in Chrome, <details/>, <audio controls/> and <video controls/> elements get a default
     // `tabIndex` of -1 when the 'tabindex' attribute isn't specified in the DOM,
@@ -51150,15 +52641,27 @@ var getTabindex = function getTabindex(node, isScope) {
     // order, consider their tab index to be 0.
     // Also browsers do not return `tabIndex` correctly for contentEditable nodes;
     // so if they don't have a tabindex attribute specifically set, assume it's 0.
-    //
-    // isScope is positive for custom element with shadow root or slot that by default
-    // have tabIndex -1, but need to be sorted by document order in order for their
-    // content to be inserted in the correct position
-    if ((isScope || /^(AUDIO|VIDEO|DETAILS)$/.test(node.tagName) || isContentEditable(node)) && isNaN(parseInt(node.getAttribute('tabindex'), 10))) {
+    if ((/^(AUDIO|VIDEO|DETAILS)$/.test(node.tagName) || isContentEditable(node)) && !hasTabIndex(node)) {
       return 0;
     }
   }
   return node.tabIndex;
+};
+
+/**
+ * Determine the tab index of a given node __for sort order purposes__.
+ * @param {HTMLElement} node
+ * @param {boolean} [isScope] True for a custom element with shadow root or slot that, by default,
+ *  has tabIndex -1, but needs to be sorted by document order in order for its content to be
+ *  inserted into the correct sort position.
+ * @returns {number} Tab order (negative, 0, or positive number).
+ */
+var getSortOrderTabIndex = function getSortOrderTabIndex(node, isScope) {
+  var tabIndex = getTabIndex(node);
+  if (tabIndex < 0 && isScope && !hasTabIndex(node)) {
+    return 0;
+  }
+  return tabIndex;
 };
 var sortOrderedTabbables = function sortOrderedTabbables(a, b) {
   return a.tabIndex === b.tabIndex ? a.documentOrder - b.documentOrder : a.tabIndex - b.tabIndex;
@@ -51402,7 +52905,7 @@ var isNodeMatchingSelectorFocusable = function isNodeMatchingSelectorFocusable(o
   return true;
 };
 var isNodeMatchingSelectorTabbable = function isNodeMatchingSelectorTabbable(options, node) {
-  if (isNonTabbableRadio(node) || getTabindex(node) < 0 || !isNodeMatchingSelectorFocusable(options, node)) {
+  if (isNonTabbableRadio(node) || getTabIndex(node) < 0 || !isNodeMatchingSelectorFocusable(options, node)) {
     return false;
   }
   return true;
@@ -51427,7 +52930,7 @@ var sortByOrder = function sortByOrder(candidates) {
   candidates.forEach(function (item, i) {
     var isScope = !!item.scopeParent;
     var element = isScope ? item.scopeParent : item;
-    var candidateTabindex = getTabindex(element, isScope);
+    var candidateTabindex = getSortOrderTabIndex(element, isScope);
     var elements = isScope ? sortByOrder(item.candidates) : element;
     if (candidateTabindex === 0) {
       isScope ? regularTabbables.push.apply(regularTabbables, elements) : regularTabbables.push(element);
@@ -51446,32 +52949,32 @@ var sortByOrder = function sortByOrder(candidates) {
     return acc;
   }, []).concat(regularTabbables);
 };
-var tabbable = function tabbable(el, options) {
+var tabbable = function tabbable(container, options) {
   options = options || {};
   var candidates;
   if (options.getShadowRoot) {
-    candidates = getCandidatesIteratively([el], options.includeContainer, {
+    candidates = getCandidatesIteratively([container], options.includeContainer, {
       filter: isNodeMatchingSelectorTabbable.bind(null, options),
       flatten: false,
       getShadowRoot: options.getShadowRoot,
       shadowRootFilter: isValidShadowRootTabbable
     });
   } else {
-    candidates = getCandidates(el, options.includeContainer, isNodeMatchingSelectorTabbable.bind(null, options));
+    candidates = getCandidates(container, options.includeContainer, isNodeMatchingSelectorTabbable.bind(null, options));
   }
   return sortByOrder(candidates);
 };
-var focusable = function focusable(el, options) {
+var focusable = function focusable(container, options) {
   options = options || {};
   var candidates;
   if (options.getShadowRoot) {
-    candidates = getCandidatesIteratively([el], options.includeContainer, {
+    candidates = getCandidatesIteratively([container], options.includeContainer, {
       filter: isNodeMatchingSelectorFocusable.bind(null, options),
       flatten: true,
       getShadowRoot: options.getShadowRoot
     });
   } else {
-    candidates = getCandidates(el, options.includeContainer, isNodeMatchingSelectorFocusable.bind(null, options));
+    candidates = getCandidates(container, options.includeContainer, isNodeMatchingSelectorFocusable.bind(null, options));
   }
   return candidates;
 };
