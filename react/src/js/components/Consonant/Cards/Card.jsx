@@ -43,6 +43,7 @@ const CardType = {
     hideCTA: bool,
     startDate: string,
     endDate: string,
+    cardDate: string,
     modifiedDate: string,
     bannerMap: shape(Object).isRequired,
     tags: arrayOf(shape(tagsType)),
@@ -66,6 +67,7 @@ const defaultProps = {
     startDate: '',
     endDate: '',
     modifiedDate: '',
+    cardDate: '',
     tags: [],
 };
 
@@ -98,6 +100,7 @@ const Card = (props) => {
         isBookmarked,
         onClick,
         dateFormat,
+        cardDate,
         modifiedDate,
         styles: {
             backgroundImage: image,
@@ -263,7 +266,7 @@ const Card = (props) => {
     const showHeader = !isProduct;
     const showBadge = isOneHalf || isThreeFourths || isFull;
     const showLogo = isOneHalf || isThreeFourths || isFull || isText;
-    const showLabel = !isProduct && !isText;
+    // const showLabel = !isProduct && !isText;
     const showVideoButton = !isProduct && !isText;
     const showText = !isHalfHeight && !isFull;
     const showFooter = isOneHalf || isProduct || isText;
@@ -388,14 +391,12 @@ const Card = (props) => {
                     className="consonant-Card-videoIco" />
                 }
 
-                {showLabel &&
-                detailText &&
                 <span
                     data-testid="consonant-Card-label"
                     className="consonant-Card-label">
-                    {detailText}
+                    <b>CardDate: {cardDate.replace(/T.*/, '')}</b>
                 </span>
-                }
+
                 <p
                     role="heading"
                     aria-label={headingAria}
