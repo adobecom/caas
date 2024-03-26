@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.24 (3/26/2024, 13:13:16)
+ * Chimera UI Libraries - Build 0.11.24 (3/26/2024, 15:39:28)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -46621,7 +46621,7 @@ var Card = function Card(props) {
             role: 'tab',
             tabIndex: 0,
             id: id,
-            title: 'Card Date: ' + cardDate.replace(/T.*/, '') + '\nModified Date: ' + modifiedDate.replace(/T.*/, '') },
+            title: 'CardDate: ' + cardDate.replace('T', ' @ ').replace('Z', '') + '\nModified:  ' + modifiedDate.replace('T', ' @ ').replace('Z', '') },
         showHeader && _react2.default.createElement(
             'div',
             {

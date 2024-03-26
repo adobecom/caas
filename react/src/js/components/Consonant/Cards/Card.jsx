@@ -316,7 +316,7 @@ const Card = (props) => {
             role="tab"
             tabIndex={0}
             id={id}
-            title={`Card Date: ${cardDate.replace(/T.*/, '')}\nModified Date: ${modifiedDate.replace(/T.*/, '')}`}>
+            title={`CardDate: ${cardDate.replace('T', ' @ ').replace('Z', '')}\nModified:  ${modifiedDate.replace('T', ' @ ').replace('Z', '')}`}>
             {showHeader &&
             <div
                 data-testid="consonant-Card-header"
