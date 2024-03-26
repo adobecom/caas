@@ -43,6 +43,7 @@ const CardType = {
     hideCTA: bool,
     startDate: string,
     endDate: string,
+    cardDate: string,
     modifiedDate: string,
     bannerMap: shape(Object).isRequired,
     tags: arrayOf(shape(tagsType)),
@@ -65,6 +66,7 @@ const defaultProps = {
     hideCTA: false,
     startDate: '',
     endDate: '',
+    cardDate: '',
     modifiedDate: '',
     tags: [],
 };
@@ -98,6 +100,7 @@ const Card = (props) => {
         isBookmarked,
         onClick,
         dateFormat,
+        cardDate,
         modifiedDate,
         styles: {
             backgroundImage: image,
@@ -312,7 +315,8 @@ const Card = (props) => {
             data-testid="consonant-Card"
             role="tab"
             tabIndex={0}
-            id={id}>
+            id={id}
+            title={`Card Date: ${cardDate.replace(/T.*/, '')}\nModified Date: ${modifiedDate.replace(/T.*/, '')}`}>
             {showHeader &&
             <div
                 data-testid="consonant-Card-header"
