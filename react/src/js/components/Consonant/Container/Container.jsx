@@ -675,6 +675,7 @@ const Container = (props) => {
      */
 
     useEffect(() => {
+        console.log('(((DEBUG)))  Container:useEffect():L678');
         setFilters(authoredFilters.map(filterGroup => ({
             ...filterGroup,
             opened: DESKTOP_SCREEN_SIZE ? filterGroup.openedOnLoad : false,
@@ -690,6 +691,7 @@ const Container = (props) => {
      * @returns {Void} - an updated state
      */
     useEffect(() => {
+        console.log('(((DEBUG)))  Container:useEffect():L695');
         setFilters(origin => origin.map((filter) => {
             const { group, items } = filter;
             const urlStateValue = urlState[filterGroupPrefix + group];

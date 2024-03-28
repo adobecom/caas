@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.24 (3/26/2024, 15:39:28)
+ * Chimera UI Libraries - Build 0.11.24 (3/28/2024, 13:34:40)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -197,41 +197,58 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	'use strict';
 
 	var hasOwn = {}.hasOwnProperty;
-	var nativeCodeString = '[native code]';
 
-	function classNames() {
-		var classes = [];
+	function classNames () {
+		var classes = '';
 
 		for (var i = 0; i < arguments.length; i++) {
 			var arg = arguments[i];
-			if (!arg) continue;
-
-			var argType = typeof arg;
-
-			if (argType === 'string' || argType === 'number') {
-				classes.push(arg);
-			} else if (Array.isArray(arg)) {
-				if (arg.length) {
-					var inner = classNames.apply(null, arg);
-					if (inner) {
-						classes.push(inner);
-					}
-				}
-			} else if (argType === 'object') {
-				if (arg.toString !== Object.prototype.toString && !arg.toString.toString().includes('[native code]')) {
-					classes.push(arg.toString());
-					continue;
-				}
-
-				for (var key in arg) {
-					if (hasOwn.call(arg, key) && arg[key]) {
-						classes.push(key);
-					}
-				}
+			if (arg) {
+				classes = appendClass(classes, parseValue(arg));
 			}
 		}
 
-		return classes.join(' ');
+		return classes;
+	}
+
+	function parseValue (arg) {
+		if (typeof arg === 'string' || typeof arg === 'number') {
+			return arg;
+		}
+
+		if (typeof arg !== 'object') {
+			return '';
+		}
+
+		if (Array.isArray(arg)) {
+			return classNames.apply(null, arg);
+		}
+
+		if (arg.toString !== Object.prototype.toString && !arg.toString.toString().includes('[native code]')) {
+			return arg.toString();
+		}
+
+		var classes = '';
+
+		for (var key in arg) {
+			if (hasOwn.call(arg, key) && arg[key]) {
+				classes = appendClass(classes, key);
+			}
+		}
+
+		return classes;
+	}
+
+	function appendClass (value, newClass) {
+		if (!newClass) {
+			return value;
+		}
+	
+		if (value) {
+			return value + ' ' + newClass;
+		}
+	
+		return value + newClass;
 	}
 
 	if (typeof module !== 'undefined' && module.exports) {
@@ -983,19 +1000,25 @@ var useWindowDimensions = exports.useWindowDimensions = function useWindowDimens
  * @type {[String, Function]} OpenDropdown
  */
 var useExpandable = exports.useExpandable = function useExpandable(dropdownId) {
+    console.log('(((DEBUG)))  Hooks:useExpandable():dropdownId: ', dropdownId);
+
     var _useContext = (0, _react.useContext)(_contexts.ExpandableContext),
         openDropdown = _useContext.value,
         setOpenDropdown = _useContext.setValue;
 
     var handleToggle = (0, _react.useCallback)(function (e) {
+        console.log('(((DEBUG)))  Hooks:handleToggle():e.target.dataset.testid:', e.target.dataset.testid);
+
         e.stopPropagation();
-        if (openDropdown === dropdownId) {
-            setOpenDropdown(null);
-        } else {
-            setOpenDropdown(dropdownId);
+        if (e.target.dataset.testid !== 'consonant-Select-btn') {
+            if (openDropdown === dropdownId) {
+                setOpenDropdown(null);
+            } else {
+                setOpenDropdown(dropdownId);
+            }
         }
     }, [setOpenDropdown, openDropdown]);
-
+    console.log('(((DEBUG)))  Hooks:useExpandable():openDropdown:', openDropdown);
     return [openDropdown, handleToggle];
 };
 
@@ -2779,6 +2802,7 @@ var getFeaturedSort = exports.getFeaturedSort = function getFeaturedSort(cards) 
  */
 var getDateAscSort = exports.getDateAscSort = function getDateAscSort(cards) {
     return cards.sort(function (cardOne, cardTwo) {
+        console.log('(((DEBUG)))  Helpers:getDateAscSort()', cardOne.id, cardTwo.id);
         var cardOneDate = (0, _general.getByPath)(cardOne, 'cardDate');
         var cardTwoDate = (0, _general.getByPath)(cardTwo, 'cardDate');
         if (cardOneDate && cardTwoDate) {
@@ -6834,6 +6858,7 @@ var Container = function Container(props) {
      */
 
     (0, _react.useEffect)(function () {
+        console.log('(((DEBUG)))  Container:useEffect():L678');
         setFilters(authoredFilters.map(function (filterGroup) {
             return _extends({}, filterGroup, {
                 opened: DESKTOP_SCREEN_SIZE ? filterGroup.openedOnLoad : false,
@@ -6851,6 +6876,7 @@ var Container = function Container(props) {
      * @returns {Void} - an updated state
      */
     (0, _react.useEffect)(function () {
+        console.log('(((DEBUG)))  Container:useEffect():L695');
         setFilters(function (origin) {
             return origin.map(function (filter) {
                 var group = filter.group,
@@ -41585,6 +41611,16 @@ class MinPriorityQueue extends PriorityQueue {
       this._heap = new MinHeap();
     }
   }
+
+  static from(entries) {
+    const queue = new MinPriorityQueue();
+
+    entries.forEach(([element, priority]) => {
+      queue.enqueue(element, priority);
+    });
+
+    return queue;
+  }
 }
 
 exports.MinPriorityQueue = MinPriorityQueue;
@@ -41887,6 +41923,16 @@ class MaxPriorityQueue extends PriorityQueue {
     if (!this._compare) {
       this._heap = new MaxHeap();
     }
+  }
+
+  static from(entries) {
+    const queue = new MaxPriorityQueue();
+
+    entries.forEach(([element, priority]) => {
+      queue.enqueue(element, priority);
+    });
+
+    return queue;
   }
 }
 
@@ -43366,6 +43412,7 @@ var Popup = function Popup(_ref) {
      * @listens ClickEvent
      */
     var handleOptionClick = function handleOptionClick(e, item) {
+        console.log('(((DEBUG))) Popup:handleOptionClick()');
         onSelect(item);
         handleToggle(e);
     };
@@ -48185,27 +48232,28 @@ exports.default = Gated;
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* WEBPACK VAR INJECTION */(function(process) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Immer", function() { return on; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "applyPatches", function() { return vn; });
+/* WEBPACK VAR INJECTION */(function(process) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Immer", function() { return un; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "applyPatches", function() { return pn; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "castDraft", function() { return K; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "castImmutable", function() { return $; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createDraft", function() { return pn; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createDraft", function() { return ln; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "current", function() { return D; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enableAllPlugins", function() { return J; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enableES5", function() { return T; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enableES5", function() { return N; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enableMapSet", function() { return C; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enablePatches", function() { return F; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "finishDraft", function() { return ln; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enablePatches", function() { return T; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "finishDraft", function() { return dn; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "freeze", function() { return d; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "immerable", function() { return L; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isDraft", function() { return t; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isDraftable", function() { return r; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isDraft", function() { return r; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isDraftable", function() { return t; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "nothing", function() { return H; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "original", function() { return e; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "produce", function() { return an; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "produceWithPatches", function() { return fn; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setAutoFreeze", function() { return cn; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setUseProxies", function() { return sn; });
-function n(n){for(var t=arguments.length,r=Array(t>1?t-1:0),e=1;e<t;e++)r[e-1]=arguments[e];if("production"!==process.env.NODE_ENV){var i=Y[n],o=i?"function"==typeof i?i.apply(null,r):i:"unknown error nr: "+n;throw Error("[Immer] "+o)}throw Error("[Immer] minified error nr: "+n+(r.length?" "+r.map((function(n){return"'"+n+"'"})).join(","):"")+". Find the full error at: https://bit.ly/3cXEKWf")}function t(n){return!!n&&!!n[Q]}function r(n){return!!n&&(function(n){if(!n||"object"!=typeof n)return!1;var t=Object.getPrototypeOf(n);return!t||t===Object.prototype}(n)||Array.isArray(n)||!!n[L]||!!n.constructor[L]||s(n)||v(n))}function e(r){return t(r)||n(23,r),r[Q].t}function i(n,t,r){void 0===r&&(r=!1),0===o(n)?(r?Object.keys:Z)(n).forEach((function(e){r&&"symbol"==typeof e||t(e,n[e],n)})):n.forEach((function(r,e){return t(e,r,n)}))}function o(n){var t=n[Q];return t?t.i>3?t.i-4:t.i:Array.isArray(n)?1:s(n)?2:v(n)?3:0}function u(n,t){return 2===o(n)?n.has(t):Object.prototype.hasOwnProperty.call(n,t)}function a(n,t){return 2===o(n)?n.get(t):n[t]}function f(n,t,r){var e=o(n);2===e?n.set(t,r):3===e?(n.delete(t),n.add(r)):n[t]=r}function c(n,t){return n===t?0!==n||1/n==1/t:n!=n&&t!=t}function s(n){return X&&n instanceof Map}function v(n){return q&&n instanceof Set}function p(n){return n.o||n.t}function l(n){if(Array.isArray(n))return Array.prototype.slice.call(n);var t=nn(n);delete t[Q];for(var r=Z(t),e=0;e<r.length;e++){var i=r[e],o=t[i];!1===o.writable&&(o.writable=!0,o.configurable=!0),(o.get||o.set)&&(t[i]={configurable:!0,writable:!0,enumerable:o.enumerable,value:n[i]})}return Object.create(Object.getPrototypeOf(n),t)}function d(n,e){y(n)||t(n)||!r(n)||(o(n)>1&&(n.set=n.add=n.clear=n.delete=h),Object.freeze(n),e&&i(n,(function(n,t){return d(t,!0)}),!0))}function h(){n(2)}function y(n){return null==n||"object"!=typeof n||Object.isFrozen(n)}function b(t){var r=tn[t];return r||n(18,t),r}function m(n,t){tn[n]||(tn[n]=t)}function _(){return"production"===process.env.NODE_ENV||U||n(0),U}function j(n,t){t&&(b("Patches"),n.u=[],n.s=[],n.v=t)}function g(n){O(n),n.p.forEach(S),n.p=null}function O(n){n===U&&(U=n.l)}function w(n){return U={p:[],l:U,h:n,m:!0,_:0}}function S(n){var t=n[Q];0===t.i||1===t.i?t.j():t.g=!0}function P(t,e){e._=e.p.length;var i=e.p[0],o=void 0!==t&&t!==i;return e.h.O||b("ES5").S(e,t,o),o?(i[Q].P&&(g(e),n(4)),r(t)&&(t=M(e,t),e.l||x(e,t)),e.u&&b("Patches").M(i[Q],t,e.u,e.s)):t=M(e,i,[]),g(e),e.u&&e.v(e.u,e.s),t!==H?t:void 0}function M(n,t,r){if(y(t))return t;var e=t[Q];if(!e)return i(t,(function(i,o){return A(n,e,t,i,o,r)}),!0),t;if(e.A!==n)return t;if(!e.P)return x(n,e.t,!0),e.t;if(!e.I){e.I=!0,e.A._--;var o=4===e.i||5===e.i?e.o=l(e.k):e.o;i(3===e.i?new Set(o):o,(function(t,i){return A(n,e,o,t,i,r)})),x(n,o,!1),r&&n.u&&b("Patches").R(e,r,n.u,n.s)}return e.o}function A(e,i,o,a,c,s){if("production"!==process.env.NODE_ENV&&c===o&&n(5),t(c)){var v=M(e,c,s&&i&&3!==i.i&&!u(i.D,a)?s.concat(a):void 0);if(f(o,a,v),!t(v))return;e.m=!1}if(r(c)&&!y(c)){if(!e.h.N&&e._<1)return;M(e,c),i&&i.A.l||x(e,c)}}function x(n,t,r){void 0===r&&(r=!1),n.h.N&&n.m&&d(t,r)}function z(n,t){var r=n[Q];return(r?p(r):n)[t]}function I(n,t){if(t in n)for(var r=Object.getPrototypeOf(n);r;){var e=Object.getOwnPropertyDescriptor(r,t);if(e)return e;r=Object.getPrototypeOf(r)}}function E(n){n.P||(n.P=!0,n.l&&E(n.l))}function k(n){n.o||(n.o=l(n.t))}function R(n,t,r){var e=s(t)?b("MapSet").T(t,r):v(t)?b("MapSet").F(t,r):n.O?function(n,t){var r=Array.isArray(n),e={i:r?1:0,A:t?t.A:_(),P:!1,I:!1,D:{},l:t,t:n,k:null,o:null,j:null,C:!1},i=e,o=rn;r&&(i=[e],o=en);var u=Proxy.revocable(i,o),a=u.revoke,f=u.proxy;return e.k=f,e.j=a,f}(t,r):b("ES5").J(t,r);return(r?r.A:_()).p.push(e),e}function D(e){return t(e)||n(22,e),function n(t){if(!r(t))return t;var e,u=t[Q],c=o(t);if(u){if(!u.P&&(u.i<4||!b("ES5").K(u)))return u.t;u.I=!0,e=N(t,c),u.I=!1}else e=N(t,c);return i(e,(function(t,r){u&&a(u.t,t)===r||f(e,t,n(r))})),3===c?new Set(e):e}(e)}function N(n,t){switch(t){case 2:return new Map(n);case 3:return Array.from(n)}return l(n)}function T(){function r(n,t){var r=s[n];return r?r.enumerable=t:s[n]=r={configurable:!0,enumerable:t,get:function(){var t=this[Q];return"production"!==process.env.NODE_ENV&&f(t),rn.get(t,n)},set:function(t){var r=this[Q];"production"!==process.env.NODE_ENV&&f(r),rn.set(r,n,t)}},r}function e(n){for(var t=n.length-1;t>=0;t--){var r=n[t][Q];if(!r.P)switch(r.i){case 5:a(r)&&E(r);break;case 4:o(r)&&E(r)}}}function o(n){for(var t=n.t,r=n.k,e=Z(r),i=e.length-1;i>=0;i--){var o=e[i];if(o!==Q){var a=t[o];if(void 0===a&&!u(t,o))return!0;var f=r[o],s=f&&f[Q];if(s?s.t!==a:!c(f,a))return!0}}var v=!!t[Q];return e.length!==Z(t).length+(v?0:1)}function a(n){var t=n.k;if(t.length!==n.t.length)return!0;var r=Object.getOwnPropertyDescriptor(t,t.length-1);return!(!r||r.get)}function f(t){t.g&&n(3,JSON.stringify(p(t)))}var s={};m("ES5",{J:function(n,t){var e=Array.isArray(n),i=function(n,t){if(n){for(var e=Array(t.length),i=0;i<t.length;i++)Object.defineProperty(e,""+i,r(i,!0));return e}var o=nn(t);delete o[Q];for(var u=Z(o),a=0;a<u.length;a++){var f=u[a];o[f]=r(f,n||!!o[f].enumerable)}return Object.create(Object.getPrototypeOf(t),o)}(e,n),o={i:e?5:4,A:t?t.A:_(),P:!1,I:!1,D:{},l:t,t:n,k:i,o:null,g:!1,C:!1};return Object.defineProperty(i,Q,{value:o,writable:!0}),i},S:function(n,r,o){o?t(r)&&r[Q].A===n&&e(n.p):(n.u&&function n(t){if(t&&"object"==typeof t){var r=t[Q];if(r){var e=r.t,o=r.k,f=r.D,c=r.i;if(4===c)i(o,(function(t){t!==Q&&(void 0!==e[t]||u(e,t)?f[t]||n(o[t]):(f[t]=!0,E(r)))})),i(e,(function(n){void 0!==o[n]||u(o,n)||(f[n]=!1,E(r))}));else if(5===c){if(a(r)&&(E(r),f.length=!0),o.length<e.length)for(var s=o.length;s<e.length;s++)f[s]=!1;else for(var v=e.length;v<o.length;v++)f[v]=!0;for(var p=Math.min(o.length,e.length),l=0;l<p;l++)void 0===f[l]&&n(o[l])}}}}(n.p[0]),e(n.p))},K:function(n){return 4===n.i?o(n):a(n)}})}function F(){function e(n){if(!r(n))return n;if(Array.isArray(n))return n.map(e);if(s(n))return new Map(Array.from(n.entries()).map((function(n){return[n[0],e(n[1])]})));if(v(n))return new Set(Array.from(n).map(e));var t=Object.create(Object.getPrototypeOf(n));for(var i in n)t[i]=e(n[i]);return t}function f(n){return t(n)?e(n):n}var c="add";m("Patches",{$:function(t,r){return r.forEach((function(r){for(var i=r.path,u=r.op,f=t,s=0;s<i.length-1;s++)"object"!=typeof(f=a(f,i[s]))&&n(15,i.join("/"));var v=o(f),p=e(r.value),l=i[i.length-1];switch(u){case"replace":switch(v){case 2:return f.set(l,p);case 3:n(16);default:return f[l]=p}case c:switch(v){case 1:return f.splice(l,0,p);case 2:return f.set(l,p);case 3:return f.add(p);default:return f[l]=p}case"remove":switch(v){case 1:return f.splice(l,1);case 2:return f.delete(l);case 3:return f.delete(r.value);default:return delete f[l]}default:n(17,u)}})),t},R:function(n,t,r,e){switch(n.i){case 0:case 4:case 2:return function(n,t,r,e){var o=n.t,s=n.o;i(n.D,(function(n,i){var v=a(o,n),p=a(s,n),l=i?u(o,n)?"replace":c:"remove";if(v!==p||"replace"!==l){var d=t.concat(n);r.push("remove"===l?{op:l,path:d}:{op:l,path:d,value:p}),e.push(l===c?{op:"remove",path:d}:"remove"===l?{op:c,path:d,value:f(v)}:{op:"replace",path:d,value:f(v)})}}))}(n,t,r,e);case 5:case 1:return function(n,t,r,e){var i=n.t,o=n.D,u=n.o;if(u.length<i.length){var a=[u,i];i=a[0],u=a[1];var s=[e,r];r=s[0],e=s[1]}for(var v=0;v<i.length;v++)if(o[v]&&u[v]!==i[v]){var p=t.concat([v]);r.push({op:"replace",path:p,value:f(u[v])}),e.push({op:"replace",path:p,value:f(i[v])})}for(var l=i.length;l<u.length;l++){var d=t.concat([l]);r.push({op:c,path:d,value:f(u[l])})}i.length<u.length&&e.push({op:"replace",path:t.concat(["length"]),value:i.length})}(n,t,r,e);case 3:return function(n,t,r,e){var i=n.t,o=n.o,u=0;i.forEach((function(n){if(!o.has(n)){var i=t.concat([u]);r.push({op:"remove",path:i,value:n}),e.unshift({op:c,path:i,value:n})}u++})),u=0,o.forEach((function(n){if(!i.has(n)){var o=t.concat([u]);r.push({op:c,path:o,value:n}),e.unshift({op:"remove",path:o,value:n})}u++}))}(n,t,r,e)}},M:function(n,t,r,e){r.push({op:"replace",path:[],value:t}),e.push({op:"replace",path:[],value:n.t})}})}function C(){function t(n,t){function r(){this.constructor=n}a(n,t),n.prototype=(r.prototype=t.prototype,new r)}function e(n){n.o||(n.D=new Map,n.o=new Map(n.t))}function o(n){n.o||(n.o=new Set,n.t.forEach((function(t){if(r(t)){var e=R(n.A.h,t,n);n.p.set(t,e),n.o.add(e)}else n.o.add(t)})))}function u(t){t.g&&n(3,JSON.stringify(p(t)))}var a=function(n,t){return(a=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(n,t){n.__proto__=t}||function(n,t){for(var r in t)t.hasOwnProperty(r)&&(n[r]=t[r])})(n,t)},f=function(){function n(n,t){return this[Q]={i:2,l:t,A:t?t.A:_(),P:!1,I:!1,o:void 0,D:void 0,t:n,k:this,C:!1,g:!1},this}t(n,Map);var o=n.prototype;return Object.defineProperty(o,"size",{get:function(){return p(this[Q]).size}}),o.has=function(n){return p(this[Q]).has(n)},o.set=function(n,t){var r=this[Q];return u(r),p(r).has(n)&&p(r).get(n)===t||(e(r),E(r),r.D.set(n,!0),r.o.set(n,t),r.D.set(n,!0)),this},o.delete=function(n){if(!this.has(n))return!1;var t=this[Q];return u(t),e(t),E(t),t.D.set(n,!1),t.o.delete(n),!0},o.clear=function(){var n=this[Q];u(n),p(n).size&&(e(n),E(n),n.D=new Map,i(n.t,(function(t){n.D.set(t,!1)})),n.o.clear())},o.forEach=function(n,t){var r=this;p(this[Q]).forEach((function(e,i){n.call(t,r.get(i),i,r)}))},o.get=function(n){var t=this[Q];u(t);var i=p(t).get(n);if(t.I||!r(i))return i;if(i!==t.t.get(n))return i;var o=R(t.A.h,i,t);return e(t),t.o.set(n,o),o},o.keys=function(){return p(this[Q]).keys()},o.values=function(){var n,t=this,r=this.keys();return(n={})[V]=function(){return t.values()},n.next=function(){var n=r.next();return n.done?n:{done:!1,value:t.get(n.value)}},n},o.entries=function(){var n,t=this,r=this.keys();return(n={})[V]=function(){return t.entries()},n.next=function(){var n=r.next();if(n.done)return n;var e=t.get(n.value);return{done:!1,value:[n.value,e]}},n},o[V]=function(){return this.entries()},n}(),c=function(){function n(n,t){return this[Q]={i:3,l:t,A:t?t.A:_(),P:!1,I:!1,o:void 0,t:n,k:this,p:new Map,g:!1,C:!1},this}t(n,Set);var r=n.prototype;return Object.defineProperty(r,"size",{get:function(){return p(this[Q]).size}}),r.has=function(n){var t=this[Q];return u(t),t.o?!!t.o.has(n)||!(!t.p.has(n)||!t.o.has(t.p.get(n))):t.t.has(n)},r.add=function(n){var t=this[Q];return u(t),this.has(n)||(o(t),E(t),t.o.add(n)),this},r.delete=function(n){if(!this.has(n))return!1;var t=this[Q];return u(t),o(t),E(t),t.o.delete(n)||!!t.p.has(n)&&t.o.delete(t.p.get(n))},r.clear=function(){var n=this[Q];u(n),p(n).size&&(o(n),E(n),n.o.clear())},r.values=function(){var n=this[Q];return u(n),o(n),n.o.values()},r.entries=function(){var n=this[Q];return u(n),o(n),n.o.entries()},r.keys=function(){return this.values()},r[V]=function(){return this.values()},r.forEach=function(n,t){for(var r=this.values(),e=r.next();!e.done;)n.call(t,e.value,e.value,this),e=r.next()},n}();m("MapSet",{T:function(n,t){return new f(n,t)},F:function(n,t){return new c(n,t)}})}function J(){T(),C(),F()}function K(n){return n}function $(n){return n}var G,U,W="undefined"!=typeof Symbol&&"symbol"==typeof Symbol("x"),X="undefined"!=typeof Map,q="undefined"!=typeof Set,B="undefined"!=typeof Proxy&&void 0!==Proxy.revocable&&"undefined"!=typeof Reflect,H=W?Symbol.for("immer-nothing"):((G={})["immer-nothing"]=!0,G),L=W?Symbol.for("immer-draftable"):"__$immer_draftable",Q=W?Symbol.for("immer-state"):"__$immer_state",V="undefined"!=typeof Symbol&&Symbol.iterator||"@@iterator",Y={0:"Illegal state",1:"Immer drafts cannot have computed properties",2:"This object has been frozen and should not be mutated",3:function(n){return"Cannot use a proxy that has been revoked. Did you pass an object from inside an immer function to an async process? "+n},4:"An immer producer returned a new value *and* modified its draft. Either return a new value *or* modify the draft.",5:"Immer forbids circular references",6:"The first or second argument to `produce` must be a function",7:"The third argument to `produce` must be a function or undefined",8:"First argument to `createDraft` must be a plain object, an array, or an immerable object",9:"First argument to `finishDraft` must be a draft returned by `createDraft`",10:"The given draft is already finalized",11:"Object.defineProperty() cannot be used on an Immer draft",12:"Object.setPrototypeOf() cannot be used on an Immer draft",13:"Immer only supports deleting array indices",14:"Immer only supports setting array indices and the 'length' property",15:function(n){return"Cannot apply patch, path doesn't resolve: "+n},16:'Sets cannot have "replace" patches.',17:function(n){return"Unsupported patch operation: "+n},18:function(n){return"The plugin for '"+n+"' has not been loaded into Immer. To enable the plugin, import and call `enable"+n+"()` when initializing your application."},20:"Cannot use proxies if Proxy, Proxy.revocable or Reflect are not available",21:function(n){return"produce can only be called on things that are draftable: plain objects, arrays, Map, Set or classes that are marked with '[immerable]: true'. Got '"+n+"'"},22:function(n){return"'current' expects a draft, got: "+n},23:function(n){return"'original' expects a draft, got: "+n}},Z="undefined"!=typeof Reflect&&Reflect.ownKeys?Reflect.ownKeys:void 0!==Object.getOwnPropertySymbols?function(n){return Object.getOwnPropertyNames(n).concat(Object.getOwnPropertySymbols(n))}:Object.getOwnPropertyNames,nn=Object.getOwnPropertyDescriptors||function(n){var t={};return Z(n).forEach((function(r){t[r]=Object.getOwnPropertyDescriptor(n,r)})),t},tn={},rn={get:function(n,t){if(t===Q)return n;var e=p(n);if(!u(e,t))return function(n,t,r){var e,i=I(t,r);return i?"value"in i?i.value:null===(e=i.get)||void 0===e?void 0:e.call(n.k):void 0}(n,e,t);var i=e[t];return n.I||!r(i)?i:i===z(n.t,t)?(k(n),n.o[t]=R(n.A.h,i,n)):i},has:function(n,t){return t in p(n)},ownKeys:function(n){return Reflect.ownKeys(p(n))},set:function(n,t,r){var e=I(p(n),t);if(null==e?void 0:e.set)return e.set.call(n.k,r),!0;if(!n.P){var i=z(p(n),t),o=null==i?void 0:i[Q];if(o&&o.t===r)return n.o[t]=r,n.D[t]=!1,!0;if(c(r,i)&&(void 0!==r||u(n.t,t)))return!0;k(n),E(n)}return n.o[t]=r,n.D[t]=!0,!0},deleteProperty:function(n,t){return void 0!==z(n.t,t)||t in n.t?(n.D[t]=!1,k(n),E(n)):delete n.D[t],n.o&&delete n.o[t],!0},getOwnPropertyDescriptor:function(n,t){var r=p(n),e=Reflect.getOwnPropertyDescriptor(r,t);return e?{writable:!0,configurable:1!==n.i||"length"!==t,enumerable:e.enumerable,value:r[t]}:e},defineProperty:function(){n(11)},getPrototypeOf:function(n){return Object.getPrototypeOf(n.t)},setPrototypeOf:function(){n(12)}},en={};i(rn,(function(n,t){en[n]=function(){return arguments[0]=arguments[0][0],t.apply(this,arguments)}})),en.deleteProperty=function(t,r){return"production"!==process.env.NODE_ENV&&isNaN(parseInt(r))&&n(13),rn.deleteProperty.call(this,t[0],r)},en.set=function(t,r,e){return"production"!==process.env.NODE_ENV&&"length"!==r&&isNaN(parseInt(r))&&n(14),rn.set.call(this,t[0],r,e,t[0])};var on=function(){function e(n){this.O=B,this.N="production"!==process.env.NODE_ENV,"boolean"==typeof(null==n?void 0:n.useProxies)&&this.setUseProxies(n.useProxies),"boolean"==typeof(null==n?void 0:n.autoFreeze)&&this.setAutoFreeze(n.autoFreeze),this.produce=this.produce.bind(this),this.produceWithPatches=this.produceWithPatches.bind(this)}var i=e.prototype;return i.produce=function(t,e,i){if("function"==typeof t&&"function"!=typeof e){var o=e;e=t;var u=this;return function(n){var t=this;void 0===n&&(n=o);for(var r=arguments.length,i=Array(r>1?r-1:0),a=1;a<r;a++)i[a-1]=arguments[a];return u.produce(n,(function(n){var r;return(r=e).call.apply(r,[t,n].concat(i))}))}}var a;if("function"!=typeof e&&n(6),void 0!==i&&"function"!=typeof i&&n(7),r(t)){var f=w(this),c=R(this,t,void 0),s=!0;try{a=e(c),s=!1}finally{s?g(f):O(f)}return"undefined"!=typeof Promise&&a instanceof Promise?a.then((function(n){return j(f,i),P(n,f)}),(function(n){throw g(f),n})):(j(f,i),P(a,f))}if(!t||"object"!=typeof t){if((a=e(t))===H)return;return void 0===a&&(a=t),this.N&&d(a,!0),a}n(21,t)},i.produceWithPatches=function(n,t){var r,e,i=this;return"function"==typeof n?function(t){for(var r=arguments.length,e=Array(r>1?r-1:0),o=1;o<r;o++)e[o-1]=arguments[o];return i.produceWithPatches(t,(function(t){return n.apply(void 0,[t].concat(e))}))}:[this.produce(n,t,(function(n,t){r=n,e=t})),r,e]},i.createDraft=function(e){r(e)||n(8),t(e)&&(e=D(e));var i=w(this),o=R(this,e,void 0);return o[Q].C=!0,O(i),o},i.finishDraft=function(t,r){var e=t&&t[Q];"production"!==process.env.NODE_ENV&&(e&&e.C||n(9),e.I&&n(10));var i=e.A;return j(i,r),P(void 0,i)},i.setAutoFreeze=function(n){this.N=n},i.setUseProxies=function(t){t&&!B&&n(20),this.O=t},i.applyPatches=function(n,r){var e;for(e=r.length-1;e>=0;e--){var i=r[e];if(0===i.path.length&&"replace"===i.op){n=i.value;break}}var o=b("Patches").$;return t(n)?o(n,r):this.produce(n,(function(n){return o(n,r.slice(e+1))}))},e}(),un=new on,an=un.produce,fn=un.produceWithPatches.bind(un),cn=un.setAutoFreeze.bind(un),sn=un.setUseProxies.bind(un),vn=un.applyPatches.bind(un),pn=un.createDraft.bind(un),ln=un.finishDraft.bind(un);/* harmony default export */ __webpack_exports__["default"] = (an);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "produce", function() { return fn; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "produceWithPatches", function() { return cn; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setAutoFreeze", function() { return sn; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setUseProxies", function() { return vn; });
+function n(n){for(var r=arguments.length,t=Array(r>1?r-1:0),e=1;e<r;e++)t[e-1]=arguments[e];if("production"!==process.env.NODE_ENV){var i=Y[n],o=i?"function"==typeof i?i.apply(null,t):i:"unknown error nr: "+n;throw Error("[Immer] "+o)}throw Error("[Immer] minified error nr: "+n+(t.length?" "+t.map((function(n){return"'"+n+"'"})).join(","):"")+". Find the full error at: https://bit.ly/3cXEKWf")}function r(n){return!!n&&!!n[Q]}function t(n){return!!n&&(function(n){if(!n||"object"!=typeof n)return!1;var r=Object.getPrototypeOf(n);if(null===r)return!0;var t=Object.hasOwnProperty.call(r,"constructor")&&r.constructor;return"function"==typeof t&&Function.toString.call(t)===Z}(n)||Array.isArray(n)||!!n[L]||!!n.constructor[L]||s(n)||v(n))}function e(t){return r(t)||n(23,t),t[Q].t}function i(n,r,t){void 0===t&&(t=!1),0===o(n)?(t?Object.keys:nn)(n).forEach((function(e){t&&"symbol"==typeof e||r(e,n[e],n)})):n.forEach((function(t,e){return r(e,t,n)}))}function o(n){var r=n[Q];return r?r.i>3?r.i-4:r.i:Array.isArray(n)?1:s(n)?2:v(n)?3:0}function u(n,r){return 2===o(n)?n.has(r):Object.prototype.hasOwnProperty.call(n,r)}function a(n,r){return 2===o(n)?n.get(r):n[r]}function f(n,r,t){var e=o(n);2===e?n.set(r,t):3===e?(n.delete(r),n.add(t)):n[r]=t}function c(n,r){return n===r?0!==n||1/n==1/r:n!=n&&r!=r}function s(n){return X&&n instanceof Map}function v(n){return q&&n instanceof Set}function p(n){return n.o||n.t}function l(n){if(Array.isArray(n))return Array.prototype.slice.call(n);var r=rn(n);delete r[Q];for(var t=nn(r),e=0;e<t.length;e++){var i=t[e],o=r[i];!1===o.writable&&(o.writable=!0,o.configurable=!0),(o.get||o.set)&&(r[i]={configurable:!0,writable:!0,enumerable:o.enumerable,value:n[i]})}return Object.create(Object.getPrototypeOf(n),r)}function d(n,e){return void 0===e&&(e=!1),y(n)||r(n)||!t(n)?n:(o(n)>1&&(n.set=n.add=n.clear=n.delete=h),Object.freeze(n),e&&i(n,(function(n,r){return d(r,!0)}),!0),n)}function h(){n(2)}function y(n){return null==n||"object"!=typeof n||Object.isFrozen(n)}function b(r){var t=tn[r];return t||n(18,r),t}function m(n,r){tn[n]||(tn[n]=r)}function _(){return"production"===process.env.NODE_ENV||U||n(0),U}function j(n,r){r&&(b("Patches"),n.u=[],n.s=[],n.v=r)}function g(n){O(n),n.p.forEach(S),n.p=null}function O(n){n===U&&(U=n.l)}function w(n){return U={p:[],l:U,h:n,m:!0,_:0}}function S(n){var r=n[Q];0===r.i||1===r.i?r.j():r.g=!0}function P(r,e){e._=e.p.length;var i=e.p[0],o=void 0!==r&&r!==i;return e.h.O||b("ES5").S(e,r,o),o?(i[Q].P&&(g(e),n(4)),t(r)&&(r=M(e,r),e.l||x(e,r)),e.u&&b("Patches").M(i[Q],r,e.u,e.s)):r=M(e,i,[]),g(e),e.u&&e.v(e.u,e.s),r!==H?r:void 0}function M(n,r,t){if(y(r))return r;var e=r[Q];if(!e)return i(r,(function(i,o){return A(n,e,r,i,o,t)}),!0),r;if(e.A!==n)return r;if(!e.P)return x(n,e.t,!0),e.t;if(!e.I){e.I=!0,e.A._--;var o=4===e.i||5===e.i?e.o=l(e.k):e.o;i(3===e.i?new Set(o):o,(function(r,i){return A(n,e,o,r,i,t)})),x(n,o,!1),t&&n.u&&b("Patches").R(e,t,n.u,n.s)}return e.o}function A(e,i,o,a,c,s){if("production"!==process.env.NODE_ENV&&c===o&&n(5),r(c)){var v=M(e,c,s&&i&&3!==i.i&&!u(i.D,a)?s.concat(a):void 0);if(f(o,a,v),!r(v))return;e.m=!1}if(t(c)&&!y(c)){if(!e.h.F&&e._<1)return;M(e,c),i&&i.A.l||x(e,c)}}function x(n,r,t){void 0===t&&(t=!1),n.h.F&&n.m&&d(r,t)}function z(n,r){var t=n[Q];return(t?p(t):n)[r]}function I(n,r){if(r in n)for(var t=Object.getPrototypeOf(n);t;){var e=Object.getOwnPropertyDescriptor(t,r);if(e)return e;t=Object.getPrototypeOf(t)}}function k(n){n.P||(n.P=!0,n.l&&k(n.l))}function E(n){n.o||(n.o=l(n.t))}function R(n,r,t){var e=s(r)?b("MapSet").N(r,t):v(r)?b("MapSet").T(r,t):n.O?function(n,r){var t=Array.isArray(n),e={i:t?1:0,A:r?r.A:_(),P:!1,I:!1,D:{},l:r,t:n,k:null,o:null,j:null,C:!1},i=e,o=en;t&&(i=[e],o=on);var u=Proxy.revocable(i,o),a=u.revoke,f=u.proxy;return e.k=f,e.j=a,f}(r,t):b("ES5").J(r,t);return(t?t.A:_()).p.push(e),e}function D(e){return r(e)||n(22,e),function n(r){if(!t(r))return r;var e,u=r[Q],c=o(r);if(u){if(!u.P&&(u.i<4||!b("ES5").K(u)))return u.t;u.I=!0,e=F(r,c),u.I=!1}else e=F(r,c);return i(e,(function(r,t){u&&a(u.t,r)===t||f(e,r,n(t))})),3===c?new Set(e):e}(e)}function F(n,r){switch(r){case 2:return new Map(n);case 3:return Array.from(n)}return l(n)}function N(){function t(n,r){var t=s[n];return t?t.enumerable=r:s[n]=t={configurable:!0,enumerable:r,get:function(){var r=this[Q];return"production"!==process.env.NODE_ENV&&f(r),en.get(r,n)},set:function(r){var t=this[Q];"production"!==process.env.NODE_ENV&&f(t),en.set(t,n,r)}},t}function e(n){for(var r=n.length-1;r>=0;r--){var t=n[r][Q];if(!t.P)switch(t.i){case 5:a(t)&&k(t);break;case 4:o(t)&&k(t)}}}function o(n){for(var r=n.t,t=n.k,e=nn(t),i=e.length-1;i>=0;i--){var o=e[i];if(o!==Q){var a=r[o];if(void 0===a&&!u(r,o))return!0;var f=t[o],s=f&&f[Q];if(s?s.t!==a:!c(f,a))return!0}}var v=!!r[Q];return e.length!==nn(r).length+(v?0:1)}function a(n){var r=n.k;if(r.length!==n.t.length)return!0;var t=Object.getOwnPropertyDescriptor(r,r.length-1);return!(!t||t.get)}function f(r){r.g&&n(3,JSON.stringify(p(r)))}var s={};m("ES5",{J:function(n,r){var e=Array.isArray(n),i=function(n,r){if(n){for(var e=Array(r.length),i=0;i<r.length;i++)Object.defineProperty(e,""+i,t(i,!0));return e}var o=rn(r);delete o[Q];for(var u=nn(o),a=0;a<u.length;a++){var f=u[a];o[f]=t(f,n||!!o[f].enumerable)}return Object.create(Object.getPrototypeOf(r),o)}(e,n),o={i:e?5:4,A:r?r.A:_(),P:!1,I:!1,D:{},l:r,t:n,k:i,o:null,g:!1,C:!1};return Object.defineProperty(i,Q,{value:o,writable:!0}),i},S:function(n,t,o){o?r(t)&&t[Q].A===n&&e(n.p):(n.u&&function n(r){if(r&&"object"==typeof r){var t=r[Q];if(t){var e=t.t,o=t.k,f=t.D,c=t.i;if(4===c)i(o,(function(r){r!==Q&&(void 0!==e[r]||u(e,r)?f[r]||n(o[r]):(f[r]=!0,k(t)))})),i(e,(function(n){void 0!==o[n]||u(o,n)||(f[n]=!1,k(t))}));else if(5===c){if(a(t)&&(k(t),f.length=!0),o.length<e.length)for(var s=o.length;s<e.length;s++)f[s]=!1;else for(var v=e.length;v<o.length;v++)f[v]=!0;for(var p=Math.min(o.length,e.length),l=0;l<p;l++)void 0===f[l]&&n(o[l])}}}}(n.p[0]),e(n.p))},K:function(n){return 4===n.i?o(n):a(n)}})}function T(){function e(n){if(!t(n))return n;if(Array.isArray(n))return n.map(e);if(s(n))return new Map(Array.from(n.entries()).map((function(n){return[n[0],e(n[1])]})));if(v(n))return new Set(Array.from(n).map(e));var r=Object.create(Object.getPrototypeOf(n));for(var i in n)r[i]=e(n[i]);return r}function f(n){return r(n)?e(n):n}var c="add";m("Patches",{$:function(r,t){return t.forEach((function(t){for(var i=t.path,u=t.op,f=r,s=0;s<i.length-1;s++){var v=o(f),p=i[s];0!==v&&1!==v||"__proto__"!==p&&"constructor"!==p||n(24),"function"==typeof f&&"prototype"===p&&n(24),"object"!=typeof(f=a(f,p))&&n(15,i.join("/"))}var l=o(f),d=e(t.value),h=i[i.length-1];switch(u){case"replace":switch(l){case 2:return f.set(h,d);case 3:n(16);default:return f[h]=d}case c:switch(l){case 1:return f.splice(h,0,d);case 2:return f.set(h,d);case 3:return f.add(d);default:return f[h]=d}case"remove":switch(l){case 1:return f.splice(h,1);case 2:return f.delete(h);case 3:return f.delete(t.value);default:return delete f[h]}default:n(17,u)}})),r},R:function(n,r,t,e){switch(n.i){case 0:case 4:case 2:return function(n,r,t,e){var o=n.t,s=n.o;i(n.D,(function(n,i){var v=a(o,n),p=a(s,n),l=i?u(o,n)?"replace":c:"remove";if(v!==p||"replace"!==l){var d=r.concat(n);t.push("remove"===l?{op:l,path:d}:{op:l,path:d,value:p}),e.push(l===c?{op:"remove",path:d}:"remove"===l?{op:c,path:d,value:f(v)}:{op:"replace",path:d,value:f(v)})}}))}(n,r,t,e);case 5:case 1:return function(n,r,t,e){var i=n.t,o=n.D,u=n.o;if(u.length<i.length){var a=[u,i];i=a[0],u=a[1];var s=[e,t];t=s[0],e=s[1]}for(var v=0;v<i.length;v++)if(o[v]&&u[v]!==i[v]){var p=r.concat([v]);t.push({op:"replace",path:p,value:f(u[v])}),e.push({op:"replace",path:p,value:f(i[v])})}for(var l=i.length;l<u.length;l++){var d=r.concat([l]);t.push({op:c,path:d,value:f(u[l])})}i.length<u.length&&e.push({op:"replace",path:r.concat(["length"]),value:i.length})}(n,r,t,e);case 3:return function(n,r,t,e){var i=n.t,o=n.o,u=0;i.forEach((function(n){if(!o.has(n)){var i=r.concat([u]);t.push({op:"remove",path:i,value:n}),e.unshift({op:c,path:i,value:n})}u++})),u=0,o.forEach((function(n){if(!i.has(n)){var o=r.concat([u]);t.push({op:c,path:o,value:n}),e.unshift({op:"remove",path:o,value:n})}u++}))}(n,r,t,e)}},M:function(n,r,t,e){t.push({op:"replace",path:[],value:r}),e.push({op:"replace",path:[],value:n.t})}})}function C(){function r(n,r){function t(){this.constructor=n}a(n,r),n.prototype=(t.prototype=r.prototype,new t)}function e(n){n.o||(n.D=new Map,n.o=new Map(n.t))}function o(n){n.o||(n.o=new Set,n.t.forEach((function(r){if(t(r)){var e=R(n.A.h,r,n);n.p.set(r,e),n.o.add(e)}else n.o.add(r)})))}function u(r){r.g&&n(3,JSON.stringify(p(r)))}var a=function(n,r){return(a=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(n,r){n.__proto__=r}||function(n,r){for(var t in r)r.hasOwnProperty(t)&&(n[t]=r[t])})(n,r)},f=function(){function n(n,r){return this[Q]={i:2,l:r,A:r?r.A:_(),P:!1,I:!1,o:void 0,D:void 0,t:n,k:this,C:!1,g:!1},this}r(n,Map);var o=n.prototype;return Object.defineProperty(o,"size",{get:function(){return p(this[Q]).size}}),o.has=function(n){return p(this[Q]).has(n)},o.set=function(n,r){var t=this[Q];return u(t),p(t).has(n)&&p(t).get(n)===r||(e(t),k(t),t.D.set(n,!0),t.o.set(n,r),t.D.set(n,!0)),this},o.delete=function(n){if(!this.has(n))return!1;var r=this[Q];return u(r),e(r),k(r),r.D.set(n,!1),r.o.delete(n),!0},o.clear=function(){var n=this[Q];u(n),p(n).size&&(e(n),k(n),n.D=new Map,i(n.t,(function(r){n.D.set(r,!1)})),n.o.clear())},o.forEach=function(n,r){var t=this;p(this[Q]).forEach((function(e,i){n.call(r,t.get(i),i,t)}))},o.get=function(n){var r=this[Q];u(r);var i=p(r).get(n);if(r.I||!t(i))return i;if(i!==r.t.get(n))return i;var o=R(r.A.h,i,r);return e(r),r.o.set(n,o),o},o.keys=function(){return p(this[Q]).keys()},o.values=function(){var n,r=this,t=this.keys();return(n={})[V]=function(){return r.values()},n.next=function(){var n=t.next();return n.done?n:{done:!1,value:r.get(n.value)}},n},o.entries=function(){var n,r=this,t=this.keys();return(n={})[V]=function(){return r.entries()},n.next=function(){var n=t.next();if(n.done)return n;var e=r.get(n.value);return{done:!1,value:[n.value,e]}},n},o[V]=function(){return this.entries()},n}(),c=function(){function n(n,r){return this[Q]={i:3,l:r,A:r?r.A:_(),P:!1,I:!1,o:void 0,t:n,k:this,p:new Map,g:!1,C:!1},this}r(n,Set);var t=n.prototype;return Object.defineProperty(t,"size",{get:function(){return p(this[Q]).size}}),t.has=function(n){var r=this[Q];return u(r),r.o?!!r.o.has(n)||!(!r.p.has(n)||!r.o.has(r.p.get(n))):r.t.has(n)},t.add=function(n){var r=this[Q];return u(r),this.has(n)||(o(r),k(r),r.o.add(n)),this},t.delete=function(n){if(!this.has(n))return!1;var r=this[Q];return u(r),o(r),k(r),r.o.delete(n)||!!r.p.has(n)&&r.o.delete(r.p.get(n))},t.clear=function(){var n=this[Q];u(n),p(n).size&&(o(n),k(n),n.o.clear())},t.values=function(){var n=this[Q];return u(n),o(n),n.o.values()},t.entries=function(){var n=this[Q];return u(n),o(n),n.o.entries()},t.keys=function(){return this.values()},t[V]=function(){return this.values()},t.forEach=function(n,r){for(var t=this.values(),e=t.next();!e.done;)n.call(r,e.value,e.value,this),e=t.next()},n}();m("MapSet",{N:function(n,r){return new f(n,r)},T:function(n,r){return new c(n,r)}})}function J(){N(),C(),T()}function K(n){return n}function $(n){return n}var G,U,W="undefined"!=typeof Symbol&&"symbol"==typeof Symbol("x"),X="undefined"!=typeof Map,q="undefined"!=typeof Set,B="undefined"!=typeof Proxy&&void 0!==Proxy.revocable&&"undefined"!=typeof Reflect,H=W?Symbol.for("immer-nothing"):((G={})["immer-nothing"]=!0,G),L=W?Symbol.for("immer-draftable"):"__$immer_draftable",Q=W?Symbol.for("immer-state"):"__$immer_state",V="undefined"!=typeof Symbol&&Symbol.iterator||"@@iterator",Y={0:"Illegal state",1:"Immer drafts cannot have computed properties",2:"This object has been frozen and should not be mutated",3:function(n){return"Cannot use a proxy that has been revoked. Did you pass an object from inside an immer function to an async process? "+n},4:"An immer producer returned a new value *and* modified its draft. Either return a new value *or* modify the draft.",5:"Immer forbids circular references",6:"The first or second argument to `produce` must be a function",7:"The third argument to `produce` must be a function or undefined",8:"First argument to `createDraft` must be a plain object, an array, or an immerable object",9:"First argument to `finishDraft` must be a draft returned by `createDraft`",10:"The given draft is already finalized",11:"Object.defineProperty() cannot be used on an Immer draft",12:"Object.setPrototypeOf() cannot be used on an Immer draft",13:"Immer only supports deleting array indices",14:"Immer only supports setting array indices and the 'length' property",15:function(n){return"Cannot apply patch, path doesn't resolve: "+n},16:'Sets cannot have "replace" patches.',17:function(n){return"Unsupported patch operation: "+n},18:function(n){return"The plugin for '"+n+"' has not been loaded into Immer. To enable the plugin, import and call `enable"+n+"()` when initializing your application."},20:"Cannot use proxies if Proxy, Proxy.revocable or Reflect are not available",21:function(n){return"produce can only be called on things that are draftable: plain objects, arrays, Map, Set or classes that are marked with '[immerable]: true'. Got '"+n+"'"},22:function(n){return"'current' expects a draft, got: "+n},23:function(n){return"'original' expects a draft, got: "+n},24:"Patching reserved attributes like __proto__, prototype and constructor is not allowed"},Z=""+Object.prototype.constructor,nn="undefined"!=typeof Reflect&&Reflect.ownKeys?Reflect.ownKeys:void 0!==Object.getOwnPropertySymbols?function(n){return Object.getOwnPropertyNames(n).concat(Object.getOwnPropertySymbols(n))}:Object.getOwnPropertyNames,rn=Object.getOwnPropertyDescriptors||function(n){var r={};return nn(n).forEach((function(t){r[t]=Object.getOwnPropertyDescriptor(n,t)})),r},tn={},en={get:function(n,r){if(r===Q)return n;var e=p(n);if(!u(e,r))return function(n,r,t){var e,i=I(r,t);return i?"value"in i?i.value:null===(e=i.get)||void 0===e?void 0:e.call(n.k):void 0}(n,e,r);var i=e[r];return n.I||!t(i)?i:i===z(n.t,r)?(E(n),n.o[r]=R(n.A.h,i,n)):i},has:function(n,r){return r in p(n)},ownKeys:function(n){return Reflect.ownKeys(p(n))},set:function(n,r,t){var e=I(p(n),r);if(null==e?void 0:e.set)return e.set.call(n.k,t),!0;if(!n.P){var i=z(p(n),r),o=null==i?void 0:i[Q];if(o&&o.t===t)return n.o[r]=t,n.D[r]=!1,!0;if(c(t,i)&&(void 0!==t||u(n.t,r)))return!0;E(n),k(n)}return n.o[r]===t&&"number"!=typeof t||(n.o[r]=t,n.D[r]=!0,!0)},deleteProperty:function(n,r){return void 0!==z(n.t,r)||r in n.t?(n.D[r]=!1,E(n),k(n)):delete n.D[r],n.o&&delete n.o[r],!0},getOwnPropertyDescriptor:function(n,r){var t=p(n),e=Reflect.getOwnPropertyDescriptor(t,r);return e?{writable:!0,configurable:1!==n.i||"length"!==r,enumerable:e.enumerable,value:t[r]}:e},defineProperty:function(){n(11)},getPrototypeOf:function(n){return Object.getPrototypeOf(n.t)},setPrototypeOf:function(){n(12)}},on={};i(en,(function(n,r){on[n]=function(){return arguments[0]=arguments[0][0],r.apply(this,arguments)}})),on.deleteProperty=function(r,t){return"production"!==process.env.NODE_ENV&&isNaN(parseInt(t))&&n(13),en.deleteProperty.call(this,r[0],t)},on.set=function(r,t,e){return"production"!==process.env.NODE_ENV&&"length"!==t&&isNaN(parseInt(t))&&n(14),en.set.call(this,r[0],t,e,r[0])};var un=function(){function e(r){var e=this;this.O=B,this.F=!0,this.produce=function(r,i,o){if("function"==typeof r&&"function"!=typeof i){var u=i;i=r;var a=e;return function(n){var r=this;void 0===n&&(n=u);for(var t=arguments.length,e=Array(t>1?t-1:0),o=1;o<t;o++)e[o-1]=arguments[o];return a.produce(n,(function(n){var t;return(t=i).call.apply(t,[r,n].concat(e))}))}}var f;if("function"!=typeof i&&n(6),void 0!==o&&"function"!=typeof o&&n(7),t(r)){var c=w(e),s=R(e,r,void 0),v=!0;try{f=i(s),v=!1}finally{v?g(c):O(c)}return"undefined"!=typeof Promise&&f instanceof Promise?f.then((function(n){return j(c,o),P(n,c)}),(function(n){throw g(c),n})):(j(c,o),P(f,c))}if(!r||"object"!=typeof r){if((f=i(r))===H)return;return void 0===f&&(f=r),e.F&&d(f,!0),f}n(21,r)},this.produceWithPatches=function(n,r){return"function"==typeof n?function(r){for(var t=arguments.length,i=Array(t>1?t-1:0),o=1;o<t;o++)i[o-1]=arguments[o];return e.produceWithPatches(r,(function(r){return n.apply(void 0,[r].concat(i))}))}:[e.produce(n,r,(function(n,r){t=n,i=r})),t,i];var t,i},"boolean"==typeof(null==r?void 0:r.useProxies)&&this.setUseProxies(r.useProxies),"boolean"==typeof(null==r?void 0:r.autoFreeze)&&this.setAutoFreeze(r.autoFreeze)}var i=e.prototype;return i.createDraft=function(e){t(e)||n(8),r(e)&&(e=D(e));var i=w(this),o=R(this,e,void 0);return o[Q].C=!0,O(i),o},i.finishDraft=function(r,t){var e=r&&r[Q];"production"!==process.env.NODE_ENV&&(e&&e.C||n(9),e.I&&n(10));var i=e.A;return j(i,t),P(void 0,i)},i.setAutoFreeze=function(n){this.F=n},i.setUseProxies=function(r){r&&!B&&n(20),this.O=r},i.applyPatches=function(n,t){var e;for(e=t.length-1;e>=0;e--){var i=t[e];if(0===i.path.length&&"replace"===i.op){n=i.value;break}}var o=b("Patches").$;return r(n)?o(n,t):this.produce(n,(function(n){return o(n,t.slice(e+1))}))},e}(),an=new un,fn=an.produce,cn=an.produceWithPatches.bind(an),sn=an.setAutoFreeze.bind(an),vn=an.setUseProxies.bind(an),pn=an.applyPatches.bind(an),ln=an.createDraft.bind(an),dn=an.finishDraft.bind(an);/* harmony default export */ __webpack_exports__["default"] = (fn);
 //# sourceMappingURL=immer.esm.js.map
 
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(12)))
@@ -50228,31 +50276,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFocusTrap", function() { return createFocusTrap; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tabbable__ = __webpack_require__(286);
 /*!
-* focus-trap 7.4.0
+* focus-trap 7.5.4
 * @license MIT, https://github.com/focus-trap/focus-trap/blob/master/LICENSE
 */
 
 
-function ownKeys(object, enumerableOnly) {
-  var keys = Object.keys(object);
+function ownKeys(e, r) {
+  var t = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
-    var symbols = Object.getOwnPropertySymbols(object);
-    enumerableOnly && (symbols = symbols.filter(function (sym) {
-      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-    })), keys.push.apply(keys, symbols);
+    var o = Object.getOwnPropertySymbols(e);
+    r && (o = o.filter(function (r) {
+      return Object.getOwnPropertyDescriptor(e, r).enumerable;
+    })), t.push.apply(t, o);
   }
-  return keys;
+  return t;
 }
-function _objectSpread2(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = null != arguments[i] ? arguments[i] : {};
-    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
-      _defineProperty(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+function _objectSpread2(e) {
+  for (var r = 1; r < arguments.length; r++) {
+    var t = null != arguments[r] ? arguments[r] : {};
+    r % 2 ? ownKeys(Object(t), !0).forEach(function (r) {
+      _defineProperty(e, r, t[r]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) {
+      Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
     });
   }
-  return target;
+  return e;
 }
 function _defineProperty(obj, key, value) {
   key = _toPropertyKey(key);
@@ -50314,10 +50362,10 @@ var isSelectableInput = function isSelectableInput(node) {
   return node.tagName && node.tagName.toLowerCase() === 'input' && typeof node.select === 'function';
 };
 var isEscapeEvent = function isEscapeEvent(e) {
-  return e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27;
+  return (e === null || e === void 0 ? void 0 : e.key) === 'Escape' || (e === null || e === void 0 ? void 0 : e.key) === 'Esc' || (e === null || e === void 0 ? void 0 : e.keyCode) === 27;
 };
 var isTabEvent = function isTabEvent(e) {
-  return e.key === 'Tab' || e.keyCode === 9;
+  return (e === null || e === void 0 ? void 0 : e.key) === 'Tab' || (e === null || e === void 0 ? void 0 : e.keyCode) === 9;
 };
 
 // checks for TAB by default
@@ -50401,8 +50449,11 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
     //   container: HTMLElement,
     //   tabbableNodes: Array<HTMLElement>, // empty if none
     //   focusableNodes: Array<HTMLElement>, // empty if none
-    //   firstTabbableNode: HTMLElement|null,
-    //   lastTabbableNode: HTMLElement|null,
+    //   posTabIndexesFound: boolean,
+    //   firstTabbableNode: HTMLElement|undefined,
+    //   lastTabbableNode: HTMLElement|undefined,
+    //   firstDomTabbableNode: HTMLElement|undefined,
+    //   lastDomTabbableNode: HTMLElement|undefined,
     //   nextTabbableNode: (node: HTMLElement, forward: boolean) => HTMLElement|undefined
     // }>}
     containerGroups: [],
@@ -50419,7 +50470,9 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
     paused: false,
     // timer ID for when delayInitialFocus is true and initial focus in this trap
     //  has been delayed during activation
-    delayInitialFocusTimer: undefined
+    delayInitialFocusTimer: undefined,
+    // the most recent KeyboardEvent for the configured nav key (typically [SHIFT+]TAB), if any
+    recentNavEvent: undefined
   };
   var trap; // eslint-disable-line prefer-const -- some private functions reference it, and its methods reference private functions, so we must declare here and define later
 
@@ -50438,23 +50491,26 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
   /**
    * Finds the index of the container that contains the element.
    * @param {HTMLElement} element
+   * @param {Event} [event] If available, and `element` isn't directly found in any container,
+   *  the event's composed path is used to see if includes any known trap containers in the
+   *  case where the element is inside a Shadow DOM.
    * @returns {number} Index of the container in either `state.containers` or
    *  `state.containerGroups` (the order/length of these lists are the same); -1
    *  if the element isn't found.
    */
-  var findContainerIndex = function findContainerIndex(element) {
+  var findContainerIndex = function findContainerIndex(element, event) {
+    var composedPath = typeof (event === null || event === void 0 ? void 0 : event.composedPath) === 'function' ? event.composedPath() : undefined;
     // NOTE: search `containerGroups` because it's possible a group contains no tabbable
     //  nodes, but still contains focusable nodes (e.g. if they all have `tabindex=-1`)
     //  and we still need to find the element in there
     return state.containerGroups.findIndex(function (_ref) {
       var container = _ref.container,
         tabbableNodes = _ref.tabbableNodes;
-      return container.contains(element) ||
-      // fall back to explicit tabbable search which will take into consideration any
+      return container.contains(element) || ( // fall back to explicit tabbable search which will take into consideration any
       //  web components if the `tabbableOptions.getShadowRoot` option was used for
       //  the trap, enabling shadow DOM support in tabbable (`Node.contains()` doesn't
       //  look inside web components even if open)
-      tabbableNodes.find(function (node) {
+      composedPath === null || composedPath === void 0 ? void 0 : composedPath.includes(container)) || tabbableNodes.find(function (node) {
         return node === element;
       });
     });
@@ -50510,8 +50566,8 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
     if (node === false) {
       return false;
     }
-    if (node === undefined) {
-      // option not specified: use fallback options
+    if (node === undefined || !Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["c" /* isFocusable */])(node, config.tabbableOptions)) {
+      // option not specified nor focusable: use fallback options
       if (findContainerIndex(doc.activeElement) >= 0) {
         node = doc.activeElement;
       } else {
@@ -50529,17 +50585,44 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
   };
   var updateTabbableNodes = function updateTabbableNodes() {
     state.containerGroups = state.containers.map(function (container) {
-      var tabbableNodes = Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["d" /* tabbable */])(container, config.tabbableOptions);
+      var tabbableNodes = Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["e" /* tabbable */])(container, config.tabbableOptions);
 
       // NOTE: if we have tabbable nodes, we must have focusable nodes; focusable nodes
-      //  are a superset of tabbable nodes
+      //  are a superset of tabbable nodes since nodes with negative `tabindex` attributes
+      //  are focusable but not tabbable
       var focusableNodes = Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["a" /* focusable */])(container, config.tabbableOptions);
+      var firstTabbableNode = tabbableNodes.length > 0 ? tabbableNodes[0] : undefined;
+      var lastTabbableNode = tabbableNodes.length > 0 ? tabbableNodes[tabbableNodes.length - 1] : undefined;
+      var firstDomTabbableNode = focusableNodes.find(function (node) {
+        return Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["d" /* isTabbable */])(node);
+      });
+      var lastDomTabbableNode = focusableNodes.slice().reverse().find(function (node) {
+        return Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["d" /* isTabbable */])(node);
+      });
+      var posTabIndexesFound = !!tabbableNodes.find(function (node) {
+        return Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["b" /* getTabIndex */])(node) > 0;
+      });
       return {
         container: container,
         tabbableNodes: tabbableNodes,
         focusableNodes: focusableNodes,
-        firstTabbableNode: tabbableNodes.length > 0 ? tabbableNodes[0] : null,
-        lastTabbableNode: tabbableNodes.length > 0 ? tabbableNodes[tabbableNodes.length - 1] : null,
+        /** True if at least one node with positive `tabindex` was found in this container. */
+        posTabIndexesFound: posTabIndexesFound,
+        /** First tabbable node in container, __tabindex__ order; `undefined` if none. */
+        firstTabbableNode: firstTabbableNode,
+        /** Last tabbable node in container, __tabindex__ order; `undefined` if none. */
+        lastTabbableNode: lastTabbableNode,
+        // NOTE: DOM order is NOT NECESSARILY "document position" order, but figuring that out
+        //  would require more than just https://developer.mozilla.org/en-US/docs/Web/API/Node/compareDocumentPosition
+        //  because that API doesn't work with Shadow DOM as well as it should (@see
+        //  https://github.com/whatwg/dom/issues/320) and since this first/last is only needed, so far,
+        //  to address an edge case related to positive tabindex support, this seems like a much easier,
+        //  "close enough most of the time" alternative for positive tabindexes which should generally
+        //  be avoided anyway...
+        /** First tabbable node in container, __DOM__ order; `undefined` if none. */
+        firstDomTabbableNode: firstDomTabbableNode,
+        /** Last tabbable node in container, __DOM__ order; `undefined` if none. */
+        lastDomTabbableNode: lastDomTabbableNode,
         /**
          * Finds the __tabbable__ node that follows the given node in the specified direction,
          *  in this container, if any.
@@ -50550,30 +50633,24 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
          */
         nextTabbableNode: function nextTabbableNode(node) {
           var forward = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-          // NOTE: If tabindex is positive (in order to manipulate the tab order separate
-          //  from the DOM order), this __will not work__ because the list of focusableNodes,
-          //  while it contains tabbable nodes, does not sort its nodes in any order other
-          //  than DOM order, because it can't: Where would you place focusable (but not
-          //  tabbable) nodes in that order? They have no order, because they aren't tabbale...
-          // Support for positive tabindex is already broken and hard to manage (possibly
-          //  not supportable, TBD), so this isn't going to make things worse than they
-          //  already are, and at least makes things better for the majority of cases where
-          //  tabindex is either 0/unset or negative.
-          // FYI, positive tabindex issue: https://github.com/focus-trap/focus-trap/issues/375
-          var nodeIdx = focusableNodes.findIndex(function (n) {
-            return n === node;
-          });
+          var nodeIdx = tabbableNodes.indexOf(node);
           if (nodeIdx < 0) {
-            return undefined;
-          }
-          if (forward) {
-            return focusableNodes.slice(nodeIdx + 1).find(function (n) {
-              return Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["c" /* isTabbable */])(n, config.tabbableOptions);
+            // either not tabbable nor focusable, or was focused but not tabbable (negative tabindex):
+            //  since `node` should at least have been focusable, we assume that's the case and mimic
+            //  what browsers do, which is set focus to the next node in __document position order__,
+            //  regardless of positive tabindexes, if any -- and for reasons explained in the NOTE
+            //  above related to `firstDomTabbable` and `lastDomTabbable` properties, we fall back to
+            //  basic DOM order
+            if (forward) {
+              return focusableNodes.slice(focusableNodes.indexOf(node) + 1).find(function (el) {
+                return Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["d" /* isTabbable */])(el);
+              });
+            }
+            return focusableNodes.slice(0, focusableNodes.indexOf(node)).reverse().find(function (el) {
+              return Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["d" /* isTabbable */])(el);
             });
           }
-          return focusableNodes.slice(0, nodeIdx).reverse().find(function (n) {
-            return Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["c" /* isTabbable */])(n, config.tabbableOptions);
-          });
+          return tabbableNodes[nodeIdx + (forward ? 1 : -1)];
         }
       };
     });
@@ -50586,12 +50663,44 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
     ) {
       throw new Error('Your focus-trap must have at least one container with at least one tabbable node in it at all times');
     }
+
+    // NOTE: Positive tabindexes are only properly supported in single-container traps because
+    //  doing it across multiple containers where tabindexes could be all over the place
+    //  would require Tabbable to support multiple containers, would require additional
+    //  specialized Shadow DOM support, and would require Tabbable's multi-container support
+    //  to look at those containers in document position order rather than user-provided
+    //  order (as they are treated in Focus-trap, for legacy reasons). See discussion on
+    //  https://github.com/focus-trap/focus-trap/issues/375 for more details.
+    if (state.containerGroups.find(function (g) {
+      return g.posTabIndexesFound;
+    }) && state.containerGroups.length > 1) {
+      throw new Error("At least one node with a positive tabindex was found in one of your focus-trap's multiple containers. Positive tabindexes are only supported in single-container focus-traps.");
+    }
+  };
+
+  /**
+   * Gets the current activeElement. If it's a web-component and has open shadow-root
+   * it will recursively search inside shadow roots for the "true" activeElement.
+   *
+   * @param {Document | ShadowRoot} el
+   *
+   * @returns {HTMLElement} The element that currently has the focus
+   **/
+  var getActiveElement = function getActiveElement(el) {
+    var activeElement = el.activeElement;
+    if (!activeElement) {
+      return;
+    }
+    if (activeElement.shadowRoot && activeElement.shadowRoot.activeElement !== null) {
+      return getActiveElement(activeElement.shadowRoot);
+    }
+    return activeElement;
   };
   var tryFocus = function tryFocus(node) {
     if (node === false) {
       return;
     }
-    if (node === doc.activeElement) {
+    if (node === getActiveElement(document)) {
       return;
     }
     if (!node || !node.focus) {
@@ -50601,6 +50710,7 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
     node.focus({
       preventScroll: !!config.preventScroll
     });
+    // NOTE: focus() API does not trigger focusIn event so set MRU node manually
     state.mostRecentlyFocusedNode = node;
     if (isSelectableInput(node)) {
       node.select();
@@ -50611,11 +50721,113 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
     return node ? node : node === false ? false : previousActiveElement;
   };
 
+  /**
+   * Finds the next node (in either direction) where focus should move according to a
+   *  keyboard focus-in event.
+   * @param {Object} params
+   * @param {Node} [params.target] Known target __from which__ to navigate, if any.
+   * @param {KeyboardEvent|FocusEvent} [params.event] Event to use if `target` isn't known (event
+   *  will be used to determine the `target`). Ignored if `target` is specified.
+   * @param {boolean} [params.isBackward] True if focus should move backward.
+   * @returns {Node|undefined} The next node, or `undefined` if a next node couldn't be
+   *  determined given the current state of the trap.
+   */
+  var findNextNavNode = function findNextNavNode(_ref2) {
+    var target = _ref2.target,
+      event = _ref2.event,
+      _ref2$isBackward = _ref2.isBackward,
+      isBackward = _ref2$isBackward === void 0 ? false : _ref2$isBackward;
+    target = target || getActualTarget(event);
+    updateTabbableNodes();
+    var destinationNode = null;
+    if (state.tabbableGroups.length > 0) {
+      // make sure the target is actually contained in a group
+      // NOTE: the target may also be the container itself if it's focusable
+      //  with tabIndex='-1' and was given initial focus
+      var containerIndex = findContainerIndex(target, event);
+      var containerGroup = containerIndex >= 0 ? state.containerGroups[containerIndex] : undefined;
+      if (containerIndex < 0) {
+        // target not found in any group: quite possible focus has escaped the trap,
+        //  so bring it back into...
+        if (isBackward) {
+          // ...the last node in the last group
+          destinationNode = state.tabbableGroups[state.tabbableGroups.length - 1].lastTabbableNode;
+        } else {
+          // ...the first node in the first group
+          destinationNode = state.tabbableGroups[0].firstTabbableNode;
+        }
+      } else if (isBackward) {
+        // REVERSE
+
+        // is the target the first tabbable node in a group?
+        var startOfGroupIndex = findIndex(state.tabbableGroups, function (_ref3) {
+          var firstTabbableNode = _ref3.firstTabbableNode;
+          return target === firstTabbableNode;
+        });
+        if (startOfGroupIndex < 0 && (containerGroup.container === target || Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["c" /* isFocusable */])(target, config.tabbableOptions) && !Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["d" /* isTabbable */])(target, config.tabbableOptions) && !containerGroup.nextTabbableNode(target, false))) {
+          // an exception case where the target is either the container itself, or
+          //  a non-tabbable node that was given focus (i.e. tabindex is negative
+          //  and user clicked on it or node was programmatically given focus)
+          //  and is not followed by any other tabbable node, in which
+          //  case, we should handle shift+tab as if focus were on the container's
+          //  first tabbable node, and go to the last tabbable node of the LAST group
+          startOfGroupIndex = containerIndex;
+        }
+        if (startOfGroupIndex >= 0) {
+          // YES: then shift+tab should go to the last tabbable node in the
+          //  previous group (and wrap around to the last tabbable node of
+          //  the LAST group if it's the first tabbable node of the FIRST group)
+          var destinationGroupIndex = startOfGroupIndex === 0 ? state.tabbableGroups.length - 1 : startOfGroupIndex - 1;
+          var destinationGroup = state.tabbableGroups[destinationGroupIndex];
+          destinationNode = Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["b" /* getTabIndex */])(target) >= 0 ? destinationGroup.lastTabbableNode : destinationGroup.lastDomTabbableNode;
+        } else if (!isTabEvent(event)) {
+          // user must have customized the nav keys so we have to move focus manually _within_
+          //  the active group: do this based on the order determined by tabbable()
+          destinationNode = containerGroup.nextTabbableNode(target, false);
+        }
+      } else {
+        // FORWARD
+
+        // is the target the last tabbable node in a group?
+        var lastOfGroupIndex = findIndex(state.tabbableGroups, function (_ref4) {
+          var lastTabbableNode = _ref4.lastTabbableNode;
+          return target === lastTabbableNode;
+        });
+        if (lastOfGroupIndex < 0 && (containerGroup.container === target || Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["c" /* isFocusable */])(target, config.tabbableOptions) && !Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["d" /* isTabbable */])(target, config.tabbableOptions) && !containerGroup.nextTabbableNode(target))) {
+          // an exception case where the target is the container itself, or
+          //  a non-tabbable node that was given focus (i.e. tabindex is negative
+          //  and user clicked on it or node was programmatically given focus)
+          //  and is not followed by any other tabbable node, in which
+          //  case, we should handle tab as if focus were on the container's
+          //  last tabbable node, and go to the first tabbable node of the FIRST group
+          lastOfGroupIndex = containerIndex;
+        }
+        if (lastOfGroupIndex >= 0) {
+          // YES: then tab should go to the first tabbable node in the next
+          //  group (and wrap around to the first tabbable node of the FIRST
+          //  group if it's the last tabbable node of the LAST group)
+          var _destinationGroupIndex = lastOfGroupIndex === state.tabbableGroups.length - 1 ? 0 : lastOfGroupIndex + 1;
+          var _destinationGroup = state.tabbableGroups[_destinationGroupIndex];
+          destinationNode = Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["b" /* getTabIndex */])(target) >= 0 ? _destinationGroup.firstTabbableNode : _destinationGroup.firstDomTabbableNode;
+        } else if (!isTabEvent(event)) {
+          // user must have customized the nav keys so we have to move focus manually _within_
+          //  the active group: do this based on the order determined by tabbable()
+          destinationNode = containerGroup.nextTabbableNode(target);
+        }
+      }
+    } else {
+      // no groups available
+      // NOTE: the fallbackFocus option does not support returning false to opt-out
+      destinationNode = getNodeForOption('fallbackFocus');
+    }
+    return destinationNode;
+  };
+
   // This needs to be done on mousedown and touchstart instead of click
   // so that it precedes the focus event.
   var checkPointerDown = function checkPointerDown(e) {
     var target = getActualTarget(e);
-    if (findContainerIndex(target) >= 0) {
+    if (findContainerIndex(target, e) >= 0) {
       // allow the click since it ocurred inside the trap
       return;
     }
@@ -50646,9 +50858,12 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
   };
 
   // In case focus escapes the trap for some strange reason, pull it back in.
-  var checkFocusIn = function checkFocusIn(e) {
-    var target = getActualTarget(e);
-    var targetContained = findContainerIndex(target) >= 0;
+  // NOTE: the focusIn event is NOT cancelable, so if focus escapes, it may cause unexpected
+  //  scrolling if the node that got focused was out of view; there's nothing we can do to
+  //  prevent that from happening by the time we discover that focus escaped
+  var checkFocusIn = function checkFocusIn(event) {
+    var target = getActualTarget(event);
+    var targetContained = findContainerIndex(target, event) >= 0;
 
     // In Firefox when you Tab out of an iframe the Document is briefly focused.
     if (targetContained || target instanceof Document) {
@@ -50657,9 +50872,88 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
       }
     } else {
       // escaped! pull it back in to where it just left
-      e.stopImmediatePropagation();
-      tryFocus(state.mostRecentlyFocusedNode || getInitialFocusNode());
+      event.stopImmediatePropagation();
+
+      // focus will escape if the MRU node had a positive tab index and user tried to nav forward;
+      //  it will also escape if the MRU node had a 0 tab index and user tried to nav backward
+      //  toward a node with a positive tab index
+      var nextNode; // next node to focus, if we find one
+      var navAcrossContainers = true;
+      if (state.mostRecentlyFocusedNode) {
+        if (Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["b" /* getTabIndex */])(state.mostRecentlyFocusedNode) > 0) {
+          // MRU container index must be >=0 otherwise we wouldn't have it as an MRU node...
+          var mruContainerIdx = findContainerIndex(state.mostRecentlyFocusedNode);
+          // there MAY not be any tabbable nodes in the container if there are at least 2 containers
+          //  and the MRU node is focusable but not tabbable (focus-trap requires at least 1 container
+          //  with at least one tabbable node in order to function, so this could be the other container
+          //  with nothing tabbable in it)
+          var tabbableNodes = state.containerGroups[mruContainerIdx].tabbableNodes;
+          if (tabbableNodes.length > 0) {
+            // MRU tab index MAY not be found if the MRU node is focusable but not tabbable
+            var mruTabIdx = tabbableNodes.findIndex(function (node) {
+              return node === state.mostRecentlyFocusedNode;
+            });
+            if (mruTabIdx >= 0) {
+              if (config.isKeyForward(state.recentNavEvent)) {
+                if (mruTabIdx + 1 < tabbableNodes.length) {
+                  nextNode = tabbableNodes[mruTabIdx + 1];
+                  navAcrossContainers = false;
+                }
+                // else, don't wrap within the container as focus should move to next/previous
+                //  container
+              } else {
+                if (mruTabIdx - 1 >= 0) {
+                  nextNode = tabbableNodes[mruTabIdx - 1];
+                  navAcrossContainers = false;
+                }
+                // else, don't wrap within the container as focus should move to next/previous
+                //  container
+              }
+              // else, don't find in container order without considering direction too
+            }
+          }
+          // else, no tabbable nodes in that container (which means we must have at least one other
+          //  container with at least one tabbable node in it, otherwise focus-trap would've thrown
+          //  an error the last time updateTabbableNodes() was run): find next node among all known
+          //  containers
+        } else {
+          // check to see if there's at least one tabbable node with a positive tab index inside
+          //  the trap because focus seems to escape when navigating backward from a tabbable node
+          //  with tabindex=0 when this is the case (instead of wrapping to the tabbable node with
+          //  the greatest positive tab index like it should)
+          if (!state.containerGroups.some(function (g) {
+            return g.tabbableNodes.some(function (n) {
+              return Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["b" /* getTabIndex */])(n) > 0;
+            });
+          })) {
+            // no containers with tabbable nodes with positive tab indexes which means the focus
+            //  escaped for some other reason and we should just execute the fallback to the
+            //  MRU node or initial focus node, if any
+            navAcrossContainers = false;
+          }
+        }
+      } else {
+        // no MRU node means we're likely in some initial condition when the trap has just
+        //  been activated and initial focus hasn't been given yet, in which case we should
+        //  fall through to trying to focus the initial focus node, which is what should
+        //  happen below at this point in the logic
+        navAcrossContainers = false;
+      }
+      if (navAcrossContainers) {
+        nextNode = findNextNavNode({
+          // move FROM the MRU node, not event-related node (which will be the node that is
+          //  outside the trap causing the focus escape we're trying to fix)
+          target: state.mostRecentlyFocusedNode,
+          isBackward: config.isKeyBackward(state.recentNavEvent)
+        });
+      }
+      if (nextNode) {
+        tryFocus(nextNode);
+      } else {
+        tryFocus(state.mostRecentlyFocusedNode || getInitialFocusNode());
+      }
     }
+    state.recentNavEvent = undefined; // clear
   };
 
   // Hijack key nav events on the first and last focusable nodes of the trap,
@@ -50668,89 +50962,11 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
   // kind of need to capture the action at the keydown phase.
   var checkKeyNav = function checkKeyNav(event) {
     var isBackward = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-    var target = getActualTarget(event);
-    updateTabbableNodes();
-    var destinationNode = null;
-    if (state.tabbableGroups.length > 0) {
-      // make sure the target is actually contained in a group
-      // NOTE: the target may also be the container itself if it's focusable
-      //  with tabIndex='-1' and was given initial focus
-      var containerIndex = findContainerIndex(target);
-      var containerGroup = containerIndex >= 0 ? state.containerGroups[containerIndex] : undefined;
-      if (containerIndex < 0) {
-        // target not found in any group: quite possible focus has escaped the trap,
-        //  so bring it back into...
-        if (isBackward) {
-          // ...the last node in the last group
-          destinationNode = state.tabbableGroups[state.tabbableGroups.length - 1].lastTabbableNode;
-        } else {
-          // ...the first node in the first group
-          destinationNode = state.tabbableGroups[0].firstTabbableNode;
-        }
-      } else if (isBackward) {
-        // REVERSE
-
-        // is the target the first tabbable node in a group?
-        var startOfGroupIndex = findIndex(state.tabbableGroups, function (_ref2) {
-          var firstTabbableNode = _ref2.firstTabbableNode;
-          return target === firstTabbableNode;
-        });
-        if (startOfGroupIndex < 0 && (containerGroup.container === target || Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["b" /* isFocusable */])(target, config.tabbableOptions) && !Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["c" /* isTabbable */])(target, config.tabbableOptions) && !containerGroup.nextTabbableNode(target, false))) {
-          // an exception case where the target is either the container itself, or
-          //  a non-tabbable node that was given focus (i.e. tabindex is negative
-          //  and user clicked on it or node was programmatically given focus)
-          //  and is not followed by any other tabbable node, in which
-          //  case, we should handle shift+tab as if focus were on the container's
-          //  first tabbable node, and go to the last tabbable node of the LAST group
-          startOfGroupIndex = containerIndex;
-        }
-        if (startOfGroupIndex >= 0) {
-          // YES: then shift+tab should go to the last tabbable node in the
-          //  previous group (and wrap around to the last tabbable node of
-          //  the LAST group if it's the first tabbable node of the FIRST group)
-          var destinationGroupIndex = startOfGroupIndex === 0 ? state.tabbableGroups.length - 1 : startOfGroupIndex - 1;
-          var destinationGroup = state.tabbableGroups[destinationGroupIndex];
-          destinationNode = destinationGroup.lastTabbableNode;
-        } else if (!isTabEvent(event)) {
-          // user must have customized the nav keys so we have to move focus manually _within_
-          //  the active group: do this based on the order determined by tabbable()
-          destinationNode = containerGroup.nextTabbableNode(target, false);
-        }
-      } else {
-        // FORWARD
-
-        // is the target the last tabbable node in a group?
-        var lastOfGroupIndex = findIndex(state.tabbableGroups, function (_ref3) {
-          var lastTabbableNode = _ref3.lastTabbableNode;
-          return target === lastTabbableNode;
-        });
-        if (lastOfGroupIndex < 0 && (containerGroup.container === target || Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["b" /* isFocusable */])(target, config.tabbableOptions) && !Object(__WEBPACK_IMPORTED_MODULE_0_tabbable__["c" /* isTabbable */])(target, config.tabbableOptions) && !containerGroup.nextTabbableNode(target))) {
-          // an exception case where the target is the container itself, or
-          //  a non-tabbable node that was given focus (i.e. tabindex is negative
-          //  and user clicked on it or node was programmatically given focus)
-          //  and is not followed by any other tabbable node, in which
-          //  case, we should handle tab as if focus were on the container's
-          //  last tabbable node, and go to the first tabbable node of the FIRST group
-          lastOfGroupIndex = containerIndex;
-        }
-        if (lastOfGroupIndex >= 0) {
-          // YES: then tab should go to the first tabbable node in the next
-          //  group (and wrap around to the first tabbable node of the FIRST
-          //  group if it's the last tabbable node of the LAST group)
-          var _destinationGroupIndex = lastOfGroupIndex === state.tabbableGroups.length - 1 ? 0 : lastOfGroupIndex + 1;
-          var _destinationGroup = state.tabbableGroups[_destinationGroupIndex];
-          destinationNode = _destinationGroup.firstTabbableNode;
-        } else if (!isTabEvent(event)) {
-          // user must have customized the nav keys so we have to move focus manually _within_
-          //  the active group: do this based on the order determined by tabbable()
-          destinationNode = containerGroup.nextTabbableNode(target);
-        }
-      }
-    } else {
-      // no groups available
-      // NOTE: the fallbackFocus option does not support returning false to opt-out
-      destinationNode = getNodeForOption('fallbackFocus');
-    }
+    state.recentNavEvent = event;
+    var destinationNode = findNextNavNode({
+      event: event,
+      isBackward: isBackward
+    });
     if (destinationNode) {
       if (isTabEvent(event)) {
         // since tab natively moves focus, we wouldn't have a destination node unless we
@@ -50776,7 +50992,7 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
   };
   var checkClick = function checkClick(e) {
     var target = getActualTarget(e);
-    if (findContainerIndex(target) >= 0) {
+    if (findContainerIndex(target, e) >= 0) {
       return;
     }
     if (valueOrHandler(config.clickOutsideDeactivates, e)) {
@@ -50838,6 +51054,43 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
   };
 
   //
+  // MUTATION OBSERVER
+  //
+
+  var checkDomRemoval = function checkDomRemoval(mutations) {
+    var isFocusedNodeRemoved = mutations.some(function (mutation) {
+      var removedNodes = Array.from(mutation.removedNodes);
+      return removedNodes.some(function (node) {
+        return node === state.mostRecentlyFocusedNode;
+      });
+    });
+
+    // If the currently focused is removed then browsers will move focus to the
+    // <body> element. If this happens, try to move focus back into the trap.
+    if (isFocusedNodeRemoved) {
+      tryFocus(getInitialFocusNode());
+    }
+  };
+
+  // Use MutationObserver - if supported - to detect if focused node is removed
+  // from the DOM.
+  var mutationObserver = typeof window !== 'undefined' && 'MutationObserver' in window ? new MutationObserver(checkDomRemoval) : undefined;
+  var updateObservedNodes = function updateObservedNodes() {
+    if (!mutationObserver) {
+      return;
+    }
+    mutationObserver.disconnect();
+    if (state.active && !state.paused) {
+      state.containers.map(function (container) {
+        mutationObserver.observe(container, {
+          subtree: true,
+          childList: true
+        });
+      });
+    }
+  };
+
+  //
   // TRAP DEFINITION
   //
 
@@ -50861,13 +51114,14 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
       state.active = true;
       state.paused = false;
       state.nodeFocusedBeforeActivation = doc.activeElement;
-      onActivate === null || onActivate === void 0 ? void 0 : onActivate();
+      onActivate === null || onActivate === void 0 || onActivate();
       var finishActivation = function finishActivation() {
         if (checkCanFocusTrap) {
           updateTabbableNodes();
         }
         addListeners();
-        onPostActivate === null || onPostActivate === void 0 ? void 0 : onPostActivate();
+        updateObservedNodes();
+        onPostActivate === null || onPostActivate === void 0 || onPostActivate();
       };
       if (checkCanFocusTrap) {
         checkCanFocusTrap(state.containers.concat()).then(finishActivation, finishActivation);
@@ -50890,18 +51144,19 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
       removeListeners();
       state.active = false;
       state.paused = false;
+      updateObservedNodes();
       activeFocusTraps.deactivateTrap(trapStack, trap);
       var onDeactivate = getOption(options, 'onDeactivate');
       var onPostDeactivate = getOption(options, 'onPostDeactivate');
       var checkCanReturnFocus = getOption(options, 'checkCanReturnFocus');
       var returnFocus = getOption(options, 'returnFocus', 'returnFocusOnDeactivate');
-      onDeactivate === null || onDeactivate === void 0 ? void 0 : onDeactivate();
+      onDeactivate === null || onDeactivate === void 0 || onDeactivate();
       var finishDeactivation = function finishDeactivation() {
         delay(function () {
           if (returnFocus) {
             tryFocus(getReturnFocusNode(state.nodeFocusedBeforeActivation));
           }
-          onPostDeactivate === null || onPostDeactivate === void 0 ? void 0 : onPostDeactivate();
+          onPostDeactivate === null || onPostDeactivate === void 0 || onPostDeactivate();
         });
       };
       if (returnFocus && checkCanReturnFocus) {
@@ -50918,9 +51173,10 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
       var onPause = getOption(pauseOptions, 'onPause');
       var onPostPause = getOption(pauseOptions, 'onPostPause');
       state.paused = true;
-      onPause === null || onPause === void 0 ? void 0 : onPause();
+      onPause === null || onPause === void 0 || onPause();
       removeListeners();
-      onPostPause === null || onPostPause === void 0 ? void 0 : onPostPause();
+      updateObservedNodes();
+      onPostPause === null || onPostPause === void 0 || onPostPause();
       return this;
     },
     unpause: function unpause(unpauseOptions) {
@@ -50930,10 +51186,11 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
       var onUnpause = getOption(unpauseOptions, 'onUnpause');
       var onPostUnpause = getOption(unpauseOptions, 'onPostUnpause');
       state.paused = false;
-      onUnpause === null || onUnpause === void 0 ? void 0 : onUnpause();
+      onUnpause === null || onUnpause === void 0 || onUnpause();
       updateTabbableNodes();
       addListeners();
-      onPostUnpause === null || onPostUnpause === void 0 ? void 0 : onPostUnpause();
+      updateObservedNodes();
+      onPostUnpause === null || onPostUnpause === void 0 || onPostUnpause();
       return this;
     },
     updateContainerElements: function updateContainerElements(containerElements) {
@@ -50944,6 +51201,7 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
       if (state.active) {
         updateTabbableNodes();
       }
+      updateObservedNodes();
       return this;
     }
   };
@@ -50963,11 +51221,12 @@ var createFocusTrap = function createFocusTrap(elements, userOptions) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return focusable; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return isFocusable; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return isTabbable; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return tabbable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return getTabIndex; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return isFocusable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return isTabbable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return tabbable; });
 /*!
-* tabbable 6.1.1
+* tabbable 6.2.0
 * @license MIT, https://github.com/focus-trap/tabbable/blob/master/LICENSE
 */
 // NOTE: separate `:not()` selectors has broader browser support than the newer
@@ -51147,7 +51406,27 @@ var getCandidatesIteratively = function getCandidatesIteratively(elements, inclu
   }
   return candidates;
 };
-var getTabindex = function getTabindex(node, isScope) {
+
+/**
+ * @private
+ * Determines if the node has an explicitly specified `tabindex` attribute.
+ * @param {HTMLElement} node
+ * @returns {boolean} True if so; false if not.
+ */
+var hasTabIndex = function hasTabIndex(node) {
+  return !isNaN(parseInt(node.getAttribute('tabindex'), 10));
+};
+
+/**
+ * Determine the tab index of a given node.
+ * @param {HTMLElement} node
+ * @returns {number} Tab order (negative, 0, or positive number).
+ * @throws {Error} If `node` is falsy.
+ */
+var getTabIndex = function getTabIndex(node) {
+  if (!node) {
+    throw new Error('No node provided');
+  }
   if (node.tabIndex < 0) {
     // in Chrome, <details/>, <audio controls/> and <video controls/> elements get a default
     // `tabIndex` of -1 when the 'tabindex' attribute isn't specified in the DOM,
@@ -51156,15 +51435,27 @@ var getTabindex = function getTabindex(node, isScope) {
     // order, consider their tab index to be 0.
     // Also browsers do not return `tabIndex` correctly for contentEditable nodes;
     // so if they don't have a tabindex attribute specifically set, assume it's 0.
-    //
-    // isScope is positive for custom element with shadow root or slot that by default
-    // have tabIndex -1, but need to be sorted by document order in order for their
-    // content to be inserted in the correct position
-    if ((isScope || /^(AUDIO|VIDEO|DETAILS)$/.test(node.tagName) || isContentEditable(node)) && isNaN(parseInt(node.getAttribute('tabindex'), 10))) {
+    if ((/^(AUDIO|VIDEO|DETAILS)$/.test(node.tagName) || isContentEditable(node)) && !hasTabIndex(node)) {
       return 0;
     }
   }
   return node.tabIndex;
+};
+
+/**
+ * Determine the tab index of a given node __for sort order purposes__.
+ * @param {HTMLElement} node
+ * @param {boolean} [isScope] True for a custom element with shadow root or slot that, by default,
+ *  has tabIndex -1, but needs to be sorted by document order in order for its content to be
+ *  inserted into the correct sort position.
+ * @returns {number} Tab order (negative, 0, or positive number).
+ */
+var getSortOrderTabIndex = function getSortOrderTabIndex(node, isScope) {
+  var tabIndex = getTabIndex(node);
+  if (tabIndex < 0 && isScope && !hasTabIndex(node)) {
+    return 0;
+  }
+  return tabIndex;
 };
 var sortOrderedTabbables = function sortOrderedTabbables(a, b) {
   return a.tabIndex === b.tabIndex ? a.documentOrder - b.documentOrder : a.tabIndex - b.tabIndex;
@@ -51408,7 +51699,7 @@ var isNodeMatchingSelectorFocusable = function isNodeMatchingSelectorFocusable(o
   return true;
 };
 var isNodeMatchingSelectorTabbable = function isNodeMatchingSelectorTabbable(options, node) {
-  if (isNonTabbableRadio(node) || getTabindex(node) < 0 || !isNodeMatchingSelectorFocusable(options, node)) {
+  if (isNonTabbableRadio(node) || getTabIndex(node) < 0 || !isNodeMatchingSelectorFocusable(options, node)) {
     return false;
   }
   return true;
@@ -51433,7 +51724,7 @@ var sortByOrder = function sortByOrder(candidates) {
   candidates.forEach(function (item, i) {
     var isScope = !!item.scopeParent;
     var element = isScope ? item.scopeParent : item;
-    var candidateTabindex = getTabindex(element, isScope);
+    var candidateTabindex = getSortOrderTabIndex(element, isScope);
     var elements = isScope ? sortByOrder(item.candidates) : element;
     if (candidateTabindex === 0) {
       isScope ? regularTabbables.push.apply(regularTabbables, elements) : regularTabbables.push(element);
@@ -51452,32 +51743,32 @@ var sortByOrder = function sortByOrder(candidates) {
     return acc;
   }, []).concat(regularTabbables);
 };
-var tabbable = function tabbable(el, options) {
+var tabbable = function tabbable(container, options) {
   options = options || {};
   var candidates;
   if (options.getShadowRoot) {
-    candidates = getCandidatesIteratively([el], options.includeContainer, {
+    candidates = getCandidatesIteratively([container], options.includeContainer, {
       filter: isNodeMatchingSelectorTabbable.bind(null, options),
       flatten: false,
       getShadowRoot: options.getShadowRoot,
       shadowRootFilter: isValidShadowRootTabbable
     });
   } else {
-    candidates = getCandidates(el, options.includeContainer, isNodeMatchingSelectorTabbable.bind(null, options));
+    candidates = getCandidates(container, options.includeContainer, isNodeMatchingSelectorTabbable.bind(null, options));
   }
   return sortByOrder(candidates);
 };
-var focusable = function focusable(el, options) {
+var focusable = function focusable(container, options) {
   options = options || {};
   var candidates;
   if (options.getShadowRoot) {
-    candidates = getCandidatesIteratively([el], options.includeContainer, {
+    candidates = getCandidatesIteratively([container], options.includeContainer, {
       filter: isNodeMatchingSelectorFocusable.bind(null, options),
       flatten: true,
       getShadowRoot: options.getShadowRoot
     });
   } else {
-    candidates = getCandidates(el, options.includeContainer, isNodeMatchingSelectorFocusable.bind(null, options));
+    candidates = getCandidates(container, options.includeContainer, isNodeMatchingSelectorFocusable.bind(null, options));
   }
   return candidates;
 };
@@ -52247,6 +52538,8 @@ var CardFilterer = function () {
     }, {
         key: 'sortCards',
         value: function sortCards(sortOption, eventFilter, featuredCardIds, hideCtaIds, isFirstLoad) {
+            console.log('(((DEBUG)))  CardFilterer:sortCards()', sortOption);
+
             if (!this.filteredCards.length) return this;
 
             var sortType = sortOption ? sortOption.sort.toLowerCase() : null;

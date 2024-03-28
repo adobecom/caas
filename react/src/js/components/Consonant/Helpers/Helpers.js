@@ -354,6 +354,7 @@ export const getFeaturedSort = cards => cards;
  * @returns {Array} - All cards sorted by Date
  */
 export const getDateAscSort = cards => cards.sort((cardOne, cardTwo) => {
+    console.log('(((DEBUG)))  Helpers:getDateAscSort()', cardOne.id, cardTwo.id);
     const cardOneDate = getByPath(cardOne, 'cardDate');
     const cardTwoDate = getByPath(cardTwo, 'cardDate');
     if (cardOneDate && cardTwoDate) {

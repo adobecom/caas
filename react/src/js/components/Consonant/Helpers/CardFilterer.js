@@ -101,6 +101,8 @@ export default class CardFilterer {
      * @memberof CardFilterer
      */
     sortCards(sortOption, eventFilter, featuredCardIds, hideCtaIds, isFirstLoad) {
+        console.log('(((DEBUG)))  CardFilterer:sortCards()', sortOption);
+
         if (!this.filteredCards.length) return this;
 
         const sortType = sortOption ? sortOption.sort.toLowerCase() : null;
