@@ -20,9 +20,10 @@
             min-height: 100vh;
         }
         .container {
-            max-width: 85%;
+            /* max-width: 85%; */
             display: flex;
             gap: 20px;
+            margin-right: 260px;
         }
         .sidebar {
             width: 340px;
@@ -39,13 +40,15 @@
             color: #bbb;
             text-decoration: none;
         }
-        /* .content {
-            columns: 2;
-        } */
+
+        .nav {
+            margin: 15px 0 -15px;
+        }
         h1 {
             font-size: 2em;
+            line-height: 1.125;
             font-weight: 700;
-            margin: 40px 0 .25em 0;
+            margin: 1em 0 .35em;
         }
         h1 span {
             display: inline-block;
@@ -74,17 +77,15 @@
             font-size: 18px;
             font-weight: 200;
         }
-
         a {
             color: #0073e6;
             text-decoration: none;
-            font-weight: 300;
         }
 
         a:hover {
             text-decoration: underline;
         }
-        .intro span {
+        .intro-content span {
             text-transform: uppercase;
             font-weight: 700;
             background: #aa99ff;
@@ -95,7 +96,7 @@
             position: absolute;
             bottom: 0;
             right: 0;
-            width: 300px;
+            width: 260px;
             z-index: -1;
         }
 
@@ -142,74 +143,12 @@
         </div>
 
         <div class="content">
-            <div class="column">
-                <h1>
-                    Welcome to the <span>CaaS Documentation Hub</span>
-                </h1>
-                <p>
-                    This is the documentation hub for the CaaS Project. Here you will find <i>most</i> of the information 
-                    you need to get started with CaaS.
-                </p>
-
-                <h2 class="getting-started">
-                    Getting Started in Milo
-                </h2>
-                <p>
-                    To get started with the CaaS in Milo, you will need to have an account in Milos sharepoint authoring site.
-                    You can do this by visiting the <a href="https://adobe.sharepoint.com/sites/adobecom/SitePages/adobe.com.aspx">adobe.sharepoint.com page</a>.
-                    where you will be able to access the CaaS authoring tools.
-                </p>
-                <ul>
-                    <li><a href="./intro.html">Introduction to CaaS (Content As A Service)</a></li>
-                    
-                    <li><a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">Create a CaaS Card Metadata</a></li>
-                    <li><a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">Send a Card to Caas Backend Service</a></li>
-                    <li><a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">Preview your Card in the Milo Configuator</a></li>
-                    <li><a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">Create a Card Collectio in the Milo Configuatorn</a></li>
-                    <li><a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">Create a Milo page with a Caas Collection</a></li>
-                    <li><a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">Create a CaaS Marquee Metadata</a></li>
-                    <li><a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">Preview a CaaS Marquee Metadata</a></li>
-                </ul>
-
-                <h2 class="getting-started">
-                    Getting Started in AEM
-                </h2>
-                
-                <p>To get started with the CaaS in AEM, you will need access to an AEM instance where CaaS has been enabled. 
-                    You can do learn more by visiting the <a href="">Enable Caas in AEM</a>.
-                </p>
-
-                <ul>
-                    <li><a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">Create a CaaS Card</a></li>
-                    <li><a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">Send To Caas</a></li>
-                    <li><a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">Preview you Caas Card using the Milo Configuator</a></li>
-                </ul>
-
-                <h2 class="the-team">
-                    The Team
-                </h2>
-                <p>
-                    The CaaS team is a group of talented engineers and product managers
-                    who are dedicated to making the CaaS project a success. 
-                </p>
-                <ul class="the-team">
-                    <li><a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">Jed Michnowicz</a> - Ship Captain</li>
-                    <li><a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">DJ Rajput</a> - Product Manager</li>
-                    <li><a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">Marjorie Mcgonigal</a> - Program Manager</li>
-                    <li><a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">Gayane</a> - QA Engineer</li>
-                    <li><a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">Sheridan Sunier</a> - Backend Engineer</li>
-                    <li><a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">Shahbaz Khan</a> - Backend Engineer</li>
-                    <li><a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">Sanjay Rai</a> - Frontend Engineer</li>
-                    <li><a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">Carlos Miqueo</a> - Frontend Engineer</li>
-                </ul>
-            </div>
-            
-
+            <p class="nav"><a href="./index.html">Back to Docs</a></p>
             <div class="column">
                 <a name="intro"></a>
                 <div class="intro">
                     <h1>
-                        Introduction to CaaS
+                        Introduction to CaaS - <span>Content as a Service</span>
                     </h1>
 
                     <p>
@@ -257,9 +196,6 @@
         </div>
     </div>
 
-<!--
-    (((<a href="https://milo.adobe.com/tools/caas#~~H4sIAAAAAAAACnVV227bOBD9Fz5LjW1Zta23XLEGnMZbO9iHRVGMyJFEhCK1vDhRi/x7Qd3tZN+kM/eZM8PfBBjjlisJ4jv+59DYPWgoDUn+/REQkCBqy6m5VUIg9XrfoESSEDIRHjXQl21ZaTSGK0mSDIRBr8B2Kuf0CHnvz1l1q5y0ut6BzAfNVKmXEvTLlip5QB+pDTHFn6WZSChodrC18LnMk0WHHLkVeE2pTyTlgtt6hycUJPkaEDqUcGNlb1pwxlCSqXQscMQav5fggf8aMGmBS9Q+mcVs9ghv/3Bmi06E0h7rCsc20LYFJCEUwCTd75Uz3sAZq8pb0KzzbeG6CUcS8tOgyEhAmPqm7A5+1TsFbGgi4wZSgTcgJWozwhoye5cO/yhZpbj0fXx9ff0CTKX4haryiha8RA0hVPxqrJJ4ixPXSpYou+bjGxWOIfNZdiV10FhjBkKkQF/ux3AkIBmCdXq0/N03aOvLTSmkdJlh+DXLojBerzbhhs7jkK0zpFG2nC0jIO/BuVEWz1erNFuFNE3jMEbGwvUsw3ARreMFTTcrtog+GrGYQhzPwiWjEMZRHIXrxSYLo2wzS+k63azhY6R1FC3n8TINMY4xjBcxhumMbcLNKsUNsnmcRRF597VzYVHfn4aGtcCN44LtQXpCNqtQguV0EO8UhW7QAjM7wXNOSUKUHqC+x+3PbUOZM+hQqNf7srL1MPbcWdsQdPlGAlIgsMFNwRneWtiy8/9xllxeDFeAzB3k2DO4/79qdklArVxDeR/OVR5SwB6VxsnqVZqXoGsSEKnsxZ1QUtS+hJtu/wfCdMUofWFQQc5l071rycvmY4gDOTIyVbmXfk/GxRklfzuQltsmtvxE3tXUAc1ARuGzwWOBJUajoQCKhRIM9bMWLRU0Gies2aPetw2cz0hADIKmxQNH0Q/BIFWSga7HIgfooJym2IPW9+ZG6XagVjsMiJk0zzw0nBiyOpM9yfPOeuFDz7EJtr3QOTQJn0FHZf0j0pQ3CpS2d2Dx2tAP2B1+Aj4qxjM+mU4jwAyc8MvEertW0I5yrypXnRm0+HeQTJUHKCvBJ69No+CX86C0PUMfuvN0BvYZXZbQ4x/KaMOeQ2hQnxTXe6UESeaz2exC0GSJJIlavH3JLhw34EW4kQkWctPS7P/vutchXlXnaP27cuL+RpABu9wN6xntLxLPC4vGXyWGFrgwR3yzT1V3sFg3oIBYn+NfCIzLvHt8SRF5gadHQ7aj8vvlbwMJiDO48769uyGqM/h0Qi2g3nH5MrB68oQ7a9Unp8QZ1FuZKd+R9z8PDKS13QgAAA==">Milo Configurator</a>)))
--->
 
     <div class="footer">
        <img src="./images/page.png">

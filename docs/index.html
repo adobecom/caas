@@ -20,9 +20,10 @@
             min-height: 100vh;
         }
         .container {
-            max-width: 85%;
+            /* max-width: 85%; */
             display: flex;
             gap: 20px;
+            margin-right: 260px;
         }
         .sidebar {
             width: 340px;
@@ -45,6 +46,7 @@
         h1 {
             font-size: 2em;
             font-weight: 700;
+            line-height: 1.125;
             margin: 40px 0 .25em 0;
         }
         h1 span {
@@ -52,6 +54,7 @@
             color: #747474;
             font-weight: 400;
         }
+
 
         h2 {
             font-size: 1.5em;
@@ -74,11 +77,13 @@
             font-size: 18px;
             font-weight: 200;
         }
+        li {
+            list-style: circle;
+        }
 
         a {
             color: #0073e6;
             text-decoration: none;
-            font-weight: 300;
         }
 
         a:hover {
@@ -95,7 +100,7 @@
             position: absolute;
             bottom: 0;
             right: 0;
-            width: 300px;
+            width: 260px;
             z-index: -1;
         }
 
@@ -203,63 +208,12 @@
                     <li><a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">Carlos Miqueo</a> - Frontend Engineer</li>
                 </ul>
             </div>
-            
-
-            <div class="column">
-                <a name="intro"></a>
-                <div class="intro">
-                    <h1>
-                        Introduction to CaaS
-                    </h1>
-
-                    <p>
-                        The following is a brief introduction to the CaaS platform. For a more detailed information, features an schedules, 
-                        please visit the <a href="javascript:alert('Opps! \nThis link is still not ready or even worse, not working!\nPlease check back soon.')">CaaS Wiki page</a>. 
-                    </p>
-
-                    <div class="intro-content">
-                        <p>
-                            <span>What</span>
-                            CaaS is a <i>Content As A Service</i> platform that allows users to create and manage content in a more efficient way.
-                            The content can be created in either Milo or AEM and then sent to the CaaS backend service (Chimera) where it gets stored in a database. 
-                            The backend service APIs can then be used to retrieve the content and display it in any application.
-                        </p>
-                        <p>
-                            <span>How</span>
-                            From the users point of view there are two main components in the CaaS framework: the content creation and content consumption. 
-                            Both, the creation and consumption of content can be done in either Milo or AEM platforms.
-                        </p>
-                        <ul>
-                            <li>
-                                <i>The content creation</i> process is responsible for <a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">creating the content</a> and <a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">sending it to the backend service</a>. 
-                                Each invividual piece of content can be render as a card or a marquee.
-                            </li>
-                            <li>
-                                <i>The content consumption</i> process is responsible for retrieving the content from the backend service as a 
-                                JSON format and displaying it in the application. Content can be rendered as a <a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">grid</a> or <a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">carousel</a> format.
-                            </li>
-                        </ul>
-                        <p>
-                            <span>Why</span>
-                            Some of the benefits of using CaaS are:
-                            <ul>
-                                <li>Content can be created and managed in a more efficient way</li>
-                                <li>Content can be reused across multiple applications</li>
-                                <li>Content can be updated in real-time</li>
-                                <li>Content can be displayed in a consistent way across different applications</li> 
-                                <li>Content can be personalized based on user needs</li>
-                                <li>Content can be optimized for different devices</li>
-                            </ul>
-                        </p>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
-<!--
+
     (((<a href="https://milo.adobe.com/tools/caas#~~H4sIAAAAAAAACnVV227bOBD9Fz5LjW1Zta23XLEGnMZbO9iHRVGMyJFEhCK1vDhRi/x7Qd3tZN+kM/eZM8PfBBjjlisJ4jv+59DYPWgoDUn+/REQkCBqy6m5VUIg9XrfoESSEDIRHjXQl21ZaTSGK0mSDIRBr8B2Kuf0CHnvz1l1q5y0ut6BzAfNVKmXEvTLlip5QB+pDTHFn6WZSChodrC18LnMk0WHHLkVeE2pTyTlgtt6hycUJPkaEDqUcGNlb1pwxlCSqXQscMQav5fggf8aMGmBS9Q+mcVs9ghv/3Bmi06E0h7rCsc20LYFJCEUwCTd75Uz3sAZq8pb0KzzbeG6CUcS8tOgyEhAmPqm7A5+1TsFbGgi4wZSgTcgJWozwhoye5cO/yhZpbj0fXx9ff0CTKX4haryiha8RA0hVPxqrJJ4ixPXSpYou+bjGxWOIfNZdiV10FhjBkKkQF/ux3AkIBmCdXq0/N03aOvLTSmkdJlh+DXLojBerzbhhs7jkK0zpFG2nC0jIO/BuVEWz1erNFuFNE3jMEbGwvUsw3ARreMFTTcrtog+GrGYQhzPwiWjEMZRHIXrxSYLo2wzS+k63azhY6R1FC3n8TINMY4xjBcxhumMbcLNKsUNsnmcRRF597VzYVHfn4aGtcCN44LtQXpCNqtQguV0EO8UhW7QAjM7wXNOSUKUHqC+x+3PbUOZM+hQqNf7srL1MPbcWdsQdPlGAlIgsMFNwRneWtiy8/9xllxeDFeAzB3k2DO4/79qdklArVxDeR/OVR5SwB6VxsnqVZqXoGsSEKnsxZ1QUtS+hJtu/wfCdMUofWFQQc5l071rycvmY4gDOTIyVbmXfk/GxRklfzuQltsmtvxE3tXUAc1ARuGzwWOBJUajoQCKhRIM9bMWLRU0Gies2aPetw2cz0hADIKmxQNH0Q/BIFWSga7HIgfooJym2IPW9+ZG6XagVjsMiJk0zzw0nBiyOpM9yfPOeuFDz7EJtr3QOTQJn0FHZf0j0pQ3CpS2d2Dx2tAP2B1+Aj4qxjM+mU4jwAyc8MvEertW0I5yrypXnRm0+HeQTJUHKCvBJ69No+CX86C0PUMfuvN0BvYZXZbQ4x/KaMOeQ2hQnxTXe6UESeaz2exC0GSJJIlavH3JLhw34EW4kQkWctPS7P/vutchXlXnaP27cuL+RpABu9wN6xntLxLPC4vGXyWGFrgwR3yzT1V3sFg3oIBYn+NfCIzLvHt8SRF5gadHQ7aj8vvlbwMJiDO48769uyGqM/h0Qi2g3nH5MrB68oQ7a9Unp8QZ1FuZKd+R9z8PDKS13QgAAA==">Milo Configurator</a>)))
--->
+
 
     <div class="footer">
        <img src="./images/page.png">
