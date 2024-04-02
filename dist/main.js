@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.24 (3/28/2024, 13:34:40)
+ * Chimera UI Libraries - Build 0.11.24 (4/2/2024, 09:57:10)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -1000,25 +1000,24 @@ var useWindowDimensions = exports.useWindowDimensions = function useWindowDimens
  * @type {[String, Function]} OpenDropdown
  */
 var useExpandable = exports.useExpandable = function useExpandable(dropdownId) {
-    console.log('(((DEBUG)))  Hooks:useExpandable():dropdownId: ', dropdownId);
-
+    // console.log('(((DEBUG)))  Hooks:useExpandable():dropdownId: ', dropdownId);
     var _useContext = (0, _react.useContext)(_contexts.ExpandableContext),
         openDropdown = _useContext.value,
         setOpenDropdown = _useContext.setValue;
 
     var handleToggle = (0, _react.useCallback)(function (e) {
-        console.log('(((DEBUG)))  Hooks:handleToggle():e.target.dataset.testid:', e.target.dataset.testid);
+        // console.log('(((DEBUG)))  Hooks:handleToggle()', e.target.dataset.testid);
+        // if (e.target.dataset.testid === 'consonant-Select-btn') return;
 
         e.stopPropagation();
-        if (e.target.dataset.testid !== 'consonant-Select-btn') {
-            if (openDropdown === dropdownId) {
-                setOpenDropdown(null);
-            } else {
-                setOpenDropdown(dropdownId);
-            }
+        if (openDropdown === dropdownId) {
+            setOpenDropdown(null);
+        } else {
+            setOpenDropdown(dropdownId);
         }
     }, [setOpenDropdown, openDropdown]);
-    console.log('(((DEBUG)))  Hooks:useExpandable():openDropdown:', openDropdown);
+
+    // console.log('(((DEBUG)))  Hooks:useExpandable():openDropdown:', openDropdown);
     return [openDropdown, handleToggle];
 };
 
@@ -2801,12 +2800,14 @@ var getFeaturedSort = exports.getFeaturedSort = function getFeaturedSort(cards) 
  * @returns {Array} - All cards sorted by Date
  */
 var getDateAscSort = exports.getDateAscSort = function getDateAscSort(cards) {
+    console.log('(((DEBUG)))  Helpers:getDateAscSort():cards', cards);
     return cards.sort(function (cardOne, cardTwo) {
-        console.log('(((DEBUG)))  Helpers:getDateAscSort()', cardOne.id, cardTwo.id);
         var cardOneDate = (0, _general.getByPath)(cardOne, 'cardDate');
         var cardTwoDate = (0, _general.getByPath)(cardTwo, 'cardDate');
+        console.log('(((DEBUG)))  Helpers:getDateAscSort()', cardOneDate, cardTwoDate);
+
         if (cardOneDate && cardTwoDate) {
-            return cardOneDate.localeCompare(cardTwoDate);
+            return cardOneDate !== cardTwoDate ? cardOneDate.localeCompare(cardTwoDate) : -1;
         }
         return 0;
     });
@@ -6858,7 +6859,7 @@ var Container = function Container(props) {
      */
 
     (0, _react.useEffect)(function () {
-        console.log('(((DEBUG)))  Container:useEffect():L678');
+        // console.log('(((DEBUG)))  Container:useEffect():L678');
         setFilters(authoredFilters.map(function (filterGroup) {
             return _extends({}, filterGroup, {
                 opened: DESKTOP_SCREEN_SIZE ? filterGroup.openedOnLoad : false,
@@ -6876,7 +6877,7 @@ var Container = function Container(props) {
      * @returns {Void} - an updated state
      */
     (0, _react.useEffect)(function () {
-        console.log('(((DEBUG)))  Container:useEffect():L695');
+        // console.log('(((DEBUG)))  Container:useEffect():L695');
         setFilters(function (origin) {
             return origin.map(function (filter) {
                 var group = filter.group,
@@ -43412,7 +43413,7 @@ var Popup = function Popup(_ref) {
      * @listens ClickEvent
      */
     var handleOptionClick = function handleOptionClick(e, item) {
-        console.log('(((DEBUG))) Popup:handleOptionClick()');
+        // console.log('(((DEBUG))) Popup:handleOptionClick()');
         onSelect(item);
         handleToggle(e);
     };
@@ -52538,7 +52539,7 @@ var CardFilterer = function () {
     }, {
         key: 'sortCards',
         value: function sortCards(sortOption, eventFilter, featuredCardIds, hideCtaIds, isFirstLoad) {
-            console.log('(((DEBUG)))  CardFilterer:sortCards()', sortOption);
+            // console.log('(((DEBUG)))  CardFilterer:sortCards()', sortOption);
 
             if (!this.filteredCards.length) return this;
 

@@ -77,7 +77,7 @@ const Popup = ({
      * @listens ClickEvent
      */
     const handleOptionClick = (e, item) => {
-        console.log('(((DEBUG))) Popup:handleOptionClick()');
+        // console.log('(((DEBUG))) Popup:handleOptionClick()');
         onSelect(item);
         handleToggle(e);
     };

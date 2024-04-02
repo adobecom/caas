@@ -353,15 +353,19 @@ export const getFeaturedSort = cards => cards;
  * @param {Array} cards - All cards in the card collection
  * @returns {Array} - All cards sorted by Date
  */
-export const getDateAscSort = cards => cards.sort((cardOne, cardTwo) => {
-    console.log('(((DEBUG)))  Helpers:getDateAscSort()', cardOne.id, cardTwo.id);
-    const cardOneDate = getByPath(cardOne, 'cardDate');
-    const cardTwoDate = getByPath(cardTwo, 'cardDate');
-    if (cardOneDate && cardTwoDate) {
-        return cardOneDate.localeCompare(cardTwoDate);
-    }
-    return 0;
-});
+export const getDateAscSort = (cards) => {
+    console.log('(((DEBUG)))  Helpers:getDateAscSort():cards', cards);
+    return cards.sort((cardOne, cardTwo) => {
+        const cardOneDate = getByPath(cardOne, 'cardDate');
+        const cardTwoDate = getByPath(cardTwo, 'cardDate');
+        console.log('(((DEBUG)))  Helpers:getDateAscSort()', cardOneDate, cardTwoDate);
+
+        if (cardOneDate && cardTwoDate) {
+            return cardOneDate !== cardTwoDate ? cardOneDate.localeCompare(cardTwoDate) : -1;
+        }
+        return 0;
+    });
+};
 
 /**
  * Returns all Cards Date Sorted (New To Old)

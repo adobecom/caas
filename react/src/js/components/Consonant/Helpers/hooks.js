@@ -66,21 +66,21 @@ export const useWindowDimensions = () => ({
  * @type {[String, Function]} OpenDropdown
  */
 export const useExpandable = (dropdownId) => {
-    console.log('(((DEBUG)))  Hooks:useExpandable():dropdownId: ', dropdownId);
+    // console.log('(((DEBUG)))  Hooks:useExpandable():dropdownId: ', dropdownId);
     const { value: openDropdown, setValue: setOpenDropdown } = useContext(ExpandableContext);
     const handleToggle = useCallback((e) => {
-        console.log('(((DEBUG)))  Hooks:handleToggle():e.target.dataset.testid:', e.target.dataset.testid);
+        // console.log('(((DEBUG)))  Hooks:handleToggle()', e.target.dataset.testid);
+        // if (e.target.dataset.testid === 'consonant-Select-btn') return;
 
         e.stopPropagation();
-        if (e.target.dataset.testid !== 'consonant-Select-btn') {
-            if (openDropdown === dropdownId) {
-                setOpenDropdown(null);
-            } else {
-                setOpenDropdown(dropdownId);
-            }
+        if (openDropdown === dropdownId) {
+            setOpenDropdown(null);
+        } else {
+            setOpenDropdown(dropdownId);
         }
     }, [setOpenDropdown, openDropdown]);
-    console.log('(((DEBUG)))  Hooks:useExpandable():openDropdown:', openDropdown);
+
+    // console.log('(((DEBUG)))  Hooks:useExpandable():openDropdown:', openDropdown);
     return [openDropdown, handleToggle];
 };
 
