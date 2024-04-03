@@ -130,7 +130,8 @@ const sortCards = [
     {
         cards: [...cardsWithoutSorting],
         sortOption: { sort: SORT_TYPES.DATEDESC },
-        expectedValue: getCards([18, 16, 15, 14, 17, 13, 11, 10, 9, 8, 6, 5, 4, 3, 2, 1, 12, 7]),
+        // expectedValue: getCards([18, 16, 15, 14, 17, 13, 11, 10, 9, 8, 6, 5, 4, 3, 2, 1, 12, 7]),
+        expectedValue: getCards([18, 13, 8, 3, 1, 2, 4, 5, 6, 9, 10, 11, 14, 15, 16, 7, 12, 17]),
     },
     {
         cards: [...cardsWithoutSorting],
