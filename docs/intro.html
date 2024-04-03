@@ -19,6 +19,14 @@
             position: relative;
             min-height: 100vh;
         }
+        .banner {
+            background: url(https://milo.adobe.com/drafts/caas/docs/media_12e683bbf3831e4bedbce5d8687c5c71d59fadd42.png);
+            min-width: 320px;
+            height: 125px;
+            display: block;
+            background-position: center;
+            background-size: 102%;
+        }
         .container {
             /* max-width: 85%; */
             display: flex;
@@ -26,20 +34,12 @@
             margin-right: 260px;
         }
         .sidebar {
-            width: 320px;
+            min-width: 320px;
             margin-top: 0;
-            background: #404040;
+            background: linear-gradient(0deg, #dddddd, transparent);
             min-height: 100vh;
         }
 
-        .sidebanner {
-            background: url(https://milo.adobe.com/drafts/caas/docs/media_1dd6821d3cba8f9827215aa6b4cf8e3e324bcf2a2.png);
-            min-width: 320px;
-            height: 90px;
-            display: block;
-            background-position: center;
-            background-size: cover;
-        }
         .sidebar p{
             padding: 6px 12px 0;
             font-size: smaller;
@@ -139,11 +139,9 @@
     </style>
 </head>
     <body>
+    <div class="banner"></div>
     <div class="container">
-
-        <div class="sidebar">
-            <div class="sidebanner"></div>
-        </div>
+        <div class="sidebar"></div>
 
         <div class="content">
             <p class="nav"><a href="./index.html">Back to Docs</a></p>
