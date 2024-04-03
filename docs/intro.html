@@ -26,12 +26,19 @@
             margin-right: 260px;
         }
         .sidebar {
-            width: 340px;
-            margin-top: -160px;
-            background: #404040;
-        }
-        .sidebar img {
             width: 320px;
+            margin-top: 0;
+            background: #404040;
+            min-height: 100vh;
+        }
+
+        .sidebanner {
+            background: url(https://milo.adobe.com/drafts/caas/docs/media_1dd6821d3cba8f9827215aa6b4cf8e3e324bcf2a2.png);
+            min-width: 320px;
+            height: 90px;
+            display: block;
+            background-position: center;
+            background-size: cover;
         }
         .sidebar p{
             padding: 6px 12px 0;
@@ -135,9 +142,7 @@
     <div class="container">
 
         <div class="sidebar">
-            <div class="sidebaner">
-                <img src="https://milo.adobe.com/drafts/caas/docs/media_1dd6821d3cba8f9827215aa6b4cf8e3e324bcf2a2.png" alt="chimea" title="Chimera">
-            </div>
+            <div class="sidebanner"></div>
         </div>
 
         <div class="content">
