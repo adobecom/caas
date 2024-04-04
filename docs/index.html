@@ -159,7 +159,23 @@
         .consonant-CardsGrid--3up .consonant-Card.one-half {
             min-height: auto;
         }
+        .consonant-CardsGrid .consonant-Card.one-half .consonant-Card-header .consonant-Card-banner {
+            background-color: #E18722 !important;
+            color: #fff !important;
+        }
+        .consonant-CardFooter {
+            margin-top: auto;
+            padding-top: 0;
+        }
 
+        .card-collection-milo {
+            background-color: transparent;
+            min-height: 406px !important;
+        }
+        .card-collection-aem {
+            background-color: transparent;
+            min-height: 438px !important;
+        }
     </style>
 </head>
 <body>
@@ -194,8 +210,9 @@
                     This account grants you the necesary access to the CaaS authoring tools.
                 </p>
 
-                <consonant-card-collection id="getting-started-in-milo" data-config=""></consonant-card-collection>
-
+                <div class="card-collection-milo">
+                    <consonant-card-collection id="getting-started-in-milo" data-config=""></consonant-card-collection>
+                </div>
                 <h2 class="getting-started">
                     Getting Started in AEM
                 </h2>
@@ -205,7 +222,9 @@
                     For more information, visit the <a href="">"Enable CaaS in AEM"</a> resource.
                 </p>
 
-                <consonant-card-collection id="getting-started-in-aem" data-config=""></consonant-card-collection>
+                <div class="card-collection-aem">
+                    <consonant-card-collection id="getting-started-in-aem" data-config=""></consonant-card-collection>
+                </div>
 
                 <h2 class="the-team">
                     Meet the Team
@@ -251,9 +270,9 @@
                 },
                 "lazyload": "false",
                 "button": {
-                    "style": "hidden"
+                    "style": "call-to-action"
                 },
-                "collectionButtonStyle": "hidden",
+                "collectionButtonStyle": "call-to-action",
                 "resultsPerPage": 4,
                 "endpoint": endpoint,
                 "fallbackEndpoint": "",
