@@ -1,0 +1,364 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <link rel="stylesheet" href="../dependencies/typekit.css" type="text/css">
+    <title>CaaS: Milo CaaS Configurator</title>
+    <style>
+        body {
+            font-family: 'adobe-clean', sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            min-height: 100vh;
+        }
+        .banner {
+            background: url(https://milo.adobe.com/drafts/caas/docs/media_12e683bbf3831e4bedbce5d8687c5c71d59fadd42.png);
+            min-width: 320px;
+            height: 160px;
+            display: block;
+            background-position: center;
+            background-size: 102%;
+        }
+        .container {
+            /* max-width: 85%; */
+            display: flex;
+            gap: 40px;
+        }
+        .sidebar {
+            min-width: 320px;
+            margin-top: 0;
+            background: linear-gradient(0deg, #dddddd, transparent);
+            min-height: 100vh;
+        }
+        .sidebar h3 {
+            margin-bottom: 10px;
+        }
+        .sidebar .toc {
+            padding: 5px 10px 30px 30px;
+            position: sticky;
+            top: 0;
+            left: 0;
+        }
+        .sidebar ul {
+            font-size: 15px;
+            padding: 4px 8px;
+            margin-top: 0;
+        }        
+        .sidebar ul li{
+            list-style: none;
+            margin: 4px 0;
+            padding: 0;
+        }
+        .sidebar p{
+            padding: 6px 12px 0;
+            font-size: smaller;
+            color: #bbb;
+        }
+        .sidebar a  {
+            color: #666;
+            text-decoration: none;
+        }
+
+        .intro.content {
+            padding: 10px 20px;    
+            max-width: 960px;
+        }
+        .nav {
+            margin: 15px 0 -15px;
+            font-size: 15px;
+            font-weight: 400;
+            color: #666;
+        }
+        h1 {
+            font-size: 2em;
+            line-height: 1.125;
+            font-weight: 700;
+            margin: 1em 0 .35em;
+        }
+        h1 span {
+            display: inline-block;
+            color: #747474;
+            font-weight: 400;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin: 1em 0 .35em;
+        }
+        h2.getting-started:before {
+            content: url(./images/tools.svg);
+            vertical-align: -2px;
+        }
+        h2.the-team:before {
+            content: url(./images/team.svg);
+            vertical-align: -2px;
+        }
+
+        p {
+            margin: 0 0 1em;
+        }
+        p, ul {
+            font-size: 18px;
+            font-weight: 200;
+        }
+        a {
+            color: #0073e6;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+        .intro-content span {
+            text-transform: uppercase;
+            font-weight: 700;
+            background: #aa99ff;
+            color: white;
+            padding: 0 6px 0 2px;
+        }
+        ul.benefits {
+            column-count: 2;
+            column-gap: 50px;
+            max-width: 900px;
+        }
+        .footer img {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 260px;
+            z-index: -1;
+        }
+        strong {
+            font-weight: 400;
+        }
+
+
+        .blade {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        dt {
+            font-weight: 500;
+        }
+        dd {
+            font-weight: 300;
+            margin: 0 10px 10px 0;
+        }
+
+
+        @media (max-width: 768px) {
+            body {
+                padding-bottom: 120px;
+            }
+            .sidebar {
+                /* display: none; */
+                height: 100px;
+                overflow: hidden;
+                margin: -16px;
+                width: 100vw;
+            }
+            .sidebar img {
+                position: relative;
+                top: -300px;
+                width: 100vw;
+                filter: brightness(0.8);
+            }   
+            .container {
+                padding: 1em;
+                flex-direction: column;
+            }
+            h1 {
+                margin-top: 20px;
+                line-height: 1;
+            }
+        }
+    </style>
+</head>
+    <body>
+    <div class="banner"></div>
+    <div class="container">
+        <div class="sidebar">
+            <div class="toc">
+                <h3>Related Links</h3>
+                <b>Content Creation</b>
+                <ul class="related-links">
+                    <li><a>Create or Edit a Card in Milo</a></li>
+                    <li><a>Send a Card to CaaS</a></li>
+                    <li><a>Preview a Card in the Configurator</a></li>
+                    <li><a>Create a new Marquee</a></li>
+                </ul>
+                
+                <b>Content Consumption</b>
+                <ul class="related-links">
+                    <li><a href="https://milo.adobe.com/tools/caas"><strong>Milo Collection Configurator</strong></a></li>
+                    <li><a href="#basics"><strong>The Basics</strong>: Create a new Card Collection</a></li>
+                    <li><a href="#ui"><strong>UI</strong>: Customize your Collection</a></li>
+                    <li><a href="#tags"><strong>Tags</strong>: Configure your query</a></li>
+                    <li><a href="#cards"><strong>Cards</strong>: Select Feature Cards</a></li>
+                    <li><a href="#sort"><strong>Sort</strong>: Enable and configure</a></li>
+                    <li><a href="#bookmarks"><strong>Bookmarks</strong>: Configure Bookmarks</a></li>
+                    <li><a href="#filters"><strong>Filters</strong>: Customize Filters behavior</a></li>
+                    <li><a href="#search"><strong>Search</strong>: Personalize Search</a></li>
+                    <li><a href="#pagination"><strong>Pagination</strong>: Configure pagination</a></li>
+                    <li><a href="#target"><strong>Target</strong>: Enable/Disable</a></li>
+                    <li><a href="#analytics"><strong>Analytis</strong>: Track impressions</a></li>
+                    <li><a href="#advanced"><strong>Advanced</strong> options </a></li>
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="intro content">
+            <p class="nav">
+                <a href="./index.html">Home</a>
+                > <a href="./intro.html">Introduction to CaaS</a>
+                > Milo Configurator
+            </p>
+            <div class="column">
+                <a name="intro"></a>
+                <div class="intro">
+                    <!-- Learn how the CaaS framework works both in front and behind the scenes and how to create and display your content. -->
+                    
+                    <h1>
+                        Introduction to CaaS - <span>Milo CaaS Configurator</span>
+                    </h1>
+                    <p>
+                        The following provides a concise overview of the CaaS Milo Configurator tool. The cofigurator
+                        is a tool that allows you to create and customize your collection in real time. Once you have
+                        created your collection, you can simply copy and paste the collection link in your Milo page.
+                    </p>
+
+
+                    <div class="intro-content">
+
+                        <a name="basics"></a>
+                        <!-- <h2><span>Basics</span> </h2> -->
+                        <h2>The Basics Tab </h2>
+                        <div class="blade">
+                            <div>
+                                <img src="./images/configurator-basics.png">
+                            </div>
+                            <div>
+                                <dl>
+                                    <dt>Collection Name</dt>
+                                    <dd><i>(Optional field)</i> Collection name is used only for the collection link pasted in Milo.</dd>
+                                    <dt>Collection Title</dt>
+                                    <dd><i>(Optional field)</i> Collection titles are displayed above the collection. The collection titles can 
+                                        be localized <a>using placeholders</a>.</dd>
+                                    <dt>Collection Title Level</dt>
+                                    <dd>Choose the appropriate collection title heading level for the page's SEO structure. 
+                                        <br>The default value is <strong>H3</strong>.</dd>
+                                    <dt>Source</dt>
+                                    <dd>Select the source for the collection content. If no Source is selected, the data </dd>
+                                    <dt>Results Per Page</dt>
+                                    <dd>Upload an image for your collection.</dd>
+                                    <dt>Total Cards to Show</dt>
+                                    <dd>Enter tags for your collection.</dd>
+                                    <dt>Country</dt>
+                                    <dd>Enter a target for your collection.</dd>
+                                    <dt>Language</dt>
+                                    <dd>Enter analytics for your collection.</dd>
+                                </dl>
+
+                            </div>
+                        </div>
+
+
+                        <!-- <a name="basics"></a>
+                        <h2><span>Basics</span> </h2>
+                        <p>
+                            Description of the CaaS framework and its components.
+                        </p> -->
+
+                        <a name="ui"></a>
+                        <h2><span>UI</span></h2>
+                        <p>
+                            Customize the look and feel of your collection.
+                        </p>
+
+                        <a name="tags"></a>
+                        <h2><span>Tags</span></h2>
+                        <p>
+                            Configure your query.
+                        </p>
+
+                        <a name="cards"></a>
+                        <h2><span>Cards</span></h2>
+                        <p>
+                            Select feature cards.
+                        </p>
+
+                        <a name="sort"></a>
+                        <h2><span>Sort</span></h2>
+                        <p>
+                            Enable and configure sorting.
+                        </p>
+
+                        <a name="bookmarks"></a>
+                        <h2><span>Bookmarks</span></h2>
+                        <p>
+                            Configure bookmarks.
+                        </p>
+
+                        <a name="filters"></a>
+                        <h2><span>Filters</span></h2>
+                        <p>
+                            Customize Filters behavior.
+                        </p>
+
+                        <a name="search"></a>
+                        <h2><span>Search</span></h2>
+                        <p>
+                            Personalize Search.
+                        </p>
+
+                        <a name="pagination"></a>
+                        <h2><span>Pagination</span></h2>
+                        <p>
+                            Configure pagination.
+                        </p>
+
+                        <a name="target"></a>
+                        <h2><span>Target</span></h2>
+                        <p>
+                            Enable/Disable Target.
+                        </p>
+
+                        <a name="analytics"></a>
+                        <h2><span>Analytics</span></h2>
+                        <p>
+                            Track impressions.
+                        </p>
+
+                        <a name="advanced"></a>
+                        <h2><span>Advanced</span></h2>
+                        <p>
+                            Advanced options.
+                        </p>
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="footer">
+       <img src="./images/page.png">
+    </div>
+</body>
+
+
+</div>
+</html>

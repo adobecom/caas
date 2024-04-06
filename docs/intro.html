@@ -22,7 +22,7 @@
         .banner {
             background: url(https://milo.adobe.com/drafts/caas/docs/media_12e683bbf3831e4bedbce5d8687c5c71d59fadd42.png);
             min-width: 320px;
-            height: 125px;
+            height: 160px;
             display: block;
             background-position: center;
             background-size: 102%;
@@ -30,8 +30,7 @@
         .container {
             /* max-width: 85%; */
             display: flex;
-            gap: 20px;
-            margin-right: 260px;
+            gap: 40px;
         }
         .sidebar {
             min-width: 320px;
@@ -39,20 +38,41 @@
             background: linear-gradient(0deg, #dddddd, transparent);
             min-height: 100vh;
         }
-
+        .sidebar h3 {
+            margin-bottom: 10px;
+        }
+        .sidebar .toc {
+            padding: 5px 10px 30px 30px;
+        }
+        .sidebar ul {
+            font-size: 15px;
+            padding: 4px 8px;
+            margin-top: 0;
+        }        
+        .sidebar ul li{
+            list-style: none;
+            margin: 4px 0;
+            padding: 0;
+        }
         .sidebar p{
             padding: 6px 12px 0;
             font-size: smaller;
             color: #bbb;
         }
         .sidebar a  {
-            color: #bbb;
+            color: #666;
             text-decoration: none;
         }
-        
 
+        .intro.content {
+            padding: 10px 20px;    
+            max-width: 960px;
+        }
         .nav {
             margin: 15px 0 -15px;
+            font-size: 15px;
+            font-weight: 400;
+            color: #666;
         }
         h1 {
             font-size: 2em;
@@ -102,12 +122,20 @@
             color: white;
             padding: 0 6px 0 2px;
         }
+        ul.benefits {
+            column-count: 2;
+            column-gap: 50px;
+            max-width: 900px;
+        }
         .footer img {
             position: absolute;
             bottom: 0;
             right: 0;
             width: 260px;
             z-index: -1;
+        }
+        strong {
+            font-weight: 400;
         }
 
         @media (max-width: 768px) {
@@ -141,54 +169,96 @@
     <body>
     <div class="banner"></div>
     <div class="container">
-        <div class="sidebar"></div>
+        <div class="sidebar">
+            <div class="toc">
+                <h3>Related Links</h3>
+                <b>Content Creation</b>
+                <ul class="related-links">
+                    <li><a>Create or Edit a Card in Milo</a></li>
+                    <li><a>Send a Card to CaaS</a></li>
+                    <li><a>Preview a Card in the Configurator</a></li>
+                    <li><a>Create a new Marquee</a></li>
+                </ul>
+                
+                <b>Content Consumption</b>
+                <ul class="related-links">
+                    <li><a href="https://milo.adobe.com/tools/caas"><strong>Milo Collection Configurator</strong></a></li>
+                    <li><a href="./configurator.html#basics"><strong>The Basics</strong>: Create a new Card Collection</a></li>
+                    <li><a href="./configurator.html#ui"><strong>UI</strong>: Customize your Collection</a></li>
+                    <li><a href="./configurator.html#tags"><strong>Tags</strong>: Configure your query</a></li>
+                    <li><a href="./configurator.html#cards"><strong>Cards</strong>: Select Feature Cards</a></li>
+                    <li><a href="./configurator.html#sort"><strong>Sort</strong>: Enable and configure</a></li>
+                    <li><a href="./configurator.html#bookmarks"><strong>Bookmarks</strong>: Configure Bookmarks</a></li>
+                    <li><a href="./configurator.html#filters"><strong>Filters</strong>: Customize Filters behavior</a></li>
+                    <li><a href="./configurator.html#search"><strong>Search</strong>: Personalize Search</a></li>
+                    <li><a href="./configurator.html#pagination"><strong>Pagination</strong>: Configure pagination</a></li>
+                    <li><a href="./configurator.html#target"><strong>Target</strong>: Enable/Disable</a></li>
+                    <li><a href="./configurator.html#analytics"><strong>Analytis</strong>: Track impressions</a></li>
+                    <li><a href="./configurator.html#advanced"><strong>Advanced</strong> options </a></li>
+                </ul>
+            </div>
+        </div>
 
-        <div class="content">
-            <p class="nav"><a href="./index.html">Back to Docs</a></p>
+
+        <div class="intro content">
+            <p class="nav">
+                <a href="./index.html">Home</a>
+                > Introduction to CaaS
+            </p>
             <div class="column">
                 <a name="intro"></a>
                 <div class="intro">
+                    <!-- Learn how the CaaS framework works both in front and behind the scenes and how to create and display your content. -->
                     <h1>
                         Introduction to CaaS - <span>Content as a Service</span>
                     </h1>
-
                     <p>
-                        The following is a brief introduction to the CaaS platform. For a more detailed information, features an schedules, 
-                        please visit the <a href="javascript:alert('Opps! \nThis link is still not ready or even worse, not working!\nPlease check back soon.')">CaaS Wiki page</a>. 
+                        The following provides a concise overview of the CaaS platform. For a comprehensive understanding, 
+                        including detailed features and schedules, please refer to the 
+                        <a href="javascript:alert('Opps! \nThis link is still not ready or even worse, not working!\nPlease check back soon.')">CaaS Wiki page</a>. 
                     </p>
 
                     <div class="intro-content">
+                        <h2><span>What</span> is it?</h2>
                         <p>
-                            <span>What</span>
-                            CaaS is a <i>Content As A Service</i> platform that allows users to create and manage content in a more efficient way.
-                            The content can be created in either Milo or AEM and then sent to the CaaS backend service (Chimera) where it gets stored in a database. 
-                            The backend service APIs can then be used to retrieve the content and display it in any application.
+                            CaaS, short for <i>Content As A Service</i>, is a platform designed to streamline content creation and management. 
+                            Users can generate content within <strong>Milo</strong> or <strong>AEM</strong>, then transmit it to the CaaS backend service (Chimera) for 
+                            storage in a database. 
                         </p>
                         <p>
-                            <span>How</span>
+                            The backend service's APIs facilitate content retrieval, enabling display across various applications.
+                            All content is stored in JSON format, allowing for easy integration with different platforms.
+                        </p>
+
+                        <h2><span>How</span> does it work?</h2>
+                        <p>
                             From the users point of view there are two main components in the CaaS framework: the content creation and content consumption. 
-                            Both, the creation and consumption of content can be done in either Milo or AEM platforms.
+                            Both, the creation and consumption of content can be done in either <strong>Milo</strong> or <strong>AEM</strong> platforms.
                         </p>
                         <ul>
                             <li>
-                                <i>The content creation</i> process is responsible for <a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">creating the content</a> and <a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">sending it to the backend service</a>. 
-                                Each invividual piece of content can be render as a card or a marquee.
+                                <b>Content creation</b>: This process involves generating content and transmitting it to the backend service. 
+                                Each piece of content must be <i>created individually</i> in order to generate an unique content ID, then <a>Sent to Caas</a>
+                                so that it can then be rendered as either a card or a marquee.
                             </li>
                             <li>
-                                <i>The content consumption</i> process is responsible for retrieving the content from the backend service as a 
-                                JSON format and displaying it in the application. Content can be rendered as a <a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">grid</a> or <a href="javascript:alert('Opps! \nThis link is still not ready! Please check back soon.')">carousel</a> format.
+                                <b>Content consumption</b>: Here, content is fetched from the backend service in JSON format and displayed 
+                                within the application. Content can be presented in <strong>grid</strong> or <strong>carousel</strong> formats. The JSON response can 
+                                include hundreds of content result items depending on the <a>Card Collection</a> configuration. 
                             </li>
                         </ul>
+
+                        <h2><span>Why</span> should I use it?</h2>
                         <p>
-                            <span>Why</span>
+                            
                             Some of the benefits of using CaaS are:
-                            <ul>
-                                <li>Content can be created and managed in a more efficient way</li>
-                                <li>Content can be reused across multiple applications</li>
-                                <li>Content can be updated in real-time</li>
-                                <li>Content can be displayed in a consistent way across different applications</li> 
-                                <li>Content can be personalized based on user needs</li>
-                                <li>Content can be optimized for different devices</li>
+                            <ul class="benefits">
+                                <li>Enhanced <i>efficiency</i> in content creation and management</li>
+                                <li>Facilitated <i>content reuse</i> across multiple applications</li>
+                                <li><i>Real-time</i> content updates</li>
+                                <li><i>Consistent</i> content display across diverse applications</li> 
+                                <li>Personalization options <i>tailored</i> to user preferences</li>
+                                <li></i>Optimization </i>for various devices</li>
                             </ul>
                         </p>
                     </div>
