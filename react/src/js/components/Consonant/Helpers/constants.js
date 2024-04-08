@@ -265,6 +265,7 @@ export const LAYOUT_CONTAINER = {
     SIZE_1600_PX: '1600MaxWidth',
     SIZE_100_VW_32_MARGIN: '32Margin',
     CAROUSEL: 'carousel',
+    EVENTS: 'events',
 };
 
 /**

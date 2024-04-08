@@ -161,7 +161,9 @@ const Container = (props) => {
     const DESKTOP_SCREEN_SIZE = window.innerWidth >= DESKTOP_MIN_WIDTH;
     const isXorFilter = filterLogic.toLowerCase().trim() === FILTER_TYPES.XOR;
     const isCarouselContainer = authoredLayoutContainer === LAYOUT_CONTAINER.CAROUSEL;
-    const isStandardContainer = authoredLayoutContainer !== LAYOUT_CONTAINER.CAROUSEL;
+    const isEventsContainer = authoredLayoutContainer === LAYOUT_CONTAINER.EVENTS;
+    // const isStandardContainer = authoredLayoutContainer !== LAYOUT_CONTAINER.CAROUSEL;
+    const isStandardContainer = !isCarouselContainer;
     /**
      **** Hooks ****
      */
@@ -1133,7 +1135,8 @@ const Container = (props) => {
      * Conditions to display the Left Filter Panel Component
      * @type {Boolean}
      */
-    const displayLeftFilterPanel = filterPanelEnabled && filterPanelType === FILTER_PANEL.LEFT;
+    const displayLeftFilterPanel = !isEventsContainer
+        && filterPanelEnabled && filterPanelType === FILTER_PANEL.LEFT;
 
     /**
      * Whether at lease one card was returned by Card Filterer
@@ -1158,13 +1161,13 @@ const Container = (props) => {
      * Whether we are using the top filter panel or not
      * @type {Boolean}
      */
-    const isTopFilterPanel = filterPanelType === FILTER_PANEL.TOP;
+    const isTopFilterPanel = isEventsContainer || filterPanelType === FILTER_PANEL.TOP;
 
     /**
      * Whether we are using the top filter panel or not
      * @type {Boolean}
      */
-    const isLeftFilterPanel = filterPanelType === FILTER_PANEL.LEFT;
+    const isLeftFilterPanel = !isEventsContainer || filterPanelType === FILTER_PANEL.LEFT;
 
     /**
      * Ui options that cause grid to rerender necessitate the aria attribute being set
@@ -1216,6 +1219,7 @@ const Container = (props) => {
         'consonant-Wrapper--1600MaxWidth': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_1600_PX,
         'consonant-Wrapper--carousel': isCarouselContainer,
         'consonant-Wrapper--withLeftFilter': filterPanelEnabled && isLeftFilterPanel,
+        'consonant-Wrapper--events': isEventsContainer,
     });
 
     return (
@@ -1264,7 +1268,7 @@ const Container = (props) => {
                         </div>
                         }
                         <div className={`consonant-Wrapper-collection${isLoading ? ' is-loading' : ''}`}>
-                            { isTopFilterPanel && isStandardContainer &&
+                            {isEventsContainer || isTopFilterPanel && isStandardContainer &&
                             <FiltersPanelTop
                                 filterPanelEnabled={filterPanelEnabled}
                                 filters={filters}
