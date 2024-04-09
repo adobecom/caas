@@ -58,6 +58,7 @@ export const FILTER_TYPES = {
 export const FILTER_PANEL = {
     LEFT: 'left',
     TOP: 'top',
+    EVENTS: 'events',
 };
 
 /**

@@ -163,7 +163,7 @@ const Container = (props) => {
     const isCarouselContainer = authoredLayoutContainer === LAYOUT_CONTAINER.CAROUSEL;
     const isEventsContainer = authoredLayoutContainer === LAYOUT_CONTAINER.EVENTS;
     // const isStandardContainer = authoredLayoutContainer !== LAYOUT_CONTAINER.CAROUSEL;
-    const isStandardContainer = !isCarouselContainer;
+    const isStandardContainer = !isCarouselContainer && isEventsContainer;
     /**
      **** Hooks ****
      */
@@ -1167,7 +1167,7 @@ const Container = (props) => {
      * Whether we are using the top filter panel or not
      * @type {Boolean}
      */
-    const isLeftFilterPanel = !isEventsContainer || filterPanelType === FILTER_PANEL.LEFT;
+    const isLeftFilterPanel = filterPanelType === FILTER_PANEL.LEFT && !isEventsContainer;
 
     /**
      * Ui options that cause grid to rerender necessitate the aria attribute being set
@@ -1219,7 +1219,7 @@ const Container = (props) => {
         'consonant-Wrapper--1600MaxWidth': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_1600_PX,
         'consonant-Wrapper--carousel': isCarouselContainer,
         'consonant-Wrapper--withLeftFilter': filterPanelEnabled && isLeftFilterPanel,
-        'consonant-Wrapper--events': isEventsContainer,
+        'consonant-Wrapper--1200MaxWidth events': isEventsContainer,
     });
 
     return (
@@ -1268,7 +1268,13 @@ const Container = (props) => {
                         </div>
                         }
                         <div className={`consonant-Wrapper-collection${isLoading ? ' is-loading' : ''}`}>
-                            {isEventsContainer || isTopFilterPanel && isStandardContainer &&
+                            {isEventsContainer &&
+                                <div className="pill-ctas">
+                                    <h3>*** EVENTS FILTERS GO HERE ***</h3>
+                                </div>
+                            }
+
+                            {isTopFilterPanel && isStandardContainer &&
                             <FiltersPanelTop
                                 filterPanelEnabled={filterPanelEnabled}
                                 filters={filters}
