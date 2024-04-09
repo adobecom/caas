@@ -67,7 +67,7 @@
             text-decoration: none;
         }
 
-        .intro.content {
+        .content {
             padding: 10px 20px;    
             max-width: 960px;
         }
@@ -91,8 +91,11 @@
 
         h2 {
             font-size: 1.5em;
-            font-weight: 700;
-            margin: 1em 0 .35em;
+            /* font-weight: 300; */
+            margin: .5em 0 .35em;
+        }
+        h2 span {
+            font-weight: 600;
         }
         h2.getting-started:before {
             content: url(./images/tools.svg);
@@ -103,7 +106,7 @@
             vertical-align: -2px;
         }
 
-        p {
+        section p:first-child {
             margin: 0 0 1em;
         }
         p, ul {
@@ -118,13 +121,6 @@
         a:hover {
             text-decoration: underline;
         }
-        .intro-content span {
-            text-transform: uppercase;
-            font-weight: 700;
-            background: #aa99ff;
-            color: white;
-            padding: 0 6px 0 2px;
-        }
         ul.benefits {
             column-count: 2;
             column-gap: 50px;
@@ -137,7 +133,7 @@
             width: 260px;
             z-index: -1;
         }
-        strong {
+        b, strong {
             font-weight: 400;
         }
 
@@ -147,14 +143,54 @@
             gap: 20px;
             margin: 20px 0;
         }
+
+        code {
+            background: #f6f6f6;
+            display: block;
+            margin: 6px;
+            padding: 6px;
+            font-size: 13px;
+        }
+
+        /* **************************************************** */
         dt {
             font-weight: 500;
         }
-        dd {
+        dd,
+        dd ul {
             font-weight: 300;
-            margin: 0 10px 10px 0;
+            margin: 0 10px 10px 10px;
+            font-size: 16px;
         }
 
+        /* **************************************************** */
+        table {
+            border-collapse: collapse;
+            width: 90%;
+        }
+        td:first-child {
+            font-weight: 500;
+            width: 30%
+        }
+
+        td {
+            border: solid 1px #ccc;
+            padding: 4px 10px;
+            vertical-align: top;
+            font-size: 16px;
+            font-weight: 300;
+        }
+        td ul {
+            font-weight: 300;
+            margin: 0 10px 10px 0;
+            font-size: 16px;
+            padding-left: 30px;
+        }
+
+        hr.divider {
+            margin-top: 40px;
+            border-top: 1px solid #ccc;
+        }
 
         @media (max-width: 768px) {
             body {
@@ -184,172 +220,547 @@
         }
     </style>
 </head>
-    <body>
+<body>
     <div class="banner"></div>
     <div class="container">
         <div class="sidebar">
             <div class="toc">
                 <h3>Related Links</h3>
-                <b>Content Creation</b>
+                <a href="./authoring-milo.html"><b>Authoring in Milo</b></a>
                 <ul class="related-links">
-                    <li><a>Create or Edit a Card in Milo</a></li>
-                    <li><a>Send a Card to CaaS</a></li>
-                    <li><a>Preview a Card in the Configurator</a></li>
-                    <li><a>Create a new Marquee</a></li>
+                    <li><a href="./authoring-milo.html#create-new-card">Create or Edit a Card in Milo</a></li>
+                    <li><a href="./authoring-milo.html#send-to-caas">Send a Card to CaaS</a></li>
+                    <li><a href="./authoring-milo.html#create-card-collection">Create a Card Collection</a></li>
+                    <li><a href="./authoring-milo.html#preview-card">Preview a Card in the Configurator</a></li>
+                    <li><a href="./authoring-milo.html#bulk-publisher">Using the Bulk Publisher</a></li>
+                    <li><a href="./authoring-milo.html#create-new-marquee">Create a new Marquee</a></li>
                 </ul>
                 
-                <b>Content Consumption</b>
+                <b>Content Consumption in Milo</b>
                 <ul class="related-links">
-                    <li><a href="https://milo.adobe.com/tools/caas"><strong>Milo Collection Configurator</strong></a></li>
-                    <li><a href="#basics"><strong>The Basics</strong>: Create a new Card Collection</a></li>
-                    <li><a href="#ui"><strong>UI</strong>: Customize your Collection</a></li>
-                    <li><a href="#tags"><strong>Tags</strong>: Configure your query</a></li>
-                    <li><a href="#cards"><strong>Cards</strong>: Select Feature Cards</a></li>
-                    <li><a href="#sort"><strong>Sort</strong>: Enable and configure</a></li>
-                    <li><a href="#bookmarks"><strong>Bookmarks</strong>: Configure Bookmarks</a></li>
-                    <li><a href="#filters"><strong>Filters</strong>: Customize Filters behavior</a></li>
-                    <li><a href="#search"><strong>Search</strong>: Personalize Search</a></li>
-                    <li><a href="#pagination"><strong>Pagination</strong>: Configure pagination</a></li>
-                    <li><a href="#target"><strong>Target</strong>: Enable/Disable</a></li>
-                    <li><a href="#analytics"><strong>Analytis</strong>: Track impressions</a></li>
-                    <li><a href="#advanced"><strong>Advanced</strong> options </a></li>
+                    <li><a href="https://milo.adobe.com/tools/caas"><b>Milo Collection Configurator</b></a></li>
+                    <li><a href="./configurator.html#basics"><b>The Basics</b>: Create a new Card Collection</a></li>
+                    <li><a href="./configurator.html#ui"><b>UI</b>: Customize your Collection</a></li>
+                    <li><a href="./configurator.html#tags"><b>Tags</b>: Configure your query</a></li>
+                    <li><a href="./configurator.html#cards"><b>Cards</b>: Select Feature Cards</a></li>
+                    <li><a href="./configurator.html#sort"><b>Sort</b>: Enable and configure</a></li>
+                    <li><a href="./configurator.html#bookmarks"><b>Bookmarks</b>: Configure Bookmarks</a></li>
+                    <li><a href="./configurator.html#filters"><b>Filters</b>: Customize Filters behavior</a></li>
+                    <li><a href="./configurator.html#search"><b>Search</b>: Personalize Search</a></li>
+                    <li><a href="./configurator.html#pagination"><b>Pagination</b>: Configure pagination</a></li>
+                    <li><a href="./configurator.html#target"><b>Target</b>: Enable/Disable</a></li>
+                    <li><a href="./configurator.html#analytics"><b>Analytis</b>: Track impressions</a></li>
+                    <li><a href="./configurator.html#advanced"><b>Advanced</b> options </a></li>
+        
+                </ul>
+
+                <b>Content Consumption in AEM</b>
+                <ul class="related-links">
+                    <li><a href="#"><b>Card Collection Component</b></a></li>
                 </ul>
             </div>
         </div>
 
-
-        <div class="intro content">
+        <div class="content">
             <p class="nav">
                 <a href="./index.html">Home</a>
                 > <a href="./intro.html">Introduction to CaaS</a>
                 > Milo Configurator
             </p>
-            <div class="column">
-                <a name="intro"></a>
-                <div class="intro">
+
+            <a name="intro"></a>
+            <div class="intro">
+                <section>
                     <!-- Learn how the CaaS framework works both in front and behind the scenes and how to create and display your content. -->
                     
                     <h1>
                         Introduction to CaaS - <span>Milo CaaS Configurator</span>
                     </h1>
                     <p>
-                        The following provides a concise overview of the CaaS Milo Configurator tool. The cofigurator
-                        is a tool that allows you to create and customize your collection in real time. Once you have
-                        created your collection, you can simply copy and paste the collection link in your Milo page.
+                        The following provides a concise overview of the <a href="https://milo.adobe.com/tools/caas">CaaS Milo Configurator</a>. 
+                        The configurator is a tool that allows you to quickly create and customize your collection in real time.
+                        Using the configurator, you can easily visualize your collection in real time, customize the look and feel,
+                        and configure the collection layout to meet your specific needs.
+                    </p>
+                    <p>
+                        Once the collection is created, you can easily add it to any <b>Milo</b> page by simply copying and pasting the collection link.
+                    </p>
+                </section>
+
+                <!-- ******************************************************* -->
+                <section>
+                    <hr class="divider">
+                    <a name="basics"></a>
+                    <!-- <h2><span>Basics</span> </h2> -->
+                    <h2>The <span>Basics</span> Tab </h2>
+                    <p>
+                        The Basics tab in the Milo CaaS Configurator allows you to configure the basic settings for your collection. 
+                        The following options are available in the Basics tab:
+                    </p>
+                    <table>
+                        <tr>
+                            <td>Collection Name</td>
+                            <td>Collection name is used only for the collection link pasted in Milo.
+                                <br><i>(Optional field)</i></dd>
+                        </tr>
+                        <tr>
+                            <td>Collection Title</td>
+                            <td>Collection titles are displayed above the collection. The collection titles can 
+                            be localized <a>using placeholders</a>.
+                            <br><i>(Optional field)</i></dd>
+
+                        </tr>
+                        <tr>
+                            <td>Collection Title Level</td>
+                            <td>Choose the appropriate collection title heading level for the page's SEO structure. 
+                            <br>The default value is <b>&lt;h3&gt;</b>.</dd>
+                        </tr>
+                        <tr>
+                            <td>Source</td>
+                            <td>Select the source for the collection content. If no Source is selected, the data </dd>
+                        </tr>
+                        <tr>
+                            <td>Results Per Page</td>
+                            <td>Upload an image for your collection.</dd>
+                        </tr>
+                        <tr>
+                            <td>Total Cards to Show</td>
+                            <td>Enter tags for your collection.</dd>
+                        </tr>
+                        <tr>
+                            <td>Auto detect country & lang</td>
+                            <td>Use this checkbox to detect country and language automatically.</dd>
+                        </tr>
+                        <tr>
+                            <td>Country</td>
+                            <td>Enter a target for your collection.</dd>
+                        </tr>
+                        <tr>
+                            <td>Language</td>
+                            <td>Enter analytics for your collection.</dd>
+                        </table>
+
+                        <p>
+                            For a more detail list of metadata options, please visit the <a href="#">CaaS Wiki page</a>.
+                        </p>
+                </section>
+
+                <!-- **************************** OLD *************************** -->
+                <!--
+                <section>
+                    <hr class="divider">
+                    <a name="ui"></a>
+                    <h2>The UI Tab</h2>
+                    <p>
+                        The UI tab in the Milo CaaS Configurator allows you to customize the look and feel of your collection. 
+                        The following options are available in the UI tab:                  
+                    </p>
+                    <dl>
+                        <tr><td>Show Card Borders</td>
+                        <td>Enable this option to show borders around each card in the collection.</dd>
+                        <tr><td>Disable Card Banners</td>
+                        <td>Enable this option to hide the card banners in the collection.</dd>
+                        <tr><td>Use Light Text</td>
+                        <td>Enable this option to use light text in the collection.</dd>
+                        <tr><td>Use Overlay Links</td>
+                        <td>Enable this option to use overlay links in the collection. With this options seleted 
+                            the entire card becmes clickable.</dd>
+                        <tr><td>Show total card count at top</td>
+                        <td>Enable this option to show the total card count at the top of the collection.</dd>
+                        <tr><td>Card Style</td>
+                        <td>Choose the card style for the collection. The available options are: 
+                            <ul>
+                                <li>1/2 Card</li>
+                                <li>3/4 Card</li>
+                                <li>1/2 Height Card</li>
+                                <li>Full Card</li>
+                                <li>Double Width Card</li>
+                                <li>Product Card</li>
+                                <li>Text Card</li>
+                                <li>Custom Card</li>
+                            </ul>
+                        <tr><td>Card Accessibility Title Level</td>
+                        <td>Choose the appropriate card title heading level for the page's SEO structure. 
+                            <br>The default value is <b>&lt;h3&gt;</b>.</dd>
+                        <tr><td>Layout</td>
+                        <td>Choose the layout for the collection. The available options are: 
+                            <ul>
+                                <li>Grid</li>
+                                <li>Carousel</li>
+                            </ul>
+                        <tr><td>Layout Type</td>
+                        <td>Choose the layout type for the collection. The available options are: 
+                            <ul>
+                                <li>Default</li>
+                                <li>Compact</li>
+                                <li>Full</li>
+                            </ul>
+                        <tr><td>Grid Gap (Gutter)</td>
+                        <td>Enter the grid gap (gutter) for the collection.</dd>
+                        <tr><td>Theme</td>
+                        <td>Choose the theme for the collection. The available options are: 
+                            <ul>
+                                <li>Default</li>
+                                <li>Dark</li>
+                                <li>Light</li>
+                            </ul>
+                        <tr><td>Details Text</td>
+                        <td>Specified the behavior of the details text in the collection. The available options are: 
+                            <ul>
+                                <li>Default</li>
+                                <li>Last Modified</li>
+                            </ul>
+                        <tr><td>Collection Button Style</td>
+                        <td>Choose the button style for the collection. The available options are: 
+                            <ul>
+                                <li>Default</li>
+                                <li>Primary</li>
+                                <li>Secondary</li>
+                            </ul>
+                        <tr><td>Load More Button Style</td>
+                        <td>Choose the load more button style for the collection. The available options are: 
+                            <ul>
+                                <li>Default</li>
+                                <li>Primary</li>
+                                <li>Secondary</li>
+                            </ul>
+                        <tr><td>Custom Card HTML</td>
+                        <td>Enter custom HTML for the cards in the collection.</dd>
+                        <tr><td>CTA Link Behavior</td>
+                        <td>Choose the CTA link behavior for the collection. The available options are: 
+                            <ul>
+                                <li>Same Tab/Window</li>
+                                <li>New Tab/Window</li>
+                            </ul>
+                    </dl>
+
+                    <p>
+                        For a more detail list of metadata options, please visit the <a href="#">CaaS Wiki page</a>.
+                    </p>
+                </section>
+                -->
+
+                <!-- ******************************************************* -->
+                <section>
+                    <hr class="divider">
+                    <a name="ui"></a>
+                    <h2>The UI Tab</h2>
+                    <p>
+                        The UI tab in the Milo CaaS Configurator allows you to customize the look and feel of your collection. 
+                    </p>
+                    <p>
+                        The following options are available:                  
+                    </p>
+                    <table>
+                        <tr>
+                            <td>Show Card Borders</td>
+                            <td>Enable this option to show borders around each card in the collection.</td>
+                        </td>
+                        </tr>
+                        <tr>
+                            <td>Disable Card Banners</td>
+                            <td>Enable this option to hide the card banners in the collection.</td>
+                        </tr>
+                        <tr>
+                            <td>Use Light Text</td>
+                            <td>Enable this option to use light text in the collection.</td>
+                        </tr>
+                        <tr>
+                            <td>Use Overlay Links</td>
+                            <td>Enable this option to use overlay links in the collection. With this options seleted 
+                                the entire card becmes clickable.</td>
+                        </tr>
+                        <tr>
+                            <td>Show total card count at top</td>
+                            <td>Enable this option to show the total card count at the top of the collection.</td>
+                        </tr>
+                        <tr>
+                            <td>Card Style</td>
+                            <td>Choose the card style for the collection. The available options are: 
+                                <ul>
+                                    <li>1/2 Card</li>
+                                    <li>3/4 Card</li>
+                                    <li>1/2 Height Card</li>
+                                    <li>Full Card</li>
+                                    <li>Double Width Card</li>
+                                    <li>Product Card</li>
+                                    <li>Text Card</li>
+                                    <li>Custom Card</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>    
+                            <td>Card Accessibility Title Level</td>
+                            <td>Choose the appropriate card title heading level for the page's SEO structure. 
+                                <br>The default value is <b>&lt;h3&gt;</b>.</td>
+                        </tr>
+                        <tr>
+                            <td>Layout</td>
+                            <td>Choose the layout for the collection. The available options are: 
+                                <ul>
+                                    <li>Grid</li>
+                                    <li>Carousel</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Layout Type</td>
+                            <td>Choose the layout type for the collection. The available options are: 
+                                <ul>
+                                    <li>Default</li>
+                                    <li>Compact</li>
+                                    <li>Full</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Grid Gap (Gutter)</td>
+                            <td>Enter the grid gap (gutter) for the collection.</td>
+                        </tr>
+                        <tr>   
+                            <td>Theme</td>
+                            <td>Choose the theme for the collection. The available options are: 
+                                <ul>
+                                    <li>Default</li>
+                                    <li>Dark</li>
+                                    <li>Light</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>   
+                            <td>Details Text</td>
+                            <td>Specified the behavior of the details text in the collection. The available options are: 
+                                <ul>
+                                    <li><b>Default</b> - Shows the test entered in the card Details field</li>
+                                    <li></b>Last Modified</b> - Shows the last modification.</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>    
+                            <td>Collection Button Style</td>
+                            <td>Choose the button style for the collection. The available options are: 
+                                <ul>
+                                    <li>Default</li>
+                                    <li>Primary</li>
+                                    <li>Secondary</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Load More Button Style</td>
+                            <td>Choose the load more button style for the collection. The available options are: 
+                                <ul>
+                                    <li>Default</li>
+                                    <li>Primary</li>
+                                    <li>Secondary</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>   
+                            <td>Custom Card HTML</td>
+                            <td>Enter custom HTML for the cards in the collection. To access the data from the JSON response, 
+                                use the following format:<br>
+                                <code>&lt;div&gt;<br>
+                                    &nbsp;&nbsp;&lt;h1>{$card.title}&lt;/h1&gt;<br>
+                                    &nbsp;&nbsp;&lt;p>{$card.description}&lt;/p&gt;<br>
+                                    &lt;/div&gt;
+                                </code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>CTA Link Behavior</td>
+                            <td>Choose the CTA link behavior for the collection. The available options are: 
+                                <ul>
+                                    <li>Same Tab/Window</li>
+                                    <li>New Tab/Window</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <p>
+                        For a more detail list of metadata options, please visit the <a href="#">CaaS Wiki page</a>.
                     </p>
 
+                </section>
 
-                    <div class="intro-content">
+                <!-- ******************************************************* -->
+                <section>
+                    <hr class="divider">
+                    <a name="tags"></a>
+                    <h2>The Tags Tab</h2>
+                    <p>
+                        In progress...  
+                        <br>This setion will cover the Tag options available in the Milo CaaS Configurator.                        
+                    </p>
+                    <table>
+                        <tr>
+                            <td>Content Type Tags</td>
+                            <td>Select the content type tags for your collection.</td>
+                        </tr>
+                        <tr>
+                            <td>Tags to Include</td>
+                            <td>Select the tags to be included in your collection.</td>
+                        </tr>
+                        <tr>
+                            <td>Tags to Exclude</td>
+                            <td>Select the tags to be excluded from your collection.</td>
+                        </tr>
+                        <tr>
+                            <td>Complex Queries <br>(Include & Exclude)</td>
+                            <td>Enter tags for your collection.
+                                <ul>
+                                    <li><b>AND logic Tags</b> - All tags added in this section must match</li>
+                                    <li><b>OR logic Tags</b> - Any tags added here will match</li>
+                                    <li><b>NOT logic Tags</b> - Use to exclude specific tags</li>
+                                </ul>
+                            </td>
+                        </tr>
 
-                        <a name="basics"></a>
-                        <!-- <h2><span>Basics</span> </h2> -->
-                        <h2>The Basics Tab </h2>
-                        <div class="blade">
-                            <div>
-                                <img src="./images/configurator-basics.png">
-                            </div>
-                            <div>
-                                <dl>
-                                    <dt>Collection Name</dt>
-                                    <dd><i>(Optional field)</i> Collection name is used only for the collection link pasted in Milo.</dd>
-                                    <dt>Collection Title</dt>
-                                    <dd><i>(Optional field)</i> Collection titles are displayed above the collection. The collection titles can 
-                                        be localized <a>using placeholders</a>.</dd>
-                                    <dt>Collection Title Level</dt>
-                                    <dd>Choose the appropriate collection title heading level for the page's SEO structure. 
-                                        <br>The default value is <strong>H3</strong>.</dd>
-                                    <dt>Source</dt>
-                                    <dd>Select the source for the collection content. If no Source is selected, the data </dd>
-                                    <dt>Results Per Page</dt>
-                                    <dd>Upload an image for your collection.</dd>
-                                    <dt>Total Cards to Show</dt>
-                                    <dd>Enter tags for your collection.</dd>
-                                    <dt>Country</dt>
-                                    <dd>Enter a target for your collection.</dd>
-                                    <dt>Language</dt>
-                                    <dd>Enter analytics for your collection.</dd>
-                                </dl>
+                        <tr>
+                            <td>Advanced Tag Configurations</td>
+                            <td>Enter tags for your collection.
+                                <ul>
+                                    <li>Use a secondary source for some content types
+                                    <br>Check to enter a secondary Source</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                    <p>
+                        For a more detail list of metadata options, please visit the <a href="#">CaaS Wiki page</a>.
+                    </p>
+                </section>
 
-                            </div>
-                        </div>
+                <!-- ******************************************************* -->
+                <section>
+                    <hr class="divider">
+                    <a name="cards"></a>
+                    <h2>Cards</h2>
+                    <p>
+                        In progress...  
+                        <br>This setion will cover the Card options available in the Milo CaaS Configurator.                        
+                    </p>
+                    <p>
+                        For a more detail list of metadata options, please visit the <a href="#">CaaS Wiki page</a>.
+                    </p>
+                </section>
+
+                <!-- ******************************************************* -->
+                <section>
+                    <hr class="divider">
+                    <a name="sort"></a>
+                    <h2>Sort</h2>
+                    <p>
+                        In progress...  
+                        <br>This setion will cover the Sort options available in the Milo CaaS Configurator.                         
+                    </p>
+                    <p>
+                        For a more detail list of metadata options, please visit the <a href="#">CaaS Wiki page</a>.
+                    </p>
+                </section>
+
+                <!-- ******************************************************* -->
+                <section>
+                    <hr class="divider">
+                    <a name="bookmarks"></a>
+                    <h2>Bookmarks</h2>
+                    <p>
+                        In progress...  
+                        <br>This setion will cover the Bookmark options available in the Milo CaaS Configurator.                         
+                    </p>
+                    <p>
+                        For a more detail list of metadata options, please visit the <a href="#">CaaS Wiki page</a>.
+                    </p>
+                </section>
+
+                <!-- ******************************************************* -->
+                <section>
+                    <hr class="divider">
+                    <a name="filters"></a>
+                    <h2>Filters</h2>
+                    <p>
+                        In progress...  
+                        <br>This setion will cover the Filter options available in the Milo CaaS Configurator.                      
+                    </p>
+                    <p>
+                        For a more detail list of metadata options, please visit the <a href="#">CaaS Wiki page</a>.
+                    </p>
+                </section>
 
 
-                        <!-- <a name="basics"></a>
-                        <h2><span>Basics</span> </h2>
-                        <p>
-                            Description of the CaaS framework and its components.
-                        </p> -->
+                <!-- ******************************************************* -->
+                <section>
+                    <hr class="divider">
+                    <a name="search"></a>
+                    <h2>Search</h2>
+                    <p>
+                        In progress...  
+                        <br>This setion will cover the Search options available in the Milo CaaS Configurator.                       
+                    </p>
+                    <p>
+                        For a more detail list of metadata options, please visit the <a href="#">CaaS Wiki page</a>.
+                    </p>
+                </section>
 
-                        <a name="ui"></a>
-                        <h2><span>UI</span></h2>
-                        <p>
-                            Customize the look and feel of your collection.
-                        </p>
+                <!-- ******************************************************* -->
+                <section>
+                    <hr class="divider">
+                    <a name="pagination"></a>
+                    <h2>Pagination</h2>
+                    <p>
+                        In progress...  
+                        <br>This setion will cover the Pagination options available in the Milo CaaS Configurator.                          
+                    </p>
+                    <p>
+                        For a more detail list of metadata options, please visit the <a href="#">CaaS Wiki page</a>.
+                    </p>
+                </section>
 
-                        <a name="tags"></a>
-                        <h2><span>Tags</span></h2>
-                        <p>
-                            Configure your query.
-                        </p>
+                <!-- ******************************************************* -->
+                <section>
+                    <hr class="divider">
+                    <a name="target"></a>
+                    <h2>Target</h2>
+                    <p>
+                        In progress...  
+                        <br>This setion will cover the Target options available in the Milo CaaS Configurator.                   
+                    </p>
+                    <p>
+                        For a more detail list of metadata options, please visit the <a href="#">CaaS Wiki page</a>.
+                    </p>
+                </section>
 
-                        <a name="cards"></a>
-                        <h2><span>Cards</span></h2>
-                        <p>
-                            Select feature cards.
-                        </p>
+                <!-- ******************************************************* -->
+                <section>
+                    <hr class="divider">
+                    <a name="analytics"></a>
+                    <h2>Analytics</h2>
+                    <p>
+                        In progress...  
+                        <br>This section will cover the Analytics options available in the Milo CaaS Configurator.                        
+                    </p>
+                    <p>
+                        For a more detail list of metadata options, please visit the <a href="#">CaaS Wiki page</a>.
+                    </p>
+                </section>
 
-                        <a name="sort"></a>
-                        <h2><span>Sort</span></h2>
-                        <p>
-                            Enable and configure sorting.
-                        </p>
-
-                        <a name="bookmarks"></a>
-                        <h2><span>Bookmarks</span></h2>
-                        <p>
-                            Configure bookmarks.
-                        </p>
-
-                        <a name="filters"></a>
-                        <h2><span>Filters</span></h2>
-                        <p>
-                            Customize Filters behavior.
-                        </p>
-
-                        <a name="search"></a>
-                        <h2><span>Search</span></h2>
-                        <p>
-                            Personalize Search.
-                        </p>
-
-                        <a name="pagination"></a>
-                        <h2><span>Pagination</span></h2>
-                        <p>
-                            Configure pagination.
-                        </p>
-
-                        <a name="target"></a>
-                        <h2><span>Target</span></h2>
-                        <p>
-                            Enable/Disable Target.
-                        </p>
-
-                        <a name="analytics"></a>
-                        <h2><span>Analytics</span></h2>
-                        <p>
-                            Track impressions.
-                        </p>
-
-                        <a name="advanced"></a>
-                        <h2><span>Advanced</span></h2>
-                        <p>
-                            Advanced options.
-                        </p>
-
-                        
-                    </div>
-                </div>
+                <!-- ******************************************************* -->
+                <section>
+                    <hr class="divider">
+                    <a name="advanced"></a>
+                    <h2>Advanced</h2>
+                    <p>
+                        In progress...  
+                        <br>This section will cover the Advanced options available in the Milo CaaS Configurator.                          
+                    </p>
+                    <p>
+                        For a more detail list of metadata options, please visit the <a href="#">CaaS Wiki page</a>.
+                    </p>
+                </section>
+                                            
             </div>
+            
         </div>
     </div>
 

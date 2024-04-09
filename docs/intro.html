@@ -1,3 +1,4 @@
+
 <!DOCTYPE HTML>
 <html lang="en">
 
@@ -28,7 +29,6 @@
             background-size: 102%;
         }
         .container {
-            /* max-width: 85%; */
             display: flex;
             gap: 40px;
         }
@@ -42,7 +42,7 @@
             margin-bottom: 10px;
         }
         .sidebar .toc {
-            padding: 5px 10px 30px 30px;
+            padding: 5px 10px 30px 20px;
         }
         .sidebar ul {
             font-size: 15px;
@@ -80,6 +80,9 @@
             font-weight: 700;
             margin: 1em 0 .35em;
         }
+        h1:before {
+            content: url(./images/caas.svg);
+        }
         h1 span {
             display: inline-block;
             color: #747474;
@@ -90,14 +93,6 @@
             font-size: 1.5em;
             font-weight: 700;
             margin: 1em 0 .35em;
-        }
-        h2.getting-started:before {
-            content: url(./images/tools.svg);
-            vertical-align: -2px;
-        }
-        h2.the-team:before {
-            content: url(./images/team.svg);
-            vertical-align: -2px;
         }
 
         p {
@@ -172,17 +167,19 @@
         <div class="sidebar">
             <div class="toc">
                 <h3>Related Links</h3>
-                <b>Content Creation</b>
+                <a href="./authoring-milo.html"><b>Authoring in Milo</b></a>
                 <ul class="related-links">
-                    <li><a>Create or Edit a Card in Milo</a></li>
-                    <li><a>Send a Card to CaaS</a></li>
-                    <li><a>Preview a Card in the Configurator</a></li>
-                    <li><a>Create a new Marquee</a></li>
+                    <li><a href="./authoring-milo.html#create-new-card">Create or Edit a Card in Milo</a></li>
+                    <li><a href="./authoring-milo.html#send-to-caas">Send a Card to CaaS</a></li>
+                    <li><a href="./authoring-milo.html#create-card-collection">Create a Card Collection</a></li>
+                    <li><a href="./authoring-milo.html#preview-card">Preview a Card in the Configurator</a></li>
+                    <li><a href="./authoring-milo.html#bulk-publisher">Using the Bulk Publisher</a></li>
+                    <li><a href="./authoring-milo.html#create-new-marquee">Create a new Marquee</a></li>
                 </ul>
                 
-                <b>Content Consumption</b>
+                <b>Content Consumption in Milo</b>
                 <ul class="related-links">
-                    <li><a href="https://milo.adobe.com/tools/caas"><strong>Milo Collection Configurator</strong></a></li>
+                    <li><a href="./configurator.html"><strong>Milo Collection Configurator</strong></a></li>
                     <li><a href="./configurator.html#basics"><strong>The Basics</strong>: Create a new Card Collection</a></li>
                     <li><a href="./configurator.html#ui"><strong>UI</strong>: Customize your Collection</a></li>
                     <li><a href="./configurator.html#tags"><strong>Tags</strong>: Configure your query</a></li>
@@ -195,6 +192,12 @@
                     <li><a href="./configurator.html#target"><strong>Target</strong>: Enable/Disable</a></li>
                     <li><a href="./configurator.html#analytics"><strong>Analytis</strong>: Track impressions</a></li>
                     <li><a href="./configurator.html#advanced"><strong>Advanced</strong> options </a></li>
+        
+                </ul>
+
+                <b>Content Consumption in AEM</b>
+                <ul class="related-links">
+                    <li><a href="#"><strong>Card Collection Component</strong></a></li>
                 </ul>
             </div>
         </div>
@@ -222,11 +225,11 @@
                         <h2><span>What</span> is it?</h2>
                         <p>
                             CaaS, short for <i>Content As A Service</i>, is a platform designed to streamline content creation and management. 
-                            Users can generate content within <strong>Milo</strong> or <strong>AEM</strong>, then transmit it to the CaaS backend service (Chimera) for 
-                            storage in a database. 
+                            Users can generate content in <strong>Milo</strong> or <strong>AEM</strong>, then transmit it to the CaaS backend service (Chimera) for 
+                            storage in a database and retrieval. 
                         </p>
                         <p>
-                            The backend service's APIs facilitate content retrieval, enabling display across various applications.
+                            The backend service's APIs facilitate the content retrieval, enabling display across various applications.
                             All content is stored in JSON format, allowing for easy integration with different platforms.
                         </p>
 
@@ -253,12 +256,12 @@
                             
                             Some of the benefits of using CaaS are:
                             <ul class="benefits">
-                                <li>Enhanced <i>efficiency</i> in content creation and management</li>
-                                <li>Facilitated <i>content reuse</i> across multiple applications</li>
-                                <li><i>Real-time</i> content updates</li>
-                                <li><i>Consistent</i> content display across diverse applications</li> 
-                                <li>Personalization options <i>tailored</i> to user preferences</li>
-                                <li></i>Optimization </i>for various devices</li>
+                                <li>Enhanced <strong>efficiency</strong> in content creation and management</li>
+                                <li>Facilitated <strong>content reuse</strong> across multiple applications</li>
+                                <li><strong>Real-time</strong> content updates</li>
+                                <li><strong>Consistent</strong> content display across diverse applications</li> 
+                                <li>Personalization options <strong>tailored</strong> to user preferences</li>
+                                <li>Optimization for various <strong>devices</strong></li>
                             </ul>
                         </p>
                     </div>
