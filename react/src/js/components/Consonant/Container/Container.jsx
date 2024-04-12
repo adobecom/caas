@@ -1215,12 +1215,29 @@ const Container = (props) => {
         'consonant-Wrapper': true,
         'consonant-Wrapper--32MarginContainer': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_100_VW_32_MARGIN,
         'consonant-Wrapper--83PercentContainier': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_83_VW,
-        'consonant-Wrapper--1200MaxWidth': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_1200_PX,
+        'consonant-Wrapper--1200MaxWidth': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_1200_PX || isEventsContainer,
         'consonant-Wrapper--1600MaxWidth': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_1600_PX,
         'consonant-Wrapper--carousel': isCarouselContainer,
         'consonant-Wrapper--withLeftFilter': filterPanelEnabled && isLeftFilterPanel,
-        'consonant-Wrapper--events': isEventsContainer,
     });
+
+    const categoriesStyle = {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        height: '100%',
+        fontSize: '1rem',
+        margin: '20px 0',
+    };
+
+    const pill = {
+        padding: '0.45em 1em',
+        borderRadius: '20px',
+        margin: '0 10px',
+        background: '#404040',
+        color: '#fff',
+    };
 
     return (
         <ConfigContext.Provider value={config}>
@@ -1268,7 +1285,18 @@ const Container = (props) => {
                         </div>
                         }
                         <div className={`consonant-Wrapper-collection${isLoading ? ' is-loading' : ''}`}>
-                            {isEventsContainer || isTopFilterPanel && isStandardContainer &&
+                            {isEventsContainer &&
+                                <div className="categories" style={categoriesStyle}>
+                                    <span style={pill}>Graphic Design</span>
+                                    <span style={pill}>Photography</span>
+                                    <span style={pill}>Illustration</span>
+                                    <span style={pill}>Video</span>
+                                    <span style={pill}>Gen AI Media</span>
+                                    <span style={pill}>Social Media</span>
+                                </div>
+                            }
+
+                            {isTopFilterPanel && isStandardContainer &&
                             <FiltersPanelTop
                                 filterPanelEnabled={filterPanelEnabled}
                                 filters={filters}
