@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.24 (4/2/2024, 12:16:10)
+ * Chimera UI Libraries - Build 0.11.25 (4/16/2024, 11:13:52)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -54124,7 +54124,7 @@ var Item = function Item(props) {
             {
                 className: 'consonant-LeftFilter-inner' },
             _react2.default.createElement(
-                'h3',
+                'p',
                 {
                     'data-testid': 'consonant-LeftFilter-name',
                     className: 'consonant-LeftFilter-name',
@@ -54662,9 +54662,8 @@ var Title = function Title(props) {
 
 
     return _react2.default.createElement(
-        'h3',
-        {
-            className: 'consonant-LeftFilters-deskTitle' },
+        'p',
+        { className: 'consonant-LeftFilters-deskTitle' },
         panelHeader
     );
 };
