@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.25 (4/9/2024, 08:52:35)
+ * Chimera UI Libraries - Build 0.11.25 (4/16/2024, 07:58:55)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6684,6 +6684,7 @@ var Container = function Container(props) {
      * @listens ClickEvent
      */
     var handleFilterGroupClick = function handleFilterGroupClick(filterId) {
+        console.log('[DEBUG] Container:handleFilterGroupClick()', filterId);
         setFilters(function (prevFilters) {
             var opened = void 0;
             return prevFilters.map(function (el) {
@@ -6732,6 +6733,11 @@ var Container = function Container(props) {
         setUrlState(filterGroupPrefix + group, value);
     };
 
+    /* ************ EVENTS **************** */
+    var handleCategoryClick = function handleCategoryClick(filterId) {
+        console.log('[DEBUG] handleCategoryClick()', filterId);
+    };
+
     /**
      * Handles what happens when a specific filter item (checkbox)
      * is clicked
@@ -6740,6 +6746,7 @@ var Container = function Container(props) {
      * @listens CheckboxClickEvent
      */
     var handleCheckBoxChange = function handleCheckBoxChange(filterId, itemId, isChecked) {
+        console.log('[DEBUG] handleCheckBoxChange()', filterId, itemId, isChecked);
         if (isXorFilter && isChecked) {
             clearAllFilters();
         }
@@ -7467,12 +7474,30 @@ var Container = function Container(props) {
         'consonant-Wrapper': true,
         'consonant-Wrapper--32MarginContainer': authoredLayoutContainer === _constants.LAYOUT_CONTAINER.SIZE_100_VW_32_MARGIN,
         'consonant-Wrapper--83PercentContainier': authoredLayoutContainer === _constants.LAYOUT_CONTAINER.SIZE_83_VW,
-        'consonant-Wrapper--1200MaxWidth': authoredLayoutContainer === _constants.LAYOUT_CONTAINER.SIZE_1200_PX,
+        'consonant-Wrapper--1200MaxWidth': authoredLayoutContainer === _constants.LAYOUT_CONTAINER.SIZE_1200_PX || isEventsContainer,
         'consonant-Wrapper--1600MaxWidth': authoredLayoutContainer === _constants.LAYOUT_CONTAINER.SIZE_1600_PX,
         'consonant-Wrapper--carousel': isCarouselContainer,
         'consonant-Wrapper--withLeftFilter': filterPanelEnabled && isLeftFilterPanel,
         'consonant-Wrapper--1200MaxWidth events': isEventsContainer
     });
+
+    // const categoriesStyle = {
+    //     display: 'flex',
+    //     justifyContent: 'center',
+    //     alignItems: 'center',
+    //     width: '100%',
+    //     height: '100%',
+    //     fontSize: '1rem',
+    //     margin: '20px 0',
+    // };
+
+    // const pill = {
+    //     padding: '0.45em 1em',
+    //     borderRadius: '20px',
+    //     margin: '0 10px',
+    //     background: '#404040',
+    //     color: '#fff',
+    // };
 
     return _react2.default.createElement(
         _contexts.ConfigContext.Provider,
@@ -7523,15 +7548,6 @@ var Container = function Container(props) {
                     _react2.default.createElement(
                         'div',
                         { className: 'consonant-Wrapper-collection' + (isLoading ? ' is-loading' : '') },
-                        isEventsContainer && _react2.default.createElement(
-                            'div',
-                            { className: 'pill-ctas' },
-                            _react2.default.createElement(
-                                'h3',
-                                null,
-                                '*** EVENTS FILTERS GO HERE ***'
-                            )
-                        ),
                         isTopFilterPanel && isStandardContainer && _react2.default.createElement(_Panel2.default, {
                             filterPanelEnabled: filterPanelEnabled,
                             filters: filters,
@@ -7539,9 +7555,11 @@ var Container = function Container(props) {
                             resQty: gridCards.length,
                             onCheckboxClick: handleCheckBoxChange,
                             onFilterClick: handleFilterGroupClick,
+                            onCategoryClick: handleCategoryClick,
                             onClearFilterItems: clearFilterItem,
                             onClearAllFilters: resetFiltersSearchAndBookmarks,
                             showLimitedFiltersQty: showLimitedFiltersQty,
+                            showTopCategories: isEventsContainer,
                             searchComponent: _react2.default.createElement(_Search2.default, {
                                 placeholderText: topPanelSearchPlaceholder,
                                 name: 'filtersTopSearch',
@@ -52494,6 +52512,8 @@ var CardFilterer = function () {
     _createClass(CardFilterer, [{
         key: 'filterCards',
         value: function filterCards(activeFilters, activePanels, filterType, filterTypes) {
+            console.log('[DEBUG] filterCards():activeFilters', activeFilters);
+            console.log('[DEBUG] filterCards():activePanels', activePanels);
             this.filteredCards = (0, _Helpers.getFilteredCards)(this.filteredCards, activeFilters, activePanels, filterType, filterTypes);
             return this;
         }
@@ -52756,19 +52776,39 @@ var filtersPanelTopType = {
     sortComponent: _propTypes.node.isRequired,
     windowWidth: _propTypes.number.isRequired,
     onFilterClick: _propTypes.func.isRequired,
+    // onCategoryClick: func.isRequired,
     onShowAllClick: _propTypes.func.isRequired,
     searchComponent: _propTypes.node.isRequired,
     filters: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_config.filterType)),
     onCheckboxClick: _propTypes.func.isRequired,
     onClearAllFilters: _propTypes.func.isRequired,
     onClearFilterItems: _propTypes.func.isRequired,
-    filterPanelEnabled: _propTypes.bool.isRequired
+    filterPanelEnabled: _propTypes.bool.isRequired,
+    showTopCategories: _propTypes.bool.isRequired
 };
 
 var defaultProps = {
     resQty: 0,
     filters: [],
     showLimitedFiltersQty: false
+};
+
+var categoriesStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    fontSize: '1rem',
+    margin: '20px 0'
+};
+
+var pill = {
+    padding: '0.45em 1em',
+    borderRadius: '20px',
+    margin: '0 10px',
+    background: '#404040',
+    color: '#fff'
 };
 
 /**
@@ -52806,9 +52846,11 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
         windowWidth = props.windowWidth,
         searchComponent = props.searchComponent,
         sortComponent = props.sortComponent,
-        filterPanelEnabled = props.filterPanelEnabled;
+        filterPanelEnabled = props.filterPanelEnabled,
+        showTopCategories = props.showTopCategories;
 
 
+    console.log('[DEBUG] Panels:FiltersPanelTop:Filters', filters);
     var getConfig = (0, _hooks.useConfig)();
 
     /**
@@ -52977,6 +53019,43 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
                 'data-testid': 'consonant-TopFilters-searchWrapper',
                 className: 'consonant-TopFilters-searchWrapper' },
             searchComponent
+        ),
+        showTopCategories && _react2.default.createElement(
+            'div',
+            { className: 'categories', style: categoriesStyle },
+            filters.map(function (filter) {
+                if (filter.id === 'caas:product-categories') {
+                    console.log('[DEBUG] Panels:FiltersPanelTop:filter.group', filter.group, filter.items, filter.id);
+                    /* eslint-disable-next-line */
+                    // return filter.items.map((item) => (<span style={pill} onClick={onFilterClick}>{item.label}</span>));
+                    /* eslint-disable-next-line */
+                    // turn the next lines into a button that filters the items
+                    return filter.items.map(function (item) {
+                        return (
+                            // <button
+                            //     onClick={onCategoryClick}
+                            //     style={pill}>
+                            //     {item.label}
+                            // </button>
+                            // <button
+                            //     onClick={() => onFilterClick(item.id)}
+                            //     style={pill}>
+                            //     {item.label}
+                            // </button>
+                            _react2.default.createElement(
+                                'button',
+                                {
+                                    onClick: function onClick() {
+                                        return onCheckboxClick('caas:product-categories', item.id, true);
+                                    },
+                                    style: pill },
+                                item.label
+                            )
+                        );
+                    });
+                }
+                return '';
+            })
         ),
         shouldRenderInnerWrapper && _react2.default.createElement(
             'div',

@@ -1,0 +1,542 @@
+{
+    "cards": [
+        {
+            "id": "00001",
+            "showCard": {
+                "from": "",
+                "until": ""
+            },
+            "styles": {
+                "typeOverride": "default",
+                "backgroundImage": "",
+                "backgroundAltText": "",
+                "mnemonic": ""
+            },
+            "overlays": {
+                "banner": {
+                    "backgroundColor": "#EAEAEA",
+                    "fontColor": "#323232",
+                    "description": "",
+                    "icon": ""
+                },
+                "logo": {
+                    "src": ""
+                },
+                "label": {},
+                "videoButton": {
+                    "url": ""
+                }
+            },
+            "tags": [
+                {
+                    "id": "caas:caas/product-categories/graphic-design"
+                },
+                {
+                    "id": "caas:caas/product-categories/illustration"
+                },
+                {
+                    "id": "caas:products/photoshop"
+                },
+                {
+                    "id": "caas:products/illustrator"
+                },
+                {
+                    "id": "caas:country/us"
+                }
+            ],
+            "contentArea": {
+                "detailText": "",
+                "title": "Card A",
+                "url": "",
+                "description": "[GRAPHIC DESIGN] [ILLUSTRATION] Photoshop, Illustrator (United States)",
+                "dateDetailText": {
+                    "type": "date-interval",
+                    "startTime": "",
+                    "endTime": ""
+                }
+            },
+            "footer": [
+                {
+                    "divider": false,
+                    "left": [
+                        {
+                            "type": "bookmark",
+                            "saveCardIcon": "",
+                            "unsaveCardIcon": "",
+                            "cardSaveText": "",
+                            "unsaveCardText": ""
+                        }
+                    ],
+                    "center": [],
+                    "right": [
+                        {
+                            "type": "button",
+                            "style": "",
+                            "text": "Read now",
+                            "href": ""
+                        }
+                    ]
+                }
+            ],
+            "search": {},
+            "cardDate": "2022-03-15T16:51:09.912Z",
+            "createdDate": "2022-03-15T16:51:09.912Z",
+            "modifiedDate": "2023-07-14T20:15:27.000Z",
+            "startDate": "",
+            "endDate": "",
+            "ctaLink": "https://business.adobe.com/resources/reports/content-for-every-moment-essentials.html",
+            "overlayLink": "https://business.adobe.com/resources/reports/content-for-every-moment-essentials.html",
+            "lang": "en",
+            "country": "us",
+            "origin": "bacom"
+        },
+        {
+            "id": "00002",
+            "showCard": {
+                "from": "",
+                "until": ""
+            },
+            "styles": {
+                "typeOverride": "default",
+                "backgroundImage": "",
+                "backgroundAltText": "",
+                "mnemonic": ""
+            },
+            "overlays": {
+                "banner": {
+                    "backgroundColor": "#EAEAEA",
+                    "fontColor": "#323232",
+                    "description": "",
+                    "icon": ""
+                },
+                "logo": {
+                    "src": ""
+                },
+                "label": {},
+                "videoButton": {
+                    "url": ""
+                }
+            },
+            "tags": [
+                {
+                    "id": "caas:caas/product-categories/graphic-design"
+                },
+                {
+                    "id": "caas:caas/product-categories/illustration"
+                },
+                {
+                    "id": "caas:products/photoshop"
+                },
+                {
+                    "id": "caas:products/illlustrator"
+                },
+                {
+                    "id": "caas:country/us"
+                }                
+            ],
+            "contentArea": {
+                "detailText": "",
+                "title": "Card B",
+                "url": "",
+                "description": "[GRAPHIC DESIGN] [ILLUSTRATION] Photoshop (United States)",
+                "dateDetailText": {
+                    "type": "date-interval",
+                    "startTime": "",
+                    "endTime": ""
+                }
+            },
+            "footer": [
+                {
+                    "divider": false,
+                    "left": [
+                        {
+                            "type": "bookmark",
+                            "saveCardIcon": "",
+                            "unsaveCardIcon": "",
+                            "cardSaveText": "",
+                            "unsaveCardText": ""
+                        }
+                    ],
+                    "center": [],
+                    "right": [
+                        {
+                            "type": "button",
+                            "style": "",
+                            "text": "Read now",
+                            "href": ""
+                        }
+                    ]
+                }
+            ],
+            "search": {},
+            "cardDate": "2022-03-15T16:51:09.912Z",
+            "createdDate": "2022-03-15T16:51:09.912Z",
+            "modifiedDate": "2023-07-14T20:15:27.000Z",
+            "startDate": "",
+            "endDate": "",
+            "ctaLink": "https://business.adobe.com/resources/reports/content-for-every-moment-essentials.html",
+            "overlayLink": "https://business.adobe.com/resources/reports/content-for-every-moment-essentials.html",
+            "lang": "en",
+            "country": "us",
+            "origin": "bacom"
+        },
+        {
+            "id": "00003",
+            "showCard": {
+                "from": "",
+                "until": ""
+            },
+            "styles": {
+                "typeOverride": "default",
+                "backgroundImage": "",
+                "backgroundAltText": "",
+                "mnemonic": ""
+            },
+            "overlays": {
+                "banner": {
+                    "backgroundColor": "#EAEAEA",
+                    "fontColor": "#323232",
+                    "description": "",
+                    "icon": ""
+                },
+                "logo": {
+                    "src": ""
+                },
+                "label": {},
+                "videoButton": {
+                    "url": ""
+                }
+            },
+            "tags": [
+                {
+                    "id": "caas:product-categories/video"
+                },
+                {
+                    "id": "caas:caas/after-effects"
+                },
+                {
+                    "id": "caas:products/photoshop"
+                },
+                {
+                    "id": "caas:country/us"
+                }
+            ],
+            "contentArea": {
+                "detailText": "",
+                "title": "Card C",
+                "url": "",
+                "description": "[PHOTOGRAPHY] Photoshop, After Effects (United States)",
+                "dateDetailText": {
+                    "type": "date-interval",
+                    "startTime": "",
+                    "endTime": ""
+                }
+            },
+            "footer": [
+                {
+                    "divider": false,
+                    "left": [
+                        {
+                            "type": "bookmark",
+                            "saveCardIcon": "",
+                            "unsaveCardIcon": "",
+                            "cardSaveText": "",
+                            "unsaveCardText": ""
+                        }
+                    ],
+                    "center": [],
+                    "right": [
+                        {
+                            "type": "button",
+                            "style": "",
+                            "text": "Read now",
+                            "href": ""
+                        }
+                    ]
+                }
+            ],
+            "search": {},
+            "cardDate": "2022-03-15T16:51:09.912Z",
+            "createdDate": "2022-03-15T16:51:09.912Z",
+            "modifiedDate": "2023-07-14T20:15:27.000Z",
+            "startDate": "",
+            "endDate": "",
+            "ctaLink": "",
+            "overlayLink": "",
+            "lang": "en",
+            "country": "us",
+            "origin": "bacom"
+        },
+        {
+            "id": "00004",
+            "showCard": {
+                "from": "",
+                "until": ""
+            },
+            "styles": {
+                "typeOverride": "default",
+                "backgroundImage": "",
+                "backgroundAltText": "",
+                "mnemonic": ""
+            },
+            "overlays": {
+                "banner": {
+                    "backgroundColor": "#EAEAEA",
+                    "fontColor": "#323232",
+                    "description": "",
+                    "icon": ""
+                },
+                "logo": {
+                    "src": ""
+                },
+                "label": {},
+                "videoButton": {
+                    "url": ""
+                }
+            },
+            "tags": [
+                {
+                    "id": "caas:caas/product-categories/illustration"
+                },
+                {
+                    "id": "caas:products/photoshop"
+                },
+                {
+                    "id": "caas:products/illustrator"
+                },
+                {
+                    "id": "caas:region/north-america"
+                },
+                {
+                    "id": "caas:country/ca"
+                }
+            ],
+            "contentArea": {
+                "detailText": "",
+                "title": "Card D",
+                "url": "",
+                "description": "[PHOTOGRAPHY] Photoshop, Adobe Lightroom (Canada)",
+                "dateDetailText": {
+                    "type": "date-interval",
+                    "startTime": "",
+                    "endTime": ""
+                }
+            },
+            "footer": [
+                {
+                    "divider": false,
+                    "left": [
+                        {
+                            "type": "bookmark",
+                            "saveCardIcon": "",
+                            "unsaveCardIcon": "",
+                            "cardSaveText": "",
+                            "unsaveCardText": ""
+                        }
+                    ],
+                    "center": [],
+                    "right": [
+                        {
+                            "type": "button",
+                            "style": "",
+                            "text": "Read now",
+                            "href": ""
+                        }
+                    ]
+                }
+            ],
+            "search": {},
+            "cardDate": "2022-03-15T16:51:09.912Z",
+            "createdDate": "2022-03-15T16:51:09.912Z",
+            "modifiedDate": "2023-07-14T20:15:27.000Z",
+            "startDate": "",
+            "endDate": "",
+            "ctaLink": "",
+            "overlayLink": "",
+            "lang": "en",
+            "country": "us",
+            "origin": "bacom"
+        },
+        {
+            "id": "00005",
+            "showCard": {
+                "from": "",
+                "until": ""
+            },
+            "styles": {
+                "typeOverride": "default",
+                "backgroundImage": "",
+                "backgroundAltText": "",
+                "mnemonic": ""
+            },
+            "overlays": {
+                "banner": {
+                    "backgroundColor": "#EAEAEA",
+                    "fontColor": "#323232",
+                    "description": "",
+                    "icon": ""
+                },
+                "logo": {
+                    "src": ""
+                },
+                "label": {},
+                "videoButton": {
+                    "url": ""
+                }
+            },
+            "tags": [
+                {
+                    "id": "caas:caas/product-categories/video"
+                },
+                {
+                    "id": "caas:region/north-america"
+                },
+                {
+                    "id": "caas:products/after-effets"
+                },
+                {
+                    "id": "caas:country/ca"
+                }
+            ],
+            "contentArea": {
+                "detailText": "",
+                "title": "Card E",
+                "url": "",
+                "description": "[PHOTOGRAPHY] Photoshop, Adobe Lightroom (Canada)",
+                "dateDetailText": {
+                    "type": "date-interval",
+                    "startTime": "",
+                    "endTime": ""
+                }
+            },
+            "footer": [
+                {
+                    "divider": false,
+                    "left": [
+                        {
+                            "type": "bookmark",
+                            "saveCardIcon": "",
+                            "unsaveCardIcon": "",
+                            "cardSaveText": "",
+                            "unsaveCardText": ""
+                        }
+                    ],
+                    "center": [],
+                    "right": [
+                        {
+                            "type": "button",
+                            "style": "",
+                            "text": "Read now",
+                            "href": ""
+                        }
+                    ]
+                }
+            ],
+            "search": {},
+            "cardDate": "2022-03-15T16:51:09.912Z",
+            "createdDate": "2022-03-15T16:51:09.912Z",
+            "modifiedDate": "2023-07-14T20:15:27.000Z",
+            "startDate": "",
+            "endDate": "",
+            "ctaLink": "",
+            "overlayLink": "",
+            "lang": "en",
+            "country": "us",
+            "origin": "bacom"
+        },
+        {
+            "id": "00006",
+            "showCard": {
+                "from": "",
+                "until": ""
+            },
+            "styles": {
+                "typeOverride": "default",
+                "backgroundImage": "",
+                "backgroundAltText": "",
+                "mnemonic": ""
+            },
+            "overlays": {
+                "banner": {
+                    "backgroundColor": "#EAEAEA",
+                    "fontColor": "#323232",
+                    "description": "",
+                    "icon": ""
+                },
+                "logo": {
+                    "src": ""
+                },
+                "label": {},
+                "videoButton": {
+                    "url": ""
+                }
+            },
+            "tags": [
+                {
+                    "id": "caas:caas/product-categories/photography"
+                },
+                {
+                    "id": "caas:products/lightroom"
+                },
+                {
+                    "id": "caas:products/photoshop"
+                },
+                {
+                    "id": "caas:country/us"
+                }
+            ],
+            "contentArea": {
+                "detailText": "",
+                "title": "Card F",
+                "url": "",
+                "description": "[PHOTOGRAPHY] Photoshop, Adobe Lightroom (United States)",
+                "dateDetailText": {
+                    "type": "date-interval",
+                    "startTime": "",
+                    "endTime": ""
+                }
+            },
+            "footer": [
+                {
+                    "divider": false,
+                    "left": [
+                        {
+                            "type": "bookmark",
+                            "saveCardIcon": "",
+                            "unsaveCardIcon": "",
+                            "cardSaveText": "",
+                            "unsaveCardText": ""
+                        }
+                    ],
+                    "center": [],
+                    "right": [
+                        {
+                            "type": "button",
+                            "style": "",
+                            "text": "Read now",
+                            "href": ""
+                        }
+                    ]
+                }
+            ],
+            "search": {},
+            "cardDate": "2022-03-15T16:51:09.912Z",
+            "createdDate": "2022-03-15T16:51:09.912Z",
+            "modifiedDate": "2023-07-14T20:15:27.000Z",
+            "startDate": "",
+            "endDate": "",
+            "ctaLink": "",
+            "overlayLink": "",
+            "lang": "en",
+            "country": "us",
+            "origin": "bacom"
+        }
+    ],
+    "filters": [],
+    "debug": [
+        {
+            "missingIds": []
+        }
+    ],
+    "isHashed": false
+}

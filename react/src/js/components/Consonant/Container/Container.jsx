@@ -534,6 +534,7 @@ const Container = (props) => {
      * @listens ClickEvent
      */
     const handleFilterGroupClick = (filterId) => {
+        console.log('[DEBUG] Container:handleFilterGroupClick()', filterId);
         setFilters((prevFilters) => {
             let opened;
             return prevFilters.map((el) => {
@@ -572,6 +573,11 @@ const Container = (props) => {
         setUrlState(filterGroupPrefix + group, value);
     };
 
+    /* ************ EVENTS **************** */
+    const handleCategoryClick = (filterId) => {
+        console.log('[DEBUG] handleCategoryClick()', filterId);
+    };
+
     /**
      * Handles what happens when a specific filter item (checkbox)
      * is clicked
@@ -580,6 +586,7 @@ const Container = (props) => {
      * @listens CheckboxClickEvent
      */
     const handleCheckBoxChange = (filterId, itemId, isChecked) => {
+        console.log('[DEBUG] handleCheckBoxChange()', filterId, itemId, isChecked);
         if (isXorFilter && isChecked) {
             clearAllFilters();
         }
@@ -1215,12 +1222,30 @@ const Container = (props) => {
         'consonant-Wrapper': true,
         'consonant-Wrapper--32MarginContainer': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_100_VW_32_MARGIN,
         'consonant-Wrapper--83PercentContainier': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_83_VW,
-        'consonant-Wrapper--1200MaxWidth': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_1200_PX,
+        'consonant-Wrapper--1200MaxWidth': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_1200_PX || isEventsContainer,
         'consonant-Wrapper--1600MaxWidth': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_1600_PX,
         'consonant-Wrapper--carousel': isCarouselContainer,
         'consonant-Wrapper--withLeftFilter': filterPanelEnabled && isLeftFilterPanel,
         'consonant-Wrapper--1200MaxWidth events': isEventsContainer,
     });
+
+    // const categoriesStyle = {
+    //     display: 'flex',
+    //     justifyContent: 'center',
+    //     alignItems: 'center',
+    //     width: '100%',
+    //     height: '100%',
+    //     fontSize: '1rem',
+    //     margin: '20px 0',
+    // };
+
+    // const pill = {
+    //     padding: '0.45em 1em',
+    //     borderRadius: '20px',
+    //     margin: '0 10px',
+    //     background: '#404040',
+    //     color: '#fff',
+    // };
 
     return (
         <ConfigContext.Provider value={config}>
@@ -1268,11 +1293,17 @@ const Container = (props) => {
                         </div>
                         }
                         <div className={`consonant-Wrapper-collection${isLoading ? ' is-loading' : ''}`}>
-                            {isEventsContainer &&
-                                <div className="pill-ctas">
-                                    <h3>*** EVENTS FILTERS GO HERE ***</h3>
+                            {/* {isEventsContainer &&
+                                <div className="categories" style={categoriesStyle}>
+                                    <span style={pill}>All</span>
+                                    <span style={pill}>Graphic Design</span>
+                                    <span style={pill}>Photography</span>
+                                    <span style={pill}>Illustration</span>
+                                    <span style={pill}>Video</span>
+                                    <span style={pill}>Gen AI Media</span>
+                                    <span style={pill}>Social Media</span>
                                 </div>
-                            }
+                            } */}
 
                             {isTopFilterPanel && isStandardContainer &&
                             <FiltersPanelTop
@@ -1282,9 +1313,11 @@ const Container = (props) => {
                                 resQty={gridCards.length}
                                 onCheckboxClick={handleCheckBoxChange}
                                 onFilterClick={handleFilterGroupClick}
+                                onCategoryClick={handleCategoryClick}
                                 onClearFilterItems={clearFilterItem}
                                 onClearAllFilters={resetFiltersSearchAndBookmarks}
                                 showLimitedFiltersQty={showLimitedFiltersQty}
+                                showTopCategories={isEventsContainer}
                                 searchComponent={
                                     <Search
                                         placeholderText={topPanelSearchPlaceholder}

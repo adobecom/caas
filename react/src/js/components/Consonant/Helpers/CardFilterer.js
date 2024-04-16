@@ -52,6 +52,8 @@ export default class CardFilterer {
      * @memberof CardFilterer
      */
     filterCards(activeFilters, activePanels, filterType, filterTypes) {
+        console.log('[DEBUG] filterCards():activeFilters', activeFilters);
+        console.log('[DEBUG] filterCards():activePanels', activePanels);
         this.filteredCards = getFilteredCards(
             this.filteredCards,
             activeFilters,
