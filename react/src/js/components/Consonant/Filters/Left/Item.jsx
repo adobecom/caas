@@ -175,7 +175,7 @@ const Item = (props) => {
             className={leftFilterClassName}>
             <div
                 className="consonant-LeftFilter-inner">
-                <h3
+                <p
                     data-testid="consonant-LeftFilter-name"
                     className="consonant-LeftFilter-name"
                     daa-ll={filterName}>
@@ -202,7 +202,7 @@ const Item = (props) => {
                             {mobileTagsSelectedText}
                         </div>
                     </button>
-                </h3>
+                </p>
                 {
                     shouldRenderSelectedBadge &&
                     <DesktopSelectedItem
