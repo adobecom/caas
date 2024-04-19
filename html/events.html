@@ -12,48 +12,39 @@
     <link rel="stylesheet" href="../dist/app.css" type="text/css">
     <link rel="stylesheet" href="../dependencies/typekit.css" type="text/css">
     <title>CaaS Events Test Page</title>
-
-</head>
-
-<body class="page basicpage spectrum spectrum--lightest">
-    <!-- <div class="root responsivegrid">
-        <div class="aem-Grid aem-Grid--12 aem-Grid--default--12">
-            <div class="aem-Grid aem-Grid--12 aem-Grid--default--12 ">
-                <div class="position aem-GridColumn aem-GridColumn--default--12">
-                    <div id="root_content_position"
-                         class="dexter-Position mobile-place-static mobile-place-left mobile-place-top mobile-padding-top-0 mobile-padding-right-0 mobile-padding-bottom-0 mobile-padding-left-0 mobile-margin-top-0 mobile-margin-right-0 mobile-margin-bottom-0 mobile-margin-left-0 is-Editor-false"
-                         style="background-color: transparent; background-position: 50% 50%;">
-                        <div class="aem-Grid aem-Grid--12 aem-Grid--default--12 ">
-                            <div class="cardcollection aem-GridColumn aem-GridColumn--default--12">
-                                <section id="create-app" class="create-app consonant">
-                                    <div class="collection-Container  create-card-collection">
-                                        <div class="container create-card-collection__outer-wrapper">
-                                            <consonant-card-collection id="foo" data-config=""></consonant-card-collection>
-                                        </div>
-                                    </div>
-                                </section>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
-    <div class="container">
-        <consonant-card-collection id="foo" data-config=""></consonant-card-collection>
-    </div>
-
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            font-size: 1.75em;
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: 300;
+            background: black;
+            color: white;
+            padding: 20px;
+            margin: 0 0 25px;
+        }
         .help {
+            display: none;
             border-top: solid 1px #666;
             width: 80%;
             margin: 60px auto;
             padding: 30px;
             font-family: Arial, Helvetica, sans-serif;
         }
-
     </style>
+</head>
+
+<body class="page basicpage spectrum spectrum--lightest">
+    <div class="container">
+        <h1>T3-Events Test Page</h1>
+        <consonant-card-collection id="foo" data-config=""></consonant-card-collection>
+    </div>
+
+
     <div class="help">
         <p><b>Testing Tips</b></p>
         <p>URLParam State examples:</p>
@@ -78,7 +69,7 @@
                 "layout": {
                     "type": "3up",
                     "gutter": "4x",
-                    "container": "1200MaxWidth"
+                    "container": "events"
                 },
                 "lazyload": "false",
                 "button": {

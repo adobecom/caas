@@ -163,7 +163,7 @@ const Container = (props) => {
     const isCarouselContainer = authoredLayoutContainer === LAYOUT_CONTAINER.CAROUSEL;
     const isEventsContainer = authoredLayoutContainer === LAYOUT_CONTAINER.EVENTS;
     // const isStandardContainer = authoredLayoutContainer !== LAYOUT_CONTAINER.CAROUSEL;
-    const isStandardContainer = !isCarouselContainer && isEventsContainer;
+    const isStandardContainer = !isCarouselContainer;
     /**
      **** Hooks ****
      */
@@ -1226,7 +1226,7 @@ const Container = (props) => {
         'consonant-Wrapper--1600MaxWidth': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_1600_PX,
         'consonant-Wrapper--carousel': isCarouselContainer,
         'consonant-Wrapper--withLeftFilter': filterPanelEnabled && isLeftFilterPanel,
-        'consonant-Wrapper--1200MaxWidth events': isEventsContainer,
+        'consonant-Wrapper--1200MaxWidth events-container': isEventsContainer,
     });
 
     // const categoriesStyle = {

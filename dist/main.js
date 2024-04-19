@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.25 (4/16/2024, 07:58:55)
+ * Chimera UI Libraries - Build 0.11.26 (4/18/2024, 12:02:36)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6199,7 +6199,7 @@ var Container = function Container(props) {
     var isCarouselContainer = authoredLayoutContainer === _constants.LAYOUT_CONTAINER.CAROUSEL;
     var isEventsContainer = authoredLayoutContainer === _constants.LAYOUT_CONTAINER.EVENTS;
     // const isStandardContainer = authoredLayoutContainer !== LAYOUT_CONTAINER.CAROUSEL;
-    var isStandardContainer = !isCarouselContainer && isEventsContainer;
+    var isStandardContainer = !isCarouselContainer;
     /**
      **** Hooks ****
      */
@@ -7478,7 +7478,7 @@ var Container = function Container(props) {
         'consonant-Wrapper--1600MaxWidth': authoredLayoutContainer === _constants.LAYOUT_CONTAINER.SIZE_1600_PX,
         'consonant-Wrapper--carousel': isCarouselContainer,
         'consonant-Wrapper--withLeftFilter': filterPanelEnabled && isLeftFilterPanel,
-        'consonant-Wrapper--1200MaxWidth events': isEventsContainer
+        'consonant-Wrapper--1200MaxWidth events-container': isEventsContainer
     });
 
     // const categoriesStyle = {
@@ -54217,7 +54217,7 @@ var Item = function Item(props) {
             {
                 className: 'consonant-LeftFilter-inner' },
             _react2.default.createElement(
-                'h3',
+                'p',
                 {
                     'data-testid': 'consonant-LeftFilter-name',
                     className: 'consonant-LeftFilter-name',
@@ -54755,9 +54755,8 @@ var Title = function Title(props) {
 
 
     return _react2.default.createElement(
-        'h3',
-        {
-            className: 'consonant-LeftFilters-deskTitle' },
+        'p',
+        { className: 'consonant-LeftFilters-deskTitle' },
         panelHeader
     );
 };
