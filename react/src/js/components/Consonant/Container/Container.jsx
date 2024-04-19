@@ -1229,24 +1229,6 @@ const Container = (props) => {
         'consonant-Wrapper--1200MaxWidth events-container': isEventsContainer,
     });
 
-    // const categoriesStyle = {
-    //     display: 'flex',
-    //     justifyContent: 'center',
-    //     alignItems: 'center',
-    //     width: '100%',
-    //     height: '100%',
-    //     fontSize: '1rem',
-    //     margin: '20px 0',
-    // };
-
-    // const pill = {
-    //     padding: '0.45em 1em',
-    //     borderRadius: '20px',
-    //     margin: '0 10px',
-    //     background: '#404040',
-    //     color: '#fff',
-    // };
-
     return (
         <ConfigContext.Provider value={config}>
             <ExpandableContext.Provider value={{ value: openDropdown, setValue: setOpenDropdown }} >
@@ -1293,18 +1275,6 @@ const Container = (props) => {
                         </div>
                         }
                         <div className={`consonant-Wrapper-collection${isLoading ? ' is-loading' : ''}`}>
-                            {/* {isEventsContainer &&
-                                <div className="categories" style={categoriesStyle}>
-                                    <span style={pill}>All</span>
-                                    <span style={pill}>Graphic Design</span>
-                                    <span style={pill}>Photography</span>
-                                    <span style={pill}>Illustration</span>
-                                    <span style={pill}>Video</span>
-                                    <span style={pill}>Gen AI Media</span>
-                                    <span style={pill}>Social Media</span>
-                                </div>
-                            } */}
-
                             {isTopFilterPanel && isStandardContainer &&
                             <FiltersPanelTop
                                 filterPanelEnabled={filterPanelEnabled}
