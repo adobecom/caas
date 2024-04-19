@@ -1200,6 +1200,10 @@ const Container = (props) => {
         'consonant-u-themeDarkest': authoredMode === THEME_TYPE.DARKEST,
     });
 
+    function pillHandler(someId){
+        alert(someId);
+    }
+
 
     const collectionStr = collectionIdentifier ? `${collectionIdentifier} | ` : '';
     const filterStr = selectedFiltersItemsQty ? filterNames : 'No Filters';
@@ -1234,14 +1238,25 @@ const Container = (props) => {
                     onClick={handleWindowClick}
                     className={`${wrapperClass} ${themeClass}`}>
                     <div className="consonant-Wrapper-inner">
+                        <div style={{textAlign: "center", marginBottom: "10px"}}>
                         {
                             pills.map(item => (
                                 <button
-                                    onClick={() => {}}>
+                                    onClick={() => pillHandler(item.tags)}
+                                    style={{
+                                        padding: "1em 1em",
+                                        borderRadius: "20px",
+                                        margin: "0px 10px",
+                                        background: "#292929",
+                                        fontWeight: 900,
+                                        color: "rgb(255, 255, 255)",
+                                    }}
+                                >
                                     {item.label}
                                 </button>
                             ))
                         }
+                        </div>
                         { displayLeftFilterPanel && isStandardContainer &&
                         <div className="consonant-Wrapper-leftFilterWrapper">
                             <LeftFilterPanel

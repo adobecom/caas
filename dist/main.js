@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.26 (4/19/2024, 24:41:18)
+ * Chimera UI Libraries - Build 0.11.26 (4/19/2024, 01:02:17)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -7452,6 +7452,10 @@ var Container = function Container(props) {
         'consonant-u-themeDarkest': authoredMode === _constants.THEME_TYPE.DARKEST
     });
 
+    function pillHandler(someId) {
+        alert(someId);
+    }
+
     var collectionStr = collectionIdentifier ? collectionIdentifier + ' | ' : '';
     var filterStr = selectedFiltersItemsQty ? filterNames : 'No Filters';
     var searchQueryStr = searchQuery || 'None';
@@ -7490,14 +7494,29 @@ var Container = function Container(props) {
                 _react2.default.createElement(
                     'div',
                     { className: 'consonant-Wrapper-inner' },
-                    pills.map(function (item) {
-                        return _react2.default.createElement(
-                            'button',
-                            {
-                                onClick: function onClick() {} },
-                            item.label
-                        );
-                    }),
+                    _react2.default.createElement(
+                        'div',
+                        { style: { textAlign: "center", marginBottom: "10px" } },
+                        pills.map(function (item) {
+                            return _react2.default.createElement(
+                                'button',
+                                {
+                                    onClick: function onClick() {
+                                        return pillHandler(item.tags);
+                                    },
+                                    style: {
+                                        padding: "1em 1em",
+                                        borderRadius: "20px",
+                                        margin: "0px 10px",
+                                        background: "#292929",
+                                        fontWeight: 900,
+                                        color: "rgb(255, 255, 255)"
+                                    }
+                                },
+                                item.label
+                            );
+                        })
+                    ),
                     displayLeftFilterPanel && isStandardContainer && _react2.default.createElement(
                         'div',
                         { className: 'consonant-Wrapper-leftFilterWrapper' },
