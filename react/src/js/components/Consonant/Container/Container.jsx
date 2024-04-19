@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, {
     Fragment,
     useEffect,
@@ -114,6 +115,7 @@ const Container = (props) => {
     const sortOptions = getConfig('sort', 'options');
     const defaultSort = getConfig('sort', 'defaultSort');
     const defaultSortOption = getDefaultSortOption(config, defaultSort);
+    const pills = getConfig('pills', '');
     let featuredCards = getConfig('featuredCards', '')
         .toString()
         .replace(/\[|\]/g, '')
@@ -1232,6 +1234,14 @@ const Container = (props) => {
                     onClick={handleWindowClick}
                     className={`${wrapperClass} ${themeClass}`}>
                     <div className="consonant-Wrapper-inner">
+                        {
+                            pills.map(item => (
+                                <button
+                                    onClick={() => {}}>
+                                    {item.label}
+                                </button>
+                            ))
+                        }
                         { displayLeftFilterPanel && isStandardContainer &&
                         <div className="consonant-Wrapper-leftFilterWrapper">
                             <LeftFilterPanel
