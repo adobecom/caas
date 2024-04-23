@@ -38,6 +38,7 @@ const CardType = {
     footer: arrayOf(shape(footerType)),
     contentArea: shape(contentAreaType),
     renderBorder: bool,
+    renderDivider: bool,
     renderOverlay: bool,
     overlayLink: string,
     hideCTA: bool,
@@ -60,6 +61,7 @@ const defaultProps = {
     isBookmarked: false,
     disableBookmarkIco: false,
     renderBorder: true,
+    renderDivider: false,
     renderOverlay: false,
     overlayLink: '',
     hideCTA: false,
@@ -134,6 +136,7 @@ const Card = (props) => {
             },
         },
         renderBorder,
+        renderDivider,
         renderOverlay,
         overlayLink,
         hideCTA,
@@ -419,7 +422,7 @@ const Card = (props) => {
                 !hideCTA &&
                 footer.map(footerItem => (
                     <CardFooter
-                        divider={footerItem.divider}
+                        divider={renderDivider || footerItem.divider}
                         isFluid={footerItem.isFluid}
                         key={cuid()}
                         left={showFooterLeft ? extendFooterData(footerItem.left) : []}
