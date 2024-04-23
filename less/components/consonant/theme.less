@@ -208,7 +208,7 @@
     .consonant-u-theme@{name} {
         .themeDefs(@name);
 
-        .consonant {
+        .consonant-CardsGrid .consonant {
             &-FiltersInfo {
                 &-title,
                 &-results {
@@ -269,210 +269,244 @@
 
             /* consonant-ThreeFourthCard */
 
-            &-ThreeFourthCard {
+            &-Card.three-fourths {
                 border-color: @consonantGray300;
                 background-color: @consonantBaseColor;
 
-                &-inner {
-                    background-color: @consonantBaseColor;
+                .consonant-Card {
+                    &-inner {
+                        background-color: @consonantBaseColor;
 
-                    @media @consonant-desktop-up {
-                        &:focus:after {
-                            border-color: @consonantBlue600;
+                        @media @consonant-desktop-up {
+                            &:focus:after {
+                                border-color: @consonantBlue600;
+                            }
                         }
                     }
-                }
 
-                &-header {
-                    background-color: @consonantGray300;
-                }
+                    &-header {
+                        background-color: @consonantGray300;
+                    }
 
-                &-label {
-                    color: @consonantGray800;
-                }
+                    &-label {
+                        color: @consonantGray800;
+                    }
 
-                &-title {
-                    color: @consonantGray900;
-                }
+                    &-title {
+                        color: @consonantGray900;
+                    }
 
-                &-banner {
-                    color: @consonantBaseColor;
-                    background-color: @consonantBlue600;
-                }
+                    &-banner {
+                        color: @consonantBaseColor;
+                        background-color: @consonantBlue600;
+                    }
 
-                &-badge {
-                    color: @consonantGray700;
-                    border-color: @consonantGray600;
-                    background-color: @consonantBaseColor;
+                    &-badge {
+                        color: @consonantGray700;
+                        border-color: @consonantGray600;
+                        background-color: @consonantBaseColor;
+                    }
                 }
             }
 
             /* consonant-OneHalfCard */
 
-            &-OneHalfCard {
+            &-Card.one-half {
                 border-color: @consonantGray300;
                 background-color: @consonantBaseColor;
 
-                &-inner {
-                    background-color: @consonantBaseColor;
-                }
+                .consonant-Card {
+                    &-inner {
+                        background-color: @consonantBaseColor;
+                    }
 
-                &-header {
-                    background-color: @consonantGray300;
-                }
+                    &-header {
+                        background-color: @consonantGray300;
+                    }
 
-                &-label {
-                    color: @consonantGray800;
-                }
+                    &-label {
+                        color: @consonantGray800;
+                    }
 
-                &-title {
-                    color: @consonantGray900;
-                }
+                    &-title {
+                        color: @consonantGray900;
+                    }
 
-                &-text {
-                    color: @consonantGray700;
-                }
+                    &-text {
+                        color: @consonantGray700;
+                    }
 
-                &-banner {
-                    color: @consonantBaseColor;
-                    background-color: @consonantBlue600;
-                }
+                    &-banner {
+                        color: @consonantBaseColor;
+                        background-color: @consonantBlue600;
+                    }
 
-                &-badge {
-                    color: @consonantGray700;
-                    border-color: @consonantGray600;
-                    background-color: @consonantBaseColor;
+                    &-badge {
+                        color: @consonantGray700;
+                        border-color: @consonantGray600;
+                        background-color: @consonantBaseColor;
+                    }
                 }
             }
 
             /* consonant-TextCard */
 
-            &-TextCard {
+            &-Card.text-card {
                 border-color: @consonantGray300;
                 background-color: @consonantBaseColor;
 
-                &-inner {
-                    background-color: @consonantBaseColor;
-                }
+                .consonant-Card {
+                    &-inner {
+                        background-color: @consonantBaseColor;
+                    }
 
-                &-header {
-                    background-color: @consonantGray300;
-                }
+                    &-header {
+                        background-color: @consonantBaseColor;
+                    }
 
-                &-label {
-                    color: @consonantGray800;
-                }
+                    &-label {
+                        color: @consonantGray800;
+                    }
 
-                &-title {
-                    color: @consonantGray900;
-                }
+                    &-title {
+                        color: @consonantGray900;
+                    }
 
-                &-text {
-                    color: @consonantGray700;
-                }
+                    &-text {
+                        color: @consonantGray700;
+                    }
 
-                &-banner {
-                    color: @consonantBaseColor;
-                    background-color: @consonantBlue600;
-                }
+                    &-banner {
+                        color: @consonantBaseColor;
+                        background-color: @consonantBlue600;
+                    }
 
-                &-badge {
-                    color: @consonantGray700;
-                    border-color: @consonantGray600;
-                    background-color: @consonantBaseColor;
+                    &-badge {
+                        color: @consonantGray700;
+                        border-color: @consonantGray600;
+                        background-color: @consonantBaseColor;
+                    }
+                }
+            }
+
+            /* consonant-Card.product-card */
+
+            &-Card.product {
+                border-color: @consonantGray300;
+                background-color: @consonantBaseColor;
+
+                .consonant-Card {
+                    &-inner {
+                        background-color: @consonantBaseColor;
+                    }
+
+                    &-title {
+                        color: @consonantGray900;
+                    }
+
+                    &-text {
+                        color: @consonantGray700;
+                    }
                 }
             }
 
             /* consonant-DoubleWideCard */
 
-            &-DoubleWideCard {
-                border-color: @consonantGray500;
+            &-Card.double-wide {
+                border-color: @consonantGray300;
+                background-color: @consonantBaseColor;
 
-                &-inner {
-                    background-color: @consonantBaseColor;
+                .consonant-Card {
+                    &-inner {
+                        background-color: @consonantBaseColor;
 
-                    @media @consonant-desktop-up {
-                        &:focus:after {
-                            border-color: @consonantBlue600;
+                        @media @consonant-desktop-up {
+                            &:focus:after {
+                                border-color: @consonantBlue600;
+                            }
                         }
                     }
-                }
 
-                &-title {
-                    color: @consonantGray900;
-                }
+                    &-title {
+                        color: @consonantGray900;
+                    }
 
-                &-text {
-                    color: @consonantGray700;
-                }
+                    &-text {
+                        color: @consonantGray700;
+                    }
 
-                &-label {
-                    color: @consonantGray800;
+                    &-label {
+                        color: @consonantGray800;
+                    }
                 }
             }
 
             /* consonant-FullCard */
 
-            &-FullCard {
+            &-Card.full-card {
                 border-color: @consonantGray500;
                 background-color: @consonantBaseColor;
 
-                &-inner {
-                    @media @consonant-desktop-up {
-                        &:focus:after {
-                            border-color: @consonantBlue600;
+                .consonant-Card {
+                    &-inner {
+                        @media @consonant-desktop-up {
+                            &:focus:after {
+                                border-color: @consonantBlue600;
+                            }
+                        }
+
+                        &:before {
+                            border-color: @consonantBaseColor;
+                            box-shadow: 1px 1px 0 0 @consonantBaseColor;
                         }
                     }
 
-                    &:before {
-                        border-color: @consonantBaseColor;
-                        box-shadow: 1px 1px 0 0 @consonantBaseColor;
+                    &-header {
+                        background-color: @consonantGray300;
                     }
-                }
 
-                &-header {
-                    background-color: @consonantGray300;
-                }
+                    &-banner {
+                        color: @consonantBaseColor;
+                        background-color: @consonantBlue600;
+                    }
 
-                &-banner {
-                    color: @consonantBaseColor;
-                    background-color: @consonantBlue600;
-                }
+                    &-label {
+                        color: @consonantBaseColor;
+                    }
 
-                &-label {
-                    color: @consonantBaseColor;
-                }
+                    &-title {
+                        color: @consonantGray400;
+                    }
 
-                &-title {
-                    color: @consonantGray400;
-                }
-
-                &-badge {
-                    color: @consonantGray700;
-                    border-color: @consonantGray600;
-                    background-color: @consonantBaseColor;
+                    &-badge {
+                        color: @consonantGray700;
+                        border-color: @consonantGray600;
+                        background-color: @consonantBaseColor;
+                    }
                 }
             }
 
             /* consonant-HalfHeightCard */
 
-            &-HalfHeightCard {
-                &-title {
-                    color: @consonantBaseColor;
-                }
+            &-Card.half-height {
+                .consonant-Card {
+                    &-title {
+                        color: @consonantBaseColor;
+                    }
 
-                &-label {
-                    color: @consonantBaseColor;
-                }
+                    &-label {
+                        color: @consonantBaseColor;
+                    }
 
-                &-banner {
-                    color: @consonantBaseColor;
-                    background-color: @consonantBlue600;
-                }
+                    &-banner {
+                        color: @consonantBaseColor;
+                        background-color: @consonantBlue600;
+                    }
 
-                @media @consonant-desktop-up {
-                    &:focus:after {
-                        border-color: @consonantBlue600;
+                    @media @consonant-desktop-up {
+                        &:focus:after {
+                            border-color: @consonantBlue600;
+                        }
                     }
                 }
             }
@@ -682,8 +716,8 @@
 
 /* Theme-specific styles  */
 
-.consonant-u-themeDark .consonant-FullCard-inner,
-.consonant-u-themeDarkest .consonant-FullCard-inner {
+.consonant-u-themeDark .consonant-CardsGrid .consonant-Card.full-card .consonant-Card-content,
+.consonant-u-themeDarkest .consonant-CardsGrid .consonant-Card.full-card .consonant-Card-content {
     background:
         transparent
         linear-gradient(
@@ -695,8 +729,8 @@
         ) 0% 0% no-repeat padding-box;
 }
 
-.consonant-u-themeDark .consonant-HalfHeightCard-img:after,
-.consonant-u-themeDarkest .consonant-HalfHeightCard-img:after {
+.consonant-u-themeDark .consonant-CardsGrid .consonant-Card.half-height .consonant-Card-header:after,
+.consonant-u-themeDarkest .consonant-CardsGrid .consonant-Card.half-height .consonant-Card-header:after {
     background:
         transparent
         linear-gradient(
