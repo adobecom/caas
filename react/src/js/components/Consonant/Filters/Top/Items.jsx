@@ -38,7 +38,6 @@ const Items = (props) => {
         handleCheck,
         stopPropagation,
         clipWrapperItemsCount,
-        isFromPill,
     } = props;
 
     /**

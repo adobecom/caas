@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.26 (4/23/2024, 16:50:50)
+ * Chimera UI Libraries - Build 0.11.26 (4/23/2024, 16:56:38)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -53312,8 +53312,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Group = undefined;
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); /* eslint-disable */
-
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var _react = __webpack_require__(0);
 
@@ -53386,11 +53385,8 @@ var Group = function Group(props) {
         onCheck = props.onCheck,
         onClearAll = props.onClearAll,
         results = props.results,
-        clearFilterText = props.clearFilterText,
-        isFromPill = props.isFromPill;
+        clearFilterText = props.clearFilterText;
 
-
-    console.log(isFromPill);
 
     var getConfig = (0, _hooks.useConfig)();
 
@@ -53567,8 +53563,6 @@ var Group = function Group(props) {
                         clipWrapperItemsCount: clipWrapperItemsCount,
                         handleCheck: handleCheck,
                         stopPropagation: _general.stopPropagation,
-                        name: name,
-                        isFromPill: isFromPill,
                         items: items }),
                     shouldClipFilters && _react2.default.createElement('aside', {
                         className: 'consonant-TopFilter-bg' }),
@@ -53644,8 +53638,7 @@ var Items = function Items(props) {
     var items = props.items,
         handleCheck = props.handleCheck,
         stopPropagation = props.stopPropagation,
-        clipWrapperItemsCount = props.clipWrapperItemsCount,
-        isFromPill = props.isFromPill;
+        clipWrapperItemsCount = props.clipWrapperItemsCount;
 
     /**
      **** Constants ****
@@ -53668,7 +53661,6 @@ var Items = function Items(props) {
         'consonant-TopFilter-items--clipped': shouldClipItems
     });
     var set = new Set();
-    // console.log(isFromPill);
 
     return _react2.default.createElement(
         'ul',
