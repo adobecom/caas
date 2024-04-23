@@ -91,4 +91,5 @@ module.exports = {
         ],
     },
     plugins,
+    devtool: 'source-map',
 };
