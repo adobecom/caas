@@ -1,7 +1,7 @@
 {
   "cards":[
     {
-      "id": "1",
+      "id": "1.0.0",
       "showCard": {
         "from": "2020-10-01T20:00:00Z",
         "until": "2025-10-31T21:45:00Z"
@@ -30,8 +30,8 @@
       },
       "contentArea": {
         "detailText": "PHOTOGRAPHY",
-        "title": "Create Now in Stamford, CT",
-        "description": "Body 1-3 line of copy, set up for text-overflow with ellipses",
+        "title": "Create now event in Stamford, CT teaching Photoshop for Photographers",
+        "description": "",
         "dateDetailText": {}
       },
       "styles": {
@@ -64,17 +64,17 @@
       "cardDate": "2020-07-02T09:41:35.933Z"
     },
     {
-      "id": "2",
+      "id": "1.0.1",
       "showCard": {
         "from": "2020-10-01T20:00:00Z",
         "until": "2025-10-31T21:45:00Z"
       },
       "tags": [
         {
-          "id": "caas:location/san-francisco-ca"
+          "id": "caas:location/stamford-ct"
         },
         {
-          "id": "caas:product-category/gen-ai/spectra"
+          "id": "caas:product-category/graphic-design/photoshop"
         },
         {
           "id": "caas:event/create-now"
@@ -82,72 +82,9 @@
       ],
       "overlays": {
         "banner": {
-          "backgroundColor": "#f68511",
-          "fontColor": "black",
-          "description": "Upcoming",
-          "icon": ""
-        },
-        "logo": {},
-        "label": {},
-        "videoButton": {}
-      },
-      "contentArea": {
-        "detailText": "GEN AI",
-        "title": "Create Now in San Francisco, CA",
-        "description": "Body 1-3 line of copy, set up for text-overflow with ellipses",
-        "dateDetailText": {}
-      },
-      "styles": {
-        "typeOverride": "",
-        "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/104643%20Adobe_Digital-Bites-web-graphics_marquee%201600x600.jpg"
-      },
-      "footer": [
-        {
-          "divider": true,
-          "left": [
-            {
-              "type": "bookmark",
-              "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
-              "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
-              "cardSaveText": "Save Card",
-              "cardUnsaveText": "Unsave Card"
-            }
-          ],
-          "center": [],
-          "right": [
-            {
-              "type": "button",
-              "style": "primary",
-              "text": "Go to Event",
-              "href": "https://www.google.com"
-            }
-          ]
-        }
-      ],
-      "cardDate": "2020-07-02T09:41:35.933Z"
-    },
-    {
-      "id": "3",
-      "showCard": {
-        "from": "2020-10-01T20:00:00Z",
-        "until": "2025-10-31T21:45:00Z"
-      },
-      "tags": [
-        {
-          "id": "caas:location/omaha-ne"
-        },
-        {
-          "id": "caas:product-category/graphic-design/illustrator"
-        },
-        {
-          "id": "caas:event/create-now"
-        }
-      ],
-      "overlays": {
-        "banner": {
-          "backgroundColor": "#f68511",
-          "fontColor": "black",
-          "description": "Upcoming",
+          "backgroundColor": "white",
+          "fontColor": "red",
+          "description": "Live",
           "icon": ""
         },
         "logo": {},
@@ -156,8 +93,8 @@
       },
       "contentArea": {
         "detailText": "GRAPHIC DESIGN",
-        "title": "Create Now in Omaha, NE",
-        "description": "Body 1-3 line of copy, set up for text-overflow with ellipses",
+        "title": "Create now event in Stamford, CT teaching Photoshop for Graphic Designers",
+        "description": "",
         "dateDetailText": {}
       },
       "styles": {
@@ -190,7 +127,7 @@
       "cardDate": "2020-07-02T09:41:35.933Z"
     },
     {
-      "id": "4",
+      "id": "1.0.2",
       "showCard": {
         "from": "2020-10-01T20:00:00Z",
         "until": "2025-10-31T21:45:00Z"
@@ -198,6 +135,201 @@
       "tags": [
         {
           "id": "caas:location/stamford-ct"
+        },
+        {
+          "id": "caas:product-category/graphic-design/photoshop"
+        },
+        {
+          "id": "caas:product-category/photography/photoshop"
+        },
+        {
+          "id": "caas:event/create-now"
+        }
+      ],
+      "overlays": {
+        "banner": {
+          "backgroundColor": "white",
+          "fontColor": "red",
+          "description": "Live",
+          "icon": ""
+        },
+        "logo": {},
+        "label": {},
+        "videoButton": {}
+      },
+      "contentArea": {
+        "detailText": "PHOTOGRAPHY & GRAPHIC DESIGN",
+        "title": "Create now event in Stamford, CT teaching Photoshop for Graphic Designers AND Photographers",
+        "description": "",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "",
+        "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/104643%20Adobe_Digital-Bites-web-graphics_marquee%201600x600.jpg"
+      },
+      "footer": [
+        {
+          "divider": true,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
+              "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
+              "cardSaveText": "Save Card",
+              "cardUnsaveText": "Unsave Card"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "primary",
+              "text": "Go to Event",
+              "href": "https://www.google.com"
+            }
+          ]
+        }
+      ],
+      "cardDate": "2020-07-02T09:41:35.933Z"
+    },
+    {
+      "id": "1.0.3",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2025-10-31T21:45:00Z"
+      },
+      "tags": [
+        {
+          "id": "caas:location/stamford-ct"
+        },
+        {
+          "id": "caas:product-category/photography/lightroom"
+        },
+        {
+          "id": "caas:event/create-now"
+        }
+      ],
+      "overlays": {
+        "banner": {
+          "backgroundColor": "white",
+          "fontColor": "red",
+          "description": "Live",
+          "icon": ""
+        },
+        "logo": {},
+        "label": {},
+        "videoButton": {}
+      },
+      "contentArea": {
+        "detailText": "PHOTOGRAPHY",
+        "title": "Create now event in Stamford, CT teaching Lightroom for Photographers",
+        "description": "",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "",
+        "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/104643%20Adobe_Digital-Bites-web-graphics_marquee%201600x600.jpg"
+      },
+      "footer": [
+        {
+          "divider": true,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
+              "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
+              "cardSaveText": "Save Card",
+              "cardUnsaveText": "Unsave Card"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "primary",
+              "text": "Go to Event",
+              "href": "https://www.google.com"
+            }
+          ]
+        }
+      ],
+      "cardDate": "2020-07-02T09:41:35.933Z"
+    },
+    {
+      "id": "1.0.4",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2025-10-31T21:45:00Z"
+      },
+      "tags": [
+        {
+          "id": "caas:location/stamford-ct"
+        },
+        {
+          "id": "caas:product-category/photoshop/lightroom"
+        },
+        {
+          "id": "caas:product-category/video/lightroom"
+        },
+        {
+          "id": "caas:event/create-now"
+        }
+      ],
+      "overlays": {
+        "banner": {
+          "backgroundColor": "white",
+          "fontColor": "red",
+          "description": "Live",
+          "icon": ""
+        },
+        "logo": {},
+        "label": {},
+        "videoButton": {}
+      },
+      "contentArea": {
+        "detailText": "VIDEO & PHOTOGRAPHY",
+        "title": "Create now event in Stamford, CT teaching Photoshop for Graphic Designers AND Videographers",
+        "description": "",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "",
+        "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/104643%20Adobe_Digital-Bites-web-graphics_marquee%201600x600.jpg"
+      },
+      "footer": [
+        {
+          "divider": true,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
+              "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
+              "cardSaveText": "Save Card",
+              "cardUnsaveText": "Unsave Card"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "primary",
+              "text": "Go to Event",
+              "href": "https://www.google.com"
+            }
+          ]
+        }
+      ],
+      "cardDate": "2020-07-02T09:41:35.933Z"
+    },
+    {
+      "id": "1.1.0",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2025-10-31T21:45:00Z"
+      },
+      "tags": [
+        {
+          "id": "caas:location/san-francisco-ca"
         },
         {
           "id": "caas:product-category/photography/photoshop"
@@ -219,8 +351,8 @@
       },
       "contentArea": {
         "detailText": "PHOTOGRAPHY",
-        "title": "Create Now in Stamford, CT",
-        "description": "Body 1-3 line of copy, set up for text-overflow with ellipses",
+        "title": "Create now event in San Francisco, CA teaching Photoshop for Photographers",
+        "description": "",
         "dateDetailText": {}
       },
       "styles": {
@@ -253,7 +385,7 @@
       "cardDate": "2020-07-02T09:41:35.933Z"
     },
     {
-      "id": "5",
+      "id": "1.1.1",
       "showCard": {
         "from": "2020-10-01T20:00:00Z",
         "until": "2025-10-31T21:45:00Z"
@@ -263,7 +395,7 @@
           "id": "caas:location/san-francisco-ca"
         },
         {
-          "id": "caas:product-category/gen-ai/spectra"
+          "id": "caas:product-category/graphic-design/photoshop"
         },
         {
           "id": "caas:event/create-now"
@@ -271,72 +403,9 @@
       ],
       "overlays": {
         "banner": {
-          "backgroundColor": "#f68511",
-          "fontColor": "black",
-          "description": "Upcoming",
-          "icon": ""
-        },
-        "logo": {},
-        "label": {},
-        "videoButton": {}
-      },
-      "contentArea": {
-        "detailText": "GEN AI",
-        "title": "Create Now in San Francisco, CA",
-        "description": "Body 1-3 line of copy, set up for text-overflow with ellipses",
-        "dateDetailText": {}
-      },
-      "styles": {
-        "typeOverride": "",
-        "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/104643%20Adobe_Digital-Bites-web-graphics_marquee%201600x600.jpg"
-      },
-      "footer": [
-        {
-          "divider": true,
-          "left": [
-            {
-              "type": "bookmark",
-              "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
-              "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
-              "cardSaveText": "Save Card",
-              "cardUnsaveText": "Unsave Card"
-            }
-          ],
-          "center": [],
-          "right": [
-            {
-              "type": "button",
-              "style": "primary",
-              "text": "Go to Event",
-              "href": "https://www.google.com"
-            }
-          ]
-        }
-      ],
-      "cardDate": "2020-07-02T09:41:35.933Z"
-    },
-    {
-      "id": "6",
-      "showCard": {
-        "from": "2020-10-01T20:00:00Z",
-        "until": "2025-10-31T21:45:00Z"
-      },
-      "tags": [
-        {
-          "id": "caas:location/omaha-ne"
-        },
-        {
-          "id": "caas:product-category/graphic-design/illustrator"
-        },
-        {
-          "id": "caas:event/create-now"
-        }
-      ],
-      "overlays": {
-        "banner": {
-          "backgroundColor": "#f68511",
-          "fontColor": "black",
-          "description": "Upcoming",
+          "backgroundColor": "white",
+          "fontColor": "red",
+          "description": "Live",
           "icon": ""
         },
         "logo": {},
@@ -345,8 +414,8 @@
       },
       "contentArea": {
         "detailText": "GRAPHIC DESIGN",
-        "title": "Create Now in Omaha, NE",
-        "description": "Body 1-3 line of copy, set up for text-overflow with ellipses",
+        "title": "Create now event in San Francisco, CA teaching Photoshop for Graphic Designers",
+        "description": "",
         "dateDetailText": {}
       },
       "styles": {
@@ -379,14 +448,17 @@
       "cardDate": "2020-07-02T09:41:35.933Z"
     },
     {
-      "id": "7",
+      "id": "1.1.2",
       "showCard": {
         "from": "2020-10-01T20:00:00Z",
         "until": "2025-10-31T21:45:00Z"
       },
       "tags": [
         {
-          "id": "caas:location/stamford-ct"
+          "id": "caas:location/san-francisco-ca"
+        },
+        {
+          "id": "caas:product-category/graphic-design/photoshop"
         },
         {
           "id": "caas:product-category/photography/photoshop"
@@ -407,9 +479,9 @@
         "videoButton": {}
       },
       "contentArea": {
-        "detailText": "PHOTOGRAPHY",
-        "title": "Create Now in Stamford, CT",
-        "description": "Body 1-3 line of copy, set up for text-overflow with ellipses",
+        "detailText": "PHOTOGRAPHY & GRAPHIC DESIGN",
+        "title": "Create now event in San Francisco, CA teaching Photoshop for Graphic Designers AND Photographers",
+        "description": "",
         "dateDetailText": {}
       },
       "styles": {
@@ -442,27 +514,27 @@
       "cardDate": "2020-07-02T09:41:35.933Z"
     },
     {
-      "id": "8",
+      "id": "2.0.0",
       "showCard": {
         "from": "2020-10-01T20:00:00Z",
         "until": "2025-10-31T21:45:00Z"
       },
       "tags": [
         {
-          "id": "caas:location/san-francisco-ca"
+          "id": "caas:location/stamford-ct"
         },
         {
-          "id": "caas:product-category/gen-ai/spectra"
+          "id": "caas:product-category/photography/photoshop"
         },
         {
-          "id": "caas:event/create-now"
+          "id": "caas:event/adobe-live"
         }
       ],
       "overlays": {
         "banner": {
-          "backgroundColor": "#f68511",
-          "fontColor": "black",
-          "description": "Upcoming",
+          "backgroundColor": "white",
+          "fontColor": "red",
+          "description": "Live",
           "icon": ""
         },
         "logo": {},
@@ -470,9 +542,9 @@
         "videoButton": {}
       },
       "contentArea": {
-        "detailText": "GEN AI",
-        "title": "Create Now in San Francisco, CA",
-        "description": "Body 1-3 line of copy, set up for text-overflow with ellipses",
+        "detailText": "PHOTOGRAPHY",
+        "title": "Adobe Live event in Stamford, CT teaching Photoshop for Photographers",
+        "description": "",
         "dateDetailText": {}
       },
       "styles": {
@@ -505,27 +577,27 @@
       "cardDate": "2020-07-02T09:41:35.933Z"
     },
     {
-      "id": "9",
+      "id": "2.0.1",
       "showCard": {
         "from": "2020-10-01T20:00:00Z",
         "until": "2025-10-31T21:45:00Z"
       },
       "tags": [
         {
-          "id": "caas:location/omaha-ne"
+          "id": "caas:location/stamford-ct"
         },
         {
-          "id": "caas:product-category/graphic-design/illustrator"
+          "id": "caas:product-category/graphic-design/photoshop"
         },
         {
-          "id": "caas:event/create-now"
+          "id": "caas:event/adobe-live"
         }
       ],
       "overlays": {
         "banner": {
-          "backgroundColor": "#f68511",
-          "fontColor": "black",
-          "description": "Upcoming",
+          "backgroundColor": "white",
+          "fontColor": "red",
+          "description": "Live",
           "icon": ""
         },
         "logo": {},
@@ -534,8 +606,74 @@
       },
       "contentArea": {
         "detailText": "GRAPHIC DESIGN",
-        "title": "Create Now in Omaha, NE",
-        "description": "Body 1-3 line of copy, set up for text-overflow with ellipses",
+        "title": "Adobe Live event in Stamford, CT teaching Photoshop for Graphic Designers",
+        "description": "",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "",
+        "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/104643%20Adobe_Digital-Bites-web-graphics_marquee%201600x600.jpg"
+      },
+      "footer": [
+        {
+          "divider": true,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
+              "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
+              "cardSaveText": "Save Card",
+              "cardUnsaveText": "Unsave Card"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "primary",
+              "text": "Go to Event",
+              "href": "https://www.google.com"
+            }
+          ]
+        }
+      ],
+      "cardDate": "2020-07-02T09:41:35.933Z"
+    },
+    {
+      "id": "2.0.2",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2025-10-31T21:45:00Z"
+      },
+      "tags": [
+        {
+          "id": "caas:location/stamford-ct"
+        },
+        {
+          "id": "caas:product-category/graphic-design/photoshop"
+        },
+        {
+          "id": "caas:product-category/photography/photoshop"
+        },
+        {
+          "id": "caas:event/adobe-live"
+        }
+      ],
+      "overlays": {
+        "banner": {
+          "backgroundColor": "white",
+          "fontColor": "red",
+          "description": "Live",
+          "icon": ""
+        },
+        "logo": {},
+        "label": {},
+        "videoButton": {}
+      },
+      "contentArea": {
+        "detailText": "PHOTOGRAPHY & GRAPHIC DESIGN",
+        "title": "Adobe Live event in Stamford, CT teaching Photoshop for Graphic Designers AND Photographers",
+        "description": "",
         "dateDetailText": {}
       },
       "styles": {

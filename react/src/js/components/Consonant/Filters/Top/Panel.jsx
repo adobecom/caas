@@ -285,21 +285,6 @@ const FiltersPanelTop = (props) => {
                                 clearFilterText={clearFilterText}
                                 isTopFilter />))
                         }
-                        {pills.map(pill =>
-                            (<TopFilterItem
-                                key={Math.random()}
-                                name="Photography"
-                                items={[]}
-                                numItemsSelected={4}
-                                results={resQty}
-                                id={Math.random()}
-                                isOpened={false}
-                                onCheck={onCheckboxClick}
-                                onClick={onFilterClick}
-                                onClearAll={onClearFilterItems}
-                                clearFilterText={clearFilterText}
-                                isTopFilter />))
-                        }
                         {shouldDisplayMoreFiltersBtn &&
                         <button
                             type="button"

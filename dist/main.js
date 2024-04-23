@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.26 (4/22/2024, 19:56:46)
+ * Chimera UI Libraries - Build 0.11.26 (4/23/2024, 16:50:50)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -2576,6 +2576,7 @@ var getFilteredCards = exports.getFilteredCards = function getFilteredCards(card
     });
 
     var temp = [];
+    var set = new Set();
     if (pills.length) {
         for (var i = 0; i < cards.length; i++) {
             var card = cards[i];
@@ -2583,7 +2584,8 @@ var getFilteredCards = exports.getFilteredCards = function getFilteredCards(card
                 var pill = pills[j];
                 for (var k = 0; k < card.tags.length; k++) {
                     var currTag = card.tags[k];
-                    if (currTag.id.includes(pill)) {
+                    if (currTag.id.includes(pill) && !set.has(card.id)) {
+                        set.add(card.id);
                         temp.push(card);
                     }
                 }
@@ -6362,6 +6364,11 @@ var Container = function Container(props) {
         searchQuery = _useState18[0],
         setSearchQuery = _useState18[1];
 
+    var _useState19 = (0, _react.useState)(''),
+        _useState20 = _slicedToArray(_useState19, 2),
+        selectedPill = _useState20[0],
+        setSelectedPill = _useState20[1];
+
     /**
      * @typedef {String} SortOpenedState — Toggles Sort Popup Opened Or Closed
      * @typedef {Function} SortOpenedStateSetter — Sets Sort Option
@@ -6370,10 +6377,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState19 = (0, _react.useState)(false),
-        _useState20 = _slicedToArray(_useState19, 2),
-        sortOpened = _useState20[0],
-        setSortOpened = _useState20[1];
+    var _useState21 = (0, _react.useState)(false),
+        _useState22 = _slicedToArray(_useState21, 2),
+        sortOpened = _useState22[0],
+        setSortOpened = _useState22[1];
 
     /**
      * @typedef {String} SortOptionState — Can be one of a range of types
@@ -6385,10 +6392,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState21 = (0, _react.useState)(defaultSortOption),
-        _useState22 = _slicedToArray(_useState21, 2),
-        sortOption = _useState22[0],
-        setSortOption = _useState22[1];
+    var _useState23 = (0, _react.useState)(defaultSortOption),
+        _useState24 = _slicedToArray(_useState23, 2),
+        sortOption = _useState24[0],
+        setSortOption = _useState24[1];
 
     if (sortOption.sort === _constants.SORT_TYPES.RANDOM) {
         totalCardLimit = sampleSize;
@@ -6417,10 +6424,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState23 = (0, _react.useState)(false),
-        _useState24 = _slicedToArray(_useState23, 2),
-        showMobileFilters = _useState24[0],
-        setShowMobileFilters = _useState24[1];
+    var _useState25 = (0, _react.useState)(false),
+        _useState26 = _slicedToArray(_useState25, 2),
+        showMobileFilters = _useState26[0],
+        setShowMobileFilters = _useState26[1];
 
     /**
      * @typedef {Boolean} ShowBookmarkState — Can either be true or false
@@ -6433,10 +6440,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState25 = (0, _react.useState)(false),
-        _useState26 = _slicedToArray(_useState25, 2),
-        showBookmarks = _useState26[0],
-        setShowBookmarks = _useState26[1];
+    var _useState27 = (0, _react.useState)(false),
+        _useState28 = _slicedToArray(_useState27, 2),
+        showBookmarks = _useState28[0],
+        setShowBookmarks = _useState28[1];
 
     /**
      * @typedef {Boolean} LimitFilterQuantityState — Can either be true or false
@@ -6449,10 +6456,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState27 = (0, _react.useState)(filterPanelType === 'top'),
-        _useState28 = _slicedToArray(_useState27, 2),
-        showLimitedFiltersQty = _useState28[0],
-        setShowLimitedFiltersQty = _useState28[1];
+    var _useState29 = (0, _react.useState)(filterPanelType === 'top'),
+        _useState30 = _slicedToArray(_useState29, 2),
+        showLimitedFiltersQty = _useState30[0],
+        setShowLimitedFiltersQty = _useState30[1];
 
     /**
      * @typedef {Array} CardState
@@ -6465,10 +6472,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState29 = (0, _react.useState)([]),
-        _useState30 = _slicedToArray(_useState29, 2),
-        cards = _useState30[0],
-        setCards = _useState30[1];
+    var _useState31 = (0, _react.useState)([]),
+        _useState32 = _slicedToArray(_useState31, 2),
+        cards = _useState32[0],
+        setCards = _useState32[1];
 
     /**
      * @typedef {Boolean} LoadingState — Can either be true or false
@@ -6481,10 +6488,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState31 = (0, _react.useState)(false),
-        _useState32 = _slicedToArray(_useState31, 2),
-        isLoading = _useState32[0],
-        setLoading = _useState32[1];
+    var _useState33 = (0, _react.useState)(false),
+        _useState34 = _slicedToArray(_useState33, 2),
+        isLoading = _useState34[0],
+        setLoading = _useState34[1];
 
     /**
      * @typedef {Boolean} ApiFailureState — Can either be true or false
@@ -6497,30 +6504,30 @@ var Container = function Container(props) {
      */
 
 
-    var _useState33 = (0, _react.useState)(false),
-        _useState34 = _slicedToArray(_useState33, 2),
-        isApiFailure = _useState34[0],
-        setApiFailure = _useState34[1];
-
-    var _useState35 = (0, _react.useState)(null),
+    var _useState35 = (0, _react.useState)(false),
         _useState36 = _slicedToArray(_useState35, 2),
-        randomSortId = _useState36[0],
-        setRandomSortId = _useState36[1];
+        isApiFailure = _useState36[0],
+        setApiFailure = _useState36[1];
 
-    var _useState37 = (0, _react.useState)(true),
+    var _useState37 = (0, _react.useState)(null),
         _useState38 = _slicedToArray(_useState37, 2),
-        isFirstLoad = _useState38[0],
-        setIsFirstLoad = _useState38[1];
+        randomSortId = _useState38[0],
+        setRandomSortId = _useState38[1];
 
-    var _useState39 = (0, _react.useState)(),
+    var _useState39 = (0, _react.useState)(true),
         _useState40 = _slicedToArray(_useState39, 2),
-        visibleStamp = _useState40[0],
-        setVisibleStamp = _useState40[1];
+        isFirstLoad = _useState40[0],
+        setIsFirstLoad = _useState40[1];
 
-    var _useState41 = (0, _react.useState)(false),
+    var _useState41 = (0, _react.useState)(),
         _useState42 = _slicedToArray(_useState41, 2),
-        hasFetched = _useState42[0],
-        setHasFetched = _useState42[1];
+        visibleStamp = _useState42[0],
+        setVisibleStamp = _useState42[1];
+
+    var _useState43 = (0, _react.useState)(false),
+        _useState44 = _slicedToArray(_useState43, 2),
+        hasFetched = _useState44[0],
+        setHasFetched = _useState44[1];
 
     /**
      * Creates a DOM reference to first filter item
@@ -7518,6 +7525,7 @@ var Container = function Container(props) {
             prevFilters.push(newGroup);
             return prevFilters;
         });
+        setSelectedPill(groupId);
     }
 
     var collectionStr = collectionIdentifier ? collectionIdentifier + ' | ' : '';
@@ -7548,6 +7556,30 @@ var Container = function Container(props) {
         try {
             for (var _iterator5 = authoredPills[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
                 var pill = _step5.value;
+                var _iteratorNormalCompletion6 = true;
+                var _didIteratorError6 = false;
+                var _iteratorError6 = undefined;
+
+                try {
+                    for (var _iterator6 = pill.items[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+                        var item = _step6.value;
+
+                        item.fromPill = true;
+                    }
+                } catch (err) {
+                    _didIteratorError6 = true;
+                    _iteratorError6 = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion6 && _iterator6.return) {
+                            _iterator6.return();
+                        }
+                    } finally {
+                        if (_didIteratorError6) {
+                            throw _iteratorError6;
+                        }
+                    }
+                }
 
                 y = y.concat(pill.items);
             }
@@ -7603,6 +7635,10 @@ var Container = function Container(props) {
                         'div',
                         { style: { textAlign: "center", marginBottom: "10px" } },
                         authoredPills.map(function (pill) {
+                            var color = '#292929';
+                            if (pill.id === selectedPill) {
+                                color = '#757575';
+                            }
                             return _react2.default.createElement(
                                 'button',
                                 {
@@ -7615,7 +7651,7 @@ var Container = function Container(props) {
                                         paddingRight: "30px",
                                         borderRadius: "20px",
                                         margin: "0px 10px",
-                                        background: "#292929",
+                                        background: color,
                                         fontWeight: 900,
                                         color: "rgb(255, 255, 255)"
                                     }
@@ -53137,21 +53173,6 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
                             clearFilterText: clearFilterText,
                             isTopFilter: true });
                     }),
-                    pills.map(function (pill) {
-                        return _react2.default.createElement(_Group.Group, {
-                            key: Math.random(),
-                            name: 'Photography',
-                            items: [],
-                            numItemsSelected: 4,
-                            results: resQty,
-                            id: Math.random(),
-                            isOpened: false,
-                            onCheck: onCheckboxClick,
-                            onClick: onFilterClick,
-                            onClearAll: onClearFilterItems,
-                            clearFilterText: clearFilterText,
-                            isTopFilter: true });
-                    }),
                     shouldDisplayMoreFiltersBtn && _react2.default.createElement(
                         'button',
                         {
@@ -53291,7 +53312,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Group = undefined;
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); /* eslint-disable */
+
 
 var _react = __webpack_require__(0);
 
@@ -53364,8 +53386,11 @@ var Group = function Group(props) {
         onCheck = props.onCheck,
         onClearAll = props.onClearAll,
         results = props.results,
-        clearFilterText = props.clearFilterText;
+        clearFilterText = props.clearFilterText,
+        isFromPill = props.isFromPill;
 
+
+    console.log(isFromPill);
 
     var getConfig = (0, _hooks.useConfig)();
 
@@ -53542,6 +53567,8 @@ var Group = function Group(props) {
                         clipWrapperItemsCount: clipWrapperItemsCount,
                         handleCheck: handleCheck,
                         stopPropagation: _general.stopPropagation,
+                        name: name,
+                        isFromPill: isFromPill,
                         items: items }),
                     shouldClipFilters && _react2.default.createElement('aside', {
                         className: 'consonant-TopFilter-bg' }),
@@ -53590,6 +53617,7 @@ var _config = __webpack_require__(20);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/* eslint-disable */
 var itemsType = {
     handleCheck: _propTypes.func.isRequired,
     stopPropagation: _propTypes.func.isRequired,
@@ -53616,7 +53644,8 @@ var Items = function Items(props) {
     var items = props.items,
         handleCheck = props.handleCheck,
         stopPropagation = props.stopPropagation,
-        clipWrapperItemsCount = props.clipWrapperItemsCount;
+        clipWrapperItemsCount = props.clipWrapperItemsCount,
+        isFromPill = props.isFromPill;
 
     /**
      **** Constants ****
@@ -53638,6 +53667,8 @@ var Items = function Items(props) {
         'consonant-TopFilter-items': true,
         'consonant-TopFilter-items--clipped': shouldClipItems
     });
+    var set = new Set();
+    // console.log(isFromPill);
 
     return _react2.default.createElement(
         'ul',
@@ -53645,34 +53676,49 @@ var Items = function Items(props) {
             'data-testid': 'consonant-TopFilter-items',
             className: clipFilterItemsClass },
         items.map(function (item) {
+            var name = item.id.split("/")[1];
+            var x = '';
+            if (!set.has(name)) {
+                x = name;
+                set.add(name);
+            }
             return _react2.default.createElement(
-                'li',
-                {
-                    key: item.id,
-                    'data-testid': 'consonant-TopFilter-item',
-                    'daa-ll': item.label,
-                    className: 'consonant-TopFilter-item' },
+                _react.Fragment,
+                null,
+                item.fromPill && _react2.default.createElement(
+                    'span',
+                    null,
+                    x
+                ),
                 _react2.default.createElement(
-                    'label',
+                    'li',
                     {
-                        htmlFor: item.id,
-                        className: 'consonant-TopFilter-itemLabel',
-                        onClick: stopPropagation },
-                    _react2.default.createElement('input', {
-                        'data-testid': 'consonant-TopFilter-itemCheckbox',
-                        id: item.id,
-                        value: item.id,
-                        type: 'checkbox',
-                        onChange: handleCheck,
-                        checked: item.selected,
-                        tabIndex: '0' }),
-                    _react2.default.createElement('span', {
-                        className: 'consonant-TopFilter-itemCheckmark' }),
+                        key: item.id,
+                        'data-testid': 'consonant-TopFilter-item',
+                        'daa-ll': item.label,
+                        className: 'consonant-TopFilter-item' },
                     _react2.default.createElement(
-                        'span',
+                        'label',
                         {
-                            className: 'consonant-TopFilter-itemName' },
-                        item.label
+                            htmlFor: item.id,
+                            className: 'consonant-TopFilter-itemLabel',
+                            onClick: stopPropagation },
+                        _react2.default.createElement('input', {
+                            'data-testid': 'consonant-TopFilter-itemCheckbox',
+                            id: item.id,
+                            value: item.id,
+                            type: 'checkbox',
+                            onChange: handleCheck,
+                            checked: item.selected,
+                            tabIndex: '0' }),
+                        _react2.default.createElement('span', {
+                            className: 'consonant-TopFilter-itemCheckmark' }),
+                        _react2.default.createElement(
+                            'span',
+                            {
+                                className: 'consonant-TopFilter-itemName' },
+                            item.label
+                        )
                     )
                 )
             );

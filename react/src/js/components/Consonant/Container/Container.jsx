@@ -256,6 +256,7 @@ const Container = (props) => {
      * @type {[String, Function]} SearchQuery
      */
     const [searchQuery, setSearchQuery] = useState('');
+    const [selectedPill, setSelectedPill] = useState('');
 
     /**
      * @typedef {String} SortOpenedState — Toggles Sort Popup Opened Or Closed
@@ -1218,6 +1219,7 @@ const Container = (props) => {
             prevFilters.push(newGroup)
             return prevFilters;
         })
+        setSelectedPill(groupId);
     }
 
 
@@ -1243,6 +1245,9 @@ const Container = (props) => {
     function getAllPillProducts(){
         let y = [];
         for(let pill of authoredPills){
+            for(let item of pill.items){
+                item.fromPill = true;
+            }
             y = y.concat(pill.items);
         }
         return {
@@ -1275,23 +1280,28 @@ const Container = (props) => {
                     <div className="consonant-Wrapper-inner">
                         <div style={{textAlign: "center", marginBottom: "10px"}}>
                         {
-                            authoredPills.map(pill => (
-                                <button
-                                    onClick={() => pillHandler(pill.items, pill.id)}
-                                    style={{
-                                        padding: "1em 1em",
-                                        paddingLeft: "30px",
-                                        paddingRight: "30px",
-                                        borderRadius: "20px",
-                                        margin: "0px 10px",
-                                        background: "#292929",
-                                        fontWeight: 900,
-                                        color: "rgb(255, 255, 255)",
-                                    }}
-                                >
-                                    {pill.group}
-                                </button>
-                            ))
+                            authoredPills.map(pill => {
+                                let color = '#292929';
+                                if(pill.id === selectedPill){
+                                    color = '#757575';
+                                }
+                                return (
+                                    <button
+                                        onClick={() => pillHandler(pill.items, pill.id)}
+                                        style={{
+                                            padding: "1em 1em",
+                                            paddingLeft: "30px",
+                                            paddingRight: "30px",
+                                            borderRadius: "20px",
+                                            margin: "0px 10px",
+                                            background: color,
+                                            fontWeight: 900,
+                                            color: "rgb(255, 255, 255)",
+                                        }}
+                                    >
+                                        {pill.group}
+                                    </button>
+                            )})
                         }
                         </div>
                         { displayLeftFilterPanel && isStandardContainer &&
