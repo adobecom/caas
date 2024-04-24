@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.26 (4/24/2024, 10:04:11)
+ * Chimera UI Libraries - Build 0.11.26 (4/24/2024, 10:14:00)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -2578,6 +2578,7 @@ var getFilteredCards = exports.getFilteredCards = function getFilteredCards(card
     });
 
     var temp = [];
+    var set = new Set();
     if (pills.length) {
         for (var i = 0; i < cards.length; i++) {
             var card = cards[i];
@@ -2585,7 +2586,8 @@ var getFilteredCards = exports.getFilteredCards = function getFilteredCards(card
                 var pill = pills[j];
                 for (var k = 0; k < card.tags.length; k++) {
                     var currTag = card.tags[k];
-                    if (currTag.id.includes(pill)) {
+                    if (currTag.id.includes(pill) && !set.has(card.id)) {
+                        set.add(card.id);
                         temp.push(card);
                     }
                 }
@@ -6218,9 +6220,7 @@ var Container = function Container(props) {
     var DESKTOP_SCREEN_SIZE = window.innerWidth >= _constants.DESKTOP_MIN_WIDTH;
     var isXorFilter = filterLogic.toLowerCase().trim() === _constants.FILTER_TYPES.XOR;
     var isCarouselContainer = authoredLayoutContainer === _constants.LAYOUT_CONTAINER.CAROUSEL;
-    var isEventsContainer = authoredLayoutContainer === _constants.LAYOUT_CONTAINER.EVENTS;
-    // const isStandardContainer = authoredLayoutContainer !== LAYOUT_CONTAINER.CAROUSEL;
-    var isStandardContainer = !isCarouselContainer;
+    var isStandardContainer = authoredLayoutContainer !== _constants.LAYOUT_CONTAINER.CAROUSEL;
     /**
      **** Hooks ****
      */
@@ -6366,6 +6366,11 @@ var Container = function Container(props) {
         searchQuery = _useState18[0],
         setSearchQuery = _useState18[1];
 
+    var _useState19 = (0, _react.useState)(''),
+        _useState20 = _slicedToArray(_useState19, 2),
+        selectedPill = _useState20[0],
+        setSelectedPill = _useState20[1];
+
     /**
      * @typedef {String} SortOpenedState — Toggles Sort Popup Opened Or Closed
      * @typedef {Function} SortOpenedStateSetter — Sets Sort Option
@@ -6374,10 +6379,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState19 = (0, _react.useState)(false),
-        _useState20 = _slicedToArray(_useState19, 2),
-        sortOpened = _useState20[0],
-        setSortOpened = _useState20[1];
+    var _useState21 = (0, _react.useState)(false),
+        _useState22 = _slicedToArray(_useState21, 2),
+        sortOpened = _useState22[0],
+        setSortOpened = _useState22[1];
 
     /**
      * @typedef {String} SortOptionState — Can be one of a range of types
@@ -6389,10 +6394,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState21 = (0, _react.useState)(defaultSortOption),
-        _useState22 = _slicedToArray(_useState21, 2),
-        sortOption = _useState22[0],
-        setSortOption = _useState22[1];
+    var _useState23 = (0, _react.useState)(defaultSortOption),
+        _useState24 = _slicedToArray(_useState23, 2),
+        sortOption = _useState24[0],
+        setSortOption = _useState24[1];
 
     if (sortOption.sort === _constants.SORT_TYPES.RANDOM) {
         totalCardLimit = sampleSize;
@@ -6421,10 +6426,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState23 = (0, _react.useState)(false),
-        _useState24 = _slicedToArray(_useState23, 2),
-        showMobileFilters = _useState24[0],
-        setShowMobileFilters = _useState24[1];
+    var _useState25 = (0, _react.useState)(false),
+        _useState26 = _slicedToArray(_useState25, 2),
+        showMobileFilters = _useState26[0],
+        setShowMobileFilters = _useState26[1];
 
     /**
      * @typedef {Boolean} ShowBookmarkState — Can either be true or false
@@ -6437,10 +6442,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState25 = (0, _react.useState)(false),
-        _useState26 = _slicedToArray(_useState25, 2),
-        showBookmarks = _useState26[0],
-        setShowBookmarks = _useState26[1];
+    var _useState27 = (0, _react.useState)(false),
+        _useState28 = _slicedToArray(_useState27, 2),
+        showBookmarks = _useState28[0],
+        setShowBookmarks = _useState28[1];
 
     /**
      * @typedef {Boolean} LimitFilterQuantityState — Can either be true or false
@@ -6453,10 +6458,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState27 = (0, _react.useState)(filterPanelType === 'top'),
-        _useState28 = _slicedToArray(_useState27, 2),
-        showLimitedFiltersQty = _useState28[0],
-        setShowLimitedFiltersQty = _useState28[1];
+    var _useState29 = (0, _react.useState)(filterPanelType === 'top'),
+        _useState30 = _slicedToArray(_useState29, 2),
+        showLimitedFiltersQty = _useState30[0],
+        setShowLimitedFiltersQty = _useState30[1];
 
     /**
      * @typedef {Array} CardState
@@ -6469,10 +6474,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState29 = (0, _react.useState)([]),
-        _useState30 = _slicedToArray(_useState29, 2),
-        cards = _useState30[0],
-        setCards = _useState30[1];
+    var _useState31 = (0, _react.useState)([]),
+        _useState32 = _slicedToArray(_useState31, 2),
+        cards = _useState32[0],
+        setCards = _useState32[1];
 
     /**
      * @typedef {Boolean} LoadingState — Can either be true or false
@@ -6485,10 +6490,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState31 = (0, _react.useState)(false),
-        _useState32 = _slicedToArray(_useState31, 2),
-        isLoading = _useState32[0],
-        setLoading = _useState32[1];
+    var _useState33 = (0, _react.useState)(false),
+        _useState34 = _slicedToArray(_useState33, 2),
+        isLoading = _useState34[0],
+        setLoading = _useState34[1];
 
     /**
      * @typedef {Boolean} ApiFailureState — Can either be true or false
@@ -6501,30 +6506,30 @@ var Container = function Container(props) {
      */
 
 
-    var _useState33 = (0, _react.useState)(false),
-        _useState34 = _slicedToArray(_useState33, 2),
-        isApiFailure = _useState34[0],
-        setApiFailure = _useState34[1];
-
-    var _useState35 = (0, _react.useState)(null),
+    var _useState35 = (0, _react.useState)(false),
         _useState36 = _slicedToArray(_useState35, 2),
-        randomSortId = _useState36[0],
-        setRandomSortId = _useState36[1];
+        isApiFailure = _useState36[0],
+        setApiFailure = _useState36[1];
 
-    var _useState37 = (0, _react.useState)(true),
+    var _useState37 = (0, _react.useState)(null),
         _useState38 = _slicedToArray(_useState37, 2),
-        isFirstLoad = _useState38[0],
-        setIsFirstLoad = _useState38[1];
+        randomSortId = _useState38[0],
+        setRandomSortId = _useState38[1];
 
-    var _useState39 = (0, _react.useState)(),
+    var _useState39 = (0, _react.useState)(true),
         _useState40 = _slicedToArray(_useState39, 2),
-        visibleStamp = _useState40[0],
-        setVisibleStamp = _useState40[1];
+        isFirstLoad = _useState40[0],
+        setIsFirstLoad = _useState40[1];
 
-    var _useState41 = (0, _react.useState)(false),
+    var _useState41 = (0, _react.useState)(),
         _useState42 = _slicedToArray(_useState41, 2),
-        hasFetched = _useState42[0],
-        setHasFetched = _useState42[1];
+        visibleStamp = _useState42[0],
+        setVisibleStamp = _useState42[1];
+
+    var _useState43 = (0, _react.useState)(false),
+        _useState44 = _slicedToArray(_useState43, 2),
+        hasFetched = _useState44[0],
+        setHasFetched = _useState44[1];
 
     /**
      * Creates a DOM reference to first filter item
@@ -6712,7 +6717,6 @@ var Container = function Container(props) {
      * @listens ClickEvent
      */
     var handleFilterGroupClick = function handleFilterGroupClick(filterId) {
-        console.log('[DEBUG] Container:handleFilterGroupClick()', filterId);
         setFilters(function (prevFilters) {
             var opened = void 0;
             return prevFilters.map(function (el) {
@@ -6761,11 +6765,6 @@ var Container = function Container(props) {
         setUrlState(filterGroupPrefix + group, value);
     };
 
-    /* ************ EVENTS **************** */
-    var handleCategoryClick = function handleCategoryClick(filterId) {
-        console.log('[DEBUG] handleCategoryClick()', filterId);
-    };
-
     /**
      * Handles what happens when a specific filter item (checkbox)
      * is clicked
@@ -6774,7 +6773,6 @@ var Container = function Container(props) {
      * @listens CheckboxClickEvent
      */
     var handleCheckBoxChange = function handleCheckBoxChange(filterId, itemId, isChecked) {
-        console.log('[DEBUG] handleCheckBoxChange()', filterId, itemId, isChecked);
         if (isXorFilter && isChecked) {
             clearAllFilters();
         }
@@ -7427,7 +7425,7 @@ var Container = function Container(props) {
      * Conditions to display the Left Filter Panel Component
      * @type {Boolean}
      */
-    var displayLeftFilterPanel = !isEventsContainer && filterPanelEnabled && filterPanelType === _constants.FILTER_PANEL.LEFT;
+    var displayLeftFilterPanel = filterPanelEnabled && filterPanelType === _constants.FILTER_PANEL.LEFT;
 
     /**
      * Whether at lease one card was returned by Card Filterer
@@ -7451,13 +7449,13 @@ var Container = function Container(props) {
      * Whether we are using the top filter panel or not
      * @type {Boolean}
      */
-    var isTopFilterPanel = isEventsContainer || filterPanelType === _constants.FILTER_PANEL.TOP;
+    var isTopFilterPanel = filterPanelType === _constants.FILTER_PANEL.TOP;
 
     /**
      * Whether we are using the top filter panel or not
      * @type {Boolean}
      */
-    var isLeftFilterPanel = filterPanelType === _constants.FILTER_PANEL.LEFT && !isEventsContainer;
+    var isLeftFilterPanel = filterPanelType === _constants.FILTER_PANEL.LEFT;
 
     /**
      * Ui options that cause grid to rerender necessitate the aria attribute being set
@@ -7529,6 +7527,7 @@ var Container = function Container(props) {
             prevFilters.push(newGroup);
             return prevFilters;
         });
+        setSelectedPill(groupId);
     }
 
     var collectionStr = collectionIdentifier ? collectionIdentifier + ' | ' : '';
@@ -7544,11 +7543,10 @@ var Container = function Container(props) {
         'consonant-Wrapper': true,
         'consonant-Wrapper--32MarginContainer': authoredLayoutContainer === _constants.LAYOUT_CONTAINER.SIZE_100_VW_32_MARGIN,
         'consonant-Wrapper--83PercentContainier': authoredLayoutContainer === _constants.LAYOUT_CONTAINER.SIZE_83_VW,
-        'consonant-Wrapper--1200MaxWidth': authoredLayoutContainer === _constants.LAYOUT_CONTAINER.SIZE_1200_PX || isEventsContainer,
+        'consonant-Wrapper--1200MaxWidth': authoredLayoutContainer === _constants.LAYOUT_CONTAINER.SIZE_1200_PX,
         'consonant-Wrapper--1600MaxWidth': authoredLayoutContainer === _constants.LAYOUT_CONTAINER.SIZE_1600_PX,
         'consonant-Wrapper--carousel': isCarouselContainer,
-        'consonant-Wrapper--withLeftFilter': filterPanelEnabled && isLeftFilterPanel,
-        'consonant-Wrapper--1200MaxWidth events-container': isEventsContainer
+        'consonant-Wrapper--withLeftFilter': filterPanelEnabled && isLeftFilterPanel
     });
 
     function getAllPillProducts() {
@@ -7560,6 +7558,30 @@ var Container = function Container(props) {
         try {
             for (var _iterator5 = authoredPills[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
                 var pill = _step5.value;
+                var _iteratorNormalCompletion6 = true;
+                var _didIteratorError6 = false;
+                var _iteratorError6 = undefined;
+
+                try {
+                    for (var _iterator6 = pill.items[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+                        var item = _step6.value;
+
+                        item.fromPill = true;
+                    }
+                } catch (err) {
+                    _didIteratorError6 = true;
+                    _iteratorError6 = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion6 && _iterator6.return) {
+                            _iterator6.return();
+                        }
+                    } finally {
+                        if (_didIteratorError6) {
+                            throw _iteratorError6;
+                        }
+                    }
+                }
 
                 y = y.concat(pill.items);
             }
@@ -7615,6 +7637,10 @@ var Container = function Container(props) {
                         'div',
                         { style: { textAlign: "center", marginBottom: "10px" } },
                         authoredPills.map(function (pill) {
+                            var color = '#292929';
+                            if (pill.id === selectedPill) {
+                                color = '#757575';
+                            }
                             return _react2.default.createElement(
                                 'button',
                                 {
@@ -7627,7 +7653,7 @@ var Container = function Container(props) {
                                         paddingRight: "30px",
                                         borderRadius: "20px",
                                         margin: "0px 10px",
-                                        background: "#292929",
+                                        background: color,
                                         fontWeight: 900,
                                         color: "rgb(255, 255, 255)"
                                     }
@@ -7673,12 +7699,10 @@ var Container = function Container(props) {
                             resQty: gridCards.length,
                             onCheckboxClick: handleCheckBoxChange,
                             onFilterClick: handleFilterGroupClick,
-                            onCategoryClick: handleCategoryClick,
                             onClearFilterItems: clearFilterItem,
                             pills: currPills,
                             onClearAllFilters: resetFiltersSearchAndBookmarks,
                             showLimitedFiltersQty: showLimitedFiltersQty,
-                            showTopCategories: isEventsContainer,
                             searchComponent: _react2.default.createElement(_Search2.default, {
                                 placeholderText: topPanelSearchPlaceholder,
                                 name: 'filtersTopSearch',
@@ -52894,39 +52918,19 @@ var filtersPanelTopType = {
     sortComponent: _propTypes.node.isRequired,
     windowWidth: _propTypes.number.isRequired,
     onFilterClick: _propTypes.func.isRequired,
-    // onCategoryClick: func.isRequired,
     onShowAllClick: _propTypes.func.isRequired,
     searchComponent: _propTypes.node.isRequired,
     filters: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_config.filterType)),
     onCheckboxClick: _propTypes.func.isRequired,
     onClearAllFilters: _propTypes.func.isRequired,
     onClearFilterItems: _propTypes.func.isRequired,
-    filterPanelEnabled: _propTypes.bool.isRequired,
-    showTopCategories: _propTypes.bool.isRequired
+    filterPanelEnabled: _propTypes.bool.isRequired
 };
 
 var defaultProps = {
     resQty: 0,
     filters: [],
     showLimitedFiltersQty: false
-};
-
-var categoriesStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
-    fontSize: '1rem',
-    margin: '20px 0'
-};
-
-var pill = {
-    padding: '0.45em 1em',
-    borderRadius: '20px',
-    margin: '0 10px',
-    background: '#404040',
-    color: '#fff'
 };
 
 /**
@@ -52968,7 +52972,6 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
         pills = props.pills;
 
 
-    console.log('[DEBUG] Panels:FiltersPanelTop:Filters', filters);
     var getConfig = (0, _hooks.useConfig)();
 
     /**
@@ -53138,43 +53141,6 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
                 className: 'consonant-TopFilters-searchWrapper' },
             searchComponent
         ),
-        showTopCategories && _react2.default.createElement(
-            'div',
-            { className: 'categories', style: categoriesStyle },
-            filters.map(function (filter) {
-                if (filter.id === 'caas:product-categories') {
-                    console.log('[DEBUG] Panels:FiltersPanelTop:filter.group', filter.group, filter.items, filter.id);
-                    /* eslint-disable-next-line */
-                    // return filter.items.map((item) => (<span style={pill} onClick={onFilterClick}>{item.label}</span>));
-                    /* eslint-disable-next-line */
-                    // turn the next lines into a button that filters the items
-                    return filter.items.map(function (item) {
-                        return (
-                            // <button
-                            //     onClick={onCategoryClick}
-                            //     style={pill}>
-                            //     {item.label}
-                            // </button>
-                            // <button
-                            //     onClick={() => onFilterClick(item.id)}
-                            //     style={pill}>
-                            //     {item.label}
-                            // </button>
-                            _react2.default.createElement(
-                                'button',
-                                {
-                                    onClick: function onClick() {
-                                        return onCheckboxClick('caas:product-categories', item.id, true);
-                                    },
-                                    style: pill },
-                                item.label
-                            )
-                        );
-                    });
-                }
-                return '';
-            })
-        ),
         shouldRenderInnerWrapper && _react2.default.createElement(
             'div',
             {
@@ -53203,21 +53169,6 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
                             results: resQty,
                             id: filter.id,
                             isOpened: filter.opened,
-                            onCheck: onCheckboxClick,
-                            onClick: onFilterClick,
-                            onClearAll: onClearFilterItems,
-                            clearFilterText: clearFilterText,
-                            isTopFilter: true });
-                    }),
-                    pills.map(function (pill) {
-                        return _react2.default.createElement(_Group.Group, {
-                            key: Math.random(),
-                            name: 'Photography',
-                            items: [],
-                            numItemsSelected: 4,
-                            results: resQty,
-                            id: Math.random(),
-                            isOpened: false,
                             onCheck: onCheckboxClick,
                             onClick: onFilterClick,
                             onClearAll: onClearFilterItems,
@@ -53662,6 +53613,7 @@ var _config = __webpack_require__(20);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/* eslint-disable */
 var itemsType = {
     handleCheck: _propTypes.func.isRequired,
     stopPropagation: _propTypes.func.isRequired,
@@ -53710,6 +53662,7 @@ var Items = function Items(props) {
         'consonant-TopFilter-items': true,
         'consonant-TopFilter-items--clipped': shouldClipItems
     });
+    var set = new Set();
 
     return _react2.default.createElement(
         'ul',
@@ -53717,34 +53670,49 @@ var Items = function Items(props) {
             'data-testid': 'consonant-TopFilter-items',
             className: clipFilterItemsClass },
         items.map(function (item) {
+            var name = item.id.split("/")[1];
+            var x = '';
+            if (!set.has(name)) {
+                x = name;
+                set.add(name);
+            }
             return _react2.default.createElement(
-                'li',
-                {
-                    key: item.id,
-                    'data-testid': 'consonant-TopFilter-item',
-                    'daa-ll': item.label,
-                    className: 'consonant-TopFilter-item' },
+                _react.Fragment,
+                null,
+                item.fromPill && _react2.default.createElement(
+                    'span',
+                    null,
+                    x
+                ),
                 _react2.default.createElement(
-                    'label',
+                    'li',
                     {
-                        htmlFor: item.id,
-                        className: 'consonant-TopFilter-itemLabel',
-                        onClick: stopPropagation },
-                    _react2.default.createElement('input', {
-                        'data-testid': 'consonant-TopFilter-itemCheckbox',
-                        id: item.id,
-                        value: item.id,
-                        type: 'checkbox',
-                        onChange: handleCheck,
-                        checked: item.selected,
-                        tabIndex: '0' }),
-                    _react2.default.createElement('span', {
-                        className: 'consonant-TopFilter-itemCheckmark' }),
+                        key: item.id,
+                        'data-testid': 'consonant-TopFilter-item',
+                        'daa-ll': item.label,
+                        className: 'consonant-TopFilter-item' },
                     _react2.default.createElement(
-                        'span',
+                        'label',
                         {
-                            className: 'consonant-TopFilter-itemName' },
-                        item.label
+                            htmlFor: item.id,
+                            className: 'consonant-TopFilter-itemLabel',
+                            onClick: stopPropagation },
+                        _react2.default.createElement('input', {
+                            'data-testid': 'consonant-TopFilter-itemCheckbox',
+                            id: item.id,
+                            value: item.id,
+                            type: 'checkbox',
+                            onChange: handleCheck,
+                            checked: item.selected,
+                            tabIndex: '0' }),
+                        _react2.default.createElement('span', {
+                            className: 'consonant-TopFilter-itemCheckmark' }),
+                        _react2.default.createElement(
+                            'span',
+                            {
+                                className: 'consonant-TopFilter-itemName' },
+                            item.label
+                        )
                     )
                 )
             );

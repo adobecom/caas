@@ -163,9 +163,7 @@ const Container = (props) => {
     const DESKTOP_SCREEN_SIZE = window.innerWidth >= DESKTOP_MIN_WIDTH;
     const isXorFilter = filterLogic.toLowerCase().trim() === FILTER_TYPES.XOR;
     const isCarouselContainer = authoredLayoutContainer === LAYOUT_CONTAINER.CAROUSEL;
-    const isEventsContainer = authoredLayoutContainer === LAYOUT_CONTAINER.EVENTS;
-    // const isStandardContainer = authoredLayoutContainer !== LAYOUT_CONTAINER.CAROUSEL;
-    const isStandardContainer = !isCarouselContainer;
+    const isStandardContainer = authoredLayoutContainer !== LAYOUT_CONTAINER.CAROUSEL;
     /**
      **** Hooks ****
      */
@@ -258,6 +256,7 @@ const Container = (props) => {
      * @type {[String, Function]} SearchQuery
      */
     const [searchQuery, setSearchQuery] = useState('');
+    const [selectedPill, setSelectedPill] = useState('');
 
     /**
      * @typedef {String} SortOpenedState — Toggles Sort Popup Opened Or Closed
@@ -538,7 +537,6 @@ const Container = (props) => {
      * @listens ClickEvent
      */
     const handleFilterGroupClick = (filterId) => {
-        console.log('[DEBUG] Container:handleFilterGroupClick()', filterId);
         setFilters((prevFilters) => {
             let opened;
             return prevFilters.map((el) => {
@@ -577,11 +575,6 @@ const Container = (props) => {
         setUrlState(filterGroupPrefix + group, value);
     };
 
-    /* ************ EVENTS **************** */
-    const handleCategoryClick = (filterId) => {
-        console.log('[DEBUG] handleCategoryClick()', filterId);
-    };
-
     /**
      * Handles what happens when a specific filter item (checkbox)
      * is clicked
@@ -590,7 +583,6 @@ const Container = (props) => {
      * @listens CheckboxClickEvent
      */
     const handleCheckBoxChange = (filterId, itemId, isChecked) => {
-        console.log('[DEBUG] handleCheckBoxChange()', filterId, itemId, isChecked);
         if (isXorFilter && isChecked) {
             clearAllFilters();
         }
@@ -1146,8 +1138,7 @@ const Container = (props) => {
      * Conditions to display the Left Filter Panel Component
      * @type {Boolean}
      */
-    const displayLeftFilterPanel = !isEventsContainer
-        && filterPanelEnabled && filterPanelType === FILTER_PANEL.LEFT;
+    const displayLeftFilterPanel = filterPanelEnabled && filterPanelType === FILTER_PANEL.LEFT;
 
     /**
      * Whether at lease one card was returned by Card Filterer
@@ -1172,13 +1163,13 @@ const Container = (props) => {
      * Whether we are using the top filter panel or not
      * @type {Boolean}
      */
-    const isTopFilterPanel = isEventsContainer || filterPanelType === FILTER_PANEL.TOP;
+    const isTopFilterPanel = filterPanelType === FILTER_PANEL.TOP;
 
     /**
      * Whether we are using the top filter panel or not
      * @type {Boolean}
      */
-    const isLeftFilterPanel = filterPanelType === FILTER_PANEL.LEFT && !isEventsContainer;
+    const isLeftFilterPanel = filterPanelType === FILTER_PANEL.LEFT;
 
     /**
      * Ui options that cause grid to rerender necessitate the aria attribute being set
@@ -1228,6 +1219,7 @@ const Container = (props) => {
             prevFilters.push(newGroup)
             return prevFilters;
         })
+        setSelectedPill(groupId);
     }
 
 
@@ -1244,16 +1236,18 @@ const Container = (props) => {
         'consonant-Wrapper': true,
         'consonant-Wrapper--32MarginContainer': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_100_VW_32_MARGIN,
         'consonant-Wrapper--83PercentContainier': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_83_VW,
-        'consonant-Wrapper--1200MaxWidth': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_1200_PX || isEventsContainer,
+        'consonant-Wrapper--1200MaxWidth': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_1200_PX,
         'consonant-Wrapper--1600MaxWidth': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_1600_PX,
         'consonant-Wrapper--carousel': isCarouselContainer,
         'consonant-Wrapper--withLeftFilter': filterPanelEnabled && isLeftFilterPanel,
-        'consonant-Wrapper--1200MaxWidth events-container': isEventsContainer,
     });
 
     function getAllPillProducts(){
         let y = [];
         for(let pill of authoredPills){
+            for(let item of pill.items){
+                item.fromPill = true;
+            }
             y = y.concat(pill.items);
         }
         return {
@@ -1286,23 +1280,28 @@ const Container = (props) => {
                     <div className="consonant-Wrapper-inner">
                         <div style={{textAlign: "center", marginBottom: "10px"}}>
                         {
-                            authoredPills.map(pill => (
-                                <button
-                                    onClick={() => pillHandler(pill.items, pill.id)}
-                                    style={{
-                                        padding: "1em 1em",
-                                        paddingLeft: "30px",
-                                        paddingRight: "30px",
-                                        borderRadius: "20px",
-                                        margin: "0px 10px",
-                                        background: "#292929",
-                                        fontWeight: 900,
-                                        color: "rgb(255, 255, 255)",
-                                    }}
-                                >
-                                    {pill.group}
-                                </button>
-                            ))
+                            authoredPills.map(pill => {
+                                let color = '#292929';
+                                if(pill.id === selectedPill){
+                                    color = '#757575';
+                                }
+                                return (
+                                    <button
+                                        onClick={() => pillHandler(pill.items, pill.id)}
+                                        style={{
+                                            padding: "1em 1em",
+                                            paddingLeft: "30px",
+                                            paddingRight: "30px",
+                                            borderRadius: "20px",
+                                            margin: "0px 10px",
+                                            background: color,
+                                            fontWeight: 900,
+                                            color: "rgb(255, 255, 255)",
+                                        }}
+                                    >
+                                        {pill.group}
+                                    </button>
+                            )})
                         }
                         </div>
                         { displayLeftFilterPanel && isStandardContainer &&
@@ -1337,7 +1336,7 @@ const Container = (props) => {
                         </div>
                         }
                         <div className={`consonant-Wrapper-collection${isLoading ? ' is-loading' : ''}`}>
-                            {isTopFilterPanel && isStandardContainer &&
+                            { isTopFilterPanel && isStandardContainer &&
                             <FiltersPanelTop
                                 filterPanelEnabled={filterPanelEnabled}
                                 filters={filters}
@@ -1345,12 +1344,10 @@ const Container = (props) => {
                                 resQty={gridCards.length}
                                 onCheckboxClick={handleCheckBoxChange}
                                 onFilterClick={handleFilterGroupClick}
-                                onCategoryClick={handleCategoryClick}
                                 onClearFilterItems={clearFilterItem}
                                 pills={currPills}
                                 onClearAllFilters={resetFiltersSearchAndBookmarks}
                                 showLimitedFiltersQty={showLimitedFiltersQty}
-                                showTopCategories={isEventsContainer}
                                 searchComponent={
                                     <Search
                                         placeholderText={topPanelSearchPlaceholder}

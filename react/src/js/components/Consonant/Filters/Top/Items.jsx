@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable */
+import React, {Fragment} from 'react';
 import classNames from 'classnames';
 import {
     arrayOf,
@@ -58,40 +59,51 @@ const Items = (props) => {
         'consonant-TopFilter-items': true,
         'consonant-TopFilter-items--clipped': shouldClipItems,
     });
+    let set = new Set();
 
     return (
         <ul
             data-testid="consonant-TopFilter-items"
             className={clipFilterItemsClass}>
-            {items.map(item => (
-                <li
-                    key={item.id}
-                    data-testid="consonant-TopFilter-item"
-                    daa-ll={item.label}
-                    className="consonant-TopFilter-item">
-                    {/* eslint-disable-next-line max-len */}
-                    {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-noninteractive-element-interactions */}
-                    <label
-                        htmlFor={item.id}
-                        className="consonant-TopFilter-itemLabel"
-                        onClick={stopPropagation}>
-                        <input
-                            data-testid="consonant-TopFilter-itemCheckbox"
-                            id={item.id}
-                            value={item.id}
-                            type="checkbox"
-                            onChange={handleCheck}
-                            checked={item.selected}
-                            tabIndex="0" />
-                        <span
-                            className="consonant-TopFilter-itemCheckmark" />
-                        <span
-                            className="consonant-TopFilter-itemName">
+            {items.map(item => {
+                let name = item.id.split("/")[1];
+                let x = '';
+                if(!set.has(name)){
+                    x = name;
+                    set.add(name);
+                }
+                return (
+                    <Fragment>
+                        {item.fromPill && <span>{x}</span>}
+                        <li
+                            key={item.id}
+                            data-testid="consonant-TopFilter-item"
+                            daa-ll={item.label}
+                            className="consonant-TopFilter-item">
+                            {/* eslint-disable-next-line max-len */}
+                            {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-noninteractive-element-interactions */}
+                            <label
+                                htmlFor={item.id}
+                                className="consonant-TopFilter-itemLabel"
+                                onClick={stopPropagation}>
+                                <input
+                                    data-testid="consonant-TopFilter-itemCheckbox"
+                                    id={item.id}
+                                    value={item.id}
+                                    type="checkbox"
+                                    onChange={handleCheck}
+                                    checked={item.selected}
+                                    tabIndex="0" />
+                                <span
+                                    className="consonant-TopFilter-itemCheckmark" />
+                                <span
+                                    className="consonant-TopFilter-itemName">
                             {item.label}
                         </span>
-                    </label>
-                </li>
-            ))}
+                            </label>
+                        </li>
+                    </Fragment>
+            )})}
         </ul>
     );
 };

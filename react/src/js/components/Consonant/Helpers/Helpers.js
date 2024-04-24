@@ -184,6 +184,7 @@ export const getFilteredCards = (cards, activeFilters, activePanels, filterType,
     timingSet.forEach(x => activeFiltersSet.delete(x));
 
     let temp = [];
+    let set = new Set();
     if(pills.length){
         for(let i = 0; i < cards.length; i++){
             let card = cards[i];
@@ -191,7 +192,8 @@ export const getFilteredCards = (cards, activeFilters, activePanels, filterType,
                 let pill = pills[j];
                 for(let k = 0; k < card.tags.length; k++){
                     let currTag = card.tags[k];
-                    if(currTag.id.includes(pill)){
+                    if(currTag.id.includes(pill) && !set.has(card.id)){
+                        set.add(card.id);
                         temp.push(card);
                     }
                 }

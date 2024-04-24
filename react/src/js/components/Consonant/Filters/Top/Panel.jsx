@@ -35,7 +35,6 @@ const filtersPanelTopType = {
     sortComponent: node.isRequired,
     windowWidth: number.isRequired,
     onFilterClick: func.isRequired,
-    // onCategoryClick: func.isRequired,
     onShowAllClick: func.isRequired,
     searchComponent: node.isRequired,
     filters: arrayOf(shape(filterType)),
@@ -43,31 +42,12 @@ const filtersPanelTopType = {
     onClearAllFilters: func.isRequired,
     onClearFilterItems: func.isRequired,
     filterPanelEnabled: bool.isRequired,
-    showTopCategories: bool.isRequired,
 };
 
 const defaultProps = {
     resQty: 0,
     filters: [],
     showLimitedFiltersQty: false,
-};
-
-const categoriesStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
-    fontSize: '1rem',
-    margin: '20px 0',
-};
-
-const pill = {
-    padding: '0.45em 1em',
-    borderRadius: '20px',
-    margin: '0 10px',
-    background: '#404040',
-    color: '#fff',
 };
 
 /**
@@ -99,7 +79,6 @@ const FiltersPanelTop = (props) => {
         resQty,
         onCheckboxClick,
         onFilterClick,
-        // onCategoryClick,
         onClearAllFilters,
         onClearFilterItems,
         showLimitedFiltersQty,
@@ -111,7 +90,6 @@ const FiltersPanelTop = (props) => {
         pills,
     } = props;
 
-    console.log('[DEBUG] Panels:FiltersPanelTop:Filters', filters);
     const getConfig = useConfig();
 
     /**
@@ -277,48 +255,6 @@ const FiltersPanelTop = (props) => {
                 {searchComponent}
             </div>
             }
-            { showTopCategories &&
-            <div className="categories" style={categoriesStyle}>
-                {/*
-                <span style={pill}>All</span>
-                <span style={pill}>Graphic Design</span>
-                <span style={pill}>Photography</span>
-                <span style={pill}>Illustration</span>
-                <span style={pill}>Video</span>
-                <span style={pill}>Gen AI Media</span>
-                <span style={pill}>Social Media</span>
-                */}
-                {
-                    filters.map((filter) => {
-                        if (filter.id === 'caas:product-categories') {
-                            console.log('[DEBUG] Panels:FiltersPanelTop:filter.group', filter.group, filter.items, filter.id);
-                            /* eslint-disable-next-line */
-                            // return filter.items.map((item) => (<span style={pill} onClick={onFilterClick}>{item.label}</span>));
-                            /* eslint-disable-next-line */
-                            // turn the next lines into a button that filters the items
-                            return filter.items.map(item => (
-                                // <button
-                                //     onClick={onCategoryClick}
-                                //     style={pill}>
-                                //     {item.label}
-                                // </button>
-                                // <button
-                                //     onClick={() => onFilterClick(item.id)}
-                                //     style={pill}>
-                                //     {item.label}
-                                // </button>
-                                <button
-                                    onClick={() => onCheckboxClick('caas:product-categories', item.id, true)}
-                                    style={pill}>
-                                    {item.label}
-                                </button>
-                            ));
-                        }
-                        return '';
-                    })
-                }
-            </div>
-            }
             { shouldRenderInnerWrapper &&
             <div
                 className="consonant-TopFilters-inner">
@@ -343,21 +279,6 @@ const FiltersPanelTop = (props) => {
                                 results={resQty}
                                 id={filter.id}
                                 isOpened={filter.opened}
-                                onCheck={onCheckboxClick}
-                                onClick={onFilterClick}
-                                onClearAll={onClearFilterItems}
-                                clearFilterText={clearFilterText}
-                                isTopFilter />))
-                        }
-                        {pills.map(pill =>
-                            (<TopFilterItem
-                                key={Math.random()}
-                                name="Photography"
-                                items={[]}
-                                numItemsSelected={4}
-                                results={resQty}
-                                id={Math.random()}
-                                isOpened={false}
                                 onCheck={onCheckboxClick}
                                 onClick={onFilterClick}
                                 onClearAll={onClearFilterItems}
