@@ -122,7 +122,7 @@
                     }
                 },
                 resultsPerPage: '55',
-                endpoint: location.hostname === "localhost" ? "../../mock-json/smoke.json" : "../../caas/mock-json/smoke.json",
+                endpoint: location.hostname.includes('localhost') ? "../../mock-json/smoke.json" : "../../caas/mock-json/smoke.json",
                 totalCardsToShow: '55',
                 cardStyle: "1:2", // available options: "1:2", "3:4", "full-card", "half-height", "custom-card", "product", "double-wide";
                 showTotalResults: 'true',
