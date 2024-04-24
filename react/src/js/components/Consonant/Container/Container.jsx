@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, {
     Fragment,
     useEffect,
@@ -114,6 +115,7 @@ const Container = (props) => {
     const sortOptions = getConfig('sort', 'options');
     const defaultSort = getConfig('sort', 'defaultSort');
     const defaultSortOption = getDefaultSortOption(config, defaultSort);
+    const authoredPills = getConfig('pills', '');
     let featuredCards = getConfig('featuredCards', '')
         .toString()
         .replace(/\[|\]/g, '')
@@ -246,6 +248,8 @@ const Container = (props) => {
      * @type {[Array, Function]} Filters
      */
     const [filters, setFilters] = useState([]);
+    window.filters = filters;
+    const [currPills, setPills] = useState([]);
 
     /**
      * @typedef {String} SearchQueryState — Will be used to search through cards
@@ -851,7 +855,7 @@ const Container = (props) => {
                             hideCtaIds,
                             hideCtaTags,
                         );
-                    setFilters(() => authoredFilters.map((filter) => {
+                    setFilters((prevFilters) => prevFilters.map((filter) => {
                         const { group, items } = filter;
                         const urlStateValue = urlState[filterGroupPrefix + group];
                         if (!urlStateValue) return filter;
@@ -1081,7 +1085,7 @@ const Container = (props) => {
         .sortCards(sortOption, eventFilter, featuredCards, hideCtaIds, isFirstLoad)
         .keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks)
         .keepCardsWithinDateRange()
-        .filterCards(activeFilterIds, activePanels, filterLogic, FILTER_TYPES)
+        .filterCards(activeFilterIds, activePanels, filterLogic, FILTER_TYPES, currPills)
         .truncateList(totalCardLimit)
         .searchCards(searchQuery, searchFields, cardStyle)
         .removeCards(inclusionIds);
@@ -1208,6 +1212,24 @@ const Container = (props) => {
         'consonant-u-themeDarkest': authoredMode === THEME_TYPE.DARKEST,
     });
 
+    function pillHandler(selectedPills, groupId){
+        let temp = [];
+        for(let pill of selectedPills){
+            temp.push(pill.id);
+        }
+        setPills(temp);
+        setFilters(prevFilters => {
+            prevFilters.pop();
+            let newGroup = authoredPills.filter(pill => pill.id === groupId)[0];
+            if(!newGroup.items.length){
+                let nextFilters = prevFilters.concat(getAllPillProducts())
+                return nextFilters;
+            }
+            prevFilters.push(newGroup)
+            return prevFilters;
+        })
+    }
+
 
     const collectionStr = collectionIdentifier ? `${collectionIdentifier} | ` : '';
     const filterStr = selectedFiltersItemsQty ? filterNames : 'No Filters';
@@ -1229,6 +1251,25 @@ const Container = (props) => {
         'consonant-Wrapper--1200MaxWidth events-container': isEventsContainer,
     });
 
+    function getAllPillProducts(){
+        let y = [];
+        for(let pill of authoredPills){
+            y = y.concat(pill.items);
+        }
+        return {
+            group: "All products",
+            id: "caas:products",
+            items: y,
+        }
+    }
+
+    useEffect(() => {
+        setFilters(prevFilters => {
+            let nextFilters = prevFilters.concat(getAllPillProducts())
+            return nextFilters;
+        });
+    }, []);
+
     return (
         <ConfigContext.Provider value={config}>
             <ExpandableContext.Provider value={{ value: openDropdown, setValue: setOpenDropdown }} >
@@ -1243,6 +1284,27 @@ const Container = (props) => {
                     onClick={handleWindowClick}
                     className={`${wrapperClass} ${themeClass}`}>
                     <div className="consonant-Wrapper-inner">
+                        <div style={{textAlign: "center", marginBottom: "10px"}}>
+                        {
+                            authoredPills.map(pill => (
+                                <button
+                                    onClick={() => pillHandler(pill.items, pill.id)}
+                                    style={{
+                                        padding: "1em 1em",
+                                        paddingLeft: "30px",
+                                        paddingRight: "30px",
+                                        borderRadius: "20px",
+                                        margin: "0px 10px",
+                                        background: "#292929",
+                                        fontWeight: 900,
+                                        color: "rgb(255, 255, 255)",
+                                    }}
+                                >
+                                    {pill.group}
+                                </button>
+                            ))
+                        }
+                        </div>
                         { displayLeftFilterPanel && isStandardContainer &&
                         <div className="consonant-Wrapper-leftFilterWrapper">
                             <LeftFilterPanel
@@ -1285,6 +1347,7 @@ const Container = (props) => {
                                 onFilterClick={handleFilterGroupClick}
                                 onCategoryClick={handleCategoryClick}
                                 onClearFilterItems={clearFilterItem}
+                                pills={currPills}
                                 onClearAllFilters={resetFiltersSearchAndBookmarks}
                                 showLimitedFiltersQty={showLimitedFiltersQty}
                                 showTopCategories={isEventsContainer}

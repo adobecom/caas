@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.26 (4/18/2024, 12:02:36)
+ * Chimera UI Libraries - Build 0.11.26 (4/24/2024, 10:04:11)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -2408,7 +2408,8 @@ var _eventSort = __webpack_require__(271);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } /* eslint-disable */
+
 
 /**
  * Needs to be explicitly called by immer - Needed for IE 11 support
@@ -2564,7 +2565,8 @@ var checkEventTiming = function checkEventTiming(card, timing) {
  * @param {Object} filterTypes - All possible filters
  * @returns {Array} - All cards that match filter options
  */
-var getFilteredCards = exports.getFilteredCards = function getFilteredCards(cards, activeFilters, activePanels, filterType, filterTypes) {
+// eslint-disable-next-line max-len
+var getFilteredCards = exports.getFilteredCards = function getFilteredCards(cards, activeFilters, activePanels, filterType, filterTypes, pills) {
     var activeFiltersSet = new Set(activeFilters);
     var timingSet = (0, _general.intersection)(activeFiltersSet, new Set([_constants.EVENT_TIMING_IDS.LIVE, _constants.EVENT_TIMING_IDS.ONDEMAND, _constants.EVENT_TIMING_IDS.UPCOMING]));
     var usingXorAndFilter = getUsingXorAndFilter(filterType, filterTypes);
@@ -2574,6 +2576,23 @@ var getFilteredCards = exports.getFilteredCards = function getFilteredCards(card
     timingSet.forEach(function (x) {
         return activeFiltersSet.delete(x);
     });
+
+    var temp = [];
+    if (pills.length) {
+        for (var i = 0; i < cards.length; i++) {
+            var card = cards[i];
+            for (var j = 0; j < pills.length; j++) {
+                var pill = pills[j];
+                for (var k = 0; k < card.tags.length; k++) {
+                    var currTag = card.tags[k];
+                    if (currTag.id.includes(pill)) {
+                        temp.push(card);
+                    }
+                }
+            }
+        }
+        cards = temp;
+    }
 
     if (activeFiltersSet.size === 0 && !usingTimingFilter) return cards;
 
@@ -6022,7 +6041,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); /* eslint-disable */
+
 
 var _react = __webpack_require__(0);
 
@@ -6158,6 +6178,7 @@ var Container = function Container(props) {
     var sortOptions = getConfig('sort', 'options');
     var defaultSort = getConfig('sort', 'defaultSort');
     var defaultSortOption = (0, _consonant.getDefaultSortOption)(config, defaultSort);
+    var authoredPills = getConfig('pills', '');
     var featuredCards = getConfig('featuredCards', '').toString().replace(/\[|\]/g, '').replace(/`/g, '').split(',');
     // eslint-disable-next-line no-use-before-define,max-len
     featuredCards = featuredCards.concat(featuredCards.map(function (id) {
@@ -6325,6 +6346,13 @@ var Container = function Container(props) {
         filters = _useState14[0],
         setFilters = _useState14[1];
 
+    window.filters = filters;
+
+    var _useState15 = (0, _react.useState)([]),
+        _useState16 = _slicedToArray(_useState15, 2),
+        currPills = _useState16[0],
+        setPills = _useState16[1];
+
     /**
      * @typedef {String} SearchQueryState — Will be used to search through cards
      * @typedef {Function} SearchQueryStateSetter — Sets user search query
@@ -6333,10 +6361,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState15 = (0, _react.useState)(''),
-        _useState16 = _slicedToArray(_useState15, 2),
-        searchQuery = _useState16[0],
-        setSearchQuery = _useState16[1];
+    var _useState17 = (0, _react.useState)(''),
+        _useState18 = _slicedToArray(_useState17, 2),
+        searchQuery = _useState18[0],
+        setSearchQuery = _useState18[1];
 
     /**
      * @typedef {String} SortOpenedState — Toggles Sort Popup Opened Or Closed
@@ -6346,10 +6374,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState17 = (0, _react.useState)(false),
-        _useState18 = _slicedToArray(_useState17, 2),
-        sortOpened = _useState18[0],
-        setSortOpened = _useState18[1];
+    var _useState19 = (0, _react.useState)(false),
+        _useState20 = _slicedToArray(_useState19, 2),
+        sortOpened = _useState20[0],
+        setSortOpened = _useState20[1];
 
     /**
      * @typedef {String} SortOptionState — Can be one of a range of types
@@ -6361,10 +6389,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState19 = (0, _react.useState)(defaultSortOption),
-        _useState20 = _slicedToArray(_useState19, 2),
-        sortOption = _useState20[0],
-        setSortOption = _useState20[1];
+    var _useState21 = (0, _react.useState)(defaultSortOption),
+        _useState22 = _slicedToArray(_useState21, 2),
+        sortOption = _useState22[0],
+        setSortOption = _useState22[1];
 
     if (sortOption.sort === _constants.SORT_TYPES.RANDOM) {
         totalCardLimit = sampleSize;
@@ -6393,10 +6421,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState21 = (0, _react.useState)(false),
-        _useState22 = _slicedToArray(_useState21, 2),
-        showMobileFilters = _useState22[0],
-        setShowMobileFilters = _useState22[1];
+    var _useState23 = (0, _react.useState)(false),
+        _useState24 = _slicedToArray(_useState23, 2),
+        showMobileFilters = _useState24[0],
+        setShowMobileFilters = _useState24[1];
 
     /**
      * @typedef {Boolean} ShowBookmarkState — Can either be true or false
@@ -6409,10 +6437,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState23 = (0, _react.useState)(false),
-        _useState24 = _slicedToArray(_useState23, 2),
-        showBookmarks = _useState24[0],
-        setShowBookmarks = _useState24[1];
+    var _useState25 = (0, _react.useState)(false),
+        _useState26 = _slicedToArray(_useState25, 2),
+        showBookmarks = _useState26[0],
+        setShowBookmarks = _useState26[1];
 
     /**
      * @typedef {Boolean} LimitFilterQuantityState — Can either be true or false
@@ -6425,10 +6453,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState25 = (0, _react.useState)(filterPanelType === 'top'),
-        _useState26 = _slicedToArray(_useState25, 2),
-        showLimitedFiltersQty = _useState26[0],
-        setShowLimitedFiltersQty = _useState26[1];
+    var _useState27 = (0, _react.useState)(filterPanelType === 'top'),
+        _useState28 = _slicedToArray(_useState27, 2),
+        showLimitedFiltersQty = _useState28[0],
+        setShowLimitedFiltersQty = _useState28[1];
 
     /**
      * @typedef {Array} CardState
@@ -6441,10 +6469,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState27 = (0, _react.useState)([]),
-        _useState28 = _slicedToArray(_useState27, 2),
-        cards = _useState28[0],
-        setCards = _useState28[1];
+    var _useState29 = (0, _react.useState)([]),
+        _useState30 = _slicedToArray(_useState29, 2),
+        cards = _useState30[0],
+        setCards = _useState30[1];
 
     /**
      * @typedef {Boolean} LoadingState — Can either be true or false
@@ -6457,10 +6485,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState29 = (0, _react.useState)(false),
-        _useState30 = _slicedToArray(_useState29, 2),
-        isLoading = _useState30[0],
-        setLoading = _useState30[1];
+    var _useState31 = (0, _react.useState)(false),
+        _useState32 = _slicedToArray(_useState31, 2),
+        isLoading = _useState32[0],
+        setLoading = _useState32[1];
 
     /**
      * @typedef {Boolean} ApiFailureState — Can either be true or false
@@ -6473,30 +6501,30 @@ var Container = function Container(props) {
      */
 
 
-    var _useState31 = (0, _react.useState)(false),
-        _useState32 = _slicedToArray(_useState31, 2),
-        isApiFailure = _useState32[0],
-        setApiFailure = _useState32[1];
-
-    var _useState33 = (0, _react.useState)(null),
+    var _useState33 = (0, _react.useState)(false),
         _useState34 = _slicedToArray(_useState33, 2),
-        randomSortId = _useState34[0],
-        setRandomSortId = _useState34[1];
+        isApiFailure = _useState34[0],
+        setApiFailure = _useState34[1];
 
-    var _useState35 = (0, _react.useState)(true),
+    var _useState35 = (0, _react.useState)(null),
         _useState36 = _slicedToArray(_useState35, 2),
-        isFirstLoad = _useState36[0],
-        setIsFirstLoad = _useState36[1];
+        randomSortId = _useState36[0],
+        setRandomSortId = _useState36[1];
 
-    var _useState37 = (0, _react.useState)(),
+    var _useState37 = (0, _react.useState)(true),
         _useState38 = _slicedToArray(_useState37, 2),
-        visibleStamp = _useState38[0],
-        setVisibleStamp = _useState38[1];
+        isFirstLoad = _useState38[0],
+        setIsFirstLoad = _useState38[1];
 
-    var _useState39 = (0, _react.useState)(false),
+    var _useState39 = (0, _react.useState)(),
         _useState40 = _slicedToArray(_useState39, 2),
-        hasFetched = _useState40[0],
-        setHasFetched = _useState40[1];
+        visibleStamp = _useState40[0],
+        setVisibleStamp = _useState40[1];
+
+    var _useState41 = (0, _react.useState)(false),
+        _useState42 = _slicedToArray(_useState41, 2),
+        hasFetched = _useState42[0],
+        setHasFetched = _useState42[1];
 
     /**
      * Creates a DOM reference to first filter item
@@ -7110,8 +7138,8 @@ var Container = function Container(props) {
                     _removeDuplicateCards2 = _removeDuplicateCards.processedCards,
                     processedCards = _removeDuplicateCards2 === undefined ? [] : _removeDuplicateCards2;
 
-                setFilters(function () {
-                    return authoredFilters.map(function (filter) {
+                setFilters(function (prevFilters) {
+                    return prevFilters.map(function (filter) {
                         var group = filter.group,
                             items = filter.items;
 
@@ -7337,7 +7365,7 @@ var Container = function Container(props) {
      * @returns {Object}
      * */
     var getFilteredCollection = function getFilteredCollection() {
-        return cardFilterer.sortCards(sortOption, eventFilter, featuredCards, hideCtaIds, isFirstLoad).keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks).keepCardsWithinDateRange().filterCards(activeFilterIds, activePanels, filterLogic, _constants.FILTER_TYPES).truncateList(totalCardLimit).searchCards(searchQuery, searchFields, cardStyle).removeCards(inclusionIds);
+        return cardFilterer.sortCards(sortOption, eventFilter, featuredCards, hideCtaIds, isFirstLoad).keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks).keepCardsWithinDateRange().filterCards(activeFilterIds, activePanels, filterLogic, _constants.FILTER_TYPES, currPills).truncateList(totalCardLimit).searchCards(searchQuery, searchFields, cardStyle).removeCards(inclusionIds);
     };
 
     /**
@@ -7461,6 +7489,48 @@ var Container = function Container(props) {
         'consonant-u-themeDarkest': authoredMode === _constants.THEME_TYPE.DARKEST
     });
 
+    function pillHandler(selectedPills, groupId) {
+        var temp = [];
+        var _iteratorNormalCompletion4 = true;
+        var _didIteratorError4 = false;
+        var _iteratorError4 = undefined;
+
+        try {
+            for (var _iterator4 = selectedPills[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+                var pill = _step4.value;
+
+                temp.push(pill.id);
+            }
+        } catch (err) {
+            _didIteratorError4 = true;
+            _iteratorError4 = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion4 && _iterator4.return) {
+                    _iterator4.return();
+                }
+            } finally {
+                if (_didIteratorError4) {
+                    throw _iteratorError4;
+                }
+            }
+        }
+
+        setPills(temp);
+        setFilters(function (prevFilters) {
+            prevFilters.pop();
+            var newGroup = authoredPills.filter(function (pill) {
+                return pill.id === groupId;
+            })[0];
+            if (!newGroup.items.length) {
+                var nextFilters = prevFilters.concat(getAllPillProducts());
+                return nextFilters;
+            }
+            prevFilters.push(newGroup);
+            return prevFilters;
+        });
+    }
+
     var collectionStr = collectionIdentifier ? collectionIdentifier + ' | ' : '';
     var filterStr = selectedFiltersItemsQty ? filterNames : 'No Filters';
     var searchQueryStr = searchQuery || 'None';
@@ -7481,23 +7551,46 @@ var Container = function Container(props) {
         'consonant-Wrapper--1200MaxWidth events-container': isEventsContainer
     });
 
-    // const categoriesStyle = {
-    //     display: 'flex',
-    //     justifyContent: 'center',
-    //     alignItems: 'center',
-    //     width: '100%',
-    //     height: '100%',
-    //     fontSize: '1rem',
-    //     margin: '20px 0',
-    // };
+    function getAllPillProducts() {
+        var y = [];
+        var _iteratorNormalCompletion5 = true;
+        var _didIteratorError5 = false;
+        var _iteratorError5 = undefined;
 
-    // const pill = {
-    //     padding: '0.45em 1em',
-    //     borderRadius: '20px',
-    //     margin: '0 10px',
-    //     background: '#404040',
-    //     color: '#fff',
-    // };
+        try {
+            for (var _iterator5 = authoredPills[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+                var pill = _step5.value;
+
+                y = y.concat(pill.items);
+            }
+        } catch (err) {
+            _didIteratorError5 = true;
+            _iteratorError5 = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion5 && _iterator5.return) {
+                    _iterator5.return();
+                }
+            } finally {
+                if (_didIteratorError5) {
+                    throw _iteratorError5;
+                }
+            }
+        }
+
+        return {
+            group: "All products",
+            id: "caas:products",
+            items: y
+        };
+    }
+
+    (0, _react.useEffect)(function () {
+        setFilters(function (prevFilters) {
+            var nextFilters = prevFilters.concat(getAllPillProducts());
+            return nextFilters;
+        });
+    }, []);
 
     return _react2.default.createElement(
         _contexts.ConfigContext.Provider,
@@ -7518,6 +7611,31 @@ var Container = function Container(props) {
                 _react2.default.createElement(
                     'div',
                     { className: 'consonant-Wrapper-inner' },
+                    _react2.default.createElement(
+                        'div',
+                        { style: { textAlign: "center", marginBottom: "10px" } },
+                        authoredPills.map(function (pill) {
+                            return _react2.default.createElement(
+                                'button',
+                                {
+                                    onClick: function onClick() {
+                                        return pillHandler(pill.items, pill.id);
+                                    },
+                                    style: {
+                                        padding: "1em 1em",
+                                        paddingLeft: "30px",
+                                        paddingRight: "30px",
+                                        borderRadius: "20px",
+                                        margin: "0px 10px",
+                                        background: "#292929",
+                                        fontWeight: 900,
+                                        color: "rgb(255, 255, 255)"
+                                    }
+                                },
+                                pill.group
+                            );
+                        })
+                    ),
                     displayLeftFilterPanel && isStandardContainer && _react2.default.createElement(
                         'div',
                         { className: 'consonant-Wrapper-leftFilterWrapper' },
@@ -7557,6 +7675,7 @@ var Container = function Container(props) {
                             onFilterClick: handleFilterGroupClick,
                             onCategoryClick: handleCategoryClick,
                             onClearFilterItems: clearFilterItem,
+                            pills: currPills,
                             onClearAllFilters: resetFiltersSearchAndBookmarks,
                             showLimitedFiltersQty: showLimitedFiltersQty,
                             showTopCategories: isEventsContainer,
@@ -52511,10 +52630,8 @@ var CardFilterer = function () {
 
     _createClass(CardFilterer, [{
         key: 'filterCards',
-        value: function filterCards(activeFilters, activePanels, filterType, filterTypes) {
-            console.log('[DEBUG] filterCards():activeFilters', activeFilters);
-            console.log('[DEBUG] filterCards():activePanels', activePanels);
-            this.filteredCards = (0, _Helpers.getFilteredCards)(this.filteredCards, activeFilters, activePanels, filterType, filterTypes);
+        value: function filterCards(activeFilters, activePanels, filterType, filterTypes, currPills) {
+            this.filteredCards = (0, _Helpers.getFilteredCards)(this.filteredCards, activeFilters, activePanels, filterType, filterTypes, currPills);
             return this;
         }
 
@@ -52740,7 +52857,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); /* eslint-disable */
+
 
 var _react = __webpack_require__(0);
 
@@ -52847,7 +52965,7 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
         searchComponent = props.searchComponent,
         sortComponent = props.sortComponent,
         filterPanelEnabled = props.filterPanelEnabled,
-        showTopCategories = props.showTopCategories;
+        pills = props.pills;
 
 
     console.log('[DEBUG] Panels:FiltersPanelTop:Filters', filters);
@@ -53085,6 +53203,21 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
                             results: resQty,
                             id: filter.id,
                             isOpened: filter.opened,
+                            onCheck: onCheckboxClick,
+                            onClick: onFilterClick,
+                            onClearAll: onClearFilterItems,
+                            clearFilterText: clearFilterText,
+                            isTopFilter: true });
+                    }),
+                    pills.map(function (pill) {
+                        return _react2.default.createElement(_Group.Group, {
+                            key: Math.random(),
+                            name: 'Photography',
+                            items: [],
+                            numItemsSelected: 4,
+                            results: resQty,
+                            id: Math.random(),
+                            isOpened: false,
                             onCheck: onCheckboxClick,
                             onClick: onFilterClick,
                             onClearAll: onClearFilterItems,
@@ -55503,3 +55636,4 @@ var parseDataConfig = exports.parseDataConfig = function parseDataConfig(Compone
 
 /***/ })
 /******/ ]);
+//# sourceMappingURL=main.js.map

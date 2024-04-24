@@ -76,15 +76,15 @@
                         description: "Sign Up"
                     }
                 },
-                resultsPerPage: '5',
-                endpoint: location.hostname === "localhost" ? "../../mock-json/all-art-board-15-cards-show.json" : "../../caas/mock-json/all-art-board-15-cards-show.json",
+                resultsPerPage: '9',
+                endpoint: location.hostname === "localhost" ? "../../mock-json/smoke.json" : "../../caas/mock-json/smoke.json",
                 totalCardsToShow: '55',
                 cardStyle: "1:2", // available options: "1:2", "3:4", "full-card", "half-height", "custom-card", "product", "double-wide";
                 showTotalResults: 'true',
                 i18n: {
                     prettyDateIntervalFormat: '{LLL} {dd} | {timeRange} {timeZone}',
                     totalResultsText: '{total} Results',
-                    title: 'Lorem Ipsum 2',
+                    title: '',
                     titleHeadingLevel: 'h2',
                     cardTitleAccessibilityLevel: '3',
                     onErrorTitle: 'Sorry there was a system error.',
@@ -95,6 +95,78 @@
                 useOverlayLinks: "false", // Can be true or false;
             },
             featuredCards: ['c7d34f39-397c-3727-9dff-5d0d9d8cf731'],
+            pills: [
+                {
+                    group: "All Topics",
+                    id: "",
+                    items: []
+                },
+                {
+                    group: "Photography",
+                    id: "caas:product-category/photography",
+                    icon: "some-path-to-icon",
+                    items: [
+                        {id: "caas:product-category/photography/photoshop", label: "Photoshop"},
+                        {id: "caas:product-category/photography/photoshop-express", label: "Photoshop Express"},
+                        {id: "caas:product-category/photography/photoshop-camera", label: "Photoshop Camera"},
+                        {id: "caas:product-category/photography/lightroom", label: "Lightroom"},
+                    ]
+                },
+                {
+                    group: "Graphic Design",
+                    id: "caas:product-category/graphic-design",
+                    items: [
+                        {id: "caas:product-category/graphic-design/adobe-express", label: "Adobe Express"},
+                        {id: "caas:product-category/graphic-design/illustrator", label: "Illustrator"},
+                    ]
+                },
+                {
+                    group: "Video",
+                    id: "caas:product-category/video",
+                    items: [
+                        {id: "caas:product-category/video/after-effects", label: "After Effects"},
+                        {id: "caas:product-category/video/premiere-pro", label: "Premiere Pro"},
+                        {id: "caas:product-category/video/adobe-express", label: "Adobe Express"},
+                        {id: "caas:product-category/video/lightroom", label: "Lightroom"}
+                    ]
+                },
+                {
+                    group: "GenAI",
+                    id: "caas:product-category/gen-ai",
+                    items: [
+                        {id: "caas:product-category/gen-ai/genstudio", label: "Gen Studio"},
+                        {id: "caas:product-category/gen-ai/firefly", label: "Firefly"},
+                        {id: "caas:product-category/gen-ai/ai-assistant", label: "AI Assistant"},
+                    ]
+                },
+                {
+                    group: "Illustration",
+                    id: "caas:product-category/illustration",
+                    items: [
+                        {id: "caas:product-category/illustration/illustrator", label: "Illustrator"},
+                        {id: "caas:product-category/illustration/indesign", label: "In Design"},
+                        {id: "caas:product-category/illustration/adobe-express", label: "Adobe Express"},
+                        {id: "caas:product-category/illustration/fresco", label: "Fresco"},
+                    ]
+                },
+                {
+                    group: "Social",
+                    id: "caas:product-category/social",
+                    items: [
+                        {id: "caas:product-category/social/adobe-express", label: "Adobe Express"},
+                        {id: "caas:product-category/social/photoshop-express", label: "Photoshop Express"},
+                    ]
+                },
+                {
+                    group: "3D & AR",
+                    id: "caas:product-category/3d-&-ar",
+                    items: [
+                        {id: "caas:product-category/3d-&-ar/3d-modeler", label: "3D Modeler"},
+                        {id: "caas:product-category/3d-&-ar/3d-painter", label: "3D Painter"},
+                        {id: "caas:product-category/3d-&-ar/3d-designer", label: "3D Designer"},
+                    ]
+                }
+            ],
             filterPanel: {
                 enabled: 'true',
                 type: 'top',
@@ -102,90 +174,66 @@
                 showEmptyFilters: true,
                 filters: [
                     {
-                        "group": "By Solution",
-                        "id": "adobe-com-enterprise:topic",
+                        "group": "All locations",
+                        "id": "caas:location",
                         "items": [
                             {
-                                "label": "Business Continuity",
-                                "id": "adobe-com-enterprise:topic/business-continuity"
+                                "label": "San Francisco, CA",
+                                "id": "caas:location/san-francisco-ca"
                             },
                             {
-                                "label": "Creativity and Design",
-                                "id": "adobe-com-enterprise:topic/creativity-design"
+                                "label": "Stamford, CT",
+                                "id": "caas:location/stamford-ct"
                             },
                             {
-                                "label": "Customer Intelligence",
-                                "id": "adobe-com-enterprise:topic/customer-intelligence"
+                                "label": "Omaha, NE",
+                                "id": "caas:location/omaha-ne"
                             },
                             {
-                                "label": "Data Management Platform",
-                                "id": "adobe-com-enterprise:topic/data-management-platform"
+                                "label": "Austin, TX",
+                                "id": "caas:location/austin-tx"
                             },
                             {
-                                "label": "Digital Foundation",
-                                "id": "adobe-com-enterprise:topic/digital-foundation"
+                                "label": "Washington, DC",
+                                "id": "caas:location/washington-dc"
                             },
                             {
-                                "label": "Digital Trends",
-                                "id": "adobe-com-enterprise:topic/digital-trends"
+                                "label": "Baltimore, MD",
+                                "id": "caas:location/baltimore-md"
                             },
                             {
-                                "label": "Document Management",
-                                "id": "adobe-com-enterprise:topic/document-management"
+                                "label": "Kansas City, MO",
+                                "id": "caas:location/kansas-city-mo"
                             },
                             {
-                                "label": "Marketing Automation",
-                                "id": "adobe-com-enterprise:topic/marketing-automation"
+                                "label": "Portland, OR",
+                                "id": "caas:location/portland-or"
                             },
                             {
-                                "label": "Personalization",
-                                "id": "adobe-com-enterprise:topic/personalization"
-                            },
-                            {
-                                "label": "Stock",
-                                "id": "adobe-com-enterprise:topic/Stock"
+                                "label": "Chicago, IL",
+                                "id": "caas:location/chicago-il"
                             }
                         ]
                     },
                     {
-                        "group": "Availability",
-                        "id": "adobe-com-enterprise:availability",
+                        "group": "All events",
+                        "id": "caas:event",
                         "items": [
                             {
-                                "label": "On-Demand",
-                                "id": "adobe-com-enterprise:availability/on-demand"
+                                "label": "Create now",
+                                "id": "caas:event/create-now"
                             },
                             {
-                                "label": "Upcoming",
-                                "id": "adobe-com-enterprise:availability/upcoming"
-                            }
-                        ]
-                    },
-                    {
-                        "group": "Duration",
-                        "id": "adobe-com-enterprise:duration",
-                        "items": [
-                            {
-                                "label": "Long",
-                                "id": "adobe-com-enterprise:duration/long"
+                                "label": "Express for marketers",
+                                "id": "caas:event/express-for-marketers"
                             },
                             {
-                                "label": "Short",
-                                "id": "adobe-com-enterprise:duration/short"
-                            }
-                        ]
-                    },
-                    {
-                        "group": "Rating",
-                        "id": "adobe-com-enterprise:rating",
-                        "items": [
-                            {
-                                "label": "5",
-                                "id": "adobe-com-enterprise:rating/5"
+                                "label": "Adobe Live",
+                                "id": "caas:event/adobe-live"
                             },
                             {
-                                "label": "4",
-                                "id": "adobe-com-enterprise:rating/4"
+                                "label": "Creative Cloud livestreams",
+                                "id": "caas:event/creative-cloud-livestreams"
                             }
                         ]
                     }
@@ -219,8 +267,8 @@
                         }
                     },
                     topPanel: {
-                        groupLabel: 'Filters',
-                        clearAllFiltersText: 'Clear All Top',
+                        groupLabel: 'Filter by:',
+                        clearAllFiltersText: 'Clear All',
                         moreFiltersBtnText: 'More Filters: +',
                         mobile: {
                             group: {
@@ -237,7 +285,7 @@
             hideCtaTags: [''],
             sort: {
                 enabled: 'true',
-                defaultSort: 'customSort',
+                defaultSort: 'dateDesc',
                 options: '[{"label":"Random", "sort":"random"},{"label":"Featured","sort":"featured"},{"label":"Title: (A-Z)","sort":"titleAsc"},{"label":"Title: (Z-A)","sort":"titleDesc"},{"label":"Date: (Oldest to newest)","sort":"dateAsc"},{"label":"Date: (Newest to oldest)","sort":"dateDesc"}, {"label": "Custom Sort", "sort": "customSort"}]',
                 customSort: function(card){console.log("customSort: ", card); return card;}
             },
@@ -262,7 +310,7 @@
                 }
             },
             bookmarks: {
-                showOnCards: 'true',
+                showOnCards: 'false',
                 leftFilterPanel: {
                     bookmarkOnlyCollection: 'false',
                     showBookmarksFilter: 'true',

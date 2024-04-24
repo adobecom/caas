@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import classNames from 'classnames';
 import {
@@ -107,7 +108,7 @@ const FiltersPanelTop = (props) => {
         searchComponent,
         sortComponent,
         filterPanelEnabled,
-        showTopCategories,
+        pills,
     } = props;
 
     console.log('[DEBUG] Panels:FiltersPanelTop:Filters', filters);
@@ -342,6 +343,21 @@ const FiltersPanelTop = (props) => {
                                 results={resQty}
                                 id={filter.id}
                                 isOpened={filter.opened}
+                                onCheck={onCheckboxClick}
+                                onClick={onFilterClick}
+                                onClearAll={onClearFilterItems}
+                                clearFilterText={clearFilterText}
+                                isTopFilter />))
+                        }
+                        {pills.map(pill =>
+                            (<TopFilterItem
+                                key={Math.random()}
+                                name="Photography"
+                                items={[]}
+                                numItemsSelected={4}
+                                results={resQty}
+                                id={Math.random()}
+                                isOpened={false}
                                 onCheck={onCheckboxClick}
                                 onClick={onFilterClick}
                                 onClearAll={onClearFilterItems}
