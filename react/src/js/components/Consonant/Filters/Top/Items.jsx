@@ -67,14 +67,14 @@ const Items = (props) => {
             className={clipFilterItemsClass}>
             {items.map(item => {
                 let name = item.id.split("/")[1];
-                let x = '';
+                let title;
                 if(!set.has(name)){
-                    x = name;
+                    title = name.replaceAll('-', ' ');
                     set.add(name);
                 }
                 return (
                     <Fragment>
-                        {item.fromPill && <span>{x}</span>}
+                        {item.fromPill && title && <span className='filter-group-title'>{title}</span>}
                         <li
                             key={item.id}
                             data-testid="consonant-TopFilter-item"
@@ -94,12 +94,10 @@ const Items = (props) => {
                                     onChange={handleCheck}
                                     checked={item.selected}
                                     tabIndex="0" />
-                                <span
-                                    className="consonant-TopFilter-itemCheckmark" />
-                                <span
-                                    className="consonant-TopFilter-itemName">
-                            {item.label}
-                        </span>
+                                <span className="consonant-TopFilter-itemCheckmark" />
+                                <span className="consonant-TopFilter-itemName">
+                                    {item.label}
+                                </span>
                             </label>
                         </li>
                     </Fragment>

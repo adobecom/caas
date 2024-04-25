@@ -312,7 +312,8 @@ const Card = (props) => {
             data-testid="consonant-Card"
             role="tab"
             tabIndex={0}
-            id={id}>
+            id={id}
+            title={tags.map(tag => tag.id).join('\n')}>
             {showHeader &&
             <div
                 data-testid="consonant-Card-header"

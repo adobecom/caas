@@ -14,21 +14,31 @@
     <link rel="stylesheet" href="../dependencies/typekit.css" type="text/css">
     <link rel="stylesheet" href="../dependencies/dexter/publish.css" type="text/css">
     <title>CaaS Events Test Page</title>
-    <style>
 
+    <style>
         body {
             margin: 0;
             padding: 0;
+            /* background-color: #fafafa; */
         }
         h1 {
-            font-size: 1.75em;
+            font-size: 1.5em;
             text-align: center;
             font-family: Arial, Helvetica, sans-serif;
             font-weight: 300;
             background: black;
+            background: linear-gradient(8deg, #000000DD, #00000099);
             color: white;
-            padding: 20px;
-            margin: 0 0 25px;
+            padding: 16px;
+            margin: 0 0 50px;
+        }
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: Arial, Helvetica, sans-serif;
+            color: #ccc;
         }
         .help {
             display: none;
@@ -38,6 +48,37 @@
             padding: 30px;
             font-family: Arial, Helvetica, sans-serif;
         }
+
+        .consonant-Card-header {
+            /* background-image: url(https://ec-prod.scene7.com/is/image/ECPROD/MAX-London-card-383?$pjpeg$&jpegSize=100) !important; */
+            opacity: .65;
+            filter: saturate(.3);
+        }
+        .consonant-Card:nth-child(odd) .consonant-Card-header {
+            background-image: url( https://www.adobe.com/content/dam/cc/us/en/creativecloud/file-types/image/raw/hero-hub-raw.jpg) !important;
+        }
+       
+        .consonant-Card:nth-child(even)  .consonant-Card-header {
+            background-image: url( https://www.adobe.com/content/dam/cc/us/en/creativecloud/file-types/image/raster/webp-file/hero-WEBP.jpg) !important;
+        }
+        
+        .consonant-Card-header:hover {
+            opacity: 1;
+            /* filter: saturate(.3); */
+        }
+        /* .consonant-NoResultsView {
+            min-height: 300px;
+        } */
+    
+        /* span.filter-group-title {
+            text-transform: capitalize;
+            margin: 6px 20px;
+            display: block;
+            text-transform: uppercase;
+            font-weight: 500;
+            border-top: solid 1px #ddd;
+            padding-top: 12px;
+        } */
 
         /* Custom Card */
         /* 
@@ -70,15 +111,21 @@
             max-height: 439px;
         } 
         */
+        /* .consonant-Wrapper {
+            background-color: #CACACA;
+        } */
     </style>
 
 </head>
 
-<body class="page basicpage spectrum spectrum--lightest">
+<body class="page basicpage spectrum spectrum--darkest">
 
     <!-- Card Collection section -->
-    <div class="container create-card-collection__outer-wrapper">
-        <div id="output">Please include the necessary clientlibs </div>
+    <div class="container">
+        <h1>T3-Events Test Page</h1>
+        <div id="output">
+            <div class="loading">Please include the necessary clientlibs</div>
+        </div>
     </div>
 
     <!-- Help section-->
@@ -121,15 +168,15 @@
                         description: "Sign Up"
                     }
                 },
-                resultsPerPage: '55',
+                resultsPerPage: '6',
                 endpoint: location.hostname.includes('localhost') ? "../../mock-json/smoke.json" : "../../caas/mock-json/smoke.json",
                 totalCardsToShow: '55',
                 cardStyle: "1:2", // available options: "1:2", "3:4", "full-card", "half-height", "custom-card", "product", "double-wide";
-                showTotalResults: 'true',
+                showTotalResults: 'false',
                 i18n: {
                     prettyDateIntervalFormat: '{LLL} {dd} | {timeRange} {timeZone}',
                     totalResultsText: '{total} Results',
-                    title: '',
+                    title: 'Explore events near you.',
                     titleHeadingLevel: 'h2',
                     cardTitleAccessibilityLevel: '3',
                     onErrorTitle: 'Sorry there was a system error.',
@@ -149,7 +196,7 @@
                 {
                     group: "Photography",
                     id: "caas:product-category/photography",
-                    icon: "some-path-to-icon",
+                    icon: 'https://spectrum.adobe.com/static/icons/workflow_18/Smock_Camera_18_N.svg',
                     items: [
                         {id: "caas:product-category/photography/photoshop", label: "Photoshop"},
                         {id: "caas:product-category/photography/photoshop-express", label: "Photoshop Express"},
@@ -160,6 +207,7 @@
                 {
                     group: "Graphic Design",
                     id: "caas:product-category/graphic-design",
+                    icon: 'https://spectrum.adobe.com/static/icons/workflow_18/Smock_Graphic_18_N.svg',
                     items: [
                         {id: "caas:product-category/graphic-design/adobe-express", label: "Adobe Express"},
                         {id: "caas:product-category/graphic-design/illustrator", label: "Illustrator"},
@@ -169,6 +217,7 @@
                 {
                     group: "Video",
                     id: "caas:product-category/video",
+                    icon: 'https://spectrum.adobe.com/static/icons/workflow_18/Smock_VideoOutline_18_N.svg',
                     items: [
                         {id: "caas:product-category/video/after-effects", label: "After Effects"},
                         {id: "caas:product-category/video/premiere-pro", label: "Premiere Pro"},
@@ -179,6 +228,7 @@
                 {
                     group: "GenAI",
                     id: "caas:product-category/gen-ai",
+                    icon: 'https://spectrum.adobe.com/static/icons/workflow_18/Smock_ImageAutoMode_18_N.svg',
                     items: [
                         {id: "caas:product-category/gen-ai/genstudio", label: "Gen Studio"},
                         {id: "caas:product-category/gen-ai/firefly", label: "Firefly"},
@@ -188,6 +238,7 @@
                 {
                     group: "Illustration",
                     id: "caas:product-category/illustration",
+                    icon: 'https://spectrum.adobe.com/static/icons/workflow_18/Smock_Brush_18_N.svg',
                     items: [
                         {id: "caas:product-category/illustration/illustrator", label: "Illustrator"},
                         {id: "caas:product-category/illustration/indesign", label: "In Design"},
@@ -198,6 +249,7 @@
                 {
                     group: "Social",
                     id: "caas:product-category/social",
+                    icon: "https://spectrum.adobe.com/static/icons/workflow_18/Smock_SocialNetwork_18_N.svg",
                     items: [
                         {id: "caas:product-category/social/adobe-express", label: "Adobe Express"},
                         {id: "caas:product-category/social/photoshop-express", label: "Photoshop Express"},
@@ -206,6 +258,7 @@
                 {
                     group: "3D & AR",
                     id: "caas:product-category/3d-&-ar",
+                    icon: 'https://spectrum.adobe.com/static/icons/workflow_18/Smock_3DMaterials_18_N.svg',
                     items: [
                         {id: "caas:product-category/3d-&-ar/3d-modeler", label: "3D Modeler"},
                         {id: "caas:product-category/3d-&-ar/3d-painter", label: "3D Painter"},

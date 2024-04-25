@@ -1276,29 +1276,27 @@ const Container = (props) => {
                     daa-lh={collectionAnalytics}
                     daa-im={String(trackImpressions)}
                     onClick={handleWindowClick}
-                    className={`${wrapperClass} ${themeClass}`}>
+                    className={`${wrapperClass} ${themeClass} Categories`}>
+                    {
+                        authoredPills &&
+                        <h2 data-testid="consonant-TopFilters-categoriesTitle" class="consonant-TopFilters-categoriesTitle">
+                            {title}
+                        </h2>
+                    }
                     <div className="consonant-Wrapper-inner">
-                        <div style={{textAlign: "center", marginBottom: "10px"}}>
+                        <div className="filters-category">
                         {
                             authoredPills.map(pill => {
-                                let color = '#292929';
+                                let selected = '';
                                 if(pill.id === selectedPill){
-                                    color = '#757575';
+                                    selected = 'selected';
                                 }
                                 return (
-                                    <button
+                                    <button 
                                         onClick={() => pillHandler(pill.items, pill.id)}
-                                        style={{
-                                            padding: "1em 1em",
-                                            paddingLeft: "30px",
-                                            paddingRight: "30px",
-                                            borderRadius: "20px",
-                                            margin: "0px 10px",
-                                            background: color,
-                                            fontWeight: 900,
-                                            color: "rgb(255, 255, 255)",
-                                        }}
-                                    >
+                                        data-selected={selected}
+                                        data-group={pill.group.replaceAll(' ','').toLowerCase()}>
+                                        <img class="filters-category--icon" src={pill.icon} />
                                         {pill.group}
                                     </button>
                             )})
