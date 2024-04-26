@@ -13,13 +13,17 @@
     <link rel="stylesheet" href="../dist/app.css" type="text/css">
     <link rel="stylesheet" href="../dependencies/typekit.css" type="text/css">
     <link rel="stylesheet" href="../dependencies/dexter/publish.css" type="text/css">
-    <title>CaaS Events Test Page</title>
+    <title>CaaS T3vents Test Page</title>
 
     <style>
         body {
             margin: 0;
             padding: 0;
             /* background-color: #fafafa; */
+            font-family: ;
+        }
+        button {
+            font-family: adobe-clean, "Segoe UI", Roboto, sans-serif
         }
         h1 {
             font-size: 1.5em;
@@ -31,6 +35,7 @@
             color: white;
             padding: 16px;
             margin: 0 0 50px;
+            text-shadow: 1px 1px 1px #202020;
         }
         .loading {
             position: absolute;
@@ -52,24 +57,32 @@
         .consonant-Card-header {
             /* background-image: url(https://ec-prod.scene7.com/is/image/ECPROD/MAX-London-card-383?$pjpeg$&jpegSize=100) !important; */
             opacity: .65;
-            filter: saturate(.3);
+            filter: saturate(.65);
         }
         .consonant-Card:nth-child(odd) .consonant-Card-header {
             background-image: url( https://www.adobe.com/content/dam/cc/us/en/creativecloud/file-types/image/raw/hero-hub-raw.jpg) !important;
         }
-       
+
         .consonant-Card:nth-child(even)  .consonant-Card-header {
             background-image: url( https://www.adobe.com/content/dam/cc/us/en/creativecloud/file-types/image/raster/webp-file/hero-WEBP.jpg) !important;
         }
-        
+
         .consonant-Card-header:hover {
             opacity: 1;
-            /* filter: saturate(.3); */
+            filter: saturate(.85);
         }
         /* .consonant-NoResultsView {
             min-height: 300px;
         } */
-    
+
+        .Categories .filters-category {
+                display: flex;
+                overflow-x: auto;
+        }
+
+        @media screen and (max-width: 480px){
+        }
+
         /* span.filter-group-title {
             text-transform: capitalize;
             margin: 6px 20px;
@@ -81,35 +94,35 @@
         } */
 
         /* Custom Card */
-        /* 
+        /*
         .customCard * {
             font-family: 'adobe-clean';
         }
-    
+
         .customCard section {
             padding: 16px 24px;
         }
-    
+
         .customCard label {
             font-size: 14px;
         }
-    
+
         .customCard p {
             font-size: 18px;
         }
-    
+
         .backgroundImg {
             background-image: url('https://cc-prod.scene7.com/is/image/CCProdAuthor/mb_ps_us_riverflow2_720x634');
             background-size: cover;
             background-position: 50% 50%;
             height: 316px;
         }
-    
+
         ​​.customCard  {
             border: solid 1px #BCBCBC;
             border-radius: 6px;
             max-height: 439px;
-        } 
+        }
         */
         /* .consonant-Wrapper {
             background-color: #CACACA;
@@ -122,7 +135,7 @@
 
     <!-- Card Collection section -->
     <div class="container">
-        <h1>T3-Events Test Page</h1>
+        <h1>CaaS T3vents Test Page</h1>
         <div id="output">
             <div class="loading">Please include the necessary clientlibs</div>
         </div>
@@ -138,7 +151,7 @@
             <li>Combined statements: <a href="?state=filterPanel.enabled:false,collection.resultsPerPage:3"><code>filterPanel.enabled:false,collection.resultsPerPage:3</code></a></li>
         </ol>
     </div>
-                        
+
     <!-- JavaScript -->
     <script type="text/javascript" src="../dist/main.source.js"></script>
     <script type="text/javascript">

@@ -56,25 +56,13 @@
 /* Locale overrides; */
 @import 'localeOverrides.less';
 
-/*
-// .events-container {
-//     .one-half .consonant-CardFooter {
-//         border-top: solid 1px #aaa;
-//     }
-
-//     .consonant-BtnInfobit--cta {
-//         background-color: #333;
-//         border-color: #333;
-//     }
-// }
-*/
-
 /* TODO: This should be moved to its own file */
 .Categories {
     .consonant-TopFilters-categoriesTitle {
         text-align: center;
         font-size: 30px;
-        font-weight: 800;
+        font-weight: 700;
+        font-family: adobe-clean, "Segoe UI", Roboto, sans-serif;
         margin-bottom: 40px;
         color: #2c2c2c;
     }
@@ -86,21 +74,23 @@
     .filters-category {
         text-align: center;
         margin-bottom: 30px;
-        // background: white;
-
-        // .consonant-TopFilters {
-        //     background: white;
-        // }
+        display: flex;
+        overflow-x: auto;
+        justify-content: center;
 
         button {
             border-radius: 24px;
             background: #909090;
             color: #fff;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 16px;
             height: 48px;
             margin: 0 6px;
             padding: 12px 24px 13px 20px;
+            display: flex;
+            white-space: nowrap;
+            align-items: center;
+            font-family: adobe-clean, "Segoe UI", Roboto, sans-serif;
 
             img.filters-category--icon {
                 height: 24px;
@@ -149,5 +139,15 @@
 
     .consonant-NoResultsView {
         min-height: 300px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .consonant-Wrapper--1200MaxWidth .consonant-Wrapper-inner {
+        width: 92%;
+    }
+
+    .Categories .filters-category {
+        justify-content: left;
     }
 }
