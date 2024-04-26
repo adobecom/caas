@@ -79,7 +79,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-jest": "^22.4.4",
     "babel-preset-react": "^6.24.1",
-    "chromedriver": "^122.0.0",
+    "chromedriver": "^124.0.0",
     "commitizen": "^4.2.6",
     "copy-webpack-plugin": "^4.6.0",
     "cross-env": "^5.2.1",
