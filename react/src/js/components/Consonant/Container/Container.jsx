@@ -1279,7 +1279,7 @@ const Container = (props) => {
                     className={`${wrapperClass} ${themeClass} Categories`}>
                     {
                         authoredPills &&
-                        <h2 data-testid="consonant-TopFilters-categoriesTitle" class="consonant-TopFilters-categoriesTitle">
+                        <h2 data-testid="consonant-TopFilters-categoriesTitle" className="consonant-TopFilters-categoriesTitle">
                             {title}
                         </h2>
                     }
@@ -1296,7 +1296,7 @@ const Container = (props) => {
                                         onClick={() => pillHandler(pill.items, pill.id)}
                                         data-selected={selected}
                                         data-group={pill.group.replaceAll(' ','').toLowerCase()}>
-                                        <img class="filters-category--icon" src={pill.icon} />
+                                        <img className="filters-category--icon" src={pill.icon} />
                                         {pill.group}
                                     </button>
                             )})

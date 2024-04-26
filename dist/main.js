@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.26 (4/25/2024, 11:44:50)
+ * Chimera UI Libraries - Build 0.11.26 (4/25/2024, 22:46:29)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -7632,7 +7632,7 @@ var Container = function Container(props) {
                     className: wrapperClass + ' ' + themeClass + ' Categories' },
                 authoredPills && _react2.default.createElement(
                     'h2',
-                    { 'data-testid': 'consonant-TopFilters-categoriesTitle', 'class': 'consonant-TopFilters-categoriesTitle' },
+                    { 'data-testid': 'consonant-TopFilters-categoriesTitle', className: 'consonant-TopFilters-categoriesTitle' },
                     title
                 ),
                 _react2.default.createElement(
@@ -7654,7 +7654,7 @@ var Container = function Container(props) {
                                     },
                                     'data-selected': selected,
                                     'data-group': pill.group.replaceAll(' ', '').toLowerCase() },
-                                _react2.default.createElement('img', { 'class': 'filters-category--icon', src: pill.icon }),
+                                _react2.default.createElement('img', { className: 'filters-category--icon', src: pill.icon }),
                                 pill.group
                             );
                         })

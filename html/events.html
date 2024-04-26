@@ -19,19 +19,37 @@
         body {
             margin: 0;
             padding: 0;
-            /* background-color: #fafafa; */
-            font-family: ;
+            font-family: adobe-clean, "Segoe UI", Roboto, sans-serif
         }
         button {
             font-family: adobe-clean, "Segoe UI", Roboto, sans-serif
+        }
+        .page-header {
+            width: 100%;
+            background: black;
+            background: linear-gradient(8deg, #000000DD, #00000099);
+        }
+        .theme-chooser {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: #ccc;
+            font-size: 14px;
+            text-shadow: 1px 1px 1px #000;
+        }
+        .theme-chooser select {
+            background: #444444;
+            color: white;
+            border: solid 1px #aaa;
+            padding: 5px 15px;
+            margin-left: 5px;
+            width: 120px;
         }
         h1 {
             font-size: 1.5em;
             text-align: center;
             font-family: Arial, Helvetica, sans-serif;
             font-weight: 300;
-            background: black;
-            background: linear-gradient(8deg, #000000DD, #00000099);
             color: white;
             padding: 16px;
             margin: 0 0 50px;
@@ -55,87 +73,48 @@
         }
 
         .consonant-Card-header {
-            /* background-image: url(https://ec-prod.scene7.com/is/image/ECPROD/MAX-London-card-383?$pjpeg$&jpegSize=100) !important; */
             opacity: .65;
             filter: saturate(.65);
         }
         .consonant-Card:nth-child(odd) .consonant-Card-header {
             background-image: url( https://www.adobe.com/content/dam/cc/us/en/creativecloud/file-types/image/raw/hero-hub-raw.jpg) !important;
         }
-
         .consonant-Card:nth-child(even)  .consonant-Card-header {
             background-image: url( https://www.adobe.com/content/dam/cc/us/en/creativecloud/file-types/image/raster/webp-file/hero-WEBP.jpg) !important;
         }
-
         .consonant-Card-header:hover {
             opacity: 1;
             filter: saturate(.85);
         }
-        /* .consonant-NoResultsView {
-            min-height: 300px;
-        } */
-
         .Categories .filters-category {
                 display: flex;
                 overflow-x: auto;
         }
-
-        @media screen and (max-width: 480px){
-        }
-
-        /* span.filter-group-title {
-            text-transform: capitalize;
-            margin: 6px 20px;
-            display: block;
-            text-transform: uppercase;
-            font-weight: 500;
-            border-top: solid 1px #ddd;
-            padding-top: 12px;
-        } */
-
-        /* Custom Card */
-        /*
-        .customCard * {
-            font-family: 'adobe-clean';
-        }
-
-        .customCard section {
-            padding: 16px 24px;
-        }
-
-        .customCard label {
-            font-size: 14px;
-        }
-
-        .customCard p {
-            font-size: 18px;
-        }
-
-        .backgroundImg {
-            background-image: url('https://cc-prod.scene7.com/is/image/CCProdAuthor/mb_ps_us_riverflow2_720x634');
-            background-size: cover;
-            background-position: 50% 50%;
-            height: 316px;
-        }
-
-        ​​.customCard  {
-            border: solid 1px #BCBCBC;
-            border-radius: 6px;
-            max-height: 439px;
-        }
-        */
-        /* .consonant-Wrapper {
-            background-color: #CACACA;
-        } */
     </style>
 
 </head>
 
-<body class="page basicpage spectrum spectrum--darkest">
-
+<body>
     <!-- Card Collection section -->
-    <div class="container">
-        <h1>CaaS T3vents Test Page</h1>
+    <div class="container consonant-u-themeLight">
+        <div class="page-header">
+            <h1>CaaS T3vents Test Page</h1>
+            <div class="theme-chooser">
+                Theme:
+                <select id="theme" onchange="javascript:setTheme()">
+                    <!-- option value="Lightest">Lightest</option -->
+                    <option value="Light" selected>Light</option>
+                    <option value="Dark">Dark</option>
+                    <option value="Darkest">Darkest</option>
+                </select>
+                &nbsp;CTAs:
+                <select id="cta-style" onchange="javascript:setCTAs()">
+                    <option value="primary">Black</option>
+                    <option value="call-to-action">Blue</option>
+                </select>
+            </div>
+        </div>
+
         <div id="output">
             <div class="loading">Please include the necessary clientlibs</div>
         </div>
@@ -155,7 +134,8 @@
     <!-- JavaScript -->
     <script type="text/javascript" src="../dist/main.source.js"></script>
     <script type="text/javascript">
-        var config = {
+        const localConfig =  JSON.parse(localStorage.getItem('t3vents-config')) || null;
+        const config = localConfig || {
             collection: {
                 mode: "lightest", // Can be empty, "light", "dark", "darkest";
                 layout: {
@@ -165,7 +145,7 @@
                 },
                 lazyLoad: false,
                 button: {
-                  style: "call-to-action", // Can be "primary", "call-to-action";
+                  style: "primary", // Can be "primary", "call-to-action";
                 },
                 banner: {
                     upcoming: {
@@ -462,9 +442,38 @@
             onCardSaved: function(){},
             onCardUnsaved: function(){}
         };
-        console.log("config", config);
 
         const consonantCardCollection = new ConsonantCardCollection(config, document.getElementById("output"));
+    </script>
+
+    <script>
+        function setTheme() {
+            var theme = document.getElementById("theme").value;
+            const container = document.querySelector('.container');
+            container.className = 'container consonant-u-theme' + theme;
+            localStorage.setItem('t3vents-theme', theme);
+        }
+        function setSavedTheme(theme) {
+            document.querySelector('#theme').value = theme;
+            const container = document.querySelector('.container');
+            container.className = 'container consonant-u-theme' + theme;
+        }
+        function setCTAs() {
+            var style = document.getElementById("cta-style").value;
+            config.collection.button.style = "call-to-action";
+            config.collection.button.style = style;
+            localStorage.setItem('t3vents-config', JSON.stringify(config));
+            location.reload();
+        }
+
+        // Update UI with the saved settings
+        if (config?.collection?.button?.style === "call-to-action") {
+            document.querySelector('#cta-style').value = "call-to-action";
+        }
+        const savedTheme = localStorage.getItem('t3vents-theme');
+        if (savedTheme) {
+            setSavedTheme(savedTheme);
+        }
     </script>
 </body>
 
