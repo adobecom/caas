@@ -1,4 +1,3 @@
-/* eslint-disable */
 import produce, { enableES5 } from 'immer';
 
 import { HighlightSearchField } from './rendering';
@@ -183,23 +182,23 @@ export const getFilteredCards = (cards, activeFilters, activePanels, filterType,
     // remove the time elements from the active filter set before you actually filter
     timingSet.forEach(x => activeFiltersSet.delete(x));
 
-    let temp = [];
-    let set = new Set();
-    if(pills.length){
-        for(let i = 0; i < cards.length; i++){
-            let card = cards[i];
-            for(let j = 0; j < pills.length; j++){
-                let pill = pills[j];
-                for(let k = 0; k < card.tags.length; k++){
-                    let currTag = card.tags[k];
-                    if(currTag.id.includes(pill) && !set.has(card.id)){
+    const temp = [];
+    const set = new Set();
+    if (pills.length) {
+        for (let i = 0; i < cards.length; i++) {
+            const card = cards[i];
+            for (let j = 0; j < pills.length; j++) {
+                const pill = pills[j];
+                for (let k = 0; k < card.tags.length; k++) {
+                    const currTag = card.tags[k];
+                    if (currTag.id.includes(pill) && !set.has(card.id)) {
                         set.add(card.id);
                         temp.push(card);
                     }
                 }
-
             }
         }
+        /* eslint-disable-next-line no-param-reassign */
         cards = temp;
     }
 

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, {
     Fragment,
     useEffect,
@@ -847,7 +846,7 @@ const Container = (props) => {
                             hideCtaIds,
                             hideCtaTags,
                         );
-                    setFilters((prevFilters) => prevFilters.map((filter) => {
+                    setFilters(prevFilters => prevFilters.map((filter) => {
                         const { group, items } = filter;
                         const urlStateValue = urlState[filterGroupPrefix + group];
                         if (!urlStateValue) return filter;
@@ -1203,22 +1202,37 @@ const Container = (props) => {
         'consonant-u-themeDarkest': authoredMode === THEME_TYPE.DARKEST,
     });
 
-    function pillHandler(selectedPills, groupId){
-        let temp = [];
-        for(let pill of selectedPills){
+    function getAllPillProducts() {
+        let y = [];
+        for (const pill of authoredPills) {
+            for (const item of pill.items) {
+                item.fromPill = true;
+            }
+            y = y.concat(pill.items);
+        }
+        return {
+            group: 'All products',
+            id: 'caas:products',
+            items: y,
+        };
+    }
+
+    function pillHandler(selectedPills, groupId) {
+        const temp = [];
+        for (const pill of selectedPills) {
             temp.push(pill.id);
         }
         setPills(temp);
-        setFilters(prevFilters => {
+        setFilters((prevFilters) => {
             prevFilters.pop();
-            let newGroup = authoredPills.filter(pill => pill.id === groupId)[0];
-            if(!newGroup.items.length){
-                let nextFilters = prevFilters.concat(getAllPillProducts())
+            const newGroup = authoredPills.filter(pill => pill.id === groupId)[0];
+            if (!newGroup.items.length) {
+                const nextFilters = prevFilters.concat(getAllPillProducts());
                 return nextFilters;
             }
-            prevFilters.push(newGroup)
+            prevFilters.push(newGroup);
             return prevFilters;
-        })
+        });
         setSelectedPill(groupId);
     }
 
@@ -1242,24 +1256,9 @@ const Container = (props) => {
         'consonant-Wrapper--withLeftFilter': filterPanelEnabled && isLeftFilterPanel,
     });
 
-    function getAllPillProducts(){
-        let y = [];
-        for(let pill of authoredPills){
-            for(let item of pill.items){
-                item.fromPill = true;
-            }
-            y = y.concat(pill.items);
-        }
-        return {
-            group: "All products",
-            id: "caas:products",
-            items: y,
-        }
-    }
-
     useEffect(() => {
-        setFilters(prevFilters => {
-            let nextFilters = prevFilters.concat(getAllPillProducts())
+        setFilters((prevFilters) => {
+            const nextFilters = prevFilters.concat(getAllPillProducts());
             return nextFilters;
         });
     }, []);
@@ -1285,22 +1284,23 @@ const Container = (props) => {
                     }
                     <div className="consonant-Wrapper-inner">
                         <div className="filters-category">
-                        {
-                            authoredPills.map(pill => {
-                                let selected = '';
-                                if(pill.id === selectedPill){
-                                    selected = 'selected';
-                                }
-                                return (
-                                    <button 
-                                        onClick={() => pillHandler(pill.items, pill.id)}
-                                        data-selected={selected}
-                                        data-group={pill.group.replaceAll(' ','').toLowerCase()}>
-                                        <img className="filters-category--icon" src={pill.icon} />
-                                        {pill.group}
-                                    </button>
-                            )})
-                        }
+                            {
+                                authoredPills.map((pill) => {
+                                    let selected = '';
+                                    if (pill.id === selectedPill) {
+                                        selected = 'selected';
+                                    }
+                                    return (
+                                        <button
+                                            onClick={() => pillHandler(pill.items, pill.id)}
+                                            data-selected={selected}
+                                            data-group={pill.group.replaceAll(' ', '').toLowerCase()}>
+                                            <img className="filters-category--icon" src={pill.icon} alt={pill.icon && 'Category icon'} />
+                                            {pill.group}
+                                        </button>
+                                    );
+                                })
+                            }
                         </div>
                         { displayLeftFilterPanel && isStandardContainer &&
                         <div className="consonant-Wrapper-leftFilterWrapper">

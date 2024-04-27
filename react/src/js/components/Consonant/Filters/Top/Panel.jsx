@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import classNames from 'classnames';
 import {
@@ -87,7 +86,6 @@ const FiltersPanelTop = (props) => {
         searchComponent,
         sortComponent,
         filterPanelEnabled,
-        pills,
     } = props;
 
     const getConfig = useConfig();

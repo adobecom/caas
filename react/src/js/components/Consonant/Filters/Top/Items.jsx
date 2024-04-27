@@ -1,5 +1,4 @@
-/* eslint-disable */
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import classNames from 'classnames';
 import {
     arrayOf,
@@ -59,22 +58,22 @@ const Items = (props) => {
         'consonant-TopFilter-items': true,
         'consonant-TopFilter-items--clipped': shouldClipItems,
     });
-    let set = new Set();
 
+    const set = new Set();
     return (
         <ul
             data-testid="consonant-TopFilter-items"
             className={clipFilterItemsClass}>
-            {items.map(item => {
-                let name = item.id.split("/")[1];
+            {items.map((item) => {
+                const name = item.id.split('/')[1];
                 let title;
-                if(!set.has(name)){
+                if (!set.has(name)) {
                     title = name.replaceAll('-', ' ');
                     set.add(name);
                 }
                 return (
                     <Fragment>
-                        {item.fromPill && title && <span className='filter-group-title'>{title}</span>}
+                        {item.fromPill && title && <span className="filter-group-title">{title}</span>}
                         <li
                             key={item.id}
                             data-testid="consonant-TopFilter-item"
@@ -101,7 +100,8 @@ const Items = (props) => {
                             </label>
                         </li>
                     </Fragment>
-            )})}
+                );
+            })}
         </ul>
     );
 };

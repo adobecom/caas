@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.29 (4/27/2024, 09:24:22)
+ * Chimera UI Libraries - Build 0.11.29 (4/27/2024, 13:04:30)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -2408,8 +2408,7 @@ var _eventSort = __webpack_require__(271);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } /* eslint-disable */
-
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /**
  * Needs to be explicitly called by immer - Needed for IE 11 support
@@ -2593,6 +2592,7 @@ var getFilteredCards = exports.getFilteredCards = function getFilteredCards(card
                 }
             }
         }
+        /* eslint-disable-next-line no-param-reassign */
         cards = temp;
     }
 
@@ -6043,8 +6043,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); /* eslint-disable */
-
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var _react = __webpack_require__(0);
 
@@ -7487,17 +7486,41 @@ var Container = function Container(props) {
         'consonant-u-themeDarkest': authoredMode === _constants.THEME_TYPE.DARKEST
     });
 
-    function pillHandler(selectedPills, groupId) {
-        var temp = [];
+    function getAllPillProducts() {
+        var y = [];
         var _iteratorNormalCompletion4 = true;
         var _didIteratorError4 = false;
         var _iteratorError4 = undefined;
 
         try {
-            for (var _iterator4 = selectedPills[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+            for (var _iterator4 = authoredPills[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
                 var pill = _step4.value;
+                var _iteratorNormalCompletion5 = true;
+                var _didIteratorError5 = false;
+                var _iteratorError5 = undefined;
 
-                temp.push(pill.id);
+                try {
+                    for (var _iterator5 = pill.items[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+                        var item = _step5.value;
+
+                        item.fromPill = true;
+                    }
+                } catch (err) {
+                    _didIteratorError5 = true;
+                    _iteratorError5 = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion5 && _iterator5.return) {
+                            _iterator5.return();
+                        }
+                    } finally {
+                        if (_didIteratorError5) {
+                            throw _iteratorError5;
+                        }
+                    }
+                }
+
+                y = y.concat(pill.items);
             }
         } catch (err) {
             _didIteratorError4 = true;
@@ -7510,6 +7533,40 @@ var Container = function Container(props) {
             } finally {
                 if (_didIteratorError4) {
                     throw _iteratorError4;
+                }
+            }
+        }
+
+        return {
+            group: 'All products',
+            id: 'caas:products',
+            items: y
+        };
+    }
+
+    function pillHandler(selectedPills, groupId) {
+        var temp = [];
+        var _iteratorNormalCompletion6 = true;
+        var _didIteratorError6 = false;
+        var _iteratorError6 = undefined;
+
+        try {
+            for (var _iterator6 = selectedPills[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+                var pill = _step6.value;
+
+                temp.push(pill.id);
+            }
+        } catch (err) {
+            _didIteratorError6 = true;
+            _iteratorError6 = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion6 && _iterator6.return) {
+                    _iterator6.return();
+                }
+            } finally {
+                if (_didIteratorError6) {
+                    throw _iteratorError6;
                 }
             }
         }
@@ -7548,64 +7605,6 @@ var Container = function Container(props) {
         'consonant-Wrapper--carousel': isCarouselContainer,
         'consonant-Wrapper--withLeftFilter': filterPanelEnabled && isLeftFilterPanel
     });
-
-    function getAllPillProducts() {
-        var y = [];
-        var _iteratorNormalCompletion5 = true;
-        var _didIteratorError5 = false;
-        var _iteratorError5 = undefined;
-
-        try {
-            for (var _iterator5 = authoredPills[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-                var pill = _step5.value;
-                var _iteratorNormalCompletion6 = true;
-                var _didIteratorError6 = false;
-                var _iteratorError6 = undefined;
-
-                try {
-                    for (var _iterator6 = pill.items[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-                        var item = _step6.value;
-
-                        item.fromPill = true;
-                    }
-                } catch (err) {
-                    _didIteratorError6 = true;
-                    _iteratorError6 = err;
-                } finally {
-                    try {
-                        if (!_iteratorNormalCompletion6 && _iterator6.return) {
-                            _iterator6.return();
-                        }
-                    } finally {
-                        if (_didIteratorError6) {
-                            throw _iteratorError6;
-                        }
-                    }
-                }
-
-                y = y.concat(pill.items);
-            }
-        } catch (err) {
-            _didIteratorError5 = true;
-            _iteratorError5 = err;
-        } finally {
-            try {
-                if (!_iteratorNormalCompletion5 && _iterator5.return) {
-                    _iterator5.return();
-                }
-            } finally {
-                if (_didIteratorError5) {
-                    throw _iteratorError5;
-                }
-            }
-        }
-
-        return {
-            group: "All products",
-            id: "caas:products",
-            items: y
-        };
-    }
 
     (0, _react.useEffect)(function () {
         setFilters(function (prevFilters) {
@@ -7654,7 +7653,7 @@ var Container = function Container(props) {
                                     },
                                     'data-selected': selected,
                                     'data-group': pill.group.replaceAll(' ', '').toLowerCase() },
-                                _react2.default.createElement('img', { className: 'filters-category--icon', src: pill.icon }),
+                                _react2.default.createElement('img', { className: 'filters-category--icon', src: pill.icon, alt: pill.icon && 'Category icon' }),
                                 pill.group
                             );
                         })
@@ -46831,8 +46830,9 @@ var Card = function Card(props) {
             'data-testid': 'consonant-Card',
             role: 'tab',
             tabIndex: 0,
-            id: id,
-            title: tags.map(function (tag) {
+            id: id
+            // TODO: *** [Debugging] Remove next line before release ***
+            , title: tags.map(function (tag) {
                 return tag.id;
             }).join('\n') },
         showHeader && _react2.default.createElement(
@@ -52886,8 +52886,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); /* eslint-disable */
-
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var _react = __webpack_require__(0);
 
@@ -52973,8 +52972,7 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
         windowWidth = props.windowWidth,
         searchComponent = props.searchComponent,
         sortComponent = props.sortComponent,
-        filterPanelEnabled = props.filterPanelEnabled,
-        pills = props.pills;
+        filterPanelEnabled = props.filterPanelEnabled;
 
 
     var getConfig = (0, _hooks.useConfig)();
@@ -53618,7 +53616,6 @@ var _config = __webpack_require__(20);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* eslint-disable */
 var itemsType = {
     handleCheck: _propTypes.func.isRequired,
     stopPropagation: _propTypes.func.isRequired,
@@ -53667,15 +53664,15 @@ var Items = function Items(props) {
         'consonant-TopFilter-items': true,
         'consonant-TopFilter-items--clipped': shouldClipItems
     });
-    var set = new Set();
 
+    var set = new Set();
     return _react2.default.createElement(
         'ul',
         {
             'data-testid': 'consonant-TopFilter-items',
             className: clipFilterItemsClass },
         items.map(function (item) {
-            var name = item.id.split("/")[1];
+            var name = item.id.split('/')[1];
             var title = void 0;
             if (!set.has(name)) {
                 title = name.replaceAll('-', ' ');

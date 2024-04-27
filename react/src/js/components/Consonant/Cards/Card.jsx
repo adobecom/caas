@@ -316,6 +316,7 @@ const Card = (props) => {
             role="tab"
             tabIndex={0}
             id={id}
+            // TODO: *** [Debugging] Remove next line before release ***
             title={tags.map(tag => tag.id).join('\n')}>
             {showHeader &&
             <div
