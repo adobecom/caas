@@ -61,7 +61,9 @@
           ]
         }
       ],
-      "cardDate": "2020-07-02T09:41:35.933Z"
+      "cardDate": "2020-07-02T09:41:35.933Z",
+      "startDate": "2023-01-01T00:00:00.000Z",
+      "endDate": "2024-01-01T00:00:00.000Z"
     },
     {
       "id": "1.0.1",
@@ -84,7 +86,7 @@
         "banner": {
           "backgroundColor": "white",
           "fontColor": "red",
-          "description": "Live",
+          "description": "Live1",
           "icon": ""
         },
         "logo": {},
@@ -124,7 +126,9 @@
           ]
         }
       ],
-      "cardDate": "2020-07-02T09:41:35.933Z"
+      "cardDate": "2020-07-02T09:41:35.933Z",
+      "startDate": "2023-01-01T00:00:00.000Z",
+      "endDate": "2025-01-01T00:00:00.000Z"
     },
     {
       "id": "1.0.2",
@@ -148,9 +152,9 @@
       ],
       "overlays": {
         "banner": {
-          "backgroundColor": "white",
+          "backgroundColor": "red",
           "fontColor": "red",
-          "description": "Live",
+          "description": "Live2",
           "icon": ""
         },
         "logo": {},
@@ -190,7 +194,9 @@
           ]
         }
       ],
-      "cardDate": "2020-07-02T09:41:35.933Z"
+      "cardDate": "2020-07-02T09:41:35.933Z",
+      "startDate": "2025-01-01T00:00:00.000Z",
+      "endDate": "2026-01-01T00:00:00.000Z"
     },
     {
       "id": "1.0.3",
