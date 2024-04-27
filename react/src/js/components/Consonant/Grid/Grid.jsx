@@ -80,6 +80,7 @@ const Grid = (props) => {
     const cardsGridLayout = getConfig('collection', 'layout.type');
     const cardsGridGutter = getConfig('collection', 'layout.gutter');
     const renderCardsBorders = getConfig('collection', 'setCardBorders');
+    const renderFooterDivider = getConfig('collection', 'showFooterDivider');
     const renderCardsOverlay = getConfig('collection', 'useOverlayLinks');
     const dateFormat = getConfig('collection', 'i18n.prettyDateIntervalFormat');
     const locale = getConfig('language', '');
@@ -229,6 +230,7 @@ const Grid = (props) => {
                                 dateFormat={dateFormat}
                                 locale={locale}
                                 renderBorder={renderCardsBorders}
+                                renderDivider={renderFooterDivider}
                                 renderOverlay={renderCardsOverlay}
                                 hideCTA={hideCTA}
                                 onFocus={() => scrollCardIntoView(card.id)} />

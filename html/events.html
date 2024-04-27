@@ -16,6 +16,7 @@
     <title>CaaS T3vents Test Page</title>
 
     <style>
+        /* Page CSS overrides */
         body {
             margin: 0;
             padding: 0;
@@ -72,30 +73,41 @@
             padding: 30px;
             font-family: Arial, Helvetica, sans-serif;
         }
-
-        .consonant-Card-header {
+        /* .consonant-Card-header {
             opacity: .65;
             filter: saturate(.65);
-        }
-        .consonant-Card:nth-child(odd) .consonant-Card-header {
-            background-image: url( https://www.adobe.com/content/dam/cc/us/en/creativecloud/file-types/image/raw/hero-hub-raw.jpg) !important;
-        }
-        .consonant-Card:nth-child(even)  .consonant-Card-header {
-            background-image: url( https://www.adobe.com/content/dam/cc/us/en/creativecloud/file-types/image/raster/webp-file/hero-WEBP.jpg) !important;
-        }
+        } 
         .consonant-Card-header:hover {
             opacity: 1;
             filter: saturate(.85);
+        }*/
+
+        .consonant-Card:nth-child(odd) .consonant-Card-header {
+            background-image: url( https://www.adobe.com/content/dam/cc/us/en/creativecloud/file-types/image/raw/hero-hub-raw.jpg) !important;
         }
-        .Categories .filters-category {
-                display: flex;
-                overflow-x: auto;
+        .consonant-Card:nth-child(even) .consonant-Card-header {
+            background-image: url( https://www.adobe.com/content/dam/cc/us/en/creativecloud/file-types/image/raster/webp-file/hero-WEBP.jpg) !important;
+        }
+
+        .theme-chooser select .option {
+            font-size: 14px;
+        }        
+        /* Custom Dark Buttons */
+        body.buttons-dark .consonant-u-themeLight .consonant-CardFooter .consonant-BtnInfobit {
+            background-color: #272727;
+            border-color: #272727;
+        }
+        body.buttons-dark .consonant-u-themeLight .consonant-CardFooter .consonant-BtnInfobit:hover {
+            background-color: #757575;
+            border-color: #666;
+        }
+        body.buttons-dark .consonant-u-themeLight .consonant-CardFooter .consonant-BtnInfobit span {
+            color: #fff !important;
         }
     </style>
-
 </head>
 
-<body>
+<body class="buttons-dark">
     <!-- Card Collection section -->
     <div class="container consonant-u-themeLight">
         <div class="page-header">
@@ -104,14 +116,23 @@
                 Theme:
                 <select id="theme" onchange="javascript:setTheme()">
                     <!-- option value="Lightest">Lightest</option -->
-                    <option value="Light" selected>Light</option>
-                    <option value="Dark">Dark</option>
-                    <option value="Darkest">Darkest</option>
+                    <option disabled></option>
+                    <option class="option" value="Light" selected>Light</option>
+                    <option disabled>───────────</option>
+                    <option class="option" value="Dark">Dark</option>
+                    <option disabled>───────────</option>
+                    <option class="option" value="Darkest">Darkest</option>
+                    <option disabled></option>
                 </select>
                 &nbsp;CTAs:
                 <select id="cta-style" onchange="javascript:setCTAs()">
-                    <option value="primary">Primary</option>
-                    <option value="call-to-action">Call to Action</option>
+                    <option disabled></option>
+                    <option class="option" value="dark" selected>Dark</option>
+                    <option disabled>───────────</option>
+                    <option class="option" value="primary">Primary</option>
+                    <option disabled>───────────</option>
+                    <option class="option" value="call-to-action">Call to Action</option>
+                    <option disabled></option>
                 </select>
             </div>
         </div>
@@ -135,7 +156,7 @@
     <!-- JavaScript -->
     <script type="text/javascript" src="../dist/main.source.js"></script>
     <script type="text/javascript">
-        const localConfig =  JSON.parse(localStorage.getItem('t3vents-config')) || null;
+        const localConfig =  JSON.parse(sessionStorage.getItem('t3vents-config')) || null;
         const config = localConfig || {
             collection: {
                 mode: "lightest", // Can be empty, "light", "dark", "darkest";
@@ -146,17 +167,19 @@
                 },
                 lazyLoad: false,
                 button: {
-                  style: "primary", // Can be "primary", "call-to-action";
+                  style: "dark", // Can be "primary", "call-to-action";
                 },
                 banner: {
                     upcoming: {
                         description: "Upcoming"
                     },
                     live: {
-                        description: "Live"
+                        description: "Live Now!"
                     },
                     onDemand: {
-                        description: "On Demand"
+                        description: "Past Event",
+                        backgroundColor: "#cccccc",
+                        fontColor: "red"
                     },
                     register: {
                         description: "Sign Up"
@@ -190,7 +213,8 @@
                 {
                     group: "Photography",
                     id: "caas:product-category/photography",
-                    icon: 'https://spectrum.adobe.com/static/icons/workflow_18/Smock_Camera_18_N.svg',
+                    // icon: 'https://spectrum.adobe.com/static/icons/workflow_18/Smock_Camera_18_N.svg',
+                    icon: './images/photography.svg',
                     items: [
                         {id: "caas:product-category/photography/photoshop", label: "Photoshop"},
                         {id: "caas:product-category/photography/photoshop-express", label: "Photoshop Express"},
@@ -201,7 +225,8 @@
                 {
                     group: "Graphic Design",
                     id: "caas:product-category/graphic-design",
-                    icon: 'https://spectrum.adobe.com/static/icons/workflow_18/Smock_Graphic_18_N.svg',
+                    // icon: 'https://spectrum.adobe.com/static/icons/workflow_18/Smock_Graphic_18_N.svg',
+                    icon: './images/graphic-design.svg',
                     items: [
                         {id: "caas:product-category/graphic-design/adobe-express", label: "Adobe Express"},
                         {id: "caas:product-category/graphic-design/illustrator", label: "Illustrator"},
@@ -211,7 +236,8 @@
                 {
                     group: "Video",
                     id: "caas:product-category/video",
-                    icon: 'https://spectrum.adobe.com/static/icons/workflow_18/Smock_VideoOutline_18_N.svg',
+                    // icon: 'https://spectrum.adobe.com/static/icons/workflow_18/Smock_VideoOutline_18_N.svg',
+                    icon: './images/video.svg',
                     items: [
                         {id: "caas:product-category/video/after-effects", label: "After Effects"},
                         {id: "caas:product-category/video/premiere-pro", label: "Premiere Pro"},
@@ -222,7 +248,8 @@
                 {
                     group: "GenAI",
                     id: "caas:product-category/gen-ai",
-                    icon: 'https://spectrum.adobe.com/static/icons/workflow_18/Smock_ImageAutoMode_18_N.svg',
+                    // icon: 'https://spectrum.adobe.com/static/icons/workflow_18/Smock_ImageAutoMode_18_N.svg',
+                    icon: './images/gen-ai.svg',
                     items: [
                         {id: "caas:product-category/gen-ai/genstudio", label: "Gen Studio"},
                         {id: "caas:product-category/gen-ai/firefly", label: "Firefly"},
@@ -232,7 +259,8 @@
                 {
                     group: "Illustration",
                     id: "caas:product-category/illustration",
-                    icon: 'https://spectrum.adobe.com/static/icons/workflow_18/Smock_Brush_18_N.svg',
+                    // icon: 'https://spectrum.adobe.com/static/icons/workflow_18/Smock_Brush_18_N.svg',
+                    icon: './images/illustration.svg',
                     items: [
                         {id: "caas:product-category/illustration/illustrator", label: "Illustrator"},
                         {id: "caas:product-category/illustration/indesign", label: "In Design"},
@@ -243,7 +271,8 @@
                 {
                     group: "Social",
                     id: "caas:product-category/social",
-                    icon: "https://spectrum.adobe.com/static/icons/workflow_18/Smock_SocialNetwork_18_N.svg",
+                    // icon: "https://spectrum.adobe.com/static/icons/workflow_18/Smock_SocialNetwork_18_N.svg",
+                    icon: './images/social-media.svg',
                     items: [
                         {id: "caas:product-category/social/adobe-express", label: "Adobe Express"},
                         {id: "caas:product-category/social/photoshop-express", label: "Photoshop Express"},
@@ -252,7 +281,8 @@
                 {
                     group: "3D & AR",
                     id: "caas:product-category/3d-&-ar",
-                    icon: 'https://spectrum.adobe.com/static/icons/workflow_18/Smock_3DMaterials_18_N.svg',
+                    // icon: 'https://spectrum.adobe.com/static/icons/workflow_18/Smock_3DMaterials_18_N.svg',
+                    icon: './images/3d-ar.svg',
                     items: [
                         {id: "caas:product-category/3d-&-ar/3d-modeler", label: "3D Modeler"},
                         {id: "caas:product-category/3d-&-ar/3d-painter", label: "3D Painter"},
@@ -444,15 +474,16 @@
             onCardUnsaved: function(){}
         };
 
+        console.log(config.collection.button.style)
         const consonantCardCollection = new ConsonantCardCollection(config, document.getElementById("output"));
-    </script>
+    </script> 
 
     <script>
         function setTheme() {
             var theme = document.getElementById("theme").value;
             const container = document.querySelector('.container');
             container.className = 'container consonant-u-theme' + theme;
-            localStorage.setItem('t3vents-theme', theme);
+            sessionStorage.setItem('t3vents-theme', theme);
         }
         function setSavedTheme(theme) {
             document.querySelector('#theme').value = theme;
@@ -463,15 +494,21 @@
             var style = document.getElementById("cta-style").value;
             config.collection.button.style = "call-to-action";
             config.collection.button.style = style;
-            localStorage.setItem('t3vents-config', JSON.stringify(config));
+            sessionStorage.setItem('t3vents-config', JSON.stringify(config));
             location.reload();
         }
 
         // Update UI with the saved settings
-        if (config?.collection?.button?.style === "call-to-action") {
-            document.querySelector('#cta-style').value = "call-to-action";
+        const ctaStyle = config.collection.button.style;
+        if (ctaStyle) {
+            document.querySelector('#cta-style').value = ctaStyle;
+            if (ctaStyle === 'dark') {
+                document.body.classList.add('buttons-dark');
+            } else {
+                document.body.classList.remove('buttons-dark');
+            }
         }
-        const savedTheme = localStorage.getItem('t3vents-theme');
+        const savedTheme = sessionStorage.getItem('t3vents-theme');
         if (savedTheme) {
             setSavedTheme(savedTheme);
         }
