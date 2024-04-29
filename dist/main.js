@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.29 (4/27/2024, 13:04:30)
+ * Chimera UI Libraries - Build 0.11.29 (4/29/2024, 08:21:02)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -1711,7 +1711,7 @@ var LAYOUT_CONTAINER = exports.LAYOUT_CONTAINER = {
     SIZE_1600_PX: '1600MaxWidth',
     SIZE_100_VW_32_MARGIN: '32Margin',
     CAROUSEL: 'carousel',
-    EVENTS: 'events'
+    CATEGORIES: 'categories'
 };
 
 /**
@@ -6219,6 +6219,7 @@ var Container = function Container(props) {
     var DESKTOP_SCREEN_SIZE = window.innerWidth >= _constants.DESKTOP_MIN_WIDTH;
     var isXorFilter = filterLogic.toLowerCase().trim() === _constants.FILTER_TYPES.XOR;
     var isCarouselContainer = authoredLayoutContainer === _constants.LAYOUT_CONTAINER.CAROUSEL;
+    var isCategoriesContainer = authoredLayoutContainer === _constants.LAYOUT_CONTAINER.CATEGORIES;
     var isStandardContainer = authoredLayoutContainer !== _constants.LAYOUT_CONTAINER.CAROUSEL;
     /**
      **** Hooks ****
@@ -7602,6 +7603,7 @@ var Container = function Container(props) {
         'consonant-Wrapper--83PercentContainier': authoredLayoutContainer === _constants.LAYOUT_CONTAINER.SIZE_83_VW,
         'consonant-Wrapper--1200MaxWidth': authoredLayoutContainer === _constants.LAYOUT_CONTAINER.SIZE_1200_PX,
         'consonant-Wrapper--1600MaxWidth': authoredLayoutContainer === _constants.LAYOUT_CONTAINER.SIZE_1600_PX,
+        'consonant-Wrapper--1200MaxWidth Categories': isCategoriesContainer,
         'consonant-Wrapper--carousel': isCarouselContainer,
         'consonant-Wrapper--withLeftFilter': filterPanelEnabled && isLeftFilterPanel
     });
@@ -7628,35 +7630,39 @@ var Container = function Container(props) {
                     'daa-lh': collectionAnalytics,
                     'daa-im': String(trackImpressions),
                     onClick: handleWindowClick,
-                    className: wrapperClass + ' ' + themeClass + ' Categories' },
-                authoredPills && _react2.default.createElement(
-                    'h2',
-                    { 'data-testid': 'consonant-TopFilters-categoriesTitle', className: 'consonant-TopFilters-categoriesTitle' },
-                    title
-                ),
+                    className: wrapperClass + ' ' + themeClass },
                 _react2.default.createElement(
                     'div',
                     { className: 'consonant-Wrapper-inner' },
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'filters-category' },
-                        authoredPills.map(function (pill) {
-                            var selected = '';
-                            if (pill.id === selectedPill) {
-                                selected = 'selected';
-                            }
-                            return _react2.default.createElement(
-                                'button',
-                                {
-                                    onClick: function onClick() {
-                                        return pillHandler(pill.items, pill.id);
-                                    },
-                                    'data-selected': selected,
-                                    'data-group': pill.group.replaceAll(' ', '').toLowerCase() },
-                                _react2.default.createElement('img', { className: 'filters-category--icon', src: pill.icon, alt: pill.icon && 'Category icon' }),
-                                pill.group
-                            );
-                        })
+                    isCategoriesContainer && _react2.default.createElement(
+                        _react.Fragment,
+                        null,
+                        _react2.default.createElement(
+                            'h2',
+                            { 'data-testid': 'consonant-TopFilters-categoriesTitle', className: 'consonant-TopFilters-categoriesTitle' },
+                            title
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'filters-category' },
+                            authoredPills.map(function (pill) {
+                                var selected = '';
+                                if (pill.id === selectedPill) {
+                                    selected = 'selected';
+                                }
+                                return _react2.default.createElement(
+                                    'button',
+                                    {
+                                        onClick: function onClick() {
+                                            return pillHandler(pill.items, pill.id);
+                                        },
+                                        'data-selected': selected,
+                                        'data-group': pill.group.replaceAll(' ', '').toLowerCase() },
+                                    _react2.default.createElement('img', { className: 'filters-category--icon', src: pill.icon, alt: pill.icon && 'Category icon' }),
+                                    pill.group
+                                );
+                            })
+                        )
                     ),
                     displayLeftFilterPanel && isStandardContainer && _react2.default.createElement(
                         'div',
@@ -52993,6 +52999,12 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
     var HeadingLevel = getConfig('collection', 'i18n.titleHeadingLevel');
     var title = getConfig('collection', 'i18n.title');
     var useLightText = getConfig('collection', 'useLightText');
+    var layoutContainer = getConfig('collection', 'layout.container');
+
+    /**
+     * Whether the current page uses category page layout
+     */
+    var isCategoryPage = layoutContainer === 'category';
 
     /**
      * Top search bar identifier
@@ -53079,7 +53091,7 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
      * should be displayed
      * @type {Boolean}
      */
-    var shouldDisplayCollectionInfo = title || showTotalResults;
+    var shouldDisplayCollectionInfo = (title || showTotalResults) && !isCategoryPage;
 
     /**
      * Whether the search bar should be displayed

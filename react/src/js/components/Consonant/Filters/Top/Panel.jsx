@@ -106,6 +106,12 @@ const FiltersPanelTop = (props) => {
     const HeadingLevel = getConfig('collection', 'i18n.titleHeadingLevel');
     const title = getConfig('collection', 'i18n.title');
     const useLightText = getConfig('collection', 'useLightText');
+    const layoutContainer = getConfig('collection', 'layout.container');
+
+    /**
+     * Whether the current page uses category page layout
+     */
+    const isCategoryPage = layoutContainer === 'category';
 
     /**
      * Top search bar identifier
@@ -187,7 +193,7 @@ const FiltersPanelTop = (props) => {
      * should be displayed
      * @type {Boolean}
      */
-    const shouldDisplayCollectionInfo = title || showTotalResults;
+    const shouldDisplayCollectionInfo = (title || showTotalResults) && !isCategoryPage;
 
     /**
      * Whether the search bar should be displayed

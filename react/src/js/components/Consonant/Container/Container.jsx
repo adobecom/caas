@@ -162,6 +162,7 @@ const Container = (props) => {
     const DESKTOP_SCREEN_SIZE = window.innerWidth >= DESKTOP_MIN_WIDTH;
     const isXorFilter = filterLogic.toLowerCase().trim() === FILTER_TYPES.XOR;
     const isCarouselContainer = authoredLayoutContainer === LAYOUT_CONTAINER.CAROUSEL;
+    const isCategoriesContainer = authoredLayoutContainer === LAYOUT_CONTAINER.CATEGORIES;
     const isStandardContainer = authoredLayoutContainer !== LAYOUT_CONTAINER.CAROUSEL;
     /**
      **** Hooks ****
@@ -1252,6 +1253,7 @@ const Container = (props) => {
         'consonant-Wrapper--83PercentContainier': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_83_VW,
         'consonant-Wrapper--1200MaxWidth': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_1200_PX,
         'consonant-Wrapper--1600MaxWidth': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_1600_PX,
+        'consonant-Wrapper--1200MaxWidth Categories': isCategoriesContainer,
         'consonant-Wrapper--carousel': isCarouselContainer,
         'consonant-Wrapper--withLeftFilter': filterPanelEnabled && isLeftFilterPanel,
     });
@@ -1275,33 +1277,34 @@ const Container = (props) => {
                     daa-lh={collectionAnalytics}
                     daa-im={String(trackImpressions)}
                     onClick={handleWindowClick}
-                    className={`${wrapperClass} ${themeClass} Categories`}>
-                    {
-                        authoredPills &&
-                        <h2 data-testid="consonant-TopFilters-categoriesTitle" className="consonant-TopFilters-categoriesTitle">
-                            {title}
-                        </h2>
-                    }
+                    className={`${wrapperClass} ${themeClass}`}>
                     <div className="consonant-Wrapper-inner">
-                        <div className="filters-category">
-                            {
-                                authoredPills.map((pill) => {
-                                    let selected = '';
-                                    if (pill.id === selectedPill) {
-                                        selected = 'selected';
-                                    }
-                                    return (
-                                        <button
-                                            onClick={() => pillHandler(pill.items, pill.id)}
-                                            data-selected={selected}
-                                            data-group={pill.group.replaceAll(' ', '').toLowerCase()}>
-                                            <img className="filters-category--icon" src={pill.icon} alt={pill.icon && 'Category icon'} />
-                                            {pill.group}
-                                        </button>
-                                    );
-                                })
-                            }
-                        </div>
+                        { isCategoriesContainer &&
+                        <Fragment>
+                            <h2 data-testid="consonant-TopFilters-categoriesTitle" className="consonant-TopFilters-categoriesTitle">
+                                {title}
+                            </h2>
+                            <div className="filters-category">
+                                {
+                                    authoredPills.map((pill) => {
+                                        let selected = '';
+                                        if (pill.id === selectedPill) {
+                                            selected = 'selected';
+                                        }
+                                        return (
+                                            <button
+                                                onClick={() => pillHandler(pill.items, pill.id)}
+                                                data-selected={selected}
+                                                data-group={pill.group.replaceAll(' ', '').toLowerCase()}>
+                                                <img className="filters-category--icon" src={pill.icon} alt={pill.icon && 'Category icon'} />
+                                                {pill.group}
+                                            </button>
+                                        );
+                                    })
+                                }
+                            </div>
+                        </Fragment>
+                        }
                         { displayLeftFilterPanel && isStandardContainer &&
                         <div className="consonant-Wrapper-leftFilterWrapper">
                             <LeftFilterPanel
