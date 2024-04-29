@@ -169,7 +169,7 @@ const checkEventTiming = (card, timing) => {
  * @returns {Array} - All cards that match filter options
  */
 // eslint-disable-next-line max-len
-export const getFilteredCards = (cards, activeFilters, activePanels, filterType, filterTypes, pills) => {
+export const getFilteredCards = (cards, activeFilters, activePanels, filterType, filterTypes, categories) => {
     const activeFiltersSet = new Set(activeFilters);
     const timingSet = intersection(activeFiltersSet, new Set([
         EVENT_TIMING_IDS.LIVE,
@@ -180,18 +180,18 @@ export const getFilteredCards = (cards, activeFilters, activePanels, filterType,
     const usingOrFilter = getUsingOrFilter(filterType, filterTypes);
     const usingTimingFilter = getUsingTimingFilter(activeFiltersSet);
     // remove the time elements from the active filter set before you actually filter
-    timingSet.forEach(x => activeFiltersSet.delete(x));
+    timingSet.forEach(filter => activeFiltersSet.delete(filter));
 
     const temp = [];
     const set = new Set();
-    if (pills.length) {
+    if (categories.length) {
         for (let i = 0; i < cards.length; i++) {
             const card = cards[i];
-            for (let j = 0; j < pills.length; j++) {
-                const pill = pills[j];
+            for (let j = 0; j < categories.length; j++) {
+                const category = categories[j];
                 for (let k = 0; k < card.tags.length; k++) {
                     const currTag = card.tags[k];
-                    if (currTag.id.includes(pill) && !set.has(card.id)) {
+                    if (currTag.id.includes(category) && !set.has(card.id)) {
                         set.add(card.id);
                         temp.push(card);
                     }

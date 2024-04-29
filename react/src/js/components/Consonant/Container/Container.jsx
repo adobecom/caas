@@ -114,7 +114,7 @@ const Container = (props) => {
     const sortOptions = getConfig('sort', 'options');
     const defaultSort = getConfig('sort', 'defaultSort');
     const defaultSortOption = getDefaultSortOption(config, defaultSort);
-    const authoredPills = getConfig('pills', '');
+    const authoredCategories = getConfig('filterPanel', 'categories');
     let featuredCards = getConfig('featuredCards', '')
         .toString()
         .replace(/\[|\]/g, '')
@@ -247,7 +247,7 @@ const Container = (props) => {
      */
     const [filters, setFilters] = useState([]);
     window.filters = filters;
-    const [currPills, setPills] = useState([]);
+    const [currCategories, setCategories] = useState([]);
 
     /**
      * @typedef {String} SearchQueryState — Will be used to search through cards
@@ -256,7 +256,7 @@ const Container = (props) => {
      * @type {[String, Function]} SearchQuery
      */
     const [searchQuery, setSearchQuery] = useState('');
-    const [selectedPill, setSelectedPill] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('');
 
     /**
      * @typedef {String} SortOpenedState — Toggles Sort Popup Opened Or Closed
@@ -1077,7 +1077,7 @@ const Container = (props) => {
         .sortCards(sortOption, eventFilter, featuredCards, hideCtaIds, isFirstLoad)
         .keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks)
         .keepCardsWithinDateRange()
-        .filterCards(activeFilterIds, activePanels, filterLogic, FILTER_TYPES, currPills)
+        .filterCards(activeFilterIds, activePanels, filterLogic, FILTER_TYPES, currCategories)
         .truncateList(totalCardLimit)
         .searchCards(searchQuery, searchFields, cardStyle)
         .removeCards(inclusionIds);
@@ -1203,38 +1203,38 @@ const Container = (props) => {
         'consonant-u-themeDarkest': authoredMode === THEME_TYPE.DARKEST,
     });
 
-    function getAllPillProducts() {
-        let y = [];
-        for (const pill of authoredPills) {
-            for (const item of pill.items) {
-                item.fromPill = true;
+    function getAllCategoryProducts() {
+        let allCategories = [];
+        for (const category of authoredCategories) {
+            for (const item of category.items) {
+                item.fromCategory = true;
             }
-            y = y.concat(pill.items);
+            allCategories = allCategories.concat(category.items);
         }
         return {
             group: 'All products',
             id: 'caas:products',
-            items: y,
+            items: allCategories,
         };
     }
 
-    function pillHandler(selectedPills, groupId) {
+    function categoryHandler(selectedCategories, groupId) {
         const temp = [];
-        for (const pill of selectedPills) {
-            temp.push(pill.id);
+        for (const category of selectedCategories) {
+            temp.push(category.id);
         }
-        setPills(temp);
+        setCategories(temp);
         setFilters((prevFilters) => {
             prevFilters.pop();
-            const newGroup = authoredPills.filter(pill => pill.id === groupId)[0];
+            const newGroup = authoredCategories.filter(category => category.id === groupId)[0];
             if (!newGroup.items.length) {
-                const nextFilters = prevFilters.concat(getAllPillProducts());
+                const nextFilters = prevFilters.concat(getAllCategoryProducts());
                 return nextFilters;
             }
             prevFilters.push(newGroup);
             return prevFilters;
         });
-        setSelectedPill(groupId);
+        setSelectedCategory(groupId);
     }
 
 
@@ -1260,7 +1260,7 @@ const Container = (props) => {
 
     useEffect(() => {
         setFilters((prevFilters) => {
-            const nextFilters = prevFilters.concat(getAllPillProducts());
+            const nextFilters = prevFilters.concat(getAllCategoryProducts());
             return nextFilters;
         });
     }, []);
@@ -1286,18 +1286,20 @@ const Container = (props) => {
                             </h2>
                             <div className="filters-category">
                                 {
-                                    authoredPills.map((pill) => {
+                                    authoredCategories.map((category) => {
                                         let selected = '';
-                                        if (pill.id === selectedPill) {
+                                        if (category.id === selectedCategory) {
                                             selected = 'selected';
                                         }
                                         return (
                                             <button
-                                                onClick={() => pillHandler(pill.items, pill.id)}
+                                                onClick={() => {
+                                                    categoryHandler(category.items, category.id);
+                                                }}
                                                 data-selected={selected}
-                                                data-group={pill.group.replaceAll(' ', '').toLowerCase()}>
-                                                <img className="filters-category--icon" src={pill.icon} alt={pill.icon && 'Category icon'} />
-                                                {pill.group}
+                                                data-group={category.group.replaceAll(' ', '').toLowerCase()}>
+                                                <img className="filters-category--icon" src={category.icon} alt={category.icon && 'Category icon'} />
+                                                {category.group}
                                             </button>
                                         );
                                     })
@@ -1346,7 +1348,7 @@ const Container = (props) => {
                                 onCheckboxClick={handleCheckBoxChange}
                                 onFilterClick={handleFilterGroupClick}
                                 onClearFilterItems={clearFilterItem}
-                                pills={currPills}
+                                categories={currCategories}
                                 onClearAllFilters={resetFiltersSearchAndBookmarks}
                                 showLimitedFiltersQty={showLimitedFiltersQty}
                                 searchComponent={

@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.29 (4/29/2024, 08:21:02)
+ * Chimera UI Libraries - Build 0.11.29 (4/29/2024, 08:59:45)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -2565,27 +2565,27 @@ var checkEventTiming = function checkEventTiming(card, timing) {
  * @returns {Array} - All cards that match filter options
  */
 // eslint-disable-next-line max-len
-var getFilteredCards = exports.getFilteredCards = function getFilteredCards(cards, activeFilters, activePanels, filterType, filterTypes, pills) {
+var getFilteredCards = exports.getFilteredCards = function getFilteredCards(cards, activeFilters, activePanels, filterType, filterTypes, categories) {
     var activeFiltersSet = new Set(activeFilters);
     var timingSet = (0, _general.intersection)(activeFiltersSet, new Set([_constants.EVENT_TIMING_IDS.LIVE, _constants.EVENT_TIMING_IDS.ONDEMAND, _constants.EVENT_TIMING_IDS.UPCOMING]));
     var usingXorAndFilter = getUsingXorAndFilter(filterType, filterTypes);
     var usingOrFilter = getUsingOrFilter(filterType, filterTypes);
     var usingTimingFilter = getUsingTimingFilter(activeFiltersSet);
     // remove the time elements from the active filter set before you actually filter
-    timingSet.forEach(function (x) {
-        return activeFiltersSet.delete(x);
+    timingSet.forEach(function (filter) {
+        return activeFiltersSet.delete(filter);
     });
 
     var temp = [];
     var set = new Set();
-    if (pills.length) {
+    if (categories.length) {
         for (var i = 0; i < cards.length; i++) {
             var card = cards[i];
-            for (var j = 0; j < pills.length; j++) {
-                var pill = pills[j];
+            for (var j = 0; j < categories.length; j++) {
+                var category = categories[j];
                 for (var k = 0; k < card.tags.length; k++) {
                     var currTag = card.tags[k];
-                    if (currTag.id.includes(pill) && !set.has(card.id)) {
+                    if (currTag.id.includes(category) && !set.has(card.id)) {
                         set.add(card.id);
                         temp.push(card);
                     }
@@ -6179,7 +6179,7 @@ var Container = function Container(props) {
     var sortOptions = getConfig('sort', 'options');
     var defaultSort = getConfig('sort', 'defaultSort');
     var defaultSortOption = (0, _consonant.getDefaultSortOption)(config, defaultSort);
-    var authoredPills = getConfig('pills', '');
+    var authoredCategories = getConfig('filterPanel', 'categories');
     var featuredCards = getConfig('featuredCards', '').toString().replace(/\[|\]/g, '').replace(/`/g, '').split(',');
     // eslint-disable-next-line no-use-before-define,max-len
     featuredCards = featuredCards.concat(featuredCards.map(function (id) {
@@ -6350,8 +6350,8 @@ var Container = function Container(props) {
 
     var _useState15 = (0, _react.useState)([]),
         _useState16 = _slicedToArray(_useState15, 2),
-        currPills = _useState16[0],
-        setPills = _useState16[1];
+        currCategories = _useState16[0],
+        setCategories = _useState16[1];
 
     /**
      * @typedef {String} SearchQueryState — Will be used to search through cards
@@ -6368,8 +6368,8 @@ var Container = function Container(props) {
 
     var _useState19 = (0, _react.useState)(''),
         _useState20 = _slicedToArray(_useState19, 2),
-        selectedPill = _useState20[0],
-        setSelectedPill = _useState20[1];
+        selectedCategory = _useState20[0],
+        setSelectedCategory = _useState20[1];
 
     /**
      * @typedef {String} SortOpenedState — Toggles Sort Popup Opened Or Closed
@@ -7363,7 +7363,7 @@ var Container = function Container(props) {
      * @returns {Object}
      * */
     var getFilteredCollection = function getFilteredCollection() {
-        return cardFilterer.sortCards(sortOption, eventFilter, featuredCards, hideCtaIds, isFirstLoad).keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks).keepCardsWithinDateRange().filterCards(activeFilterIds, activePanels, filterLogic, _constants.FILTER_TYPES, currPills).truncateList(totalCardLimit).searchCards(searchQuery, searchFields, cardStyle).removeCards(inclusionIds);
+        return cardFilterer.sortCards(sortOption, eventFilter, featuredCards, hideCtaIds, isFirstLoad).keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks).keepCardsWithinDateRange().filterCards(activeFilterIds, activePanels, filterLogic, _constants.FILTER_TYPES, currCategories).truncateList(totalCardLimit).searchCards(searchQuery, searchFields, cardStyle).removeCards(inclusionIds);
     };
 
     /**
@@ -7487,24 +7487,24 @@ var Container = function Container(props) {
         'consonant-u-themeDarkest': authoredMode === _constants.THEME_TYPE.DARKEST
     });
 
-    function getAllPillProducts() {
-        var y = [];
+    function getAllCategoryProducts() {
+        var allCategories = [];
         var _iteratorNormalCompletion4 = true;
         var _didIteratorError4 = false;
         var _iteratorError4 = undefined;
 
         try {
-            for (var _iterator4 = authoredPills[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-                var pill = _step4.value;
+            for (var _iterator4 = authoredCategories[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+                var category = _step4.value;
                 var _iteratorNormalCompletion5 = true;
                 var _didIteratorError5 = false;
                 var _iteratorError5 = undefined;
 
                 try {
-                    for (var _iterator5 = pill.items[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+                    for (var _iterator5 = category.items[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
                         var item = _step5.value;
 
-                        item.fromPill = true;
+                        item.fromCategory = true;
                     }
                 } catch (err) {
                     _didIteratorError5 = true;
@@ -7521,7 +7521,7 @@ var Container = function Container(props) {
                     }
                 }
 
-                y = y.concat(pill.items);
+                allCategories = allCategories.concat(category.items);
             }
         } catch (err) {
             _didIteratorError4 = true;
@@ -7541,21 +7541,21 @@ var Container = function Container(props) {
         return {
             group: 'All products',
             id: 'caas:products',
-            items: y
+            items: allCategories
         };
     }
 
-    function pillHandler(selectedPills, groupId) {
+    function categoryHandler(selectedCategories, groupId) {
         var temp = [];
         var _iteratorNormalCompletion6 = true;
         var _didIteratorError6 = false;
         var _iteratorError6 = undefined;
 
         try {
-            for (var _iterator6 = selectedPills[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-                var pill = _step6.value;
+            for (var _iterator6 = selectedCategories[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+                var category = _step6.value;
 
-                temp.push(pill.id);
+                temp.push(category.id);
             }
         } catch (err) {
             _didIteratorError6 = true;
@@ -7572,20 +7572,20 @@ var Container = function Container(props) {
             }
         }
 
-        setPills(temp);
+        setCategories(temp);
         setFilters(function (prevFilters) {
             prevFilters.pop();
-            var newGroup = authoredPills.filter(function (pill) {
-                return pill.id === groupId;
+            var newGroup = authoredCategories.filter(function (category) {
+                return category.id === groupId;
             })[0];
             if (!newGroup.items.length) {
-                var nextFilters = prevFilters.concat(getAllPillProducts());
+                var nextFilters = prevFilters.concat(getAllCategoryProducts());
                 return nextFilters;
             }
             prevFilters.push(newGroup);
             return prevFilters;
         });
-        setSelectedPill(groupId);
+        setSelectedCategory(groupId);
     }
 
     var collectionStr = collectionIdentifier ? collectionIdentifier + ' | ' : '';
@@ -7610,7 +7610,7 @@ var Container = function Container(props) {
 
     (0, _react.useEffect)(function () {
         setFilters(function (prevFilters) {
-            var nextFilters = prevFilters.concat(getAllPillProducts());
+            var nextFilters = prevFilters.concat(getAllCategoryProducts());
             return nextFilters;
         });
     }, []);
@@ -7645,21 +7645,21 @@ var Container = function Container(props) {
                         _react2.default.createElement(
                             'div',
                             { className: 'filters-category' },
-                            authoredPills.map(function (pill) {
+                            authoredCategories.map(function (category) {
                                 var selected = '';
-                                if (pill.id === selectedPill) {
+                                if (category.id === selectedCategory) {
                                     selected = 'selected';
                                 }
                                 return _react2.default.createElement(
                                     'button',
                                     {
                                         onClick: function onClick() {
-                                            return pillHandler(pill.items, pill.id);
+                                            categoryHandler(category.items, category.id);
                                         },
                                         'data-selected': selected,
-                                        'data-group': pill.group.replaceAll(' ', '').toLowerCase() },
-                                    _react2.default.createElement('img', { className: 'filters-category--icon', src: pill.icon, alt: pill.icon && 'Category icon' }),
-                                    pill.group
+                                        'data-group': category.group.replaceAll(' ', '').toLowerCase() },
+                                    _react2.default.createElement('img', { className: 'filters-category--icon', src: category.icon, alt: category.icon && 'Category icon' }),
+                                    category.group
                                 );
                             })
                         )
@@ -7702,7 +7702,7 @@ var Container = function Container(props) {
                             onCheckboxClick: handleCheckBoxChange,
                             onFilterClick: handleFilterGroupClick,
                             onClearFilterItems: clearFilterItem,
-                            pills: currPills,
+                            categories: currCategories,
                             onClearAllFilters: resetFiltersSearchAndBookmarks,
                             showLimitedFiltersQty: showLimitedFiltersQty,
                             searchComponent: _react2.default.createElement(_Search2.default, {
@@ -52665,8 +52665,8 @@ var CardFilterer = function () {
 
     _createClass(CardFilterer, [{
         key: 'filterCards',
-        value: function filterCards(activeFilters, activePanels, filterType, filterTypes, currPills) {
-            this.filteredCards = (0, _Helpers.getFilteredCards)(this.filteredCards, activeFilters, activePanels, filterType, filterTypes, currPills);
+        value: function filterCards(activeFilters, activePanels, filterType, filterTypes, currCategories) {
+            this.filteredCards = (0, _Helpers.getFilteredCards)(this.filteredCards, activeFilters, activePanels, filterType, filterTypes, currCategories);
             return this;
         }
 
