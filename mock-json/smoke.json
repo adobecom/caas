@@ -20,8 +20,8 @@
       "overlays": {
         "banner": {
           "backgroundColor": "white",
-          "fontColor": "red",
-          "description": "Live",
+          "fontColor": "darkgray",
+          "description": "Event",
           "icon": ""
         },
         "logo": {},
@@ -56,7 +56,7 @@
               "type": "button",
               "style": "primary",
               "text": "Go to Event",
-              "href": "https://www.google.com"
+              "href": "https://www.adobe.com/max.html"
             }
           ]
         }
@@ -85,7 +85,7 @@
       "overlays": {
         "banner": {
           "backgroundColor": "white",
-          "fontColor": "red",
+          "fontColor": "darkgray",
           "description": "Live1",
           "icon": ""
         },
@@ -121,7 +121,7 @@
               "type": "button",
               "style": "primary",
               "text": "Go to Event",
-              "href": "https://www.google.com"
+              "href": "https://www.adobe.com/max.html"
             }
           ]
         }
@@ -153,7 +153,7 @@
       "overlays": {
         "banner": {
           "backgroundColor": "red",
-          "fontColor": "red",
+          "fontColor": "darkgray",
           "description": "Live2",
           "icon": ""
         },
@@ -189,7 +189,7 @@
               "type": "button",
               "style": "primary",
               "text": "Go to Event",
-              "href": "https://www.google.com"
+              "href": "https://www.adobe.com/max.html"
             }
           ]
         }
@@ -218,13 +218,15 @@
       "overlays": {
         "banner": {
           "backgroundColor": "white",
-          "fontColor": "red",
-          "description": "Live",
+          "fontColor": "darkgray",
+          "description": "Event",
           "icon": ""
         },
         "logo": {},
         "label": {},
-        "videoButton": {}
+        "videoButton": {
+          "url": "https://www.adobe.com/max.html"
+        }
       },
       "contentArea": {
         "detailText": "Photography",
@@ -254,12 +256,14 @@
               "type": "button",
               "style": "primary",
               "text": "Go to Event",
-              "href": "https://www.google.com"
+              "href": "https://www.adobe.com/max.html"
             }
           ]
         }
       ],
-      "cardDate": "2020-07-02T09:41:35.933Z"
+      "cardDate": "2020-07-02T09:41:35.933Z",
+      "startDate": "2023-01-01T00:00:00.000Z",
+      "endDate": "2024-01-01T00:00:00.000Z"
     },
     {
       "id": "1.0.4",
@@ -284,13 +288,15 @@
       "overlays": {
         "banner": {
           "backgroundColor": "white",
-          "fontColor": "red",
-          "description": "Live",
+          "fontColor": "darkgray",
+          "description": "Event",
           "icon": ""
         },
         "logo": {},
         "label": {},
-        "videoButton": {}
+        "videoButton": {
+          "url": "https://www.adobe.com/max.html"
+        }
       },
       "contentArea": {
         "detailText": "Video & Photography",
@@ -320,12 +326,14 @@
               "type": "button",
               "style": "primary",
               "text": "Go to Event",
-              "href": "https://www.google.com"
+              "href": "https://www.adobe.com/max.html"
             }
           ]
         }
       ],
-      "cardDate": "2020-07-02T09:41:35.933Z"
+      "cardDate": "2020-07-02T09:41:35.933Z",
+      "startDate": "2024-01-01T00:00:00.000Z",
+      "endDate": "2025-01-01T00:00:00.000Z"
     },
     {
       "id": "1.1.0",
@@ -347,8 +355,8 @@
       "overlays": {
         "banner": {
           "backgroundColor": "white",
-          "fontColor": "red",
-          "description": "Live",
+          "fontColor": "darkgray",
+          "description": "Event",
           "icon": ""
         },
         "logo": {},
@@ -383,7 +391,7 @@
               "type": "button",
               "style": "primary",
               "text": "Go to Event",
-              "href": "https://www.google.com"
+              "href": "https://www.adobe.com/max.html"
             }
           ]
         }
@@ -410,8 +418,8 @@
       "overlays": {
         "banner": {
           "backgroundColor": "white",
-          "fontColor": "red",
-          "description": "Live",
+          "fontColor": "darkgray",
+          "description": "Event",
           "icon": ""
         },
         "logo": {},
@@ -446,7 +454,7 @@
               "type": "button",
               "style": "primary",
               "text": "Go to Event",
-              "href": "https://www.google.com"
+              "href": "https://www.adobe.com/max.html"
             }
           ]
         }
@@ -476,8 +484,8 @@
       "overlays": {
         "banner": {
           "backgroundColor": "white",
-          "fontColor": "red",
-          "description": "Live",
+          "fontColor": "darkgray",
+          "description": "Event",
           "icon": ""
         },
         "logo": {},
@@ -512,7 +520,7 @@
               "type": "button",
               "style": "primary",
               "text": "Go to Event",
-              "href": "https://www.google.com"
+              "href": "https://www.adobe.com/max.html"
             }
           ]
         }
@@ -539,8 +547,8 @@
       "overlays": {
         "banner": {
           "backgroundColor": "white",
-          "fontColor": "red",
-          "description": "Live",
+          "fontColor": "darkgray",
+          "description": "Event",
           "icon": ""
         },
         "logo": {},
@@ -575,7 +583,7 @@
               "type": "button",
               "style": "primary",
               "text": "Go to Event",
-              "href": "https://www.google.com"
+              "href": "https://www.adobe.com/max.html"
             }
           ]
         }
@@ -602,8 +610,8 @@
       "overlays": {
         "banner": {
           "backgroundColor": "white",
-          "fontColor": "red",
-          "description": "Live",
+          "fontColor": "darkgray",
+          "description": "Event",
           "icon": ""
         },
         "logo": {},
@@ -638,7 +646,7 @@
               "type": "button",
               "style": "primary",
               "text": "Go to Event",
-              "href": "https://www.google.com"
+              "href": "https://www.adobe.com/max.html"
             }
           ]
         }
@@ -668,8 +676,8 @@
       "overlays": {
         "banner": {
           "backgroundColor": "white",
-          "fontColor": "red",
-          "description": "Live",
+          "fontColor": "darkgray",
+          "description": "Event",
           "icon": ""
         },
         "logo": {},
@@ -704,7 +712,7 @@
               "type": "button",
               "style": "primary",
               "text": "Go to Event",
-              "href": "https://www.google.com"
+              "href": "https://www.adobe.com/max.html"
             }
           ]
         }

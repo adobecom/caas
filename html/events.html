@@ -31,6 +31,13 @@
             background: black;
             background: linear-gradient(8deg, #000000DD, #00000099);
         }
+        .last-updated {
+            position: absolute;
+            color: #999;
+            font-size: smaller;
+            top: 20px;
+            left: 10px;
+        }
         .theme-chooser {
             position: absolute;
             top: 15px;
@@ -102,6 +109,7 @@
     <!-- Card Collection section -->
     <div class="container consonant-u-themeLight">
         <div class="page-header">
+            <div class="last-updated">Last Updated: 04/29/24</div>
             <h1>CaaS T3vents Test Page</h1>
             <div class="theme-chooser">
                 Theme:
@@ -118,7 +126,7 @@
                 &nbsp;CTAs:
                 <select id="cta-style" onchange="javascript:setCTAs()">
                     <option disabled></option>
-                    <option class="option" value="dark" selected>Dark</option>
+                    <option class="option" value="dark" selected>Dark (new)</option>
                     <option disabled>───────────</option>
                     <option class="option" value="primary">Primary</option>
                     <option disabled>───────────</option>
@@ -400,7 +408,7 @@
             sort: {
                 enabled: 'true',
                 defaultSort: 'dateDesc',
-                options: '[{"label":"Random", "sort":"random"},{"label":"Featured","sort":"featured"},{"label":"Title: (A-Z)","sort":"titleAsc"},{"label":"Title: (Z-A)","sort":"titleDesc"},{"label":"Date: (Oldest to newest)","sort":"dateAsc"},{"label":"Date: (Newest to oldest)","sort":"dateDesc"}, {"label": "Custom Sort", "sort": "customSort"}]',
+                options: '[{"label":"Newest to oldest","sort":"dateDesc"},{"label":"Oldest to newest","sort":"dateAsc"},{"label":"Title A-Z","sort":"titleAsc"},{"label":"Title Z-A","sort":"titleDesc"}]',
                 customSort: function(card){console.log("customSort: ", card); return card;}
             },
             pagination: {
