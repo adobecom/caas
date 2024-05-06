@@ -73,7 +73,7 @@ const Items = (props) => {
                 }
                 return (
                     <Fragment>
-                        {item.fromPill && title && <span className="filter-group-title">{title}</span>}
+                        {item.fromCategory && title && <span className="filter-group-title">{title}</span>}
                         <li
                             key={item.id}
                             data-testid="consonant-TopFilter-item"

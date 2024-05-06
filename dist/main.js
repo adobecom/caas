@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.29 (4/29/2024, 12:24:34)
+ * Chimera UI Libraries - Build 0.11.29 (5/6/2024, 08:08:44)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -46838,9 +46838,9 @@ var Card = function Card(props) {
             tabIndex: 0,
             id: id
             // TODO: *** [Debugging] Remove next line before release ***
-            , title: tags.map(function (tag) {
+            , title: 'Id: ' + id + '\n' + tags.map(function (tag) {
                 return tag.id;
-            }).join('\n') },
+            }).join('\n') + '\n' + startDate + '\n' + endDate },
         showHeader && _react2.default.createElement(
             'div',
             {
@@ -53693,7 +53693,7 @@ var Items = function Items(props) {
             return _react2.default.createElement(
                 _react.Fragment,
                 null,
-                item.fromPill && title && _react2.default.createElement(
+                item.fromCategory && title && _react2.default.createElement(
                     'span',
                     { className: 'filter-group-title' },
                     title

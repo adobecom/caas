@@ -317,7 +317,7 @@ const Card = (props) => {
             tabIndex={0}
             id={id}
             // TODO: *** [Debugging] Remove next line before release ***
-            title={tags.map(tag => tag.id).join('\n')}>
+            title={`Id: ${id}\n${tags.map(tag => tag.id).join('\n')}\n${startDate}\n${endDate}`}>
             {showHeader &&
             <div
                 data-testid="consonant-Card-header"
