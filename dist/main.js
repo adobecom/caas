@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.29 (5/6/2024, 08:08:44)
+ * Chimera UI Libraries - Build 0.11.29 (5/7/2024, 09:40:57)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -53004,7 +53004,7 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
     /**
      * Whether the current page uses category page layout
      */
-    var isCategoryPage = layoutContainer === 'category';
+    var isCategoryPage = layoutContainer === 'categories';
 
     /**
      * Top search bar identifier

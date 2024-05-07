@@ -111,7 +111,7 @@ const FiltersPanelTop = (props) => {
     /**
      * Whether the current page uses category page layout
      */
-    const isCategoryPage = layoutContainer === 'category';
+    const isCategoryPage = layoutContainer === 'categories';
 
     /**
      * Top search bar identifier
