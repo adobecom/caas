@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import classNames from 'classnames';
 import {
     string,
@@ -79,6 +79,11 @@ const Group = (props) => {
         getConfig('filterPanel', 'i18n.topPanel.mobile.group.totalResultsText').replace('{total}', results);
     const mobileGroupApplyBtnText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.applyBtnText');
     const mobileGroupDoneBtnText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.doneBtnText');
+
+    const isCategoriesPage = getConfig('collection', 'layout.container') === 'categories';
+    // const isProductsFilter = id === 'caas:zzz_events-tier-3-testing/product-family';
+    const isProductsFilter = id === 'caas:product-category';
+    const showProductsFilter = !isCategoriesPage || (isCategoriesPage && !isProductsFilter);
 
     /**
      **** Hooks ****
@@ -196,52 +201,57 @@ const Group = (props) => {
     const filterName = `${name} ${isOpened ? 'Close' : 'Open'}`;
 
     return (
-        <div
-            data-testid="consonant-TopFilter"
-            daa-lh={name}
-            className={containerClassname}>
-            <div
-                className="consonant-TopFilter-inner">
-                <h3
-                    className="consonant-TopFilter-name"
-                    daa-ll={filterName}>
-                    <button
-                        type="button"
-                        className="consonant-TopFilter-link"
-                        data-testid="consonant-TopFilter-link"
-                        onClick={handleToggle}
-                        tabIndex="0">
-                        {name}
-                        <span
-                            className="consonant-TopFilter-selectedItemsQty">
-                            {selectedItemQtyText}
-                        </span>
-                    </button>
-                </h3>
+        <Fragment>
+            {
+                showProductsFilter &&
                 <div
-                    className="consonant-TopFilter-selectedItems">
+                    data-testid="consonant-TopFilter"
+                    daa-lh={name}
+                    className={containerClassname}>
                     <div
-                        className="consonant-TopFilter-absoluteWrapper">
-                        <Items
-                            clipWrapperItemsCount={clipWrapperItemsCount}
-                            handleCheck={handleCheck}
-                            stopPropagation={stopPropagation}
-                            items={items} />
-                        {shouldClipFilters &&
-                        <aside
-                            className="consonant-TopFilter-bg" />
-                        }
-                        <Footer
-                            mobileFooterBtnText={mobileFooterBtnText}
-                            handleToggle={handleToggle}
-                            clearFilterText={clearFilterText}
-                            handleClear={handleClear}
-                            numItemsSelected={numItemsSelected}
-                            mobileGroupTotalResultsText={mobileGroupTotalResultsText} />
+                        className="consonant-TopFilter-inner">
+                        <h3
+                            className="consonant-TopFilter-name"
+                            daa-ll={filterName}>
+                            <button
+                                type="button"
+                                className="consonant-TopFilter-link"
+                                data-testid="consonant-TopFilter-link"
+                                onClick={handleToggle}
+                                tabIndex="0">
+                                {name}
+                                <span
+                                    className="consonant-TopFilter-selectedItemsQty">
+                                    {selectedItemQtyText}
+                                </span>
+                            </button>
+                        </h3>
+                        <div
+                            className="consonant-TopFilter-selectedItems">
+                            <div
+                                className="consonant-TopFilter-absoluteWrapper">
+                                <Items
+                                    clipWrapperItemsCount={clipWrapperItemsCount}
+                                    handleCheck={handleCheck}
+                                    stopPropagation={stopPropagation}
+                                    items={items} />
+                                {shouldClipFilters &&
+                                <aside
+                                    className="consonant-TopFilter-bg" />
+                                }
+                                <Footer
+                                    mobileFooterBtnText={mobileFooterBtnText}
+                                    handleToggle={handleToggle}
+                                    clearFilterText={clearFilterText}
+                                    handleClear={handleClear}
+                                    numItemsSelected={numItemsSelected}
+                                    mobileGroupTotalResultsText={mobileGroupTotalResultsText} />
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            }
+        </Fragment>
     );
 };
 

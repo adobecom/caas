@@ -102,6 +102,17 @@
         body.buttons-dark .consonant-u-themeLight .consonant-CardFooter .consonant-BtnInfobit span {
             color: #fff !important;
         }
+
+        /* animation */
+        .consonant-CardsGrid .consonant-Card.one-half:hover {
+            transform: scale(1.02);
+            transition: all 1s;
+        }
+        .consonant-CardsGrid .consonant-Card.one-half [class*=-header]:after {
+            display: none;
+        }
+        /* animation end  */
+
     </style>
 </head>
 
@@ -214,11 +225,13 @@
                 categories: [
                     {
                         group: "All Topics",
+                        label: "All Topics",
                         id: "",
                         items: []
                     },
                     {
                         group: "Photography",
+                        label: "Photography",
                         id: "caas:product-category/photography",
                         icon: './images/photography.svg',
                         items: [
@@ -230,6 +243,7 @@
                     },
                     {
                         group: "Graphic Design",
+                        label: "Graphic Design",                        
                         id: "caas:product-category/graphic-design",
                         icon: './images/graphic-design.svg',
                         items: [
@@ -240,6 +254,7 @@
                     },
                     {
                         group: "Video",
+                        label: "Video",
                         id: "caas:product-category/video",
                         icon: './images/video.svg',
                         items: [
@@ -251,6 +266,7 @@
                     },
                     {
                         group: "GenAI",
+                        label: "GenAI",
                         id: "caas:product-category/gen-ai",
                         icon: './images/gen-ai.svg',
                         items: [
@@ -261,6 +277,7 @@
                     },
                     {
                         group: "Illustration",
+                        label: "Illustration",
                         id: "caas:product-category/illustration",
                         icon: './images/illustration.svg',
                         items: [
@@ -272,6 +289,7 @@
                     },
                     {
                         group: "Social",
+                        label: "Social",
                         id: "caas:product-category/social",
                         icon: './images/social-media.svg',
                         items: [
@@ -281,6 +299,7 @@
                     },
                     {
                         group: "3D & AR",
+                        label: "3D & AR",
                         id: "caas:product-category/3d-&-ar",
                         icon: './images/3d-ar.svg',
                         items: [

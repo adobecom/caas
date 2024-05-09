@@ -95,7 +95,7 @@ const Items = (props) => {
                                     tabIndex="0" />
                                 <span className="consonant-TopFilter-itemCheckmark" />
                                 <span className="consonant-TopFilter-itemName">
-                                    {item.label}
+                                    {item.group || item.label}
                                 </span>
                             </label>
                         </li>

@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.29 (5/7/2024, 09:40:57)
+ * Chimera UI Libraries - Build 0.11.29 (5/9/2024, 15:21:41)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -7659,7 +7659,7 @@ var Container = function Container(props) {
                                         'data-selected': selected,
                                         'data-group': category.group.replaceAll(' ', '').toLowerCase() },
                                     _react2.default.createElement('img', { className: 'filters-category--icon', src: category.icon, alt: category.icon && 'Category icon' }),
-                                    category.group
+                                    category.label
                                 );
                             })
                         )
@@ -53414,6 +53414,11 @@ var Group = function Group(props) {
     var mobileGroupApplyBtnText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.applyBtnText');
     var mobileGroupDoneBtnText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.doneBtnText');
 
+    var isCategoriesPage = getConfig('collection', 'layout.container') === 'categories';
+    // const isProductsFilter = id === 'caas:zzz_events-tier-3-testing/product-family';
+    var isProductsFilter = id === 'caas:product-category';
+    var showProductsFilter = !isCategoriesPage || isCategoriesPage && !isProductsFilter;
+
     /**
      **** Hooks ****
      */
@@ -53537,59 +53542,63 @@ var Group = function Group(props) {
     var filterName = name + ' ' + (isOpened ? 'Close' : 'Open');
 
     return _react2.default.createElement(
-        'div',
-        {
-            'data-testid': 'consonant-TopFilter',
-            'daa-lh': name,
-            className: containerClassname },
-        _react2.default.createElement(
+        _react.Fragment,
+        null,
+        showProductsFilter && _react2.default.createElement(
             'div',
             {
-                className: 'consonant-TopFilter-inner' },
-            _react2.default.createElement(
-                'h3',
-                {
-                    className: 'consonant-TopFilter-name',
-                    'daa-ll': filterName },
-                _react2.default.createElement(
-                    'button',
-                    {
-                        type: 'button',
-                        className: 'consonant-TopFilter-link',
-                        'data-testid': 'consonant-TopFilter-link',
-                        onClick: handleToggle,
-                        tabIndex: '0' },
-                    name,
-                    _react2.default.createElement(
-                        'span',
-                        {
-                            className: 'consonant-TopFilter-selectedItemsQty' },
-                        selectedItemQtyText
-                    )
-                )
-            ),
+                'data-testid': 'consonant-TopFilter',
+                'daa-lh': name,
+                className: containerClassname },
             _react2.default.createElement(
                 'div',
                 {
-                    className: 'consonant-TopFilter-selectedItems' },
+                    className: 'consonant-TopFilter-inner' },
+                _react2.default.createElement(
+                    'h3',
+                    {
+                        className: 'consonant-TopFilter-name',
+                        'daa-ll': filterName },
+                    _react2.default.createElement(
+                        'button',
+                        {
+                            type: 'button',
+                            className: 'consonant-TopFilter-link',
+                            'data-testid': 'consonant-TopFilter-link',
+                            onClick: handleToggle,
+                            tabIndex: '0' },
+                        name,
+                        _react2.default.createElement(
+                            'span',
+                            {
+                                className: 'consonant-TopFilter-selectedItemsQty' },
+                            selectedItemQtyText
+                        )
+                    )
+                ),
                 _react2.default.createElement(
                     'div',
                     {
-                        className: 'consonant-TopFilter-absoluteWrapper' },
-                    _react2.default.createElement(_Items.Items, {
-                        clipWrapperItemsCount: clipWrapperItemsCount,
-                        handleCheck: handleCheck,
-                        stopPropagation: _general.stopPropagation,
-                        items: items }),
-                    shouldClipFilters && _react2.default.createElement('aside', {
-                        className: 'consonant-TopFilter-bg' }),
-                    _react2.default.createElement(_Footer.Footer, {
-                        mobileFooterBtnText: mobileFooterBtnText,
-                        handleToggle: handleToggle,
-                        clearFilterText: clearFilterText,
-                        handleClear: handleClear,
-                        numItemsSelected: numItemsSelected,
-                        mobileGroupTotalResultsText: mobileGroupTotalResultsText })
+                        className: 'consonant-TopFilter-selectedItems' },
+                    _react2.default.createElement(
+                        'div',
+                        {
+                            className: 'consonant-TopFilter-absoluteWrapper' },
+                        _react2.default.createElement(_Items.Items, {
+                            clipWrapperItemsCount: clipWrapperItemsCount,
+                            handleCheck: handleCheck,
+                            stopPropagation: _general.stopPropagation,
+                            items: items }),
+                        shouldClipFilters && _react2.default.createElement('aside', {
+                            className: 'consonant-TopFilter-bg' }),
+                        _react2.default.createElement(_Footer.Footer, {
+                            mobileFooterBtnText: mobileFooterBtnText,
+                            handleToggle: handleToggle,
+                            clearFilterText: clearFilterText,
+                            handleClear: handleClear,
+                            numItemsSelected: numItemsSelected,
+                            mobileGroupTotalResultsText: mobileGroupTotalResultsText })
+                    )
                 )
             )
         )
@@ -53723,7 +53732,7 @@ var Items = function Items(props) {
                         _react2.default.createElement(
                             'span',
                             { className: 'consonant-TopFilter-itemName' },
-                            item.label
+                            item.group || item.label
                         )
                     )
                 )

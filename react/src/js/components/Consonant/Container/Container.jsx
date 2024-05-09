@@ -1299,7 +1299,7 @@ const Container = (props) => {
                                                 data-selected={selected}
                                                 data-group={category.group.replaceAll(' ', '').toLowerCase()}>
                                                 <img className="filters-category--icon" src={category.icon} alt={category.icon && 'Category icon'} />
-                                                {category.group}
+                                                {category.label}
                                             </button>
                                         );
                                     })
