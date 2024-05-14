@@ -114,10 +114,12 @@ const Container = (props) => {
     const sortOptions = getConfig('sort', 'options');
     const defaultSort = getConfig('sort', 'defaultSort');
     const defaultSortOption = getDefaultSortOption(config, defaultSort);
-    // eslint-disable-next-line no-use-before-define
-    const authoredCategories = getAuthoredCategories(getConfig('filterPanel', 'categories'));
-    console.log('authoredCategories', authoredCategories);
     // const authoredCategories = getConfig('filterPanel', 'categories');
+    // eslint-disable-next-line no-use-before-define
+    const categories = getConfig('filterPanel', 'categories');
+    // eslint-disable-next-line no-use-before-define
+    const authoredCategories = getAuthoredCategories(authoredFilters, categories);
+    console.log('authoredCategories', authoredCategories);
     let featuredCards = getConfig('featuredCards', '')
         .toString()
         .replace(/\[|\]/g, '')
@@ -1207,30 +1209,30 @@ const Container = (props) => {
     });
 
     /** Temporary function to get authored categories */
-    function getAuthoredCategories(allCategories) {
-        const allowedCategories = [
-            'caas:product-categories/photo',
-            'caas:product-categories/illustration',
-            'caas:product-categories/video',
-            'caas:product-categories/grphic-design',
-            'caas:product-categories/social-media',
-            'caas:product-categories/3d-and-ar',
-            'caas:product-categories/genai',
-        ];
-        const result = allCategories.filter(category => allowedCategories.includes(category.id));
+    function getAuthoredCategories(filterList, categoryList) {
+        const categoryIds = filterList
+            .filter(filter => filter.id.includes('caas:product-categories'))
+            .map(item => item.id);
+        // console.log('*** categoryIds()', categoryIds);
+
+        // Parse through the filters and get the categories
+        const selectedCategories = categoryList
+            .filter(category => categoryIds.includes(category.id));
+        // console.log('*** categories()', categories);
+
         return [{
-            group: 'All products',
-            id: 'caas:products',
-            items: '',
+            group: 'All Products',
             label: 'All Topics',
-        }, ...result];
+            id: 'caas:products',
+            items: [],
+        }, ...selectedCategories];
     }
 
     function getAllCategoryProducts() {
         let allCategories = [];
 
         for (const category of authoredCategories) {
-            console.log('*** CATEGORY ID', category.id);
+            console.log('*** getAllCategoryProducts(): category.id', category.id);
             for (const item of category.items) {
                 item.fromCategory = true;
             }

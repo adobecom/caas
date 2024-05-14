@@ -81,9 +81,12 @@ const Group = (props) => {
     const mobileGroupDoneBtnText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.doneBtnText');
 
     const isCategoriesPage = getConfig('collection', 'layout.container') === 'categories';
-    // const isProductsFilter = id === 'caas:zzz_events-tier-3-testing/product-family';
     const isProductsFilter = id === 'caas:product-category';
-    const showProductsFilter = !isCategoriesPage || (isCategoriesPage && !isProductsFilter);
+    // const showProductsFilter = !isCategoriesPage || (isCategoriesPage && !isProductsFilter);
+    const isCategory = id.includes('caas:product-categories');
+    const showProductsFilter = !isCategoriesPage
+        || (isCategoriesPage && !isCategory && !isProductsFilter);
+
 
     /**
      **** Hooks ****
@@ -207,7 +210,7 @@ const Group = (props) => {
                 <div
                     data-testid="consonant-TopFilter"
                     daa-lh={name}
-                    className={containerClassname}>
+                    className={`${containerClassname} SHOW-PRODUCT-FILTER`}>
                     <div
                         className="consonant-TopFilter-inner">
                         <h3

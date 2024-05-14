@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.29 (5/13/2024, 18:07:03)
+ * Chimera UI Libraries - Build 0.11.29 (5/14/2024, 10:40:56)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6179,10 +6179,12 @@ var Container = function Container(props) {
     var sortOptions = getConfig('sort', 'options');
     var defaultSort = getConfig('sort', 'defaultSort');
     var defaultSortOption = (0, _consonant.getDefaultSortOption)(config, defaultSort);
-    // eslint-disable-next-line no-use-before-define
-    var authoredCategories = getAuthoredCategories(getConfig('filterPanel', 'categories'));
-    console.log('authoredCategories', authoredCategories);
     // const authoredCategories = getConfig('filterPanel', 'categories');
+    // eslint-disable-next-line no-use-before-define
+    var categories = getConfig('filterPanel', 'categories');
+    // eslint-disable-next-line no-use-before-define
+    var authoredCategories = getAuthoredCategories(authoredFilters, categories);
+    console.log('authoredCategories', authoredCategories);
     var featuredCards = getConfig('featuredCards', '').toString().replace(/\[|\]/g, '').replace(/`/g, '').split(',');
     // eslint-disable-next-line no-use-before-define,max-len
     featuredCards = featuredCards.concat(featuredCards.map(function (id) {
@@ -7491,17 +7493,26 @@ var Container = function Container(props) {
     });
 
     /** Temporary function to get authored categories */
-    function getAuthoredCategories(allCategories) {
-        var allowedCategories = ['caas:product-categories/photo', 'caas:product-categories/illustration', 'caas:product-categories/video', 'caas:product-categories/grphic-design', 'caas:product-categories/social-media', 'caas:product-categories/3d-and-ar', 'caas:product-categories/genai'];
-        var result = allCategories.filter(function (category) {
-            return allowedCategories.includes(category.id);
+    function getAuthoredCategories(filterList, categoryList) {
+        var categoryIds = filterList.filter(function (filter) {
+            return filter.id.includes('caas:product-categories');
+        }).map(function (item) {
+            return item.id;
         });
+        // console.log('*** categoryIds()', categoryIds);
+
+        // Parse through the filters and get the categories
+        var selectedCategories = categoryList.filter(function (category) {
+            return categoryIds.includes(category.id);
+        });
+        // console.log('*** categories()', categories);
+
         return [{
-            group: 'All products',
+            group: 'All Products',
+            label: 'All Topics',
             id: 'caas:products',
-            items: '',
-            label: 'All Topics'
-        }].concat(_toConsumableArray(result));
+            items: []
+        }].concat(_toConsumableArray(selectedCategories));
     }
 
     function getAllCategoryProducts() {
@@ -7515,7 +7526,7 @@ var Container = function Container(props) {
             for (var _iterator4 = authoredCategories[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
                 var category = _step4.value;
 
-                console.log('*** CATEGORY ID', category.id);
+                console.log('*** getAllCategoryProducts(): category.id', category.id);
                 var _iteratorNormalCompletion5 = true;
                 var _didIteratorError5 = false;
                 var _iteratorError5 = undefined;
@@ -53086,7 +53097,7 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
      * Whether we should hide all filters after quantity defined in MAX_TRUNCATED_FILTERS constant
      * @type {Boolean}
      */
-    var shouldHideSomeFilters = filters.length > _constants.MAX_TRUNCATED_FILTERS;
+    var shouldHideSomeFilters = layoutContainer !== 'categories' && filters.length > _constants.MAX_TRUNCATED_FILTERS;
 
     /**
      * Whether the sort dropdown should be displayed
@@ -53435,9 +53446,10 @@ var Group = function Group(props) {
     var mobileGroupDoneBtnText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.doneBtnText');
 
     var isCategoriesPage = getConfig('collection', 'layout.container') === 'categories';
-    // const isProductsFilter = id === 'caas:zzz_events-tier-3-testing/product-family';
     var isProductsFilter = id === 'caas:product-category';
-    var showProductsFilter = !isCategoriesPage || isCategoriesPage && !isProductsFilter;
+    // const showProductsFilter = !isCategoriesPage || (isCategoriesPage && !isProductsFilter);
+    var isCategory = id.includes('caas:product-categories');
+    var showProductsFilter = !isCategoriesPage || isCategoriesPage && !isCategory && !isProductsFilter;
 
     /**
      **** Hooks ****
@@ -53569,7 +53581,7 @@ var Group = function Group(props) {
             {
                 'data-testid': 'consonant-TopFilter',
                 'daa-lh': name,
-                className: containerClassname },
+                className: containerClassname + ' SHOW-PRODUCT-FILTER' },
             _react2.default.createElement(
                 'div',
                 {
