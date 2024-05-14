@@ -65,6 +65,7 @@ const Items = (props) => {
             data-testid="consonant-TopFilter-items"
             className={clipFilterItemsClass}>
             {items.map((item) => {
+                if (!item.id) return null;
                 const name = item.id.split('/')[1];
                 let title;
                 if (!set.has(name)) {

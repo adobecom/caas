@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.29 (5/9/2024, 15:21:41)
+ * Chimera UI Libraries - Build 0.11.29 (5/13/2024, 18:07:03)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6179,7 +6179,10 @@ var Container = function Container(props) {
     var sortOptions = getConfig('sort', 'options');
     var defaultSort = getConfig('sort', 'defaultSort');
     var defaultSortOption = (0, _consonant.getDefaultSortOption)(config, defaultSort);
-    var authoredCategories = getConfig('filterPanel', 'categories');
+    // eslint-disable-next-line no-use-before-define
+    var authoredCategories = getAuthoredCategories(getConfig('filterPanel', 'categories'));
+    console.log('authoredCategories', authoredCategories);
+    // const authoredCategories = getConfig('filterPanel', 'categories');
     var featuredCards = getConfig('featuredCards', '').toString().replace(/\[|\]/g, '').replace(/`/g, '').split(',');
     // eslint-disable-next-line no-use-before-define,max-len
     featuredCards = featuredCards.concat(featuredCards.map(function (id) {
@@ -7487,8 +7490,23 @@ var Container = function Container(props) {
         'consonant-u-themeDarkest': authoredMode === _constants.THEME_TYPE.DARKEST
     });
 
+    /** Temporary function to get authored categories */
+    function getAuthoredCategories(allCategories) {
+        var allowedCategories = ['caas:product-categories/photo', 'caas:product-categories/illustration', 'caas:product-categories/video', 'caas:product-categories/grphic-design', 'caas:product-categories/social-media', 'caas:product-categories/3d-and-ar', 'caas:product-categories/genai'];
+        var result = allCategories.filter(function (category) {
+            return allowedCategories.includes(category.id);
+        });
+        return [{
+            group: 'All products',
+            id: 'caas:products',
+            items: '',
+            label: 'All Topics'
+        }].concat(_toConsumableArray(result));
+    }
+
     function getAllCategoryProducts() {
         var allCategories = [];
+
         var _iteratorNormalCompletion4 = true;
         var _didIteratorError4 = false;
         var _iteratorError4 = undefined;
@@ -7496,6 +7514,8 @@ var Container = function Container(props) {
         try {
             for (var _iterator4 = authoredCategories[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
                 var category = _step4.value;
+
+                console.log('*** CATEGORY ID', category.id);
                 var _iteratorNormalCompletion5 = true;
                 var _didIteratorError5 = false;
                 var _iteratorError5 = undefined;
@@ -53693,6 +53713,7 @@ var Items = function Items(props) {
             'data-testid': 'consonant-TopFilter-items',
             className: clipFilterItemsClass },
         items.map(function (item) {
+            if (!item.id) return null;
             var name = item.id.split('/')[1];
             var title = void 0;
             if (!set.has(name)) {
