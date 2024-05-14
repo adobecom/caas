@@ -165,6 +165,7 @@ const FiltersPanelTop = (props) => {
 
     /**
      * Whether we should hide all filters after quantity defined in MAX_TRUNCATED_FILTERS constant
+     * Or if we are in a categories template page
      * @type {Boolean}
      */
     const shouldHideSomeFilters = layoutContainer !== 'categories'
