@@ -71,6 +71,7 @@ const Group = (props) => {
     } = props;
 
     const getConfig = useConfig();
+    console.log('>>>> Group', name, id, items, results);
 
     /**
      **** Authored Configs ****
@@ -82,8 +83,12 @@ const Group = (props) => {
 
     const isCategoriesPage = getConfig('collection', 'layout.container') === 'categories';
     // const isProductsFilter = id === 'caas:zzz_events-tier-3-testing/product-family';
-    const isProductsFilter = id === 'caas:product-category';
-    const showProductsFilter = !isCategoriesPage || (isCategoriesPage && !isProductsFilter);
+    // const isAllProductsFilter = id === 'caas:products';
+    const isProductsFilter = id === 'caas:products';
+    const showProductsFilter = !isCategoriesPage
+        || (isCategoriesPage && isProductsFilter)
+        || !id.startsWith('caas:product-categories')
+        || id.includes(name);
 
     /**
      **** Hooks ****
@@ -195,6 +200,10 @@ const Group = (props) => {
         'is-selected': atleastOneFilterSelected && filterGroupNotOpened,
     });
 
+    const filterLabel = (isCategoriesPage && id.includes(name))
+        ? `All ${name}`
+        : name;
+
     /**
      * Impression Tracking
      */
@@ -207,7 +216,7 @@ const Group = (props) => {
                 <div
                     data-testid="consonant-TopFilter"
                     daa-lh={name}
-                    className={containerClassname}>
+                    className={`${containerClassname} FILTER-ID-${id}`}>
                     <div
                         className="consonant-TopFilter-inner">
                         <h3
@@ -219,7 +228,7 @@ const Group = (props) => {
                                 data-testid="consonant-TopFilter-link"
                                 onClick={handleToggle}
                                 tabIndex="0">
-                                {name}
+                                {filterLabel}
                                 <span
                                     className="consonant-TopFilter-selectedItemsQty">
                                     {selectedItemQtyText}

@@ -1213,16 +1213,17 @@ const Container = (props) => {
     });
 
     /* ************************ VERSION 2.0 ************************ */
+    // Generates a list of all categories for the top pills
     function getAuthoredCategories(filterList, categoryList) {
         const categoryIds = filterList
             .filter(filter => filter.id.includes('caas:product-categories'))
             .map(item => item.id);
-        console.log('*** categoryIds()', categoryIds);
+        console.log('*** getAuthoredCategories():categoryIds()', categoryIds);
 
         // Parse through the filters and get the categories
         const selectedCategories = categoryList
             .filter(category => categoryIds.includes(category.id));
-        console.log('*** categories()', categories);
+        console.log('*** getAuthoredCategories():categories()', categories);
 
         return [{
             group: 'All Topics',
@@ -1233,9 +1234,11 @@ const Container = (props) => {
     }
     /* ********************** END VERSION 2.0 ********************** */
 
+    // Generates a list of all products from all categories for the 'All products' menu
     function getAllCategoryProducts() {
         let allCategories = [];
         for (const category of authoredCategories) {
+            console.log('*** getAllCategoryProducts(): category.id', category.id);
             for (const item of category.items) {
                 item.fromCategory = true;
             }
@@ -1249,6 +1252,7 @@ const Container = (props) => {
     }
 
     function categoryHandler(selectedCategories, groupId) {
+        console.log('*** categoryHandler()', selectedCategories, groupId);
         const temp = [];
         for (const category of selectedCategories) {
             temp.push(category.id);
@@ -1265,6 +1269,7 @@ const Container = (props) => {
             return prevFilters;
         });
         setSelectedCategory(groupId);
+        console.log('*** categoryHandler():state.selectedCategory', groupId);
     }
 
 

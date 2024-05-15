@@ -167,7 +167,12 @@ const FiltersPanelTop = (props) => {
      * Whether we should hide all filters after quantity defined in MAX_TRUNCATED_FILTERS constant
      * @type {Boolean}
      */
-    const shouldHideSomeFilters = filters.length > MAX_TRUNCATED_FILTERS;
+    // const shouldHideSomeFilters = filters.length > MAX_TRUNCATED_FILTERS; // *** VERSION 1 ***
+
+    /* ************************ VERSION 2.0 ************************ */
+    const shouldHideSomeFilters = layoutContainer !== 'categories'
+        && filters.length > MAX_TRUNCATED_FILTERS; // *** VERSION 2 ***
+    /* ********************** END VERSION 2.0 ********************** */
 
     /**
      * Whether the sort dropdown should be displayed
