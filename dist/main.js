@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.29 (5/9/2024, 15:21:41)
+ * Chimera UI Libraries - Build 0.11.29 (5/15/2024, 07:47:09)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6179,7 +6179,16 @@ var Container = function Container(props) {
     var sortOptions = getConfig('sort', 'options');
     var defaultSort = getConfig('sort', 'defaultSort');
     var defaultSortOption = (0, _consonant.getDefaultSortOption)(config, defaultSort);
-    var authoredCategories = getConfig('filterPanel', 'categories');
+    // const authoredCategories = getConfig('filterPanel', 'categories'); // *** VERSION 1
+
+    // *** VERSION 2
+    // eslint-disable-next-line no-use-before-define
+    var categories = getConfig('filterPanel', 'categories');
+    // eslint-disable-next-line no-use-before-define
+    var authoredCategories = getAuthoredCategories(authoredFilters, categories);
+    console.log('authoredCategories', authoredCategories);
+    // *** END VERSION 2
+
     var featuredCards = getConfig('featuredCards', '').toString().replace(/\[|\]/g, '').replace(/`/g, '').split(',');
     // eslint-disable-next-line no-use-before-define,max-len
     featuredCards = featuredCards.concat(featuredCards.map(function (id) {
@@ -7486,6 +7495,30 @@ var Container = function Container(props) {
         'consonant-u-themeDark': authoredMode === _constants.THEME_TYPE.DARK,
         'consonant-u-themeDarkest': authoredMode === _constants.THEME_TYPE.DARKEST
     });
+
+    /* ************************ VERSION 2.0 ************************ */
+    function getAuthoredCategories(filterList, categoryList) {
+        var categoryIds = filterList.filter(function (filter) {
+            return filter.id.includes('caas:product-categories');
+        }).map(function (item) {
+            return item.id;
+        });
+        console.log('*** categoryIds()', categoryIds);
+
+        // Parse through the filters and get the categories
+        var selectedCategories = categoryList.filter(function (category) {
+            return categoryIds.includes(category.id);
+        });
+        console.log('*** categories()', categories);
+
+        return [{
+            group: 'All Topics',
+            label: 'All Topics',
+            id: '',
+            items: []
+        }].concat(_toConsumableArray(selectedCategories));
+    }
+    /* ********************** END VERSION 2.0 ********************** */
 
     function getAllCategoryProducts() {
         var allCategories = [];

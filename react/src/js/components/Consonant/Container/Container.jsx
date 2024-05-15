@@ -114,7 +114,16 @@ const Container = (props) => {
     const sortOptions = getConfig('sort', 'options');
     const defaultSort = getConfig('sort', 'defaultSort');
     const defaultSortOption = getDefaultSortOption(config, defaultSort);
-    const authoredCategories = getConfig('filterPanel', 'categories');
+    // const authoredCategories = getConfig('filterPanel', 'categories'); // *** VERSION 1
+
+    // *** VERSION 2
+    // eslint-disable-next-line no-use-before-define
+    const categories = getConfig('filterPanel', 'categories');
+    // eslint-disable-next-line no-use-before-define
+    const authoredCategories = getAuthoredCategories(authoredFilters, categories);
+    console.log('authoredCategories', authoredCategories);
+    // *** END VERSION 2
+
     let featuredCards = getConfig('featuredCards', '')
         .toString()
         .replace(/\[|\]/g, '')
@@ -1202,6 +1211,27 @@ const Container = (props) => {
         'consonant-u-themeDark': authoredMode === THEME_TYPE.DARK,
         'consonant-u-themeDarkest': authoredMode === THEME_TYPE.DARKEST,
     });
+
+    /* ************************ VERSION 2.0 ************************ */
+    function getAuthoredCategories(filterList, categoryList) {
+        const categoryIds = filterList
+            .filter(filter => filter.id.includes('caas:product-categories'))
+            .map(item => item.id);
+        console.log('*** categoryIds()', categoryIds);
+
+        // Parse through the filters and get the categories
+        const selectedCategories = categoryList
+            .filter(category => categoryIds.includes(category.id));
+        console.log('*** categories()', categories);
+
+        return [{
+            group: 'All Topics',
+            label: 'All Topics',
+            id: '',
+            items: [],
+        }, ...selectedCategories];
+    }
+    /* ********************** END VERSION 2.0 ********************** */
 
     function getAllCategoryProducts() {
         let allCategories = [];
