@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.29 (5/15/2024, 10:44:44)
+ * Chimera UI Libraries - Build 0.11.29 (5/15/2024, 12:03:55)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6186,7 +6186,7 @@ var Container = function Container(props) {
     var categories = getConfig('filterPanel', 'categories');
     // eslint-disable-next-line no-use-before-define
     var authoredCategories = getAuthoredCategories(authoredFilters, categories);
-    console.log('authoredCategories', authoredCategories);
+    // console.log('*** authoredCategories', authoredCategories);
     // *** END VERSION 2
 
     var featuredCards = getConfig('featuredCards', '').toString().replace(/\[|\]/g, '').replace(/`/g, '').split(',');
@@ -7504,13 +7504,13 @@ var Container = function Container(props) {
         }).map(function (item) {
             return item.id;
         });
-        console.log('*** getAuthoredCategories():categoryIds()', categoryIds);
+        // console.log('*** getAuthoredCategories():categoryIds()', categoryIds);
 
         // Parse through the filters and get the categories
         var selectedCategories = categoryList.filter(function (category) {
             return categoryIds.includes(category.id);
         });
-        console.log('*** getAuthoredCategories():categories()', categories);
+        // console.log('*** getAuthoredCategories():categories()', categories);
 
         return [{
             group: 'All Topics',
@@ -7532,7 +7532,7 @@ var Container = function Container(props) {
             for (var _iterator4 = authoredCategories[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
                 var category = _step4.value;
 
-                console.log('*** getAllCategoryProducts(): category.id', category.id);
+                // console.log('*** getAllCategoryProducts(): category.id', category.id);
                 var _iteratorNormalCompletion5 = true;
                 var _didIteratorError5 = false;
                 var _iteratorError5 = undefined;
@@ -7583,7 +7583,7 @@ var Container = function Container(props) {
     }
 
     function categoryHandler(selectedCategories, groupId) {
-        console.log('*** categoryHandler()', selectedCategories, groupId);
+        // console.log('*** categoryHandler()', selectedCategories, groupId);
         var temp = [];
         var _iteratorNormalCompletion6 = true;
         var _didIteratorError6 = false;
@@ -7624,7 +7624,7 @@ var Container = function Container(props) {
             return prevFilters;
         });
         setSelectedCategory(groupId);
-        console.log('*** categoryHandler():state.selectedCategory', groupId);
+        // console.log('*** categoryHandler():state.selectedCategory', groupId);
     }
 
     var collectionStr = collectionIdentifier ? collectionIdentifier + ' | ' : '';
@@ -47565,7 +47565,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var BUTTON_STYLE = {
     PRIMARY: 'primary',
     SECONDARY: 'secondary',
-    CTA: 'call-to-action'
+    CTA: 'call-to-action',
+    DARK: 'dark'
 };
 
 var buttonType = {
@@ -47624,15 +47625,22 @@ var Button = function Button(_ref) {
     var ctaAction = '';
 
     /**
+     * Whether we should render a dark button
+     */
+    var isDarkButton = cardButtonStyle === BUTTON_STYLE.DARK;
+
+    /**
      * Whether we should render cta button or not
      * cardButtonStyle has higher priority than style
      * @type {Boolean}
      */
-    var isCtaButton = style === BUTTON_STYLE.CTA && cardButtonStyle !== BUTTON_STYLE.PRIMARY || cardButtonStyle === BUTTON_STYLE.CTA && style !== BUTTON_STYLE.SECONDARY;
+    var isCtaButton = !isDarkButton || style === BUTTON_STYLE.CTA && cardButtonStyle !== BUTTON_STYLE.PRIMARY || cardButtonStyle === BUTTON_STYLE.CTA && style !== BUTTON_STYLE.SECONDARY;
 
     if (isCta) {
         ctaAction = getConfig('collection', 'ctaAction');
     }
+
+    console.log('isDarkButton', isDarkButton);
 
     /**
      * Class name for button:
@@ -47641,7 +47649,8 @@ var Button = function Button(_ref) {
      */
     var buttonClass = (0, _classnames2.default)({
         'consonant-BtnInfobit': true,
-        'consonant-BtnInfobit--cta': isCtaButton
+        'consonant-BtnInfobit--cta': isCtaButton,
+        'consonant-BtnInfobit--dark': isDarkButton
     });
 
     /**
@@ -53449,7 +53458,7 @@ var Group = function Group(props) {
 
 
     var getConfig = (0, _hooks.useConfig)();
-    console.log('>>>> Group', name, id, items, results);
+    // console.log('>>>> Group', name, id, items, results);
 
     /**
      **** Authored Configs ****

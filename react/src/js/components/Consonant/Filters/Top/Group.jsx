@@ -71,7 +71,7 @@ const Group = (props) => {
     } = props;
 
     const getConfig = useConfig();
-    console.log('>>>> Group', name, id, items, results);
+    // console.log('>>>> Group', name, id, items, results);
 
     /**
      **** Authored Configs ****

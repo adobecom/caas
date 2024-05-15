@@ -121,7 +121,7 @@ const Container = (props) => {
     const categories = getConfig('filterPanel', 'categories');
     // eslint-disable-next-line no-use-before-define
     const authoredCategories = getAuthoredCategories(authoredFilters, categories);
-    console.log('authoredCategories', authoredCategories);
+    // console.log('*** authoredCategories', authoredCategories);
     // *** END VERSION 2
 
     let featuredCards = getConfig('featuredCards', '')
@@ -1218,12 +1218,12 @@ const Container = (props) => {
         const categoryIds = filterList
             .filter(filter => filter.id.includes('caas:product-categories'))
             .map(item => item.id);
-        console.log('*** getAuthoredCategories():categoryIds()', categoryIds);
+        // console.log('*** getAuthoredCategories():categoryIds()', categoryIds);
 
         // Parse through the filters and get the categories
         const selectedCategories = categoryList
             .filter(category => categoryIds.includes(category.id));
-        console.log('*** getAuthoredCategories():categories()', categories);
+        // console.log('*** getAuthoredCategories():categories()', categories);
 
         return [{
             group: 'All Topics',
@@ -1238,7 +1238,7 @@ const Container = (props) => {
     function getAllCategoryProducts() {
         let allCategories = [];
         for (const category of authoredCategories) {
-            console.log('*** getAllCategoryProducts(): category.id', category.id);
+            // console.log('*** getAllCategoryProducts(): category.id', category.id);
             for (const item of category.items) {
                 item.fromCategory = true;
             }
@@ -1252,7 +1252,7 @@ const Container = (props) => {
     }
 
     function categoryHandler(selectedCategories, groupId) {
-        console.log('*** categoryHandler()', selectedCategories, groupId);
+        // console.log('*** categoryHandler()', selectedCategories, groupId);
         const temp = [];
         for (const category of selectedCategories) {
             temp.push(category.id);
@@ -1269,7 +1269,7 @@ const Container = (props) => {
             return prevFilters;
         });
         setSelectedCategory(groupId);
-        console.log('*** categoryHandler():state.selectedCategory', groupId);
+        // console.log('*** categoryHandler():state.selectedCategory', groupId);
     }
 
 

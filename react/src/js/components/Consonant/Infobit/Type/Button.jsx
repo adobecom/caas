@@ -9,6 +9,7 @@ const BUTTON_STYLE = {
     PRIMARY: 'primary',
     SECONDARY: 'secondary',
     CTA: 'call-to-action',
+    DARK: 'dark',
 };
 
 const buttonType = {
@@ -67,16 +68,24 @@ const Button = ({
     let ctaAction = '';
 
     /**
+     * Whether we should render a dark button
+     */
+    const isDarkButton = cardButtonStyle === BUTTON_STYLE.DARK;
+
+    /**
      * Whether we should render cta button or not
      * cardButtonStyle has higher priority than style
      * @type {Boolean}
      */
-    const isCtaButton = (style === BUTTON_STYLE.CTA && cardButtonStyle !== BUTTON_STYLE.PRIMARY) ||
-        (cardButtonStyle === BUTTON_STYLE.CTA && style !== BUTTON_STYLE.SECONDARY);
+    const isCtaButton = !isDarkButton
+        || (style === BUTTON_STYLE.CTA && cardButtonStyle !== BUTTON_STYLE.PRIMARY)
+        || (cardButtonStyle === BUTTON_STYLE.CTA && style !== BUTTON_STYLE.SECONDARY);
 
     if (isCta) {
         ctaAction = getConfig('collection', 'ctaAction');
     }
+
+    console.log('isDarkButton', isDarkButton);
 
     /**
      * Class name for button:
@@ -86,6 +95,7 @@ const Button = ({
     const buttonClass = className({
         'consonant-BtnInfobit': true,
         'consonant-BtnInfobit--cta': isCtaButton,
+        'consonant-BtnInfobit--dark': isDarkButton,
     });
 
     /**
