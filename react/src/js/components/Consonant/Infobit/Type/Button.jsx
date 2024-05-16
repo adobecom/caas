@@ -85,8 +85,6 @@ const Button = ({
         ctaAction = getConfig('collection', 'ctaAction');
     }
 
-    console.log('isDarkButton', isDarkButton);
-
     /**
      * Class name for button:
      * Whether we should render cta button or not

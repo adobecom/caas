@@ -165,3 +165,37 @@
 .consonant-BtnInfobit--dark:hover span {
     color: #fff;
 }
+
+/* Card grow effect */
+// .consonant-CardsGrid.card-hover-grow {
+//     .consonant-Card {
+//         transition: transform 0.2s ease-in-out;
+//     }
+
+//     .consonant-Card:hover {
+//         transition: transform 0.2s ease-in-out;
+//         transform: scale(1.03);
+//     }
+
+//     .consonant-Card[class *= -header]:after {
+//         display: none;
+//     }
+// }
+
+/* animation */
+.consonant-CardsGrid.card-hover-grow {
+    .consonant-Card.one-half {
+        transition: all 0.2s ease-in-out;
+    }
+
+    .consonant-Card.one-half:hover {
+        transform: scale(1.03);
+        transition: all 0.2s ease-in-out;
+    }
+
+    .consonant-Card.one-half [class *= -header]:after {
+        display: none !important;
+    }
+}
+
+/* animation end  */

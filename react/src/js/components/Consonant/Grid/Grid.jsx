@@ -86,6 +86,7 @@ const Grid = (props) => {
     const locale = getConfig('language', '');
     const paginationType = getConfig('pagination', 'type');
     const collectionButtonStyle = getConfig('collection', 'collectionButtonStyle');
+    const cardHoverEffect = getConfig('collection', 'cardHoverEffect');
 
     let customCard;
     try {
@@ -112,6 +113,7 @@ const Grid = (props) => {
         'consonant-CardsGrid--with3xGutter': cardsGridGutter === GUTTER_SIZE.GUTTER_3_X,
         'consonant-CardsGrid--with4xGutter': cardsGridGutter === GUTTER_SIZE.GUTTER_4_X,
         'consonant-CardsGrid--doubleWideCards': collectionStyleOverride === CARD_STYLES.DOUBLE_WIDE,
+        'card-hover-grow': cardHoverEffect === 'grow',
     });
 
     const bannerMap = {

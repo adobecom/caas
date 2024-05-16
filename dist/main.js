@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.29 (5/15/2024, 12:03:55)
+ * Chimera UI Libraries - Build 0.11.29 (5/15/2024, 13:43:51)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -8062,6 +8062,7 @@ var Grid = function Grid(props) {
     var locale = getConfig('language', '');
     var paginationType = getConfig('pagination', 'type');
     var collectionButtonStyle = getConfig('collection', 'collectionButtonStyle');
+    var cardHoverEffect = getConfig('collection', 'cardHoverEffect');
 
     var customCard = void 0;
     try {
@@ -8087,7 +8088,8 @@ var Grid = function Grid(props) {
         'consonant-CardsGrid--with2xGutter': cardsGridGutter === _constants.GUTTER_SIZE.GUTTER_2_X,
         'consonant-CardsGrid--with3xGutter': cardsGridGutter === _constants.GUTTER_SIZE.GUTTER_3_X,
         'consonant-CardsGrid--with4xGutter': cardsGridGutter === _constants.GUTTER_SIZE.GUTTER_4_X,
-        'consonant-CardsGrid--doubleWideCards': collectionStyleOverride === _constants.CARD_STYLES.DOUBLE_WIDE
+        'consonant-CardsGrid--doubleWideCards': collectionStyleOverride === _constants.CARD_STYLES.DOUBLE_WIDE,
+        'card-hover-grow': cardHoverEffect === 'grow'
     });
 
     var bannerMap = {
@@ -47639,8 +47641,6 @@ var Button = function Button(_ref) {
     if (isCta) {
         ctaAction = getConfig('collection', 'ctaAction');
     }
-
-    console.log('isDarkButton', isDarkButton);
 
     /**
      * Class name for button:
