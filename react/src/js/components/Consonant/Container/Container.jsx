@@ -1272,6 +1272,19 @@ const Container = (props) => {
         // console.log('*** categoryHandler():state.selectedCategory', groupId);
     }
 
+    /* ************ EXPERIMENTING ************ */
+    function getCategoryIcon(category) {
+        const authoredIcon = authoredFilters
+            .filter(filter => filter.id === category.id)
+            .map(filter => filter.icon)
+            .toString();
+
+        console.log('**** Authored Icon:', authoredIcon);
+        console.log('**** Category Icon:', category.icon);
+        return authoredIcon || category.icon || '';
+    }
+    /* ************ END EXPERIMENTING ************ */
+
 
     const collectionStr = collectionIdentifier ? `${collectionIdentifier} | ` : '';
     const filterStr = selectedFiltersItemsQty ? filterNames : 'No Filters';
@@ -1333,7 +1346,7 @@ const Container = (props) => {
                                                 }}
                                                 data-selected={selected}
                                                 data-group={category.group.replaceAll(' ', '').toLowerCase()}>
-                                                <img className="filters-category--icon" src={category.icon} alt={category.icon && 'Category icon'} />
+                                                <img className="filters-category--icon" src={getCategoryIcon(category)} alt={category.icon && 'Category icon'} />
                                                 {category.label}
                                             </button>
                                         );

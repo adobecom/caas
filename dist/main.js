@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.29 (5/15/2024, 13:43:51)
+ * Chimera UI Libraries - Build 0.11.29 (5/16/2024, 12:03:19)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -7627,6 +7627,20 @@ var Container = function Container(props) {
         // console.log('*** categoryHandler():state.selectedCategory', groupId);
     }
 
+    /* ************ EXPERIMENTING ************ */
+    function getCategoryIcon(category) {
+        var authoredIcon = authoredFilters.filter(function (filter) {
+            return filter.id === category.id;
+        }).map(function (filter) {
+            return filter.icon;
+        }).toString();
+
+        console.log('**** Authored Icon:', authoredIcon);
+        console.log('**** Category Icon:', category.icon);
+        return authoredIcon || category.icon;
+    }
+    /* ************ END EXPERIMENTING ************ */
+
     var collectionStr = collectionIdentifier ? collectionIdentifier + ' | ' : '';
     var filterStr = selectedFiltersItemsQty ? filterNames : 'No Filters';
     var searchQueryStr = searchQuery || 'None';
@@ -7697,7 +7711,7 @@ var Container = function Container(props) {
                                         },
                                         'data-selected': selected,
                                         'data-group': category.group.replaceAll(' ', '').toLowerCase() },
-                                    _react2.default.createElement('img', { className: 'filters-category--icon', src: category.icon, alt: category.icon && 'Category icon' }),
+                                    _react2.default.createElement('img', { className: 'filters-category--icon', src: getCategoryIcon(category), alt: category.icon && 'Category icon' }),
                                     category.label
                                 );
                             })
