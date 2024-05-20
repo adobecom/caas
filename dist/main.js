@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.29 (5/16/2024, 12:03:19)
+ * Chimera UI Libraries - Build 0.11.29 (5/19/2024, 24:30:28)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -7637,7 +7637,7 @@ var Container = function Container(props) {
 
         console.log('**** Authored Icon:', authoredIcon);
         console.log('**** Category Icon:', category.icon);
-        return authoredIcon || category.icon;
+        return authoredIcon || category.icon || '';
     }
     /* ************ END EXPERIMENTING ************ */
 
