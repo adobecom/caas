@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.29 (5/19/2024, 24:30:28)
+ * Chimera UI Libraries - Build 0.11.29 (5/22/2024, 12:42:41)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6179,16 +6179,6 @@ var Container = function Container(props) {
     var sortOptions = getConfig('sort', 'options');
     var defaultSort = getConfig('sort', 'defaultSort');
     var defaultSortOption = (0, _consonant.getDefaultSortOption)(config, defaultSort);
-    // const authoredCategories = getConfig('filterPanel', 'categories'); // *** VERSION 1
-
-    // *** VERSION 2
-    // eslint-disable-next-line no-use-before-define
-    var categories = getConfig('filterPanel', 'categories');
-    // eslint-disable-next-line no-use-before-define
-    var authoredCategories = getAuthoredCategories(authoredFilters, categories);
-    // console.log('*** authoredCategories', authoredCategories);
-    // *** END VERSION 2
-
     var featuredCards = getConfig('featuredCards', '').toString().replace(/\[|\]/g, '').replace(/`/g, '').split(',');
     // eslint-disable-next-line no-use-before-define,max-len
     featuredCards = featuredCards.concat(featuredCards.map(function (id) {
@@ -6221,6 +6211,10 @@ var Container = function Container(props) {
     var cardStyle = getConfig('collection', 'cardStyle');
     var title = getConfig('collection', 'i18n.title');
     var headers = getConfig('headers', '');
+    // eslint-disable-next-line no-use-before-define
+    var categories = getConfig('filterPanel', 'categories');
+    // eslint-disable-next-line no-use-before-define
+    var authoredCategories = getAuthoredCategories(authoredFilters, categories);
 
     /**
      **** Constants ****
@@ -7496,22 +7490,21 @@ var Container = function Container(props) {
         'consonant-u-themeDarkest': authoredMode === _constants.THEME_TYPE.DARKEST
     });
 
-    /* ************************ VERSION 2.0 ************************ */
-    // Generates a list of all categories for the top pills
+    /**
+     * @param {*} filterList
+     * @param {*} categoryList
+     * @returns List of categories for the top pills
+     *          Prepends the "All Topics" pill to the list of categories
+     */
     function getAuthoredCategories(filterList, categoryList) {
         var categoryIds = filterList.filter(function (filter) {
             return filter.id.includes('caas:product-categories');
         }).map(function (item) {
             return item.id;
         });
-        // console.log('*** getAuthoredCategories():categoryIds()', categoryIds);
-
-        // Parse through the filters and get the categories
         var selectedCategories = categoryList.filter(function (category) {
             return categoryIds.includes(category.id);
         });
-        // console.log('*** getAuthoredCategories():categories()', categories);
-
         return [{
             group: 'All Topics',
             label: 'All Topics',
@@ -7519,9 +7512,11 @@ var Container = function Container(props) {
             items: []
         }].concat(_toConsumableArray(selectedCategories));
     }
-    /* ********************** END VERSION 2.0 ********************** */
 
-    // Generates a list of all products from all categories for the 'All products' menu
+    /**
+     * @returns List of all products from all categories for the 'All products' menu
+     *          Prepends the "All products" label to the list of categories
+     */
     function getAllCategoryProducts() {
         var allCategories = [];
         var _iteratorNormalCompletion4 = true;
@@ -7531,8 +7526,6 @@ var Container = function Container(props) {
         try {
             for (var _iterator4 = authoredCategories[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
                 var category = _step4.value;
-
-                // console.log('*** getAllCategoryProducts(): category.id', category.id);
                 var _iteratorNormalCompletion5 = true;
                 var _didIteratorError5 = false;
                 var _iteratorError5 = undefined;
@@ -7582,8 +7575,12 @@ var Container = function Container(props) {
         };
     }
 
+    /**
+     * @param {*} selectedCategories
+     * @param {*} groupId
+     * Sets the categories and filters based on the selected category
+     */
     function categoryHandler(selectedCategories, groupId) {
-        // console.log('*** categoryHandler()', selectedCategories, groupId);
         var temp = [];
         var _iteratorNormalCompletion6 = true;
         var _didIteratorError6 = false;
@@ -7624,22 +7621,22 @@ var Container = function Container(props) {
             return prevFilters;
         });
         setSelectedCategory(groupId);
-        // console.log('*** categoryHandler():state.selectedCategory', groupId);
     }
 
-    /* ************ EXPERIMENTING ************ */
+    /**
+     * @param {*} category
+     * @returns The Authored icon for the category if exists,
+     *          otherwise returns the default icon from the tags or an empty string
+     */
     function getCategoryIcon(category) {
+        console.log('**** getCategoryIcon():', category);
         var authoredIcon = authoredFilters.filter(function (filter) {
             return filter.id === category.id;
         }).map(function (filter) {
             return filter.icon;
         }).toString();
-
-        console.log('**** Authored Icon:', authoredIcon);
-        console.log('**** Category Icon:', category.icon);
         return authoredIcon || category.icon || '';
     }
-    /* ************ END EXPERIMENTING ************ */
 
     var collectionStr = collectionIdentifier ? collectionIdentifier + ' | ' : '';
     var filterStr = selectedFiltersItemsQty ? filterNames : 'No Filters';

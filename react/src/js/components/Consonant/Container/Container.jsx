@@ -114,16 +114,6 @@ const Container = (props) => {
     const sortOptions = getConfig('sort', 'options');
     const defaultSort = getConfig('sort', 'defaultSort');
     const defaultSortOption = getDefaultSortOption(config, defaultSort);
-    // const authoredCategories = getConfig('filterPanel', 'categories'); // *** VERSION 1
-
-    // *** VERSION 2
-    // eslint-disable-next-line no-use-before-define
-    const categories = getConfig('filterPanel', 'categories');
-    // eslint-disable-next-line no-use-before-define
-    const authoredCategories = getAuthoredCategories(authoredFilters, categories);
-    // console.log('*** authoredCategories', authoredCategories);
-    // *** END VERSION 2
-
     let featuredCards = getConfig('featuredCards', '')
         .toString()
         .replace(/\[|\]/g, '')
@@ -164,6 +154,10 @@ const Container = (props) => {
     const cardStyle = getConfig('collection', 'cardStyle');
     const title = getConfig('collection', 'i18n.title');
     const headers = getConfig('headers', '');
+    // eslint-disable-next-line no-use-before-define
+    const categories = getConfig('filterPanel', 'categories');
+    // eslint-disable-next-line no-use-before-define
+    const authoredCategories = getAuthoredCategories(authoredFilters, categories);
 
     /**
      **** Constants ****
@@ -1212,19 +1206,18 @@ const Container = (props) => {
         'consonant-u-themeDarkest': authoredMode === THEME_TYPE.DARKEST,
     });
 
-    /* ************************ VERSION 2.0 ************************ */
-    // Generates a list of all categories for the top pills
+    /**
+     * @param {*} filterList
+     * @param {*} categoryList
+     * @returns List of categories for the top pills
+     *          Prepends the "All Topics" pill to the list of categories
+     */
     function getAuthoredCategories(filterList, categoryList) {
         const categoryIds = filterList
             .filter(filter => filter.id.includes('caas:product-categories'))
             .map(item => item.id);
-        // console.log('*** getAuthoredCategories():categoryIds()', categoryIds);
-
-        // Parse through the filters and get the categories
         const selectedCategories = categoryList
             .filter(category => categoryIds.includes(category.id));
-        // console.log('*** getAuthoredCategories():categories()', categories);
-
         return [{
             group: 'All Topics',
             label: 'All Topics',
@@ -1232,13 +1225,14 @@ const Container = (props) => {
             items: [],
         }, ...selectedCategories];
     }
-    /* ********************** END VERSION 2.0 ********************** */
 
-    // Generates a list of all products from all categories for the 'All products' menu
+    /**
+     * @returns List of all products from all categories for the 'All products' menu
+     *          Prepends the "All products" label to the list of categories
+     */
     function getAllCategoryProducts() {
         let allCategories = [];
         for (const category of authoredCategories) {
-            // console.log('*** getAllCategoryProducts(): category.id', category.id);
             for (const item of category.items) {
                 item.fromCategory = true;
             }
@@ -1251,8 +1245,12 @@ const Container = (props) => {
         };
     }
 
+    /**
+     * @param {*} selectedCategories
+     * @param {*} groupId
+     * Sets the categories and filters based on the selected category
+     */
     function categoryHandler(selectedCategories, groupId) {
-        // console.log('*** categoryHandler()', selectedCategories, groupId);
         const temp = [];
         for (const category of selectedCategories) {
             temp.push(category.id);
@@ -1269,21 +1267,21 @@ const Container = (props) => {
             return prevFilters;
         });
         setSelectedCategory(groupId);
-        // console.log('*** categoryHandler():state.selectedCategory', groupId);
     }
 
-    /* ************ EXPERIMENTING ************ */
+    /**
+     * @param {*} category
+     * @returns The Authored icon for the category if exists,
+     *          otherwise returns the default icon from the tags or an empty string
+     */
     function getCategoryIcon(category) {
+        console.log('**** getCategoryIcon():', category);
         const authoredIcon = authoredFilters
             .filter(filter => filter.id === category.id)
             .map(filter => filter.icon)
             .toString();
-
-        console.log('**** Authored Icon:', authoredIcon);
-        console.log('**** Category Icon:', category.icon);
         return authoredIcon || category.icon || '';
     }
-    /* ************ END EXPERIMENTING ************ */
 
 
     const collectionStr = collectionIdentifier ? `${collectionIdentifier} | ` : '';
