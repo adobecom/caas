@@ -200,8 +200,9 @@ const Group = (props) => {
         'is-selected': atleastOneFilterSelected && filterGroupNotOpened,
     });
 
+    // Update filter label for categories page if needed
     const filterLabel = (isCategoriesPage && id.includes(name))
-        ? `All ${name}`
+        ? `All ${name.replace('photo', 'photography').replace('genai', 'gen-AI').replaceAll('-', ' ')}`
         : name;
 
     /**

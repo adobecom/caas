@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.29 (5/22/2024, 12:42:41)
+ * Chimera UI Libraries - Build 0.11.29 (5/23/2024, 08:53:02)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -53601,7 +53601,8 @@ var Group = function Group(props) {
         'is-selected': atleastOneFilterSelected && filterGroupNotOpened
     });
 
-    var filterLabel = isCategoriesPage && id.includes(name) ? 'All ' + name : name;
+    // Update filter label for categories page if needed
+    var filterLabel = isCategoriesPage && id.includes(name) ? 'All ' + name.replace('photo', 'photography').replace('genai', 'gen-AI').replaceAll('-', ' ') : name;
 
     /**
      * Impression Tracking

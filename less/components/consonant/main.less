@@ -86,7 +86,7 @@
             font-size: 16px;
             height: 48px;
             margin: 0 6px;
-            padding: 12px 24px 13px 20px;
+            padding: 12px 20px 13px 18px;
             display: flex;
             white-space: nowrap;
             align-items: center;
@@ -95,16 +95,25 @@
             img.filters-category--icon {
                 height: 24px;
                 vertical-align: -8px;
-                margin-right: 8px;
+                margin-right: 6px;
             }
-        }
 
-        button:hover {
-            background: #505050;
-        }
+            &:not(:first-child):after {
+                content: '';
+                width: 12px;
+            }
 
-        button[data-selected = 'selected'] {
-            background: #292929;
+            &:hover {
+                background: #505050;
+            }
+
+            &[data-selected = 'selected'] {
+                background: #292929;
+            }
+
+            &[data-group = 'alltopics'] img {
+                display: none;
+            }
         }
     }
 
