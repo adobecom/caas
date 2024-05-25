@@ -1220,7 +1220,7 @@ const Container = (props) => {
             .filter(category => categoryIds.includes(category.id));
         return [{
             group: 'All Topics',
-            label: 'All Topics',
+            title: 'All Topics',
             id: '',
             items: [],
         }, ...selectedCategories];
@@ -1267,6 +1267,7 @@ const Container = (props) => {
             return prevFilters;
         });
         setSelectedCategory(groupId);
+        setCurrentPage(1);
     }
 
     /**
@@ -1275,7 +1276,6 @@ const Container = (props) => {
      *          otherwise returns the default icon from the tags or an empty string
      */
     function getCategoryIcon(category) {
-        console.log('**** getCategoryIcon():', category);
         const authoredIcon = authoredFilters
             .filter(filter => filter.id === category.id)
             .map(filter => filter.icon)
@@ -1345,7 +1345,7 @@ const Container = (props) => {
                                                 data-selected={selected}
                                                 data-group={category.group.replaceAll(' ', '').toLowerCase()}>
                                                 <img className="filters-category--icon" src={getCategoryIcon(category)} alt={category.icon && 'Category icon'} />
-                                                {category.label}
+                                                {category.title}
                                             </button>
                                         );
                                     })

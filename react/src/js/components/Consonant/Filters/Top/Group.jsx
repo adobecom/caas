@@ -202,7 +202,7 @@ const Group = (props) => {
 
     // Update filter label for categories page if needed
     const filterLabel = (isCategoriesPage && id.includes(name))
-        ? `All ${name.replace('photo', 'photography').replace('genai', 'gen-AI').replaceAll('-', ' ')}`
+        ? `All ${name.replace('genai', 'gen-AI').replaceAll('-', ' ')}`
         : name;
 
     /**

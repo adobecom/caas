@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.29 (5/23/2024, 08:53:02)
+ * Chimera UI Libraries - Build 0.11.29 (5/25/2024, 11:23:45)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -7507,7 +7507,7 @@ var Container = function Container(props) {
         });
         return [{
             group: 'All Topics',
-            label: 'All Topics',
+            title: 'All Topics',
             id: '',
             items: []
         }].concat(_toConsumableArray(selectedCategories));
@@ -7621,6 +7621,7 @@ var Container = function Container(props) {
             return prevFilters;
         });
         setSelectedCategory(groupId);
+        setCurrentPage(1);
     }
 
     /**
@@ -7629,7 +7630,6 @@ var Container = function Container(props) {
      *          otherwise returns the default icon from the tags or an empty string
      */
     function getCategoryIcon(category) {
-        console.log('**** getCategoryIcon():', category);
         var authoredIcon = authoredFilters.filter(function (filter) {
             return filter.id === category.id;
         }).map(function (filter) {
@@ -7709,7 +7709,7 @@ var Container = function Container(props) {
                                         'data-selected': selected,
                                         'data-group': category.group.replaceAll(' ', '').toLowerCase() },
                                     _react2.default.createElement('img', { className: 'filters-category--icon', src: getCategoryIcon(category), alt: category.icon && 'Category icon' }),
-                                    category.label
+                                    category.title
                                 );
                             })
                         )
@@ -53602,7 +53602,7 @@ var Group = function Group(props) {
     });
 
     // Update filter label for categories page if needed
-    var filterLabel = isCategoriesPage && id.includes(name) ? 'All ' + name.replace('photo', 'photography').replace('genai', 'gen-AI').replaceAll('-', ' ') : name;
+    var filterLabel = isCategoriesPage && id.includes(name) ? 'All ' + name.replace('genai', 'gen-AI').replaceAll('-', ' ') : name;
 
     /**
      * Impression Tracking
