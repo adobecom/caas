@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.29 (5/25/2024, 11:23:45)
+ * Chimera UI Libraries - Build 0.11.29 (5/25/2024, 11:43:08)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -7502,9 +7502,16 @@ var Container = function Container(props) {
         }).map(function (item) {
             return item.id;
         });
-        var selectedCategories = categoryList.filter(function (category) {
-            return categoryIds.includes(category.id);
+
+        // const selectedCategories = categoryList
+        //     .filter(category => categoryIds.includes(category.id));
+
+        var selectedCategories = categoryIds.map(function (id) {
+            return categoryList.filter(function (category) {
+                return category.id === id;
+            })[0];
         });
+
         return [{
             group: 'All Topics',
             title: 'All Topics',

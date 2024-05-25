@@ -1216,8 +1216,14 @@ const Container = (props) => {
         const categoryIds = filterList
             .filter(filter => filter.id.includes('caas:product-categories'))
             .map(item => item.id);
-        const selectedCategories = categoryList
-            .filter(category => categoryIds.includes(category.id));
+
+        // const selectedCategories = categoryList
+        //     .filter(category => categoryIds.includes(category.id));
+
+        // Sorts category list based on authored order
+        const selectedCategories = categoryIds
+            .map(id => categoryList.filter(category => category.id === id)[0]);
+
         return [{
             group: 'All Topics',
             title: 'All Topics',
