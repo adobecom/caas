@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.12.1 (5/30/2024, 09:56:08)
+ * Chimera UI Libraries - Build 0.12.2 (6/3/2024, 13:07:08)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -1506,7 +1506,8 @@ var FILTER_TYPES = exports.FILTER_TYPES = {
  */
 var FILTER_PANEL = exports.FILTER_PANEL = {
     LEFT: 'left',
-    TOP: 'top'
+    TOP: 'top',
+    EVENTS: 'events'
 };
 
 /**
@@ -1709,7 +1710,8 @@ var LAYOUT_CONTAINER = exports.LAYOUT_CONTAINER = {
     SIZE_1200_PX: '1200MaxWidth',
     SIZE_1600_PX: '1600MaxWidth',
     SIZE_100_VW_32_MARGIN: '32Margin',
-    CAROUSEL: 'carousel'
+    CAROUSEL: 'carousel',
+    CATEGORIES: 'categories'
 };
 
 /**
@@ -2562,16 +2564,37 @@ var checkEventTiming = function checkEventTiming(card, timing) {
  * @param {Object} filterTypes - All possible filters
  * @returns {Array} - All cards that match filter options
  */
-var getFilteredCards = exports.getFilteredCards = function getFilteredCards(cards, activeFilters, activePanels, filterType, filterTypes) {
+// eslint-disable-next-line max-len
+var getFilteredCards = exports.getFilteredCards = function getFilteredCards(cards, activeFilters, activePanels, filterType, filterTypes, categories) {
     var activeFiltersSet = new Set(activeFilters);
     var timingSet = (0, _general.intersection)(activeFiltersSet, new Set([_constants.EVENT_TIMING_IDS.LIVE, _constants.EVENT_TIMING_IDS.ONDEMAND, _constants.EVENT_TIMING_IDS.UPCOMING]));
     var usingXorAndFilter = getUsingXorAndFilter(filterType, filterTypes);
     var usingOrFilter = getUsingOrFilter(filterType, filterTypes);
     var usingTimingFilter = getUsingTimingFilter(activeFiltersSet);
     // remove the time elements from the active filter set before you actually filter
-    timingSet.forEach(function (x) {
-        return activeFiltersSet.delete(x);
+    timingSet.forEach(function (filter) {
+        return activeFiltersSet.delete(filter);
     });
+
+    var temp = [];
+    var set = new Set();
+    if (categories && categories.length) {
+        for (var i = 0; i < cards.length; i++) {
+            var card = cards[i];
+            for (var j = 0; j < categories.length; j++) {
+                var category = categories[j];
+                for (var k = 0; k < card.tags.length; k++) {
+                    var currTag = card.tags[k];
+                    if (currTag.id.includes(category) && !set.has(card.id)) {
+                        set.add(card.id);
+                        temp.push(card);
+                    }
+                }
+            }
+        }
+        /* eslint-disable-next-line no-param-reassign */
+        cards = temp;
+    }
 
     if (activeFiltersSet.size === 0 && !usingTimingFilter) return cards;
 
@@ -6188,6 +6211,10 @@ var Container = function Container(props) {
     var cardStyle = getConfig('collection', 'cardStyle');
     var title = getConfig('collection', 'i18n.title');
     var headers = getConfig('headers', '');
+    // eslint-disable-next-line no-use-before-define
+    var categories = getConfig('filterPanel', 'categories');
+    // eslint-disable-next-line no-use-before-define
+    var authoredCategories = getAuthoredCategories(authoredFilters, categories);
 
     /**
      **** Constants ****
@@ -6196,6 +6223,8 @@ var Container = function Container(props) {
     var isXorFilter = filterLogic.toLowerCase().trim() === _constants.FILTER_TYPES.XOR;
     var isCarouselContainer = authoredLayoutContainer === _constants.LAYOUT_CONTAINER.CAROUSEL;
     var isStandardContainer = authoredLayoutContainer !== _constants.LAYOUT_CONTAINER.CAROUSEL;
+    var isCategoriesContainer = authoredLayoutContainer === _constants.LAYOUT_CONTAINER.CATEGORIES;
+
     /**
      **** Hooks ****
      */
@@ -6321,6 +6350,13 @@ var Container = function Container(props) {
         filters = _useState14[0],
         setFilters = _useState14[1];
 
+    window.filters = filters;
+
+    var _useState15 = (0, _react.useState)([]),
+        _useState16 = _slicedToArray(_useState15, 2),
+        currCategories = _useState16[0],
+        setCategories = _useState16[1];
+
     /**
      * @typedef {String} SearchQueryState — Will be used to search through cards
      * @typedef {Function} SearchQueryStateSetter — Sets user search query
@@ -6329,10 +6365,15 @@ var Container = function Container(props) {
      */
 
 
-    var _useState15 = (0, _react.useState)(''),
-        _useState16 = _slicedToArray(_useState15, 2),
-        searchQuery = _useState16[0],
-        setSearchQuery = _useState16[1];
+    var _useState17 = (0, _react.useState)(''),
+        _useState18 = _slicedToArray(_useState17, 2),
+        searchQuery = _useState18[0],
+        setSearchQuery = _useState18[1];
+
+    var _useState19 = (0, _react.useState)(''),
+        _useState20 = _slicedToArray(_useState19, 2),
+        selectedCategory = _useState20[0],
+        setSelectedCategory = _useState20[1];
 
     /**
      * @typedef {String} SortOpenedState — Toggles Sort Popup Opened Or Closed
@@ -6342,10 +6383,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState17 = (0, _react.useState)(false),
-        _useState18 = _slicedToArray(_useState17, 2),
-        sortOpened = _useState18[0],
-        setSortOpened = _useState18[1];
+    var _useState21 = (0, _react.useState)(false),
+        _useState22 = _slicedToArray(_useState21, 2),
+        sortOpened = _useState22[0],
+        setSortOpened = _useState22[1];
 
     /**
      * @typedef {String} SortOptionState — Can be one of a range of types
@@ -6357,10 +6398,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState19 = (0, _react.useState)(defaultSortOption),
-        _useState20 = _slicedToArray(_useState19, 2),
-        sortOption = _useState20[0],
-        setSortOption = _useState20[1];
+    var _useState23 = (0, _react.useState)(defaultSortOption),
+        _useState24 = _slicedToArray(_useState23, 2),
+        sortOption = _useState24[0],
+        setSortOption = _useState24[1];
 
     if (sortOption.sort === _constants.SORT_TYPES.RANDOM) {
         totalCardLimit = sampleSize;
@@ -6389,10 +6430,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState21 = (0, _react.useState)(false),
-        _useState22 = _slicedToArray(_useState21, 2),
-        showMobileFilters = _useState22[0],
-        setShowMobileFilters = _useState22[1];
+    var _useState25 = (0, _react.useState)(false),
+        _useState26 = _slicedToArray(_useState25, 2),
+        showMobileFilters = _useState26[0],
+        setShowMobileFilters = _useState26[1];
 
     /**
      * @typedef {Boolean} ShowBookmarkState — Can either be true or false
@@ -6405,10 +6446,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState23 = (0, _react.useState)(false),
-        _useState24 = _slicedToArray(_useState23, 2),
-        showBookmarks = _useState24[0],
-        setShowBookmarks = _useState24[1];
+    var _useState27 = (0, _react.useState)(false),
+        _useState28 = _slicedToArray(_useState27, 2),
+        showBookmarks = _useState28[0],
+        setShowBookmarks = _useState28[1];
 
     /**
      * @typedef {Boolean} LimitFilterQuantityState — Can either be true or false
@@ -6421,10 +6462,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState25 = (0, _react.useState)(filterPanelType === 'top'),
-        _useState26 = _slicedToArray(_useState25, 2),
-        showLimitedFiltersQty = _useState26[0],
-        setShowLimitedFiltersQty = _useState26[1];
+    var _useState29 = (0, _react.useState)(filterPanelType === 'top'),
+        _useState30 = _slicedToArray(_useState29, 2),
+        showLimitedFiltersQty = _useState30[0],
+        setShowLimitedFiltersQty = _useState30[1];
 
     /**
      * @typedef {Array} CardState
@@ -6437,10 +6478,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState27 = (0, _react.useState)([]),
-        _useState28 = _slicedToArray(_useState27, 2),
-        cards = _useState28[0],
-        setCards = _useState28[1];
+    var _useState31 = (0, _react.useState)([]),
+        _useState32 = _slicedToArray(_useState31, 2),
+        cards = _useState32[0],
+        setCards = _useState32[1];
 
     /**
      * @typedef {Boolean} LoadingState — Can either be true or false
@@ -6453,10 +6494,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState29 = (0, _react.useState)(false),
-        _useState30 = _slicedToArray(_useState29, 2),
-        isLoading = _useState30[0],
-        setLoading = _useState30[1];
+    var _useState33 = (0, _react.useState)(false),
+        _useState34 = _slicedToArray(_useState33, 2),
+        isLoading = _useState34[0],
+        setLoading = _useState34[1];
 
     /**
      * @typedef {Boolean} ApiFailureState — Can either be true or false
@@ -6469,30 +6510,30 @@ var Container = function Container(props) {
      */
 
 
-    var _useState31 = (0, _react.useState)(false),
-        _useState32 = _slicedToArray(_useState31, 2),
-        isApiFailure = _useState32[0],
-        setApiFailure = _useState32[1];
-
-    var _useState33 = (0, _react.useState)(null),
-        _useState34 = _slicedToArray(_useState33, 2),
-        randomSortId = _useState34[0],
-        setRandomSortId = _useState34[1];
-
-    var _useState35 = (0, _react.useState)(true),
+    var _useState35 = (0, _react.useState)(false),
         _useState36 = _slicedToArray(_useState35, 2),
-        isFirstLoad = _useState36[0],
-        setIsFirstLoad = _useState36[1];
+        isApiFailure = _useState36[0],
+        setApiFailure = _useState36[1];
 
-    var _useState37 = (0, _react.useState)(),
+    var _useState37 = (0, _react.useState)(null),
         _useState38 = _slicedToArray(_useState37, 2),
-        visibleStamp = _useState38[0],
-        setVisibleStamp = _useState38[1];
+        randomSortId = _useState38[0],
+        setRandomSortId = _useState38[1];
 
-    var _useState39 = (0, _react.useState)(false),
+    var _useState39 = (0, _react.useState)(true),
         _useState40 = _slicedToArray(_useState39, 2),
-        hasFetched = _useState40[0],
-        setHasFetched = _useState40[1];
+        isFirstLoad = _useState40[0],
+        setIsFirstLoad = _useState40[1];
+
+    var _useState41 = (0, _react.useState)(),
+        _useState42 = _slicedToArray(_useState41, 2),
+        visibleStamp = _useState42[0],
+        setVisibleStamp = _useState42[1];
+
+    var _useState43 = (0, _react.useState)(false),
+        _useState44 = _slicedToArray(_useState43, 2),
+        hasFetched = _useState44[0],
+        setHasFetched = _useState44[1];
 
     /**
      * Creates a DOM reference to first filter item
@@ -7099,8 +7140,8 @@ var Container = function Container(props) {
                     _removeDuplicateCards2 = _removeDuplicateCards.processedCards,
                     processedCards = _removeDuplicateCards2 === undefined ? [] : _removeDuplicateCards2;
 
-                setFilters(function () {
-                    return authoredFilters.map(function (filter) {
+                setFilters(function (prevFilters) {
+                    return prevFilters.map(function (filter) {
                         var group = filter.group,
                             items = filter.items;
 
@@ -7320,13 +7361,14 @@ var Container = function Container(props) {
      * @type {Object}
      */
     var cardFilterer = new _CardFilterer2.default(cards, randomSortId, sampleSize, reservoirSize, featuredCards);
+
     /**
      * @type {Function} getFilteredCollection
      * @desc Closure around CardFilterer for reuse within context
      * @returns {Object}
      * */
     var getFilteredCollection = function getFilteredCollection() {
-        return cardFilterer.sortCards(sortOption, eventFilter, featuredCards, hideCtaIds, isFirstLoad).keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks).keepCardsWithinDateRange().filterCards(activeFilterIds, activePanels, filterLogic, _constants.FILTER_TYPES).truncateList(totalCardLimit).searchCards(searchQuery, searchFields, cardStyle).removeCards(inclusionIds);
+        return cardFilterer.sortCards(sortOption, eventFilter, featuredCards, hideCtaIds, isFirstLoad).keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks).keepCardsWithinDateRange().filterCards(activeFilterIds, activePanels, filterLogic, _constants.FILTER_TYPES, currCategories).truncateList(totalCardLimit).searchCards(searchQuery, searchFields, cardStyle).removeCards(inclusionIds);
     };
 
     /**
@@ -7450,6 +7492,159 @@ var Container = function Container(props) {
         'consonant-u-themeDarkest': authoredMode === _constants.THEME_TYPE.DARKEST
     });
 
+    /**
+     * @param {*} filterList
+     * @param {*} categoryList
+     * @returns List of categories for the top pills
+     *          Prepends the "All Topics" pill to the list of categories
+     */
+    function getAuthoredCategories(filterList, categoryList) {
+        var categoryIds = filterList.filter(function (filter) {
+            return filter.id.includes('caas:product-categories');
+        }).map(function (item) {
+            return item.id;
+        });
+
+        // Sorts category list based on authored order
+        var selectedCategories = categoryIds.map(function (id) {
+            return categoryList.filter(function (category) {
+                return category.id === id;
+            })[0];
+        });
+
+        return [{
+            group: 'All Topics',
+            title: 'All Topics',
+            id: '',
+            items: []
+        }].concat(_toConsumableArray(selectedCategories));
+    }
+
+    /**
+     * @returns List of all products from all categories for the 'All products' menu
+     *          Prepends the "All products" label to the list of categories
+     */
+    function getAllCategoryProducts() {
+        var allCategories = [];
+        var _iteratorNormalCompletion4 = true;
+        var _didIteratorError4 = false;
+        var _iteratorError4 = undefined;
+
+        try {
+            for (var _iterator4 = authoredCategories[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+                var category = _step4.value;
+                var _iteratorNormalCompletion5 = true;
+                var _didIteratorError5 = false;
+                var _iteratorError5 = undefined;
+
+                try {
+                    for (var _iterator5 = category.items[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+                        var item = _step5.value;
+
+                        item.fromCategory = true;
+                    }
+                } catch (err) {
+                    _didIteratorError5 = true;
+                    _iteratorError5 = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion5 && _iterator5.return) {
+                            _iterator5.return();
+                        }
+                    } finally {
+                        if (_didIteratorError5) {
+                            throw _iteratorError5;
+                        }
+                    }
+                }
+
+                allCategories = allCategories.concat(category.items);
+            }
+        } catch (err) {
+            _didIteratorError4 = true;
+            _iteratorError4 = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion4 && _iterator4.return) {
+                    _iterator4.return();
+                }
+            } finally {
+                if (_didIteratorError4) {
+                    throw _iteratorError4;
+                }
+            }
+        }
+
+        return {
+            group: 'All products',
+            id: 'caas:products',
+            items: allCategories
+        };
+    }
+
+    /**
+     * @param {*} selectedCategories
+     * @param {*} groupId
+     * Sets the categories and filters based on the selected category
+     */
+    function categoryHandler(selectedCategories, groupId) {
+        var temp = [];
+        var _iteratorNormalCompletion6 = true;
+        var _didIteratorError6 = false;
+        var _iteratorError6 = undefined;
+
+        try {
+            for (var _iterator6 = selectedCategories[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+                var category = _step6.value;
+
+                temp.push(category.id);
+            }
+        } catch (err) {
+            _didIteratorError6 = true;
+            _iteratorError6 = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion6 && _iterator6.return) {
+                    _iterator6.return();
+                }
+            } finally {
+                if (_didIteratorError6) {
+                    throw _iteratorError6;
+                }
+            }
+        }
+
+        setCategories(temp);
+        setFilters(function (prevFilters) {
+            prevFilters.pop();
+            var newGroup = authoredCategories.filter(function (category) {
+                return category.id === groupId;
+            })[0];
+            if (!newGroup.items.length) {
+                var nextFilters = prevFilters.concat(getAllCategoryProducts());
+                return nextFilters;
+            }
+            prevFilters.push(newGroup);
+            return prevFilters;
+        });
+        setSelectedCategory(groupId);
+        setCurrentPage(1);
+    }
+
+    /**
+     * @param {*} category
+     * @returns The Authored icon for the category if exists,
+     *          otherwise returns the default icon from the tags or an empty string
+     */
+    function getCategoryIcon(category) {
+        var authoredIcon = authoredFilters.filter(function (filter) {
+            return filter.id === category.id;
+        }).map(function (filter) {
+            return filter.icon;
+        }).toString();
+        return authoredIcon || category.icon || '';
+    }
+
     var collectionStr = collectionIdentifier ? collectionIdentifier + ' | ' : '';
     var filterStr = selectedFiltersItemsQty ? filterNames : 'No Filters';
     var searchQueryStr = searchQuery || 'None';
@@ -7465,9 +7660,17 @@ var Container = function Container(props) {
         'consonant-Wrapper--83PercentContainier': authoredLayoutContainer === _constants.LAYOUT_CONTAINER.SIZE_83_VW,
         'consonant-Wrapper--1200MaxWidth': authoredLayoutContainer === _constants.LAYOUT_CONTAINER.SIZE_1200_PX,
         'consonant-Wrapper--1600MaxWidth': authoredLayoutContainer === _constants.LAYOUT_CONTAINER.SIZE_1600_PX,
+        'consonant-Wrapper--1200MaxWidth Categories': isCategoriesContainer,
         'consonant-Wrapper--carousel': isCarouselContainer,
         'consonant-Wrapper--withLeftFilter': filterPanelEnabled && isLeftFilterPanel
     });
+
+    (0, _react.useEffect)(function () {
+        setFilters(function (prevFilters) {
+            var nextFilters = prevFilters.concat(getAllCategoryProducts());
+            return nextFilters;
+        });
+    }, []);
 
     return _react2.default.createElement(
         _contexts.ConfigContext.Provider,
@@ -7488,6 +7691,36 @@ var Container = function Container(props) {
                 _react2.default.createElement(
                     'div',
                     { className: 'consonant-Wrapper-inner' },
+                    isCategoriesContainer && _react2.default.createElement(
+                        _react.Fragment,
+                        null,
+                        _react2.default.createElement(
+                            'h2',
+                            { 'data-testid': 'consonant-TopFilters-categoriesTitle', className: 'consonant-TopFilters-categoriesTitle' },
+                            title
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'filters-category' },
+                            authoredCategories.map(function (category) {
+                                var selected = '';
+                                if (category.id === selectedCategory) {
+                                    selected = 'selected';
+                                }
+                                return _react2.default.createElement(
+                                    'button',
+                                    {
+                                        onClick: function onClick() {
+                                            categoryHandler(category.items, category.id);
+                                        },
+                                        'data-selected': selected,
+                                        'data-group': category.group.replaceAll(' ', '').toLowerCase() },
+                                    _react2.default.createElement('img', { className: 'filters-category--icon', src: getCategoryIcon(category), alt: category.icon && 'Category icon' }),
+                                    category.title
+                                );
+                            })
+                        )
+                    ),
                     displayLeftFilterPanel && isStandardContainer && _react2.default.createElement(
                         'div',
                         { className: 'consonant-Wrapper-leftFilterWrapper' },
@@ -7526,6 +7759,7 @@ var Container = function Container(props) {
                             onCheckboxClick: handleCheckBoxChange,
                             onFilterClick: handleFilterGroupClick,
                             onClearFilterItems: clearFilterItem,
+                            categories: currCategories,
                             onClearAllFilters: resetFiltersSearchAndBookmarks,
                             showLimitedFiltersQty: showLimitedFiltersQty,
                             searchComponent: _react2.default.createElement(_Search2.default, {
@@ -7846,6 +8080,7 @@ var Grid = function Grid(props) {
     var locale = getConfig('language', '');
     var paginationType = getConfig('pagination', 'type');
     var collectionButtonStyle = getConfig('collection', 'collectionButtonStyle');
+    var cardHoverEffect = getConfig('collection', 'cardHoverEffect');
 
     var customCard = void 0;
     try {
@@ -7871,7 +8106,8 @@ var Grid = function Grid(props) {
         'consonant-CardsGrid--with2xGutter': cardsGridGutter === _constants.GUTTER_SIZE.GUTTER_2_X,
         'consonant-CardsGrid--with3xGutter': cardsGridGutter === _constants.GUTTER_SIZE.GUTTER_3_X,
         'consonant-CardsGrid--with4xGutter': cardsGridGutter === _constants.GUTTER_SIZE.GUTTER_4_X,
-        'consonant-CardsGrid--doubleWideCards': collectionStyleOverride === _constants.CARD_STYLES.DOUBLE_WIDE
+        'consonant-CardsGrid--doubleWideCards': collectionStyleOverride === _constants.CARD_STYLES.DOUBLE_WIDE,
+        'card-hover-grow': cardHoverEffect === 'grow'
     });
 
     var bannerMap = {
@@ -47368,7 +47604,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var BUTTON_STYLE = {
     PRIMARY: 'primary',
     SECONDARY: 'secondary',
-    CTA: 'call-to-action'
+    CTA: 'call-to-action',
+    DARK: 'dark'
 };
 
 var buttonType = {
@@ -47427,11 +47664,16 @@ var Button = function Button(_ref) {
     var ctaAction = '';
 
     /**
+     * Whether we should render a dark button
+     */
+    var isDarkButton = cardButtonStyle === BUTTON_STYLE.DARK;
+
+    /**
      * Whether we should render cta button or not
      * cardButtonStyle has higher priority than style
      * @type {Boolean}
      */
-    var isCtaButton = style === BUTTON_STYLE.CTA && cardButtonStyle !== BUTTON_STYLE.PRIMARY || cardButtonStyle === BUTTON_STYLE.CTA && style !== BUTTON_STYLE.SECONDARY;
+    var isCtaButton = !isDarkButton && style !== BUTTON_STYLE.PRIMARY && cardButtonStyle !== BUTTON_STYLE.PRIMARY && cardButtonStyle !== BUTTON_STYLE.SECONDARY;
 
     if (isCta) {
         ctaAction = getConfig('collection', 'ctaAction');
@@ -47444,7 +47686,8 @@ var Button = function Button(_ref) {
      */
     var buttonClass = (0, _classnames2.default)({
         'consonant-BtnInfobit': true,
-        'consonant-BtnInfobit--cta': isCtaButton
+        'consonant-BtnInfobit--cta': isCtaButton,
+        'consonant-BtnInfobit--dark': isDarkButton
     });
 
     /**
@@ -52508,8 +52751,8 @@ var CardFilterer = function () {
 
     _createClass(CardFilterer, [{
         key: 'filterCards',
-        value: function filterCards(activeFilters, activePanels, filterType, filterTypes) {
-            this.filteredCards = (0, _Helpers.getFilteredCards)(this.filteredCards, activeFilters, activePanels, filterType, filterTypes);
+        value: function filterCards(activeFilters, activePanels, filterType, filterTypes, currCategories) {
+            this.filteredCards = (0, _Helpers.getFilteredCards)(this.filteredCards, activeFilters, activePanels, filterType, filterTypes, currCategories);
             return this;
         }
 
@@ -52842,6 +53085,8 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
     var HeadingLevel = getConfig('collection', 'i18n.titleHeadingLevel');
     var title = getConfig('collection', 'i18n.title');
     var useLightText = getConfig('collection', 'useLightText');
+    var layoutContainer = getConfig('collection', 'layout.container');
+    var isCategoryPage = layoutContainer === 'categories';
 
     /**
      * Top search bar identifier
@@ -52903,7 +53148,7 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
      * Whether we should hide all filters after quantity defined in MAX_TRUNCATED_FILTERS constant
      * @type {Boolean}
      */
-    var shouldHideSomeFilters = filters.length > _constants.MAX_TRUNCATED_FILTERS;
+    var shouldHideSomeFilters = layoutContainer !== 'categories' && filters.length > _constants.MAX_TRUNCATED_FILTERS;
 
     /**
      * Whether the sort dropdown should be displayed
@@ -52928,7 +53173,7 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
      * should be displayed
      * @type {Boolean}
      */
-    var shouldDisplayCollectionInfo = title || showTotalResults;
+    var shouldDisplayCollectionInfo = (title || showTotalResults) && !isCategoryPage;
 
     /**
      * Whether the search bar should be displayed
@@ -53250,6 +53495,9 @@ var Group = function Group(props) {
     var mobileGroupTotalResultsText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.totalResultsText').replace('{total}', results);
     var mobileGroupApplyBtnText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.applyBtnText');
     var mobileGroupDoneBtnText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.doneBtnText');
+    var isCategoriesPage = getConfig('collection', 'layout.container') === 'categories';
+    var isProductsFilter = id === 'caas:products';
+    var showProductsFilter = !isCategoriesPage || isCategoriesPage && isProductsFilter || !id.startsWith('caas:product-categories') || id.includes(name);
 
     /**
      **** Hooks ****
@@ -53368,65 +53616,72 @@ var Group = function Group(props) {
         'is-selected': atleastOneFilterSelected && filterGroupNotOpened
     });
 
+    // Update filter label for categories page if needed
+    var filterLabel = isCategoriesPage && id.includes(name) ? 'All ' + name.replaceAll('-', ' ') : name;
+
     /**
      * Impression Tracking
      */
     var filterName = name + ' ' + (isOpened ? 'Close' : 'Open');
 
     return _react2.default.createElement(
-        'div',
-        {
-            'data-testid': 'consonant-TopFilter',
-            'daa-lh': name,
-            className: containerClassname },
-        _react2.default.createElement(
+        _react.Fragment,
+        null,
+        showProductsFilter && _react2.default.createElement(
             'div',
             {
-                className: 'consonant-TopFilter-inner' },
-            _react2.default.createElement(
-                'h3',
-                {
-                    className: 'consonant-TopFilter-name',
-                    'daa-ll': filterName },
-                _react2.default.createElement(
-                    'button',
-                    {
-                        type: 'button',
-                        className: 'consonant-TopFilter-link',
-                        'data-testid': 'consonant-TopFilter-link',
-                        onClick: handleToggle,
-                        tabIndex: '0' },
-                    name,
-                    _react2.default.createElement(
-                        'span',
-                        {
-                            className: 'consonant-TopFilter-selectedItemsQty' },
-                        selectedItemQtyText
-                    )
-                )
-            ),
+                'data-testid': 'consonant-TopFilter',
+                'daa-lh': name,
+                className: containerClassname + ' FILTER-ID-' + id },
             _react2.default.createElement(
                 'div',
                 {
-                    className: 'consonant-TopFilter-selectedItems' },
+                    className: 'consonant-TopFilter-inner' },
+                _react2.default.createElement(
+                    'h3',
+                    {
+                        className: 'consonant-TopFilter-name',
+                        'daa-ll': filterName },
+                    _react2.default.createElement(
+                        'button',
+                        {
+                            type: 'button',
+                            className: 'consonant-TopFilter-link',
+                            'data-testid': 'consonant-TopFilter-link',
+                            onClick: handleToggle,
+                            tabIndex: '0' },
+                        filterLabel,
+                        _react2.default.createElement(
+                            'span',
+                            {
+                                className: 'consonant-TopFilter-selectedItemsQty' },
+                            selectedItemQtyText
+                        )
+                    )
+                ),
                 _react2.default.createElement(
                     'div',
                     {
-                        className: 'consonant-TopFilter-absoluteWrapper' },
-                    _react2.default.createElement(_Items.Items, {
-                        clipWrapperItemsCount: clipWrapperItemsCount,
-                        handleCheck: handleCheck,
-                        stopPropagation: _general.stopPropagation,
-                        items: items }),
-                    shouldClipFilters && _react2.default.createElement('aside', {
-                        className: 'consonant-TopFilter-bg' }),
-                    _react2.default.createElement(_Footer.Footer, {
-                        mobileFooterBtnText: mobileFooterBtnText,
-                        handleToggle: handleToggle,
-                        clearFilterText: clearFilterText,
-                        handleClear: handleClear,
-                        numItemsSelected: numItemsSelected,
-                        mobileGroupTotalResultsText: mobileGroupTotalResultsText })
+                        className: 'consonant-TopFilter-selectedItems' },
+                    _react2.default.createElement(
+                        'div',
+                        {
+                            className: 'consonant-TopFilter-absoluteWrapper' },
+                        _react2.default.createElement(_Items.Items, {
+                            clipWrapperItemsCount: clipWrapperItemsCount,
+                            handleCheck: handleCheck,
+                            stopPropagation: _general.stopPropagation,
+                            items: items }),
+                        shouldClipFilters && _react2.default.createElement('aside', {
+                            className: 'consonant-TopFilter-bg' }),
+                        _react2.default.createElement(_Footer.Footer, {
+                            mobileFooterBtnText: mobileFooterBtnText,
+                            handleToggle: handleToggle,
+                            clearFilterText: clearFilterText,
+                            handleClear: handleClear,
+                            numItemsSelected: numItemsSelected,
+                            mobileGroupTotalResultsText: mobileGroupTotalResultsText })
+                    )
                 )
             )
         )
@@ -53514,40 +53769,54 @@ var Items = function Items(props) {
         'consonant-TopFilter-items--clipped': shouldClipItems
     });
 
+    var set = new Set();
     return _react2.default.createElement(
         'ul',
         {
             'data-testid': 'consonant-TopFilter-items',
             className: clipFilterItemsClass },
         items.map(function (item) {
+            var name = item.id.split('/')[1];
+            var title = void 0;
+            if (!set.has(name)) {
+                title = name.replaceAll('-', ' ');
+                set.add(name);
+            }
             return _react2.default.createElement(
-                'li',
-                {
-                    key: item.id,
-                    'data-testid': 'consonant-TopFilter-item',
-                    'daa-ll': item.label,
-                    className: 'consonant-TopFilter-item' },
+                _react.Fragment,
+                null,
+                item.fromCategory && title && _react2.default.createElement(
+                    'span',
+                    { className: 'filter-group-title' },
+                    title
+                ),
                 _react2.default.createElement(
-                    'label',
+                    'li',
                     {
-                        htmlFor: item.id,
-                        className: 'consonant-TopFilter-itemLabel',
-                        onClick: stopPropagation },
-                    _react2.default.createElement('input', {
-                        'data-testid': 'consonant-TopFilter-itemCheckbox',
-                        id: item.id,
-                        value: item.id,
-                        type: 'checkbox',
-                        onChange: handleCheck,
-                        checked: item.selected,
-                        tabIndex: '0' }),
-                    _react2.default.createElement('span', {
-                        className: 'consonant-TopFilter-itemCheckmark' }),
+                        key: item.id,
+                        'data-testid': 'consonant-TopFilter-item',
+                        'daa-ll': item.label,
+                        className: 'consonant-TopFilter-item' },
                     _react2.default.createElement(
-                        'span',
+                        'label',
                         {
-                            className: 'consonant-TopFilter-itemName' },
-                        item.label
+                            htmlFor: item.id,
+                            className: 'consonant-TopFilter-itemLabel',
+                            onClick: stopPropagation },
+                        _react2.default.createElement('input', {
+                            'data-testid': 'consonant-TopFilter-itemCheckbox',
+                            id: item.id,
+                            value: item.id,
+                            type: 'checkbox',
+                            onChange: handleCheck,
+                            checked: item.selected,
+                            tabIndex: '0' }),
+                        _react2.default.createElement('span', { className: 'consonant-TopFilter-itemCheckmark' }),
+                        _react2.default.createElement(
+                            'span',
+                            { className: 'consonant-TopFilter-itemName' },
+                            item.group || item.label
+                        )
                     )
                 )
             );

@@ -1,4 +1,3 @@
-
 import produce, { enableES5 } from 'immer';
 
 import { HighlightSearchField } from './rendering';
@@ -169,7 +168,8 @@ const checkEventTiming = (card, timing) => {
  * @param {Object} filterTypes - All possible filters
  * @returns {Array} - All cards that match filter options
  */
-export const getFilteredCards = (cards, activeFilters, activePanels, filterType, filterTypes) => {
+// eslint-disable-next-line max-len
+export const getFilteredCards = (cards, activeFilters, activePanels, filterType, filterTypes, categories) => {
     const activeFiltersSet = new Set(activeFilters);
     const timingSet = intersection(activeFiltersSet, new Set([
         EVENT_TIMING_IDS.LIVE,
@@ -180,7 +180,27 @@ export const getFilteredCards = (cards, activeFilters, activePanels, filterType,
     const usingOrFilter = getUsingOrFilter(filterType, filterTypes);
     const usingTimingFilter = getUsingTimingFilter(activeFiltersSet);
     // remove the time elements from the active filter set before you actually filter
-    timingSet.forEach(x => activeFiltersSet.delete(x));
+    timingSet.forEach(filter => activeFiltersSet.delete(filter));
+
+    const temp = [];
+    const set = new Set();
+    if (categories && categories.length) {
+        for (let i = 0; i < cards.length; i++) {
+            const card = cards[i];
+            for (let j = 0; j < categories.length; j++) {
+                const category = categories[j];
+                for (let k = 0; k < card.tags.length; k++) {
+                    const currTag = card.tags[k];
+                    if (currTag.id.includes(category) && !set.has(card.id)) {
+                        set.add(card.id);
+                        temp.push(card);
+                    }
+                }
+            }
+        }
+        /* eslint-disable-next-line no-param-reassign */
+        cards = temp;
+    }
 
     if (activeFiltersSet.size === 0 && !usingTimingFilter) return cards;
 

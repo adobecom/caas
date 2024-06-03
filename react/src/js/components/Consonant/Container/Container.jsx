@@ -154,6 +154,10 @@ const Container = (props) => {
     const cardStyle = getConfig('collection', 'cardStyle');
     const title = getConfig('collection', 'i18n.title');
     const headers = getConfig('headers', '');
+    // eslint-disable-next-line no-use-before-define
+    const categories = getConfig('filterPanel', 'categories');
+    // eslint-disable-next-line no-use-before-define
+    const authoredCategories = getAuthoredCategories(authoredFilters, categories);
 
     /**
      **** Constants ****
@@ -162,6 +166,8 @@ const Container = (props) => {
     const isXorFilter = filterLogic.toLowerCase().trim() === FILTER_TYPES.XOR;
     const isCarouselContainer = authoredLayoutContainer === LAYOUT_CONTAINER.CAROUSEL;
     const isStandardContainer = authoredLayoutContainer !== LAYOUT_CONTAINER.CAROUSEL;
+    const isCategoriesContainer = authoredLayoutContainer === LAYOUT_CONTAINER.CATEGORIES;
+
     /**
      **** Hooks ****
      */
@@ -244,6 +250,8 @@ const Container = (props) => {
      * @type {[Array, Function]} Filters
      */
     const [filters, setFilters] = useState([]);
+    window.filters = filters;
+    const [currCategories, setCategories] = useState([]);
 
     /**
      * @typedef {String} SearchQueryState — Will be used to search through cards
@@ -252,6 +260,7 @@ const Container = (props) => {
      * @type {[String, Function]} SearchQuery
      */
     const [searchQuery, setSearchQuery] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('');
 
     /**
      * @typedef {String} SortOpenedState — Toggles Sort Popup Opened Or Closed
@@ -842,7 +851,7 @@ const Container = (props) => {
                             hideCtaIds,
                             hideCtaTags,
                         );
-                    setFilters(() => authoredFilters.map((filter) => {
+                    setFilters(prevFilters => prevFilters.map((filter) => {
                         const { group, items } = filter;
                         const urlStateValue = urlState[filterGroupPrefix + group];
                         if (!urlStateValue) return filter;
@@ -1063,6 +1072,7 @@ const Container = (props) => {
         reservoirSize,
         featuredCards,
     );
+
     /**
      * @type {Function} getFilteredCollection
      * @desc Closure around CardFilterer for reuse within context
@@ -1072,7 +1082,7 @@ const Container = (props) => {
         .sortCards(sortOption, eventFilter, featuredCards, hideCtaIds, isFirstLoad)
         .keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks)
         .keepCardsWithinDateRange()
-        .filterCards(activeFilterIds, activePanels, filterLogic, FILTER_TYPES)
+        .filterCards(activeFilterIds, activePanels, filterLogic, FILTER_TYPES, currCategories)
         .truncateList(totalCardLimit)
         .searchCards(searchQuery, searchFields, cardStyle)
         .removeCards(inclusionIds);
@@ -1198,6 +1208,85 @@ const Container = (props) => {
         'consonant-u-themeDarkest': authoredMode === THEME_TYPE.DARKEST,
     });
 
+    /**
+     * @param {*} filterList
+     * @param {*} categoryList
+     * @returns List of categories for the top pills
+     *          Prepends the "All Topics" pill to the list of categories
+     */
+    function getAuthoredCategories(filterList, categoryList) {
+        const categoryIds = filterList
+            .filter(filter => filter.id.includes('caas:product-categories'))
+            .map(item => item.id);
+
+        // Sorts category list based on authored order
+        const selectedCategories = categoryIds
+            .map(id => categoryList.filter(category => category.id === id)[0]);
+
+        return [{
+            group: 'All Topics',
+            title: 'All Topics',
+            id: '',
+            items: [],
+        }, ...selectedCategories];
+    }
+
+    /**
+     * @returns List of all products from all categories for the 'All products' menu
+     *          Prepends the "All products" label to the list of categories
+     */
+    function getAllCategoryProducts() {
+        let allCategories = [];
+        for (const category of authoredCategories) {
+            for (const item of category.items) {
+                item.fromCategory = true;
+            }
+            allCategories = allCategories.concat(category.items);
+        }
+        return {
+            group: 'All products',
+            id: 'caas:products',
+            items: allCategories,
+        };
+    }
+
+    /**
+     * @param {*} selectedCategories
+     * @param {*} groupId
+     * Sets the categories and filters based on the selected category
+     */
+    function categoryHandler(selectedCategories, groupId) {
+        const temp = [];
+        for (const category of selectedCategories) {
+            temp.push(category.id);
+        }
+        setCategories(temp);
+        setFilters((prevFilters) => {
+            prevFilters.pop();
+            const newGroup = authoredCategories.filter(category => category.id === groupId)[0];
+            if (!newGroup.items.length) {
+                const nextFilters = prevFilters.concat(getAllCategoryProducts());
+                return nextFilters;
+            }
+            prevFilters.push(newGroup);
+            return prevFilters;
+        });
+        setSelectedCategory(groupId);
+        setCurrentPage(1);
+    }
+
+    /**
+     * @param {*} category
+     * @returns The Authored icon for the category if exists,
+     *          otherwise returns the default icon from the tags or an empty string
+     */
+    function getCategoryIcon(category) {
+        const authoredIcon = authoredFilters
+            .filter(filter => filter.id === category.id)
+            .map(filter => filter.icon)
+            .toString();
+        return authoredIcon || category.icon || '';
+    }
 
     const collectionStr = collectionIdentifier ? `${collectionIdentifier} | ` : '';
     const filterStr = selectedFiltersItemsQty ? filterNames : 'No Filters';
@@ -1214,9 +1303,17 @@ const Container = (props) => {
         'consonant-Wrapper--83PercentContainier': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_83_VW,
         'consonant-Wrapper--1200MaxWidth': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_1200_PX,
         'consonant-Wrapper--1600MaxWidth': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_1600_PX,
+        'consonant-Wrapper--1200MaxWidth Categories': isCategoriesContainer,
         'consonant-Wrapper--carousel': isCarouselContainer,
         'consonant-Wrapper--withLeftFilter': filterPanelEnabled && isLeftFilterPanel,
     });
+
+    useEffect(() => {
+        setFilters((prevFilters) => {
+            const nextFilters = prevFilters.concat(getAllCategoryProducts());
+            return nextFilters;
+        });
+    }, []);
 
     return (
         <ConfigContext.Provider value={config}>
@@ -1232,6 +1329,34 @@ const Container = (props) => {
                     onClick={handleWindowClick}
                     className={`${wrapperClass} ${themeClass}`}>
                     <div className="consonant-Wrapper-inner">
+                        { isCategoriesContainer &&
+                        <Fragment>
+                            <h2 data-testid="consonant-TopFilters-categoriesTitle" className="consonant-TopFilters-categoriesTitle">
+                                {title}
+                            </h2>
+                            <div className="filters-category">
+                                {
+                                    authoredCategories.map((category) => {
+                                        let selected = '';
+                                        if (category.id === selectedCategory) {
+                                            selected = 'selected';
+                                        }
+                                        return (
+                                            <button
+                                                onClick={() => {
+                                                    categoryHandler(category.items, category.id);
+                                                }}
+                                                data-selected={selected}
+                                                data-group={category.group.replaceAll(' ', '').toLowerCase()}>
+                                                <img className="filters-category--icon" src={getCategoryIcon(category)} alt={category.icon && 'Category icon'} />
+                                                {category.title}
+                                            </button>
+                                        );
+                                    })
+                                }
+                            </div>
+                        </Fragment>
+                        }
                         { displayLeftFilterPanel && isStandardContainer &&
                         <div className="consonant-Wrapper-leftFilterWrapper">
                             <LeftFilterPanel
@@ -1273,6 +1398,7 @@ const Container = (props) => {
                                 onCheckboxClick={handleCheckBoxChange}
                                 onFilterClick={handleFilterGroupClick}
                                 onClearFilterItems={clearFilterItem}
+                                categories={currCategories}
                                 onClearAllFilters={resetFiltersSearchAndBookmarks}
                                 showLimitedFiltersQty={showLimitedFiltersQty}
                                 searchComponent={

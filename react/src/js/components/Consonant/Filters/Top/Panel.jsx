@@ -106,6 +106,8 @@ const FiltersPanelTop = (props) => {
     const HeadingLevel = getConfig('collection', 'i18n.titleHeadingLevel');
     const title = getConfig('collection', 'i18n.title');
     const useLightText = getConfig('collection', 'useLightText');
+    const layoutContainer = getConfig('collection', 'layout.container');
+    const isCategoryPage = layoutContainer === 'categories';
 
     /**
      * Top search bar identifier
@@ -161,7 +163,8 @@ const FiltersPanelTop = (props) => {
      * Whether we should hide all filters after quantity defined in MAX_TRUNCATED_FILTERS constant
      * @type {Boolean}
      */
-    const shouldHideSomeFilters = filters.length > MAX_TRUNCATED_FILTERS;
+    const shouldHideSomeFilters = layoutContainer !== 'categories'
+        && filters.length > MAX_TRUNCATED_FILTERS;
 
     /**
      * Whether the sort dropdown should be displayed
@@ -187,7 +190,7 @@ const FiltersPanelTop = (props) => {
      * should be displayed
      * @type {Boolean}
      */
-    const shouldDisplayCollectionInfo = title || showTotalResults;
+    const shouldDisplayCollectionInfo = (title || showTotalResults) && !isCategoryPage;
 
     /**
      * Whether the search bar should be displayed
