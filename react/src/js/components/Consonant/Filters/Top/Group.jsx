@@ -197,9 +197,12 @@ const Group = (props) => {
     });
 
     // Update filter label for categories page if needed
-    const filterLabel = (isCategoriesPage && id.includes(name))
+    let filterLabel = (isCategoriesPage && id.includes(name))
         ? `All ${name.replaceAll('-', ' ')}`
         : name;
+
+    filterLabel = id === 'caas:events/series' ? 'All event series' : filterLabel;
+    filterLabel = id.startsWith('caas:events/region') ? 'All locations' : filterLabel;
 
     /**
      * Impression Tracking

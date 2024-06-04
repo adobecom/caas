@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.12.2 (6/3/2024, 13:07:08)
+ * Chimera UI Libraries - Build 0.12.2 (6/4/2024, 10:46:23)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -53618,6 +53618,9 @@ var Group = function Group(props) {
 
     // Update filter label for categories page if needed
     var filterLabel = isCategoriesPage && id.includes(name) ? 'All ' + name.replaceAll('-', ' ') : name;
+
+    filterLabel = id === 'caas:events/series' ? 'All event series' : filterLabel;
+    filterLabel = id.startsWith('caas:events/region') ? 'All locations' : filterLabel;
 
     /**
      * Impression Tracking
