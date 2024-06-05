@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.12.2 (6/4/2024, 18:46:28)
+ * Chimera UI Libraries - Build 0.13.0 (6/5/2024, 12:28:24)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -7507,7 +7507,7 @@ var Container = function Container(props) {
 
         // Sorts category list based on authored order
         var selectedCategories = categoryIds.map(function (id) {
-            return categoryList.filter(function (category) {
+            return categoryList && categoryList.filter(function (category) {
                 return category.id === id;
             })[0];
         });
@@ -7525,7 +7525,6 @@ var Container = function Container(props) {
      *          Prepends the "All products" label to the list of categories
      */
     function getAllCategoryProducts() {
-        // if (isCategoriesContainer) return [];
         var allCategories = [];
         var _iteratorNormalCompletion4 = true;
         var _didIteratorError4 = false;
@@ -7534,32 +7533,35 @@ var Container = function Container(props) {
         try {
             for (var _iterator4 = authoredCategories[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
                 var category = _step4.value;
-                var _iteratorNormalCompletion5 = true;
-                var _didIteratorError5 = false;
-                var _iteratorError5 = undefined;
 
-                try {
-                    for (var _iterator5 = category.items[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-                        var item = _step5.value;
+                if (category && category.items) {
+                    var _iteratorNormalCompletion5 = true;
+                    var _didIteratorError5 = false;
+                    var _iteratorError5 = undefined;
 
-                        item.fromCategory = true;
-                    }
-                } catch (err) {
-                    _didIteratorError5 = true;
-                    _iteratorError5 = err;
-                } finally {
                     try {
-                        if (!_iteratorNormalCompletion5 && _iterator5.return) {
-                            _iterator5.return();
+                        for (var _iterator5 = category.items[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+                            var item = _step5.value;
+
+                            item.fromCategory = true;
                         }
+                    } catch (err) {
+                        _didIteratorError5 = true;
+                        _iteratorError5 = err;
                     } finally {
-                        if (_didIteratorError5) {
-                            throw _iteratorError5;
+                        try {
+                            if (!_iteratorNormalCompletion5 && _iterator5.return) {
+                                _iterator5.return();
+                            }
+                        } finally {
+                            if (_didIteratorError5) {
+                                throw _iteratorError5;
+                            }
                         }
                     }
-                }
 
-                allCategories = allCategories.concat(category.items);
+                    allCategories = allCategories.concat(category.items);
+                }
             }
         } catch (err) {
             _didIteratorError4 = true;
