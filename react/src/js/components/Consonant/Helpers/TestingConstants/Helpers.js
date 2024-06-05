@@ -156,8 +156,8 @@ const getBookmarkedCards = [
 
 const card1 = { id: 'card-id-1', tags: [{ id: 1 }, { id: 2 }] };
 const card2 = { id: 'card-id-2', tags: [{ id: 1 }, { id: 2 }, { id: 3 }] };
-const card3 = { id: 'card-id-3', };
-const upcoming = { id: 'upcoming1', endDate: getDate((curDate + 240000)), startDate: getDate((curDate + 120000)),}
+const card3 = { id: 'card-id-3' };
+const upcoming = { id: 'upcoming1', endDate: getDate((curDate + 240000)), startDate: getDate((curDate + 120000)) };
 
 const cards = [card1, card2, card3, upcoming];
 
@@ -203,7 +203,7 @@ const getFilteredCards = [
         filterType: 'or',
         filterTypes,
         expectedValue: [upcoming],
-    }
+    },
 ];
 
 const getFilteredCardsThrowError = {

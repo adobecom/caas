@@ -58,6 +58,7 @@ export const FILTER_TYPES = {
 export const FILTER_PANEL = {
     LEFT: 'left',
     TOP: 'top',
+    EVENTS: 'events',
 };
 
 /**
@@ -265,6 +266,7 @@ export const LAYOUT_CONTAINER = {
     SIZE_1600_PX: '1600MaxWidth',
     SIZE_100_VW_32_MARGIN: '32Margin',
     CAROUSEL: 'carousel',
+    CATEGORIES: 'categories',
 };
 
 /**

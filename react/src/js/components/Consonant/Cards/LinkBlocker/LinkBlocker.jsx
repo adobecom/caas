@@ -36,6 +36,7 @@ const LinkBlocker = (props) => {
             href={link}
             target={target}
             rel="noopener noreferrer"
+            aria-label={link}
             tabIndex="0"
             className="consonant-LinkBlocker" />
     );

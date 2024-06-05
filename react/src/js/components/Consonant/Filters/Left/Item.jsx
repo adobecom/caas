@@ -167,63 +167,67 @@ const Item = (props) => {
      * Impression Tracking
      */
     const filterName = `${name} ${isOpened ? 'Close' : 'Open'}`;
+    const showFilter = id !== 'caas:products';
 
     return (
         <div
             data-testid="consonant-LeftFilter"
             daa-lh={name}
             className={leftFilterClassName}>
-            <div
-                className="consonant-LeftFilter-inner">
-                <h3
-                    data-testid="consonant-LeftFilter-name"
-                    className="consonant-LeftFilter-name"
-                    daa-ll={filterName}>
-                    {icon &&
-                    <img
-                        src={icon}
-                        width="16"
-                        alt=""
-                        loading="lazy" />
+            {
+                showFilter &&
+                <div
+                    className="consonant-LeftFilter-inner">
+                    <p
+                        data-testid="consonant-LeftFilter-name"
+                        className="consonant-LeftFilter-name"
+                        daa-ll={filterName}>
+                        {icon &&
+                        <img
+                            src={icon}
+                            width="16"
+                            alt=""
+                            loading="lazy" />
+                        }
+                        <button
+                            type="button"
+                            aria-expanded={isOpened}
+                            data-testid="consonant-LeftFilter-link"
+                            className="consonant-LeftFilter-link"
+                            aria-controls={`${id}-panel`}
+                            id={`${id}-link`}
+                            onClick={handleClick}
+                            tabIndex="0">
+                            {name}
+                            <div
+                                className="consonant-LeftFilter-selectedItemsQty"
+                                data-qty={dataQtyTxt}>
+                                {mobileTagsSelectedText}
+                            </div>
+                        </button>
+                    </p>
+                    {
+                        shouldRenderSelectedBadge &&
+                        <DesktopSelectedItem
+                            handleClear={handleClear}
+                            numItemsSelected={numItemsSelected} />
                     }
-                    <button
-                        type="button"
-                        aria-expanded={isOpened}
-                        data-testid="consonant-LeftFilter-link"
-                        className="consonant-LeftFilter-link"
-                        aria-controls={`${id}-panel`}
-                        id={`${id}-link`}
-                        onClick={handleClick}
-                        tabIndex="0">
-                        {name}
-                        <div
-                            className="consonant-LeftFilter-selectedItemsQty"
-                            data-qty={dataQtyTxt}>
-                            {mobileTagsSelectedText}
-                        </div>
-                    </button>
-                </h3>
-                {
-                    shouldRenderSelectedBadge &&
-                    <DesktopSelectedItem
+                    <section
+                        id={`${id}-panel`}
+                        aria-labelledby={`${id}-link`}>
+                        <Items
+                            items={items}
+                            handleCheck={handleCheck} />
+                    </section>
+                    <GroupFooter
+                        ctaText={buttonText}
+                        handleClick={handleClick}
+                        clearFilterText={clearFilterText}
                         handleClear={handleClear}
-                        numItemsSelected={numItemsSelected} />
-                }
-                <section
-                    id={`${id}-panel`}
-                    aria-labelledby={`${id}-link`}>
-                    <Items
-                        items={items}
-                        handleCheck={handleCheck} />
-                </section>
-                <GroupFooter
-                    ctaText={buttonText}
-                    handleClick={handleClick}
-                    clearFilterText={clearFilterText}
-                    handleClear={handleClear}
-                    numItemsSelected={numItemsSelected}
-                    mobileGroupTotalResultsText={mobileGroupTotalResultsText} />
-            </div>
+                        numItemsSelected={numItemsSelected}
+                        mobileGroupTotalResultsText={mobileGroupTotalResultsText} />
+                </div>
+            }
         </div>
     );
 };

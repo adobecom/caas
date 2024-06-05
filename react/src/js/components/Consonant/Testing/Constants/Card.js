@@ -67,3 +67,7 @@ export const DEFAULT_PROPS_TEXT = {
     ...CARD_PROPS,
     footer,
 };
+
+export const DEFAULT_PROPS_ICON = {
+    ...CARD_PROPS,
+};

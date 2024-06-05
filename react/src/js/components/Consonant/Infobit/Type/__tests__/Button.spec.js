@@ -20,7 +20,7 @@ describe('Consonant/Infobits/Type/Button', () => {
 
         const buttonElement = screen.getByTestId('consonant-BtnInfobit');
 
-        expect(buttonElement).not.toHaveClass('consonant-BtnInfobit--cta');
+        expect(buttonElement).toHaveClass('consonant-BtnInfobit--cta');
     });
     test('If an icon src is authored, render ite', async () => {
         render(<Button {...{ iconSrc: 'some-icon.svg' }} />);

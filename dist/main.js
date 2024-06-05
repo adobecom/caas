@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.11.23 (3/24/2024, 19:19:11)
+ * Chimera UI Libraries - Build 0.12.2 (6/4/2024, 18:46:28)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -1506,7 +1506,8 @@ var FILTER_TYPES = exports.FILTER_TYPES = {
  */
 var FILTER_PANEL = exports.FILTER_PANEL = {
     LEFT: 'left',
-    TOP: 'top'
+    TOP: 'top',
+    EVENTS: 'events'
 };
 
 /**
@@ -1709,7 +1710,8 @@ var LAYOUT_CONTAINER = exports.LAYOUT_CONTAINER = {
     SIZE_1200_PX: '1200MaxWidth',
     SIZE_1600_PX: '1600MaxWidth',
     SIZE_100_VW_32_MARGIN: '32Margin',
-    CAROUSEL: 'carousel'
+    CAROUSEL: 'carousel',
+    CATEGORIES: 'categories'
 };
 
 /**
@@ -2562,16 +2564,37 @@ var checkEventTiming = function checkEventTiming(card, timing) {
  * @param {Object} filterTypes - All possible filters
  * @returns {Array} - All cards that match filter options
  */
-var getFilteredCards = exports.getFilteredCards = function getFilteredCards(cards, activeFilters, activePanels, filterType, filterTypes) {
+// eslint-disable-next-line max-len
+var getFilteredCards = exports.getFilteredCards = function getFilteredCards(cards, activeFilters, activePanels, filterType, filterTypes, categories) {
     var activeFiltersSet = new Set(activeFilters);
     var timingSet = (0, _general.intersection)(activeFiltersSet, new Set([_constants.EVENT_TIMING_IDS.LIVE, _constants.EVENT_TIMING_IDS.ONDEMAND, _constants.EVENT_TIMING_IDS.UPCOMING]));
     var usingXorAndFilter = getUsingXorAndFilter(filterType, filterTypes);
     var usingOrFilter = getUsingOrFilter(filterType, filterTypes);
     var usingTimingFilter = getUsingTimingFilter(activeFiltersSet);
     // remove the time elements from the active filter set before you actually filter
-    timingSet.forEach(function (x) {
-        return activeFiltersSet.delete(x);
+    timingSet.forEach(function (filter) {
+        return activeFiltersSet.delete(filter);
     });
+
+    var temp = [];
+    var set = new Set();
+    if (categories && categories.length) {
+        for (var i = 0; i < cards.length; i++) {
+            var card = cards[i];
+            for (var j = 0; j < categories.length; j++) {
+                var category = categories[j];
+                for (var k = 0; k < card.tags.length; k++) {
+                    var currTag = card.tags[k];
+                    if (currTag.id.includes(category) && !set.has(card.id)) {
+                        set.add(card.id);
+                        temp.push(card);
+                    }
+                }
+            }
+        }
+        /* eslint-disable-next-line no-param-reassign */
+        cards = temp;
+    }
 
     if (activeFiltersSet.size === 0 && !usingTimingFilter) return cards;
 
@@ -2799,7 +2822,7 @@ var getDateAscSort = exports.getDateAscSort = function getDateAscSort(cards) {
         var cardOneDate = (0, _general.getByPath)(cardOne, 'cardDate');
         var cardTwoDate = (0, _general.getByPath)(cardTwo, 'cardDate');
         if (cardOneDate && cardTwoDate) {
-            return cardOneDate.localeCompare(cardTwoDate);
+            return cardOneDate !== cardTwoDate ? cardOneDate.localeCompare(cardTwoDate) : -1;
         }
         return 0;
     });
@@ -6188,6 +6211,10 @@ var Container = function Container(props) {
     var cardStyle = getConfig('collection', 'cardStyle');
     var title = getConfig('collection', 'i18n.title');
     var headers = getConfig('headers', '');
+    // eslint-disable-next-line no-use-before-define
+    var categories = getConfig('filterPanel', 'categories');
+    // eslint-disable-next-line no-use-before-define
+    var authoredCategories = getAuthoredCategories(authoredFilters, categories);
 
     /**
      **** Constants ****
@@ -6196,6 +6223,8 @@ var Container = function Container(props) {
     var isXorFilter = filterLogic.toLowerCase().trim() === _constants.FILTER_TYPES.XOR;
     var isCarouselContainer = authoredLayoutContainer === _constants.LAYOUT_CONTAINER.CAROUSEL;
     var isStandardContainer = authoredLayoutContainer !== _constants.LAYOUT_CONTAINER.CAROUSEL;
+    var isCategoriesContainer = authoredLayoutContainer === _constants.LAYOUT_CONTAINER.CATEGORIES;
+
     /**
      **** Hooks ****
      */
@@ -6320,6 +6349,13 @@ var Container = function Container(props) {
         _useState14 = _slicedToArray(_useState13, 2),
         filters = _useState14[0],
         setFilters = _useState14[1];
+    // window.filters = filters;
+
+
+    var _useState15 = (0, _react.useState)([]),
+        _useState16 = _slicedToArray(_useState15, 2),
+        currCategories = _useState16[0],
+        setCategories = _useState16[1];
 
     /**
      * @typedef {String} SearchQueryState — Will be used to search through cards
@@ -6329,10 +6365,15 @@ var Container = function Container(props) {
      */
 
 
-    var _useState15 = (0, _react.useState)(''),
-        _useState16 = _slicedToArray(_useState15, 2),
-        searchQuery = _useState16[0],
-        setSearchQuery = _useState16[1];
+    var _useState17 = (0, _react.useState)(''),
+        _useState18 = _slicedToArray(_useState17, 2),
+        searchQuery = _useState18[0],
+        setSearchQuery = _useState18[1];
+
+    var _useState19 = (0, _react.useState)(''),
+        _useState20 = _slicedToArray(_useState19, 2),
+        selectedCategory = _useState20[0],
+        setSelectedCategory = _useState20[1];
 
     /**
      * @typedef {String} SortOpenedState — Toggles Sort Popup Opened Or Closed
@@ -6342,10 +6383,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState17 = (0, _react.useState)(false),
-        _useState18 = _slicedToArray(_useState17, 2),
-        sortOpened = _useState18[0],
-        setSortOpened = _useState18[1];
+    var _useState21 = (0, _react.useState)(false),
+        _useState22 = _slicedToArray(_useState21, 2),
+        sortOpened = _useState22[0],
+        setSortOpened = _useState22[1];
 
     /**
      * @typedef {String} SortOptionState — Can be one of a range of types
@@ -6357,10 +6398,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState19 = (0, _react.useState)(defaultSortOption),
-        _useState20 = _slicedToArray(_useState19, 2),
-        sortOption = _useState20[0],
-        setSortOption = _useState20[1];
+    var _useState23 = (0, _react.useState)(defaultSortOption),
+        _useState24 = _slicedToArray(_useState23, 2),
+        sortOption = _useState24[0],
+        setSortOption = _useState24[1];
 
     if (sortOption.sort === _constants.SORT_TYPES.RANDOM) {
         totalCardLimit = sampleSize;
@@ -6389,10 +6430,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState21 = (0, _react.useState)(false),
-        _useState22 = _slicedToArray(_useState21, 2),
-        showMobileFilters = _useState22[0],
-        setShowMobileFilters = _useState22[1];
+    var _useState25 = (0, _react.useState)(false),
+        _useState26 = _slicedToArray(_useState25, 2),
+        showMobileFilters = _useState26[0],
+        setShowMobileFilters = _useState26[1];
 
     /**
      * @typedef {Boolean} ShowBookmarkState — Can either be true or false
@@ -6405,10 +6446,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState23 = (0, _react.useState)(false),
-        _useState24 = _slicedToArray(_useState23, 2),
-        showBookmarks = _useState24[0],
-        setShowBookmarks = _useState24[1];
+    var _useState27 = (0, _react.useState)(false),
+        _useState28 = _slicedToArray(_useState27, 2),
+        showBookmarks = _useState28[0],
+        setShowBookmarks = _useState28[1];
 
     /**
      * @typedef {Boolean} LimitFilterQuantityState — Can either be true or false
@@ -6421,10 +6462,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState25 = (0, _react.useState)(filterPanelType === 'top'),
-        _useState26 = _slicedToArray(_useState25, 2),
-        showLimitedFiltersQty = _useState26[0],
-        setShowLimitedFiltersQty = _useState26[1];
+    var _useState29 = (0, _react.useState)(filterPanelType === 'top'),
+        _useState30 = _slicedToArray(_useState29, 2),
+        showLimitedFiltersQty = _useState30[0],
+        setShowLimitedFiltersQty = _useState30[1];
 
     /**
      * @typedef {Array} CardState
@@ -6437,10 +6478,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState27 = (0, _react.useState)([]),
-        _useState28 = _slicedToArray(_useState27, 2),
-        cards = _useState28[0],
-        setCards = _useState28[1];
+    var _useState31 = (0, _react.useState)([]),
+        _useState32 = _slicedToArray(_useState31, 2),
+        cards = _useState32[0],
+        setCards = _useState32[1];
 
     /**
      * @typedef {Boolean} LoadingState — Can either be true or false
@@ -6453,10 +6494,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState29 = (0, _react.useState)(false),
-        _useState30 = _slicedToArray(_useState29, 2),
-        isLoading = _useState30[0],
-        setLoading = _useState30[1];
+    var _useState33 = (0, _react.useState)(false),
+        _useState34 = _slicedToArray(_useState33, 2),
+        isLoading = _useState34[0],
+        setLoading = _useState34[1];
 
     /**
      * @typedef {Boolean} ApiFailureState — Can either be true or false
@@ -6469,30 +6510,30 @@ var Container = function Container(props) {
      */
 
 
-    var _useState31 = (0, _react.useState)(false),
-        _useState32 = _slicedToArray(_useState31, 2),
-        isApiFailure = _useState32[0],
-        setApiFailure = _useState32[1];
-
-    var _useState33 = (0, _react.useState)(null),
-        _useState34 = _slicedToArray(_useState33, 2),
-        randomSortId = _useState34[0],
-        setRandomSortId = _useState34[1];
-
-    var _useState35 = (0, _react.useState)(true),
+    var _useState35 = (0, _react.useState)(false),
         _useState36 = _slicedToArray(_useState35, 2),
-        isFirstLoad = _useState36[0],
-        setIsFirstLoad = _useState36[1];
+        isApiFailure = _useState36[0],
+        setApiFailure = _useState36[1];
 
-    var _useState37 = (0, _react.useState)(),
+    var _useState37 = (0, _react.useState)(null),
         _useState38 = _slicedToArray(_useState37, 2),
-        visibleStamp = _useState38[0],
-        setVisibleStamp = _useState38[1];
+        randomSortId = _useState38[0],
+        setRandomSortId = _useState38[1];
 
-    var _useState39 = (0, _react.useState)(false),
+    var _useState39 = (0, _react.useState)(true),
         _useState40 = _slicedToArray(_useState39, 2),
-        hasFetched = _useState40[0],
-        setHasFetched = _useState40[1];
+        isFirstLoad = _useState40[0],
+        setIsFirstLoad = _useState40[1];
+
+    var _useState41 = (0, _react.useState)(),
+        _useState42 = _slicedToArray(_useState41, 2),
+        visibleStamp = _useState42[0],
+        setVisibleStamp = _useState42[1];
+
+    var _useState43 = (0, _react.useState)(false),
+        _useState44 = _slicedToArray(_useState43, 2),
+        hasFetched = _useState44[0],
+        setHasFetched = _useState44[1];
 
     /**
      * Creates a DOM reference to first filter item
@@ -7099,8 +7140,8 @@ var Container = function Container(props) {
                     _removeDuplicateCards2 = _removeDuplicateCards.processedCards,
                     processedCards = _removeDuplicateCards2 === undefined ? [] : _removeDuplicateCards2;
 
-                setFilters(function () {
-                    return authoredFilters.map(function (filter) {
+                setFilters(function (prevFilters) {
+                    return prevFilters.map(function (filter) {
                         var group = filter.group,
                             items = filter.items;
 
@@ -7320,13 +7361,14 @@ var Container = function Container(props) {
      * @type {Object}
      */
     var cardFilterer = new _CardFilterer2.default(cards, randomSortId, sampleSize, reservoirSize, featuredCards);
+
     /**
      * @type {Function} getFilteredCollection
      * @desc Closure around CardFilterer for reuse within context
      * @returns {Object}
      * */
     var getFilteredCollection = function getFilteredCollection() {
-        return cardFilterer.sortCards(sortOption, eventFilter, featuredCards, hideCtaIds, isFirstLoad).keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks).keepCardsWithinDateRange().filterCards(activeFilterIds, activePanels, filterLogic, _constants.FILTER_TYPES).truncateList(totalCardLimit).searchCards(searchQuery, searchFields, cardStyle).removeCards(inclusionIds);
+        return cardFilterer.sortCards(sortOption, eventFilter, featuredCards, hideCtaIds, isFirstLoad).keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks).keepCardsWithinDateRange().filterCards(activeFilterIds, activePanels, filterLogic, _constants.FILTER_TYPES, currCategories).truncateList(totalCardLimit).searchCards(searchQuery, searchFields, cardStyle).removeCards(inclusionIds);
     };
 
     /**
@@ -7450,6 +7492,160 @@ var Container = function Container(props) {
         'consonant-u-themeDarkest': authoredMode === _constants.THEME_TYPE.DARKEST
     });
 
+    /**
+     * @param {*} filterList
+     * @param {*} categoryList
+     * @returns List of categories for the top pills
+     *          Prepends the "All Topics" pill to the list of categories
+     */
+    function getAuthoredCategories(filterList, categoryList) {
+        var categoryIds = filterList.filter(function (filter) {
+            return filter.id.includes('caas:product-categories');
+        }).map(function (item) {
+            return item.id;
+        });
+
+        // Sorts category list based on authored order
+        var selectedCategories = categoryIds.map(function (id) {
+            return categoryList.filter(function (category) {
+                return category.id === id;
+            })[0];
+        });
+
+        return [{
+            group: 'All Topics',
+            title: 'All Topics',
+            id: '',
+            items: []
+        }].concat(_toConsumableArray(selectedCategories));
+    }
+
+    /**
+     * @returns List of all products from all categories for the 'All products' menu
+     *          Prepends the "All products" label to the list of categories
+     */
+    function getAllCategoryProducts() {
+        // if (isCategoriesContainer) return [];
+        var allCategories = [];
+        var _iteratorNormalCompletion4 = true;
+        var _didIteratorError4 = false;
+        var _iteratorError4 = undefined;
+
+        try {
+            for (var _iterator4 = authoredCategories[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+                var category = _step4.value;
+                var _iteratorNormalCompletion5 = true;
+                var _didIteratorError5 = false;
+                var _iteratorError5 = undefined;
+
+                try {
+                    for (var _iterator5 = category.items[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+                        var item = _step5.value;
+
+                        item.fromCategory = true;
+                    }
+                } catch (err) {
+                    _didIteratorError5 = true;
+                    _iteratorError5 = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion5 && _iterator5.return) {
+                            _iterator5.return();
+                        }
+                    } finally {
+                        if (_didIteratorError5) {
+                            throw _iteratorError5;
+                        }
+                    }
+                }
+
+                allCategories = allCategories.concat(category.items);
+            }
+        } catch (err) {
+            _didIteratorError4 = true;
+            _iteratorError4 = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion4 && _iterator4.return) {
+                    _iterator4.return();
+                }
+            } finally {
+                if (_didIteratorError4) {
+                    throw _iteratorError4;
+                }
+            }
+        }
+
+        return {
+            group: 'All products',
+            id: 'caas:products',
+            items: allCategories
+        };
+    }
+
+    /**
+     * @param {*} selectedCategories
+     * @param {*} groupId
+     * Sets the categories and filters based on the selected category
+     */
+    function categoryHandler(selectedCategories, groupId) {
+        var temp = [];
+        var _iteratorNormalCompletion6 = true;
+        var _didIteratorError6 = false;
+        var _iteratorError6 = undefined;
+
+        try {
+            for (var _iterator6 = selectedCategories[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+                var category = _step6.value;
+
+                temp.push(category.id);
+            }
+        } catch (err) {
+            _didIteratorError6 = true;
+            _iteratorError6 = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion6 && _iterator6.return) {
+                    _iterator6.return();
+                }
+            } finally {
+                if (_didIteratorError6) {
+                    throw _iteratorError6;
+                }
+            }
+        }
+
+        setCategories(temp);
+        setFilters(function (prevFilters) {
+            prevFilters.pop();
+            var newGroup = authoredCategories.filter(function (category) {
+                return category.id === groupId;
+            })[0];
+            if (!newGroup.items.length) {
+                var nextFilters = prevFilters.concat(getAllCategoryProducts());
+                return nextFilters;
+            }
+            prevFilters.push(newGroup);
+            return prevFilters;
+        });
+        setSelectedCategory(groupId);
+        setCurrentPage(1);
+    }
+
+    /**
+     * @param {*} category
+     * @returns The Authored icon for the category if exists,
+     *          otherwise returns the default icon from the tags or an empty string
+     */
+    function getCategoryIcon(category) {
+        var authoredIcon = authoredFilters.filter(function (filter) {
+            return filter.id === category.id;
+        }).map(function (filter) {
+            return filter.icon;
+        }).toString();
+        return authoredIcon || category.icon || '';
+    }
+
     var collectionStr = collectionIdentifier ? collectionIdentifier + ' | ' : '';
     var filterStr = selectedFiltersItemsQty ? filterNames : 'No Filters';
     var searchQueryStr = searchQuery || 'None';
@@ -7465,9 +7661,17 @@ var Container = function Container(props) {
         'consonant-Wrapper--83PercentContainier': authoredLayoutContainer === _constants.LAYOUT_CONTAINER.SIZE_83_VW,
         'consonant-Wrapper--1200MaxWidth': authoredLayoutContainer === _constants.LAYOUT_CONTAINER.SIZE_1200_PX,
         'consonant-Wrapper--1600MaxWidth': authoredLayoutContainer === _constants.LAYOUT_CONTAINER.SIZE_1600_PX,
+        'consonant-Wrapper--1200MaxWidth Categories': isCategoriesContainer,
         'consonant-Wrapper--carousel': isCarouselContainer,
         'consonant-Wrapper--withLeftFilter': filterPanelEnabled && isLeftFilterPanel
     });
+
+    (0, _react.useEffect)(function () {
+        setFilters(function (prevFilters) {
+            var nextFilters = prevFilters.concat(getAllCategoryProducts());
+            return nextFilters;
+        });
+    }, []);
 
     return _react2.default.createElement(
         _contexts.ConfigContext.Provider,
@@ -7488,6 +7692,36 @@ var Container = function Container(props) {
                 _react2.default.createElement(
                     'div',
                     { className: 'consonant-Wrapper-inner' },
+                    isCategoriesContainer && _react2.default.createElement(
+                        _react.Fragment,
+                        null,
+                        _react2.default.createElement(
+                            'h2',
+                            { 'data-testid': 'consonant-TopFilters-categoriesTitle', className: 'consonant-TopFilters-categoriesTitle' },
+                            title
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'filters-category' },
+                            authoredCategories.map(function (category) {
+                                var selected = '';
+                                if (category.id === selectedCategory) {
+                                    selected = 'selected';
+                                }
+                                return _react2.default.createElement(
+                                    'button',
+                                    {
+                                        onClick: function onClick() {
+                                            categoryHandler(category.items, category.id);
+                                        },
+                                        'data-selected': selected,
+                                        'data-group': category.group.replaceAll(' ', '').toLowerCase() },
+                                    _react2.default.createElement('img', { className: 'filters-category--icon', src: getCategoryIcon(category), alt: category.icon && 'Category icon' }),
+                                    category.title
+                                );
+                            })
+                        )
+                    ),
                     displayLeftFilterPanel && isStandardContainer && _react2.default.createElement(
                         'div',
                         { className: 'consonant-Wrapper-leftFilterWrapper' },
@@ -7526,6 +7760,7 @@ var Container = function Container(props) {
                             onCheckboxClick: handleCheckBoxChange,
                             onFilterClick: handleFilterGroupClick,
                             onClearFilterItems: clearFilterItem,
+                            categories: currCategories,
                             onClearAllFilters: resetFiltersSearchAndBookmarks,
                             showLimitedFiltersQty: showLimitedFiltersQty,
                             searchComponent: _react2.default.createElement(_Search2.default, {
@@ -7840,11 +8075,13 @@ var Grid = function Grid(props) {
     var cardsGridLayout = getConfig('collection', 'layout.type');
     var cardsGridGutter = getConfig('collection', 'layout.gutter');
     var renderCardsBorders = getConfig('collection', 'setCardBorders');
+    var renderFooterDivider = getConfig('collection', 'showFooterDivider');
     var renderCardsOverlay = getConfig('collection', 'useOverlayLinks');
     var dateFormat = getConfig('collection', 'i18n.prettyDateIntervalFormat');
     var locale = getConfig('language', '');
     var paginationType = getConfig('pagination', 'type');
     var collectionButtonStyle = getConfig('collection', 'collectionButtonStyle');
+    var cardHoverEffect = getConfig('collection', 'cardHoverEffect');
 
     var customCard = void 0;
     try {
@@ -7870,7 +8107,8 @@ var Grid = function Grid(props) {
         'consonant-CardsGrid--with2xGutter': cardsGridGutter === _constants.GUTTER_SIZE.GUTTER_2_X,
         'consonant-CardsGrid--with3xGutter': cardsGridGutter === _constants.GUTTER_SIZE.GUTTER_3_X,
         'consonant-CardsGrid--with4xGutter': cardsGridGutter === _constants.GUTTER_SIZE.GUTTER_4_X,
-        'consonant-CardsGrid--doubleWideCards': collectionStyleOverride === _constants.CARD_STYLES.DOUBLE_WIDE
+        'consonant-CardsGrid--doubleWideCards': collectionStyleOverride === _constants.CARD_STYLES.DOUBLE_WIDE,
+        'card-hover-grow': cardHoverEffect === 'grow'
     });
 
     var bannerMap = {
@@ -7969,6 +8207,7 @@ var Grid = function Grid(props) {
             'data-card-style': collectionStyleOverride,
             'data-testid': 'consonant-CardsGrid',
             className: gridClass,
+            role: 'tablist',
             'aria-live': isAriaLiveActive ? 'polite' : 'off' },
         cardsToshow.map(function (card, index) {
             var cardStyleOverride = (0, _general.getByPath)(card, 'styles.typeOverride');
@@ -7996,6 +8235,7 @@ var Grid = function Grid(props) {
                         dateFormat: dateFormat,
                         locale: locale,
                         renderBorder: renderCardsBorders,
+                        renderDivider: renderFooterDivider,
                         renderOverlay: renderCardsOverlay,
                         hideCTA: hideCTA,
                         onFocus: function onFocus() {
@@ -46400,6 +46640,7 @@ var CardType = {
     footer: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_card.footerType)),
     contentArea: (0, _propTypes.shape)(_card.contentAreaType),
     renderBorder: _propTypes.bool,
+    renderDivider: _propTypes.bool,
     renderOverlay: _propTypes.bool,
     overlayLink: _propTypes.string,
     hideCTA: _propTypes.bool,
@@ -46422,6 +46663,7 @@ var defaultProps = {
     isBookmarked: false,
     disableBookmarkIco: false,
     renderBorder: true,
+    renderDivider: false,
     renderOverlay: false,
     overlayLink: '',
     hideCTA: false,
@@ -46464,6 +46706,8 @@ var Card = function Card(props) {
         image = _props$styles.backgroundImage,
         altText = _props$styles.backgroundAltText,
         mnemonic = _props$styles.mnemonic,
+        cardIcon = _props$styles.icon,
+        iconAlt = _props$styles.iconAlt,
         _props$contentArea = props.contentArea,
         title = _props$contentArea.title,
         label = _props$contentArea.detailText,
@@ -46485,6 +46729,7 @@ var Card = function Card(props) {
         logoBorderBg = _props$overlays$logo.borderColor,
         badgeText = _props$overlays.label.description,
         renderBorder = props.renderBorder,
+        renderDivider = props.renderDivider,
         renderOverlay = props.renderOverlay,
         overlayLink = props.overlayLink,
         hideCTA = props.hideCTA,
@@ -46600,13 +46845,14 @@ var Card = function Card(props) {
     var isProduct = cardStyle === 'product';
     var isText = cardStyle === 'text-card';
     var isFull = cardStyle === 'full-card';
+    var isIcon = cardStyle === 'icon-card';
 
     // Card elements to show
     var showHeader = !isProduct;
     var showBadge = isOneHalf || isThreeFourths || isFull;
     var showLogo = isOneHalf || isThreeFourths || isFull || isText;
     var showLabel = !isProduct && !isText;
-    var showVideoButton = !isProduct && !isText;
+    var showVideoButton = !isProduct && !isText && !isIcon;
     var showText = !isHalfHeight && !isFull;
     var showFooter = isOneHalf || isProduct || isText;
     var showFooterLeft = !isProduct;
@@ -46634,7 +46880,7 @@ var Card = function Card(props) {
     }
 
     var hasBanner = bannerDescriptionToUse && bannerFontColorToUse && bannerBackgroundColorToUse;
-    var headingAria = videoURL || label || detailText || description || logoSrc || badgeText || hasBanner && !disableBanners ? '' : title;
+    var headingAria = videoURL || label || detailText || description || logoSrc || badgeText || hasBanner && !disableBanners || !isIcon ? '' : title;
 
     var ariaText = title;
     if (hasBanner && !disableBanners) {
@@ -46663,7 +46909,7 @@ var Card = function Card(props) {
                 style: { backgroundImage: 'url("' + image + '")' },
                 role: altText && 'img',
                 'aria-label': altText },
-            hasBanner && !disableBanners && _react2.default.createElement(
+            hasBanner && !disableBanners && !isIcon && _react2.default.createElement(
                 'span',
                 {
                     'data-testid': 'consonant-Card-banner',
@@ -46714,6 +46960,18 @@ var Card = function Card(props) {
                     alt: isText ? altText : logoAlt,
                     loading: 'lazy',
                     width: '32' })
+            ),
+            isIcon && _react2.default.createElement(
+                'div',
+                {
+                    'data-testid': 'consonant-Card-logo',
+                    className: 'consonant-Card-logo' },
+                _react2.default.createElement('img', {
+                    src: cardIcon,
+                    alt: iconAlt,
+                    loading: 'lazy',
+                    width: '32',
+                    'data-testid': 'consonant-Card-logoImg' })
             )
         ),
         _react2.default.createElement(
@@ -46732,6 +46990,13 @@ var Card = function Card(props) {
                     className: 'consonant-Card-label' },
                 detailText
             ),
+            isIcon && detailText === '' && _react2.default.createElement(
+                'span',
+                {
+                    'data-testid': 'consonant-Card-label',
+                    className: 'consonant-Card-label' },
+                iconAlt
+            ),
             _react2.default.createElement(
                 'p',
                 {
@@ -46744,7 +47009,7 @@ var Card = function Card(props) {
                 isProduct && mnemonic && _react2.default.createElement('img', { src: mnemonic, alt: 'mnemonic', loading: 'lazy' }),
                 title
             ),
-            showText && description && _react2.default.createElement(
+            showText && description && !isIcon && _react2.default.createElement(
                 'p',
                 {
                     'data-testid': 'consonant-Card-text',
@@ -46753,7 +47018,7 @@ var Card = function Card(props) {
             ),
             showFooter && !hideCTA && footer.map(function (footerItem) {
                 return _react2.default.createElement(_CardFooter2.default, {
-                    divider: footerItem.divider,
+                    divider: renderDivider || footerItem.divider,
                     isFluid: footerItem.isFluid,
                     key: (0, _cuid2.default)(),
                     left: showFooterLeft ? extendFooterData(footerItem.left) : [],
@@ -46764,7 +47029,7 @@ var Card = function Card(props) {
             }),
             (isThreeFourths || isDoubleWide || isFull) && !renderOverlay && _react2.default.createElement(_LinkBlocker2.default, { target: linkBlockerTarget, link: overlay })
         ),
-        (renderOverlay || hideCTA || isHalfHeight) && _react2.default.createElement(_LinkBlocker2.default, { target: linkBlockerTarget, link: overlay })
+        (renderOverlay || hideCTA || isHalfHeight || isIcon) && _react2.default.createElement(_LinkBlocker2.default, { target: linkBlockerTarget, link: overlay })
     );
 };
 
@@ -47340,7 +47605,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var BUTTON_STYLE = {
     PRIMARY: 'primary',
     SECONDARY: 'secondary',
-    CTA: 'call-to-action'
+    CTA: 'call-to-action',
+    DARK: 'dark'
 };
 
 var buttonType = {
@@ -47399,11 +47665,16 @@ var Button = function Button(_ref) {
     var ctaAction = '';
 
     /**
+     * Whether we should render a dark button
+     */
+    var isDarkButton = cardButtonStyle === BUTTON_STYLE.DARK;
+
+    /**
      * Whether we should render cta button or not
      * cardButtonStyle has higher priority than style
      * @type {Boolean}
      */
-    var isCtaButton = style === BUTTON_STYLE.CTA && cardButtonStyle !== BUTTON_STYLE.PRIMARY || cardButtonStyle === BUTTON_STYLE.CTA && style !== BUTTON_STYLE.SECONDARY;
+    var isCtaButton = !isDarkButton && style !== BUTTON_STYLE.PRIMARY && cardButtonStyle !== BUTTON_STYLE.PRIMARY && cardButtonStyle !== BUTTON_STYLE.SECONDARY;
 
     if (isCta) {
         ctaAction = getConfig('collection', 'ctaAction');
@@ -47416,7 +47687,8 @@ var Button = function Button(_ref) {
      */
     var buttonClass = (0, _classnames2.default)({
         'consonant-BtnInfobit': true,
-        'consonant-BtnInfobit--cta': isCtaButton
+        'consonant-BtnInfobit--cta': isCtaButton,
+        'consonant-BtnInfobit--dark': isDarkButton
     });
 
     /**
@@ -48218,27 +48490,28 @@ exports.default = Gated;
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* WEBPACK VAR INJECTION */(function(process) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Immer", function() { return on; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "applyPatches", function() { return vn; });
+/* WEBPACK VAR INJECTION */(function(process) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Immer", function() { return un; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "applyPatches", function() { return pn; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "castDraft", function() { return K; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "castImmutable", function() { return $; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createDraft", function() { return pn; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createDraft", function() { return ln; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "current", function() { return D; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enableAllPlugins", function() { return J; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enableES5", function() { return T; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enableES5", function() { return N; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enableMapSet", function() { return C; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enablePatches", function() { return F; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "finishDraft", function() { return ln; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enablePatches", function() { return T; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "finishDraft", function() { return dn; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "freeze", function() { return d; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "immerable", function() { return L; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isDraft", function() { return t; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isDraftable", function() { return r; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isDraft", function() { return r; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isDraftable", function() { return t; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "nothing", function() { return H; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "original", function() { return e; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "produce", function() { return an; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "produceWithPatches", function() { return fn; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setAutoFreeze", function() { return cn; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setUseProxies", function() { return sn; });
-function n(n){for(var t=arguments.length,r=Array(t>1?t-1:0),e=1;e<t;e++)r[e-1]=arguments[e];if("production"!==process.env.NODE_ENV){var i=Y[n],o=i?"function"==typeof i?i.apply(null,r):i:"unknown error nr: "+n;throw Error("[Immer] "+o)}throw Error("[Immer] minified error nr: "+n+(r.length?" "+r.map((function(n){return"'"+n+"'"})).join(","):"")+". Find the full error at: https://bit.ly/3cXEKWf")}function t(n){return!!n&&!!n[Q]}function r(n){return!!n&&(function(n){if(!n||"object"!=typeof n)return!1;var t=Object.getPrototypeOf(n);return!t||t===Object.prototype}(n)||Array.isArray(n)||!!n[L]||!!n.constructor[L]||s(n)||v(n))}function e(r){return t(r)||n(23,r),r[Q].t}function i(n,t,r){void 0===r&&(r=!1),0===o(n)?(r?Object.keys:Z)(n).forEach((function(e){r&&"symbol"==typeof e||t(e,n[e],n)})):n.forEach((function(r,e){return t(e,r,n)}))}function o(n){var t=n[Q];return t?t.i>3?t.i-4:t.i:Array.isArray(n)?1:s(n)?2:v(n)?3:0}function u(n,t){return 2===o(n)?n.has(t):Object.prototype.hasOwnProperty.call(n,t)}function a(n,t){return 2===o(n)?n.get(t):n[t]}function f(n,t,r){var e=o(n);2===e?n.set(t,r):3===e?(n.delete(t),n.add(r)):n[t]=r}function c(n,t){return n===t?0!==n||1/n==1/t:n!=n&&t!=t}function s(n){return X&&n instanceof Map}function v(n){return q&&n instanceof Set}function p(n){return n.o||n.t}function l(n){if(Array.isArray(n))return Array.prototype.slice.call(n);var t=nn(n);delete t[Q];for(var r=Z(t),e=0;e<r.length;e++){var i=r[e],o=t[i];!1===o.writable&&(o.writable=!0,o.configurable=!0),(o.get||o.set)&&(t[i]={configurable:!0,writable:!0,enumerable:o.enumerable,value:n[i]})}return Object.create(Object.getPrototypeOf(n),t)}function d(n,e){y(n)||t(n)||!r(n)||(o(n)>1&&(n.set=n.add=n.clear=n.delete=h),Object.freeze(n),e&&i(n,(function(n,t){return d(t,!0)}),!0))}function h(){n(2)}function y(n){return null==n||"object"!=typeof n||Object.isFrozen(n)}function b(t){var r=tn[t];return r||n(18,t),r}function m(n,t){tn[n]||(tn[n]=t)}function _(){return"production"===process.env.NODE_ENV||U||n(0),U}function j(n,t){t&&(b("Patches"),n.u=[],n.s=[],n.v=t)}function g(n){O(n),n.p.forEach(S),n.p=null}function O(n){n===U&&(U=n.l)}function w(n){return U={p:[],l:U,h:n,m:!0,_:0}}function S(n){var t=n[Q];0===t.i||1===t.i?t.j():t.g=!0}function P(t,e){e._=e.p.length;var i=e.p[0],o=void 0!==t&&t!==i;return e.h.O||b("ES5").S(e,t,o),o?(i[Q].P&&(g(e),n(4)),r(t)&&(t=M(e,t),e.l||x(e,t)),e.u&&b("Patches").M(i[Q],t,e.u,e.s)):t=M(e,i,[]),g(e),e.u&&e.v(e.u,e.s),t!==H?t:void 0}function M(n,t,r){if(y(t))return t;var e=t[Q];if(!e)return i(t,(function(i,o){return A(n,e,t,i,o,r)}),!0),t;if(e.A!==n)return t;if(!e.P)return x(n,e.t,!0),e.t;if(!e.I){e.I=!0,e.A._--;var o=4===e.i||5===e.i?e.o=l(e.k):e.o;i(3===e.i?new Set(o):o,(function(t,i){return A(n,e,o,t,i,r)})),x(n,o,!1),r&&n.u&&b("Patches").R(e,r,n.u,n.s)}return e.o}function A(e,i,o,a,c,s){if("production"!==process.env.NODE_ENV&&c===o&&n(5),t(c)){var v=M(e,c,s&&i&&3!==i.i&&!u(i.D,a)?s.concat(a):void 0);if(f(o,a,v),!t(v))return;e.m=!1}if(r(c)&&!y(c)){if(!e.h.N&&e._<1)return;M(e,c),i&&i.A.l||x(e,c)}}function x(n,t,r){void 0===r&&(r=!1),n.h.N&&n.m&&d(t,r)}function z(n,t){var r=n[Q];return(r?p(r):n)[t]}function I(n,t){if(t in n)for(var r=Object.getPrototypeOf(n);r;){var e=Object.getOwnPropertyDescriptor(r,t);if(e)return e;r=Object.getPrototypeOf(r)}}function E(n){n.P||(n.P=!0,n.l&&E(n.l))}function k(n){n.o||(n.o=l(n.t))}function R(n,t,r){var e=s(t)?b("MapSet").T(t,r):v(t)?b("MapSet").F(t,r):n.O?function(n,t){var r=Array.isArray(n),e={i:r?1:0,A:t?t.A:_(),P:!1,I:!1,D:{},l:t,t:n,k:null,o:null,j:null,C:!1},i=e,o=rn;r&&(i=[e],o=en);var u=Proxy.revocable(i,o),a=u.revoke,f=u.proxy;return e.k=f,e.j=a,f}(t,r):b("ES5").J(t,r);return(r?r.A:_()).p.push(e),e}function D(e){return t(e)||n(22,e),function n(t){if(!r(t))return t;var e,u=t[Q],c=o(t);if(u){if(!u.P&&(u.i<4||!b("ES5").K(u)))return u.t;u.I=!0,e=N(t,c),u.I=!1}else e=N(t,c);return i(e,(function(t,r){u&&a(u.t,t)===r||f(e,t,n(r))})),3===c?new Set(e):e}(e)}function N(n,t){switch(t){case 2:return new Map(n);case 3:return Array.from(n)}return l(n)}function T(){function r(n,t){var r=s[n];return r?r.enumerable=t:s[n]=r={configurable:!0,enumerable:t,get:function(){var t=this[Q];return"production"!==process.env.NODE_ENV&&f(t),rn.get(t,n)},set:function(t){var r=this[Q];"production"!==process.env.NODE_ENV&&f(r),rn.set(r,n,t)}},r}function e(n){for(var t=n.length-1;t>=0;t--){var r=n[t][Q];if(!r.P)switch(r.i){case 5:a(r)&&E(r);break;case 4:o(r)&&E(r)}}}function o(n){for(var t=n.t,r=n.k,e=Z(r),i=e.length-1;i>=0;i--){var o=e[i];if(o!==Q){var a=t[o];if(void 0===a&&!u(t,o))return!0;var f=r[o],s=f&&f[Q];if(s?s.t!==a:!c(f,a))return!0}}var v=!!t[Q];return e.length!==Z(t).length+(v?0:1)}function a(n){var t=n.k;if(t.length!==n.t.length)return!0;var r=Object.getOwnPropertyDescriptor(t,t.length-1);return!(!r||r.get)}function f(t){t.g&&n(3,JSON.stringify(p(t)))}var s={};m("ES5",{J:function(n,t){var e=Array.isArray(n),i=function(n,t){if(n){for(var e=Array(t.length),i=0;i<t.length;i++)Object.defineProperty(e,""+i,r(i,!0));return e}var o=nn(t);delete o[Q];for(var u=Z(o),a=0;a<u.length;a++){var f=u[a];o[f]=r(f,n||!!o[f].enumerable)}return Object.create(Object.getPrototypeOf(t),o)}(e,n),o={i:e?5:4,A:t?t.A:_(),P:!1,I:!1,D:{},l:t,t:n,k:i,o:null,g:!1,C:!1};return Object.defineProperty(i,Q,{value:o,writable:!0}),i},S:function(n,r,o){o?t(r)&&r[Q].A===n&&e(n.p):(n.u&&function n(t){if(t&&"object"==typeof t){var r=t[Q];if(r){var e=r.t,o=r.k,f=r.D,c=r.i;if(4===c)i(o,(function(t){t!==Q&&(void 0!==e[t]||u(e,t)?f[t]||n(o[t]):(f[t]=!0,E(r)))})),i(e,(function(n){void 0!==o[n]||u(o,n)||(f[n]=!1,E(r))}));else if(5===c){if(a(r)&&(E(r),f.length=!0),o.length<e.length)for(var s=o.length;s<e.length;s++)f[s]=!1;else for(var v=e.length;v<o.length;v++)f[v]=!0;for(var p=Math.min(o.length,e.length),l=0;l<p;l++)void 0===f[l]&&n(o[l])}}}}(n.p[0]),e(n.p))},K:function(n){return 4===n.i?o(n):a(n)}})}function F(){function e(n){if(!r(n))return n;if(Array.isArray(n))return n.map(e);if(s(n))return new Map(Array.from(n.entries()).map((function(n){return[n[0],e(n[1])]})));if(v(n))return new Set(Array.from(n).map(e));var t=Object.create(Object.getPrototypeOf(n));for(var i in n)t[i]=e(n[i]);return t}function f(n){return t(n)?e(n):n}var c="add";m("Patches",{$:function(t,r){return r.forEach((function(r){for(var i=r.path,u=r.op,f=t,s=0;s<i.length-1;s++)"object"!=typeof(f=a(f,i[s]))&&n(15,i.join("/"));var v=o(f),p=e(r.value),l=i[i.length-1];switch(u){case"replace":switch(v){case 2:return f.set(l,p);case 3:n(16);default:return f[l]=p}case c:switch(v){case 1:return f.splice(l,0,p);case 2:return f.set(l,p);case 3:return f.add(p);default:return f[l]=p}case"remove":switch(v){case 1:return f.splice(l,1);case 2:return f.delete(l);case 3:return f.delete(r.value);default:return delete f[l]}default:n(17,u)}})),t},R:function(n,t,r,e){switch(n.i){case 0:case 4:case 2:return function(n,t,r,e){var o=n.t,s=n.o;i(n.D,(function(n,i){var v=a(o,n),p=a(s,n),l=i?u(o,n)?"replace":c:"remove";if(v!==p||"replace"!==l){var d=t.concat(n);r.push("remove"===l?{op:l,path:d}:{op:l,path:d,value:p}),e.push(l===c?{op:"remove",path:d}:"remove"===l?{op:c,path:d,value:f(v)}:{op:"replace",path:d,value:f(v)})}}))}(n,t,r,e);case 5:case 1:return function(n,t,r,e){var i=n.t,o=n.D,u=n.o;if(u.length<i.length){var a=[u,i];i=a[0],u=a[1];var s=[e,r];r=s[0],e=s[1]}for(var v=0;v<i.length;v++)if(o[v]&&u[v]!==i[v]){var p=t.concat([v]);r.push({op:"replace",path:p,value:f(u[v])}),e.push({op:"replace",path:p,value:f(i[v])})}for(var l=i.length;l<u.length;l++){var d=t.concat([l]);r.push({op:c,path:d,value:f(u[l])})}i.length<u.length&&e.push({op:"replace",path:t.concat(["length"]),value:i.length})}(n,t,r,e);case 3:return function(n,t,r,e){var i=n.t,o=n.o,u=0;i.forEach((function(n){if(!o.has(n)){var i=t.concat([u]);r.push({op:"remove",path:i,value:n}),e.unshift({op:c,path:i,value:n})}u++})),u=0,o.forEach((function(n){if(!i.has(n)){var o=t.concat([u]);r.push({op:c,path:o,value:n}),e.unshift({op:"remove",path:o,value:n})}u++}))}(n,t,r,e)}},M:function(n,t,r,e){r.push({op:"replace",path:[],value:t}),e.push({op:"replace",path:[],value:n.t})}})}function C(){function t(n,t){function r(){this.constructor=n}a(n,t),n.prototype=(r.prototype=t.prototype,new r)}function e(n){n.o||(n.D=new Map,n.o=new Map(n.t))}function o(n){n.o||(n.o=new Set,n.t.forEach((function(t){if(r(t)){var e=R(n.A.h,t,n);n.p.set(t,e),n.o.add(e)}else n.o.add(t)})))}function u(t){t.g&&n(3,JSON.stringify(p(t)))}var a=function(n,t){return(a=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(n,t){n.__proto__=t}||function(n,t){for(var r in t)t.hasOwnProperty(r)&&(n[r]=t[r])})(n,t)},f=function(){function n(n,t){return this[Q]={i:2,l:t,A:t?t.A:_(),P:!1,I:!1,o:void 0,D:void 0,t:n,k:this,C:!1,g:!1},this}t(n,Map);var o=n.prototype;return Object.defineProperty(o,"size",{get:function(){return p(this[Q]).size}}),o.has=function(n){return p(this[Q]).has(n)},o.set=function(n,t){var r=this[Q];return u(r),p(r).has(n)&&p(r).get(n)===t||(e(r),E(r),r.D.set(n,!0),r.o.set(n,t),r.D.set(n,!0)),this},o.delete=function(n){if(!this.has(n))return!1;var t=this[Q];return u(t),e(t),E(t),t.D.set(n,!1),t.o.delete(n),!0},o.clear=function(){var n=this[Q];u(n),p(n).size&&(e(n),E(n),n.D=new Map,i(n.t,(function(t){n.D.set(t,!1)})),n.o.clear())},o.forEach=function(n,t){var r=this;p(this[Q]).forEach((function(e,i){n.call(t,r.get(i),i,r)}))},o.get=function(n){var t=this[Q];u(t);var i=p(t).get(n);if(t.I||!r(i))return i;if(i!==t.t.get(n))return i;var o=R(t.A.h,i,t);return e(t),t.o.set(n,o),o},o.keys=function(){return p(this[Q]).keys()},o.values=function(){var n,t=this,r=this.keys();return(n={})[V]=function(){return t.values()},n.next=function(){var n=r.next();return n.done?n:{done:!1,value:t.get(n.value)}},n},o.entries=function(){var n,t=this,r=this.keys();return(n={})[V]=function(){return t.entries()},n.next=function(){var n=r.next();if(n.done)return n;var e=t.get(n.value);return{done:!1,value:[n.value,e]}},n},o[V]=function(){return this.entries()},n}(),c=function(){function n(n,t){return this[Q]={i:3,l:t,A:t?t.A:_(),P:!1,I:!1,o:void 0,t:n,k:this,p:new Map,g:!1,C:!1},this}t(n,Set);var r=n.prototype;return Object.defineProperty(r,"size",{get:function(){return p(this[Q]).size}}),r.has=function(n){var t=this[Q];return u(t),t.o?!!t.o.has(n)||!(!t.p.has(n)||!t.o.has(t.p.get(n))):t.t.has(n)},r.add=function(n){var t=this[Q];return u(t),this.has(n)||(o(t),E(t),t.o.add(n)),this},r.delete=function(n){if(!this.has(n))return!1;var t=this[Q];return u(t),o(t),E(t),t.o.delete(n)||!!t.p.has(n)&&t.o.delete(t.p.get(n))},r.clear=function(){var n=this[Q];u(n),p(n).size&&(o(n),E(n),n.o.clear())},r.values=function(){var n=this[Q];return u(n),o(n),n.o.values()},r.entries=function(){var n=this[Q];return u(n),o(n),n.o.entries()},r.keys=function(){return this.values()},r[V]=function(){return this.values()},r.forEach=function(n,t){for(var r=this.values(),e=r.next();!e.done;)n.call(t,e.value,e.value,this),e=r.next()},n}();m("MapSet",{T:function(n,t){return new f(n,t)},F:function(n,t){return new c(n,t)}})}function J(){T(),C(),F()}function K(n){return n}function $(n){return n}var G,U,W="undefined"!=typeof Symbol&&"symbol"==typeof Symbol("x"),X="undefined"!=typeof Map,q="undefined"!=typeof Set,B="undefined"!=typeof Proxy&&void 0!==Proxy.revocable&&"undefined"!=typeof Reflect,H=W?Symbol.for("immer-nothing"):((G={})["immer-nothing"]=!0,G),L=W?Symbol.for("immer-draftable"):"__$immer_draftable",Q=W?Symbol.for("immer-state"):"__$immer_state",V="undefined"!=typeof Symbol&&Symbol.iterator||"@@iterator",Y={0:"Illegal state",1:"Immer drafts cannot have computed properties",2:"This object has been frozen and should not be mutated",3:function(n){return"Cannot use a proxy that has been revoked. Did you pass an object from inside an immer function to an async process? "+n},4:"An immer producer returned a new value *and* modified its draft. Either return a new value *or* modify the draft.",5:"Immer forbids circular references",6:"The first or second argument to `produce` must be a function",7:"The third argument to `produce` must be a function or undefined",8:"First argument to `createDraft` must be a plain object, an array, or an immerable object",9:"First argument to `finishDraft` must be a draft returned by `createDraft`",10:"The given draft is already finalized",11:"Object.defineProperty() cannot be used on an Immer draft",12:"Object.setPrototypeOf() cannot be used on an Immer draft",13:"Immer only supports deleting array indices",14:"Immer only supports setting array indices and the 'length' property",15:function(n){return"Cannot apply patch, path doesn't resolve: "+n},16:'Sets cannot have "replace" patches.',17:function(n){return"Unsupported patch operation: "+n},18:function(n){return"The plugin for '"+n+"' has not been loaded into Immer. To enable the plugin, import and call `enable"+n+"()` when initializing your application."},20:"Cannot use proxies if Proxy, Proxy.revocable or Reflect are not available",21:function(n){return"produce can only be called on things that are draftable: plain objects, arrays, Map, Set or classes that are marked with '[immerable]: true'. Got '"+n+"'"},22:function(n){return"'current' expects a draft, got: "+n},23:function(n){return"'original' expects a draft, got: "+n}},Z="undefined"!=typeof Reflect&&Reflect.ownKeys?Reflect.ownKeys:void 0!==Object.getOwnPropertySymbols?function(n){return Object.getOwnPropertyNames(n).concat(Object.getOwnPropertySymbols(n))}:Object.getOwnPropertyNames,nn=Object.getOwnPropertyDescriptors||function(n){var t={};return Z(n).forEach((function(r){t[r]=Object.getOwnPropertyDescriptor(n,r)})),t},tn={},rn={get:function(n,t){if(t===Q)return n;var e=p(n);if(!u(e,t))return function(n,t,r){var e,i=I(t,r);return i?"value"in i?i.value:null===(e=i.get)||void 0===e?void 0:e.call(n.k):void 0}(n,e,t);var i=e[t];return n.I||!r(i)?i:i===z(n.t,t)?(k(n),n.o[t]=R(n.A.h,i,n)):i},has:function(n,t){return t in p(n)},ownKeys:function(n){return Reflect.ownKeys(p(n))},set:function(n,t,r){var e=I(p(n),t);if(null==e?void 0:e.set)return e.set.call(n.k,r),!0;if(!n.P){var i=z(p(n),t),o=null==i?void 0:i[Q];if(o&&o.t===r)return n.o[t]=r,n.D[t]=!1,!0;if(c(r,i)&&(void 0!==r||u(n.t,t)))return!0;k(n),E(n)}return n.o[t]=r,n.D[t]=!0,!0},deleteProperty:function(n,t){return void 0!==z(n.t,t)||t in n.t?(n.D[t]=!1,k(n),E(n)):delete n.D[t],n.o&&delete n.o[t],!0},getOwnPropertyDescriptor:function(n,t){var r=p(n),e=Reflect.getOwnPropertyDescriptor(r,t);return e?{writable:!0,configurable:1!==n.i||"length"!==t,enumerable:e.enumerable,value:r[t]}:e},defineProperty:function(){n(11)},getPrototypeOf:function(n){return Object.getPrototypeOf(n.t)},setPrototypeOf:function(){n(12)}},en={};i(rn,(function(n,t){en[n]=function(){return arguments[0]=arguments[0][0],t.apply(this,arguments)}})),en.deleteProperty=function(t,r){return"production"!==process.env.NODE_ENV&&isNaN(parseInt(r))&&n(13),rn.deleteProperty.call(this,t[0],r)},en.set=function(t,r,e){return"production"!==process.env.NODE_ENV&&"length"!==r&&isNaN(parseInt(r))&&n(14),rn.set.call(this,t[0],r,e,t[0])};var on=function(){function e(n){this.O=B,this.N="production"!==process.env.NODE_ENV,"boolean"==typeof(null==n?void 0:n.useProxies)&&this.setUseProxies(n.useProxies),"boolean"==typeof(null==n?void 0:n.autoFreeze)&&this.setAutoFreeze(n.autoFreeze),this.produce=this.produce.bind(this),this.produceWithPatches=this.produceWithPatches.bind(this)}var i=e.prototype;return i.produce=function(t,e,i){if("function"==typeof t&&"function"!=typeof e){var o=e;e=t;var u=this;return function(n){var t=this;void 0===n&&(n=o);for(var r=arguments.length,i=Array(r>1?r-1:0),a=1;a<r;a++)i[a-1]=arguments[a];return u.produce(n,(function(n){var r;return(r=e).call.apply(r,[t,n].concat(i))}))}}var a;if("function"!=typeof e&&n(6),void 0!==i&&"function"!=typeof i&&n(7),r(t)){var f=w(this),c=R(this,t,void 0),s=!0;try{a=e(c),s=!1}finally{s?g(f):O(f)}return"undefined"!=typeof Promise&&a instanceof Promise?a.then((function(n){return j(f,i),P(n,f)}),(function(n){throw g(f),n})):(j(f,i),P(a,f))}if(!t||"object"!=typeof t){if((a=e(t))===H)return;return void 0===a&&(a=t),this.N&&d(a,!0),a}n(21,t)},i.produceWithPatches=function(n,t){var r,e,i=this;return"function"==typeof n?function(t){for(var r=arguments.length,e=Array(r>1?r-1:0),o=1;o<r;o++)e[o-1]=arguments[o];return i.produceWithPatches(t,(function(t){return n.apply(void 0,[t].concat(e))}))}:[this.produce(n,t,(function(n,t){r=n,e=t})),r,e]},i.createDraft=function(e){r(e)||n(8),t(e)&&(e=D(e));var i=w(this),o=R(this,e,void 0);return o[Q].C=!0,O(i),o},i.finishDraft=function(t,r){var e=t&&t[Q];"production"!==process.env.NODE_ENV&&(e&&e.C||n(9),e.I&&n(10));var i=e.A;return j(i,r),P(void 0,i)},i.setAutoFreeze=function(n){this.N=n},i.setUseProxies=function(t){t&&!B&&n(20),this.O=t},i.applyPatches=function(n,r){var e;for(e=r.length-1;e>=0;e--){var i=r[e];if(0===i.path.length&&"replace"===i.op){n=i.value;break}}var o=b("Patches").$;return t(n)?o(n,r):this.produce(n,(function(n){return o(n,r.slice(e+1))}))},e}(),un=new on,an=un.produce,fn=un.produceWithPatches.bind(un),cn=un.setAutoFreeze.bind(un),sn=un.setUseProxies.bind(un),vn=un.applyPatches.bind(un),pn=un.createDraft.bind(un),ln=un.finishDraft.bind(un);/* harmony default export */ __webpack_exports__["default"] = (an);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "produce", function() { return fn; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "produceWithPatches", function() { return cn; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setAutoFreeze", function() { return sn; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setUseProxies", function() { return vn; });
+function n(n){for(var r=arguments.length,t=Array(r>1?r-1:0),e=1;e<r;e++)t[e-1]=arguments[e];if("production"!==process.env.NODE_ENV){var i=Y[n],o=i?"function"==typeof i?i.apply(null,t):i:"unknown error nr: "+n;throw Error("[Immer] "+o)}throw Error("[Immer] minified error nr: "+n+(t.length?" "+t.map((function(n){return"'"+n+"'"})).join(","):"")+". Find the full error at: https://bit.ly/3cXEKWf")}function r(n){return!!n&&!!n[Q]}function t(n){return!!n&&(function(n){if(!n||"object"!=typeof n)return!1;var r=Object.getPrototypeOf(n);if(null===r)return!0;var t=Object.hasOwnProperty.call(r,"constructor")&&r.constructor;return"function"==typeof t&&Function.toString.call(t)===Z}(n)||Array.isArray(n)||!!n[L]||!!n.constructor[L]||s(n)||v(n))}function e(t){return r(t)||n(23,t),t[Q].t}function i(n,r,t){void 0===t&&(t=!1),0===o(n)?(t?Object.keys:nn)(n).forEach((function(e){t&&"symbol"==typeof e||r(e,n[e],n)})):n.forEach((function(t,e){return r(e,t,n)}))}function o(n){var r=n[Q];return r?r.i>3?r.i-4:r.i:Array.isArray(n)?1:s(n)?2:v(n)?3:0}function u(n,r){return 2===o(n)?n.has(r):Object.prototype.hasOwnProperty.call(n,r)}function a(n,r){return 2===o(n)?n.get(r):n[r]}function f(n,r,t){var e=o(n);2===e?n.set(r,t):3===e?(n.delete(r),n.add(t)):n[r]=t}function c(n,r){return n===r?0!==n||1/n==1/r:n!=n&&r!=r}function s(n){return X&&n instanceof Map}function v(n){return q&&n instanceof Set}function p(n){return n.o||n.t}function l(n){if(Array.isArray(n))return Array.prototype.slice.call(n);var r=rn(n);delete r[Q];for(var t=nn(r),e=0;e<t.length;e++){var i=t[e],o=r[i];!1===o.writable&&(o.writable=!0,o.configurable=!0),(o.get||o.set)&&(r[i]={configurable:!0,writable:!0,enumerable:o.enumerable,value:n[i]})}return Object.create(Object.getPrototypeOf(n),r)}function d(n,e){return void 0===e&&(e=!1),y(n)||r(n)||!t(n)?n:(o(n)>1&&(n.set=n.add=n.clear=n.delete=h),Object.freeze(n),e&&i(n,(function(n,r){return d(r,!0)}),!0),n)}function h(){n(2)}function y(n){return null==n||"object"!=typeof n||Object.isFrozen(n)}function b(r){var t=tn[r];return t||n(18,r),t}function m(n,r){tn[n]||(tn[n]=r)}function _(){return"production"===process.env.NODE_ENV||U||n(0),U}function j(n,r){r&&(b("Patches"),n.u=[],n.s=[],n.v=r)}function g(n){O(n),n.p.forEach(S),n.p=null}function O(n){n===U&&(U=n.l)}function w(n){return U={p:[],l:U,h:n,m:!0,_:0}}function S(n){var r=n[Q];0===r.i||1===r.i?r.j():r.g=!0}function P(r,e){e._=e.p.length;var i=e.p[0],o=void 0!==r&&r!==i;return e.h.O||b("ES5").S(e,r,o),o?(i[Q].P&&(g(e),n(4)),t(r)&&(r=M(e,r),e.l||x(e,r)),e.u&&b("Patches").M(i[Q],r,e.u,e.s)):r=M(e,i,[]),g(e),e.u&&e.v(e.u,e.s),r!==H?r:void 0}function M(n,r,t){if(y(r))return r;var e=r[Q];if(!e)return i(r,(function(i,o){return A(n,e,r,i,o,t)}),!0),r;if(e.A!==n)return r;if(!e.P)return x(n,e.t,!0),e.t;if(!e.I){e.I=!0,e.A._--;var o=4===e.i||5===e.i?e.o=l(e.k):e.o;i(3===e.i?new Set(o):o,(function(r,i){return A(n,e,o,r,i,t)})),x(n,o,!1),t&&n.u&&b("Patches").R(e,t,n.u,n.s)}return e.o}function A(e,i,o,a,c,s){if("production"!==process.env.NODE_ENV&&c===o&&n(5),r(c)){var v=M(e,c,s&&i&&3!==i.i&&!u(i.D,a)?s.concat(a):void 0);if(f(o,a,v),!r(v))return;e.m=!1}if(t(c)&&!y(c)){if(!e.h.F&&e._<1)return;M(e,c),i&&i.A.l||x(e,c)}}function x(n,r,t){void 0===t&&(t=!1),n.h.F&&n.m&&d(r,t)}function z(n,r){var t=n[Q];return(t?p(t):n)[r]}function I(n,r){if(r in n)for(var t=Object.getPrototypeOf(n);t;){var e=Object.getOwnPropertyDescriptor(t,r);if(e)return e;t=Object.getPrototypeOf(t)}}function k(n){n.P||(n.P=!0,n.l&&k(n.l))}function E(n){n.o||(n.o=l(n.t))}function R(n,r,t){var e=s(r)?b("MapSet").N(r,t):v(r)?b("MapSet").T(r,t):n.O?function(n,r){var t=Array.isArray(n),e={i:t?1:0,A:r?r.A:_(),P:!1,I:!1,D:{},l:r,t:n,k:null,o:null,j:null,C:!1},i=e,o=en;t&&(i=[e],o=on);var u=Proxy.revocable(i,o),a=u.revoke,f=u.proxy;return e.k=f,e.j=a,f}(r,t):b("ES5").J(r,t);return(t?t.A:_()).p.push(e),e}function D(e){return r(e)||n(22,e),function n(r){if(!t(r))return r;var e,u=r[Q],c=o(r);if(u){if(!u.P&&(u.i<4||!b("ES5").K(u)))return u.t;u.I=!0,e=F(r,c),u.I=!1}else e=F(r,c);return i(e,(function(r,t){u&&a(u.t,r)===t||f(e,r,n(t))})),3===c?new Set(e):e}(e)}function F(n,r){switch(r){case 2:return new Map(n);case 3:return Array.from(n)}return l(n)}function N(){function t(n,r){var t=s[n];return t?t.enumerable=r:s[n]=t={configurable:!0,enumerable:r,get:function(){var r=this[Q];return"production"!==process.env.NODE_ENV&&f(r),en.get(r,n)},set:function(r){var t=this[Q];"production"!==process.env.NODE_ENV&&f(t),en.set(t,n,r)}},t}function e(n){for(var r=n.length-1;r>=0;r--){var t=n[r][Q];if(!t.P)switch(t.i){case 5:a(t)&&k(t);break;case 4:o(t)&&k(t)}}}function o(n){for(var r=n.t,t=n.k,e=nn(t),i=e.length-1;i>=0;i--){var o=e[i];if(o!==Q){var a=r[o];if(void 0===a&&!u(r,o))return!0;var f=t[o],s=f&&f[Q];if(s?s.t!==a:!c(f,a))return!0}}var v=!!r[Q];return e.length!==nn(r).length+(v?0:1)}function a(n){var r=n.k;if(r.length!==n.t.length)return!0;var t=Object.getOwnPropertyDescriptor(r,r.length-1);return!(!t||t.get)}function f(r){r.g&&n(3,JSON.stringify(p(r)))}var s={};m("ES5",{J:function(n,r){var e=Array.isArray(n),i=function(n,r){if(n){for(var e=Array(r.length),i=0;i<r.length;i++)Object.defineProperty(e,""+i,t(i,!0));return e}var o=rn(r);delete o[Q];for(var u=nn(o),a=0;a<u.length;a++){var f=u[a];o[f]=t(f,n||!!o[f].enumerable)}return Object.create(Object.getPrototypeOf(r),o)}(e,n),o={i:e?5:4,A:r?r.A:_(),P:!1,I:!1,D:{},l:r,t:n,k:i,o:null,g:!1,C:!1};return Object.defineProperty(i,Q,{value:o,writable:!0}),i},S:function(n,t,o){o?r(t)&&t[Q].A===n&&e(n.p):(n.u&&function n(r){if(r&&"object"==typeof r){var t=r[Q];if(t){var e=t.t,o=t.k,f=t.D,c=t.i;if(4===c)i(o,(function(r){r!==Q&&(void 0!==e[r]||u(e,r)?f[r]||n(o[r]):(f[r]=!0,k(t)))})),i(e,(function(n){void 0!==o[n]||u(o,n)||(f[n]=!1,k(t))}));else if(5===c){if(a(t)&&(k(t),f.length=!0),o.length<e.length)for(var s=o.length;s<e.length;s++)f[s]=!1;else for(var v=e.length;v<o.length;v++)f[v]=!0;for(var p=Math.min(o.length,e.length),l=0;l<p;l++)void 0===f[l]&&n(o[l])}}}}(n.p[0]),e(n.p))},K:function(n){return 4===n.i?o(n):a(n)}})}function T(){function e(n){if(!t(n))return n;if(Array.isArray(n))return n.map(e);if(s(n))return new Map(Array.from(n.entries()).map((function(n){return[n[0],e(n[1])]})));if(v(n))return new Set(Array.from(n).map(e));var r=Object.create(Object.getPrototypeOf(n));for(var i in n)r[i]=e(n[i]);return r}function f(n){return r(n)?e(n):n}var c="add";m("Patches",{$:function(r,t){return t.forEach((function(t){for(var i=t.path,u=t.op,f=r,s=0;s<i.length-1;s++){var v=o(f),p=i[s];0!==v&&1!==v||"__proto__"!==p&&"constructor"!==p||n(24),"function"==typeof f&&"prototype"===p&&n(24),"object"!=typeof(f=a(f,p))&&n(15,i.join("/"))}var l=o(f),d=e(t.value),h=i[i.length-1];switch(u){case"replace":switch(l){case 2:return f.set(h,d);case 3:n(16);default:return f[h]=d}case c:switch(l){case 1:return f.splice(h,0,d);case 2:return f.set(h,d);case 3:return f.add(d);default:return f[h]=d}case"remove":switch(l){case 1:return f.splice(h,1);case 2:return f.delete(h);case 3:return f.delete(t.value);default:return delete f[h]}default:n(17,u)}})),r},R:function(n,r,t,e){switch(n.i){case 0:case 4:case 2:return function(n,r,t,e){var o=n.t,s=n.o;i(n.D,(function(n,i){var v=a(o,n),p=a(s,n),l=i?u(o,n)?"replace":c:"remove";if(v!==p||"replace"!==l){var d=r.concat(n);t.push("remove"===l?{op:l,path:d}:{op:l,path:d,value:p}),e.push(l===c?{op:"remove",path:d}:"remove"===l?{op:c,path:d,value:f(v)}:{op:"replace",path:d,value:f(v)})}}))}(n,r,t,e);case 5:case 1:return function(n,r,t,e){var i=n.t,o=n.D,u=n.o;if(u.length<i.length){var a=[u,i];i=a[0],u=a[1];var s=[e,t];t=s[0],e=s[1]}for(var v=0;v<i.length;v++)if(o[v]&&u[v]!==i[v]){var p=r.concat([v]);t.push({op:"replace",path:p,value:f(u[v])}),e.push({op:"replace",path:p,value:f(i[v])})}for(var l=i.length;l<u.length;l++){var d=r.concat([l]);t.push({op:c,path:d,value:f(u[l])})}i.length<u.length&&e.push({op:"replace",path:r.concat(["length"]),value:i.length})}(n,r,t,e);case 3:return function(n,r,t,e){var i=n.t,o=n.o,u=0;i.forEach((function(n){if(!o.has(n)){var i=r.concat([u]);t.push({op:"remove",path:i,value:n}),e.unshift({op:c,path:i,value:n})}u++})),u=0,o.forEach((function(n){if(!i.has(n)){var o=r.concat([u]);t.push({op:c,path:o,value:n}),e.unshift({op:"remove",path:o,value:n})}u++}))}(n,r,t,e)}},M:function(n,r,t,e){t.push({op:"replace",path:[],value:r}),e.push({op:"replace",path:[],value:n.t})}})}function C(){function r(n,r){function t(){this.constructor=n}a(n,r),n.prototype=(t.prototype=r.prototype,new t)}function e(n){n.o||(n.D=new Map,n.o=new Map(n.t))}function o(n){n.o||(n.o=new Set,n.t.forEach((function(r){if(t(r)){var e=R(n.A.h,r,n);n.p.set(r,e),n.o.add(e)}else n.o.add(r)})))}function u(r){r.g&&n(3,JSON.stringify(p(r)))}var a=function(n,r){return(a=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(n,r){n.__proto__=r}||function(n,r){for(var t in r)r.hasOwnProperty(t)&&(n[t]=r[t])})(n,r)},f=function(){function n(n,r){return this[Q]={i:2,l:r,A:r?r.A:_(),P:!1,I:!1,o:void 0,D:void 0,t:n,k:this,C:!1,g:!1},this}r(n,Map);var o=n.prototype;return Object.defineProperty(o,"size",{get:function(){return p(this[Q]).size}}),o.has=function(n){return p(this[Q]).has(n)},o.set=function(n,r){var t=this[Q];return u(t),p(t).has(n)&&p(t).get(n)===r||(e(t),k(t),t.D.set(n,!0),t.o.set(n,r),t.D.set(n,!0)),this},o.delete=function(n){if(!this.has(n))return!1;var r=this[Q];return u(r),e(r),k(r),r.D.set(n,!1),r.o.delete(n),!0},o.clear=function(){var n=this[Q];u(n),p(n).size&&(e(n),k(n),n.D=new Map,i(n.t,(function(r){n.D.set(r,!1)})),n.o.clear())},o.forEach=function(n,r){var t=this;p(this[Q]).forEach((function(e,i){n.call(r,t.get(i),i,t)}))},o.get=function(n){var r=this[Q];u(r);var i=p(r).get(n);if(r.I||!t(i))return i;if(i!==r.t.get(n))return i;var o=R(r.A.h,i,r);return e(r),r.o.set(n,o),o},o.keys=function(){return p(this[Q]).keys()},o.values=function(){var n,r=this,t=this.keys();return(n={})[V]=function(){return r.values()},n.next=function(){var n=t.next();return n.done?n:{done:!1,value:r.get(n.value)}},n},o.entries=function(){var n,r=this,t=this.keys();return(n={})[V]=function(){return r.entries()},n.next=function(){var n=t.next();if(n.done)return n;var e=r.get(n.value);return{done:!1,value:[n.value,e]}},n},o[V]=function(){return this.entries()},n}(),c=function(){function n(n,r){return this[Q]={i:3,l:r,A:r?r.A:_(),P:!1,I:!1,o:void 0,t:n,k:this,p:new Map,g:!1,C:!1},this}r(n,Set);var t=n.prototype;return Object.defineProperty(t,"size",{get:function(){return p(this[Q]).size}}),t.has=function(n){var r=this[Q];return u(r),r.o?!!r.o.has(n)||!(!r.p.has(n)||!r.o.has(r.p.get(n))):r.t.has(n)},t.add=function(n){var r=this[Q];return u(r),this.has(n)||(o(r),k(r),r.o.add(n)),this},t.delete=function(n){if(!this.has(n))return!1;var r=this[Q];return u(r),o(r),k(r),r.o.delete(n)||!!r.p.has(n)&&r.o.delete(r.p.get(n))},t.clear=function(){var n=this[Q];u(n),p(n).size&&(o(n),k(n),n.o.clear())},t.values=function(){var n=this[Q];return u(n),o(n),n.o.values()},t.entries=function(){var n=this[Q];return u(n),o(n),n.o.entries()},t.keys=function(){return this.values()},t[V]=function(){return this.values()},t.forEach=function(n,r){for(var t=this.values(),e=t.next();!e.done;)n.call(r,e.value,e.value,this),e=t.next()},n}();m("MapSet",{N:function(n,r){return new f(n,r)},T:function(n,r){return new c(n,r)}})}function J(){N(),C(),T()}function K(n){return n}function $(n){return n}var G,U,W="undefined"!=typeof Symbol&&"symbol"==typeof Symbol("x"),X="undefined"!=typeof Map,q="undefined"!=typeof Set,B="undefined"!=typeof Proxy&&void 0!==Proxy.revocable&&"undefined"!=typeof Reflect,H=W?Symbol.for("immer-nothing"):((G={})["immer-nothing"]=!0,G),L=W?Symbol.for("immer-draftable"):"__$immer_draftable",Q=W?Symbol.for("immer-state"):"__$immer_state",V="undefined"!=typeof Symbol&&Symbol.iterator||"@@iterator",Y={0:"Illegal state",1:"Immer drafts cannot have computed properties",2:"This object has been frozen and should not be mutated",3:function(n){return"Cannot use a proxy that has been revoked. Did you pass an object from inside an immer function to an async process? "+n},4:"An immer producer returned a new value *and* modified its draft. Either return a new value *or* modify the draft.",5:"Immer forbids circular references",6:"The first or second argument to `produce` must be a function",7:"The third argument to `produce` must be a function or undefined",8:"First argument to `createDraft` must be a plain object, an array, or an immerable object",9:"First argument to `finishDraft` must be a draft returned by `createDraft`",10:"The given draft is already finalized",11:"Object.defineProperty() cannot be used on an Immer draft",12:"Object.setPrototypeOf() cannot be used on an Immer draft",13:"Immer only supports deleting array indices",14:"Immer only supports setting array indices and the 'length' property",15:function(n){return"Cannot apply patch, path doesn't resolve: "+n},16:'Sets cannot have "replace" patches.',17:function(n){return"Unsupported patch operation: "+n},18:function(n){return"The plugin for '"+n+"' has not been loaded into Immer. To enable the plugin, import and call `enable"+n+"()` when initializing your application."},20:"Cannot use proxies if Proxy, Proxy.revocable or Reflect are not available",21:function(n){return"produce can only be called on things that are draftable: plain objects, arrays, Map, Set or classes that are marked with '[immerable]: true'. Got '"+n+"'"},22:function(n){return"'current' expects a draft, got: "+n},23:function(n){return"'original' expects a draft, got: "+n},24:"Patching reserved attributes like __proto__, prototype and constructor is not allowed"},Z=""+Object.prototype.constructor,nn="undefined"!=typeof Reflect&&Reflect.ownKeys?Reflect.ownKeys:void 0!==Object.getOwnPropertySymbols?function(n){return Object.getOwnPropertyNames(n).concat(Object.getOwnPropertySymbols(n))}:Object.getOwnPropertyNames,rn=Object.getOwnPropertyDescriptors||function(n){var r={};return nn(n).forEach((function(t){r[t]=Object.getOwnPropertyDescriptor(n,t)})),r},tn={},en={get:function(n,r){if(r===Q)return n;var e=p(n);if(!u(e,r))return function(n,r,t){var e,i=I(r,t);return i?"value"in i?i.value:null===(e=i.get)||void 0===e?void 0:e.call(n.k):void 0}(n,e,r);var i=e[r];return n.I||!t(i)?i:i===z(n.t,r)?(E(n),n.o[r]=R(n.A.h,i,n)):i},has:function(n,r){return r in p(n)},ownKeys:function(n){return Reflect.ownKeys(p(n))},set:function(n,r,t){var e=I(p(n),r);if(null==e?void 0:e.set)return e.set.call(n.k,t),!0;if(!n.P){var i=z(p(n),r),o=null==i?void 0:i[Q];if(o&&o.t===t)return n.o[r]=t,n.D[r]=!1,!0;if(c(t,i)&&(void 0!==t||u(n.t,r)))return!0;E(n),k(n)}return n.o[r]===t&&"number"!=typeof t||(n.o[r]=t,n.D[r]=!0,!0)},deleteProperty:function(n,r){return void 0!==z(n.t,r)||r in n.t?(n.D[r]=!1,E(n),k(n)):delete n.D[r],n.o&&delete n.o[r],!0},getOwnPropertyDescriptor:function(n,r){var t=p(n),e=Reflect.getOwnPropertyDescriptor(t,r);return e?{writable:!0,configurable:1!==n.i||"length"!==r,enumerable:e.enumerable,value:t[r]}:e},defineProperty:function(){n(11)},getPrototypeOf:function(n){return Object.getPrototypeOf(n.t)},setPrototypeOf:function(){n(12)}},on={};i(en,(function(n,r){on[n]=function(){return arguments[0]=arguments[0][0],r.apply(this,arguments)}})),on.deleteProperty=function(r,t){return"production"!==process.env.NODE_ENV&&isNaN(parseInt(t))&&n(13),en.deleteProperty.call(this,r[0],t)},on.set=function(r,t,e){return"production"!==process.env.NODE_ENV&&"length"!==t&&isNaN(parseInt(t))&&n(14),en.set.call(this,r[0],t,e,r[0])};var un=function(){function e(r){var e=this;this.O=B,this.F=!0,this.produce=function(r,i,o){if("function"==typeof r&&"function"!=typeof i){var u=i;i=r;var a=e;return function(n){var r=this;void 0===n&&(n=u);for(var t=arguments.length,e=Array(t>1?t-1:0),o=1;o<t;o++)e[o-1]=arguments[o];return a.produce(n,(function(n){var t;return(t=i).call.apply(t,[r,n].concat(e))}))}}var f;if("function"!=typeof i&&n(6),void 0!==o&&"function"!=typeof o&&n(7),t(r)){var c=w(e),s=R(e,r,void 0),v=!0;try{f=i(s),v=!1}finally{v?g(c):O(c)}return"undefined"!=typeof Promise&&f instanceof Promise?f.then((function(n){return j(c,o),P(n,c)}),(function(n){throw g(c),n})):(j(c,o),P(f,c))}if(!r||"object"!=typeof r){if((f=i(r))===H)return;return void 0===f&&(f=r),e.F&&d(f,!0),f}n(21,r)},this.produceWithPatches=function(n,r){return"function"==typeof n?function(r){for(var t=arguments.length,i=Array(t>1?t-1:0),o=1;o<t;o++)i[o-1]=arguments[o];return e.produceWithPatches(r,(function(r){return n.apply(void 0,[r].concat(i))}))}:[e.produce(n,r,(function(n,r){t=n,i=r})),t,i];var t,i},"boolean"==typeof(null==r?void 0:r.useProxies)&&this.setUseProxies(r.useProxies),"boolean"==typeof(null==r?void 0:r.autoFreeze)&&this.setAutoFreeze(r.autoFreeze)}var i=e.prototype;return i.createDraft=function(e){t(e)||n(8),r(e)&&(e=D(e));var i=w(this),o=R(this,e,void 0);return o[Q].C=!0,O(i),o},i.finishDraft=function(r,t){var e=r&&r[Q];"production"!==process.env.NODE_ENV&&(e&&e.C||n(9),e.I&&n(10));var i=e.A;return j(i,t),P(void 0,i)},i.setAutoFreeze=function(n){this.F=n},i.setUseProxies=function(r){r&&!B&&n(20),this.O=r},i.applyPatches=function(n,t){var e;for(e=t.length-1;e>=0;e--){var i=t[e];if(0===i.path.length&&"replace"===i.op){n=i.value;break}}var o=b("Patches").$;return r(n)?o(n,t):this.produce(n,(function(n){return o(n,t.slice(e+1))}))},e}(),an=new un,fn=an.produce,cn=an.produceWithPatches.bind(an),sn=an.setAutoFreeze.bind(an),vn=an.setUseProxies.bind(an),pn=an.applyPatches.bind(an),ln=an.createDraft.bind(an),dn=an.finishDraft.bind(an);/* harmony default export */ __webpack_exports__["default"] = (fn);
 //# sourceMappingURL=immer.esm.js.map
 
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(12)))
@@ -48610,6 +48883,7 @@ var LinkBlocker = function LinkBlocker(props) {
             href: link,
             target: target,
             rel: 'noopener noreferrer',
+            'aria-label': link,
             tabIndex: '0',
             className: 'consonant-LinkBlocker' })
     );
@@ -52478,8 +52752,8 @@ var CardFilterer = function () {
 
     _createClass(CardFilterer, [{
         key: 'filterCards',
-        value: function filterCards(activeFilters, activePanels, filterType, filterTypes) {
-            this.filteredCards = (0, _Helpers.getFilteredCards)(this.filteredCards, activeFilters, activePanels, filterType, filterTypes);
+        value: function filterCards(activeFilters, activePanels, filterType, filterTypes, currCategories) {
+            this.filteredCards = (0, _Helpers.getFilteredCards)(this.filteredCards, activeFilters, activePanels, filterType, filterTypes, currCategories);
             return this;
         }
 
@@ -52812,6 +53086,8 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
     var HeadingLevel = getConfig('collection', 'i18n.titleHeadingLevel');
     var title = getConfig('collection', 'i18n.title');
     var useLightText = getConfig('collection', 'useLightText');
+    var layoutContainer = getConfig('collection', 'layout.container');
+    var isCategoryPage = layoutContainer === 'categories';
 
     /**
      * Top search bar identifier
@@ -52873,7 +53149,7 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
      * Whether we should hide all filters after quantity defined in MAX_TRUNCATED_FILTERS constant
      * @type {Boolean}
      */
-    var shouldHideSomeFilters = filters.length > _constants.MAX_TRUNCATED_FILTERS;
+    var shouldHideSomeFilters = layoutContainer !== 'categories' && filters.length > _constants.MAX_TRUNCATED_FILTERS;
 
     /**
      * Whether the sort dropdown should be displayed
@@ -52898,7 +53174,7 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
      * should be displayed
      * @type {Boolean}
      */
-    var shouldDisplayCollectionInfo = title || showTotalResults;
+    var shouldDisplayCollectionInfo = (title || showTotalResults) && !isCategoryPage;
 
     /**
      * Whether the search bar should be displayed
@@ -53220,6 +53496,12 @@ var Group = function Group(props) {
     var mobileGroupTotalResultsText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.totalResultsText').replace('{total}', results);
     var mobileGroupApplyBtnText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.applyBtnText');
     var mobileGroupDoneBtnText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.doneBtnText');
+    var isCategoriesPage = getConfig('collection', 'layout.container') === 'categories';
+    var isProductsFilter = id === 'caas:products';
+
+    var showFilter = isCategoriesPage && isProductsFilter || isCategoriesPage && !id.startsWith('caas:product-categories') // don't show product filters
+    || isCategoriesPage && id.includes(name) // include custom product filter
+    || !isCategoriesPage && !isProductsFilter; // do not show custom product filter
 
     /**
      **** Hooks ****
@@ -53338,65 +53620,75 @@ var Group = function Group(props) {
         'is-selected': atleastOneFilterSelected && filterGroupNotOpened
     });
 
+    // Update filter label for categories page if needed
+    var filterLabel = isCategoriesPage && id.includes(name) ? 'All ' + name.replaceAll('-', ' ') : name;
+
+    filterLabel = isCategoriesPage && id === 'caas:events/series' ? 'All event series' : filterLabel;
+    filterLabel = isCategoriesPage && id.startsWith('caas:events/region') ? 'All locations' : filterLabel;
+
     /**
      * Impression Tracking
      */
     var filterName = name + ' ' + (isOpened ? 'Close' : 'Open');
 
     return _react2.default.createElement(
-        'div',
-        {
-            'data-testid': 'consonant-TopFilter',
-            'daa-lh': name,
-            className: containerClassname },
-        _react2.default.createElement(
+        _react.Fragment,
+        null,
+        showFilter && _react2.default.createElement(
             'div',
             {
-                className: 'consonant-TopFilter-inner' },
-            _react2.default.createElement(
-                'h3',
-                {
-                    className: 'consonant-TopFilter-name',
-                    'daa-ll': filterName },
-                _react2.default.createElement(
-                    'button',
-                    {
-                        type: 'button',
-                        className: 'consonant-TopFilter-link',
-                        'data-testid': 'consonant-TopFilter-link',
-                        onClick: handleToggle,
-                        tabIndex: '0' },
-                    name,
-                    _react2.default.createElement(
-                        'span',
-                        {
-                            className: 'consonant-TopFilter-selectedItemsQty' },
-                        selectedItemQtyText
-                    )
-                )
-            ),
+                'data-testid': 'consonant-TopFilter',
+                'daa-lh': name,
+                className: containerClassname + ' FILTER-ID-' + id },
             _react2.default.createElement(
                 'div',
                 {
-                    className: 'consonant-TopFilter-selectedItems' },
+                    className: 'consonant-TopFilter-inner' },
+                _react2.default.createElement(
+                    'h3',
+                    {
+                        className: 'consonant-TopFilter-name',
+                        'daa-ll': filterName },
+                    _react2.default.createElement(
+                        'button',
+                        {
+                            type: 'button',
+                            className: 'consonant-TopFilter-link',
+                            'data-testid': 'consonant-TopFilter-link',
+                            onClick: handleToggle,
+                            tabIndex: '0' },
+                        filterLabel,
+                        _react2.default.createElement(
+                            'span',
+                            {
+                                className: 'consonant-TopFilter-selectedItemsQty' },
+                            selectedItemQtyText
+                        )
+                    )
+                ),
                 _react2.default.createElement(
                     'div',
                     {
-                        className: 'consonant-TopFilter-absoluteWrapper' },
-                    _react2.default.createElement(_Items.Items, {
-                        clipWrapperItemsCount: clipWrapperItemsCount,
-                        handleCheck: handleCheck,
-                        stopPropagation: _general.stopPropagation,
-                        items: items }),
-                    shouldClipFilters && _react2.default.createElement('aside', {
-                        className: 'consonant-TopFilter-bg' }),
-                    _react2.default.createElement(_Footer.Footer, {
-                        mobileFooterBtnText: mobileFooterBtnText,
-                        handleToggle: handleToggle,
-                        clearFilterText: clearFilterText,
-                        handleClear: handleClear,
-                        numItemsSelected: numItemsSelected,
-                        mobileGroupTotalResultsText: mobileGroupTotalResultsText })
+                        className: 'consonant-TopFilter-selectedItems' },
+                    _react2.default.createElement(
+                        'div',
+                        {
+                            className: 'consonant-TopFilter-absoluteWrapper' },
+                        _react2.default.createElement(_Items.Items, {
+                            clipWrapperItemsCount: clipWrapperItemsCount,
+                            handleCheck: handleCheck,
+                            stopPropagation: _general.stopPropagation,
+                            items: items }),
+                        shouldClipFilters && _react2.default.createElement('aside', {
+                            className: 'consonant-TopFilter-bg' }),
+                        _react2.default.createElement(_Footer.Footer, {
+                            mobileFooterBtnText: mobileFooterBtnText,
+                            handleToggle: handleToggle,
+                            clearFilterText: clearFilterText,
+                            handleClear: handleClear,
+                            numItemsSelected: numItemsSelected,
+                            mobileGroupTotalResultsText: mobileGroupTotalResultsText })
+                    )
                 )
             )
         )
@@ -53484,40 +53776,54 @@ var Items = function Items(props) {
         'consonant-TopFilter-items--clipped': shouldClipItems
     });
 
+    var set = new Set();
     return _react2.default.createElement(
         'ul',
         {
             'data-testid': 'consonant-TopFilter-items',
             className: clipFilterItemsClass },
         items.map(function (item) {
+            var name = item.id.split('/')[1];
+            var title = void 0;
+            if (!set.has(name)) {
+                title = name.replaceAll('-', ' ');
+                set.add(name);
+            }
             return _react2.default.createElement(
-                'li',
-                {
-                    key: item.id,
-                    'data-testid': 'consonant-TopFilter-item',
-                    'daa-ll': item.label,
-                    className: 'consonant-TopFilter-item' },
+                _react.Fragment,
+                null,
+                item.fromCategory && title && _react2.default.createElement(
+                    'span',
+                    { className: 'filter-group-title' },
+                    title
+                ),
                 _react2.default.createElement(
-                    'label',
+                    'li',
                     {
-                        htmlFor: item.id,
-                        className: 'consonant-TopFilter-itemLabel',
-                        onClick: stopPropagation },
-                    _react2.default.createElement('input', {
-                        'data-testid': 'consonant-TopFilter-itemCheckbox',
-                        id: item.id,
-                        value: item.id,
-                        type: 'checkbox',
-                        onChange: handleCheck,
-                        checked: item.selected,
-                        tabIndex: '0' }),
-                    _react2.default.createElement('span', {
-                        className: 'consonant-TopFilter-itemCheckmark' }),
+                        key: item.id,
+                        'data-testid': 'consonant-TopFilter-item',
+                        'daa-ll': item.label,
+                        className: 'consonant-TopFilter-item' },
                     _react2.default.createElement(
-                        'span',
+                        'label',
                         {
-                            className: 'consonant-TopFilter-itemName' },
-                        item.label
+                            htmlFor: item.id,
+                            className: 'consonant-TopFilter-itemLabel',
+                            onClick: stopPropagation },
+                        _react2.default.createElement('input', {
+                            'data-testid': 'consonant-TopFilter-itemCheckbox',
+                            id: item.id,
+                            value: item.id,
+                            type: 'checkbox',
+                            onChange: handleCheck,
+                            checked: item.selected,
+                            tabIndex: '0' }),
+                        _react2.default.createElement('span', { className: 'consonant-TopFilter-itemCheckmark' }),
+                        _react2.default.createElement(
+                            'span',
+                            { className: 'consonant-TopFilter-itemName' },
+                            item.group || item.label
+                        )
                     )
                 )
             );
@@ -54111,6 +54417,7 @@ var Item = function Item(props) {
      * Impression Tracking
      */
     var filterName = name + ' ' + (isOpened ? 'Close' : 'Open');
+    var showFilter = id !== 'caas:products';
 
     return _react2.default.createElement(
         'div',
@@ -54118,12 +54425,12 @@ var Item = function Item(props) {
             'data-testid': 'consonant-LeftFilter',
             'daa-lh': name,
             className: leftFilterClassName },
-        _react2.default.createElement(
+        showFilter && _react2.default.createElement(
             'div',
             {
                 className: 'consonant-LeftFilter-inner' },
             _react2.default.createElement(
-                'h3',
+                'p',
                 {
                     'data-testid': 'consonant-LeftFilter-name',
                     className: 'consonant-LeftFilter-name',
@@ -54661,9 +54968,8 @@ var Title = function Title(props) {
 
 
     return _react2.default.createElement(
-        'h3',
-        {
-            className: 'consonant-LeftFilters-deskTitle' },
+        'p',
+        { className: 'consonant-LeftFilters-deskTitle' },
         panelHeader
     );
 };

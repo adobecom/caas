@@ -12,7 +12,7 @@ const renderCard = setup(Card, DEFAULT_PROPS_HALF_HEIGHT);
 const cardStyle = 'half-height';
 
 describe(`Consonant/Card/${cardStyle}`, () => {
-
+    
     test('should be able to render a card header', () => {
         renderCard({
             cardStyle,

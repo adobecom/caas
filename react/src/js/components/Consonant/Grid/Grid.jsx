@@ -80,11 +80,13 @@ const Grid = (props) => {
     const cardsGridLayout = getConfig('collection', 'layout.type');
     const cardsGridGutter = getConfig('collection', 'layout.gutter');
     const renderCardsBorders = getConfig('collection', 'setCardBorders');
+    const renderFooterDivider = getConfig('collection', 'showFooterDivider');
     const renderCardsOverlay = getConfig('collection', 'useOverlayLinks');
     const dateFormat = getConfig('collection', 'i18n.prettyDateIntervalFormat');
     const locale = getConfig('language', '');
     const paginationType = getConfig('pagination', 'type');
     const collectionButtonStyle = getConfig('collection', 'collectionButtonStyle');
+    const cardHoverEffect = getConfig('collection', 'cardHoverEffect');
 
     let customCard;
     try {
@@ -111,6 +113,7 @@ const Grid = (props) => {
         'consonant-CardsGrid--with3xGutter': cardsGridGutter === GUTTER_SIZE.GUTTER_3_X,
         'consonant-CardsGrid--with4xGutter': cardsGridGutter === GUTTER_SIZE.GUTTER_4_X,
         'consonant-CardsGrid--doubleWideCards': collectionStyleOverride === CARD_STYLES.DOUBLE_WIDE,
+        'card-hover-grow': cardHoverEffect === 'grow',
     });
 
     const bannerMap = {
@@ -206,6 +209,7 @@ const Grid = (props) => {
             data-card-style={collectionStyleOverride}
             data-testid="consonant-CardsGrid"
             className={gridClass}
+            role="tablist"
             aria-live={isAriaLiveActive ? 'polite' : 'off'}>
             {cardsToshow.map((card, index) => {
                 const cardStyleOverride = getByPath(card, 'styles.typeOverride');
@@ -229,6 +233,7 @@ const Grid = (props) => {
                                 dateFormat={dateFormat}
                                 locale={locale}
                                 renderBorder={renderCardsBorders}
+                                renderDivider={renderFooterDivider}
                                 renderOverlay={renderCardsOverlay}
                                 hideCTA={hideCTA}
                                 onFocus={() => scrollCardIntoView(card.id)} />

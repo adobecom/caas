@@ -12,7 +12,9 @@
         },
         "styles": {
             "typeOverride": "3:2",
-            "backgroundImage": "https://some-url.com/some-background-image.png"
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
         },
         "overlays": {
             "banner": {
@@ -88,7 +90,9 @@
         },
         "styles": {
             "typeOverride": "3:2",
-            "backgroundImage": "https://some-url.com/some-background-image.png"
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
         },
         "overlays": {
             "banner": {
@@ -161,7 +165,9 @@
         },
         "styles": {
             "typeOverride": "3:2",
-            "backgroundImage": "https://some-url.com/some-background-image.png"
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
         },
         "overlays": {
             "banner": {
@@ -224,7 +230,9 @@
         },
         "styles": {
             "typeOverride": "3:2",
-            "backgroundImage": "https://some-url.com/some-background-image.png"
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
         },
         "overlays": {
             "banner": {
@@ -276,7 +284,9 @@
         },
         "styles": {
             "typeOverride": "3:2",
-            "backgroundImage": "https://some-url.com/some-background-image.png"
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
         },
         "overlays": {
             "banner": {
@@ -337,7 +347,9 @@
         },
         "styles": {
             "typeOverride": "3:2",
-            "backgroundImage": "https://some-url.com/some-background-image.png"
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
         },
         "overlays": {
             "banner": {
@@ -398,7 +410,9 @@
         },
         "styles": {
             "typeOverride": "3:2",
-            "backgroundImage": "https://some-url.com/some-background-image.png"
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
         },
         "overlays": {
             "banner": {
@@ -457,7 +471,9 @@
         },
         "styles": {
             "typeOverride": "3:2",
-            "backgroundImage": "https://some-url.com/some-background-image.png"
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
         },
         "overlays": {
             "banner": {
@@ -515,7 +531,9 @@
         },
         "styles": {
             "typeOverride": "3:2",
-            "backgroundImage": "https://some-url.com/some-background-image.png"
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
         },
         "overlays": {
             "banner": {
@@ -571,7 +589,9 @@
         },
         "styles": {
             "typeOverride": "3:2",
-            "backgroundImage": "https://some-url.com/some-background-image.png"
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
         },
         "overlays": {
             "banner": {
@@ -633,7 +653,9 @@
         },
         "styles": {
             "typeOverride": "3:2",
-            "backgroundImage": "https://some-url.com/some-background-image.png"
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
         },
         "overlays": {
             "banner": {
@@ -691,7 +713,9 @@
         },
         "styles": {
             "typeOverride": "3:2",
-            "backgroundImage": "https://some-url.com/some-background-image.png"
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
         },
         "overlays": {
             "banner": {
@@ -748,7 +772,9 @@
         },
         "styles": {
             "typeOverride": "3:2",
-            "backgroundImage": "https://some-url.com/some-background-image.png"
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
         },
         "overlays": {
             "banner": {
@@ -807,7 +833,9 @@
         },
         "styles": {
             "typeOverride": "3:2",
-            "backgroundImage": "https://some-url.com/some-background-image.png"
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
         },
         "overlays": {
             "banner": {
@@ -855,7 +883,9 @@
         },
         "styles": {
             "typeOverride": "3:2",
-            "backgroundImage": "https://some-url.com/some-background-image.png"
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
         },
         "overlays": {
             "banner": {
@@ -933,7 +963,9 @@
         },
         "styles": {
             "typeOverride": "3:2",
-            "backgroundImage": "https://some-url.com/some-background-image.png"
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
         },
         "overlays": {
             "banner": {
@@ -999,7 +1031,9 @@
         },
         "styles": {
             "typeOverride": "3:2",
-            "backgroundImage": "https://some-url.com/some-background-image.png"
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
         },
         "overlays": {
             "banner": {
@@ -1047,7 +1081,9 @@
         },
         "styles": {
             "typeOverride": "3:2",
-            "backgroundImage": "https://some-url.com/some-background-image.png"
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
         },
         "overlays": {
             "banner": {
@@ -1081,7 +1117,9 @@
         },
         "styles": {
             "typeOverride": "1:1",
-            "backgroundImage": "https://some-url.com/some-background-image.png"
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
         },
         "overlays": {
             "banner": {
@@ -1115,7 +1153,9 @@
         },
         "styles": {
             "typeOverride": null,
-            "backgroundImage": "https://some-url.com/some-background-image.png"
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
         },
         "overlays": {
             "banner": {
@@ -1149,7 +1189,9 @@
         },
         "styles": {
             "typeOverride": "1:1",
-            "backgroundImage": "https://some-url.com/some-background-image.png"
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
         },
         "overlays": {
             "banner": {
@@ -1183,7 +1225,9 @@
         },
         "styles": {
             "typeOverride": "full-card",
-            "backgroundImage": "https://some-url.com/some-background-image.png"
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
         },
         "overlays": {
             "banner": {
