@@ -250,7 +250,7 @@ const Container = (props) => {
      * @type {[Array, Function]} Filters
      */
     const [filters, setFilters] = useState([]);
-    window.filters = filters;
+    // window.filters = filters;
     const [currCategories, setCategories] = useState([]);
 
     /**
@@ -1236,6 +1236,7 @@ const Container = (props) => {
      *          Prepends the "All products" label to the list of categories
      */
     function getAllCategoryProducts() {
+        // if (isCategoriesContainer) return [];
         let allCategories = [];
         for (const category of authoredCategories) {
             for (const item of category.items) {

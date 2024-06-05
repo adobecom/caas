@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.12.2 (6/4/2024, 10:46:23)
+ * Chimera UI Libraries - Build 0.12.2 (6/4/2024, 18:32:10)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6349,8 +6349,8 @@ var Container = function Container(props) {
         _useState14 = _slicedToArray(_useState13, 2),
         filters = _useState14[0],
         setFilters = _useState14[1];
+    // window.filters = filters;
 
-    window.filters = filters;
 
     var _useState15 = (0, _react.useState)([]),
         _useState16 = _slicedToArray(_useState15, 2),
@@ -7525,6 +7525,7 @@ var Container = function Container(props) {
      *          Prepends the "All products" label to the list of categories
      */
     function getAllCategoryProducts() {
+        // if (isCategoriesContainer) return [];
         var allCategories = [];
         var _iteratorNormalCompletion4 = true;
         var _didIteratorError4 = false;
@@ -53497,7 +53498,10 @@ var Group = function Group(props) {
     var mobileGroupDoneBtnText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.doneBtnText');
     var isCategoriesPage = getConfig('collection', 'layout.container') === 'categories';
     var isProductsFilter = id === 'caas:products';
-    var showProductsFilter = !isCategoriesPage || isCategoriesPage && isProductsFilter || !id.startsWith('caas:product-categories') || id.includes(name);
+
+    var showFilter = isCategoriesPage && isProductsFilter || isCategoriesPage && !id.startsWith('caas:product-categories') // don't show product filters
+    || isCategoriesPage && id.includes(name) // include custom product filter
+    || !isCategoriesPage && !isProductsFilter; // do not show custom product filter
 
     /**
      **** Hooks ****
@@ -53619,8 +53623,8 @@ var Group = function Group(props) {
     // Update filter label for categories page if needed
     var filterLabel = isCategoriesPage && id.includes(name) ? 'All ' + name.replaceAll('-', ' ') : name;
 
-    filterLabel = id === 'caas:events/series' ? 'All event series' : filterLabel;
-    filterLabel = id.startsWith('caas:events/region') ? 'All locations' : filterLabel;
+    filterLabel = isCategoriesPage && id === 'caas:events/series' ? 'All event series' : filterLabel;
+    filterLabel = isCategoriesPage && id.startsWith('caas:events/region') ? 'All locations' : filterLabel;
 
     /**
      * Impression Tracking
@@ -53630,7 +53634,7 @@ var Group = function Group(props) {
     return _react2.default.createElement(
         _react.Fragment,
         null,
-        showProductsFilter && _react2.default.createElement(
+        showFilter && _react2.default.createElement(
             'div',
             {
                 'data-testid': 'consonant-TopFilter',
@@ -54413,6 +54417,7 @@ var Item = function Item(props) {
      * Impression Tracking
      */
     var filterName = name + ' ' + (isOpened ? 'Close' : 'Open');
+    var showFilter = id !== 'caas:products';
 
     return _react2.default.createElement(
         'div',
@@ -54420,7 +54425,7 @@ var Item = function Item(props) {
             'data-testid': 'consonant-LeftFilter',
             'daa-lh': name,
             className: leftFilterClassName },
-        _react2.default.createElement(
+        showFilter && _react2.default.createElement(
             'div',
             {
                 className: 'consonant-LeftFilter-inner' },

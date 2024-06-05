@@ -81,10 +81,11 @@ const Group = (props) => {
     const mobileGroupDoneBtnText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.doneBtnText');
     const isCategoriesPage = getConfig('collection', 'layout.container') === 'categories';
     const isProductsFilter = id === 'caas:products';
-    const showProductsFilter = !isCategoriesPage
-        || (isCategoriesPage && isProductsFilter)
-        || !id.startsWith('caas:product-categories')
-        || id.includes(name);
+
+    const showFilter = (isCategoriesPage && isProductsFilter)
+        || (isCategoriesPage && !id.startsWith('caas:product-categories')) // don't show product filters
+        || (isCategoriesPage && id.includes(name)) // include custom product filter
+        || (!isCategoriesPage && !isProductsFilter); // do not show custom product filter
 
     /**
      **** Hooks ****
@@ -201,8 +202,8 @@ const Group = (props) => {
         ? `All ${name.replaceAll('-', ' ')}`
         : name;
 
-    filterLabel = id === 'caas:events/series' ? 'All event series' : filterLabel;
-    filterLabel = id.startsWith('caas:events/region') ? 'All locations' : filterLabel;
+    filterLabel = (isCategoriesPage && id === 'caas:events/series') ? 'All event series' : filterLabel;
+    filterLabel = (isCategoriesPage && id.startsWith('caas:events/region')) ? 'All locations' : filterLabel;
 
     /**
      * Impression Tracking
@@ -212,7 +213,7 @@ const Group = (props) => {
     return (
         <Fragment>
             {
-                showProductsFilter &&
+                showFilter &&
                 <div
                     data-testid="consonant-TopFilter"
                     daa-lh={name}
