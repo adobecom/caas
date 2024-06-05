@@ -18,6 +18,23 @@
         max-width: 100%;
         grid-template-columns: repeat(auto-fit, minmax(@consonantCardMinWidth, max-content));
 
+        /* Cards hover grow animation */
+
+        &.card-hover-grow {
+            .consonant-Card.one-half {
+                transition: all 0.2s ease-in-out;
+            }
+
+            .consonant-Card.one-half:hover {
+                transform: scale(1.03);
+                transition: all 0.2s ease-in-out;
+            }
+
+            .consonant-Card.one-half [class *= -header]:after {
+                display: none !important;
+            }
+        }
+
         /* Spacing variations */
 
         &--with1xGutter {
