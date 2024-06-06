@@ -1339,6 +1339,7 @@ const Container = (props) => {
                             <div className="filters-category">
                                 {
                                     authoredCategories.map((category) => {
+                                        if (!category) return null;
                                         let selected = '';
                                         if (category.id === selectedCategory) {
                                             selected = 'selected';

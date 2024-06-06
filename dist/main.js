@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.13.0 (6/5/2024, 12:28:24)
+ * Chimera UI Libraries - Build 0.13.0 (6/6/2024, 08:59:58)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -7706,6 +7706,7 @@ var Container = function Container(props) {
                             'div',
                             { className: 'filters-category' },
                             authoredCategories.map(function (category) {
+                                if (!category) return null;
                                 var selected = '';
                                 if (category.id === selectedCategory) {
                                     selected = 'selected';
