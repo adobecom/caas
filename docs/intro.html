@@ -27,6 +27,21 @@
             display: block;
             background-position: center;
             background-size: 102%;
+            display: flex;
+            justify-content: end;
+        }
+        .banner h1 {
+            font-size: 2.25rem;
+            color: white;
+            text-align: right;
+            position: relative;
+            bottom: 0;
+            align-content: center;
+            text-shadow: 1px 1px #000;
+            margin: 20px 50px;
+        }
+        .banner h1::before {
+            content: '';
         }
         .container {
             display: flex;
@@ -162,12 +177,14 @@
     </style>
 </head>
     <body>
-    <div class="banner"></div>
+    <div class="banner">
+        <h1>CaaS: Introduction</h1>
+    </div>
     <div class="container">
         <div class="sidebar">
             <div class="toc">
                 <h3>Related Links</h3>
-                <a href="./authoring-milo.html"><b>Authoring in Milo</b></a>
+                <a href="./authoring-milo.html"><b>Authoring Cards in Milo</b></a>
                 <ul class="related-links">
                     <li><a href="./authoring-milo.html#create-new-card">Create or Edit a Card in Milo</a></li>
                     <li><a href="./authoring-milo.html#send-to-caas">Send a Card to CaaS</a></li>

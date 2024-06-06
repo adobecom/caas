@@ -20,12 +20,28 @@
             min-height: 100vh;
         }
         .banner {
+            /* background: url(https://milo.adobe.com/drafts/caas/docs/media_1ef924fa5f7943727d30f003e85bcbd2bbd7f4dd3.png); */
             background: url(https://milo.adobe.com/drafts/caas/docs/media_12e683bbf3831e4bedbce5d8687c5c71d59fadd42.png);
             min-width: 320px;
             height: 160px;
             display: block;
             background-position: center;
             background-size: 102%;
+            display: flex;
+            justify-content: end;
+        }
+        .banner h1 {
+            font-size: 2.25rem;
+            color: white;
+            text-align: right;
+            position: relative;
+            bottom: 0;
+            align-content: center;
+            text-shadow: 1px 1px #000;
+            margin: 20px 50px;
+        }
+        .banner h1::before {
+            content: '';
         }
         .container {
             /* max-width: 85%; */
@@ -221,7 +237,9 @@
     </style>
 </head>
 <body>
-    <div class="banner"></div>
+    <div class="banner">
+        <h1>CaaS: Milo Configurator</h1>
+    </div>
     <div class="container">
         <div class="sidebar">
             <div class="toc">
@@ -236,7 +254,7 @@
                     <li><a href="./authoring-milo.html#create-new-marquee">Create a new Marquee</a></li>
                 </ul>
                 
-                <b>Content Consumption in Milo</b>
+                <b>Milo Card Collection</b>
                 <ul class="related-links">
                     <li><a href="https://milo.adobe.com/tools/caas"><b>Milo Collection Configurator</b></a></li>
                     <li><a href="./configurator.html#basics"><b>The Basics</b>: Create a new Card Collection</a></li>
@@ -274,7 +292,7 @@
                     <!-- Learn how the CaaS framework works both in front and behind the scenes and how to create and display your content. -->
                     
                     <h1>
-                        Introduction to CaaS - <span>Milo CaaS Configurator</span>
+                        Introduction to CaaS - <span>Milo Configurator</span>
                     </h1>
                     <p>
                         The following provides a concise overview of the <a href="https://milo.adobe.com/tools/caas">CaaS Milo Configurator</a>. 
