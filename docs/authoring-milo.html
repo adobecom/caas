@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE HTML>
 <html lang="en">
 
@@ -6,9 +8,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="robots" content="noodp" />
-    <link rel="stylesheet" href="../dependencies/typekit.css" type="text/css">
+    <link rel="stylesheet" href="https://adobecom.github.io/caas/dependencies/typekit.css" type="text/css">
     <title>CaaS Documentation Hub: Authoring in Milo</title>
     <style>
+        html {
+           scroll-behavior: smooth;
+        }
         body {
             font-family: 'adobe-clean', sans-serif;
             font-size: 16px;
@@ -51,7 +56,7 @@
             font-size: 15px;
             padding: 4px 8px;
             margin-top: 0;
-        }        
+        }
         .sidebar ul li{
             list-style: none;
             margin: 4px 0;
@@ -66,9 +71,9 @@
             color: #666;
             text-decoration: none;
         }
-        
+
         .content {
-            padding: 10px 20px;    
+            padding: 10px 20px;
             max-width: 960px;
         }
         .nav {
@@ -91,11 +96,17 @@
             color: #747474;
             font-weight: 400;
         }
-
+        hr.divider {
+            margin: 60px 0 0;
+            border: 1px solid #ccc;
+        }
         h2 {
             font-size: 1.5em;
             font-weight: 700;
-            margin: 1em 0 .35em;
+            padding: .5em 0;
+            background: #000;
+            background: linear-gradient(-55deg, transparent, #ddd, #ccc, #eee, transparent);
+            margin-top: 0;
         }
         .authoring-milo-content h2:before {
             content: url(./images/tools.svg);
@@ -110,19 +121,27 @@
         p {
             margin: 0 0 1em;
         }
-        p, ul {
+        p, ul, ol {
             font-size: 18px;
             font-weight: 200;
         }
-        .content ul {
+        .content ul,
+        .content ol {
             margin: 0 10px 10px 0;
             padding-left: 30px;
         }
-
-        .content p:has(+ ul) {
-            margin-bottom: 5px;
+        .content li {
+            margin: 8px 0;
         }
 
+        .content li img.border {
+            margin: 10px 0 5px;
+            border: solid 1px #ccc;
+        }
+
+        .content p:has(+ ul, + ol) {
+            margin-bottom: 5px;
+        }
 
         a {
             color: #0073e6;
@@ -146,9 +165,37 @@
             width: 260px;
             z-index: -1;
         }
-        strong {
+        b, strong {
             font-weight: 400;
         }
+
+        /* **************************************************** */
+        table {
+            border-collapse: collapse;
+            width: 90%;
+        }
+        th {
+            border: solid 1px #ccc;
+        }
+        td:first-child {
+            font-weight: 500;
+            width: 30%
+        }
+
+        td {
+            border: solid 1px #ccc;
+            padding: 4px 10px;
+            vertical-align: top;
+            font-size: 16px;
+            font-weight: 300;
+        }
+        td ul {
+            font-weight: 300;
+            margin: 0 10px 10px 0;
+            font-size: 16px;
+            padding-left: 30px;
+        }
+
         @media (max-width: 768px) {
             body {
                 padding-bottom: 120px;
@@ -165,7 +212,7 @@
                 top: -300px;
                 width: 100vw;
                 filter: brightness(0.8);
-            }   
+            }
             .container {
                 padding: 1em;
                 flex-direction: column;
@@ -176,7 +223,9 @@
             }
         }
     </style>
-</head>
+
+<script nonce="95821872878d152dd49c67c6eda19ef2">(window.BOOMR_mq=window.BOOMR_mq||[]).push(["addVar",{"rua.upush":"false","rua.cpush":"false","rua.upre":"false","rua.cpre":"true","rua.uprl":"false","rua.cprl":"false","rua.cprf":"false","rua.trans":"SJ-1684a075-a3eb-4541-9d70-e07c46abcb1b","rua.cook":"true","rua.ims":"false","rua.ufprl":"false","rua.cfprl":"false","rua.isuxp":"false","rua.texp":"norulematch"}]);</script>
+                              <script nonce="95821872878d152dd49c67c6eda19ef2">!function(e){var n="https://s.go-mpulse.net/boomerang/";if("False"=="True")e.BOOMR_config=e.BOOMR_config||{},e.BOOMR_config.PageParams=e.BOOMR_config.PageParams||{},e.BOOMR_config.PageParams.pci=!0,n="https://s2.go-mpulse.net/boomerang/";if(window.BOOMR_API_key="KD8VK-3YQ4N-NLLRX-T69VN-WTAZK",function(){function e(){if(!o){var e=document.createElement("script");e.id="boomr-scr-as",e.src=window.BOOMR.url,e.async=!0,i.parentNode.appendChild(e),o=!0}}function t(e){o=!0;var n,t,a,r,d=document,O=window;if(window.BOOMR.snippetMethod=e?"if":"i",t=function(e,n){var t=d.createElement("script");t.id=n||"boomr-if-as",t.src=window.BOOMR.url,BOOMR_lstart=(new Date).getTime(),e=e||d.body,e.appendChild(t)},!window.addEventListener&&window.attachEvent&&navigator.userAgent.match(/MSIE [67]\./))return window.BOOMR.snippetMethod="s",void t(i.parentNode,"boomr-async");a=document.createElement("IFRAME"),a.src="about:blank",a.title="",a.role="presentation",a.loading="eager",r=(a.frameElement||a).style,r.width=0,r.height=0,r.border=0,r.display="none",i.parentNode.appendChild(a);try{O=a.contentWindow,d=O.document.open()}catch(_){n=document.domain,a.src="javascript:var d=document.open();d.domain='"+n+"';void(0);",O=a.contentWindow,d=O.document.open()}if(n)d._boomrl=function(){this.domain=n,t()},d.write("<bo"+"dy onload='document._boomrl();'>");else if(O._boomrl=function(){t()},O.addEventListener)O.addEventListener("load",O._boomrl,!1);else if(O.attachEvent)O.attachEvent("onload",O._boomrl);d.close()}function a(e){window.BOOMR_onload=e&&e.timeStamp||(new Date).getTime()}if(!window.BOOMR||!window.BOOMR.version&&!window.BOOMR.snippetExecuted){window.BOOMR=window.BOOMR||{},window.BOOMR.snippetStart=(new Date).getTime(),window.BOOMR.snippetExecuted=!0,window.BOOMR.snippetVersion=12,window.BOOMR.url=n+"KD8VK-3YQ4N-NLLRX-T69VN-WTAZK";var i=document.currentScript||document.getElementsByTagName("script")[0],o=!1,r=document.createElement("link");if(r.relList&&"function"==typeof r.relList.supports&&r.relList.supports("preload")&&"as"in r)window.BOOMR.snippetMethod="p",r.href=window.BOOMR.url,r.rel="preload",r.as="script",r.addEventListener("load",e),r.addEventListener("error",function(){t(!0)}),setTimeout(function(){if(!o)t(!0)},3e3),BOOMR_lstart=(new Date).getTime(),i.parentNode.appendChild(r);else t(!1);if(window.addEventListener)window.addEventListener("load",a,!1);else if(window.attachEvent)window.attachEvent("onload",a)}}(),"".length>0)if(e&&"performance"in e&&e.performance&&"function"==typeof e.performance.setResourceTimingBufferSize)e.performance.setResourceTimingBufferSize();!function(){if(BOOMR=e.BOOMR||{},BOOMR.plugins=BOOMR.plugins||{},!BOOMR.plugins.AK){var n="true"=="true"?1:0,t="cookiepresent",a="yclavuqx3nhnkztbx3da-f-2c13e534f-clientnsv4-s.akamaihd.net",i="false"=="true"?2:1,o={"ak.v":"37","ak.cp":"734565","ak.ai":parseInt("476637",10),"ak.ol":"0","ak.cr":31,"ak.ipv":4,"ak.proto":"h3","ak.rid":"33134ea5","ak.r":46330,"ak.a2":n,"ak.m":"dscr","ak.n":"ff","ak.bpcip":"192.150.10.0","ak.cport":51833,"ak.gh":"23.219.77.213","ak.quicv":"0x00000001","ak.tlsv":"tls1.3","ak.0rtt":"0","ak.csrc":"-","ak.acc":"","ak.t":"1717681862","ak.ak":"hOBiQwZUYzCg5VSAfCLimQ==4kLCGnynRz1rwXnMfPCqSZasCQ6gBaSASHhJtjhQe2vShBHkpYzdlOy9x+mWvn2z+YF8bi8Phnf7fgkii0LHErWl2oTAcRcAuI/cj1C5Zt40ivXdde3go4J9GixZ8p0ujqBHIUA5U8wX+K3WxGVJLd54gmKjlCjnyk0MoOesLFQ/S/UD2DpLfWB0p60l/539fgDLt9Eb1hw+6hOJeEUIEggXzXQqiMJnkQbyX2jP+TbdywWTVxOXyVoQoGz/ELvgX5PQBuc2aS1QPI4C4W+yM7LBByM1kTETsq58B55UrCohwfC5sGD9CLgeSQiQ3PAutMK7xOUoj0ctcK1v2uW+5hZImvb9512hyTCuqL1GEoauuGUL0Wh6gKL8YESqSuc9JPxGw6cnHuFSu1qrK0mMcVIZrTMvsGnQRGyF4HFkUrI=","ak.pv":"944","ak.dpoabenc":"","ak.tf":i};if(""!==t)o["ak.ruds"]=t;var r={i:!1,av:function(n){var t="http.initiator";if(n&&(!n[t]||"spa_hard"===n[t]))o["ak.feo"]=void 0!==e.aFeoApplied?1:0,BOOMR.addVar(o)},rv:function(){var e=["ak.bpcip","ak.cport","ak.cr","ak.csrc","ak.gh","ak.ipv","ak.m","ak.n","ak.ol","ak.proto","ak.quicv","ak.tlsv","ak.0rtt","ak.r","ak.acc","ak.t","ak.tf"];BOOMR.removeVar(e)}};BOOMR.plugins.AK={akVars:o,akDNSPreFetchDomain:a,init:function(){if(!r.i){var e=BOOMR.subscribe;e("before_beacon",r.av,null,null),e("onbeacon",r.rv,null,null),r.i=!0}return this},is_complete:function(){return!0}}}}()}(window);</script></head>
     <body>
     <div class="banner"></div>
     <div class="container">
@@ -186,13 +235,13 @@
                 <b>Authoring in Milo</b>
                 <ul class="related-links">
                     <li><a href="./authoring-milo.html#create-new-card">Create or Edit a Card in Milo</a></li>
-                    <li><a href="./authoring-milo.html#send-to-caas">Send a Card to CaaS</a></li>
+                    <li><a href="./authoring-milo.html#send-to-caas">Send to CaaS</a></li>
                     <li><a href="./authoring-milo.html#create-card-collection">Create a Card Collection</a></li>
                     <li><a href="./authoring-milo.html#preview-card">Preview a Card in the Configurator</a></li>
                     <li><a href="./authoring-milo.html#bulk-publisher">Using the Bulk Publisher</a></li>
                     <li><a href="./authoring-milo.html#create-new-marquee">Create a new Marquee</a></li>
                 </ul>
-                
+
                 <b>Milo Card Collection</b>
                 <ul class="related-links">
                     <li><a href="./configurator.html"><strong>Milo Collection Configurator</strong></a></li>
@@ -208,7 +257,7 @@
                     <li><a href="./configurator.html#target"><strong>Target</strong>: Enable/Disable</a></li>
                     <li><a href="./configurator.html#analytics"><strong>Analytis</strong>: Track impressions</a></li>
                     <li><a href="./configurator.html#advanced"><strong>Advanced</strong> options </a></li>
-        
+
                 </ul>
 
                 <b>AEM Card Collection</b>
@@ -233,102 +282,166 @@
                     </h1>
 
                     <p>
-                        The following is a brief introduction to the CaaS platform. For a more detailed information, features and schedules, 
-                        please visit the <a href="javascript:alert('Opps! \nThis link is still not ready or even worse, not working!\nPlease check back soon.')">CaaS Wiki page</a>. 
+                        The following is a brief introduction to the Milo authoring tools and publishing workflows for 
+                        the CaaS platform. For a more detailed information, features and schedules, please visit the 
+                        <a href="https://wiki.corp.adobe.com/pages/viewpage.action?pageId=2112914481">CaaS Wiki page</a>.
                     </p>
 
                     <div class="authoring-milo-content">
                         <!-- ******************************************************* -->
+                        <!--                         SECTION                         -->
+                        <!-- ******************************************************* -->
                         <section>
                             <hr class="divider">
                             <a name="create-new-card"></a>
-                            <h2>Create a new card</h2>
+                            <h2>Create or Edit a Card in Milo</h2>
                             <p>
-                                To create a new card in Milo, follow these steps:
+                                To create or edit a new card in Milo, follow these steps:
                                 <ul>
                                     <li>Create a new page in Milo in the desired location</li>
                                     <li>Open the Milo Library from the AEM sidekick on the top of the page</li>
-                                    <li>From the </strom>Blocks</strom> section, select <strom>Caas Card Metadata</strom> 
+                                    <li>From the </strom>Blocks</strom> section, select <strom>Caas Card Metadata</strom>
                                         and copy and paste into your Milo document</li>
                                     <li>Modify or create new metadata rows as needed</li>
                                 </ul>
                             </p>
-                            
+
                             <h3>Available metadata options</h3>
                             <p>
-                                The following are the most common metadata options for a basic card:
+                                Here is an example of one of the card styles that can be created with CaaS and its metadata options:
+                                <br>
+                                <img src="https://milo.adobe.com/docs/authoring/media_15c2f295f491f2e7888651ba8261f3df9e16c1fc3.png" alt="Milo Authoring">
                             </p>
-                            <ul>
-                                <li>CardTitle</li>
-                                <li>Description</li>
-                                <li>CardImage</li>
-                                <li>CTAText</li>
-                                <li>CTAURL</li>
-                            </ul>
+                            
+                            <p>
+                                The following are the most common metadata Milo block options for a basic card:
+                            </p>
+
+                            <table>
+                                <tr>
+                                    <th colspan="2">Card-Metadata</th>
+                                </tr>
+                                <tr>
+                                    <td>CardImage</td>
+                                    <td>Enter URL or paste image </dd>
+                                </tr>
+                                <tr>
+                                    <td>CardTitle</td>
+                                    <td>Card title goes here</dd>
+        
+                                </tr>
+                                <tr>
+                                    <td>Description</td>
+                                    <td>Card description goes here</td>
+                                </tr>
+                                <tr>
+                                    <td>CTAText</td>
+                                    <td>Text to be disaplyed in the CTA</td>
+                                </tr>
+                                <tr>
+                                    <td>CTAURL</td>
+                                    <td>Destination URL for the CTA. 
+                                        <br><b>Note</b>: If no URL is provided it will default tot the current page </td>
+                                </tr>
+                            </table>
+
+                            <p>
+                                <br>
+                                <b>Note</b>: The <b>metadata</b> names are not case sensitive, but the values are.
+                            </p>
+
+                            <p>
+                                For a more detail list of metadata options, please visit the <a href="https://milo.adobe.com/docs/authoring/send-to-caas#sample-card-with-basic-metadata-properties">CaaS Milo Documentation</a>.
+                            </p>
+                        </section>
+                        
+                        <!-- ******************************************************* -->
+                        <!--                         SECTION                         -->
+                        <!-- ******************************************************* -->                        <section>
+                            <hr class="divider">
+                            <a name="send-to-caas"></a>
+                            <h2>Send to CaaS</h2>
+                            <p>Once you have created, or edited, a card in Milo using the <b>Card Metadata</b> block as explained in the <a href="#create-new-card">previous section</a>,
+                                you can send it to CaaS so that it is available via the Chimera backend services and 
+                                can be rendered in a CasC Card Collection.
+                            </p>
+                            <p>
+                                Follow these steps:
+                            </p>
+                            <ol>
+                                <li><p>
+                                        Once the metadata block is ready, click on the <strong>Preview</strong> button on the AEM sidekick bar.
+                                        <br><img src="./images/sidekick.png" class="border" alt="Sidekick bar">
+                                        <br><i>> Depending on the page content, a new blank page will be displayed in the <strong>main--milo-adobe.com</strong> preview server</i>
+                                    </p>
+                                    <p>
+                                        <i>ProTip</i>: A hidden div will be rendered with the card's metadata information used by the Send to CaaS script.
+                                    </p>
+                                </li>
+                                <li>In the preview page click on the <strong>Publish</strong> button on the AEM sidekick bar.
+                                    <br><img src="./images/sidekick-publish.png" class="border" alt="Publish button">
+                                    <br><i>> A new blank page will be displayed in the <strong>milo.adobe.com</strong> publish server</i></li>
+                                </li>
+                                <li>In the AEM sidekick, select </strong>Tools > Send To Caas</strong>. 
+                                    <br><img src="./images/sidekick-send-to-caas.png" class="border" alt="Send To Caas button">
+
+                                    <br><i>> If everything is OK you will get to the confirmation page where you can:</i>
+                                    <br><img src="./images/send-to-caas.png" class="border" alt="Send To Caas">
+                                    <br><strong>See All Properties</strong> - <i class="protip">ProTip</i> unique Ids can be seeing here withough the need to publish the card.
+                                    <br><strong>Send to Caas</strong> - Click <i>Continue with these tags </i> to send the data to CaaS.
+                                    <p>
+                                        <br>You should see a success message like this:
+                                        <br><img src="./images/send-to-caas-success.png" class="border" alt="Send To Caas success">
+                                    </p>
+                                </li>    
+                            </ol>
+
+                            <p><strong>You are done!</strong></p>
                             <p>
                                 For a more detail list of metadata options, please visit the <a href="#">CaaS Wiki page</a>.
                             </p>
                         </section>
-                        <!-- ******************************************************* -->
-                        <section>
-                            <hr class="divider">
-                            <a name="send-to-caas"></a>
-                            <h2>Send to CaaS</h2>
-                            <p>
-                                To send a card data to CaaS so that is available via the Chimera backend services, follow these steps:
-                            </p>
-                            <ul>
-                                <li>Once the metadata is ready, click on the <strong>Preview</strong> button on the AEM sidekick bar. 
-                                    <br><i>> A new blank page will be displayed in the <strong>main--milo-adobe.com</strong> preview server</i></li>
-                                </li>
-                                <li>In the preview page click on the <strong>Publish</strong> button
-                                    <br><i>> A new blank page will be displayed in the <strong>milo.adobe.com</strong> publish server</i></li>
-                                </li>
-                                <li>In the AEM sidekick, select </strong>Tools > Send To Caas</strong>. 
-                                    <br>If everything is OK you will get to the confirmation page where you can:
-                                    <br> <strong>See All Properties</strong> - <i class="protip">ProTip</i> unique Ids can be seeing here withough the need to publish the card.
-                                    <br> <strong>Send to Caas</strong> - sends data to the caas backend (Chimera)</li>
-                            </ul>  
-                            <p>
-                                For a more detail list of metadata options, please visit the <a href="#">CaaS Wiki page</a>.
-                            </p>
-                        </section> 
 
+                        <!-- ******************************************************* -->
+                        <!--                         SECTION                         -->
                         <!-- ******************************************************* -->
                         <section>
                             <hr class="divider">
                             <a name="create-card-collection"></a>
                             <h2>Create a Card Collection</h2>
                             <p>
-                                In progress...  
-                                <br>This setion will cover how to create a card collection in Milo.                          
+                                Card collections are created in the <a href="./configurator.html">Milo Configurator tool</a>. This tool allows you to 
+                                quickly create and visualize a collection of cards that can be used in a variety of ways, such as a carousel or a grid.
                             </p>
                             <p>
-                                For a more detail list of metadata options, please visit the <a href="#">CaaS Wiki page</a>.
+                                For a more detail list of metadata options, please visit the <a href="./configurator.html">Milo Configurator Documentation</a>
+                                or access specific topics from the manu in the left panel of this page.    
+                            </p>
+                            <p>
+                                To create a new card collection, follow these steps:
+                                <ol>
+                                    <li>Open the <a href="https://milo.adobe.com/tools/caas/">Milo Caas Configurator</a> tool
+                                    <br><b>Note:</b> The tool has a default set of values you can modify to meet your needs, or it loads the last settings used.</li>
+                                    <li>In the <b>Basics</b> tab select:
+                                        <br> <strong>Source</strong>: Your desired source for the caontent or leave blank to pull from all sources
+                                        <br> <strong>Results Per Page</strong>: As specified in your designs or comps. Tupically 4 for a carousel and 12 for a grid
+                                        <br> <strong>Total Cards to Show</strong>: up to 2000. 
+                                    </li>
+                                    <li>In the <b>Cards</b> tab, click on <strong>Featured Cards > Add</strong> </li>
+                                    <li>Paste the card's <i>unique ID</i> into the text field</li>
+                                </ol>
                             </p>
                         </section>
 
                         <!-- ******************************************************* -->
-                        <section>
-                            <hr class="divider">
-                            <a name="bulk-publisher"></a>
-                            <h2>Using the Bulk Publisher</h2>
-                            <p>
-                                In progress... 
-                                <br>This setion will cover how to use the bulk publisher in Milo.                          
-                            </p>
-                            <p>
-                                For a more detail list of metadata options, please visit the <a href="#">CaaS Wiki page</a>.
-                            </p>
-                        </section>
-
+                        <!--                         SECTION                         -->
                         <!-- ******************************************************* -->
                         <section>
                             <hr class="divider">
                             <a name="preview-card"></a>
                             <h2>Preview a Card in Different Styles</h2>
                             <p>
-                                To preview a card in different styles using the Milo configurator you need to know the unique ID of the card 
+                                To preview a card in different styles using the Milo configurator you need to know the unique ID of the card
                                 you want to preview. The card's unique ID can be seeing during the <a>Send To Caas</a> workflow.
                             </p>
                             <ul>
@@ -340,20 +453,39 @@
                                 </li>
                                 <li>In the <i>Cards</i> tab, click on <strong>Featured Cards > Add</strong> </li>
                                 <li>Paste the card's <i>unique ID</i> into the text field</li>
-                            </ul>  
+                            </ul>
                             <p>
-                                For a more detail list of metadata options, please visit the <a href="#">CaaS Wiki page</a>.
+                                For a more detail list of metadata options, please visit the <a href="https://milo.adobe.com/docs/authoring/send-to-caas">CaaS Milo Documentation</a>.
                             </p>
-                        </section> 
+                        </section>
+
+                        <!-- ******************************************************* -->
+                        <!--                         SECTION                         -->
+                        <!-- ******************************************************* -->                        
+                        <section>
+                            <hr class="divider">
+                            <a name="bulk-publisher"></a>
+                            <h2>Using the Bulk Publisher</h2>
+                            <p>
+                                In progress...
+                                <br>The <a href="https://milo.adobe.com/tools/send-to-caas/bulkpublisher.html">Bulk publisher</a> in Milo
+                                allows to send multiple pages to CaaS at the same time.
+                            </p>
+                            <p>
+                                For a more detail list of metadata options, please visit this <a href="https://wiki.corp.adobe.com/display/adobedotcom/How+to+send+pages+to+CaaS+in+Milo">Wiki page</a>.
+                            </p>
+                        </section>
                 </div>
             </div>
         </div>
     </div>
 
 
+    <!--
     <div class="footer">
        <img src="./images/page.png">
     </div>
+    -->
 </body>
 
 
