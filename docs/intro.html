@@ -21,7 +21,8 @@
             min-height: 100vh;
         }
         .banner {
-            background: url(https://milo.adobe.com/drafts/caas/docs/media_12e683bbf3831e4bedbce5d8687c5c71d59fadd42.png);
+            /* background: url(https://milo.adobe.com/drafts/caas/docs/media_12e683bbf3831e4bedbce5d8687c5c71d59fadd42.png); */
+            background: url(https://milo.adobe.com/drafts/caas/docs/media_1dd6821d3cba8f9827215aa6b4cf8e3e324bcf2a2.png);
             min-width: 320px;
             height: 160px;
             display: block;
@@ -138,6 +139,7 @@
             max-width: 900px;
         }
         .footer img {
+            display: none;
             position: absolute;
             bottom: 0;
             right: 0;
@@ -191,12 +193,12 @@
                     <li><a href="./authoring-milo.html#create-card-collection">Create a Card Collection</a></li>
                     <li><a href="./authoring-milo.html#preview-card">Preview a Card in the Configurator</a></li>
                     <li><a href="./authoring-milo.html#bulk-publisher">Using the Bulk Publisher</a></li>
-                    <li><a href="./authoring-milo.html#create-new-marquee">Create a new Marquee</a></li>
+                    <!-- <li><a href="./authoring-milo.html#create-new-marquee">Create a new Marquee</a></li> -->
                 </ul>
                 
-                <b>Content Consumption in Milo</b>
+                <b><a href="./configurator.html">Milo Card Collection</a></b>
                 <ul class="related-links">
-                    <li><a href="./configurator.html"><strong>Milo Collection Configurator</strong></a></li>
+                    <li><a href="https://milo.adobe.com/tools/caas"><b>Milo Collection Configurator</b></a></li>
                     <li><a href="./configurator.html#basics"><strong>The Basics</strong>: Create a new Card Collection</a></li>
                     <li><a href="./configurator.html#ui"><strong>UI</strong>: Customize your Collection</a></li>
                     <li><a href="./configurator.html#tags"><strong>Tags</strong>: Configure your query</a></li>
@@ -212,9 +214,9 @@
         
                 </ul>
 
-                <b>Content Consumption in AEM</b>
+                <b>AEM Card Collection</b>
                 <ul class="related-links">
-                    <li><a href="#"><strong>Card Collection Component</strong></a></li>
+                    <li><a href="https://dexter.lab02.corp.adobe.com/authoring-documentation/caas.html"><strong>AEM CaaS Documentation</strong></a></li>
                 </ul>
             </div>
         </div>
@@ -235,8 +237,10 @@
                     <p>
                         The following provides a concise overview of the CaaS platform. For a comprehensive understanding, 
                         including detailed features and schedules, please refer to the 
-                        <a href="javascript:alert('Opps! \nThis link is still not ready or even worse, not working!\nPlease check back soon.')">CaaS Wiki page</a>. 
+                        <a href="https://wiki.corp.adobe.com/pages/viewpage.action?spaceKey=javelin&title=Engineering">CaaS Wiki page</a>. 
                     </p>
+
+                    <p><b>*Note:</b> Use the links in the left panel to access specific sections of the documentation.</p>
 
                     <div class="intro-content">
                         <h2><span>What</span> is it?</h2>
@@ -258,13 +262,13 @@
                         <ul>
                             <li>
                                 <b>Content creation</b>: This process involves generating content and transmitting it to the backend service. 
-                                Each piece of content must be <i>created individually</i> in order to generate an unique content ID, then <a>Sent to Caas</a>
+                                Each piece of content must be <i>created individually</i> in order to generate an unique content ID, then <a href="./authoring-milo.html#send-to-caas">Sent to Caas</a>
                                 so that it can then be rendered as either a card or a marquee.
                             </li>
                             <li>
                                 <b>Content consumption</b>: Here, content is fetched from the backend service in JSON format and displayed 
                                 within the application. Content can be presented in <strong>grid</strong> or <strong>carousel</strong> formats. The JSON response can 
-                                include hundreds of content result items depending on the <a>Card Collection</a> configuration. 
+                                include hundreds of content result items depending on the <a href="./configurator.html">Card Collection</a> configuration. 
                             </li>
                         </ul>
 

@@ -176,6 +176,7 @@
             padding: 0 6px 0 2px;
         }
         .footer img {
+            display: none;
             position: absolute;
             bottom: 0;
             right: 0;
@@ -196,6 +197,11 @@
         }
         th {
             border: solid 1px #ccc;
+            padding-left: 8px;
+        }
+        table.configurator th {
+            color: white;
+            background: linear-gradient(45deg, #6F9B00, transparent);
         }
         td:first-child {
             font-weight: 500;
@@ -260,7 +266,7 @@
                     <li><a href="./authoring-milo.html#create-card-collection">Create a Card Collection</a></li>
                     <li><a href="./authoring-milo.html#preview-card">Preview a Card in the Configurator</a></li>
                     <li><a href="./authoring-milo.html#bulk-publisher">Using the Bulk Publisher</a></li>
-                    <li><a href="./authoring-milo.html#create-new-marquee">Create a new Marquee</a></li>
+                    <!-- <li><a href="./authoring-milo.html#create-new-marquee">Create a new Marquee</a></li> -->
                 </ul>
 
                 <b><a href="./configurator.html">Milo Card Collection</a></b>
@@ -283,7 +289,7 @@
 
                 <b>AEM Card Collection</b>
                 <ul class="related-links">
-                    <li><a href="#"><strong>Card Collection Component</strong></a></li>
+                    <li><a href="https://dexter.lab02.corp.adobe.com/authoring-documentation/caas.html"><strong>AEM CaaS Documentation</strong></a></li>
                 </ul>
             </div>
         </div>
@@ -307,6 +313,8 @@
                         the CaaS platform. For a more detailed information, features and schedules, please visit the 
                         <a href="https://wiki.corp.adobe.com/pages/viewpage.action?pageId=2112914481">CaaS Wiki page</a>.
                     </p>
+
+                    <p><b>*Note</b>: Some of these options may be slighty different depending on the project setup</p>
 
                     <div class="authoring-milo-content">
                         <!-- ******************************************************* -->
@@ -349,6 +357,14 @@
                                     <th colspan="2">Card-Metadata</th>
                                 </tr>
                                 <tr>
+                                    <td>PrimaryTag</td>
+                                    <td>caas:content-type/article <i>(Use the tag bowser for easy access)</i></dd>
+                                </tr>
+                                <tr>
+                                    <td>Tags</td>
+                                    <td>caas:content-type/article <i>(Use the tag bowser for easy access)</i></dd>
+                                    </tr>
+                                <tr>
                                     <td>CardImage</td>
                                     <td>Enter URL or paste image </dd>
                                 </tr>
@@ -368,7 +384,7 @@
                                 <tr>
                                     <td>CTAURL</td>
                                     <td>Destination URL for the CTA. 
-                                        <br><b>Note</b>: If no URL is provided it will default tot the current page </td>
+                                        <br><b>Note</b>: If no URL is provided, the URL to the current page will be used </td>
                                 </tr>
                             </table>
 
@@ -378,7 +394,9 @@
                             </p>
 
                             <p>
-                                For a more detail list of metadata options, please visit the <a href="https://milo.adobe.com/docs/authoring/send-to-caas#sample-card-with-basic-metadata-properties">CaaS Milo Documentation</a>.
+                                <b>*Note</b>: For a more detail list of metadata options, please visit the 
+                                <a href="https://milo.adobe.com/docs/authoring/send-to-caas#sample-card-with-basic-metadata-properties">CaaS Milo Documentation</a>
+                                wiki.
                             </p>
                         </section>
 
@@ -414,7 +432,7 @@
                                 when the user clicks on the card's play button, and a regular different URL for the CTA.
                             </p>
                             <p>
-                                <i class="tip">ProTip</i>: Modal videos can not be opened from a regular CTAs.
+                                <b>*Note</b>: Modal videos can not be opened from a regular CTAs.
                             </p>
 
                         </section>
@@ -427,6 +445,9 @@
                             <hr class="divider">
                             <a name="send-to-caas"></a>
                             <h2>Send to CaaS</h2>
+                            
+                            <p><b>*Note</b>: Some of these options may be slighty different depending on the project setup</p>
+
                             <p>Once you have created, or edited, a card in Milo using the <b>Card Metadata</b> block as explained in the <a href="#create-new-card">previous section</a>,
                                 you can send it to CaaS so that it is available via the Chimera backend services and 
                                 can be rendered in a CasC Card Collection.
@@ -463,9 +484,7 @@
                             </ol>
 
                             <p><strong>You are done!</strong></p>
-                            <p>
-                                For a more detail list of metadata options, please visit the <a href="#">CaaS Wiki page</a>.
-                            </p>
+
                         </section>
 
                         <!-- ******************************************************* -->
@@ -480,54 +499,75 @@
                                 quickly create and visualize a collection of cards that can be used in a variety of ways, such as a carousel or a grid.
                             </p>
                             <p>
-                                For a more detail list of metadata options, please visit the <a href="./configurator.html">Milo Configurator Documentation</a>
-                                or access specific topics from the manu in the left panel of this page.    
-                            </p>
-                            <p>
-                                To create a new card collection, follow these steps:
+                                To create a ver basic new card collection, follow these steps:
                                 <ol>
-                                    <li>Open the <a href="https://milo.adobe.com/tools/caas/">Milo Caas Configurator</a> tool
-                                    <br><b>Note:</b> The tool has a default set of values you can modify to meet your needs, or it loads the last settings used.</li>
-                                    <li>In the <b>Basics</b> tab select:
-                                        <br> <strong>Source</strong>: Your desired source for the caontent or leave blank to pull from all sources
-                                        <br> <strong>Results Per Page</strong>: As specified in your designs or comps. Tupically 4 for a carousel and 12 for a grid
-                                        <br> <strong>Total Cards to Show</strong>: up to 2000. 
+                                    <li><p>Open the <a href="https://milo.adobe.com/tools/caas/">Milo Caas Configurator</a> tool</p>
+                                    <p><b>*Note:</b> The first time the Configurator tool loads with a default set of values you can modify to meet your needs, 
+                                        subsequent times it will load with the last settings used. You can reset back to the default 
+                                        values in the <b>Advance</b> tab.</p>
                                     </li>
-                                    <li>In the <b>Cards</b> tab, click on <strong>Featured Cards > Add</strong> </li>
-                                    <li>Paste the card's <i>unique ID</i> into the text field</li>
+                                    
+                                    <li>In the <b>Basics</b> tab select the values you need for your collection, for example:
+                                        <p><table class="configurator">
+                                            <tr>
+                                                <th colspan="2"><strong> Basics Tab</strong></th>
+                                            </tr>
+                                            <tr>
+                                                <td>Source</td>
+                                                <td>Milo <i>(If left blank it will pull content from all sources)</i></dd>
+                                            </tr>
+                                            <tr>
+                                                <td>Results Per Page</td>
+                                                <td>8 <i>(Typically 8 for Grid layouts and 4 for Carousel)</i></dd>
+                                            </tr>
+                                            <tr>
+                                                <td>Total Cards to Show</td>
+                                                <td>300 <i>(up to 2000)</td>
+                                            </tr>
+                                        </table></p>
+                                    </li>
+                                    <li>In the <b>UI</b> tab select the settings that match your design, for example
+                                        <p><table class="configurator">
+                                            <tr>
+                                                <th colspan="2"><strong> UI Tab</strong></th>
+                                            </tr>
+                                            <tr>
+                                                <td>Card Style</td>
+                                                <td>1/2 Card</dd>
+                                            </tr>
+                                            <tr>
+                                                <td>Layout Type</td>
+                                                <td>1200px Container <i>(Most common are Grid Container or Carousel)</i></dd>
+                                            </tr>
+                                        </table></p>
+                                    </li>
+                                    <li>In the <b>Tags</b> tab select a few tags to narrow down the scope the collection, for example
+                                        <p><table class="configurator">
+                                            <tr>
+                                                <th colspan="2"><strong> Tags Tab</strong></th>
+                                            </tr>
+                                            <tr>
+                                                <td>Content type Tags</td>
+                                                <td>Article, Video <i>(if left blank, it will get cards from all content types)</i></i></dd>
+                                                </tr>
+                                            <tr>
+                                                <td>Tags to Include</td>
+                                                <td><i>(List of tags that must be in the cards)</i></dd>
+                                            </tr>
+                                        </table></p>
+                                    </li>
                                 </ol>
                             </p>
-                        </section>
+                            <p>
+                                To use a collection on any Milo page, click on the copy button 
+                                in the top right corner of the configurator tool to copy the code snippet.
+                            </p>
+                            <p><img src="./images/configurator-copy.png" alt="Copy collection"></p>
+                            <p>And paste the HTML link into the sharepoint document.</p>
 
-                        <!-- ******************************************************* -->
-                        <!--                         SECTION                         -->
-                        <!-- ******************************************************* -->
-                        <section>
-                            <hr class="divider">
-                            <a name="create-card-collection"></a>
-                            <h2>Create a Card Collection</h2>
-                            <p>
-                                Card collections are created in the <a href="./configurator.html">Milo Configurator tool</a>. This tool allows you to 
-                                quickly create and visualize a collection of cards that can be used in a variety of ways, such as a carousel or a grid.
-                            </p>
-                            <p>
-                                For a more detail list of metadata options, please visit the <a href="./configurator.html">Milo Configurator Documentation</a>
-                                or access specific topics from the manu in the left panel of this page.    
-                            </p>
-                            <p>
-                                To create a new card collection, follow these steps:
-                                <ol>
-                                    <li>Open the <a href="https://milo.adobe.com/tools/caas/">Milo Caas Configurator</a> tool
-                                    <br><b>Note:</b> The tool has a default set of values you can modify to meet your needs, or it loads the last settings used.</li>
-                                    <li>In the <b>Basics</b> tab select:
-                                        <br> <strong>Source</strong>: Your desired source for the caontent or leave blank to pull from all sources
-                                        <br> <strong>Results Per Page</strong>: As specified in your designs or comps. Tupically 4 for a carousel and 12 for a grid
-                                        <br> <strong>Total Cards to Show</strong>: up to 2000. 
-                                    </li>
-                                    <li>In the <b>Cards</b> tab, click on <strong>Featured Cards > Add</strong> </li>
-                                    <li>Paste the card's <i>unique ID</i> into the text field</li>
-                                </ol>
-                            </p>
+                            <p>For a more detailed description of all of the Milo Configurator tool options, please see the 
+                               <a href="./configurator.html">Milo Configurator Documentation</a>.</p>
+
                         </section>
 
                         <!-- ******************************************************* -->
@@ -538,12 +578,26 @@
                             <a name="bulk-publisher"></a>
                             <h2>Using the Bulk Publisher</h2>
                             <p>
-                                In progress...
-                                <br>The <a href="https://milo.adobe.com/tools/send-to-caas/bulkpublisher.html">Bulk publisher</a> in Milo
+                                The <a href="https://milo.adobe.com/tools/send-to-caas/bulkpublisher.html">Bulk publisher</a> in Milo
                                 allows to send multiple pages to CaaS at the same time.
                             </p>
+                            <p>In progress... <i>(Check back later!)</i></p>
+                        </section>
+
+                        <!-- *****************************About************************** -->
+                        <section>
+                            <hr class="divider">
+                                <a name="advanced"></a>
+                                <h2>That's it!</h2>
                             <p>
-                                For a more detail list of metadata options, please visit this <a href="https://wiki.corp.adobe.com/display/adobedotcom/How+to+send+pages+to+CaaS+in+Milo">Wiki page</a>.
+                                <b>Congrats!</b> 
+                                <br>You should now be *almost* an expert in creating and editing cards in Milo and sending them to CaaS.
+                            </p>
+                            <p>
+                                <b>Go make some awesome collections!</b>
+                            </p>
+                            <p>
+                                <i>The Javelin Team.</i>
                             </p>
                         </section>
                 </div>
