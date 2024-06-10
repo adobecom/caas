@@ -295,7 +295,7 @@
         </div>
 
         <div class="content">
-            <p class="nav">
+            <p class="breadcrumbs nav">
                 <a href="./index.html">Home</a>
                 > <a href="./intro.html">Introduction to CaaS</a>
                 > Authoring in Milo
@@ -326,7 +326,7 @@
                             <h2>Create or Edit a Card in Milo</h2>
                             <p>
                                 To create or edit a new card in Milo, follow these steps:
-                                <ul>
+                                <ol>
                                     <li>Create a new page in Milo in the desired location</li>
                                     <li>Open the Milo <b>Library</b> from the <a>AEM Sidekick</a> on the top of the page
                                         <br><img src="./images/sidekick.png" class="border" alt="Sidekick bar">
@@ -336,12 +336,12 @@
                                         <br><img src="./images/milo-library.png" class="border" alt="Sidekick bar">
                                     </li>
                                     <li>Modify or create new metadata rows as needed</li>
-                                </ul>
+                                </ol>
                             </p>
 
                             <h3>Available metadata options</h3>
                             <p>
-                                Here is an example of one of the card styles that can be created with CaaS and its metadata options:
+                                Here is an example of a <b>1/2 Card</b> card style that can be created with CaaS and its metadata options:
                                 <br>
                                 <img src="https://milo.adobe.com/docs/authoring/media_15c2f295f491f2e7888651ba8261f3df9e16c1fc3.png" class="border" alt="Milo Authoring">
                             </p>
@@ -349,7 +349,7 @@
                             <h3>Example Caas Card Metadata block</h3>
 
                             <p>
-                                The following are the most common metadata Milo block options for a basic card:
+                                The following are the most common metadata <b>Caas Card Metadata</b> block options for a basic card:
                             </p>
 
                             <table>
@@ -357,7 +357,7 @@
                                     <th colspan="2">Card-Metadata</th>
                                 </tr>
                                 <tr>
-                                    <td>PrimaryTag</td>
+                                    <td>ContentType</td>
                                     <td>caas:content-type/article <i>(Use the tag bowser for easy access)</i></dd>
                                 </tr>
                                 <tr>
@@ -411,15 +411,14 @@
                                 The video must be hosted on YouTube or Adobe TV.
                             </p>
                             <p>
-                                If a card has a modal video, a play button icon is displayed in the card image. The position of 
+                                If a card has a modal video, a play button icon is displayed over the card image. The position of 
                                 the play button may vary depending on the card design and content.
                             </p>
                             <p>
                                 <img src="./images/modal-video.png" class="border" alt="Sidekick bar">
                             </p>
                             <p>
-                                To create a <b>Modal Video</b>, add this entry to the card metadata. Adjust the <b>PlayURL</b> 
-                                to the desired video URL and settings:
+                                To create a <b>Modal Video</b>, add a <b>PlayURL</b> entry to the card metadata. Adjust the value to the desired video URL and settings:
                             </p>
                             <table>
                                 <tr>
@@ -427,9 +426,14 @@
                                     <td>https://video.tv.adobe.com/v/17838t1?autoplay=true</dd>
                                 </tr>
                             </table>
+                            
                             <p>
-                                <br><i class="tip">ProTip</i>: Depending on the card design and authoring, a card can have a video that opens in a modal window 
-                                when the user clicks on the card's play button, and a regular different URL for the CTA.
+                                <br>If necessary, see the previous 
+                                section <a href="./authoring-milo.html#create-new-card">Create or Edit a Card in Milo</a> for more details.
+                            </p>
+                            <p>
+                                <i class="tip">ProTip</i>: Depending on the card design and authoring, a card can have a video that opens in a modal window 
+                                when the user clicks on the card's play button, and a different URL for regular the CTA.
                             </p>
                             <p>
                                 <b>*Note</b>: Modal videos can not be opened from a regular CTAs.
@@ -438,9 +442,7 @@
                         </section>
 
                         
-                        <!-- ******************************************************* -->
-                        <!--                         SECTION                         -->
-                        <!-- ******************************************************* --> 
+                        <!-- *****************************Advanced************************** -->
                         <section>
                             <hr class="divider">
                             <a name="send-to-caas"></a>
@@ -448,9 +450,8 @@
                             
                             <p><b>*Note</b>: Some of these options may be slighty different depending on the project setup</p>
 
-                            <p>Once you have created, or edited, a card in Milo using the <b>Card Metadata</b> block as explained in the <a href="#create-new-card">previous section</a>,
-                                you can send it to CaaS so that it is available via the Chimera backend services and 
-                                can be rendered in a CasC Card Collection.
+                            <p>Once you have created, or edited a card metadata using Milo's <b>Card Metadata</b> block, as explained in the <a href="#create-new-card">previous section</a>,
+                                you can send it to the CaaS backend service (Chimera) so that it can be rendered in a CaaS Card Collection.
                             </p>
                             <p>
                                 Follow these steps:
@@ -459,13 +460,15 @@
                                 <li><p>
                                         Once the metadata block is ready, click on the <strong>Preview</strong> button on the AEM sidekick bar.
                                         <br><img src="./images/sidekick.png" class="border" alt="Sidekick bar">
-                                        <br><i>> Depending on the page content, a new blank page will be displayed in the <strong>main--milo-adobe.com</strong> preview server</i>
+                                        <br><i>> Depending on the page content, a new blank page will be displayed in the <strong>main--milo-adobe.com</strong> 
+                                        preview server, or consumer site.</i>
                                     </p>
                                     <p>
-                                        <i class="tip">ProTip</i>: A hidden div will be rendered with the card's metadata information used by the Send to CaaS script.
+                                        <i class="tip">ProTip</i>: A hidden HTML div will be created in the page with the card's metadata information 
+                                        needed by the Send to CaaS script.
                                     </p>
                                 </li>
-                                <li>In the preview page click on the <strong>Publish</strong> button on the AEM sidekick bar.
+                                <li>Once the preview page opens in a new tab, click on the <strong>Publish</strong> button on the AEM sidekick bar.
                                     <br><img src="./images/sidekick-publish.png" class="border" alt="Publish button">
                                     <br><i>> A new blank page will be displayed in the <strong>milo.adobe.com</strong> publish server</i></li>
                                 </li>
@@ -474,10 +477,15 @@
 
                                     <br><i>> If everything is OK you will get to the confirmation page where you can:</i>
                                     <br><img src="./images/send-to-caas.png" class="border" alt="Send To Caas">
-                                    <br><strong>See All Properties</strong> - <i class="protip">ProTip</i> unique Ids can be seeing here withough the need to publish the card.
-                                    <br><strong>Send to Caas</strong> - Click <i>Continue with these tags </i> to send the data to CaaS.
-                                    <p>
-                                        <br>You should see a success message like this:
+                                    <br><strong>CaaS env:</strong> Select the environment where you want to send the card.
+                                    <br><strong>Push to Draft only:</strong> Check this box if you want to send the card to the draft environment only.
+                                    <br><strong>Use .html extension:</strong> Check this box if you want to use the .html extension in the URL.
+                                    <br><strong>See all properties</strong> - <i class="protip">ProTip</i> unique Ids can be seeing here withough the need to publish the card.
+                                    <br><strong>Cancel Registration</strong> - Go back to the previous page.
+                                </li>
+                                <li>
+                                    Click <b>Continue with these tags </b> to send the data to CaaS.
+                                    <p>You should see a success message like this:
                                         <br><img src="./images/send-to-caas-success.png" class="border" alt="Send To Caas success">
                                     </p>
                                 </li>    
