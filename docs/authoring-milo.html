@@ -140,6 +140,9 @@
             font-size: 18px;
             font-weight: 200;
         }
+        .smaller {
+            font-size: smaller;
+        }
         .content ul,
         .content ol {
             margin: 0 10px 10px 0;
@@ -258,17 +261,17 @@
         <div class="sidebar">
             <div class="toc">
                 <h3>Related Links</h3>
-                <b>Authoring Cards in Milo</b>
+                <a href="./authoring-milo.html"><b>Authoring Cards in Milo</b></a>
                 <ul class="related-links">
                     <li><a href="./authoring-milo.html#create-new-card">Create or Edit a Card in Milo</a></li>
+                    <li><a href="./authoring-milo.html#secondary-cta">Card with Secondary CTA</a></li>
                     <li><a href="./authoring-milo.html#modal-video">Card with Modal Video</a></li>
-                    <li><a href="./authoring-milo.html#send-to-caas">Send to CaaS</a></li>
+                    <li><a href="./authoring-milo.html#send-to-caas">Send a Card to CaaS</a></li>
                     <li><a href="./authoring-milo.html#create-card-collection">Create a Card Collection</a></li>
                     <li><a href="./authoring-milo.html#preview-card">Preview a Card in the Configurator</a></li>
                     <li><a href="./authoring-milo.html#bulk-publisher">Using the Bulk Publisher</a></li>
-                    <!-- <li><a href="./authoring-milo.html#create-new-marquee">Create a new Marquee</a></li> -->
                 </ul>
-
+                
                 <b><a href="./configurator.html">Milo Card Collection</a></b>
                 <ul class="related-links">
                     <li><a href="https://milo.adobe.com/tools/caas"><b>Milo Collection Configurator</b></a></li>
@@ -284,7 +287,6 @@
                     <li><a href="./configurator.html#target"><strong>Target</strong>: Enable/Disable</a></li>
                     <li><a href="./configurator.html#analytics"><strong>Analytis</strong>: Track impressions</a></li>
                     <li><a href="./configurator.html#advanced"><strong>Advanced</strong> options </a></li>
-
                 </ul>
 
                 <b>AEM Card Collection</b>
@@ -317,9 +319,7 @@
                     <p><b>*Note</b>: Some of these options may be slighty different depending on the project setup</p>
 
                     <div class="authoring-milo-content">
-                        <!-- ******************************************************* -->
-                        <!--                         SECTION                         -->
-                        <!-- ******************************************************* -->
+                        <!-- ***************************** Create or Edit a Card in Milo ************************** -->
                         <section>
                             <hr class="divider">
                             <a name="create-new-card"></a>
@@ -400,9 +400,56 @@
                             </p>
                         </section>
 
-                        <!-- ******************************************************* -->
-                        <!--                         SECTION                         -->
-                        <!-- ******************************************************* --> 
+                        <!-- ***************************** Create Card with a Secondary CTA ************************** -->
+                        <section>
+                            <hr class="divider">
+                            <a name="secondary-cta"></a>
+                            <h2>Create Card with a Secondary CTA</h2>
+                            <p>Cards can have a secondary CTA that can be used to link to a different URL than the main CTA. 
+                                The secondary CTA is displayed to the left of the primary CTA.
+                            </p>
+                            <p>
+                                Similar to the primary CTA, the secondary CTA can be of one of the following types:
+                                <ul>
+                                    <li>Call To Action</li>
+                                    <li>Primary</li>
+                                    <li>Dark</li>
+                                    <li>Link</li>
+                                </ul>
+                            </p>
+                            <p>
+                                To create a <b>Secodary CTA</b>, add  the following entries to the card metadata. Adjust the values as needed:
+                            </p>
+                            <table>
+                                <tr>
+                                    <td>CTA2Text</td>
+                                    <td>Click me!</td>
+                                </tr>
+                                <tr>
+                                    <td>CTA2URL</td>
+                                    <td>http://www.adobe.com </td>
+                                </tr>
+                                <tr>
+                                    <td>CTA2Style</td>
+                                    <td>call-to-action <i>(avalable options: call-to-action, primary, dark, link)</i></td>
+                                </tr>
+                            </table>
+                            
+                            <p>
+                                <br>If necessary, see the previous 
+                                section <a href="./authoring-milo.html#create-new-card">Create or Edit a Card in Milo</a> for more details.
+                            </p>
+                            <p>
+                                <i class="tip">ProTip</i>: Depending on the card design and authoring, a card can have a video that opens in a modal window 
+                                when the user clicks on the card's play button, and a different URL for regular the CTA.
+                            </p>
+                            <p>
+                                <b>*Note</b>: Modal videos can not be opened from a regular CTAs.
+                            </p>
+
+                        </section>
+
+                        <!-- ***************************** Create Card with Modal Video ************************** -->
                         <section>
                             <hr class="divider">
                             <a name="modal-video"></a>
@@ -442,7 +489,7 @@
                         </section>
 
                         
-                        <!-- *****************************Advanced************************** -->
+                        <!-- ***************************** Send to CaaS ************************** -->
                         <section>
                             <hr class="divider">
                             <a name="send-to-caas"></a>
@@ -474,17 +521,19 @@
                                 </li>
                                 <li>In the AEM sidekick, select </strong>Tools > Send To Caas</strong>. 
                                     <br><img src="./images/sidekick-send-to-caas.png" class="border" alt="Send To Caas button">
-
-                                    <br><i>> If everything is OK you will get to the confirmation page where you can:</i>
+                                    <i>> If everything is OK you will get to the confirmation page where you can:</i>
                                     <br><img src="./images/send-to-caas.png" class="border" alt="Send To Caas">
-                                    <br><strong>CaaS env:</strong> Select the environment where you want to send the card.
-                                    <br><strong>Push to Draft only:</strong> Check this box if you want to send the card to the draft environment only.
-                                    <br><strong>Use .html extension:</strong> Check this box if you want to use the .html extension in the URL.
-                                    <br><strong>See all properties</strong> - <i class="protip">ProTip</i> unique Ids can be seeing here withough the need to publish the card.
-                                    <br><strong>Cancel Registration</strong> - Go back to the previous page.
+                                    <dd class="smaller">
+                                        <strong>CaaS env:</strong> Select the environment where you want to send the card.
+                                        <br><strong>Push to Draft only:</strong> Check this box if you want to send the card to the draft environment only.
+                                        <br><strong>Use .html extension:</strong> Check this box if you want to use the .html extension in the URL.
+                                        <br><strong>See all properties</strong> - Displays all properties of the card. 
+                                            <i class="tip">ProTip</i> unique Ids can be seeing without before publishing the card.
+                                        <br><strong>Cancel Registration</strong> - Go back to the previous page.
+                                    </dd>
                                 </li>
                                 <li>
-                                    Click <b>Continue with these tags </b> to send the data to CaaS.
+                                    Click <b>Continue with these tags </b> to publish the card to CaaS.
                                     <p>You should see a success message like this:
                                         <br><img src="./images/send-to-caas-success.png" class="border" alt="Send To Caas success">
                                     </p>
@@ -495,9 +544,7 @@
 
                         </section>
 
-                        <!-- ******************************************************* -->
-                        <!--                         SECTION                         -->
-                        <!-- ******************************************************* -->
+                        <!-- ***************************** Create a Card Collection ************************** -->
                         <section>
                             <hr class="divider">
                             <a name="create-card-collection"></a>
@@ -578,9 +625,8 @@
 
                         </section>
 
-                        <!-- ******************************************************* -->
-                        <!--                         SECTION                         -->
-                        <!-- ******************************************************* -->                        
+                        <!-- ***************************** Using the Bulk Publisher ************************** -->
+                       
                         <section>
                             <hr class="divider">
                             <a name="bulk-publisher"></a>
@@ -592,7 +638,7 @@
                             <p>In progress... <i>(Check back later!)</i></p>
                         </section>
 
-                        <!-- *****************************About************************** -->
+                        <!-- ***************************** About ************************** -->
                         <section>
                             <hr class="divider">
                                 <a name="advanced"></a>
