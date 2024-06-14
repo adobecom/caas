@@ -182,6 +182,7 @@ export const getFilteredCards = (cards, activeFilters, activePanels, filterType,
     // remove the time elements from the active filter set before you actually filter
     timingSet.forEach(filter => activeFiltersSet.delete(filter));
 
+    // console.log('*** [BEFORE]Helpers.js:getFilteredCards:cards', cards);
     const temp = [];
     const set = new Set();
     if (categories && categories.length) {
@@ -201,6 +202,7 @@ export const getFilteredCards = (cards, activeFilters, activePanels, filterType,
         /* eslint-disable-next-line no-param-reassign */
         cards = temp;
     }
+    // console.log('*** [AFTER]Helpers.js:getFilteredCards:cards', cards);
 
     if (activeFiltersSet.size === 0 && !usingTimingFilter) return cards;
 

@@ -66,7 +66,6 @@ import {
     getUpdatedCardBookmarkData,
 } from '../Helpers/Helpers';
 
-
 /**
  * Consonant Card Collection
  * Config is implicitly populated by authors
@@ -154,10 +153,6 @@ const Container = (props) => {
     const cardStyle = getConfig('collection', 'cardStyle');
     const title = getConfig('collection', 'i18n.title');
     const headers = getConfig('headers', '');
-    // eslint-disable-next-line no-use-before-define
-    const categories = getConfig('filterPanel', 'categories');
-    // eslint-disable-next-line no-use-before-define
-    const authoredCategories = getAuthoredCategories(authoredFilters, categories);
 
     /**
      **** Constants ****
@@ -167,6 +162,15 @@ const Container = (props) => {
     const isCarouselContainer = authoredLayoutContainer === LAYOUT_CONTAINER.CAROUSEL;
     const isStandardContainer = authoredLayoutContainer !== LAYOUT_CONTAINER.CAROUSEL;
     const isCategoriesContainer = authoredLayoutContainer === LAYOUT_CONTAINER.CATEGORIES;
+
+    /**
+     * Categories container
+     */
+    // eslint-disable-next-line no-use-before-define
+    const categories = getConfig('filterPanel', 'categories');
+    // eslint-disable-next-line no-use-before-define, max-len
+    const authoredCategories = isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories)
+        : [];
 
     /**
      **** Hooks ****
@@ -1215,9 +1219,19 @@ const Container = (props) => {
      *          Prepends the "All Topics" pill to the list of categories
      */
     function getAuthoredCategories(filterList, categoryList) {
+        // console.log('*** getAuthoredCategories():categoryList', categoryList);
+
+        const hashedIds = ['3277', 'jff0', '5ron', '7m56', 'agc9', '50kf', 'agc9'];
         const categoryIds = filterList
-            .filter(filter => filter.id.includes('caas:product-categories'))
+        // .filter(filter => filter.id.includes('caas:product-categories'))
+            .filter(filter => (filter.id.includes('caas:product-categories') || hashedIds.includes(filter.id)))
             .map(item => item.id);
+        console.log('*** getAuthoredCategories():categoryIds', categoryIds);
+
+        if (categoryIds.length === 0) return [];
+        // console.log('*** getAuthoredCategories():categoryList', categoryList);
+        // console.log('*** getAuthoredCategories():categoryIds', categoryIds);
+        console.log('*** getAuthoredCategories():filterList', filterList);
 
         // Sorts category list based on authored order
         const selectedCategories = categoryIds
@@ -1226,7 +1240,7 @@ const Container = (props) => {
         return [{
             group: 'All Topics',
             title: 'All Topics',
-            id: '',
+            id: 'topics-all',
             items: [],
         }, ...selectedCategories];
     }
@@ -1236,6 +1250,9 @@ const Container = (props) => {
      *          Prepends the "All products" label to the list of categories
      */
     function getAllCategoryProducts() {
+        if (authoredCategories.length === 0) return [];
+        console.log('*** getAllCategoryProducts():authoredCategories', authoredCategories);
+
         let allCategories = [];
         for (const category of authoredCategories) {
             if (category && category.items) {
@@ -1246,8 +1263,8 @@ const Container = (props) => {
             }
         }
         return {
+            id: 'caas:products-all',
             group: 'All products',
-            id: 'caas:products',
             items: allCategories,
         };
     }
@@ -1313,6 +1330,8 @@ const Container = (props) => {
     useEffect(() => {
         setFilters((prevFilters) => {
             const nextFilters = prevFilters.concat(getAllCategoryProducts());
+            // console.log('*** useEffect():prevFilters', prevFilters);
+            // console.log('*** useEffect():nextFilters', nextFilters);
             return nextFilters;
         });
     }, []);

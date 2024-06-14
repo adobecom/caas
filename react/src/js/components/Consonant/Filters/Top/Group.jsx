@@ -80,12 +80,15 @@ const Group = (props) => {
     const mobileGroupApplyBtnText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.applyBtnText');
     const mobileGroupDoneBtnText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.doneBtnText');
     const isCategoriesPage = getConfig('collection', 'layout.container') === 'categories';
-    const isProductsFilter = id === 'caas:products';
+
+    const isProductsFilter = id === 'caas:products' || id === '4x24';
+    console.log('*** Group.js:isProductsFilter', isProductsFilter, id);
 
     const showFilter = (isCategoriesPage && isProductsFilter)
         || (isCategoriesPage && !id.startsWith('caas:product-categories')) // don't show product filters
         || (isCategoriesPage && id.includes(name)) // include custom product filter
         || (!isCategoriesPage && !isProductsFilter); // do not show custom product filter
+    console.log('*** Group.js:showFilter', showFilter, id, name);
 
     /**
      **** Hooks ****

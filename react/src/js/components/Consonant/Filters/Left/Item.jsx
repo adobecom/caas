@@ -167,7 +167,10 @@ const Item = (props) => {
      * Impression Tracking
      */
     const filterName = `${name} ${isOpened ? 'Close' : 'Open'}`;
-    const showFilter = id !== 'caas:products';
+
+    // const showFilter = id !== 'caas:products'; //*** TODAY ****/
+    const showFilter = true;
+    console.log('**** Item.jsx:showFilter:ID', showFilter, id);
 
     return (
         <div

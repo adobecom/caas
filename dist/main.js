@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.13.1 (6/11/2024, 19:35:09)
+ * Chimera UI Libraries - Build 0.13.1 (6/14/2024, 08:57:30)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -2576,6 +2576,7 @@ var getFilteredCards = exports.getFilteredCards = function getFilteredCards(card
         return activeFiltersSet.delete(filter);
     });
 
+    // console.log('*** [BEFORE]Helpers.js:getFilteredCards:cards', cards);
     var temp = [];
     var set = new Set();
     if (categories && categories.length) {
@@ -2595,6 +2596,7 @@ var getFilteredCards = exports.getFilteredCards = function getFilteredCards(card
         /* eslint-disable-next-line no-param-reassign */
         cards = temp;
     }
+    // console.log('*** [AFTER]Helpers.js:getFilteredCards:cards', cards);
 
     if (activeFiltersSet.size === 0 && !usingTimingFilter) return cards;
 
@@ -6211,10 +6213,6 @@ var Container = function Container(props) {
     var cardStyle = getConfig('collection', 'cardStyle');
     var title = getConfig('collection', 'i18n.title');
     var headers = getConfig('headers', '');
-    // eslint-disable-next-line no-use-before-define
-    var categories = getConfig('filterPanel', 'categories');
-    // eslint-disable-next-line no-use-before-define
-    var authoredCategories = getAuthoredCategories(authoredFilters, categories);
 
     /**
      **** Constants ****
@@ -6224,6 +6222,14 @@ var Container = function Container(props) {
     var isCarouselContainer = authoredLayoutContainer === _constants.LAYOUT_CONTAINER.CAROUSEL;
     var isStandardContainer = authoredLayoutContainer !== _constants.LAYOUT_CONTAINER.CAROUSEL;
     var isCategoriesContainer = authoredLayoutContainer === _constants.LAYOUT_CONTAINER.CATEGORIES;
+
+    /**
+     * Categories container
+     */
+    // eslint-disable-next-line no-use-before-define
+    var categories = getConfig('filterPanel', 'categories');
+    // eslint-disable-next-line no-use-before-define, max-len
+    var authoredCategories = isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : [];
 
     /**
      **** Hooks ****
@@ -7499,11 +7505,22 @@ var Container = function Container(props) {
      *          Prepends the "All Topics" pill to the list of categories
      */
     function getAuthoredCategories(filterList, categoryList) {
-        var categoryIds = filterList.filter(function (filter) {
-            return filter.id.includes('caas:product-categories');
+        // console.log('*** getAuthoredCategories():categoryList', categoryList);
+
+        var hashedIds = ['3277', 'jff0', '5ron', '7m56', 'agc9', '50kf', 'agc9'];
+        var categoryIds = filterList
+        // .filter(filter => filter.id.includes('caas:product-categories'))
+        .filter(function (filter) {
+            return filter.id.includes('caas:product-categories') || hashedIds.includes(filter.id);
         }).map(function (item) {
             return item.id;
         });
+        console.log('*** getAuthoredCategories():categoryIds', categoryIds);
+
+        if (categoryIds.length === 0) return [];
+        // console.log('*** getAuthoredCategories():categoryList', categoryList);
+        // console.log('*** getAuthoredCategories():categoryIds', categoryIds);
+        console.log('*** getAuthoredCategories():filterList', filterList);
 
         // Sorts category list based on authored order
         var selectedCategories = categoryIds.map(function (id) {
@@ -7515,7 +7532,7 @@ var Container = function Container(props) {
         return [{
             group: 'All Topics',
             title: 'All Topics',
-            id: '',
+            id: 'topics-all',
             items: []
         }].concat(_toConsumableArray(selectedCategories));
     }
@@ -7525,6 +7542,9 @@ var Container = function Container(props) {
      *          Prepends the "All products" label to the list of categories
      */
     function getAllCategoryProducts() {
+        if (authoredCategories.length === 0) return [];
+        console.log('*** getAllCategoryProducts():authoredCategories', authoredCategories);
+
         var allCategories = [];
         var _iteratorNormalCompletion4 = true;
         var _didIteratorError4 = false;
@@ -7579,8 +7599,8 @@ var Container = function Container(props) {
         }
 
         return {
+            id: 'caas:products-all',
             group: 'All products',
-            id: 'caas:products',
             items: allCategories
         };
     }
@@ -7671,6 +7691,8 @@ var Container = function Container(props) {
     (0, _react.useEffect)(function () {
         setFilters(function (prevFilters) {
             var nextFilters = prevFilters.concat(getAllCategoryProducts());
+            // console.log('*** useEffect():prevFilters', prevFilters);
+            // console.log('*** useEffect():nextFilters', nextFilters);
             return nextFilters;
         });
     }, []);
@@ -53519,11 +53541,14 @@ var Group = function Group(props) {
     var mobileGroupApplyBtnText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.applyBtnText');
     var mobileGroupDoneBtnText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.doneBtnText');
     var isCategoriesPage = getConfig('collection', 'layout.container') === 'categories';
-    var isProductsFilter = id === 'caas:products';
+
+    var isProductsFilter = id === 'caas:products' || id === '4x24';
+    console.log('*** Group.js:isProductsFilter', isProductsFilter, id);
 
     var showFilter = isCategoriesPage && isProductsFilter || isCategoriesPage && !id.startsWith('caas:product-categories') // don't show product filters
     || isCategoriesPage && id.includes(name) // include custom product filter
     || !isCategoriesPage && !isProductsFilter; // do not show custom product filter
+    console.log('*** Group.js:showFilter', showFilter, id, name);
 
     /**
      **** Hooks ****
@@ -54439,7 +54464,10 @@ var Item = function Item(props) {
      * Impression Tracking
      */
     var filterName = name + ' ' + (isOpened ? 'Close' : 'Open');
-    var showFilter = id !== 'caas:products';
+
+    // const showFilter = id !== 'caas:products'; //*** TODAY ****/
+    var showFilter = true;
+    console.log('**** Item.jsx:showFilter:ID', showFilter, id);
 
     return _react2.default.createElement(
         'div',
