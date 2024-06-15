@@ -89,6 +89,8 @@ const LeftFilterPanel = forwardRef(({
 }, ref) => {
     const getConfig = useConfig();
 
+    console.log('*** Left: Panel.js: LeftFilterPanel: filters', filters);
+
     /**
      **** Authored Configs ****
      */
@@ -148,6 +150,7 @@ const LeftFilterPanel = forwardRef(({
      * @type {Boolean}
      */
     const atleastOneFilter = filters.length > 0;
+    console.log('*** Left: Panel.js: atleastOneFilter', atleastOneFilter);
 
     /**
      * Class name for the left filters:

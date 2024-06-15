@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.12.1 (5/30/2024, 09:56:08)
+ * Chimera UI Libraries - Build 0.12.2 (6/15/2024, 10:00:46)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6196,6 +6196,20 @@ var Container = function Container(props) {
     var isXorFilter = filterLogic.toLowerCase().trim() === _constants.FILTER_TYPES.XOR;
     var isCarouselContainer = authoredLayoutContainer === _constants.LAYOUT_CONTAINER.CAROUSEL;
     var isStandardContainer = authoredLayoutContainer !== _constants.LAYOUT_CONTAINER.CAROUSEL;
+    var isCategoriesContainer = authoredLayoutContainer === _constants.LAYOUT_CONTAINER.CATEGORIES;
+
+    // eslint-disable-next-line no-use-before-define
+    var categories = getConfig('filterPanel', 'categories');
+    // eslint-disable-next-line no-use-before-define, max-len
+    var authoredCategories = isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : [];
+    if (isCategoriesContainer) console.log('*** Container.js: authoredCategories', authoredCategories);
+
+    // TEMPORARY FUNCTION **********************************************************
+    function getAuthoredCategories(filterList, categoryList) {
+        console.log('*** Container.js: getAuthoredCategories: filterList', filterList, categoryList);
+        return [];
+    }
+
     /**
      **** Hooks ****
      */
@@ -6321,6 +6335,11 @@ var Container = function Container(props) {
         filters = _useState14[0],
         setFilters = _useState14[1];
 
+    var _useState15 = (0, _react.useState)([]),
+        _useState16 = _slicedToArray(_useState15, 2),
+        currCategories = _useState16[0],
+        setCategories = _useState16[1];
+
     /**
      * @typedef {String} SearchQueryState — Will be used to search through cards
      * @typedef {Function} SearchQueryStateSetter — Sets user search query
@@ -6329,10 +6348,15 @@ var Container = function Container(props) {
      */
 
 
-    var _useState15 = (0, _react.useState)(''),
-        _useState16 = _slicedToArray(_useState15, 2),
-        searchQuery = _useState16[0],
-        setSearchQuery = _useState16[1];
+    var _useState17 = (0, _react.useState)(''),
+        _useState18 = _slicedToArray(_useState17, 2),
+        searchQuery = _useState18[0],
+        setSearchQuery = _useState18[1];
+
+    var _useState19 = (0, _react.useState)(''),
+        _useState20 = _slicedToArray(_useState19, 2),
+        selectedCategory = _useState20[0],
+        setSelectedCategory = _useState20[1];
 
     /**
      * @typedef {String} SortOpenedState — Toggles Sort Popup Opened Or Closed
@@ -6342,10 +6366,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState17 = (0, _react.useState)(false),
-        _useState18 = _slicedToArray(_useState17, 2),
-        sortOpened = _useState18[0],
-        setSortOpened = _useState18[1];
+    var _useState21 = (0, _react.useState)(false),
+        _useState22 = _slicedToArray(_useState21, 2),
+        sortOpened = _useState22[0],
+        setSortOpened = _useState22[1];
 
     /**
      * @typedef {String} SortOptionState — Can be one of a range of types
@@ -6357,10 +6381,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState19 = (0, _react.useState)(defaultSortOption),
-        _useState20 = _slicedToArray(_useState19, 2),
-        sortOption = _useState20[0],
-        setSortOption = _useState20[1];
+    var _useState23 = (0, _react.useState)(defaultSortOption),
+        _useState24 = _slicedToArray(_useState23, 2),
+        sortOption = _useState24[0],
+        setSortOption = _useState24[1];
 
     if (sortOption.sort === _constants.SORT_TYPES.RANDOM) {
         totalCardLimit = sampleSize;
@@ -6389,10 +6413,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState21 = (0, _react.useState)(false),
-        _useState22 = _slicedToArray(_useState21, 2),
-        showMobileFilters = _useState22[0],
-        setShowMobileFilters = _useState22[1];
+    var _useState25 = (0, _react.useState)(false),
+        _useState26 = _slicedToArray(_useState25, 2),
+        showMobileFilters = _useState26[0],
+        setShowMobileFilters = _useState26[1];
 
     /**
      * @typedef {Boolean} ShowBookmarkState — Can either be true or false
@@ -6405,10 +6429,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState23 = (0, _react.useState)(false),
-        _useState24 = _slicedToArray(_useState23, 2),
-        showBookmarks = _useState24[0],
-        setShowBookmarks = _useState24[1];
+    var _useState27 = (0, _react.useState)(false),
+        _useState28 = _slicedToArray(_useState27, 2),
+        showBookmarks = _useState28[0],
+        setShowBookmarks = _useState28[1];
 
     /**
      * @typedef {Boolean} LimitFilterQuantityState — Can either be true or false
@@ -6421,10 +6445,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState25 = (0, _react.useState)(filterPanelType === 'top'),
-        _useState26 = _slicedToArray(_useState25, 2),
-        showLimitedFiltersQty = _useState26[0],
-        setShowLimitedFiltersQty = _useState26[1];
+    var _useState29 = (0, _react.useState)(filterPanelType === 'top'),
+        _useState30 = _slicedToArray(_useState29, 2),
+        showLimitedFiltersQty = _useState30[0],
+        setShowLimitedFiltersQty = _useState30[1];
 
     /**
      * @typedef {Array} CardState
@@ -6437,10 +6461,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState27 = (0, _react.useState)([]),
-        _useState28 = _slicedToArray(_useState27, 2),
-        cards = _useState28[0],
-        setCards = _useState28[1];
+    var _useState31 = (0, _react.useState)([]),
+        _useState32 = _slicedToArray(_useState31, 2),
+        cards = _useState32[0],
+        setCards = _useState32[1];
 
     /**
      * @typedef {Boolean} LoadingState — Can either be true or false
@@ -6453,10 +6477,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState29 = (0, _react.useState)(false),
-        _useState30 = _slicedToArray(_useState29, 2),
-        isLoading = _useState30[0],
-        setLoading = _useState30[1];
+    var _useState33 = (0, _react.useState)(false),
+        _useState34 = _slicedToArray(_useState33, 2),
+        isLoading = _useState34[0],
+        setLoading = _useState34[1];
 
     /**
      * @typedef {Boolean} ApiFailureState — Can either be true or false
@@ -6469,30 +6493,30 @@ var Container = function Container(props) {
      */
 
 
-    var _useState31 = (0, _react.useState)(false),
-        _useState32 = _slicedToArray(_useState31, 2),
-        isApiFailure = _useState32[0],
-        setApiFailure = _useState32[1];
-
-    var _useState33 = (0, _react.useState)(null),
-        _useState34 = _slicedToArray(_useState33, 2),
-        randomSortId = _useState34[0],
-        setRandomSortId = _useState34[1];
-
-    var _useState35 = (0, _react.useState)(true),
+    var _useState35 = (0, _react.useState)(false),
         _useState36 = _slicedToArray(_useState35, 2),
-        isFirstLoad = _useState36[0],
-        setIsFirstLoad = _useState36[1];
+        isApiFailure = _useState36[0],
+        setApiFailure = _useState36[1];
 
-    var _useState37 = (0, _react.useState)(),
+    var _useState37 = (0, _react.useState)(null),
         _useState38 = _slicedToArray(_useState37, 2),
-        visibleStamp = _useState38[0],
-        setVisibleStamp = _useState38[1];
+        randomSortId = _useState38[0],
+        setRandomSortId = _useState38[1];
 
-    var _useState39 = (0, _react.useState)(false),
+    var _useState39 = (0, _react.useState)(true),
         _useState40 = _slicedToArray(_useState39, 2),
-        hasFetched = _useState40[0],
-        setHasFetched = _useState40[1];
+        isFirstLoad = _useState40[0],
+        setIsFirstLoad = _useState40[1];
+
+    var _useState41 = (0, _react.useState)(),
+        _useState42 = _slicedToArray(_useState41, 2),
+        visibleStamp = _useState42[0],
+        setVisibleStamp = _useState42[1];
+
+    var _useState43 = (0, _react.useState)(false),
+        _useState44 = _slicedToArray(_useState43, 2),
+        hasFetched = _useState44[0],
+        setHasFetched = _useState44[1];
 
     /**
      * Creates a DOM reference to first filter item
@@ -6602,6 +6626,7 @@ var Container = function Container(props) {
      * @returns {Void} - an updated state
      */
     var clearAllFilters = function clearAllFilters() {
+        console.log('*** Container.js: clearAllFilters');
         setFilters(function (prevFilters) {
             var allFiltersClearedState = getAllFiltersClearedState(prevFilters);
             return allFiltersClearedState;
@@ -6680,6 +6705,7 @@ var Container = function Container(props) {
      * @listens ClickEvent
      */
     var handleFilterGroupClick = function handleFilterGroupClick(filterId) {
+        console.log('*** Container.js: handleFilterGroupClick: filterId', filterId);
         setFilters(function (prevFilters) {
             var opened = void 0;
             return prevFilters.map(function (el) {
@@ -6742,6 +6768,7 @@ var Container = function Container(props) {
 
         setFilters(function (prevFilters) {
             return prevFilters.map(function (filter) {
+                console.log('*** Container.js: handleCheckBoxChange: filter', filter);
                 if (filter.id !== filterId) return filter;
 
                 return _extends({}, filter, {
@@ -6851,6 +6878,7 @@ var Container = function Container(props) {
      */
 
     (0, _react.useEffect)(function () {
+        console.log('*** Container.js: useEffect: setFilters');
         setFilters(authoredFilters.map(function (filterGroup) {
             return _extends({}, filterGroup, {
                 opened: DESKTOP_SCREEN_SIZE ? filterGroup.openedOnLoad : false,
@@ -6870,6 +6898,7 @@ var Container = function Container(props) {
     (0, _react.useEffect)(function () {
         setFilters(function (origin) {
             return origin.map(function (filter) {
+                console.log('*** Container.jsx: useEffect: setFilters: filter', filter);
                 var group = filter.group,
                     items = filter.items;
 
@@ -6914,12 +6943,16 @@ var Container = function Container(props) {
                 return tag.id;
             });
         })));
+        // console.log('*** Container.jsx: removeEmptyFilters: cardsFromJson', cardsFromJson);
+        console.log('*** Container.jsx: removeEmptyFilters: allFilters', allFilters);
+        console.log('*** Container.jsx: removeEmptyFilters: tags', tags);
+
         var timingTags = [_constants.EVENT_TIMING_IDS.LIVE, _constants.EVENT_TIMING_IDS.ONDEMAND, _constants.EVENT_TIMING_IDS.UPCOMING];
 
         return allFilters.map(function (filter) {
             return _extends({}, filter, {
                 items: filter.items.filter(function (item) {
-                    return tags.includes(item.id) || timingTags.includes(item.id);
+                    return tags.includes(item.id) || tags.toString().includes('/' + item.id) || timingTags.includes(item.id);
                 })
             });
         }).filter(function (filter) {
@@ -7101,6 +7134,8 @@ var Container = function Container(props) {
 
                 setFilters(function () {
                     return authoredFilters.map(function (filter) {
+                        // setFilters(prevFilters => prevFilters.map((filter) => {
+                        console.log('*** Container.js: getCards: filter', filter);
                         var group = filter.group,
                             items = filter.items;
 
@@ -7129,6 +7164,7 @@ var Container = function Container(props) {
 
                 setCards(processedCards);
                 if (!showEmptyFilters) {
+                    console.log('*** Container.js: getCards: removeEmptyFilters');
                     setFilters(function (prevFilters) {
                         return removeEmptyFilters(prevFilters, processedCards);
                     });
@@ -7468,6 +7504,16 @@ var Container = function Container(props) {
         'consonant-Wrapper--carousel': isCarouselContainer,
         'consonant-Wrapper--withLeftFilter': filterPanelEnabled && isLeftFilterPanel
     });
+
+    // useEffect(() => {
+    //     if (isCategoriesContainer) {
+    //         setFilters((prevFilters) => {
+    //             // const nextFilters = prevFilters.concat(getAllCategoryProducts());
+    //             console.log('*** Container.js: useEffect: prevFilters', prevFilters);
+    //             return prevFilters;
+    //         });
+    //     }
+    // }, []);
 
     return _react2.default.createElement(
         _contexts.ConfigContext.Provider,
@@ -53780,6 +53826,8 @@ var LeftFilterPanel = (0, _react.forwardRef)(function (_ref, ref) {
 
     var getConfig = (0, _hooks.useConfig)();
 
+    console.log('*** Left: Panel.js: LeftFilterPanel: filters', filters);
+
     /**
      **** Authored Configs ****
      */
@@ -53839,6 +53887,7 @@ var LeftFilterPanel = (0, _react.forwardRef)(function (_ref, ref) {
      * @type {Boolean}
      */
     var atleastOneFilter = filters.length > 0;
+    console.log('*** Left: Panel.js: atleastOneFilter', atleastOneFilter);
 
     /**
      * Class name for the left filters:

@@ -162,6 +162,20 @@ const Container = (props) => {
     const isXorFilter = filterLogic.toLowerCase().trim() === FILTER_TYPES.XOR;
     const isCarouselContainer = authoredLayoutContainer === LAYOUT_CONTAINER.CAROUSEL;
     const isStandardContainer = authoredLayoutContainer !== LAYOUT_CONTAINER.CAROUSEL;
+    const isCategoriesContainer = authoredLayoutContainer === LAYOUT_CONTAINER.CATEGORIES;
+
+    // eslint-disable-next-line no-use-before-define
+    const categories = getConfig('filterPanel', 'categories');
+    // eslint-disable-next-line no-use-before-define, max-len
+    const authoredCategories = isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : [];
+    if (isCategoriesContainer) console.log('*** Container.js: authoredCategories', authoredCategories);
+
+    // TEMPORARY FUNCTION **********************************************************
+    function getAuthoredCategories(filterList, categoryList) {
+        console.log('*** Container.js: getAuthoredCategories: filterList', filterList, categoryList);
+        return [];
+    }
+
     /**
      **** Hooks ****
      */
@@ -245,6 +259,8 @@ const Container = (props) => {
      */
     const [filters, setFilters] = useState([]);
 
+    const [currCategories, setCategories] = useState([]);
+
     /**
      * @typedef {String} SearchQueryState — Will be used to search through cards
      * @typedef {Function} SearchQueryStateSetter — Sets user search query
@@ -252,6 +268,8 @@ const Container = (props) => {
      * @type {[String, Function]} SearchQuery
      */
     const [searchQuery, setSearchQuery] = useState('');
+
+    const [selectedCategory, setSelectedCategory] = useState('');
 
     /**
      * @typedef {String} SortOpenedState — Toggles Sort Popup Opened Or Closed
@@ -455,6 +473,7 @@ const Container = (props) => {
      * @returns {Void} - an updated state
      */
     const clearAllFilters = () => {
+        console.log('*** Container.js: clearAllFilters');
         setFilters((prevFilters) => {
             const allFiltersClearedState = getAllFiltersClearedState(prevFilters);
             return allFiltersClearedState;
@@ -532,6 +551,7 @@ const Container = (props) => {
      * @listens ClickEvent
      */
     const handleFilterGroupClick = (filterId) => {
+        console.log('*** Container.js: handleFilterGroupClick: filterId', filterId);
         setFilters((prevFilters) => {
             let opened;
             return prevFilters.map((el) => {
@@ -583,6 +603,7 @@ const Container = (props) => {
         }
 
         setFilters(prevFilters => prevFilters.map((filter) => {
+            console.log('*** Container.js: handleCheckBoxChange: filter', filter);
             if (filter.id !== filterId) return filter;
 
             return {
@@ -675,6 +696,7 @@ const Container = (props) => {
      */
 
     useEffect(() => {
+        console.log('*** Container.js: useEffect: setFilters');
         setFilters(authoredFilters.map(filterGroup => ({
             ...filterGroup,
             opened: DESKTOP_SCREEN_SIZE ? filterGroup.openedOnLoad : false,
@@ -691,6 +713,7 @@ const Container = (props) => {
      */
     useEffect(() => {
         setFilters(origin => origin.map((filter) => {
+            console.log('*** Container.jsx: useEffect: setFilters: filter', filter);
             const { group, items } = filter;
             const urlStateValue = urlState[filterGroupPrefix + group];
 
@@ -726,6 +749,10 @@ const Container = (props) => {
 
     const removeEmptyFilters = (allFilters, cardsFromJson) => {
         const tags = [].concat(...cardsFromJson.map(card => card.tags.map(tag => tag.id)));
+        // console.log('*** Container.jsx: removeEmptyFilters: cardsFromJson', cardsFromJson);
+        console.log('*** Container.jsx: removeEmptyFilters: allFilters', allFilters);
+        console.log('*** Container.jsx: removeEmptyFilters: tags', tags);
+
         const timingTags = [
             EVENT_TIMING_IDS.LIVE,
             EVENT_TIMING_IDS.ONDEMAND,
@@ -734,8 +761,9 @@ const Container = (props) => {
 
         return allFilters.map(filter => ({
             ...filter,
-            items: filter.items.filter(item => tags.includes(item.id) ||
-                timingTags.includes(item.id)),
+            items: filter.items.filter(item => tags.includes(item.id)
+                || tags.toString().includes(`/${item.id}`) // ***** FIX  HERE *****
+                || timingTags.includes(item.id)),
         })).filter(filter => filter.items.length > 0);
     };
 
@@ -843,6 +871,8 @@ const Container = (props) => {
                             hideCtaTags,
                         );
                     setFilters(() => authoredFilters.map((filter) => {
+                    // setFilters(prevFilters => prevFilters.map((filter) => {
+                        console.log('*** Container.js: getCards: filter', filter);
                         const { group, items } = filter;
                         const urlStateValue = urlState[filterGroupPrefix + group];
                         if (!urlStateValue) return filter;
@@ -868,6 +898,7 @@ const Container = (props) => {
 
                     setCards(processedCards);
                     if (!showEmptyFilters) {
+                        console.log('*** Container.js: getCards: removeEmptyFilters');
                         setFilters(prevFilters => removeEmptyFilters(prevFilters, processedCards));
                     }
                     setTimeout(() => {
@@ -1217,6 +1248,16 @@ const Container = (props) => {
         'consonant-Wrapper--carousel': isCarouselContainer,
         'consonant-Wrapper--withLeftFilter': filterPanelEnabled && isLeftFilterPanel,
     });
+
+    // useEffect(() => {
+    //     if (isCategoriesContainer) {
+    //         setFilters((prevFilters) => {
+    //             // const nextFilters = prevFilters.concat(getAllCategoryProducts());
+    //             console.log('*** Container.js: useEffect: prevFilters', prevFilters);
+    //             return prevFilters;
+    //         });
+    //     }
+    // }, []);
 
     return (
         <ConfigContext.Provider value={config}>
