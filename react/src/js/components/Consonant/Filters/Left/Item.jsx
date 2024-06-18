@@ -195,7 +195,7 @@ const Item = (props) => {
                         id={`${id}-link`}
                         onClick={handleClick}
                         tabIndex="0">
-                        {name}
+                        {name.replaceAll('&amp;', '&')}
                         <div
                             className="consonant-LeftFilter-selectedItemsQty"
                             data-qty={dataQtyTxt}>

@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.12.1 (5/30/2024, 09:56:08)
+ * Chimera UI Libraries - Build 0.12.2 (6/18/2024, 15:21:28)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -54174,7 +54174,7 @@ var Item = function Item(props) {
                         id: id + '-link',
                         onClick: handleClick,
                         tabIndex: '0' },
-                    name,
+                    name.replaceAll('&amp;', '&'),
                     _react2.default.createElement(
                         'div',
                         {
@@ -54290,7 +54290,7 @@ var Items = function Items(props) {
                         'span',
                         {
                             className: 'consonant-LeftFilter-itemsItemName' },
-                        item.label
+                        item.label.replaceAll('&amp;', '&')
                     )
                 )
             );
@@ -54538,7 +54538,7 @@ var ChosenFilterItem = function ChosenFilterItem(props) {
             'data-testid': 'consonant-ChosenFilter',
             className: 'consonant-ChosenFilter',
             tabIndex: '0' },
-        name
+        name.replaceAll('&amp;', '&')
     );
 };
 

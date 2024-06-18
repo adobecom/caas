@@ -51,7 +51,7 @@ const ChosenFilterItem = (props) => {
             data-testid="consonant-ChosenFilter"
             className="consonant-ChosenFilter"
             tabIndex="0">
-            {name}
+            {name.replaceAll('&amp;', '&')}
         </button>
     );
 };

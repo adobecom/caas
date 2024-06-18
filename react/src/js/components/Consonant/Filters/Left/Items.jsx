@@ -57,7 +57,7 @@ const Items = (props) => {
                             className="consonant-LeftFilter-itemsItemCheckmark" />
                         <span
                             className="consonant-LeftFilter-itemsItemName">
-                            {item.label}
+                            {item.label.replaceAll('&amp;', '&')}
                         </span>
                     </label>
                 </li>
