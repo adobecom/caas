@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.12.2 (6/18/2024, 15:21:28)
+ * Chimera UI Libraries - Build 0.12.2 (6/19/2024, 13:17:07)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -54290,7 +54290,7 @@ var Items = function Items(props) {
                         'span',
                         {
                             className: 'consonant-LeftFilter-itemsItemName' },
-                        item.label.replaceAll('&amp;', '&')
+                        item.label && item.label.replaceAll('&amp;', '&')
                     )
                 )
             );
