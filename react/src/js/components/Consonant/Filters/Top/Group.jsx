@@ -84,6 +84,7 @@ const Group = (props) => {
 
     const showFilter = (isCategoriesPage && isProductsFilter)
         || (isCategoriesPage && !id.startsWith('caas:product-categories')) // don't show product filters
+        || (isCategoriesPage && !id.startsWith('4x24')) // don't show product filters
         || (isCategoriesPage && id.includes(name)) // include custom product filter
         || (!isCategoriesPage && !isProductsFilter); // do not show custom product filter
 

@@ -1,3 +1,4 @@
+// eslint-disable
 import React, {
     Fragment,
     useEffect,
@@ -743,6 +744,8 @@ const Container = (props) => {
             EVENT_TIMING_IDS.UPCOMING,
         ];
 
+        console.log('*********** removeEmptyFilters() ***********');
+        console.log(allFilters);
         return allFilters.map(filter => ({
             ...filter,
             items: filter.items.filter(item => tags.includes(item.id)
@@ -836,6 +839,19 @@ const Container = (props) => {
                                 filterItem.id = `${rollingHash(parent, TAG_HASH_LENGTH)}/${rollingHash(child, TAG_HASH_LENGTH)}`;
                             }
                         }
+                        console.log('*********** authoredFilters ***********');
+                        console.log(authoredFilters);
+
+                        for (const group of authoredCategories) {
+                            group.id = rollingHash(group.id, TAG_HASH_LENGTH);
+                            for (const filterItem of group.items) {
+                                const [parent, child] = getParentChild(filterItem.id);
+                                filterItem.id = `${rollingHash(parent, TAG_HASH_LENGTH)}/${rollingHash(child, TAG_HASH_LENGTH)}`;
+                            }
+                        }
+                        console.log('*********** authoredCategories ***********');
+                        console.log(authoredCategories);
+
                         const temp = [];
                         for (const tag of hideCtaTags) {
                             const [parent, child] = getParentChild(tag);
