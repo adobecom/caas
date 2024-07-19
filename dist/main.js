@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.15.0 (7/18/2024, 15:03:54)
+ * Chimera UI Libraries - Build 0.15.0 (7/18/2024, 15:25:28)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6050,7 +6050,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); // eslint-disable
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); /* eslint-disable */
 
 
 var _react = __webpack_require__(0);
@@ -6232,7 +6232,7 @@ var Container = function Container(props) {
     // eslint-disable-next-line no-use-before-define
     var categories = getConfig('filterPanel', 'categories');
     // eslint-disable-next-line no-use-before-define, max-len
-    var authoredCategories = isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : [];
+    // const authoredCategories = isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : [];
 
     /**
      **** Hooks ****
@@ -6353,18 +6353,22 @@ var Container = function Container(props) {
      * @type {[Array, Function]} Filters
      */
 
-
-    var _useState13 = (0, _react.useState)([]),
+    var _useState13 = (0, _react.useState)(isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : []),
         _useState14 = _slicedToArray(_useState13, 2),
-        filters = _useState14[0],
-        setFilters = _useState14[1];
-    // window.filters = filters;
-
+        authoredCategories = _useState14[0],
+        setAuthoredCategories = _useState14[1];
 
     var _useState15 = (0, _react.useState)([]),
         _useState16 = _slicedToArray(_useState15, 2),
-        currCategories = _useState16[0],
-        setCategories = _useState16[1];
+        filters = _useState16[0],
+        setFilters = _useState16[1];
+    // window.filters = filters;
+
+
+    var _useState17 = (0, _react.useState)([]),
+        _useState18 = _slicedToArray(_useState17, 2),
+        currCategories = _useState18[0],
+        setCategories = _useState18[1];
 
     /**
      * @typedef {String} SearchQueryState — Will be used to search through cards
@@ -6374,15 +6378,15 @@ var Container = function Container(props) {
      */
 
 
-    var _useState17 = (0, _react.useState)(''),
-        _useState18 = _slicedToArray(_useState17, 2),
-        searchQuery = _useState18[0],
-        setSearchQuery = _useState18[1];
-
     var _useState19 = (0, _react.useState)(''),
         _useState20 = _slicedToArray(_useState19, 2),
-        selectedCategory = _useState20[0],
-        setSelectedCategory = _useState20[1];
+        searchQuery = _useState20[0],
+        setSearchQuery = _useState20[1];
+
+    var _useState21 = (0, _react.useState)(''),
+        _useState22 = _slicedToArray(_useState21, 2),
+        selectedCategory = _useState22[0],
+        setSelectedCategory = _useState22[1];
 
     /**
      * @typedef {String} SortOpenedState — Toggles Sort Popup Opened Or Closed
@@ -6392,10 +6396,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState21 = (0, _react.useState)(false),
-        _useState22 = _slicedToArray(_useState21, 2),
-        sortOpened = _useState22[0],
-        setSortOpened = _useState22[1];
+    var _useState23 = (0, _react.useState)(false),
+        _useState24 = _slicedToArray(_useState23, 2),
+        sortOpened = _useState24[0],
+        setSortOpened = _useState24[1];
 
     /**
      * @typedef {String} SortOptionState — Can be one of a range of types
@@ -6407,10 +6411,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState23 = (0, _react.useState)(defaultSortOption),
-        _useState24 = _slicedToArray(_useState23, 2),
-        sortOption = _useState24[0],
-        setSortOption = _useState24[1];
+    var _useState25 = (0, _react.useState)(defaultSortOption),
+        _useState26 = _slicedToArray(_useState25, 2),
+        sortOption = _useState26[0],
+        setSortOption = _useState26[1];
 
     if (sortOption.sort === _constants.SORT_TYPES.RANDOM) {
         totalCardLimit = sampleSize;
@@ -6439,10 +6443,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState25 = (0, _react.useState)(false),
-        _useState26 = _slicedToArray(_useState25, 2),
-        showMobileFilters = _useState26[0],
-        setShowMobileFilters = _useState26[1];
+    var _useState27 = (0, _react.useState)(false),
+        _useState28 = _slicedToArray(_useState27, 2),
+        showMobileFilters = _useState28[0],
+        setShowMobileFilters = _useState28[1];
 
     /**
      * @typedef {Boolean} ShowBookmarkState — Can either be true or false
@@ -6455,10 +6459,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState27 = (0, _react.useState)(false),
-        _useState28 = _slicedToArray(_useState27, 2),
-        showBookmarks = _useState28[0],
-        setShowBookmarks = _useState28[1];
+    var _useState29 = (0, _react.useState)(false),
+        _useState30 = _slicedToArray(_useState29, 2),
+        showBookmarks = _useState30[0],
+        setShowBookmarks = _useState30[1];
 
     /**
      * @typedef {Boolean} LimitFilterQuantityState — Can either be true or false
@@ -6471,10 +6475,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState29 = (0, _react.useState)(filterPanelType === 'top'),
-        _useState30 = _slicedToArray(_useState29, 2),
-        showLimitedFiltersQty = _useState30[0],
-        setShowLimitedFiltersQty = _useState30[1];
+    var _useState31 = (0, _react.useState)(filterPanelType === 'top'),
+        _useState32 = _slicedToArray(_useState31, 2),
+        showLimitedFiltersQty = _useState32[0],
+        setShowLimitedFiltersQty = _useState32[1];
 
     /**
      * @typedef {Array} CardState
@@ -6487,10 +6491,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState31 = (0, _react.useState)([]),
-        _useState32 = _slicedToArray(_useState31, 2),
-        cards = _useState32[0],
-        setCards = _useState32[1];
+    var _useState33 = (0, _react.useState)([]),
+        _useState34 = _slicedToArray(_useState33, 2),
+        cards = _useState34[0],
+        setCards = _useState34[1];
 
     /**
      * @typedef {Boolean} LoadingState — Can either be true or false
@@ -6503,10 +6507,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState33 = (0, _react.useState)(false),
-        _useState34 = _slicedToArray(_useState33, 2),
-        isLoading = _useState34[0],
-        setLoading = _useState34[1];
+    var _useState35 = (0, _react.useState)(false),
+        _useState36 = _slicedToArray(_useState35, 2),
+        isLoading = _useState36[0],
+        setLoading = _useState36[1];
 
     /**
      * @typedef {Boolean} ApiFailureState — Can either be true or false
@@ -6519,30 +6523,30 @@ var Container = function Container(props) {
      */
 
 
-    var _useState35 = (0, _react.useState)(false),
-        _useState36 = _slicedToArray(_useState35, 2),
-        isApiFailure = _useState36[0],
-        setApiFailure = _useState36[1];
-
-    var _useState37 = (0, _react.useState)(null),
+    var _useState37 = (0, _react.useState)(false),
         _useState38 = _slicedToArray(_useState37, 2),
-        randomSortId = _useState38[0],
-        setRandomSortId = _useState38[1];
+        isApiFailure = _useState38[0],
+        setApiFailure = _useState38[1];
 
-    var _useState39 = (0, _react.useState)(true),
+    var _useState39 = (0, _react.useState)(null),
         _useState40 = _slicedToArray(_useState39, 2),
-        isFirstLoad = _useState40[0],
-        setIsFirstLoad = _useState40[1];
+        randomSortId = _useState40[0],
+        setRandomSortId = _useState40[1];
 
-    var _useState41 = (0, _react.useState)(),
+    var _useState41 = (0, _react.useState)(true),
         _useState42 = _slicedToArray(_useState41, 2),
-        visibleStamp = _useState42[0],
-        setVisibleStamp = _useState42[1];
+        isFirstLoad = _useState42[0],
+        setIsFirstLoad = _useState42[1];
 
-    var _useState43 = (0, _react.useState)(false),
+    var _useState43 = (0, _react.useState)(),
         _useState44 = _slicedToArray(_useState43, 2),
-        hasFetched = _useState44[0],
-        setHasFetched = _useState44[1];
+        visibleStamp = _useState44[0],
+        setVisibleStamp = _useState44[1];
+
+    var _useState45 = (0, _react.useState)(false),
+        _useState46 = _slicedToArray(_useState45, 2),
+        hasFetched = _useState46[0],
+        setHasFetched = _useState46[1];
 
     /**
      * Creates a DOM reference to first filter item
@@ -7772,6 +7776,7 @@ var Container = function Container(props) {
         }
     }, []);
 
+    console.log('Line 1361:', authoredCategories);
     return _react2.default.createElement(
         _contexts.ConfigContext.Provider,
         { value: config },

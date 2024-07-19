@@ -1,4 +1,4 @@
-// eslint-disable
+/* eslint-disable */
 import React, {
     Fragment,
     useEffect,
@@ -168,7 +168,7 @@ const Container = (props) => {
     // eslint-disable-next-line no-use-before-define
     const categories = getConfig('filterPanel', 'categories');
     // eslint-disable-next-line no-use-before-define, max-len
-    const authoredCategories = isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : [];
+    // const authoredCategories = isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : [];
 
     /**
      **** Hooks ****
@@ -251,6 +251,10 @@ const Container = (props) => {
      *
      * @type {[Array, Function]} Filters
      */
+    
+    const [authoredCategories, setAuthoredCategories] = useState( 
+        isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : []);
+
     const [filters, setFilters] = useState([]);
     // window.filters = filters;
     const [currCategories, setCategories] = useState([]);
@@ -1358,6 +1362,7 @@ const Container = (props) => {
         }
     }, []);
 
+    console.log('Line 1361:', authoredCategories);
     return (
         <ConfigContext.Provider value={config}>
             <ExpandableContext.Provider value={{ value: openDropdown, setValue: setOpenDropdown }} >
