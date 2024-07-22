@@ -105,7 +105,7 @@ const Container = (props) => {
     const paginationIsEnabled = getConfig('pagination', 'enabled');
     const resultsPerPage = getConfig('collection', 'resultsPerPage');
     const onlyShowBookmarks = getConfig('bookmarks', 'leftFilterPanel.bookmarkOnlyCollection');
-    const authoredFilters = getConfig('filterPanel', 'filters');
+    let authoredFilters = getConfig('filterPanel', 'filters');
     const filterLogic = getConfig('filterPanel', 'filterLogic').toLowerCase().trim();
     let totalCardLimit = getConfig('collection', 'totalCardsToShow');
     const sampleSize = getConfig('collection', 'reservoir.sample');
@@ -167,7 +167,7 @@ const Container = (props) => {
     // eslint-disable-next-line no-use-before-define
     const categories = getConfig('filterPanel', 'categories');
     // eslint-disable-next-line no-use-before-define, max-len
-    const authoredCategories = isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : [];
+    // const authoredCategories = isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : [];
 
     /**
      **** Hooks ****
@@ -253,6 +253,9 @@ const Container = (props) => {
     const [filters, setFilters] = useState([]);
     // window.filters = filters;
     const [currCategories, setCategories] = useState([]);
+
+    // eslint-disable-next-line no-use-before-define, max-len
+    const [authoredCategories, setAuthoredCategories] = useState(isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : []);
 
     /**
      * @typedef {String} SearchQueryState — Will be used to search through cards
@@ -734,8 +737,15 @@ const Container = (props) => {
         setUrlState('page', currentPage === 1 ? '' : currentPage);
     }, [currentPage]);
 
-    const removeEmptyFilters = (allFilters, cardsFromJson) => {
+    const removeEmptyFilters = (allFilters, cardsFromJson, isHashed = false) => {
         const tags = [].concat(...cardsFromJson.map(card => card.tags.map(tag => tag.id)));
+
+        // eslint-disable-next-line no-use-before-define, no-param-reassign
+        if (isHashed) allFilters = hashTagIds(allFilters);
+
+        console.log('*********** removeEmptyFilters() ***********');
+        console.log('tags', tags);
+        console.log('allFilters', allFilters);
 
         const timingTags = [
             EVENT_TIMING_IDS.LIVE,
@@ -750,6 +760,18 @@ const Container = (props) => {
             || tags.toString().includes(`/${item.id}`) // ***** FIX  HERE *****
             || timingTags.includes(item.id)),
         })).filter(filter => filter.items.length > 0);
+    };
+
+    const TAG_HASH_LENGTH = 6;
+    const hashTagIds = (tags) => {
+        for (const group of tags) {
+            group.id = rollingHash(group.id, TAG_HASH_LENGTH);
+            for (const filterItem of group.items) {
+                const [parent, child] = getParentChild(filterItem.id);
+                filterItem.id = `${rollingHash(parent, TAG_HASH_LENGTH)}/${rollingHash(child, TAG_HASH_LENGTH)}`;
+            }
+        }
+        return tags;
     };
 
     /**
@@ -828,14 +850,23 @@ const Container = (props) => {
                         return;
                     }
                     if (payload.isHashed) {
-                        const TAG_HASH_LENGTH = 6;
-                        for (const group of authoredFilters) {
-                            group.id = rollingHash(group.id, TAG_HASH_LENGTH);
-                            for (const filterItem of group.items) {
-                                const [parent, child] = getParentChild(filterItem.id);
-                                filterItem.id = `${rollingHash(parent, TAG_HASH_LENGTH)}/${rollingHash(child, TAG_HASH_LENGTH)}`;
-                            }
-                        }
+                        // const TAG_HASH_LENGTH = 6;
+                        // for (const group of authoredFilters) {
+                        //     group.id = rollingHash(group.id, TAG_HASH_LENGTH);
+                        //     for (const filterItem of group.items) {
+                        //         const [parent, child] = getParentChild(filterItem.id);
+                        // eslint-disable-next-line max-len
+                        //         filterItem.id = `${rollingHash(parent, TAG_HASH_LENGTH)}/${rollingHash(child, TAG_HASH_LENGTH)}`;
+                        //     }
+                        // }
+                        console.log('*********** authoredFilters ***********');
+                        authoredFilters = hashTagIds(authoredFilters);
+                        console.log(authoredFilters);
+
+                        console.log('*********** authoredCategories ***********');
+                        setAuthoredCategories(hashTagIds(authoredCategories));
+                        console.log(authoredCategories);
+
                         const temp = [];
                         for (const tag of hideCtaTags) {
                             const [parent, child] = getParentChild(tag);
@@ -898,7 +929,8 @@ const Container = (props) => {
 
                     setCards(processedCards);
                     if (!showEmptyFilters) {
-                        setFilters(prevFilters => removeEmptyFilters(prevFilters, processedCards));
+                        // eslint-disable-next-line max-len
+                        setFilters(prevFilters => removeEmptyFilters(prevFilters, processedCards, payload.isHashed));
                     }
                     setTimeout(() => {
                         if (!scrollElementRef.current) return;

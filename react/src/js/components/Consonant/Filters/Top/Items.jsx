@@ -39,6 +39,9 @@ const Items = (props) => {
         clipWrapperItemsCount,
     } = props;
 
+    // console.log('*********** Items.jsx: items ***********');
+    // console.log(items);
+
     /**
      **** Constants ****
      */
@@ -65,7 +68,7 @@ const Items = (props) => {
             data-testid="consonant-TopFilter-items"
             className={clipFilterItemsClass}>
             {items.map((item) => {
-                const name = item.id.split('/')[1];
+                const name = item.group || item.id.split('/')[1];
                 let title;
                 if (!set.has(name)) {
                     title = name.replaceAll('-', ' ');

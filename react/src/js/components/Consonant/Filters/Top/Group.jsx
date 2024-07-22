@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Fragment } from 'react';
 import classNames from 'classnames';
 import {
@@ -72,6 +73,9 @@ const Group = (props) => {
 
     const getConfig = useConfig();
 
+    console.log('*********** Group.jsx: id, items ***********');
+    console.log(id, name, items);
+
     /**
      **** Authored Configs ****
      */
@@ -82,10 +86,60 @@ const Group = (props) => {
     const isCategoriesPage = getConfig('collection', 'layout.container') === 'categories';
     const isProductsFilter = id === 'caas:all-products';
 
-    const showFilter = (isCategoriesPage && isProductsFilter)
-        || (isCategoriesPage && !id.startsWith('caas:product-categories')) // don't show product filters
-        || (isCategoriesPage && id.includes(name)) // include custom product filter
-        || (!isCategoriesPage && !isProductsFilter); // do not show custom product filter
+    const hashedCategories = ['3277', '8r6z', '5ron', '7m56', 'jff0', '50kf', 'agc9'];
+    // const hashedId = id.split('/')[0];
+
+    console.log('>>>>>>>>>>>>>> hashedCategories.includes(id)', hashedCategories.includes(id), id, name);
+
+    // let showFilter = (isCategoriesPage && isProductsFilter)
+    //     // || (isCategoriesPage && !hashedCategories.includes(id)) // show category filters
+    //     || (isCategoriesPage && !id.startsWith('caas:product-categories'))
+    //     || (isCategoriesPage && id.includes(name)) // include custom product filter
+    //     || (!isCategoriesPage && !isProductsFilter); // do not show custom product filter
+
+    // showFilter = isCategoriesPage && hashedCategories.includes(id) ? false : showFilter;
+
+    const showFilter = (() => {
+        if (!isCategoriesPage) {
+            return true;
+        } else if (isProductsFilter) {
+            console.log('>>>>>>>>>>>>>> isProductsFilter: TRUE');
+            return true;
+        } else if (id.startsWith('caas:product-categories')) {
+            console.log('>>>>>>>>>>>>>> id.startsWith(caas:product-categories): FALSE');
+            return false;
+        } else if (hashedCategories.includes(id)) {
+            console.log('>>>>>>>>>>>>>> hashedCategories.includes(id): FALSE');
+            return false;
+        } else if (id.includes(name)) {
+            console.log('>>>>>>>>>>>>>> id.includes(name): FALSE');
+            return false;
+        // } else if ( !isProductsFilter) {
+        //     return true;
+        } else {
+            return false;
+        }
+    })();
+
+
+
+
+    // const showFilter = isCategoriesPage &&
+    //     (
+    //         isProductsFilter
+    //         || !hashedCategories.includes(id) // show category filters
+    //         || !id.startsWith('caas:product-categories') // don't show product filters
+    //         || id.includes(name) // include custom product filter
+    //     )
+    //     || (!isCategoriesPage && !isProductsFilter);
+
+    console.log('>>>>>>>>>>>>>> showFilter?', showFilter, name);
+    console.log(' hashedCategories', hashedCategories);
+    console.log(' id', id);
+    // console.log(' isProductsFilter', isProductsFilter);
+    // console.log(' !haschedCategories.includes(id)', !(hashedCategories.includes(id)));
+    // console.log(' id.startsWith(caas:product-categories)', id.startsWith('caas:product-categories'));
+    // console.log(' id.includes(name)', id.includes(name));
 
     /**
      **** Hooks ****

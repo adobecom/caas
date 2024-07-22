@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.14.2 (7/17/2024, 13:45:06)
+ * Chimera UI Libraries - Build 0.15.0 (7/22/2024, 10:23:01)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6231,7 +6231,7 @@ var Container = function Container(props) {
     // eslint-disable-next-line no-use-before-define
     var categories = getConfig('filterPanel', 'categories');
     // eslint-disable-next-line no-use-before-define, max-len
-    var authoredCategories = isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : [];
+    // const authoredCategories = isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : [];
 
     /**
      **** Hooks ****
@@ -6365,6 +6365,14 @@ var Container = function Container(props) {
         currCategories = _useState16[0],
         setCategories = _useState16[1];
 
+    // eslint-disable-next-line no-use-before-define, max-len
+
+
+    var _useState17 = (0, _react.useState)(isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : []),
+        _useState18 = _slicedToArray(_useState17, 2),
+        authoredCategories = _useState18[0],
+        setAuthoredCategories = _useState18[1];
+
     /**
      * @typedef {String} SearchQueryState — Will be used to search through cards
      * @typedef {Function} SearchQueryStateSetter — Sets user search query
@@ -6373,15 +6381,15 @@ var Container = function Container(props) {
      */
 
 
-    var _useState17 = (0, _react.useState)(''),
-        _useState18 = _slicedToArray(_useState17, 2),
-        searchQuery = _useState18[0],
-        setSearchQuery = _useState18[1];
-
     var _useState19 = (0, _react.useState)(''),
         _useState20 = _slicedToArray(_useState19, 2),
-        selectedCategory = _useState20[0],
-        setSelectedCategory = _useState20[1];
+        searchQuery = _useState20[0],
+        setSearchQuery = _useState20[1];
+
+    var _useState21 = (0, _react.useState)(''),
+        _useState22 = _slicedToArray(_useState21, 2),
+        selectedCategory = _useState22[0],
+        setSelectedCategory = _useState22[1];
 
     /**
      * @typedef {String} SortOpenedState — Toggles Sort Popup Opened Or Closed
@@ -6391,10 +6399,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState21 = (0, _react.useState)(false),
-        _useState22 = _slicedToArray(_useState21, 2),
-        sortOpened = _useState22[0],
-        setSortOpened = _useState22[1];
+    var _useState23 = (0, _react.useState)(false),
+        _useState24 = _slicedToArray(_useState23, 2),
+        sortOpened = _useState24[0],
+        setSortOpened = _useState24[1];
 
     /**
      * @typedef {String} SortOptionState — Can be one of a range of types
@@ -6406,10 +6414,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState23 = (0, _react.useState)(defaultSortOption),
-        _useState24 = _slicedToArray(_useState23, 2),
-        sortOption = _useState24[0],
-        setSortOption = _useState24[1];
+    var _useState25 = (0, _react.useState)(defaultSortOption),
+        _useState26 = _slicedToArray(_useState25, 2),
+        sortOption = _useState26[0],
+        setSortOption = _useState26[1];
 
     if (sortOption.sort === _constants.SORT_TYPES.RANDOM) {
         totalCardLimit = sampleSize;
@@ -6438,10 +6446,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState25 = (0, _react.useState)(false),
-        _useState26 = _slicedToArray(_useState25, 2),
-        showMobileFilters = _useState26[0],
-        setShowMobileFilters = _useState26[1];
+    var _useState27 = (0, _react.useState)(false),
+        _useState28 = _slicedToArray(_useState27, 2),
+        showMobileFilters = _useState28[0],
+        setShowMobileFilters = _useState28[1];
 
     /**
      * @typedef {Boolean} ShowBookmarkState — Can either be true or false
@@ -6454,10 +6462,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState27 = (0, _react.useState)(false),
-        _useState28 = _slicedToArray(_useState27, 2),
-        showBookmarks = _useState28[0],
-        setShowBookmarks = _useState28[1];
+    var _useState29 = (0, _react.useState)(false),
+        _useState30 = _slicedToArray(_useState29, 2),
+        showBookmarks = _useState30[0],
+        setShowBookmarks = _useState30[1];
 
     /**
      * @typedef {Boolean} LimitFilterQuantityState — Can either be true or false
@@ -6470,10 +6478,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState29 = (0, _react.useState)(filterPanelType === 'top'),
-        _useState30 = _slicedToArray(_useState29, 2),
-        showLimitedFiltersQty = _useState30[0],
-        setShowLimitedFiltersQty = _useState30[1];
+    var _useState31 = (0, _react.useState)(filterPanelType === 'top'),
+        _useState32 = _slicedToArray(_useState31, 2),
+        showLimitedFiltersQty = _useState32[0],
+        setShowLimitedFiltersQty = _useState32[1];
 
     /**
      * @typedef {Array} CardState
@@ -6486,10 +6494,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState31 = (0, _react.useState)([]),
-        _useState32 = _slicedToArray(_useState31, 2),
-        cards = _useState32[0],
-        setCards = _useState32[1];
+    var _useState33 = (0, _react.useState)([]),
+        _useState34 = _slicedToArray(_useState33, 2),
+        cards = _useState34[0],
+        setCards = _useState34[1];
 
     /**
      * @typedef {Boolean} LoadingState — Can either be true or false
@@ -6502,10 +6510,10 @@ var Container = function Container(props) {
      */
 
 
-    var _useState33 = (0, _react.useState)(false),
-        _useState34 = _slicedToArray(_useState33, 2),
-        isLoading = _useState34[0],
-        setLoading = _useState34[1];
+    var _useState35 = (0, _react.useState)(false),
+        _useState36 = _slicedToArray(_useState35, 2),
+        isLoading = _useState36[0],
+        setLoading = _useState36[1];
 
     /**
      * @typedef {Boolean} ApiFailureState — Can either be true or false
@@ -6518,30 +6526,30 @@ var Container = function Container(props) {
      */
 
 
-    var _useState35 = (0, _react.useState)(false),
-        _useState36 = _slicedToArray(_useState35, 2),
-        isApiFailure = _useState36[0],
-        setApiFailure = _useState36[1];
-
-    var _useState37 = (0, _react.useState)(null),
+    var _useState37 = (0, _react.useState)(false),
         _useState38 = _slicedToArray(_useState37, 2),
-        randomSortId = _useState38[0],
-        setRandomSortId = _useState38[1];
+        isApiFailure = _useState38[0],
+        setApiFailure = _useState38[1];
 
-    var _useState39 = (0, _react.useState)(true),
+    var _useState39 = (0, _react.useState)(null),
         _useState40 = _slicedToArray(_useState39, 2),
-        isFirstLoad = _useState40[0],
-        setIsFirstLoad = _useState40[1];
+        randomSortId = _useState40[0],
+        setRandomSortId = _useState40[1];
 
-    var _useState41 = (0, _react.useState)(),
+    var _useState41 = (0, _react.useState)(true),
         _useState42 = _slicedToArray(_useState41, 2),
-        visibleStamp = _useState42[0],
-        setVisibleStamp = _useState42[1];
+        isFirstLoad = _useState42[0],
+        setIsFirstLoad = _useState42[1];
 
-    var _useState43 = (0, _react.useState)(false),
+    var _useState43 = (0, _react.useState)(),
         _useState44 = _slicedToArray(_useState43, 2),
-        hasFetched = _useState44[0],
-        setHasFetched = _useState44[1];
+        visibleStamp = _useState44[0],
+        setVisibleStamp = _useState44[1];
+
+    var _useState45 = (0, _react.useState)(false),
+        _useState46 = _slicedToArray(_useState45, 2),
+        hasFetched = _useState46[0],
+        setHasFetched = _useState46[1];
 
     /**
      * Creates a DOM reference to first filter item
@@ -6958,11 +6966,20 @@ var Container = function Container(props) {
     var removeEmptyFilters = function removeEmptyFilters(allFilters, cardsFromJson) {
         var _ref3;
 
+        var isHashed = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
         var tags = (_ref3 = []).concat.apply(_ref3, _toConsumableArray(cardsFromJson.map(function (card) {
             return card.tags.map(function (tag) {
                 return tag.id;
             });
         })));
+
+        // eslint-disable-next-line no-use-before-define, no-param-reassign
+        if (isHashed) allFilters = hashTagIds(allFilters);
+
+        console.log('*********** removeEmptyFilters() ***********');
+        console.log('tags', tags);
+        console.log('allFilters', allFilters);
 
         var timingTags = [_constants.EVENT_TIMING_IDS.LIVE, _constants.EVENT_TIMING_IDS.ONDEMAND, _constants.EVENT_TIMING_IDS.UPCOMING];
 
@@ -6976,6 +6993,65 @@ var Container = function Container(props) {
         }).filter(function (filter) {
             return filter.items.length > 0;
         });
+    };
+
+    var TAG_HASH_LENGTH = 6;
+    var hashTagIds = function hashTagIds(tags) {
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+            for (var _iterator = tags[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                var group = _step.value;
+
+                group.id = rollingHash(group.id, TAG_HASH_LENGTH);
+                var _iteratorNormalCompletion2 = true;
+                var _didIteratorError2 = false;
+                var _iteratorError2 = undefined;
+
+                try {
+                    for (var _iterator2 = group.items[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                        var filterItem = _step2.value;
+
+                        var _getParentChild = getParentChild(filterItem.id),
+                            _getParentChild2 = _slicedToArray(_getParentChild, 2),
+                            parent = _getParentChild2[0],
+                            child = _getParentChild2[1];
+
+                        filterItem.id = rollingHash(parent, TAG_HASH_LENGTH) + '/' + rollingHash(child, TAG_HASH_LENGTH);
+                    }
+                } catch (err) {
+                    _didIteratorError2 = true;
+                    _iteratorError2 = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                            _iterator2.return();
+                        }
+                    } finally {
+                        if (_didIteratorError2) {
+                            throw _iteratorError2;
+                        }
+                    }
+                }
+            }
+        } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion && _iterator.return) {
+                    _iterator.return();
+                }
+            } finally {
+                if (_didIteratorError) {
+                    throw _iteratorError;
+                }
+            }
+        }
+
+        return tags;
     };
 
     /**
@@ -7055,69 +7131,31 @@ var Container = function Container(props) {
                     return;
                 }
                 if (payload.isHashed) {
-                    var TAG_HASH_LENGTH = 6;
-                    var _iteratorNormalCompletion = true;
-                    var _didIteratorError = false;
-                    var _iteratorError = undefined;
+                    // const TAG_HASH_LENGTH = 6;
+                    // for (const group of authoredFilters) {
+                    //     group.id = rollingHash(group.id, TAG_HASH_LENGTH);
+                    //     for (const filterItem of group.items) {
+                    //         const [parent, child] = getParentChild(filterItem.id);
+                    // eslint-disable-next-line max-len
+                    //         filterItem.id = `${rollingHash(parent, TAG_HASH_LENGTH)}/${rollingHash(child, TAG_HASH_LENGTH)}`;
+                    //     }
+                    // }
+                    console.log('*********** authoredFilters ***********');
+                    authoredFilters = hashTagIds(authoredFilters);
+                    console.log(authoredFilters);
 
-                    try {
-                        for (var _iterator = authoredFilters[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                            var group = _step.value;
-
-                            group.id = rollingHash(group.id, TAG_HASH_LENGTH);
-                            var _iteratorNormalCompletion3 = true;
-                            var _didIteratorError3 = false;
-                            var _iteratorError3 = undefined;
-
-                            try {
-                                for (var _iterator3 = group.items[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-                                    var filterItem = _step3.value;
-
-                                    var _getParentChild = getParentChild(filterItem.id),
-                                        _getParentChild2 = _slicedToArray(_getParentChild, 2),
-                                        parent = _getParentChild2[0],
-                                        child = _getParentChild2[1];
-
-                                    filterItem.id = rollingHash(parent, TAG_HASH_LENGTH) + '/' + rollingHash(child, TAG_HASH_LENGTH);
-                                }
-                            } catch (err) {
-                                _didIteratorError3 = true;
-                                _iteratorError3 = err;
-                            } finally {
-                                try {
-                                    if (!_iteratorNormalCompletion3 && _iterator3.return) {
-                                        _iterator3.return();
-                                    }
-                                } finally {
-                                    if (_didIteratorError3) {
-                                        throw _iteratorError3;
-                                    }
-                                }
-                            }
-                        }
-                    } catch (err) {
-                        _didIteratorError = true;
-                        _iteratorError = err;
-                    } finally {
-                        try {
-                            if (!_iteratorNormalCompletion && _iterator.return) {
-                                _iterator.return();
-                            }
-                        } finally {
-                            if (_didIteratorError) {
-                                throw _iteratorError;
-                            }
-                        }
-                    }
+                    console.log('*********** authoredCategories ***********');
+                    setAuthoredCategories(hashTagIds(authoredCategories));
+                    console.log(authoredCategories);
 
                     var temp = [];
-                    var _iteratorNormalCompletion2 = true;
-                    var _didIteratorError2 = false;
-                    var _iteratorError2 = undefined;
+                    var _iteratorNormalCompletion3 = true;
+                    var _didIteratorError3 = false;
+                    var _iteratorError3 = undefined;
 
                     try {
-                        for (var _iterator2 = hideCtaTags[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                            var tag = _step2.value;
+                        for (var _iterator3 = hideCtaTags[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                            var tag = _step3.value;
 
                             var _getParentChild3 = getParentChild(tag),
                                 _getParentChild4 = _slicedToArray(_getParentChild3, 2),
@@ -7129,16 +7167,16 @@ var Container = function Container(props) {
                             }
                         }
                     } catch (err) {
-                        _didIteratorError2 = true;
-                        _iteratorError2 = err;
+                        _didIteratorError3 = true;
+                        _iteratorError3 = err;
                     } finally {
                         try {
-                            if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                                _iterator2.return();
+                            if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                                _iterator3.return();
                             }
                         } finally {
-                            if (_didIteratorError2) {
-                                throw _iteratorError2;
+                            if (_didIteratorError3) {
+                                throw _iteratorError3;
                             }
                         }
                     }
@@ -7201,8 +7239,9 @@ var Container = function Container(props) {
 
                 setCards(processedCards);
                 if (!showEmptyFilters) {
+                    // eslint-disable-next-line max-len
                     setFilters(function (prevFilters) {
-                        return removeEmptyFilters(prevFilters, processedCards);
+                        return removeEmptyFilters(prevFilters, processedCards, payload.isHashed);
                     });
                 }
                 setTimeout(function () {
@@ -53470,7 +53509,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Group = undefined;
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); /* eslint-disable */
+
 
 var _react = __webpack_require__(0);
 
@@ -53548,6 +53588,9 @@ var Group = function Group(props) {
 
     var getConfig = (0, _hooks.useConfig)();
 
+    console.log('*********** Group.jsx: id, items ***********');
+    console.log(id, name, items);
+
     /**
      **** Authored Configs ****
      */
@@ -53557,9 +53600,57 @@ var Group = function Group(props) {
     var isCategoriesPage = getConfig('collection', 'layout.container') === 'categories';
     var isProductsFilter = id === 'caas:all-products';
 
-    var showFilter = isCategoriesPage && isProductsFilter || isCategoriesPage && !id.startsWith('caas:product-categories') // don't show product filters
-    || isCategoriesPage && id.includes(name) // include custom product filter
-    || !isCategoriesPage && !isProductsFilter; // do not show custom product filter
+    var hashedCategories = ['3277', '8r6z', '5ron', '7m56', 'jff0', '50kf', 'agc9'];
+    // const hashedId = id.split('/')[0];
+
+    console.log('>>>>>>>>>>>>>> hashedCategories.includes(id)', hashedCategories.includes(id), id, name);
+
+    // let showFilter = (isCategoriesPage && isProductsFilter)
+    //     // || (isCategoriesPage && !hashedCategories.includes(id)) // show category filters
+    //     || (isCategoriesPage && !id.startsWith('caas:product-categories'))
+    //     || (isCategoriesPage && id.includes(name)) // include custom product filter
+    //     || (!isCategoriesPage && !isProductsFilter); // do not show custom product filter
+
+    // showFilter = isCategoriesPage && hashedCategories.includes(id) ? false : showFilter;
+
+    var showFilter = function () {
+        if (!isCategoriesPage) {
+            return true;
+        } else if (isProductsFilter) {
+            console.log('>>>>>>>>>>>>>> isProductsFilter: TRUE');
+            return true;
+        } else if (id.startsWith('caas:product-categories')) {
+            console.log('>>>>>>>>>>>>>> id.startsWith(caas:product-categories): FALSE');
+            return false;
+        } else if (hashedCategories.includes(id)) {
+            console.log('>>>>>>>>>>>>>> hashedCategories.includes(id): FALSE');
+            return false;
+        } else if (id.includes(name)) {
+            console.log('>>>>>>>>>>>>>> id.includes(name): FALSE');
+            return false;
+            // } else if ( !isProductsFilter) {
+            //     return true;
+        } else {
+            return false;
+        }
+    }();
+
+    // const showFilter = isCategoriesPage &&
+    //     (
+    //         isProductsFilter
+    //         || !hashedCategories.includes(id) // show category filters
+    //         || !id.startsWith('caas:product-categories') // don't show product filters
+    //         || id.includes(name) // include custom product filter
+    //     )
+    //     || (!isCategoriesPage && !isProductsFilter);
+
+    console.log('>>>>>>>>>>>>>> showFilter?', showFilter, name);
+    console.log(' hashedCategories', hashedCategories);
+    console.log(' id', id);
+    // console.log(' isProductsFilter', isProductsFilter);
+    // console.log(' !haschedCategories.includes(id)', !(hashedCategories.includes(id)));
+    // console.log(' id.startsWith(caas:product-categories)', id.startsWith('caas:product-categories'));
+    // console.log(' id.includes(name)', id.includes(name));
 
     /**
      **** Hooks ****
@@ -53813,6 +53904,9 @@ var Items = function Items(props) {
         stopPropagation = props.stopPropagation,
         clipWrapperItemsCount = props.clipWrapperItemsCount;
 
+    // console.log('*********** Items.jsx: items ***********');
+    // console.log(items);
+
     /**
      **** Constants ****
      */
@@ -53841,7 +53935,7 @@ var Items = function Items(props) {
             'data-testid': 'consonant-TopFilter-items',
             className: clipFilterItemsClass },
         items.map(function (item) {
-            var name = item.id.split('/')[1];
+            var name = item.group || item.id.split('/')[1];
             var title = void 0;
             if (!set.has(name)) {
                 title = name.replaceAll('-', ' ');
