@@ -76,9 +76,9 @@
                         description: "Sign Up"
                     }
                 },
-                resultsPerPage: '5',
-                endpoint: location.hostname === "localhost" ? "../../mock-json/all-art-board-15-cards-show.json" : "../../caas/mock-json/all-art-board-15-cards-show.json",
-                totalCardsToShow: '55',
+                resultsPerPage: '6',
+                endpoint: location.hostname === "localhost" ? "../../mock-json/all-art-board-15-cards-show.json" : "https://14257-chimera-sanrai.adobeioruntime.net/api/v1/web/chimera-0.0.1/collection?originSelection=bacom&contentTypeTags=&secondSource=&secondaryTags=&collectionTags=&excludeContentWithTags=caas%3Aevents%2Fmax%2Ccaas%3Acontent-type%2Fproduct&language=en&country=US&complexQuery=%28%28%22caas%3Acontent-type%2Freport%22%2BOR%2B%22caas%3Acontent-type%2Fvideo%22%2BOR%2B%22caas%3Acontent-type%2Fwebinar%22%2BOR%2B%22caas%3Acontent-type%2Finfographic%22%2BOR%2B%22caas%3Acontent-type%2Febook%22%2BOR%2B%22caas%3Acontent-type%2Fguide%22%2BOR%2B%22caas%3Acontent-type%2Fdemo%22%2BOR%2B%22caas%3Acontent-type%2Fblog%22%2BOR%2B%22caas%3Acontent-type%2Fcustomer-story%22%2BOR%2B%22caas%3Acontent-type%2Fevent-session%22%2BOR%2B%22caas%3Acontent-type%2Fdemos-and-videos%22%2BOR%2B%22caas%3Acontent-type%2Fpodcast%22%2BOR%2B%22caas%3Acontent-type%2Fcustomer-blog%22%29%29&excludeIds=64c7ad2e-7bf1-5e7f-8619-c66f27371445%2C0dfd22b4-56d1-5ce5-ad6e-b58c5ef608d5%2Cd69bc403-58d5-5fcf-9fad-4d006f6b96d9%2Cbfc32f06-6e6a-5f99-b252-48c1410be5a3%2Cc80d9edd-8c6d-5fc2-97f1-445f53e49188%2C97380bce-0678-5e02-900e-82957e2c4afe&currentEntityId=&featuredCards=&environment=&draft=false&size=4500&flatFile=false",
+                totalCardsToShow: '50000',
                 cardStyle: "1:2", // available options: "1:2", "3:4", "full-card", "half-height", "custom-card", "product", "double-wide";
                 showTotalResults: 'true',
                 i18n: {
@@ -93,11 +93,12 @@
                 },
                 setCardBorders: "true", // Can be true or false;
                 useOverlayLinks: "false", // Can be true or false;
+                partialLoadWithBackgroundFetch: "true",
             },
             featuredCards: ['c7d34f39-397c-3727-9dff-5d0d9d8cf731'],
             filterPanel: {
                 enabled: 'true',
-                type: 'top',
+                type: 'left',
                 eventFilter: 'all',
                 showEmptyFilters: true,
                 filters: [
@@ -244,7 +245,7 @@
             pagination: {
                 animationStyle: 'paged',
                 enabled: 'true',
-                type: 'loadMore',
+                type: 'paginator',
                 loadMoreButton: {
                   style: "primary", // Can be "primary", "over-background";
                   useThemeThree: "true", // Can be "true" or "false";

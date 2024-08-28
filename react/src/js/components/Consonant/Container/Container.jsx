@@ -154,6 +154,7 @@ const Container = (props) => {
     const cardStyle = getConfig('collection', 'cardStyle');
     const title = getConfig('collection', 'i18n.title');
     const headers = getConfig('headers', '');
+    const partialLoadWithBackgroundFetch = getConfig('collection', 'partialLoadWithBackgroundFetch');
 
     /**
      **** Constants ****
@@ -193,6 +194,8 @@ const Container = (props) => {
      */
     /* eslint-disable no-unused-vars */
     const [transition, setTransition] = useState(0);
+
+    const [someLen, setSomeLen] = useState(0);
 
     const [, updateState] = React.useState();
     const scrollElementRef = useRef(null);
@@ -845,7 +848,9 @@ const Container = (props) => {
                         }
                         hideCtaTags = temp;
                     }
-
+                    if (payload.total) {
+                        setSomeLen(payload.total);
+                    }
                     const { processedCards = [] } = new JsonProcessor(payload.cards)
                         .removeDuplicateCards()
                         .addCardMetaData(
@@ -1003,8 +1008,13 @@ const Container = (props) => {
             visitorRetry();
         }
 
-        if (!targetEnabled) {
+        if (!targetEnabled && !partialLoadWithBackgroundFetch) {
             getCards();
+        }
+        if (!targetEnabled && partialLoadWithBackgroundFetch) {
+            const temp = new URL(collectionEndpoint);
+            temp.searchParams.set('resultsPerPage', String(resultsPerPage));
+            getCards(temp.toString()).then(() => getCards());
         }
     }, [visibleStamp, hasFetched]);
 
@@ -1125,13 +1135,13 @@ const Container = (props) => {
      * Total pages (used by Paginator Component)
      * @type {Number}
      */
-    const totalPages = getTotalPages(resultsPerPage, gridCards.length);
+    const totalPages = getTotalPages(resultsPerPage, someLen);
 
     /**
      * Number of cards to show (used by Load More component)
      * @type {Number}
      */
-    const numCardsToShow = getNumCardsToShow(resultsPerPage, currentPage, gridCards.length);
+    const numCardsToShow = getNumCardsToShow(resultsPerPage, currentPage, someLen);
 
     /**
      * How many filters were selected - (used by Left Filter Panel)
@@ -1146,7 +1156,7 @@ const Container = (props) => {
     const displayPagination = shouldDisplayPaginator(
         paginationIsEnabled,
         totalCardLimit,
-        gridCards.length,
+        someLen,
     );
     /**
      * Conditions to display the Load More Button
@@ -1170,7 +1180,7 @@ const Container = (props) => {
      * Whether at lease one card was returned by Card Filterer
      * @type {Boolean}
      */
-    const atLeastOneCard = gridCards.length > 0;
+    const atLeastOneCard = someLen > 0;
 
     /**
      * Where to place the Sort Popup (either left or right)
@@ -1398,7 +1408,7 @@ const Container = (props) => {
                                 onMobileFiltersToggleClick={handleMobileFiltersToggle}
                                 onSelectedFilterClick={handleCheckBoxChange}
                                 showMobileFilters={showMobileFilters}
-                                resQty={gridCards.length}
+                                resQty={someLen}
                                 bookmarkComponent={
                                     <Bookmarks
                                         showBookmarks={showBookmarks}
@@ -1422,7 +1432,7 @@ const Container = (props) => {
                                 filterPanelEnabled={filterPanelEnabled}
                                 filters={filters}
                                 windowWidth={windowWidth}
-                                resQty={gridCards.length}
+                                resQty={someLen}
                                 onCheckboxClick={handleCheckBoxChange}
                                 onFilterClick={handleFilterGroupClick}
                                 onClearFilterItems={clearFilterItem}
@@ -1455,7 +1465,7 @@ const Container = (props) => {
                                 enabled={filterPanelEnabled}
                                 filtersQty={filters.length}
                                 filters={filters}
-                                cardsQty={gridCards.length}
+                                cardsQty={someLen}
                                 selectedFiltersQty={selectedFiltersItemsQty}
                                 windowWidth={windowWidth}
                                 onMobileFiltersToggleClick={handleMobileFiltersToggle}
@@ -1493,7 +1503,7 @@ const Container = (props) => {
                                 <LoadMore
                                     onClick={onLoadMoreClick}
                                     show={numCardsToShow}
-                                    total={gridCards.length} />
+                                    total={someLen} />
                                 }
                                 {displayPaginator &&
                                 <Paginator
@@ -1501,13 +1511,13 @@ const Container = (props) => {
                                     currentPageNumber={currentPage}
                                     totalPages={totalPages}
                                     showItemsPerPage={resultsPerPage}
-                                    totalResults={gridCards.length}
+                                    totalResults={someLen}
                                     onClick={setCurrentPage} />
                                 }
                             </Fragment>}
                             { atLeastOneCard && isCarouselContainer && !(cardStyle === 'custom-card') &&
                             <CardsCarousel
-                                resQty={gridCards.length}
+                                resQty={someLen}
                                 cards={gridCards}
                                 role="tablist"
                                 onCardBookmark={handleCardBookmarking} />
