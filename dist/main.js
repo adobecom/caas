@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.18.0 (8/29/2024, 24:23:18)
+ * Chimera UI Libraries - Build 0.18.0 (8/29/2024, 24:35:55)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6290,8 +6290,8 @@ var Container = function Container(props) {
 
     var _useState5 = (0, _react.useState)(0),
         _useState6 = _slicedToArray(_useState5, 2),
-        someLen = _useState6[0],
-        setSomeLen = _useState6[1];
+        cardCount = _useState6[0],
+        setCardCount = _useState6[1];
 
     var _React$useState = _react2.default.useState(),
         _React$useState2 = _slicedToArray(_React$useState, 2),
@@ -7172,7 +7172,7 @@ var Container = function Container(props) {
                     hideCtaTags = temp;
                 }
                 if (payload.total) {
-                    setSomeLen(payload.total);
+                    setCardCount(payload.total);
                 }
 
                 var _removeDuplicateCards = new _JsonProcessor2.default(payload.cards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags),
@@ -7342,9 +7342,9 @@ var Container = function Container(props) {
             getCards();
         }
         if (!targetEnabled && partialLoadWithBackgroundFetch) {
-            var temp = new URL(collectionEndpoint);
-            temp.searchParams.set('partialLoadCount', String(partialLoadCount));
-            getCards(temp.toString()).then(function () {
+            var collectionEndpointUrl = new URL(collectionEndpoint);
+            collectionEndpointUrl.searchParams.set('partialLoadCount', String(partialLoadCount));
+            getCards(collectionEndpointUrl.toString()).then(function () {
                 return getCards();
             });
         }
@@ -7462,13 +7462,13 @@ var Container = function Container(props) {
      * Total pages (used by Paginator Component)
      * @type {Number}
      */
-    var totalPages = (0, _Helpers.getTotalPages)(resultsPerPage, someLen);
+    var totalPages = (0, _Helpers.getTotalPages)(resultsPerPage, cardCount);
 
     /**
      * Number of cards to show (used by Load More component)
      * @type {Number}
      */
-    var numCardsToShow = (0, _Helpers.getNumCardsToShow)(resultsPerPage, currentPage, someLen);
+    var numCardsToShow = (0, _Helpers.getNumCardsToShow)(resultsPerPage, currentPage, cardCount);
 
     /**
      * How many filters were selected - (used by Left Filter Panel)
@@ -7480,7 +7480,7 @@ var Container = function Container(props) {
      * Conditions to Display A Form Of Pagination
      * @type {Boolean}
      */
-    var displayPagination = (0, _Helpers.shouldDisplayPaginator)(paginationIsEnabled, totalCardLimit, someLen);
+    var displayPagination = (0, _Helpers.shouldDisplayPaginator)(paginationIsEnabled, totalCardLimit, cardCount);
     /**
      * Conditions to display the Load More Button
      * @type {Boolean}
@@ -7503,7 +7503,7 @@ var Container = function Container(props) {
      * Whether at lease one card was returned by Card Filterer
      * @type {Boolean}
      */
-    var atLeastOneCard = someLen > 0;
+    var atLeastOneCard = cardCount > 0;
 
     /**
      * Where to place the Sort Popup (either left or right)
@@ -7809,7 +7809,7 @@ var Container = function Container(props) {
                             onMobileFiltersToggleClick: handleMobileFiltersToggle,
                             onSelectedFilterClick: handleCheckBoxChange,
                             showMobileFilters: showMobileFilters,
-                            resQty: someLen,
+                            resQty: cardCount,
                             bookmarkComponent: _react2.default.createElement(_Bookmarks2.default, {
                                 showBookmarks: showBookmarks,
                                 onClick: handleShowBookmarksFilterClick,
@@ -7829,7 +7829,7 @@ var Container = function Container(props) {
                             filterPanelEnabled: filterPanelEnabled,
                             filters: filters,
                             windowWidth: windowWidth,
-                            resQty: someLen,
+                            resQty: cardCount,
                             onCheckboxClick: handleCheckBoxChange,
                             onFilterClick: handleFilterGroupClick,
                             onClearFilterItems: clearFilterItem,
@@ -7856,7 +7856,7 @@ var Container = function Container(props) {
                             enabled: filterPanelEnabled,
                             filtersQty: filters.length,
                             filters: filters,
-                            cardsQty: someLen,
+                            cardsQty: cardCount,
                             selectedFiltersQty: selectedFiltersItemsQty,
                             windowWidth: windowWidth,
                             onMobileFiltersToggleClick: handleMobileFiltersToggle,
@@ -7889,17 +7889,17 @@ var Container = function Container(props) {
                             displayLoadMore && _react2.default.createElement(_LoadMore2.default, {
                                 onClick: onLoadMoreClick,
                                 show: numCardsToShow,
-                                total: someLen }),
+                                total: cardCount }),
                             displayPaginator && _react2.default.createElement(_Paginator2.default, {
                                 pageCount: paginatorCount,
                                 currentPageNumber: currentPage,
                                 totalPages: totalPages,
                                 showItemsPerPage: resultsPerPage,
-                                totalResults: someLen,
+                                totalResults: cardCount,
                                 onClick: setCurrentPage })
                         ),
                         atLeastOneCard && isCarouselContainer && !(cardStyle === 'custom-card') && _react2.default.createElement(_CardsCarousel2.default, {
-                            resQty: someLen,
+                            resQty: cardCount,
                             cards: gridCards,
                             role: 'tablist',
                             onCardBookmark: handleCardBookmarking }),
