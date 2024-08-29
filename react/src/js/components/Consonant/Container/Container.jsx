@@ -154,8 +154,8 @@ const Container = (props) => {
     const cardStyle = getConfig('collection', 'cardStyle');
     const title = getConfig('collection', 'i18n.title');
     const headers = getConfig('headers', '');
-    const partialLoadWithBackgroundFetch = getConfig('collection', 'partialLoadWithBackgroundFetch');
-
+    const partialLoadWithBackgroundFetch = getConfig('collection', 'partialLoadWithBackgroundFetch.enabled');
+    const partialLoadCount = getConfig('collection', 'partialLoadWithBackgroundFetch.partialLoadCount');
     /**
      **** Constants ****
      */
@@ -1013,7 +1013,7 @@ const Container = (props) => {
         }
         if (!targetEnabled && partialLoadWithBackgroundFetch) {
             const temp = new URL(collectionEndpoint);
-            temp.searchParams.set('resultsPerPage', String(resultsPerPage));
+            temp.searchParams.set('partialLoadCount', String(partialLoadCount));
             getCards(temp.toString()).then(() => getCards());
         }
     }, [visibleStamp, hasFetched]);

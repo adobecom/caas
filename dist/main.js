@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.18.0 (8/28/2024, 04:26:14)
+ * Chimera UI Libraries - Build 0.18.0 (8/29/2024, 24:23:18)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6238,8 +6238,8 @@ var Container = function Container(props) {
     var cardStyle = getConfig('collection', 'cardStyle');
     var title = getConfig('collection', 'i18n.title');
     var headers = getConfig('headers', '');
-    var partialLoadWithBackgroundFetch = getConfig('collection', 'partialLoadWithBackgroundFetch');
-
+    var partialLoadWithBackgroundFetch = getConfig('collection', 'partialLoadWithBackgroundFetch.enabled');
+    var partialLoadCount = getConfig('collection', 'partialLoadWithBackgroundFetch.partialLoadCount');
     /**
      **** Constants ****
      */
@@ -7343,7 +7343,7 @@ var Container = function Container(props) {
         }
         if (!targetEnabled && partialLoadWithBackgroundFetch) {
             var temp = new URL(collectionEndpoint);
-            temp.searchParams.set('resultsPerPage', String(resultsPerPage));
+            temp.searchParams.set('partialLoadCount', String(partialLoadCount));
             getCards(temp.toString()).then(function () {
                 return getCards();
             });
