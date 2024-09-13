@@ -351,8 +351,6 @@ const Card = (props) => {
             className={`${cardStyle} ${cardClassName}`}
             aria-label={ariaText}
             data-testid="consonant-Card"
-            role="tab"
-            tabIndex={0}
             id={id}>
             {showHeader &&
             <div

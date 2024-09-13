@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.21.0 (9/9/2024, 20:46:25)
+ * Chimera UI Libraries - Build 0.21.1 (9/13/2024, 08:56:58)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -7885,7 +7885,6 @@ var Container = function Container(props) {
                         atLeastOneCard && isCarouselContainer && !(cardStyle === 'custom-card') && _react2.default.createElement(_CardsCarousel2.default, {
                             resQty: gridCards.length,
                             cards: gridCards,
-                            role: 'tablist',
                             onCardBookmark: handleCardBookmarking }),
                         atLeastOneCard && isCarouselContainer && cardStyle === 'custom-card' && _react2.default.createElement(_View2.default, {
                             title: 'Not Supported',
@@ -46988,8 +46987,6 @@ var Card = function Card(props) {
             className: cardStyle + ' ' + cardClassName,
             'aria-label': ariaText,
             'data-testid': 'consonant-Card',
-            role: 'tab',
-            tabIndex: 0,
             id: id },
         showHeader && _react2.default.createElement(
             'div',
