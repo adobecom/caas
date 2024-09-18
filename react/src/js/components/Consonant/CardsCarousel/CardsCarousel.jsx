@@ -231,6 +231,7 @@ function CardsCarousel({
                 </div>
                 }
             </div>
+            {/* eslint-disable jsx-a11y/no-static-element-interactions */}
             <div
                 className="consonant-Container--carousel"
                 onMouseDown={mouseDownHandler}
@@ -238,8 +239,6 @@ function CardsCarousel({
                 onMouseMove={mouseMoveHandler}
                 onMouseLeave={mouseLeaveHandler}
                 onScroll={scrollHandler}
-                role="tab"
-                tabIndex={-1}
                 ref={carouselRef}>
                 <Grid
                     cards={cards}
@@ -248,6 +247,7 @@ function CardsCarousel({
                     onCardBookmark={onCardBookmark}
                     pages={pages} />
             </div>
+            {/* eslint-enable jsx-a11y/no-static-element-interactions */}
         </Fragment>
     );
 }

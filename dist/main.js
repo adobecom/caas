@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.21.1 (9/13/2024, 08:56:58)
+ * Chimera UI Libraries - Build 0.21.1 (9/18/2024, 12:43:43)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -7740,7 +7740,7 @@ var Container = function Container(props) {
                 {
                     ref: box,
                     role: 'group',
-                    'aria-label': title,
+                    'aria-label': title || 'Card Collection',
                     'daa-lh': collectionAnalytics,
                     'daa-im': String(trackImpressions),
                     onClick: handleWindowClick,
@@ -8264,7 +8264,6 @@ var Grid = function Grid(props) {
             'data-card-style': collectionStyleOverride,
             'data-testid': 'consonant-CardsGrid',
             className: gridClass,
-            role: 'tablist',
             'aria-live': isAriaLiveActive ? 'polite' : 'off' },
         cardsToshow.map(function (card, index) {
             var cardStyleOverride = (0, _general.getByPath)(card, 'styles.typeOverride');
@@ -44287,8 +44286,6 @@ function CardsCarousel() {
                 onMouseMove: mouseMoveHandler,
                 onMouseLeave: mouseLeaveHandler,
                 onScroll: scrollHandler,
-                role: 'tab',
-                tabIndex: -1,
                 ref: carouselRef },
             _react2.default.createElement(_Grid2.default, {
                 cards: cards,
