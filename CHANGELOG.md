@@ -1,5 +1,14 @@
 
 
+## [0.21.3](https://github.com/adobecom/caas/compare/0.21.2...0.21.3) (2024-09-17)
+
+## [0.21.2](https://github.com/adobecom/caas/compare/0.21.1...0.21.2) (2024-09-13)
+
+
+### Bug Fixes
+
+* **MWPW-145210:** Removes role=tab from carousel elements ([#175](https://github.com/adobecom/caas/issues/175)) ([5baf013](https://github.com/adobecom/caas/commit/5baf01373ff73444b4a33ad7b89fa3025bc46e95))
+
 ## [0.21.1](https://github.com/adobecom/caas/compare/0.21.0...0.21.1) (2024-09-11)
 
 

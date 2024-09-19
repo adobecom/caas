@@ -77,7 +77,7 @@
                     }
                 },
                 resultsPerPage: '5',
-                endpoint: location.hostname === "localhost" ? "../../mock-json/all-art-board-15-cards-show.json" : "../../caas/mock-json/all-art-board-15-cards-show.json",
+                endpoint: location.hostname === "localhost" ? "../../mock-json/all-art-board-15-cards-show.json" : "https://14257-chimera.adobeioruntime.net/api/v1/web/chimera-0.0.1/collection?origin=northstar&size=20",
                 totalCardsToShow: '55',
                 cardStyle: "1:2", // available options: "1:2", "3:4", "full-card", "half-height", "custom-card", "product", "double-wide";
                 showTotalResults: 'true',
@@ -260,6 +260,19 @@
                         nextLabel: 'Next',
                     }
                 }
+            },
+            linkTransformer: {
+                enabled: false,
+                hostnameTransforms: [
+                    {
+                        from: '(https?:\\/\\/)business\\.adobe\\.com((?!\\/content\\/dam).*)',
+                        to: '$1business.stage.adobe.com$2',
+                    },
+                    {
+                        from: '(https?:\\/\\/)(www\\.adobe\\.com)(\\/max.*)',
+                        to: '$1www.stage.adobe.com$3',
+                    }
+                ]
             },
             bookmarks: {
                 showOnCards: 'true',

@@ -15,6 +15,7 @@ import { cardType } from '../types/card';
 import { getByPath } from '../Helpers/general';
 import { useConfig } from '../Helpers/hooks';
 import Card from '../Cards/Card';
+import withLinkTransformer from '../Helpers/withLinkTransformer';
 
 import {
     CARD_STYLES,
@@ -22,6 +23,8 @@ import {
     GRID_TYPE,
     GUTTER_SIZE,
 } from '../Helpers/constants';
+
+const TransformedCard = withLinkTransformer(Card);
 
 const cardsGridType = {
     pages: number,
@@ -222,7 +225,7 @@ const Grid = (props) => {
                         return parseHTML(customCard(card));
                     default:
                         return (
-                            <Card
+                            <TransformedCard
                                 cardStyle={cardStyle}
                                 lh={`Card ${cardNumber} | ${cleanTitle(title)} | ${id}`}
                                 key={card.id}
