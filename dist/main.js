@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.21.4 (9/19/2024, 14:36:59)
+ * Chimera UI Libraries - Build 0.21.6 (9/26/2024, 12:57:25)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -3580,11 +3580,13 @@ var logLana = exports.logLana = function logLana() {
         sampleRate = _ref2$sampleRate === undefined ? 1 : _ref2$sampleRate;
 
     var msg = message + ' | referer: ' + window.location.href + ' | ' + (e.reason || e.error || e.message || e);
-    window.lana.log(msg, {
-        clientId: 'chimera',
-        sampleRate: sampleRate,
-        tags: tags
-    });
+    if (window.lana && typeof window.lana.log === 'function') {
+        window.lana.log(msg, {
+            clientId: 'chimera',
+            sampleRate: sampleRate,
+            tags: tags
+        });
+    }
 };
 
 /***/ }),
@@ -47120,9 +47122,9 @@ var Card = function Card(props) {
                     cardStyle: cardStyle,
                     onFocus: onFocus });
             }),
-            (isThreeFourths || isDoubleWide || isFull) && !renderOverlay && _react2.default.createElement(_LinkBlocker2.default, { target: linkBlockerTarget, link: overlay })
+            (isThreeFourths || isDoubleWide || isFull) && !renderOverlay && _react2.default.createElement(_LinkBlocker2.default, { target: linkBlockerTarget, link: overlay, title: title })
         ),
-        (renderOverlay || hideCTA || isHalfHeight || isIcon) && _react2.default.createElement(_LinkBlocker2.default, { target: linkBlockerTarget, link: overlay })
+        (renderOverlay || hideCTA || isHalfHeight || isIcon) && _react2.default.createElement(_LinkBlocker2.default, { target: linkBlockerTarget, link: overlay, title: title })
     );
 };
 
@@ -49001,12 +49003,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var LinkBlockerType = {
     link: _propTypes.string,
-    target: _propTypes.string
+    target: _propTypes.string,
+    title: _propTypes.string
 };
 
 var defaultProps = {
     link: '',
-    target: ''
+    target: '',
+    title: ''
 };
 
 /**
@@ -49024,7 +49028,8 @@ var defaultProps = {
  */
 var LinkBlocker = function LinkBlocker(props) {
     var link = props.link,
-        target = props.target;
+        target = props.target,
+        title = props.title;
 
     return (
         // eslint-disable-next-line jsx-a11y/anchor-has-content
@@ -49032,7 +49037,7 @@ var LinkBlocker = function LinkBlocker(props) {
             href: link,
             target: target,
             rel: 'noopener noreferrer',
-            'aria-label': link,
+            'aria-label': title,
             tabIndex: '0',
             className: 'consonant-LinkBlocker' })
     );
