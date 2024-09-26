@@ -5,11 +5,13 @@ import { string } from 'prop-types';
 const LinkBlockerType = {
     link: string,
     target: string,
+    title: string,
 };
 
 const defaultProps = {
     link: '',
     target: '',
+    title: '',
 };
 
 /**
@@ -20,6 +22,7 @@ const defaultProps = {
  * const props= {
     link: String,
     target: String,
+    title: String,
  * }
  * return (
  *   <LinkBlocker {...props}/>
@@ -29,6 +32,7 @@ const LinkBlocker = (props) => {
     const {
         link,
         target,
+        title,
     } = props;
     return (
         // eslint-disable-next-line jsx-a11y/anchor-has-content
@@ -36,7 +40,7 @@ const LinkBlocker = (props) => {
             href={link}
             target={target}
             rel="noopener noreferrer"
-            aria-label={link}
+            aria-label={title}
             tabIndex="0"
             className="consonant-LinkBlocker" />
     );

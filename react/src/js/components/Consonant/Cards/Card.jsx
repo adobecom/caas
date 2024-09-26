@@ -494,10 +494,10 @@ const Card = (props) => {
                 ))}
                 {(isThreeFourths || isDoubleWide || isFull)
                     && !renderOverlay
-                    && <LinkBlocker target={linkBlockerTarget} link={overlay} />}
+                    && <LinkBlocker target={linkBlockerTarget} link={overlay} title={title} />}
             </div>
             {(renderOverlay || hideCTA || isHalfHeight || isIcon)
-            && <LinkBlocker target={linkBlockerTarget} link={overlay} />}
+            && <LinkBlocker target={linkBlockerTarget} link={overlay} title={title} />}
         </div>
     );
 };
