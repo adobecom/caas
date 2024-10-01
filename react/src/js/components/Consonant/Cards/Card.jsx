@@ -344,6 +344,12 @@ const Card = (props) => {
     const linkBlockerTarget = getLinkTarget(overlayLink, ctaAction);
     const addParams = new URLSearchParams(additionalParams);
     const overlay = (additionalParams && addParams.keys().next().value) ? `${overlayLink}?${addParams.toString()}` : overlayLink;
+    const getsFocus = isHalfHeight
+        || isThreeFourths
+        || isFull
+        || isDoubleWide
+        || isIcon
+        || hideCTA;
 
     return (
         <div
@@ -494,10 +500,18 @@ const Card = (props) => {
                 ))}
                 {(isThreeFourths || isDoubleWide || isFull)
                     && !renderOverlay
-                    && <LinkBlocker target={linkBlockerTarget} link={overlay} title={title} />}
+                    && <LinkBlocker
+                        target={linkBlockerTarget}
+                        link={overlay}
+                        title={title}
+                        getsFocus={getsFocus} />}
             </div>
             {(renderOverlay || hideCTA || isHalfHeight || isIcon)
-            && <LinkBlocker target={linkBlockerTarget} link={overlay} title={title} />}
+            && <LinkBlocker
+                target={linkBlockerTarget}
+                link={overlay}
+                title={title}
+                getsFocus={getsFocus} />}
         </div>
     );
 };
