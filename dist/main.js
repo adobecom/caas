@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.21.6 (9/26/2024, 12:57:25)
+ * Chimera UI Libraries - Build 0.21.7 (10/1/2024, 10:04:20)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -46984,6 +46984,7 @@ var Card = function Card(props) {
     var linkBlockerTarget = (0, _general.getLinkTarget)(overlayLink, ctaAction);
     var addParams = new URLSearchParams(additionalParams);
     var overlay = additionalParams && addParams.keys().next().value ? overlayLink + '?' + addParams.toString() : overlayLink;
+    var getsFocus = isHalfHeight || isThreeFourths || isFull || isDoubleWide || isIcon || hideCTA;
 
     return _react2.default.createElement(
         'div',
@@ -47122,9 +47123,17 @@ var Card = function Card(props) {
                     cardStyle: cardStyle,
                     onFocus: onFocus });
             }),
-            (isThreeFourths || isDoubleWide || isFull) && !renderOverlay && _react2.default.createElement(_LinkBlocker2.default, { target: linkBlockerTarget, link: overlay, title: title })
+            (isThreeFourths || isDoubleWide || isFull) && !renderOverlay && _react2.default.createElement(_LinkBlocker2.default, {
+                target: linkBlockerTarget,
+                link: overlay,
+                title: title,
+                getsFocus: getsFocus })
         ),
-        (renderOverlay || hideCTA || isHalfHeight || isIcon) && _react2.default.createElement(_LinkBlocker2.default, { target: linkBlockerTarget, link: overlay, title: title })
+        (renderOverlay || hideCTA || isHalfHeight || isIcon) && _react2.default.createElement(_LinkBlocker2.default, {
+            target: linkBlockerTarget,
+            link: overlay,
+            title: title,
+            getsFocus: getsFocus })
     );
 };
 
@@ -49004,13 +49013,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var LinkBlockerType = {
     link: _propTypes.string,
     target: _propTypes.string,
-    title: _propTypes.string
+    title: _propTypes.string,
+    getsFocus: Boolean
 };
 
 var defaultProps = {
     link: '',
     target: '',
-    title: ''
+    title: '',
+    getsFocus: false
 };
 
 /**
@@ -49021,6 +49032,7 @@ var defaultProps = {
  * const props= {
     link: String,
     target: String,
+    title: String,
  * }
  * return (
  *   <LinkBlocker {...props}/>
@@ -49029,7 +49041,8 @@ var defaultProps = {
 var LinkBlocker = function LinkBlocker(props) {
     var link = props.link,
         target = props.target,
-        title = props.title;
+        title = props.title,
+        getsFocus = props.getsFocus;
 
     return (
         // eslint-disable-next-line jsx-a11y/anchor-has-content
@@ -49038,7 +49051,7 @@ var LinkBlocker = function LinkBlocker(props) {
             target: target,
             rel: 'noopener noreferrer',
             'aria-label': title,
-            tabIndex: '0',
+            tabIndex: getsFocus ? 0 : -1,
             className: 'consonant-LinkBlocker' })
     );
 };
