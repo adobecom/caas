@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.21.7 (10/1/2024, 15:36:54)
+ * Chimera UI Libraries - Build 0.21.7 (10/3/2024, 13:43:35)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -7173,9 +7173,7 @@ var Container = function Container(props) {
 
                     hideCtaTags = temp;
                 }
-                if (payload.total) {
-                    setCardCount(payload.total);
-                }
+                setCardCount(payload.total ? payload.total : payload.cards.length);
 
                 var _removeDuplicateCards = new _JsonProcessor2.default(payload.cards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags),
                     _removeDuplicateCards2 = _removeDuplicateCards.processedCards,
