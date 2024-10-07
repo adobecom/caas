@@ -1358,7 +1358,7 @@ const Container = (props) => {
                 <section
                     ref={box}
                     role="group"
-                    aria-label={title}
+                    aria-label={title || 'Card Collection'}
                     daa-lh={collectionAnalytics}
                     daa-im={String(trackImpressions)}
                     onClick={handleWindowClick}
