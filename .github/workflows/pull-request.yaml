@@ -80,11 +80,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: 'stable'
       - uses: actions/setup-node@v3
         with:
           node-version: 16.13.1
       - name: Install
         run: npm ci
+      - name: Install Matching ChromeDriver
+        run: | 
+          CHROME_VERSION=$(google-chrome --version | cut -d' ' -f3 | cut -d'.' -f1) 
+          npm install chromedriver@$CHROME_VERSION
       - name: E2E
         run: npm run test:e2e-prod
   run-accessibility-checks:

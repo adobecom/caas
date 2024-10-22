@@ -19,6 +19,7 @@ exports.config = {
                 '--disable-gpu',
                 '--window-size=1440,735',
             ],
+            w3c: true,
         },
     }],
     logLevel: 'info',
