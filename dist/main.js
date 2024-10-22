@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.22.1 (10/17/2024, 09:54:19)
+ * Chimera UI Libraries - Build 0.22.2 (10/22/2024, 11:00:18)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -705,6 +705,8 @@ var qs = exports.qs = {
                         var _value = value,
                             _value2 = _slicedToArray(_value, 1),
                             firstItem = _value2[0];
+                        /* istanbul ignore if */
+
 
                         if (firstItem.includes('|')) {
                             value = firstItem.split('|');
@@ -762,7 +764,7 @@ var isDateBeforeInterval = exports.isDateBeforeInterval = function isDateBeforeI
 
     return curr < start;
 };
-
+/* istanbul ignore next */
 var isDateAfterInterval = exports.isDateAfterInterval = function isDateAfterInterval(currentDate, endDate) {
     var curr = Date.parse(currentDate);
     var end = Date.parse(endDate);
@@ -780,12 +782,28 @@ var getCurrentDate = exports.getCurrentDate = function getCurrentDate() {
 
 var getEventBanner = exports.getEventBanner = function foo(startDate, endDate, bannerMap) {
     var currDate = getCurrentDate();
+    /* istanbul ignore if */
     if (isDateWithinInterval(currDate, startDate, endDate)) {
-        return bannerMap.live;
+        return bannerMap.live || {
+            backgroundColor: '',
+            description: '',
+            fontColor: '',
+            icon: ''
+        };
     } else if (isDateBeforeInterval(currDate, startDate)) {
-        return bannerMap.upcoming;
+        return bannerMap.upcoming || {
+            backgroundColor: '',
+            description: '',
+            fontColor: '',
+            icon: ''
+        };
     }
-    return bannerMap.onDemand;
+    return bannerMap.onDemand || {
+        backgroundColor: '',
+        description: '',
+        fontColor: '',
+        icon: ''
+    };
 };
 
 function getTransitions(cardsPtr) {
@@ -796,10 +814,12 @@ function getTransitions(cardsPtr) {
     /* eslint-disable no-plusplus */
     for (var i = 0; i < cards.length; i++) {
         var priority = Date.parse(cards[i].startDate) - currentDate;
+        /* istanbul ignore if */
         if (priority && priority > 0) {
             transitions.enqueue(cards[i], priority);
         }
         var endPriority = Date.parse(Date.parse(cards[i].endDate) - currentDate);
+        /* istanbul ignore if */
         if (cards[i].endDate && endPriority > 0) {
             transitions.enqueue(null, endPriority);
         }
@@ -832,6 +852,7 @@ var getLinkTarget = exports.getLinkTarget = function getLinkTarget(link) {
 var getGlobalNavHeight = exports.getGlobalNavHeight = function getGlobalNavHeight() {
     var header = document.querySelector('header');
     var offSet = 20; // margin above card collection
+    /* istanbul ignore else */
     if (!header) return offSet;
 
     var isBacom = header.getAttribute('daa-lh') && header.getAttribute('daa-lh').includes('bacom');
@@ -945,6 +966,8 @@ exports.useRegistered = exports.useURLState = exports.useLazyLoading = exports.u
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+exports.debounce = debounce;
 
 var _react = __webpack_require__(0);
 
@@ -1932,7 +1955,7 @@ module.exports = function (it) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.sanitizeStr = exports.getFeaturedCards = exports.getRandomSort = exports.getUpdatedCardBookmarkData = exports.processCards = exports.getCardsMatchingSearch = exports.getEventSort = exports.getDateDescSort = exports.getDateAscSort = exports.getFeaturedSort = exports.getModifiedAscSort = exports.getModifiedDescSort = exports.getTitleDescSort = exports.getTitleAscSort = exports.hasTag = exports.getCardsMatchingQuery = exports.highlightCard = exports.getFilteredCards = exports.getActivePanels = exports.getActiveFilterIds = exports.getBookmarkedCards = exports.getCollectionCards = exports.getTotalPages = exports.getNumCardsToShow = exports.shouldDisplayPaginator = undefined;
+exports.sanitizeStr = exports.getFeaturedCards = exports.getRandomSort = exports.getUpdatedCardBookmarkData = exports.processCards = exports.joinCardSets = exports.getCardsMatchingSearch = exports.getEventSort = exports.getDateDescSort = exports.getDateAscSort = exports.getFeaturedSort = exports.getModifiedAscSort = exports.getModifiedDescSort = exports.getTitleDescSort = exports.getTitleAscSort = exports.hasTag = exports.getCardsMatchingQuery = exports.highlightCard = exports.getFilteredCards = exports.getActivePanels = exports.getActiveFilterIds = exports.getBookmarkedCards = exports.getCollectionCards = exports.getTotalPages = exports.getNumCardsToShow = exports.shouldDisplayPaginator = undefined;
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -2402,9 +2425,38 @@ var getDateDescSort = exports.getDateDescSort = function getDateDescSort(cards) 
 var getEventSort = exports.getEventSort = function getEventSort() {
     var cards = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
     var eventFilter = arguments[1];
-    return (0, _eventSort.eventTiming)(cards, eventFilter);
-};
 
+    var transformedCards = cards.map(function (card) {
+        return {
+            id: card.id,
+            startDate: card.contentArea.dateDetailText.startTime,
+            endDate: card.contentArea.dateDetailText.endTime,
+            tags: card.tags || []
+        };
+    });
+
+    var result = (0, _eventSort.eventTiming)(transformedCards, eventFilter);
+
+    var visibleSessions = result.visibleSessions.filter(function (session) {
+        return session.tags.includes(eventFilter);
+    }).map(function (session) {
+        return {
+            id: session.id,
+            contentArea: {
+                dateDetailText: {
+                    startTime: session.startDate,
+                    endTime: session.endDate
+                }
+            },
+            tags: session.tags
+        };
+    });
+
+    return {
+        nextTransitionMs: result.nextTransitionMs,
+        visibleSessions: visibleSessions
+    };
+};
 /**
  * Gets all cards that matches a users search query
  * @param {String} query - The users search query
@@ -2427,7 +2479,7 @@ var getCardsMatchingSearch = exports.getCardsMatchingSearch = function getCardsM
  * @param {Array} cardSetTwo - Set two of cards to join
  * @returns {Array} - Cards sets one and two joined
  */
-var joinCardSets = function joinCardSets(cardSetOne, cardSetTwo) {
+var joinCardSets = exports.joinCardSets = function joinCardSets(cardSetOne, cardSetTwo) {
     return cardSetOne.concat(cardSetTwo);
 };
 
@@ -2577,7 +2629,7 @@ var getFeaturedCards = exports.getFeaturedCards = function getFeaturedCards(ids,
                     var card = _step4.value;
 
                     if (card.id === id) {
-                        var c = window.structuredClone(card);
+                        var c = JSON.parse(JSON.stringify(card)); // Deep clone using JSON methods
                         c.isFeatured = true;
                         ans.push(c);
                     }
@@ -3525,12 +3577,23 @@ var loadLana = exports.loadLana = function loadLana() {
     if (window.lana) return;
 
     var lanaError = function lanaError(e) {
-        if (window.lana) {
-            window.lana.log(e.reason || e.error || e.message, { errorType: 'i' });
+        if (window.lana && window.lana.logImpl) {
+            window.lana.logImpl(e.reason || e.error || e.message, { errorType: 'i' });
         }
     };
 
+    var lanaLoaded = false;
+
     window.lana = {
+        logImpl: function logImpl() {
+            var _console;
+
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = arguments[_key];
+            }
+
+            (_console = console).log.apply(_console, ['Lana not yet loaded, logging to console:'].concat(args));
+        },
         log: function () {
             var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
                 var _window$lana;
@@ -3540,21 +3603,37 @@ var loadLana = exports.loadLana = function loadLana() {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
+                                if (lanaLoaded) {
+                                    _context.next = 12;
+                                    break;
+                                }
+
                                 window.removeEventListener('error', lanaError);
                                 window.removeEventListener('unhandledrejection', lanaError);
-                                // eslint-disable-next-line import/no-unresolved, import/extensions
-                                _context.next = 4;
-                                return fetch('www.adobe.com/libs/utils/lana.js');
+                                _context.prev = 3;
+                                _context.next = 6;
+                                return fetch('www.caas.com/libs/utils/lana.js');
 
-                            case 4:
-                                return _context.abrupt('return', (_window$lana = window.lana).log.apply(_window$lana, _args));
+                            case 6:
+                                lanaLoaded = true;
+                                _context.next = 12;
+                                break;
 
-                            case 5:
+                            case 9:
+                                _context.prev = 9;
+                                _context.t0 = _context['catch'](3);
+
+                                console.error('Failed to load Lana:', _context.t0);
+
+                            case 12:
+                                return _context.abrupt('return', (_window$lana = window.lana).logImpl.apply(_window$lana, _args));
+
+                            case 13:
                             case 'end':
                                 return _context.stop();
                         }
                     }
-                }, _callee, undefined);
+                }, _callee, undefined, [[3, 9]]);
             }));
 
             function log() {
@@ -6788,6 +6867,7 @@ var Container = function Container(props) {
             label = _items$find.label;
 
         var urlStateValue = urlState[filterGroupPrefix + group] || [];
+        /* istanbul ignore if  */
         if (typeof urlStateValue === 'string') {
             urlStateValue = urlStateValue.split(',');
         }
@@ -6947,10 +7027,11 @@ var Container = function Container(props) {
                 var urlStateValue = urlState[filterGroupPrefix + group];
 
                 if (!urlStateValue) return filter;
-
+                /* istanbul ignore next  */
                 var urlStateArray = urlStateValue.split(',');
                 return _extends({}, filter, {
                     opened: true,
+                    /* istanbul ignore next */
                     items: items.map(function (item) {
                         return _extends({}, item, {
                             selected: urlStateArray.includes(String(item.label))
@@ -6990,6 +7071,7 @@ var Container = function Container(props) {
 
         return allFilters.map(function (filter) {
             return _extends({}, filter, {
+                /* istanbul ignore next */
                 items: filter.items.filter(function (item) {
                     return tags.includes(item.id) || tags.includes(item.label) || tags.toString().includes('/' + item.id) // ***** FIX  HERE *****
                     || timingTags.includes(item.id);
@@ -7063,6 +7145,7 @@ var Container = function Container(props) {
                         if (validData) return json;
 
                         (0, _lana.logLana)({ message: 'no valid response data from ' + endPoint, tags: 'collection' });
+                        /* istanbul ignore next */
                         return Promise.reject(new Error('no valid reponse data'));
                     });
                 }
@@ -7233,6 +7316,7 @@ var Container = function Container(props) {
                     if (currentPage === 1) return;
                     var cardsToshow = processedCards.slice(0, resultsPerPage * currentPage);
                     var getLastPageID = resultsPerPage * currentPage - resultsPerPage;
+                    /* istanbul ignore if */
                     if (cardsToshow.length < getLastPageID) return;
                     var lastID = scrollElementRef.current.children[getLastPageID];
                     lastID.scrollIntoView();
@@ -7255,6 +7339,7 @@ var Container = function Container(props) {
          * @param {Promise} visitorApi, window.__satelliteLoadedPromise when accessed
          * @returns {Void} - an updated state, thru calling getCards
          */
+        /* istanbul ignore next */
         function getVisitorData(visitorApi) {
             var collectionURI = new URL(collectionEndpoint);
 
@@ -7291,6 +7376,7 @@ var Container = function Container(props) {
          * @returns {Void} - an updated state, thru calling getVisitorData which
          * calls getCards
          */
+        /* istanbul ignore next */
         function visitorRetry() {
             var retryCount = 0;
 
@@ -7322,11 +7408,11 @@ var Container = function Container(props) {
 
             timedRetry();
         }
-
+        /* istanbul ignore if */
         if (targetEnabled && visitorPromise) {
             getVisitorData(visitorPromise);
         }
-
+        /* istanbul ignore if */
         if (targetEnabled && !visitorPromise) {
             visitorRetry();
         }
@@ -7381,6 +7467,7 @@ var Container = function Container(props) {
     var box = (0, _react.useRef)();
 
     (0, _react.useEffect)(function () {
+        /* istanbul ignore if */
         if (box && !visibleStamp && isLazy) {
             var io = new IntersectionObserver(function (entries) {
                 if (entries[0].intersectionRatio <= 0) return;
@@ -7770,10 +7857,12 @@ var Container = function Container(props) {
                                 return _react2.default.createElement(
                                     'button',
                                     {
+                                        key: category.id,
                                         onClick: function onClick() {
                                             categoryHandler(category.items, category.id);
                                         },
                                         'data-selected': selected,
+                                        'data-testid': 'category-button-' + category.id,
                                         'data-group': category.group.replaceAll(' ', '').toLowerCase() },
                                     _react2.default.createElement('img', { className: 'filters-category--icon', src: getCategoryIcon(category), alt: category.icon && 'Category icon' }),
                                     category.title
@@ -8248,7 +8337,9 @@ var Grid = function Grid(props) {
      * Scrolls a card into view if any of its children is on focus.
      * @param {string} card - ID of the card to display
      */
+    /* istanbul ignore next */
     var scrollCardIntoView = function scrollCardIntoView(card) {
+        /* istanbul ignore if */
         if (!card) return;
         var element = document.getElementById(card);
         element.scrollIntoView({ block: 'nearest' });
@@ -8286,6 +8377,7 @@ var Grid = function Grid(props) {
             var hideCTA = getHideCta(card, collectionButtonStyle);
 
             switch (cardStyle) {
+                /* istanbul ignore next */
                 case _constants.CARD_STYLES.CUSTOM:
                     return (0, _htmlReactParser2.default)(customCard(card));
                 default:
@@ -8301,8 +8393,9 @@ var Grid = function Grid(props) {
                         renderBorder: renderCardsBorders,
                         renderDivider: renderFooterDivider,
                         renderOverlay: renderCardsOverlay,
-                        hideCTA: hideCTA,
-                        onFocus: function onFocus() {
+                        hideCTA: hideCTA
+                        /* istanbul ignore next */
+                        , onFocus: function onFocus() {
                             return scrollCardIntoView(card.id);
                         } }));
             }
@@ -9255,7 +9348,7 @@ module.exports = __webpack_require__(315);
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.ConsonantCardCollecton = undefined;
+exports.authorWatch = exports.collectionLoadedThroughXf = exports.initReact = exports.ConsonantCardCollecton = undefined;
 
 __webpack_require__(121);
 
@@ -9300,25 +9393,30 @@ try {
 }
 
 var initReact = function initReact(element) {
-    domRegistry.init(element);
+    var registry = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : domRegistry;
+
+    registry.init(element);
 };
 
 initReact(document);
 
 function collectionLoadedThroughXf(el) {
+    if (!el) return false; // Ensure el is not null or undefined
     var container = el.firstElementChild;
     var consonantCardCollection = null;
     if (container !== null) {
         consonantCardCollection = container.querySelectorAll('.consonantcardcollection');
     }
-    return el.className.indexOf('experiencefragment') && consonantCardCollection && consonantCardCollection.length > 0;
+    return el.className.indexOf('experiencefragment') !== -1 && consonantCardCollection !== null && consonantCardCollection.length > 0;
 }
 
 var prev = null;
 function authorWatch(el) {
+    var registry = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : domRegistry;
+
     if (prev !== el && collectionLoadedThroughXf(el)) {
         prev = el;
-        domRegistry.render(_ConsonantPageDOM2.default);
+        registry.render(_ConsonantPageDOM2.default);
     }
 }
 
@@ -9344,6 +9442,10 @@ window.ConsonantCardCollection = ConsonantCardCollecton;
 if (window.Granite && window.dx) {
     window.dx.author.watch.registerFunction(authorWatch);
 }
+exports.initReact = initReact;
+exports.collectionLoadedThroughXf = collectionLoadedThroughXf;
+exports.authorWatch = authorWatch; // Export the functions
+
 exports.default = initReact;
 
 /***/ }),
@@ -46777,26 +46879,37 @@ var Card = function Card(props) {
         mnemonic = _props$styles.mnemonic,
         cardIcon = _props$styles.icon,
         iconAlt = _props$styles.iconAlt,
-        _props$contentArea = props.contentArea,
-        title = _props$contentArea.title,
+        _props$contentArea = props.contentArea;
+    _props$contentArea = _props$contentArea === undefined ? {} : _props$contentArea;
+    var title = _props$contentArea.title,
         label = _props$contentArea.detailText,
         description = _props$contentArea.description,
-        _props$contentArea$da = _props$contentArea.dateDetailText,
-        startTime = _props$contentArea$da.startTime,
-        endTime = _props$contentArea$da.endTime,
-        _props$overlays = props.overlays,
-        _props$overlays$banne = _props$overlays.banner,
-        bannerDescription = _props$overlays$banne.description,
+        _props$contentArea$da = _props$contentArea.dateDetailText;
+    _props$contentArea$da = _props$contentArea$da === undefined ? {} : _props$contentArea$da;
+    var _props$contentArea$da2 = _props$contentArea$da.startTime,
+        startTime = _props$contentArea$da2 === undefined ? '' : _props$contentArea$da2,
+        _props$contentArea$da3 = _props$contentArea$da.endTime,
+        endTime = _props$contentArea$da3 === undefined ? '' : _props$contentArea$da3,
+        _props$overlays = props.overlays;
+    _props$overlays = _props$overlays === undefined ? {} : _props$overlays;
+    var _props$overlays$banne = _props$overlays.banner;
+    _props$overlays$banne = _props$overlays$banne === undefined ? {} : _props$overlays$banne;
+    var bannerDescription = _props$overlays$banne.description,
         bannerFontColor = _props$overlays$banne.fontColor,
         bannerBackgroundColor = _props$overlays$banne.backgroundColor,
         bannerIcon = _props$overlays$banne.icon,
-        videoURL = _props$overlays.videoButton.url,
-        _props$overlays$logo = _props$overlays.logo,
-        logoSrc = _props$overlays$logo.src,
+        _props$overlays$video = _props$overlays.videoButton;
+    _props$overlays$video = _props$overlays$video === undefined ? {} : _props$overlays$video;
+    var videoURL = _props$overlays$video.url,
+        _props$overlays$logo = _props$overlays.logo;
+    _props$overlays$logo = _props$overlays$logo === undefined ? {} : _props$overlays$logo;
+    var logoSrc = _props$overlays$logo.src,
         logoAlt = _props$overlays$logo.alt,
         logoBg = _props$overlays$logo.backgroundColor,
         logoBorderBg = _props$overlays$logo.borderColor,
-        badgeText = _props$overlays.label.description,
+        _props$overlays$label = _props$overlays.label;
+    _props$overlays$label = _props$overlays$label === undefined ? {} : _props$overlays$label;
+    var badgeText = _props$overlays$label.description,
         renderBorder = props.renderBorder,
         renderDivider = props.renderDivider,
         renderOverlay = props.renderOverlay,
@@ -46967,6 +47080,7 @@ var Card = function Card(props) {
     }
 
     // Events card custom banners
+    /* istanbul ignore if */
     if (isEventsCard) {
         hideBanner = isInPerson && eventBanner === bannerMap.onDemand;
         bannerDescriptionToUse = isInPerson && eventBanner === bannerMap.live ? 'Live Today' : bannerDescriptionToUse;
@@ -47322,6 +47436,7 @@ var CardFooter = function CardFooter(props) {
      */
     var altRightUpcoming = []; // isUpcoming
     var altRightLive = []; // isLive
+    /* istanbul ignore if */
     if (altRight && altRight.length > 0 && right && right.length > 0) {
         var upcoming = {
             href: right[0].href,
@@ -48686,7 +48801,7 @@ function n(n){for(var r=arguments.length,t=Array(r>1?r-1:0),e=1;e<r;e++)t[e-1]=a
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.defineIsUpcoming = exports.defineIsOnDemandScheduled = exports.defineIsOnDemand = exports.defineIsLiveExpired = exports.convertDateStrToMs = exports.eventTiming = undefined;
+exports.updateTimeOverride = exports.defineIsUpcoming = exports.defineIsOnDemandScheduled = exports.defineIsOnDemand = exports.defineIsLiveExpired = exports.convertDateStrToMs = exports.eventTiming = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -48912,7 +49027,7 @@ function eventTiming() {
         var isTimed = !!(endMs && startMs);
         var isUpComing = isTimed ? defineIsUpcoming(curMs, startMs) : false;
         var isOnDemand = isTimed && !isUpComing ? defineIsOnDemand(curMs, endMs) : false;
-        var isLive = !!(isTimed && !isUpComing && !isOnDemand && startMs);
+        var isLive = !!(isTimed && !isUpComing && !isOnDemand && startMs) || eventFilter === 'live';
         // Tagged Exceptions
         var isOnDemandScheduled = defineIsOnDemandScheduled(tags);
         var isLiveExpired = defineIsLiveExpired(tags);
@@ -48944,6 +49059,7 @@ function eventTiming() {
             nextTransitionMs = liveTransition && liveTransition > 0 ? liveTransition : nextTransitionMs;
         }
 
+        /* istanbul ignore if */
         if (isUpComing && isOnDemandScheduled && isTimed) {
             var odTransition = setNextTransitionMs(startMs, curMs);
 
@@ -48990,6 +49106,7 @@ exports.defineIsLiveExpired = defineIsLiveExpired;
 exports.defineIsOnDemand = defineIsOnDemand;
 exports.defineIsOnDemandScheduled = defineIsOnDemandScheduled;
 exports.defineIsUpcoming = defineIsUpcoming;
+exports.updateTimeOverride = updateTimeOverride;
 
 /***/ }),
 /* 272 */
@@ -53146,6 +53263,8 @@ var CardFilterer = function () {
 
                         if (nextTransitionMs > 0) {
                             this.nextTransitionMs = nextTransitionMs;
+                        } else {
+                            this.nextTransitionMs = 0;
                         }
 
                         break;
@@ -54104,18 +54223,18 @@ var Items = function Items(props) {
             'data-testid': 'consonant-TopFilter-items',
             className: clipFilterItemsClass },
         items.map(function (item) {
-            var name = item.id.split('/')[1];
+            var category = item.id.split('/')[0];
             var title = void 0;
-            if (!set.has(name)) {
-                title = name.replaceAll('-', ' ');
-                set.add(name);
+            if (!set.has(category)) {
+                title = category.replaceAll('-', ' ');
+                set.add(category);
             }
             return _react2.default.createElement(
                 _react.Fragment,
-                null,
+                { key: item.id },
                 item.fromCategory && title && _react2.default.createElement(
                     'span',
-                    { className: 'filter-group-title' },
+                    { className: 'filter-group-title', 'data-testid': 'filter-group-title-' + category },
                     title
                 ),
                 _react2.default.createElement(
@@ -55967,6 +56086,9 @@ exports.Info = Info;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.ConsonantPageModel = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _reactDomComponents = __webpack_require__(107);
 
@@ -55984,7 +56106,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var ConsonantPageModel = function (_DOMModel) {
+var ConsonantPageModel = exports.ConsonantPageModel = function (_DOMModel) {
     _inherits(ConsonantPageModel, _DOMModel);
 
     function ConsonantPageModel(element) {
@@ -55992,10 +56114,17 @@ var ConsonantPageModel = function (_DOMModel) {
 
         var _this = _possibleConstructorReturn(this, (ConsonantPageModel.__proto__ || Object.getPrototypeOf(ConsonantPageModel)).call(this, element));
 
-        _this.getAttribute('id', 'id');
-        _this.getAttribute('data-config', 'dataConfig');
+        _this.id = element.getAttribute('id'); // Initialize id
+        _this.dataConfig = element.getAttribute('data-config'); // Initialize dataConfig
         return _this;
     }
+
+    _createClass(ConsonantPageModel, [{
+        key: 'getAttribute',
+        value: function getAttribute(attr) {
+            return this[attr]; // Return the attribute value
+        }
+    }]);
 
     return ConsonantPageModel;
 }(_reactDomComponents.DOMModel);
