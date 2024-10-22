@@ -1,88 +1,137 @@
-import { loadLana, logLana } from '../lana';
+import { loadLana } from '../lana';
 
-describe('lana', () => {
+describe('Lana Logging', () => {
     let originalFetch;
-    let originalAddEventListener;
-    let originalRemoveEventListener;
-    let originalConsoleLog;
+
+    beforeAll(() => {
+        // Mock the fetch API
+        originalFetch = global.fetch;
+        global.fetch = jest.fn(() =>
+            Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve({}),
+            }));
+    });
+
+    afterAll(() => {
+        // Restore the original fetch API
+        global.fetch = originalFetch;
+    });
 
     beforeEach(() => {
+        // Reset the global lana object before each test
+        delete window.lana;
+    });
+
+    test('should initialize lana if not already initialized', () => {
+        loadLana();
+        expect(window.lana).toBeDefined();
+        expect(window.lana.debug).toBe(false);
+        expect(window.lana.options).toEqual({});
+    });
+
+    test('should not reinitialize lana if already initialized', () => {
+        window.lana = { log: jest.fn() };
+        loadLana();
+        expect(window.lana).toBeDefined();
+    });
+
+    test('should log an error when an error event occurs', async () => {
+        loadLana();
+        const errorEvent = new ErrorEvent('error', {
+            message: 'Test error',
+        });
+
+        // Mock logImpl instead of log
+        window.lana.logImpl = jest.fn();
+
+        window.dispatchEvent(errorEvent);
+
+        // Check if logImpl was called with the correct arguments
+        expect(window.lana.logImpl).toHaveBeenCalledWith('Test error', { errorType: 'i' });
+    });
+
+    test('should log an error when an unhandledrejection event occurs', async () => {
+        loadLana();
+        const rejectionEvent = new Event('unhandledrejection');
+        rejectionEvent.reason = 'Test rejection';
+
+        // Mock logImpl instead of log
+        window.lana.logImpl = jest.fn();
+
+        window.dispatchEvent(rejectionEvent);
+
+        // Check if logImpl was called with the correct arguments
+        expect(window.lana.logImpl).toHaveBeenCalledWith('Test rejection', { errorType: 'i' });
+    });
+});
+describe('Lana Logging - Additional Coverage Tests', () => {
+    let originalFetch;
+    let originalLana;
+
+    beforeAll(() => {
         originalFetch = global.fetch;
-        originalAddEventListener = global.addEventListener;
-        originalRemoveEventListener = global.removeEventListener;
-        originalConsoleLog = console.log;
+        originalLana = window.lana;
+    });
 
-        global.fetch = jest.fn(() => Promise.resolve());
-        global.addEventListener = jest.fn();
-        global.removeEventListener = jest.fn();
+    afterAll(() => {
+        global.fetch = originalFetch;
+        window.lana = originalLana;
+    });
+
+    beforeEach(() => {
+        delete window.lana;
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({}),
+        }));
         console.log = jest.fn();
-
-        global.window = {
-            lana: undefined,
-            addEventListener: jest.fn(),
-            removeEventListener: jest.fn(),
-            location: {
-                href: 'https://example.com',
-            },
-        };
     });
 
     afterEach(() => {
-        global.fetch = originalFetch;
-        global.addEventListener = originalAddEventListener;
-        global.removeEventListener = originalRemoveEventListener;
-        console.log = originalConsoleLog;
-        delete global.window;
+        jest.restoreAllMocks();
     });
 
-    describe('loadLana', () => {
-        it('should set up lana object and error listeners', async () => {
-            await loadLana();
+    test('should remove event listeners and fetch lana.js when log is called', async () => {
+        loadLana();
+        const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');
+        const fetchSpy = jest.spyOn(global, 'fetch');
 
-            expect(window.lana).toBeDefined();
-            expect(window.lana.log).toBeInstanceOf(Function);
-            expect(window.addEventListener).toHaveBeenCalledWith('error', expect.any(Function));
-            expect(window.addEventListener).toHaveBeenCalledWith('unhandledrejection', expect.any(Function));
-        });
+        await window.lana.log('Test message');
 
-        it('should not modify existing lana object if already defined', async () => {
-            const mockLanaLog = jest.fn();
-            window.lana = { log: mockLanaLog };
-
-            await loadLana();
-
-            expect(window.lana.log).toBe(mockLanaLog);
-        });
+        expect(removeEventListenerSpy).toHaveBeenCalledWith('error', expect.any(Function));
+        expect(removeEventListenerSpy).toHaveBeenCalledWith('unhandledrejection', expect.any(Function));
+        expect(fetchSpy).toHaveBeenCalledWith('www.caas.com/libs/utils/lana.js');
     });
 
-    describe('logLana', () => {
-        it('should call window.lana.log with correct arguments', async () => {
-            const mockLanaLog = jest.fn();
-            window.lana = { log: mockLanaLog };
+    test('should handle fetch errors gracefully when calling log', async () => {
+        loadLana();
+        const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');
+        global.fetch.mockImplementationOnce(() => Promise.reject(new Error('Fetch error')));
 
-            const message = 'Test message';
-            const tags = 'test-tag';
-            const error = new Error('Test error');
+        await window.lana.log('Test message');
 
-            await logLana({ message, tags, e: error });
+        expect(removeEventListenerSpy).toHaveBeenCalledWith('error', expect.any(Function));
+        expect(removeEventListenerSpy).toHaveBeenCalledWith('unhandledrejection', expect.any(Function));
+        expect(console.log).toHaveBeenCalledWith('Lana not yet loaded, logging to console:', 'Test message');
+    });
 
-            expect(mockLanaLog).toHaveBeenCalledWith(
-                expect.stringContaining(message),
-                expect.objectContaining({
-                    clientId: 'chimera',
-                    sampleRate: 1,
-                    tags,
-                }),
-            );
+    test('should call logImpl after fetching', async () => {
+        loadLana();
+        const mockLogResult = 'Logged successfully';
+        const mockLogImpl = jest.fn().mockReturnValue(mockLogResult);
+
+        global.fetch.mockImplementationOnce(() => {
+            window.lana.logImpl = mockLogImpl;
+            return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve({}),
+            });
         });
 
-        it('should handle errors when window.lana is not defined', async () => {
-            delete window.lana;
+        const result = await window.lana.log('Test message');
 
-            const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
-            await logLana({ message: 'Test message' });
-            expect(consoleErrorSpy).not.toHaveBeenCalled();
-            consoleErrorSpy.mockRestore();
-        });
+        expect(mockLogImpl).toHaveBeenCalledWith('Test message');
+        expect(result).toBe(mockLogResult);
     });
 });

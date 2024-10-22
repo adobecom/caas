@@ -43,6 +43,7 @@ describe('Consonant/Filters/Top/Panel', () => {
         const filterGroupElements = screen.queryAllByTestId('consonant-TopFilter-items');
         expect(filterGroupElements).toHaveLength(filters.length);
     });
+
     test('Should be able to display total results if authored', () => {
         renderTopFilterPanel({ displayTotalResults: true });
 
@@ -59,12 +60,14 @@ describe('Consonant/Filters/Top/Panel', () => {
         const footerTotalResElement = screen.queryByTestId('consonant-TopFilters-searchWrapper');
         expect(footerTotalResElement).not.toBeNull();
     });
+
     test('Should be able to render correctly without search', () => {
         renderTopFilterPanel({ searchComponent: CHILD_COMPONENTS.search });
 
         const footerTotalResElement = screen.queryByTestId('consonant-TopFilters-searchWrapper');
         expect(footerTotalResElement).toBeNull();
     });
+
     test('Should be able to show the Sort Popup', () => {
         renderTopFilterPanel({ sortComponent: CHILD_COMPONENTS.select });
 
@@ -140,5 +143,72 @@ describe('Consonant/Filters/Top/Panel', () => {
         topFilterItem.forEach((filterItem, index) => {
             expect(filterItem).toHaveAttribute('daa-lh', ANALYTICS_ITEMS[index]);
         });
+    });
+
+    // Additional Tests for 100% Coverage
+
+    test('Should display search bar on mobile', () => {
+        renderTopFilterPanel({
+            windowWidth: MOBILE_MIN_WIDTH,
+            searchComponent: CHILD_COMPONENTS.search,
+        });
+
+        const searchWrapper = screen.queryByTestId('consonant-TopFilters-searchWrapper');
+        expect(searchWrapper).not.toBeNull();
+    });
+
+    test('Should display filters when filters are provided and panel is enabled', () => {
+        renderTopFilterPanel({
+            filterPanelEnabled: true,
+            filters: selectedAllFilters,
+        });
+
+        const filtersWrapper = screen.queryByTestId('consonant-TopFilters-filters');
+        expect(filtersWrapper).not.toBeNull();
+    });
+
+    test('Should display "Show all filters" button when conditions are met', () => {
+        renderTopFilterPanel({
+            filterPanelEnabled: true,
+            filters: multipleFilters,
+            showLimitedFiltersQty: true,
+            windowWidth: TABLET_MIN_WIDTH,
+        });
+
+        const moreFiltersBtn = screen.queryByTestId('consonant-TopFilters-moreBtn');
+        expect(moreFiltersBtn).not.toBeNull();
+    });
+
+    test('Should display collection info when title or total results are provided', () => {
+        renderTopFilterPanel({
+            filterPanelEnabled: true,
+            filters: selectedAllFilters,
+            title: 'Test Collection',
+            showTotalResults: true,
+        });
+
+        const collectionTitle = screen.queryByTestId('consonant-TopFilters-collectionTitle');
+        const totalResults = screen.queryByTestId('consonant-TopFilters-results');
+        expect(collectionTitle).not.toBeNull();
+        expect(totalResults).not.toBeNull();
+    });
+
+    test('Should show clear button wrapper when at least one filter is selected', () => {
+        renderTopFilterPanel({
+            filterPanelEnabled: true,
+            filters: selectedAllFilters,
+        });
+
+        const clearBtnWrapper = screen.queryByTestId('consonant-TopFilters-clearBtnWrapper');
+        expect(clearBtnWrapper).not.toBeNull();
+    });
+    test('Should render Group components for each filter', () => {
+        const { props: { filters } } = renderTopFilterPanel({
+            filterPanelEnabled: true,
+            filters: selectedAllFilters,
+        });
+
+        const filterGroupElements = screen.queryAllByTestId('consonant-TopFilter-items');
+        expect(filterGroupElements).toHaveLength(filters.length);
     });
 });

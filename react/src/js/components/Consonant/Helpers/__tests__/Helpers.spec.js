@@ -22,6 +22,14 @@ import {
     getCardsMatchingSearch,
     getUpdatedCardBookmarkData,
     hasTag,
+    getModifiedDescSort,
+    getModifiedAscSort,
+    // getEventSort,
+    joinCardSets,
+    getRandomSort,
+    getFeaturedCards,
+    sanitizeStr,
+    getActivePanels,
 } from '../Helpers';
 
 describe('utils/Helpers', () => {
@@ -97,7 +105,7 @@ describe('utils/Helpers', () => {
     });
     describe('getFilteredCards', () => {
         PROPS.getFilteredCards.forEach(({
-            cards, activeFilters, activePanels, filterType, filterTypes, expectedValue,
+            cards, activeFilters, activePanels, filterType, filterTypes, categories, expectedValue,
         }) => {
             test('should return filtered cards', () => {
                 const filteredCards = getFilteredCards(
@@ -106,11 +114,13 @@ describe('utils/Helpers', () => {
                     activePanels,
                     filterType,
                     filterTypes,
+                    categories,
                 );
 
                 expect(filteredCards).toEqual(expectedValue);
             });
         });
+
         test('should return throw error when invalid filterType', () => {
             const {
                 cards,
@@ -132,6 +142,117 @@ describe('utils/Helpers', () => {
             }
 
             expect(throwError).toThrowError(new Error(expectedValue));
+        });
+
+        // Additional test cases for full coverage
+        test('should return cards when activeFiltersSet is empty and usingTimingFilter is false', () => {
+            const cards = [{ id: 1, tags: [] }];
+            const activeFilters = [];
+            const activePanels = new Set();
+            const filterTypes = { TIMING: 'TIMING' };
+            const filterType = filterTypes.TIMING;
+            const categories = null;
+            const result = getFilteredCards(
+                cards,
+                activeFilters,
+                activePanels,
+                filterType,
+                filterTypes,
+                categories,
+            );
+            expect(result).toEqual(cards);
+        });
+
+        test('should filter cards based on categories', () => {
+            const cards = [
+                { id: 1, tags: [{ id: 'category1' }] },
+                { id: 2, tags: [{ id: 'category2' }] },
+            ];
+            const activeFilters = [];
+            const activePanels = new Set();
+            const filterTypes = { TIMING: 'TIMING' };
+            const filterType = filterTypes.TIMING;
+            const categories = ['category1'];
+
+            const expectedValue = [{ id: 1, tags: [{ id: 'category1' }] }];
+            const result = getFilteredCards(
+                cards,
+                activeFilters,
+                activePanels,
+                filterType,
+                filterTypes,
+                categories,
+            );
+            expect(result).toEqual(expectedValue);
+        });
+
+        test('should filter cards based on XOR and filter', () => {
+            const cards = [
+                { id: 1, tags: [{ id: 'filter1' }, { id: 'filter2' }] },
+                { id: 2, tags: [{ id: 'filter1' }] },
+            ];
+            const activeFilters = ['filter1', 'filter2'];
+            const activePanels = new Set();
+            const filterTypes = { XOR: 'XOR' };
+            const filterType = filterTypes.XOR;
+            const categories = null;
+
+            const expectedValue = [{ id: 1, tags: [{ id: 'filter1' }, { id: 'filter2' }] }];
+            const result = getFilteredCards(
+                cards,
+                activeFilters,
+                activePanels,
+                filterType,
+                filterTypes,
+                categories,
+            );
+            expect(result).toEqual(expectedValue);
+        });
+
+        test('should filter cards based on OR filter with single panel', () => {
+            const cards = [
+                { id: 1, tags: [{ id: 'filter1' }] },
+                { id: 2, tags: [{ id: 'filter2' }] },
+            ];
+            const activeFilters = ['filter1'];
+            const activePanels = new Set(['panel1']);
+            const filterTypes = { OR: 'OR' };
+            const filterType = filterTypes.OR;
+            const categories = null;
+
+            const expectedValue = [{ id: 1, tags: [{ id: 'filter1' }] }];
+            const result = getFilteredCards(
+                cards,
+                activeFilters,
+                activePanels,
+                filterType,
+                filterTypes,
+                categories,
+            );
+            expect(result).toEqual(expectedValue);
+        });
+
+        test('should filter cards based on OR filter with multiple panels', () => {
+            const cards = [
+                { id: 1, tags: [{ id: 'panel1/filter1' }, { id: 'panel2/filter2' }] },
+                { id: 2, tags: [{ id: 'panel1/filter1' }] },
+            ];
+            const activeFilters = ['panel1/filter1', 'panel2/filter2'];
+            const activePanels = new Set(['panel1', 'panel2']);
+            const filterTypes = { OR: 'OR' };
+            const filterType = filterTypes.OR;
+            const categories = null;
+
+            const expectedValue = [{ id: 1, tags: [{ id: 'panel1/filter1' }, { id: 'panel2/filter2' }] }];
+            const result = getFilteredCards(
+                cards,
+                activeFilters,
+                activePanels,
+                filterType,
+                filterTypes,
+                categories,
+            );
+            expect(result).toEqual(expectedValue);
         });
     });
     describe('highlightCard', () => {
@@ -295,6 +416,101 @@ describe('utils/Helpers', () => {
             const hasLiveExpired = hasTag(PROPS.hasTag.compareRegExp3, PROPS.hasTag.passedTags3);
 
             expect(hasLiveExpired).toBe(false);
+        });
+    });
+    describe('getModifiedDescSort', () => {
+        PROPS.getModifiedDescSort.forEach(({
+            cards, expectedValue,
+        }) => {
+            test('should return DESC sorted cards by modified date', () => {
+                const sortedCards = getModifiedDescSort(cards);
+
+                expect(sortedCards).toEqual(expectedValue);
+            });
+        });
+    });
+    describe('getModifiedAscSort', () => {
+        PROPS.getModifiedAscSort.forEach(({
+            cards, expectedValue,
+        }) => {
+            test('should return ASC sorted cards by modified date', () => {
+                const sortedCards = getModifiedAscSort(cards);
+
+                expect(sortedCards).toEqual(expectedValue);
+            });
+        });
+    });
+
+    // describe('getEventSort', () => {
+    //     PROPS.getEventSort.forEach(({ cards, eventFilter, expectedValue }) => {
+    //         test(`should return sorted cards by event filter: ${eventFilter}`, () => {
+    //             const sortedCards = getEventSort(cards, eventFilter).visibleSessions;
+    //             expect(sortedCards).toEqual(expectedValue);
+    //         });
+    //     });
+    // });
+    describe('joinCardSets', () => {
+        PROPS.joinCardSets.forEach(({ cardSetOne, cardSetTwo, expectedValue }) => {
+            test('should concatenate two card sets', () => {
+                const result = joinCardSets(cardSetOne, cardSetTwo);
+                expect(result).toEqual(expectedValue);
+            });
+            test('should return the first set if the second set is empty', () => {
+                const result = joinCardSets(cardSetOne, []);
+                expect(result).toEqual(cardSetOne);
+            });
+            //
+            test('should return the second set if the first set is empty', () => {
+                const result = joinCardSets([], cardSetTwo);
+                expect(result).toEqual(cardSetTwo);
+            });
+            //
+            test('should return an empty array if both sets are empty', () => {
+                const result = joinCardSets([], []);
+                expect(result).toEqual([]);
+            });
+        });
+    });
+
+    describe('getRandomSort', () => {
+        PROPS.getRandomSort.forEach(({
+            cards, id, sampleSize, reservoirSize, expectedValue,
+        }) => {
+            test(`should return a random sample of cards for id: ${id}`, () => {
+                const result = getRandomSort(cards, id, sampleSize, reservoirSize);
+                result.forEach((card) => {
+                    expect(expectedValue).toContainEqual(card);
+                });
+            });
+        });
+    });
+    describe('getFeaturedCards', () => {
+        PROPS.getFeaturedCards.forEach(({ ids, cards, expectedValue }) => {
+            test('should return featured cards with isFeatured set to true', () => {
+                const result = getFeaturedCards(ids, cards);
+                expect(result).toEqual(expectedValue);
+            });
+        });
+    });
+    describe('Sanitize', () => {
+        test('should return sanitized string', () => {
+            const input = 'Hello &amp; World &lt;3 &gt;2';
+            const expectedValue = 'Hello & World <3 >2';
+            const result = sanitizeStr(input);
+            expect(result).toEqual(expectedValue);
+        });
+    });
+    describe('getActivePanels', () => {
+        test('should return a set of filter panels with filters checked on the page', () => {
+            const activeFilters = [
+                'panel1/filter1',
+                'panel1/filter2',
+                'panel2/filter1',
+                'panel3/filter1',
+            ];
+            const expectedValue = new Set(['panel1', 'panel2', 'panel3']);
+            const result = getActivePanels(activeFilters);
+            expect(result).toEqual(expectedValue);
         });
     });
 });

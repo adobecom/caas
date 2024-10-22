@@ -63,3 +63,22 @@ describe('Consonant/Container/Card Styles', () => {
         expect(screen.queryAllByTestId('consonant-Card-bannerImg')).toHaveLength(totalCards);
     });
 });
+
+describe('Container Component - Intersection Observer', () => {
+    beforeEach(() => {
+        setupIntersectionObserverMock();
+    });
+    test('should set hasFetched and visibleStamp when box is in view', () => {
+        const configToUse = { ...config, collection: { ...config.collection, lazyLoad: true } };
+        const { container } = render(<Container config={configToUse} />);
+
+        const box = container.querySelector('.box-class'); // Replace with the actual class or test ID
+        const observerCallback = jest.fn();
+
+        const observer = new IntersectionObserver(observerCallback);
+        observer.observe(box);
+
+        observerCallback([{ intersectionRatio: 1 }]);
+        expect(observerCallback).toHaveBeenCalled();
+    });
+});

@@ -7,6 +7,9 @@ import {
     useConfig,
     useWindowDimensions,
     useLazyLoading,
+    useRegistered,
+    useURLState,
+    debounce,
 } from '../hooks';
 import { ConfigContext, ExpandableContext } from '../contexts';
 
@@ -118,6 +121,131 @@ describe('utils/hooks', () => {
 
             expect(unobserve).toHaveBeenCalledTimes(1);
             expect(result.current[0]).toBe(imageUrl);
+        });
+    });
+    describe('useURLState', () => {
+        test('should parse initial URL state', () => {
+            const { result } = renderHook(() => useURLState());
+
+            const expectedState = {};
+            const params = new URLSearchParams(window.location.search);
+            for (const [key, value] of params.entries()) {
+                expectedState[key] = value;
+            }
+
+            expect(result.current[0]).toEqual(expectedState);
+        });
+
+        test('should set query parameter', () => {
+            const { result } = renderHook(() => useURLState());
+            const [, setQuery] = result.current;
+
+            act(() => {
+                setQuery('testKey', 'testValue');
+            });
+
+            expect(result.current[0]).toEqual({ testKey: 'testValue' });
+            expect(window.location.search).toContain('testKey=testValue');
+        });
+
+        test('should clear query parameters', () => {
+            const { result } = renderHook(() => useURLState());
+            const [, , clearQuery] = result.current;
+
+            act(() => {
+                clearQuery();
+            });
+
+            expect(result.current[0]).toEqual({});
+            expect(window.location.search).toBe('');
+        });
+    });
+    describe('useRegistered', () => {
+        test('should return false if not registered', () => {
+            const { result } = renderHook(() => useRegistered());
+
+            expect(result.current).toBe(false);
+        });
+
+        test('should return true if registered', async () => {
+            const mockGetEventData = jest.fn().mockResolvedValue({ isRegistered: true });
+            window.feds = {
+                utilities: {
+                    getEventData: mockGetEventData,
+                },
+            };
+
+            const { result, waitForNextUpdate } = renderHook(() => useRegistered());
+
+            await waitForNextUpdate();
+
+            expect(result.current).toBe(true);
+        });
+
+        test('should handle error in getEventData', async () => {
+            const mockGetEventData = jest.fn().mockRejectedValue(new Error('Error'));
+            window.feds = {
+                utilities: {
+                    getEventData: mockGetEventData,
+                },
+                data: {
+                    eventName: 'testEvent',
+                    testEvent: { isRegistered: true },
+                    isRegisteredForMax: false,
+                },
+            };
+
+            const { result, waitForNextUpdate } = renderHook(() => useRegistered());
+
+            await waitForNextUpdate();
+
+            expect(result.current).toBe(true);
+        });
+    });
+
+    describe('debounce', () => {
+        beforeEach(() => {
+            jest.useFakeTimers();
+        });
+        afterEach(() => {
+            jest.runOnlyPendingTimers();
+            jest.useRealTimers();
+        });
+        test('should delay the function execution', () => {
+            const fn = jest.fn();
+            const debouncedFn = debounce(fn, 1000);
+            debouncedFn();
+            expect(fn).not.toBeCalled();
+            jest.advanceTimersByTime(500);
+            expect(fn).not.toBeCalled();
+            jest.advanceTimersByTime(500);
+            expect(fn).toBeCalledTimes(1);
+        });
+        test('should pass arguments to the debounced function', () => {
+            const fn = jest.fn();
+            const debouncedFn = debounce(fn, 1000);
+            debouncedFn('arg1', 'arg2');
+            jest.advanceTimersByTime(1000);
+            expect(fn).toBeCalledWith('arg1', 'arg2');
+        });
+        test('should preserve the context of the debounced function', () => {
+            const context = { value: 42 };
+            const fn = jest.fn(function fn() {
+                return this.value;
+            });
+            const debouncedFn = debounce(fn, 1000);
+            debouncedFn.call(context);
+            jest.advanceTimersByTime(1000);
+            expect(fn).toBeCalled();
+            expect(fn.mock.results[0].value).toBe(42);
+        });
+        test('should cancel the debounced function', () => {
+            const fn = jest.fn();
+            const debouncedFn = debounce(fn, 1000);
+            debouncedFn();
+            debouncedFn.cancel();
+            jest.advanceTimersByTime(1000);
+            expect(fn).not.toBeCalled();
         });
     });
 });

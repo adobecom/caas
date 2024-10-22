@@ -2,18 +2,30 @@ export const loadLana = (options = {}) => {
     if (window.lana) return;
 
     const lanaError = (e) => {
-        if (window.lana) {
-            window.lana.log(e.reason || e.error || e.message, { errorType: 'i' });
+        if (window.lana && window.lana.logImpl) {
+            window.lana.logImpl(e.reason || e.error || e.message, { errorType: 'i' });
         }
     };
 
+    let lanaLoaded = false;
+
     window.lana = {
+        logImpl: (...args) => {
+            console.log('Lana not yet loaded, logging to console:', ...args);
+        },
         log: async (...args) => {
-            window.removeEventListener('error', lanaError);
-            window.removeEventListener('unhandledrejection', lanaError);
-            // eslint-disable-next-line import/no-unresolved, import/extensions
-            await fetch('www.adobe.com/libs/utils/lana.js');
-            return window.lana.log(...args);
+            if (!lanaLoaded) {
+                window.removeEventListener('error', lanaError);
+                window.removeEventListener('unhandledrejection', lanaError);
+                try {
+                    // eslint-disable-next-line import/no-unresolved, import/extensions
+                    await fetch('www.caas.com/libs/utils/lana.js');
+                    lanaLoaded = true;
+                } catch (error) {
+                    console.error('Failed to load Lana:', error);
+                }
+            }
+            return window.lana.logImpl(...args);
         },
         debug: false,
         options,

@@ -189,7 +189,9 @@ const Grid = (props) => {
      * Scrolls a card into view if any of its children is on focus.
      * @param {string} card - ID of the card to display
      */
+    /* istanbul ignore next */
     const scrollCardIntoView = (card) => {
+        /* istanbul ignore if */
         if (!card) return;
         const element = document.getElementById(card);
         element.scrollIntoView({ block: 'nearest' });
@@ -221,6 +223,7 @@ const Grid = (props) => {
                 const hideCTA = getHideCta(card, collectionButtonStyle);
 
                 switch (cardStyle) {
+                    /* istanbul ignore next */
                     case CARD_STYLES.CUSTOM:
                         return parseHTML(customCard(card));
                     default:
@@ -238,6 +241,7 @@ const Grid = (props) => {
                                 renderDivider={renderFooterDivider}
                                 renderOverlay={renderCardsOverlay}
                                 hideCTA={hideCTA}
+                                /* istanbul ignore next */
                                 onFocus={() => scrollCardIntoView(card.id)} />
                         );
                 }

@@ -43,6 +43,88 @@ describe('utils/CardFilterer', () => {
             const { filteredCards } = cardFilterer.sortCards({ sort: 'featured' }, '', [], true);
             expect(filteredCards).toEqual(expectedValue);
         });
+
+        // Additional test cases for full coverage
+        test('Date Ascending Sort', () => {
+            const cards = [{ id: 1, cardDate: '2021-01-01' }, { id: 2, cardDate: '2020-01-01' }];
+            const expectedValue = [{ id: 2, cardDate: '2020-01-01' }, { id: 1, cardDate: '2021-01-01' }];
+            const cardFilterer = new CardFilterer(cards);
+            const { filteredCards } = cardFilterer.sortCards({ sort: 'dateasc' });
+            expect(filteredCards).toEqual(expectedValue);
+        });
+
+        test('Date Descending Sort', () => {
+            const cards = [{ id: 1, cardDate: '2021-01-01' }, { id: 2, cardDate: '2020-01-01' }];
+            const expectedValue = [{ id: 1, cardDate: '2021-01-01' }, { id: 2, cardDate: '2020-01-01' }];
+            const cardFilterer = new CardFilterer(cards);
+            const { filteredCards } = cardFilterer.sortCards({ sort: 'datedesc' });
+            expect(filteredCards).toEqual(expectedValue);
+        });
+
+        test('Modified Descending Sort', () => {
+            const cards = [{ id: 1, modified: '2021-01-01' }, { id: 2, modified: '2020-01-01' }];
+            const expectedValue = [{ id: 1, modified: '2021-01-01' }, { id: 2, modified: '2020-01-01' }];
+            const cardFilterer = new CardFilterer(cards);
+            const { filteredCards } = cardFilterer.sortCards({ sort: 'modifieddesc' });
+            expect(filteredCards).toEqual(expectedValue);
+        });
+
+        test('Modified Ascending Sort', () => {
+            const cards = [{ id: 1, modified: '2021-01-01' }, { id: 2, modified: '2020-01-01' }];
+            const expectedValue = [{ id: 2, modified: '2020-01-01' }, { id: 1, modified: '2021-01-01' }];
+            const cardFilterer = new CardFilterer(cards);
+            const { filteredCards } = cardFilterer.sortCards({ sort: 'modifiedasc' });
+            expect(filteredCards).toEqual(expectedValue);
+        });
+
+        test('Event Sort', () => {
+            const cards = [
+                { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } }, tags: ['event1'] },
+                { id: 2, contentArea: { dateDetailText: { startTime: '2021-01-03', endTime: '2021-01-04' } }, tags: ['event2'] },
+            ];
+            const expectedValue = [
+                { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } }, tags: ['event1'] },
+            ];
+            const cardFilterer = new CardFilterer(cards);
+            const { filteredCards } = cardFilterer.sortCards({ sort: 'eventsort' }, 'event1');
+            expect(filteredCards).toEqual(expectedValue);
+        });
+
+        test('Event Sort with nextTransitionMs', () => {
+            const cards = [
+                { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } }, tags: ['event1'] },
+                { id: 2, contentArea: { dateDetailText: { startTime: '2021-01-03', endTime: '2021-01-04' } }, tags: ['event2'] },
+            ];
+            const expectedValue = [
+                { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } }, tags: ['event1'] },
+            ];
+            const cardFilterer = new CardFilterer(cards);
+            cardFilterer.sortCards({ sort: 'eventsort' }, 'event1');
+            expect(cardFilterer.filteredCards).toEqual(expectedValue);
+            expect(cardFilterer.nextTransitionMs).toBeGreaterThan(-1);
+        });
+        test('Title Ascending Sort', () => {
+            const cards = [{ id: 1, contentArea: { title: 'B' } }, { id: 2, contentArea: { title: 'A' } }];
+            const expectedValue = [{ id: 2, contentArea: { title: 'A' } }, { id: 1, contentArea: { title: 'B' } }];
+            const cardFilterer = new CardFilterer(cards);
+            const { filteredCards } = cardFilterer.sortCards({ sort: 'titleasc' });
+            expect(filteredCards).toEqual(expectedValue);
+        });
+
+        test('Title Descending Sort', () => {
+            const cards = [{ id: 1, contentArea: { title: 'B' } }, { id: 2, contentArea: { title: 'A' } }];
+            const expectedValue = [{ id: 1, contentArea: { title: 'B' } }, { id: 2, contentArea: { title: 'A' } }];
+            const cardFilterer = new CardFilterer(cards);
+            const { filteredCards } = cardFilterer.sortCards({ sort: 'titledesc' });
+            expect(filteredCards).toEqual(expectedValue);
+        });
+
+        test('Random Sort', () => {
+            const cards = [{ id: 1 }, { id: 2 }, { id: 3 }];
+            const cardFilterer = new CardFilterer(cards, 1, 2, 3);
+            const { filteredCards } = cardFilterer.sortCards({ sort: 'random' });
+            expect(filteredCards.length).toBe(2); // Assuming sampleSize is 2
+        });
     });
     describe('keepCardsWithinDateRange', () => {
         PROPS.keepCardsWithinDateRange.forEach(({ cards, expectedValue }) => {

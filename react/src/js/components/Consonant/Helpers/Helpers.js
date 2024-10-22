@@ -407,8 +407,34 @@ export const getDateDescSort = cards => getDateAscSort(cards).reverse();
  * @param {Object} urlState - URL search/query Params.
  * @returns {Array} visibleCards
  */
-export const getEventSort = (cards = [], eventFilter) => eventTiming(cards, eventFilter);
+export const getEventSort = (cards = [], eventFilter) => {
+    const transformedCards = cards.map(card => ({
+        id: card.id,
+        startDate: card.contentArea.dateDetailText.startTime,
+        endDate: card.contentArea.dateDetailText.endTime,
+        tags: card.tags || [],
+    }));
 
+    const result = eventTiming(transformedCards, eventFilter);
+
+    const visibleSessions = result.visibleSessions
+        .filter(session => session.tags.includes(eventFilter))
+        .map(session => ({
+            id: session.id,
+            contentArea: {
+                dateDetailText: {
+                    startTime: session.startDate,
+                    endTime: session.endDate,
+                },
+            },
+            tags: session.tags,
+        }));
+
+    return {
+        nextTransitionMs: result.nextTransitionMs,
+        visibleSessions,
+    };
+};
 /**
  * Gets all cards that matches a users search query
  * @param {String} query - The users search query
@@ -431,7 +457,7 @@ export const getCardsMatchingSearch = (query, cards, searchFields) => {
  * @param {Array} cardSetTwo - Set two of cards to join
  * @returns {Array} - Cards sets one and two joined
  */
-const joinCardSets = (cardSetOne, cardSetTwo) => cardSetOne.concat(cardSetTwo);
+export const joinCardSets = (cardSetOne, cardSetTwo) => cardSetOne.concat(cardSetTwo);
 
 /**
  * Processes featured cards with raw cards received from API response
@@ -530,7 +556,7 @@ export const getFeaturedCards = (ids, cards) => {
     for (const id of ids) {
         for (const card of cards) {
             if (card.id === id) {
-                const c = window.structuredClone(card);
+                const c = JSON.parse(JSON.stringify(card)); // Deep clone using JSON methods
                 c.isFeatured = true;
                 ans.push(c);
             }

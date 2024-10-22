@@ -609,6 +609,130 @@ const hasTag = {
 };
 /* eslint-enable */
 
+const getModifiedDescSort = [
+    {
+        cards: [
+            { id: 1, modifiedDate: '2023-01-01' },
+            { id: 2, modifiedDate: '2023-01-03' },
+            { id: 3, modifiedDate: '2023-01-02' },
+        ],
+        expectedValue: [
+            { id: 2, modifiedDate: '2023-01-03' },
+            { id: 3, modifiedDate: '2023-01-02' },
+            { id: 1, modifiedDate: '2023-01-01' },
+        ],
+    },
+    // Add more test cases if needed
+];
+
+const getModifiedAscSort = [
+    {
+        cards: [
+            { id: 1, modifiedDate: '2023-01-01' },
+            { id: 2, modifiedDate: '2023-01-03' },
+            { id: 3, modifiedDate: '2023-01-02' },
+        ],
+        expectedValue: [
+            { id: 1, modifiedDate: '2023-01-01' },
+            { id: 3, modifiedDate: '2023-01-02' },
+            { id: 2, modifiedDate: '2023-01-03' },
+        ],
+    },
+    // Add more test cases if needed
+];
+
+const getEventSort = [
+    {
+        cards: [
+            { id: 1, contentArea: { dateDetailText: { startTime: '2023-01-01T10:00:00Z', endTime: '2023-01-01T12:00:00Z' } } },
+            { id: 2, contentArea: { dateDetailText: { startTime: '2023-01-02T10:00:00Z', endTime: '2023-01-02T12:00:00Z' } } },
+            { id: 3, contentArea: { dateDetailText: { startTime: '2023-01-03T10:00:00Z', endTime: '2023-01-03T12:00:00Z' } } },
+        ],
+        eventFilter: 'live',
+        expectedValue: [
+            { id: 1, contentArea: { dateDetailText: { startTime: '2023-01-01T10:00:00Z', endTime: '2023-01-01T12:00:00Z' } } },
+            { id: 2, contentArea: { dateDetailText: { startTime: '2023-01-02T10:00:00Z', endTime: '2023-01-02T12:00:00Z' } } },
+            { id: 3, contentArea: { dateDetailText: { startTime: '2023-01-03T10:00:00Z', endTime: '2023-01-03T12:00:00Z' } } },
+        ],
+    },
+    // Add more test cases if needed
+];
+const joinCardSets = [
+    {
+        cardSetOne: [
+            { id: 1, contentArea: { dateDetailText: { startTime: '2023-01-01T10:00:00Z', endTime: '2023-01-01T12:00:00Z' } } },
+            { id: 2, contentArea: { dateDetailText: { startTime: '2023-01-02T10:00:00Z', endTime: '2023-01-02T12:00:00Z' } } },
+        ],
+        cardSetTwo: [
+            { id: 3, contentArea: { dateDetailText: { startTime: '2023-01-03T10:00:00Z', endTime: '2023-01-03T12:00:00Z' } } },
+            { id: 4, contentArea: { dateDetailText: { startTime: '2023-01-04T10:00:00Z', endTime: '2023-01-04T12:00:00Z' } } },
+        ],
+        expectedValue: [
+            { id: 1, contentArea: { dateDetailText: { startTime: '2023-01-01T10:00:00Z', endTime: '2023-01-01T12:00:00Z' } } },
+            { id: 2, contentArea: { dateDetailText: { startTime: '2023-01-02T10:00:00Z', endTime: '2023-01-02T12:00:00Z' } } },
+            { id: 3, contentArea: { dateDetailText: { startTime: '2023-01-03T10:00:00Z', endTime: '2023-01-03T12:00:00Z' } } },
+            { id: 4, contentArea: { dateDetailText: { startTime: '2023-01-04T10:00:00Z', endTime: '2023-01-04T12:00:00Z' } } },
+        ],
+    },
+    {
+        cardSetOne: [
+            { id: 1, contentArea: { dateDetailText: { startTime: '2023-01-01T10:00:00Z', endTime: '2023-01-01T12:00:00Z' } } },
+        ],
+        cardSetTwo: [],
+        expectedValue: [
+            { id: 1, contentArea: { dateDetailText: { startTime: '2023-01-01T10:00:00Z', endTime: '2023-01-01T12:00:00Z' } } },
+        ],
+    },
+    {
+        cardSetOne: [],
+        cardSetTwo: [
+            { id: 2, contentArea: { dateDetailText: { startTime: '2023-01-02T10:00:00Z', endTime: '2023-01-02T12:00:00Z' } } },
+        ],
+        expectedValue: [
+            { id: 2, contentArea: { dateDetailText: { startTime: '2023-01-02T10:00:00Z', endTime: '2023-01-02T12:00:00Z' } } },
+        ],
+    },
+    {
+        cardSetOne: [],
+        cardSetTwo: [],
+        expectedValue: [],
+    },
+];
+
+const getRandomSort = [
+    {
+        cards: [
+            { id: 1, contentArea: { dateDetailText: { startTime: '2023-01-01T10:00:00Z', endTime: '2023-01-01T12:00:00Z' } } },
+            { id: 2, contentArea: { dateDetailText: { startTime: '2023-01-02T10:00:00Z', endTime: '2023-01-02T12:00:00Z' } } },
+            { id: 3, contentArea: { dateDetailText: { startTime: '2023-01-03T10:00:00Z', endTime: '2023-01-03T12:00:00Z' } } },
+        ],
+        id: 'test-id-1',
+        sampleSize: 2,
+        reservoirSize: 3,
+        expectedValue: [
+            // Expected random sample, e.g., [{ id: 1, ... }, { id: 2, ... }]
+            { id: 1, contentArea: { dateDetailText: { startTime: '2023-01-01T10:00:00Z', endTime: '2023-01-01T12:00:00Z' } } },
+            { id: 2, contentArea: { dateDetailText: { startTime: '2023-01-02T10:00:00Z', endTime: '2023-01-02T12:00:00Z' } } },
+            { id: 3, contentArea: { dateDetailText: { startTime: '2023-01-03T10:00:00Z', endTime: '2023-01-03T12:00:00Z' } } },
+        ],
+    },
+    // Add more test cases as needed
+];
+const getFeaturedCards = [
+    {
+        ids: [1, 3],
+        cards: [
+            { id: 1, contentArea: { dateDetailText: { startTime: '2023-01-01T10:00:00Z', endTime: '2023-01-01T12:00:00Z' } } },
+            { id: 2, contentArea: { dateDetailText: { startTime: '2023-01-02T10:00:00Z', endTime: '2023-01-02T12:00:00Z' } } },
+            { id: 3, contentArea: { dateDetailText: { startTime: '2023-01-03T10:00:00Z', endTime: '2023-01-03T12:00:00Z' } } },
+        ],
+        expectedValue: [
+            { id: 1, contentArea: { dateDetailText: { startTime: '2023-01-01T10:00:00Z', endTime: '2023-01-01T12:00:00Z' } }, isFeatured: true },
+            { id: 3, contentArea: { dateDetailText: { startTime: '2023-01-03T10:00:00Z', endTime: '2023-01-03T12:00:00Z' } }, isFeatured: true },
+        ],
+    },
+    // Add more test cases as needed
+];
 export default {
     processCards,
     getTotalPages,
@@ -628,4 +752,10 @@ export default {
     getUpdatedCardBookmarkData,
     getFilteredCardsThrowError,
     hasTag,
+    getModifiedDescSort,
+    getModifiedAscSort,
+    getEventSort,
+    joinCardSets,
+    getRandomSort,
+    getFeaturedCards,
 };

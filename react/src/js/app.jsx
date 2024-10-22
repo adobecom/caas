@@ -21,28 +21,29 @@ try {
     }
 }
 
-const initReact = (element) => {
-    domRegistry.init(element);
+const initReact = (element, registry = domRegistry) => {
+    registry.init(element);
 };
 
 initReact(document);
 
 function collectionLoadedThroughXf(el) {
+    if (!el) return false; // Ensure el is not null or undefined
     const container = el.firstElementChild;
     let consonantCardCollection = null;
     if (container !== null) {
         consonantCardCollection = container.querySelectorAll('.consonantcardcollection');
     }
-    return el.className.indexOf('experiencefragment')
-        && consonantCardCollection
+    return el.className.indexOf('experiencefragment') !== -1
+        && consonantCardCollection !== null
         && consonantCardCollection.length > 0;
 }
 
 let prev = null;
-function authorWatch(el) {
+function authorWatch(el, registry = domRegistry) {
     if (prev !== el && collectionLoadedThroughXf(el)) {
         prev = el;
-        domRegistry.render(consonantPageRDC);
+        registry.render(consonantPageRDC);
     }
 }
 
@@ -67,4 +68,5 @@ window.ConsonantCardCollection = ConsonantCardCollecton;
 if (window.Granite && window.dx) {
     window.dx.author.watch.registerFunction(authorWatch);
 }
+export { initReact, collectionLoadedThroughXf, authorWatch }; // Export the functions
 export default initReact;

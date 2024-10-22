@@ -4,11 +4,17 @@
 module.exports = {
     // Automatically clear mock calls and instances between every test
     clearMocks: true,
+    collectCoverage: true,
+    collectCoverageFrom: ['react/**/*.{js,jsx,mjs}', '!js/components/Consonant/Testing/**'],
 
-    collectCoverageFrom: ['react/**/*.{js,jsx,mjs}'],
-
-    "coveragePathIgnorePatterns": [
-        "Modal",
+    coveragePathIgnorePatterns: [
+        'Modal',
+        'js/components/Consonant/Testing/',
+        'app.jsx',
+        'ConsonantPageDOM.jsx',
+        'polyfills.js',
+        'watch.js',
+        'js/components/Consonant/Helpers/TestingConstants',
     ],
 
     // The directory where Jest should output its coverage files
@@ -16,10 +22,10 @@ module.exports = {
 
     coverageThreshold: {
         global: {
-            branches: 30,
-            functions: 50,
-            lines: 50,
-            statements: 50,
+            branches: 85.67,
+            functions: 96.5,
+            lines: 98.25,
+            statements: 98.04,
         },
     },
 

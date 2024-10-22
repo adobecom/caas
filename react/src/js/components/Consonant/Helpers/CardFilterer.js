@@ -129,6 +129,8 @@ export default class CardFilterer {
 
                 if (nextTransitionMs > 0) {
                     this.nextTransitionMs = nextTransitionMs;
+                } else {
+                    this.nextTransitionMs = 0;
                 }
 
                 break;

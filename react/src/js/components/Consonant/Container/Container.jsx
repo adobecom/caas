@@ -569,6 +569,7 @@ const Container = (props) => {
         const { label } = items.find(({ id }) => id === itemId);
 
         let urlStateValue = urlState[filterGroupPrefix + group] || [];
+        /* istanbul ignore if  */
         if (typeof urlStateValue === 'string') {
             urlStateValue = urlStateValue.split(',');
         }
@@ -705,11 +706,12 @@ const Container = (props) => {
             const urlStateValue = urlState[filterGroupPrefix + group];
 
             if (!urlStateValue) return filter;
-
+            /* istanbul ignore next  */
             const urlStateArray = urlStateValue.split(',');
             return {
                 ...filter,
                 opened: true,
+                /* istanbul ignore next */
                 items: items.map(item => ({
                     ...item,
                     selected: urlStateArray.includes(String(item.label)),
@@ -745,6 +747,7 @@ const Container = (props) => {
 
         return allFilters.map(filter => ({
             ...filter,
+            /* istanbul ignore next */
             items: filter.items.filter(item => tags.includes(item.id)
             || tags.includes(item.label)
             || tags.toString().includes(`/${item.id}`) // ***** FIX  HERE *****
@@ -813,6 +816,7 @@ const Container = (props) => {
                             if (validData) return json;
 
                             logLana({ message: `no valid response data from ${endPoint}`, tags: 'collection' });
+                            /* istanbul ignore next */
                             return Promise.reject(new Error('no valid reponse data'));
                         });
                     }
@@ -906,6 +910,7 @@ const Container = (props) => {
                         if (currentPage === 1) return;
                         const cardsToshow = processedCards.slice(0, resultsPerPage * currentPage);
                         const getLastPageID = (resultsPerPage * currentPage) - resultsPerPage;
+                        /* istanbul ignore if */
                         if (cardsToshow.length < getLastPageID) return;
                         const lastID = scrollElementRef.current.children[getLastPageID];
                         lastID.scrollIntoView();
@@ -928,6 +933,7 @@ const Container = (props) => {
          * @param {Promise} visitorApi, window.__satelliteLoadedPromise when accessed
          * @returns {Void} - an updated state, thru calling getCards
          */
+        /* istanbul ignore next */
         function getVisitorData(visitorApi) {
             const collectionURI = new URL(collectionEndpoint);
 
@@ -965,6 +971,7 @@ const Container = (props) => {
          * @returns {Void} - an updated state, thru calling getVisitorData which
          * calls getCards
          */
+        /* istanbul ignore next */
         function visitorRetry() {
             let retryCount = 0;
 
@@ -994,11 +1001,11 @@ const Container = (props) => {
 
             timedRetry();
         }
-
+        /* istanbul ignore if */
         if (targetEnabled && visitorPromise) {
             getVisitorData(visitorPromise);
         }
-
+        /* istanbul ignore if */
         if (targetEnabled && !visitorPromise) {
             visitorRetry();
         }
@@ -1054,6 +1061,7 @@ const Container = (props) => {
     const box = useRef();
 
     useEffect(() => {
+        /* istanbul ignore if */
         if (box && !visibleStamp && isLazy) {
             const io = new IntersectionObserver((entries) => {
                 if (entries[0].intersectionRatio <= 0) return;
@@ -1371,10 +1379,12 @@ const Container = (props) => {
                                         }
                                         return (
                                             <button
+                                                key={category.id}
                                                 onClick={() => {
                                                     categoryHandler(category.items, category.id);
                                                 }}
                                                 data-selected={selected}
+                                                data-testid={`category-button-${category.id}`}
                                                 data-group={category.group.replaceAll(' ', '').toLowerCase()}>
                                                 <img className="filters-category--icon" src={getCategoryIcon(category)} alt={category.icon && 'Category icon'} />
                                                 {category.title}

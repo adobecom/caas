@@ -14,7 +14,7 @@ import {
 import { ROOT_MARGIN_DEFAULT } from './constants';
 
 /* eslint-disable */
-function debounce(fn, wait) {
+export function debounce(fn, wait) {
     var timeout = void 0;
 
     var cancel = function cancel() {

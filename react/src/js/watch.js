@@ -1,9 +1,11 @@
+// watch.js
 /**
  *
  * @param {Class} registry The React DOM Component Registry
  */
-const watch = (registry) => {
-    const body = registry.element !== document ? registry.element : document.querySelector('body');
+export const watch = (registry) => {
+    // Ensure registry.element is a valid Node
+    const body = registry.element instanceof Node ? registry.element : document.querySelector('body');
 
     const config = {
         childList: true,
@@ -28,10 +30,12 @@ const watch = (registry) => {
     observer.observe(body, config);
 };
 
-const authorWatch = (registry) => {
-    if (typeof CQ !== 'undefined') {
+/**
+ *
+ * @param {Class} registry The React DOM Component Registry
+ */
+export const authorWatch = (registry) => {
+    if (global.CQ) {
         watch(registry);
     }
 };
-
-export default authorWatch;

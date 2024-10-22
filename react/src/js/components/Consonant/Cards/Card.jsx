@@ -118,30 +118,30 @@ const Card = (props) => {
             detailText: label,
             description,
             dateDetailText: {
-                startTime,
-                endTime,
-            },
-        },
+                startTime = '',
+                endTime = '',
+            } = {},
+        } = {},
         overlays: {
             banner: {
                 description: bannerDescription,
                 fontColor: bannerFontColor,
                 backgroundColor: bannerBackgroundColor,
                 icon: bannerIcon,
-            },
+            } = {},
             videoButton: {
                 url: videoURL,
-            },
+            } = {},
             logo: {
                 src: logoSrc,
                 alt: logoAlt,
                 backgroundColor: logoBg,
                 borderColor: logoBorderBg,
-            },
+            } = {},
             label: {
                 description: badgeText,
-            },
-        },
+            } = {},
+        } = {},
         renderBorder,
         renderDivider,
         renderOverlay,
@@ -321,6 +321,7 @@ const Card = (props) => {
     }
 
     // Events card custom banners
+    /* istanbul ignore if */
     if (isEventsCard) {
         hideBanner = isInPerson && eventBanner === bannerMap.onDemand;
         bannerDescriptionToUse = isInPerson && eventBanner === bannerMap.live

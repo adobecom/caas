@@ -215,4 +215,26 @@ describe('Consonant/Left Filter/Selected Filter Pills', () => {
 
         expect(selectedFilter).not.toBeNull();
     });
+    test('Should allow users to check filter checkboxes', async () => {
+        const configToUse = config;
+        configToUse.filterPanel.filterLogic = 'and';
+        configToUse.filterPanel.type = 'left';
+
+
+        await act(async () => render(<Container config={configToUse} />));
+        await waitFor(() => screen.getAllByTestId('consonant-LeftFilter-itemsItemCheckbox'));
+
+        const filtersLeftElement = screen.getByTestId('consonant-LeftFilters');
+        const [firstCheckbox] = queryAllByTestId(filtersLeftElement, 'consonant-LeftFilter-itemsItemCheckbox');
+
+        expect(firstCheckbox.checked).toBeFalsy();
+
+        fireEvent.click(firstCheckbox);
+
+        expect(firstCheckbox.checked).toBeTruthy();
+
+        fireEvent.click(firstCheckbox);
+
+        expect(firstCheckbox.checked).toBeFalsy();
+    });
 });

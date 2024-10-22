@@ -66,4 +66,31 @@ describe('Consonant/Filters/Top/Item', () => {
             expect(item).toHaveAttribute('daa-ll', ANALYTICS_ITEMS.itemsItem[index]);
         });
     });
+
+    test('Items should be clipped if item length is greater than or equal to clipWrapperItemsCount', () => {
+        const defaultItems = [...DEFAULT_PROPS.items];
+        defaultItems.length = 10;
+
+        renderTopFilterItem({ items: defaultItems });
+
+        const filterGroupElement = screen.getByTestId('consonant-TopFilter-items');
+        expect(filterGroupElement).toHaveClass('consonant-TopFilter-items--clipped');
+    });
+
+    test('should render filter group titles correctly', () => {
+        /* eslint-disable */
+        const itemsWithCategories = [
+            { id: 'category1/item1', fromCategory: true, label: 'Item 1', selected: false },
+            { id: 'category1/item2', fromCategory: true, label: 'Item 2', selected: false },
+            { id: 'category2/item3', fromCategory: true, label: 'Item 3', selected: false },
+        ];
+        /* eslint-enable */
+
+        renderTopFilterItem({ items: itemsWithCategories });
+
+        const categoryTitles = screen.queryAllByTestId(/filter-group-title-/i);
+        expect(categoryTitles).toHaveLength(2);
+        expect(categoryTitles[0]).toHaveTextContent('category1');
+        expect(categoryTitles[1]).toHaveTextContent('category2');
+    });
 });

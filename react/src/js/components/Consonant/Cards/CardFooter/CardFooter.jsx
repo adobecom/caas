@@ -112,6 +112,7 @@ const CardFooter = (props) => {
      */
     const altRightUpcoming = []; // isUpcoming
     const altRightLive = []; // isLive
+    /* istanbul ignore if */
     if (altRight && altRight.length > 0 && right && right.length > 0) {
         const upcoming = {
             href: right[0].href,

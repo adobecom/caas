@@ -2,11 +2,15 @@ import { DOMModel, createRDC } from 'react-dom-components';
 import Container from '../Container/Container';
 import { parseDataConfig } from '../Helpers/decorators';
 
-class ConsonantPageModel extends DOMModel {
+export class ConsonantPageModel extends DOMModel {
     constructor(element) {
         super(element);
-        this.getAttribute('id', 'id');
-        this.getAttribute('data-config', 'dataConfig');
+        this.id = element.getAttribute('id'); // Initialize id
+        this.dataConfig = element.getAttribute('data-config'); // Initialize dataConfig
+    }
+
+    getAttribute(attr) {
+        return this[attr]; // Return the attribute value
     }
 }
 

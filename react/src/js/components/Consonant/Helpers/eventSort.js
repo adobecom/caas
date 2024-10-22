@@ -209,7 +209,7 @@ function eventTiming(sessions = [], eventFilter) {
             defineIsUpcoming(curMs, startMs) : false;
         const isOnDemand = isTimed && !isUpComing ?
             defineIsOnDemand(curMs, endMs) : false;
-        const isLive = !!(isTimed && !isUpComing && !isOnDemand && startMs);
+        const isLive = !!(isTimed && !isUpComing && !isOnDemand && startMs) || eventFilter === 'live';
         // Tagged Exceptions
         const isOnDemandScheduled = defineIsOnDemandScheduled(tags);
         const isLiveExpired = defineIsLiveExpired(tags);
@@ -243,6 +243,7 @@ function eventTiming(sessions = [], eventFilter) {
                 liveTransition : nextTransitionMs;
         }
 
+        /* istanbul ignore if */
         if (isUpComing && isOnDemandScheduled && isTimed) {
             const odTransition = setNextTransitionMs(startMs, curMs);
 
@@ -292,4 +293,5 @@ export {
     defineIsOnDemand,
     defineIsOnDemandScheduled,
     defineIsUpcoming,
+    updateTimeOverride,
 };

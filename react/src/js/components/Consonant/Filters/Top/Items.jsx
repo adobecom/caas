@@ -65,15 +65,15 @@ const Items = (props) => {
             data-testid="consonant-TopFilter-items"
             className={clipFilterItemsClass}>
             {items.map((item) => {
-                const name = item.id.split('/')[1];
+                const category = item.id.split('/')[0];
                 let title;
-                if (!set.has(name)) {
-                    title = name.replaceAll('-', ' ');
-                    set.add(name);
+                if (!set.has(category)) {
+                    title = category.replaceAll('-', ' ');
+                    set.add(category);
                 }
                 return (
-                    <Fragment>
-                        {item.fromCategory && title && <span className="filter-group-title">{title}</span>}
+                    <Fragment key={item.id}>
+                        {item.fromCategory && title && <span className="filter-group-title" data-testid={`filter-group-title-${category}`}>{title}</span>}
                         <li
                             key={item.id}
                             data-testid="consonant-TopFilter-item"
