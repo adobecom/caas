@@ -1,5 +1,25 @@
 /*!
+<<<<<<< HEAD
  * Chimera UI Libraries - Build 0.23.28 (1/6/2025, 16:49:34)
+=======
+<<<<<<< HEAD
+ * Chimera UI Libraries - Build 0.23.26 (12/18/2024, 11:05:06)
+=======
+<<<<<<< HEAD
+ * Chimera UI Libraries - Build 0.23.25 (12/12/2024, 14:19:59)
+=======
+<<<<<<< HEAD
+ * Chimera UI Libraries - Build 0.23.0 (11/18/2024, 02:32:36)
+=======
+<<<<<<< HEAD
+ * Chimera UI Libraries - Build 0.22.4 (11/4/2024, 04:38:25)
+=======
+ * Chimera UI Libraries - Build 0.22.3 (10/28/2024, 14:47:45)
+>>>>>>> 8c09ed1 (feat(mwpw-155425): updating build)
+>>>>>>> aa3d483 (feat(mwpw-155425): rebase)
+>>>>>>> d4e8f22 (feat(mwpw-155425): ability to add multiple event types sort)
+>>>>>>> c224138 (feat(mwpw-155425): rebasing)
+>>>>>>> 666bfaf (feat(mwpw-155425): rebase)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
