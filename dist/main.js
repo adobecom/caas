@@ -48979,6 +48979,17 @@ var defineIsUpcoming = function defineIsUpcoming(currentTime, startTimeMls) {
 };
 
 /**
+ * @func sanitizeEventFilter
+ * @desc Ensures backwards compatibility with both string and array values for the event filter
+ * @param {*} rawEventFilter
+ * @returns {Array} of the events that will be filtered
+ */
+function sanitizeEventFilter(rawEventFilter) {
+    if (Array.isArray(rawEventFilter)) return rawEventFilter;
+    return [rawEventFilter];
+}
+
+/**
  * @func eventTiming
  * @desc First Sorts sessions by startDate, and then partitions them by category
  *
@@ -48990,6 +49001,7 @@ function eventTiming() {
     var sessions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
     var eventFilter = arguments[1];
 
+    var sanitizedEventFilter = sanitizeEventFilter(eventFilter);
     if (!sessions.length) return [];
 
     var overrideTime = timeOverride();
@@ -49112,15 +49124,17 @@ function eventTiming() {
         // updateTimeOverride(curMs, nextTransitionMs);
     }
 
-    var cards = [].concat(live, upComing, onDemand, notTimed);
-    if (eventFilter === 'live') {
-        cards = live;
-    } else if (eventFilter === 'upcoming') {
-        cards = upComing;
-    } else if (eventFilter === 'on-demand') {
-        cards = onDemand;
-    } else if (eventFilter === 'not-timed') {
-        cards = notTimed;
+    var cards = [];
+    if (sanitizedEventFilter.length === 0) {
+        cards = [].concat(live, upComing, onDemand, notTimed);
+    }if (sanitizedEventFilter.indexOf('live') > -1) {
+        cards = cards.concat(live);
+    }if (sanitizedEventFilter.indexOf('upcoming') > -1) {
+        cards = cards.concat(upComing);
+    }if (sanitizedEventFilter.indexOf('on-demand') > -1) {
+        cards = cards.concat(onDemand);
+    }if (sanitizedEventFilter.indexOf('not-timed') > -1) {
+        cards = cards.concat(notTimed);
     }
 
     /*
