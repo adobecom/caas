@@ -287,6 +287,8 @@ function eventTiming(sessions = [], eventFilter = []) {
         cards = cards.concat(onDemand);
     } if (sanitizedEventFilter.indexOf('not-timed') > -1) {
         cards = cards.concat(notTimed);
+    } else {
+        cards = [].concat(live, upComing, onDemand, notTimed);
     }
 
     /*
