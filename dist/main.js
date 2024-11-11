@@ -1,13 +1,20 @@
 /*!
 <<<<<<< HEAD
+<<<<<<< HEAD
  * Chimera UI Libraries - Build 0.23.28 (1/6/2025, 16:49:34)
 =======
+=======
+>>>>>>> b357f95 (feat(mwpw-155425): rebase)
 <<<<<<< HEAD
  * Chimera UI Libraries - Build 0.23.26 (12/18/2024, 11:05:06)
 =======
+=======
+>>>>>>> 6bd5369 (feat(mwpw-155425): rebase)
 <<<<<<< HEAD
  * Chimera UI Libraries - Build 0.23.25 (12/12/2024, 14:19:59)
 =======
+=======
+>>>>>>> 0cc743f (feat(mwpw-155425): rebase4)
 <<<<<<< HEAD
  * Chimera UI Libraries - Build 0.23.0 (11/18/2024, 02:32:36)
 =======
@@ -17,9 +24,21 @@
  * Chimera UI Libraries - Build 0.22.3 (10/28/2024, 14:47:45)
 >>>>>>> 8c09ed1 (feat(mwpw-155425): updating build)
 >>>>>>> aa3d483 (feat(mwpw-155425): rebase)
+<<<<<<< HEAD
 >>>>>>> d4e8f22 (feat(mwpw-155425): ability to add multiple event types sort)
+<<<<<<< HEAD
 >>>>>>> c224138 (feat(mwpw-155425): rebasing)
+<<<<<<< HEAD
 >>>>>>> 666bfaf (feat(mwpw-155425): rebase)
+=======
+=======
+=======
+=======
+ * Chimera UI Libraries - Build 0.23.0 (11/11/2024, 10:07:58)
+>>>>>>> 2c9b4e7 (feat(mwpw-155425): ability to select multiple event-types for a collection)
+>>>>>>> 0cc743f (feat(mwpw-155425): rebase4)
+>>>>>>> 6bd5369 (feat(mwpw-155425): rebase)
+>>>>>>> b357f95 (feat(mwpw-155425): rebase)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
