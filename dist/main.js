@@ -1,20 +1,27 @@
 /*!
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
  * Chimera UI Libraries - Build 0.23.28 (1/6/2025, 16:49:34)
 =======
 =======
 >>>>>>> b357f95 (feat(mwpw-155425): rebase)
+=======
+>>>>>>> 541e893 (feat(mwpw-155425): rebase)
 <<<<<<< HEAD
  * Chimera UI Libraries - Build 0.23.26 (12/18/2024, 11:05:06)
 =======
 =======
 >>>>>>> 6bd5369 (feat(mwpw-155425): rebase)
+=======
+>>>>>>> 5a47868 (feat(mwpw-155425): rebase)
 <<<<<<< HEAD
  * Chimera UI Libraries - Build 0.23.25 (12/12/2024, 14:19:59)
 =======
 =======
 >>>>>>> 0cc743f (feat(mwpw-155425): rebase4)
+=======
+>>>>>>> fc2aa26 (feat(mwpw-155425): rebase)
 <<<<<<< HEAD
  * Chimera UI Libraries - Build 0.23.0 (11/18/2024, 02:32:36)
 =======
@@ -36,9 +43,21 @@
 =======
  * Chimera UI Libraries - Build 0.23.0 (11/11/2024, 10:07:58)
 >>>>>>> 2c9b4e7 (feat(mwpw-155425): ability to select multiple event-types for a collection)
+<<<<<<< HEAD
 >>>>>>> 0cc743f (feat(mwpw-155425): rebase4)
+<<<<<<< HEAD
 >>>>>>> 6bd5369 (feat(mwpw-155425): rebase)
+<<<<<<< HEAD
 >>>>>>> b357f95 (feat(mwpw-155425): rebase)
+=======
+=======
+=======
+=======
+ * Chimera UI Libraries - Build 0.23.0 (11/11/2024, 10:28:14)
+>>>>>>> 1b5f57d (feat(mwpw-155425): unit tests)
+>>>>>>> fc2aa26 (feat(mwpw-155425): rebase)
+>>>>>>> 5a47868 (feat(mwpw-155425): rebase)
+>>>>>>> 541e893 (feat(mwpw-155425): rebase)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -49038,7 +49057,7 @@ function sanitizeEventFilter(rawEventFilter) {
  */
 function eventTiming() {
     var sessions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-    var eventFilter = arguments[1];
+    var eventFilter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
     var sanitizedEventFilter = sanitizeEventFilter(eventFilter);
     if (!sessions.length) return [];

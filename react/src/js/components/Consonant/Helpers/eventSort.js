@@ -145,7 +145,7 @@ function sanitizeEventFilter(rawEventFilter) {
  * @returns {Object} nextTransitionMs, value for setTimeout.
  * visibleSessions, sorted cards/sessions to be rendered.
  */
-function eventTiming(sessions = [], eventFilter) {
+function eventTiming(sessions = [], eventFilter = []) {
     const sanitizedEventFilter = sanitizeEventFilter(eventFilter);
     if (!sessions.length) return [];
 
