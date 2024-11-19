@@ -15,7 +15,8 @@
     "test:e2e-prod": "wdio run wdio.conf.js env=PROD",
     "serve": "serve",
     "watch": "npm run serve & webpack -w",
-    "start": "npm run serve"
+    "start": "npm run serve",
+    "mytest": "npm run ./mytest.js"
   },
   "author": "",
   "license": "ISC",
