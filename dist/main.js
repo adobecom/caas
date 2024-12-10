@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.23.0 (11/18/2024, 02:32:36)
+ * Chimera UI Libraries - Build 0.23.24 (12/10/2024, 10:00:24)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -53855,6 +53855,7 @@ var SearchIcon = function SearchIcon(props) {
         'button',
         {
             'data-testid': 'search-icon',
+            'aria-label': 'Search',
             type: 'button',
             className: 'consonant-SearchIco',
             onClick: onClick,

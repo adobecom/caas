@@ -25,6 +25,7 @@ const SearchIcon = (props) => {
     return (
         <button
             data-testid="search-icon"
+            aria-label="Search"
             type="button"
             className="consonant-SearchIco"
             onClick={onClick}
