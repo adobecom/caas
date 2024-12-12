@@ -5,6 +5,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
  * Chimera UI Libraries - Build 0.23.28 (1/6/2025, 16:49:34)
 =======
 =======
@@ -17,6 +18,8 @@
 >>>>>>> 04bc6db (feat(mwpw-155425): rebase)
 =======
 >>>>>>> 6e726dc (feat(mwpw-155425): rebase)
+=======
+>>>>>>> 183fb3e (feat(mwpw-155425): rebase)
 <<<<<<< HEAD
  * Chimera UI Libraries - Build 0.23.26 (12/18/2024, 11:05:06)
 =======
@@ -30,6 +33,8 @@
 >>>>>>> 940fee1 (feat(mwpw-155425): rebase)
 =======
 >>>>>>> 6c365de (feat(mwpw-155425): rebase)
+=======
+>>>>>>> 3740053 (feat(rebase): aMWPW-155425)
 <<<<<<< HEAD
  * Chimera UI Libraries - Build 0.23.25 (12/12/2024, 14:19:59)
 =======
@@ -103,8 +108,17 @@
 =======
  * Chimera UI Libraries - Build 0.23.4 (12/12/2024, 12:00:26)
 >>>>>>> 6a63439 (feat(mwpw-155425): multiple event filter selections)
+<<<<<<< HEAD
 >>>>>>> 6c365de (feat(mwpw-155425): rebase)
+<<<<<<< HEAD
 >>>>>>> 6e726dc (feat(mwpw-155425): rebase)
+=======
+=======
+=======
+ * Chimera UI Libraries - Build 0.23.4 (12/12/2024, 12:23:27)
+>>>>>>> 3ac9b11 (feat(mwpw-155425): unit tests)
+>>>>>>> 3740053 (feat(rebase): aMWPW-155425)
+>>>>>>> 183fb3e (feat(mwpw-155425): rebase)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -2540,20 +2554,20 @@ var getEventSort = exports.getEventSort = function getEventSort() {
             startDate: card.contentArea.dateDetailText.startTime || card.footer[0].left[1].startTime,
             endDate: card.contentArea.dateDetailText.endTime || card.footer[0].left[1].endTime,
             tags: card.tags || [],
-            cardDate: card.cardDate,
-            contentArea: card.contentArea,
-            createdDate: card.createdDate,
-            ctaLink: card.ctaLink,
-            description: card.description,
-            footer: card.footer,
-            initial: card.initial,
-            isBookmarked: card.isBookmarked,
-            modifiedDate: card.modifiedDate,
-            overlayLink: card.overlayLink,
-            overlays: card.overlays,
-            showCard: card.showCard,
-            search: card.search,
-            styles: card.styles
+            cardDate: card.cardDate || '',
+            contentArea: card.contentArea || {},
+            createdDate: card.createdDate || '',
+            ctaLink: card.ctaLink || '',
+            description: card.description || '',
+            footer: card.footer || [],
+            initial: card.initial || {},
+            isBookmarked: card.isBookmarked || '',
+            modifiedDate: card.modifiedDate || '',
+            overlayLink: card.overlayLink || '',
+            overlays: card.overlays || {},
+            showCard: card.showCard || {},
+            search: card.search || {},
+            styles: card.styles || {}
         };
     });
 
