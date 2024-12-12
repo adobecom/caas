@@ -221,7 +221,7 @@ function eventTiming(sessions = [], eventFilter = []) {
             defineIsUpcoming(curMs, startMs) : false;
         const isOnDemand = isTimed && !isUpComing ?
             defineIsOnDemand(curMs, endMs) : false;
-        const isLive = !!(isTimed && !isUpComing && !isOnDemand && startMs) || eventFilter === 'live';
+        const isLive = !!(isTimed && !isUpComing && !isOnDemand && startMs);
         // Tagged Exceptions
         const isOnDemandScheduled = defineIsOnDemandScheduled(tags);
         const isLiveExpired = defineIsLiveExpired(tags);
@@ -279,6 +279,10 @@ function eventTiming(sessions = [], eventFilter = []) {
     let cards = [];
     if (sanitizedEventFilter.length === 0) {
         cards = [].concat(live, upComing, onDemand, notTimed);
+        return {
+            visibleSessions: cards,
+            ...((nextTransitionMs && { nextTransitionMs })),
+        };
     } if (sanitizedEventFilter.indexOf('live') > -1) {
         cards = cards.concat(live);
     } if (sanitizedEventFilter.indexOf('upcoming') > -1) {
@@ -287,8 +291,6 @@ function eventTiming(sessions = [], eventFilter = []) {
         cards = cards.concat(onDemand);
     } if (sanitizedEventFilter.indexOf('not-timed') > -1) {
         cards = cards.concat(notTimed);
-    } else {
-        cards = [].concat(live, upComing, onDemand, notTimed);
     }
 
     /*
@@ -297,8 +299,8 @@ function eventTiming(sessions = [], eventFilter = []) {
         - returns an Array of cards sorted by Category and then Date ASC
     */
     return {
-        ...((nextTransitionMs && { nextTransitionMs })),
         visibleSessions: cards,
+        ...((nextTransitionMs && { nextTransitionMs })),
     };
 }
 

@@ -4,6 +4,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
  * Chimera UI Libraries - Build 0.23.28 (1/6/2025, 16:49:34)
 =======
 =======
@@ -14,6 +15,8 @@
 >>>>>>> e2117c6 (feat(mwpw-155425): rebase)
 =======
 >>>>>>> 04bc6db (feat(mwpw-155425): rebase)
+=======
+>>>>>>> 6e726dc (feat(mwpw-155425): rebase)
 <<<<<<< HEAD
  * Chimera UI Libraries - Build 0.23.26 (12/18/2024, 11:05:06)
 =======
@@ -25,6 +28,8 @@
 >>>>>>> ff5e5fb (feat(mwpw-155425): rebase)
 =======
 >>>>>>> 940fee1 (feat(mwpw-155425): rebase)
+=======
+>>>>>>> 6c365de (feat(mwpw-155425): rebase)
 <<<<<<< HEAD
  * Chimera UI Libraries - Build 0.23.25 (12/12/2024, 14:19:59)
 =======
@@ -89,8 +94,17 @@
 =======
  * Chimera UI Libraries - Build 0.23.4 (11/19/2024, 10:47:38)
 >>>>>>> db4c04c (feat(mwpw-155425): rebuild after rebase)
+<<<<<<< HEAD
 >>>>>>> 940fee1 (feat(mwpw-155425): rebase)
+<<<<<<< HEAD
 >>>>>>> 04bc6db (feat(mwpw-155425): rebase)
+=======
+=======
+=======
+ * Chimera UI Libraries - Build 0.23.4 (12/12/2024, 12:00:26)
+>>>>>>> 6a63439 (feat(mwpw-155425): multiple event filter selections)
+>>>>>>> 6c365de (feat(mwpw-155425): rebase)
+>>>>>>> 6e726dc (feat(mwpw-155425): rebase)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -2523,32 +2537,31 @@ var getEventSort = exports.getEventSort = function getEventSort() {
     var transformedCards = cards.map(function (card) {
         return {
             id: card.id,
-            startDate: card.contentArea.dateDetailText.startTime,
-            endDate: card.contentArea.dateDetailText.endTime,
-            tags: card.tags || []
+            startDate: card.contentArea.dateDetailText.startTime || card.footer[0].left[1].startTime,
+            endDate: card.contentArea.dateDetailText.endTime || card.footer[0].left[1].endTime,
+            tags: card.tags || [],
+            cardDate: card.cardDate,
+            contentArea: card.contentArea,
+            createdDate: card.createdDate,
+            ctaLink: card.ctaLink,
+            description: card.description,
+            footer: card.footer,
+            initial: card.initial,
+            isBookmarked: card.isBookmarked,
+            modifiedDate: card.modifiedDate,
+            overlayLink: card.overlayLink,
+            overlays: card.overlays,
+            showCard: card.showCard,
+            search: card.search,
+            styles: card.styles
         };
     });
 
     var result = (0, _eventSort.eventTiming)(transformedCards, eventFilter);
 
-    var visibleSessions = result.visibleSessions.filter(function (session) {
-        return session.tags.includes(eventFilter);
-    }).map(function (session) {
-        return {
-            id: session.id,
-            contentArea: {
-                dateDetailText: {
-                    startTime: session.startDate,
-                    endTime: session.endDate
-                }
-            },
-            tags: session.tags
-        };
-    });
-
     return {
-        nextTransitionMs: result.nextTransitionMs,
-        visibleSessions: visibleSessions
+        visibleSessions: result.visibleSessions,
+        nextTransitionMs: result.nextTransitionMs
     };
 };
 /**
@@ -49163,7 +49176,7 @@ function eventTiming() {
         var isTimed = !!(endMs && startMs);
         var isUpComing = isTimed ? defineIsUpcoming(curMs, startMs) : false;
         var isOnDemand = isTimed && !isUpComing ? defineIsOnDemand(curMs, endMs) : false;
-        var isLive = !!(isTimed && !isUpComing && !isOnDemand && startMs) || eventFilter === 'live';
+        var isLive = !!(isTimed && !isUpComing && !isOnDemand && startMs);
         // Tagged Exceptions
         var isOnDemandScheduled = defineIsOnDemandScheduled(tags);
         var isLiveExpired = defineIsLiveExpired(tags);
@@ -49218,6 +49231,9 @@ function eventTiming() {
     var cards = [];
     if (sanitizedEventFilter.length === 0) {
         cards = [].concat(live, upComing, onDemand, notTimed);
+        return _extends({
+            visibleSessions: cards
+        }, nextTransitionMs && { nextTransitionMs: nextTransitionMs });
     }if (sanitizedEventFilter.indexOf('live') > -1) {
         cards = cards.concat(live);
     }if (sanitizedEventFilter.indexOf('upcoming') > -1) {
@@ -49226,8 +49242,6 @@ function eventTiming() {
         cards = cards.concat(onDemand);
     }if (sanitizedEventFilter.indexOf('not-timed') > -1) {
         cards = cards.concat(notTimed);
-    } else {
-        cards = [].concat(live, upComing, onDemand, notTimed);
     }
 
     /*
@@ -49235,9 +49249,9 @@ function eventTiming() {
         - conditionally adds next sort transition time to returns
         - returns an Array of cards sorted by Category and then Date ASC
     */
-    return _extends({}, nextTransitionMs && { nextTransitionMs: nextTransitionMs }, {
+    return _extends({
         visibleSessions: cards
-    });
+    }, nextTransitionMs && { nextTransitionMs: nextTransitionMs });
 }
 
 exports.eventTiming = eventTiming;
@@ -53374,10 +53388,18 @@ var CardFilterer = function () {
 
     }, {
         key: 'sortCards',
-        value: function sortCards(sortOption, eventFilter, featuredCardIds, hideCtaIds, isFirstLoad) {
+        value: function sortCards(sortOption) {
+            var eventFilter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+            var featuredCardIds = arguments[2];
+            var hideCtaIds = arguments[3];
+            var isFirstLoad = arguments[4];
+
             if (!this.filteredCards.length) return this;
 
             var sortType = sortOption ? sortOption.sort.toLowerCase() : null;
+            if (eventFilter.length > 0) {
+                sortType = _constants.SORT_TYPES.EVENTSORT;
+            }
 
             switch (sortType) {
                 case _constants.SORT_TYPES.DATEASC:
@@ -53395,9 +53417,10 @@ var CardFilterer = function () {
                 case _constants.SORT_TYPES.EVENTSORT:
                     {
                         var _getEventSort = (0, _Helpers.getEventSort)(this.filteredCards, eventFilter),
-                            nextTransitionMs = _getEventSort.nextTransitionMs,
                             _getEventSort$visible = _getEventSort.visibleSessions,
-                            visibleSessions = _getEventSort$visible === undefined ? [] : _getEventSort$visible;
+                            visibleSessions = _getEventSort$visible === undefined ? [] : _getEventSort$visible,
+                            _getEventSort$nextTra = _getEventSort.nextTransitionMs,
+                            nextTransitionMs = _getEventSort$nextTra === undefined ? 0 : _getEventSort$nextTra;
 
                         this.filteredCards = visibleSessions;
 
