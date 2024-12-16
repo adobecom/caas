@@ -6,6 +6,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
  * Chimera UI Libraries - Build 0.23.28 (1/6/2025, 16:49:34)
 =======
 =======
@@ -20,6 +21,8 @@
 >>>>>>> 6e726dc (feat(mwpw-155425): rebase)
 =======
 >>>>>>> 183fb3e (feat(mwpw-155425): rebase)
+=======
+>>>>>>> 5fddd0a (feat(mwpw-155425): rebase)
 <<<<<<< HEAD
  * Chimera UI Libraries - Build 0.23.26 (12/18/2024, 11:05:06)
 =======
@@ -35,6 +38,8 @@
 >>>>>>> 6c365de (feat(mwpw-155425): rebase)
 =======
 >>>>>>> 3740053 (feat(rebase): aMWPW-155425)
+=======
+>>>>>>> 2b416ca (feat(mwpw-155425): rebase)
 <<<<<<< HEAD
  * Chimera UI Libraries - Build 0.23.25 (12/12/2024, 14:19:59)
 =======
@@ -117,8 +122,17 @@
 =======
  * Chimera UI Libraries - Build 0.23.4 (12/12/2024, 12:23:27)
 >>>>>>> 3ac9b11 (feat(mwpw-155425): unit tests)
+<<<<<<< HEAD
 >>>>>>> 3740053 (feat(rebase): aMWPW-155425)
+<<<<<<< HEAD
 >>>>>>> 183fb3e (feat(mwpw-155425): rebase)
+=======
+=======
+=======
+ * Chimera UI Libraries - Build 0.23.4 (12/16/2024, 15:32:44)
+>>>>>>> f176796 (feat(mwpw-155425): working on e2e tests)
+>>>>>>> 2b416ca (feat(mwpw-155425): rebase)
+>>>>>>> 5fddd0a (feat(mwpw-155425): rebase)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -49243,7 +49257,7 @@ function eventTiming() {
     }
 
     var cards = [];
-    if (sanitizedEventFilter.length === 0) {
+    if (sanitizedEventFilter.length === 0 || sanitizedEventFilter.length === 1 && sanitizedEventFilter.indexOf('all') > -1) {
         cards = [].concat(live, upComing, onDemand, notTimed);
         return _extends({
             visibleSessions: cards
