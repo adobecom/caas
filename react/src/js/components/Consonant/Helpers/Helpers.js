@@ -377,7 +377,10 @@ export const getDateAscSort = cards => cards.sort((cardOne, cardTwo) => {
     const cardOneDate = getByPath(cardOne, 'cardDate');
     const cardTwoDate = getByPath(cardTwo, 'cardDate');
     if (cardOneDate && cardTwoDate) {
-        return cardOneDate !== cardTwoDate ? cardOneDate.localeCompare(cardTwoDate) : -1;
+        if (cardOneDate !== cardTwoDate) {
+            return cardOneDate.localeCompare(cardTwoDate);
+        }
+        return (cardOne.id || '').localeCompare(cardTwo.id || '');
     }
     return 0;
 });

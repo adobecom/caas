@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.23.24 (12/17/2024, 12:08:25)
+ * Chimera UI Libraries - Build 0.23.26 (12/17/2024, 12:11:19)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -2389,7 +2389,10 @@ var getDateAscSort = exports.getDateAscSort = function getDateAscSort(cards) {
         var cardOneDate = (0, _general.getByPath)(cardOne, 'cardDate');
         var cardTwoDate = (0, _general.getByPath)(cardTwo, 'cardDate');
         if (cardOneDate && cardTwoDate) {
-            return cardOneDate !== cardTwoDate ? cardOneDate.localeCompare(cardTwoDate) : -1;
+            if (cardOneDate !== cardTwoDate) {
+                return cardOneDate.localeCompare(cardTwoDate);
+            }
+            return (cardOne.id || '').localeCompare(cardTwo.id || '');
         }
         return 0;
     });
@@ -6379,6 +6382,8 @@ var Container = function Container(props) {
         isPartialLoad = _useState8[0],
         setIsPartialLoad = _useState8[1];
 
+    var hashedRef = (0, _react.useRef)(false);
+
     var _React$useState = _react2.default.useState(),
         _React$useState2 = _slicedToArray(_React$useState, 2),
         updateState = _React$useState2[1];
@@ -7170,7 +7175,8 @@ var Container = function Container(props) {
                     (0, _lana.logLana)({ message: 'no cards return by query to this endpoint: ' + endPoint, tags: 'collection' });
                     return;
                 }
-                if (payload.isHashed) {
+                if (payload.isHashed && !hashedRef.current) {
+                    hashedRef.current = true;
                     var TAG_HASH_LENGTH = 6;
                     var _iteratorNormalCompletion = true;
                     var _didIteratorError = false;

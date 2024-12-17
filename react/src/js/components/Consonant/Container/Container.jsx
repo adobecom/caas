@@ -197,6 +197,7 @@ const Container = (props) => {
 
     const [cardCount, setCardCount] = useState(0);
     const [isPartialLoad, setIsPartialLoad] = useState(false);
+    const hashedRef = useRef(false);
 
     const [, updateState] = React.useState();
     const scrollElementRef = useRef(null);
@@ -835,7 +836,8 @@ const Container = (props) => {
                         logLana({ message: `no cards return by query to this endpoint: ${endPoint}`, tags: 'collection' });
                         return;
                     }
-                    if (payload.isHashed) {
+                    if (payload.isHashed && !hashedRef.current) {
+                        hashedRef.current = true;
                         const TAG_HASH_LENGTH = 6;
                         for (const group of authoredFilters) {
                             group.id = rollingHash(group.id, TAG_HASH_LENGTH);

@@ -58,5 +58,29 @@
       "fid": 0.8999999999941792,
       "cls": null
     }
+  },
+  {
+    "date": "2024-12-12T21:43:51.862Z",
+    "pr": {
+      "number": "212",
+      "title": "fix(MWPW-163667): filters being double hashed"
+    },
+    "metrics": {
+      "lcp": 12985.200000000012,
+      "fid": 1,
+      "cls": null
+    }
+  },
+  {
+    "date": "2024-12-12T22:31:15.830Z",
+    "pr": {
+      "number": "210",
+      "title": "fix(MWPW-147600): stabilize date sorting for cards with identical dates"
+    },
+    "metrics": {
+      "lcp": 10400.200000000012,
+      "fid": 0.7999999999883585,
+      "cls": null
+    }
   }
 ]
