@@ -94,6 +94,7 @@ const FiltersPanelTop = (props) => {
      **** Authored Configs ****
      */
     const searchEnabled = getConfig('search', 'enabled');
+    const searchTitle = getConfig('search', 'i18n.leftFilterPanel.searchTitle');
     const clearFilterText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.clearFilterText');
     const clearAllFiltersText = getConfig('filterPanel', 'i18n.topPanel.clearAllFiltersText');
     const blurMobileFilters = getConfig('filterPanel', 'topPanel.mobile.blurFilters');
@@ -321,6 +322,7 @@ const FiltersPanelTop = (props) => {
                     {shouldShowSearchBar && searchComponent}
                     {TABLET_OR_DESKTOP_SCREEN_SIZE &&
                     <SearchIcon
+                        searchTitle={searchTitle}
                         onClick={handleExpandableToggle} />
                     }
                 </div>

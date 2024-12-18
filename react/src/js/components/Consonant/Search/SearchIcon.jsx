@@ -1,8 +1,9 @@
 import React from 'react';
-import { func } from 'prop-types';
+import { func, string } from 'prop-types';
 
 const searchIconType = {
     onClick: func.isRequired,
+    searchTitle: string.isRequired,
 };
 
 /**
@@ -20,12 +21,12 @@ const searchIconType = {
  * )
  */
 const SearchIcon = (props) => {
-    const { onClick } = props;
+    const { searchTitle, onClick } = props;
 
     return (
         <button
             data-testid="search-icon"
-            aria-label="Search"
+            aria-label={searchTitle}
             type="button"
             className="consonant-SearchIco"
             onClick={onClick}

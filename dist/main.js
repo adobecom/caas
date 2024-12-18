@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.23.26 (12/17/2024, 12:11:19)
+ * Chimera UI Libraries - Build 0.23.26 (12/18/2024, 11:05:06)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -47197,7 +47197,7 @@ var Card = function Card(props) {
                 _react2.default.createElement('img', {
                     // the text card uses the image as logo
                     src: isText ? image : logoSrc,
-                    alt: isText ? altText : logoAlt,
+                    alt: isText ? altText : logoAlt || 'Logo',
                     loading: 'lazy',
                     width: '32' })
             ),
@@ -47208,7 +47208,7 @@ var Card = function Card(props) {
                     className: 'consonant-Card-logo' },
                 _react2.default.createElement('img', {
                     src: cardIcon,
-                    alt: iconAlt,
+                    alt: iconAlt || 'Logo',
                     loading: 'lazy',
                     width: '32',
                     'data-testid': 'consonant-Card-logoImg' })
@@ -53547,6 +53547,7 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
      **** Authored Configs ****
      */
     var searchEnabled = getConfig('search', 'enabled');
+    var searchTitle = getConfig('search', 'i18n.leftFilterPanel.searchTitle');
     var clearFilterText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.clearFilterText');
     var clearAllFiltersText = getConfig('filterPanel', 'i18n.topPanel.clearAllFiltersText');
     var blurMobileFilters = getConfig('filterPanel', 'topPanel.mobile.blurFilters');
@@ -53780,6 +53781,7 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
                     className: 'consonant-TopFilters-searchIcoWrapper' },
                 shouldShowSearchBar && searchComponent,
                 TABLET_OR_DESKTOP_SCREEN_SIZE && _react2.default.createElement(_SearchIcon2.default, {
+                    searchTitle: searchTitle,
                     onClick: handleExpandableToggle })
             ),
             shouldDisplaySortComponent && _react2.default.createElement(
@@ -53836,7 +53838,8 @@ var _propTypes = __webpack_require__(1);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var searchIconType = {
-    onClick: _propTypes.func.isRequired
+    onClick: _propTypes.func.isRequired,
+    searchTitle: _propTypes.string.isRequired
 };
 
 /**
@@ -53854,14 +53857,15 @@ var searchIconType = {
  * )
  */
 var SearchIcon = function SearchIcon(props) {
-    var onClick = props.onClick;
+    var searchTitle = props.searchTitle,
+        onClick = props.onClick;
 
 
     return _react2.default.createElement(
         'button',
         {
             'data-testid': 'search-icon',
-            'aria-label': 'Search',
+            'aria-label': searchTitle,
             type: 'button',
             className: 'consonant-SearchIco',
             onClick: onClick,
