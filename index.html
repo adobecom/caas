@@ -52,34 +52,35 @@
     <script type="text/javascript">
         var config = {
             collection: {
-                mode: "lightest", // Can be empty, "light", "dark", "darkest";
-                layout: {
-                    type: '3up', // Can be "2up", "3up", "4up", "5up";
-                    gutter: '4x', // Can be "2x", "3x", "4x";
-                    container: '1200MaxWidth', // Can be "83Percent", "1200MaxWidth", "32Margin";
+                mode: "lightest",
+                /** changed from reservoir.poll to reservoir.pool **/
+                reservoir: {
+                    sample: 10,
+                    pool: 100
                 },
-                lazyLoad: false,
+                layout: {
+                    type: '3up',
+                    gutter: '4x',
+                    container: '1200MaxWidth',
+                },
+                /**
+                 * changed from `lazyLoad` to `lazyload` to match
+                 * getConfig('collection','lazyload') in Container.jsx
+                 */
+                lazyload: false,
                 button: {
-                  style: "call-to-action", // Can be "primary", "call-to-action";
+                    style: "call-to-action"
                 },
                 banner: {
-                    upcoming: {
-                        description: "Upcoming"
-                    },
-                    live: {
-                        description: "Live"
-                    },
-                    onDemand: {
-                        description: "On Demand"
-                    },
-                    register: {
-                        description: "Sign Up"
-                    }
+                    upcoming: { description: "Upcoming" },
+                    live: { description: "Live" },
+                    onDemand: { description: "On Demand" },
+                    register: { description: "Sign Up" }
                 },
                 resultsPerPage: '5',
-                endpoint: location.hostname === "localhost" ? "../../mock-json/all-art-board-15-cards-show.json" : "https://www.adobe.com/chimera-api/collection?origin=northstar&size=10",
+                endpoint: '../../mock-json/all-art-board-15-cards-show.json',
                 totalCardsToShow: '55',
-                cardStyle: "1:2", // available options: "1:2", "3:4", "full-card", "half-height", "custom-card", "product", "double-wide";
+                cardStyle: "1:2",
                 showTotalResults: 'true',
                 i18n: {
                     prettyDateIntervalFormat: '{LLL} {dd} | {timeRange} {timeZone}',
@@ -91,12 +92,8 @@
                     onErrorDescription: 'Please try reloading the page or try coming back to the page another time.',
                     lastModified: "Last modified {date}"
                 },
-                setCardBorders: "true", // Can be true or false;
-                useOverlayLinks: "false", // Can be true or false;
-                partialLoadWithBackgroundFetch: {
-                    enabled: true,
-                    partialLoadCount: 10,
-                }
+                setCardBorders: "true",
+                useOverlayLinks: "false",
             },
             featuredCards: ['c7d34f39-397c-3727-9dff-5d0d9d8cf731'],
             filterPanel: {
@@ -107,89 +104,89 @@
                 filters: [
                     {
                         "group": "By Solution",
-                        "id": "adobe-com-enterprise:topic",
+                        "id": "caas-com-enterprise:topic",
                         "items": [
                             {
                                 "label": "Business Continuity",
-                                "id": "adobe-com-enterprise:topic/business-continuity"
+                                "id": "caas-com-enterprise:topic/business-continuity"
                             },
                             {
                                 "label": "Creativity and Design",
-                                "id": "adobe-com-enterprise:topic/creativity-design"
+                                "id": "caas-com-enterprise:topic/creativity-design"
                             },
                             {
                                 "label": "Customer Intelligence",
-                                "id": "adobe-com-enterprise:topic/customer-intelligence"
+                                "id": "caas-com-enterprise:topic/customer-intelligence"
                             },
                             {
                                 "label": "Data Management Platform",
-                                "id": "adobe-com-enterprise:topic/data-management-platform"
+                                "id": "caas-com-enterprise:topic/data-management-platform"
                             },
                             {
                                 "label": "Digital Foundation",
-                                "id": "adobe-com-enterprise:topic/digital-foundation"
+                                "id": "caas-com-enterprise:topic/digital-foundation"
                             },
                             {
                                 "label": "Digital Trends",
-                                "id": "adobe-com-enterprise:topic/digital-trends"
+                                "id": "caas-com-enterprise:topic/digital-trends"
                             },
                             {
                                 "label": "Document Management",
-                                "id": "adobe-com-enterprise:topic/document-management"
+                                "id": "caas-com-enterprise:topic/document-management"
                             },
                             {
                                 "label": "Marketing Automation",
-                                "id": "adobe-com-enterprise:topic/marketing-automation"
+                                "id": "caas-com-enterprise:topic/marketing-automation"
                             },
                             {
                                 "label": "Personalization",
-                                "id": "adobe-com-enterprise:topic/personalization"
+                                "id": "caas-com-enterprise:topic/personalization"
                             },
                             {
                                 "label": "Stock",
-                                "id": "adobe-com-enterprise:topic/Stock"
+                                "id": "caas-com-enterprise:topic/Stock"
                             }
                         ]
                     },
                     {
                         "group": "Availability",
-                        "id": "adobe-com-enterprise:availability",
+                        "id": "caas-com-enterprise:availability",
                         "items": [
                             {
                                 "label": "On-Demand",
-                                "id": "adobe-com-enterprise:availability/on-demand"
+                                "id": "caas-com-enterprise:availability/on-demand"
                             },
                             {
                                 "label": "Upcoming",
-                                "id": "adobe-com-enterprise:availability/upcoming"
+                                "id": "caas-com-enterprise:availability/upcoming"
                             }
                         ]
                     },
                     {
                         "group": "Duration",
-                        "id": "adobe-com-enterprise:duration",
+                        "id": "caas-com-enterprise:duration",
                         "items": [
                             {
                                 "label": "Long",
-                                "id": "adobe-com-enterprise:duration/long"
+                                "id": "caas-com-enterprise:duration/long"
                             },
                             {
                                 "label": "Short",
-                                "id": "adobe-com-enterprise:duration/short"
+                                "id": "caas-com-enterprise:duration/short"
                             }
                         ]
                     },
                     {
                         "group": "Rating",
-                        "id": "adobe-com-enterprise:rating",
+                        "id": "caas-com-enterprise:rating",
                         "items": [
                             {
                                 "label": "5",
-                                "id": "adobe-com-enterprise:rating/5"
+                                "id": "caas-com-enterprise:rating/5"
                             },
                             {
                                 "label": "4",
-                                "id": "adobe-com-enterprise:rating/4"
+                                "id": "caas-com-enterprise:rating/4"
                             }
                         ]
                     }
@@ -203,7 +200,6 @@
                 i18n: {
                     leftPanel: {
                         header: 'My Favorites',
-                        // searchBoxTitle: 'Search',
                         clearAllFiltersText: 'Clear All',
                         mobile: {
                             filtersBtnLabel: 'Filters:',
@@ -242,16 +238,20 @@
             sort: {
                 enabled: 'true',
                 defaultSort: 'customSort',
-                options: '[{"label":"Random", "sort":"random"},{"label":"Featured","sort":"featured"},{"label":"Title: (A-Z)","sort":"titleAsc"},{"label":"Title: (Z-A)","sort":"titleDesc"},{"label":"Date: (Oldest to newest)","sort":"dateAsc"},{"label":"Date: (Newest to oldest)","sort":"dateDesc"}, {"label": "Custom Sort", "sort": "customSort"}]',
-                customSort: function(card){console.log("customSort: ", card); return card;}
+                options: '[{"label":"Random","sort":"random"},{"label":"Featured","sort":"featured"},{"label":"Title: (A-Z)","sort":"titleAsc"},{"label":"Title: (Z-A)","sort":"titleDesc"},{"label":"Date: (Oldest to newest)","sort":"dateAsc"},{"label":"Date: (Newest to oldest)","sort":"dateDesc"},{"label":"Custom Sort","sort":"customSort"}]',
+                customSort: function (card) {
+                    // example custom sort
+                    console.log("customSort: ", card);
+                    return card;
+                }
             },
             pagination: {
                 animationStyle: 'paged',
                 enabled: 'true',
                 type: 'loadMore',
                 loadMoreButton: {
-                  style: "primary", // Can be "primary", "over-background";
-                  useThemeThree: "true", // Can be "true" or "false";
+                    style: "primary",
+                    useThemeThree: "true"
                 },
                 i18n: {
                     loadMore: {
@@ -265,16 +265,30 @@
                     }
                 }
             },
+            /**
+             * added empty headers so getConfig('headers') is not undefined
+             */
+            headers: {
+                // e.g. 'X-Requested-With': 'XMLHttpRequest'
+            },
+            /**
+             * added "target" object so the code that checks getConfig('target','enabled')
+             * and getConfig('target','lastViewedSession') does not break
+             */
+            target: {
+                enabled: false,
+                lastViewedSession: false
+            },
             linkTransformer: {
                 enabled: false,
                 hostnameTransforms: [
                     {
-                        from: '(https?:\\/\\/)business\\.adobe\\.com((?!\\/content\\/dam).*)',
-                        to: '$1business.stage.adobe.com$2',
+                        from: '(https?:\\/\\/)business\\.caas\\.com((?!\\/content\\/dam).*)',
+                        to: '$1business.stage.caas.com$2',
                     },
                     {
-                        from: '(https?:\\/\\/)(www\\.adobe\\.com)(\\/max.*)',
-                        to: '$1www.stage.adobe.com$3',
+                        from: '(https?:\\/\\/)(www\\.caas\\.com)(\\/max.*)',
+                        to: '$1www.stage.caas.com$3',
                     }
                 ]
             },
@@ -294,7 +308,7 @@
             },
             search: {
                 enabled: 'true',
-                searchFields: '["contentArea.title","contentArea.description","search.meta.author","overlays.banner.description", "foo.bar"]',
+                searchFields: '["contentArea.title","contentArea.description","search.meta.author","overlays.banner.description","foo.bar"]',
                 i18n: {
                     noResultsTitle: 'No Results Found',
                     noResultsDescription: 'We could not find any results. {break} Try checking your spelling or broadening your search.',
@@ -313,9 +327,12 @@
             language: 'en-US',
             analytics: {
                 trackImpressions: 'true',
-                collectionIdentifier: 'Some Identifier',
+                collectionIdentifier: 'Some Identifier'
             },
-            customCard: ["data", "return `<div class=customCard><div class=backgroundImg></div> <section><label>PHOTO EDITING</label><p><b>Transform a landscape with Sky Replacement.</b></p></div></section> </div>`"],
+            customCard: [
+                "data",
+                "return `<div class=customCard><div class=backgroundImg></div> <section><label>PHOTO EDITING</label><p><b>Transform a landscape with Sky Replacement.</b></p></div></section> </div>`"
+            ],
             onCardSaved: function(){},
             onCardUnsaved: function(){}
         };
@@ -333,7 +350,7 @@
 <style>
 
     .customCard * {
-        font-family: 'adobe-clean';
+        font-family: 'caas-clean';
     }
 
     .customCard section {
