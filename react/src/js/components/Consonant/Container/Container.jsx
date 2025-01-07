@@ -19,7 +19,6 @@ import {
     readInclusionsFromLocalStorage,
     getTransitions,
 } from '../Helpers/general';
-import { sanitizeEventFilter } from '../Helpers/eventSort';
 import { configType } from '../types/config';
 import CardsCarousel from '../CardsCarousel/CardsCarousel';
 import NoResultsView from '../NoResults/View';
@@ -149,7 +148,7 @@ const Container = (props) => {
     const authoredMode = getConfig('collection', 'mode');
     const authoredLayoutContainer = getConfig('collection', 'layout.container');
     const showEmptyFilters = getConfig('filterPanel', 'showEmptyFilters');
-    const eventFilter = sanitizeEventFilter(getConfig('filterPanel', 'eventFilter'));
+    const eventFilter = getConfig('filterPanel', 'eventFilter');
     const searchEnabled = getConfig('search', 'enabled');
     const sortEnabled = getConfig('sort', 'enabled');
     const cardStyle = getConfig('collection', 'cardStyle');
@@ -170,6 +169,8 @@ const Container = (props) => {
     const categories = getConfig('filterPanel', 'categories');
     // eslint-disable-next-line no-use-before-define, max-len
     const authoredCategories = isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : [];
+    // eslint-disable-next-line no-use-before-define
+    const sanitizedEventFilter = eventFilter ? sanitizeEventFilter(eventFilter) : [];
 
     /**
      **** Hooks ****
@@ -1125,7 +1126,7 @@ const Container = (props) => {
      * @returns {Object}
      * */
     const getFilteredCollection = () => cardFilterer
-        .sortCards(sortOption, eventFilter, featuredCards, hideCtaIds, isFirstLoad)
+        .sortCards(sortOption, sanitizedEventFilter, featuredCards, hideCtaIds, isFirstLoad)
         .keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks)
         .keepCardsWithinDateRange()
         .filterCards(activeFilterIds, activePanels, filterLogic, FILTER_TYPES, currCategories)
@@ -1279,6 +1280,18 @@ const Container = (props) => {
             id: '',
             items: [],
         }, ...selectedCategories];
+    }
+
+    /**
+     * @func sanitizeEventFilter
+     * @desc Ensures backwards compatibility with both string and array values for the event filter
+     * @param {*} rawEventFilter
+     * @returns {Array} of the events that will be filtered
+     */
+    function sanitizeEventFilter(rawEventFilter) {
+        if (Array.isArray(rawEventFilter)) return rawEventFilter;
+        if (rawEventFilter.indexOf('all') > -1) return [];
+        return [rawEventFilter];
     }
 
     /**

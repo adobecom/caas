@@ -127,18 +127,6 @@ const defineIsUpcoming = (currentTime, startTimeMls) => {
 };
 
 /**
- * @func sanitizeEventFilter
- * @desc Ensures backwards compatibility with both string and array values for the event filter
- * @param {*} rawEventFilter
- * @returns {Array} of the events that will be filtered
- */
-function sanitizeEventFilter(rawEventFilter) {
-    if (Array.isArray(rawEventFilter)) return rawEventFilter;
-    if (rawEventFilter.indexOf('all') > -1) return [];
-    return [rawEventFilter];
-}
-
-/**
  * @func eventTiming
  * @desc First Sorts sessions by startDate, and then partitions them by category
  *
@@ -147,7 +135,6 @@ function sanitizeEventFilter(rawEventFilter) {
  * visibleSessions, sorted cards/sessions to be rendered.
  */
 function eventTiming(sessions = [], eventFilter = []) {
-    const sanitizedEventFilter = sanitizeEventFilter(eventFilter);
     if (!sessions.length) return [];
 
     const overrideTime = timeOverride();
@@ -278,19 +265,19 @@ function eventTiming(sessions = [], eventFilter = []) {
     }
 
     let cards = [];
-    if (sanitizedEventFilter.length === 0) {
+    if (eventFilter.length === 0) {
         cards = [].concat(live, upComing, onDemand, notTimed);
         return {
             visibleSessions: cards,
             ...((nextTransitionMs && { nextTransitionMs })),
         };
-    } if (sanitizedEventFilter.indexOf('live') > -1) {
+    } if (eventFilter.indexOf('live') > -1) {
         cards = cards.concat(live);
-    } if (sanitizedEventFilter.indexOf('upcoming') > -1) {
+    } if (eventFilter.indexOf('upcoming') > -1) {
         cards = cards.concat(upComing);
-    } if (sanitizedEventFilter.indexOf('on-demand') > -1) {
+    } if (eventFilter.indexOf('on-demand') > -1) {
         cards = cards.concat(onDemand);
-    } if (sanitizedEventFilter.indexOf('not-timed') > -1) {
+    } if (eventFilter.indexOf('not-timed') > -1) {
         cards = cards.concat(notTimed);
     }
 
@@ -312,6 +299,5 @@ export {
     defineIsOnDemand,
     defineIsOnDemandScheduled,
     defineIsUpcoming,
-    sanitizeEventFilter,
     updateTimeOverride,
 };
