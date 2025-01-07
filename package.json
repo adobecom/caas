@@ -8,7 +8,6 @@
     "build": "webpack",
     "postbuild": "minify dist/main.js > dist/main.min.js",
     "lint": "eslint react/src/js/components/Consonant --fix",
-    "release": "HUSKY_SKIP_HOOKS=1 release-it --ci",
     "test:coverage": "jest --coverage",
     "test:unit": "jest",
     "test:e2e-local": "wdio run wdio.local.conf.js env=LOCAL",
@@ -100,7 +99,6 @@
     "eslint-plugin-react": "^7.18.3",
     "eslint-plugin-react-hooks": "^4.1.2",
     "extract-text-webpack-plugin": "^3.0.1",
-    "husky": "^4.3.8",
     "ignore-loader": "^0.1.2",
     "inject-loader": "^3.0.1",
     "jest": "^24.0.0",
@@ -128,13 +126,6 @@
     "uglifyjs-webpack-plugin": "^1.2.4",
     "wdio-chromedriver-service": "^8.0.1",
     "webpack": "^3.9.1"
-  },
-  "husky": {
-    "hooks": {
-      "prepare-commit-msg": "exec < /dev/tty && npx cz --hook || true",
-      "pre-commit": "npm run build && git add . && enforce-branch-name '.*'",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
   },
   "config": {
     "commitizen": {

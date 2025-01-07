@@ -8,6 +8,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
  * Chimera UI Libraries - Build 0.23.28 (1/6/2025, 16:49:34)
 =======
 =======
@@ -142,6 +143,9 @@
  * Chimera UI Libraries - Build 0.23.26 (12/17/2024, 13:40:26)
 >>>>>>> 9c8ee49 (MWPW-155425: end to end tests without husky)
 >>>>>>> 7c54986 (feat(mwpw-155425): rebase)
+=======
+ * Chimera UI Libraries - Build 0.23.28 (1/7/2025, 12:54:37)
+>>>>>>> 3ab4aa9 (MWPW-155425: rebuilding post-rebase)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -49266,7 +49270,7 @@ function eventTiming() {
     }
 
     var cards = [];
-    if (sanitizedEventFilter.length === 0 || sanitizedEventFilter.length === 1 && sanitizedEventFilter.indexOf('all') > -1) {
+    if (sanitizedEventFilter.length === 0) {
         cards = [].concat(live, upComing, onDemand, notTimed);
         return _extends({
             visibleSessions: cards
