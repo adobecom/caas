@@ -134,6 +134,7 @@ const defineIsUpcoming = (currentTime, startTimeMls) => {
  */
 function sanitizeEventFilter(rawEventFilter) {
     if (Array.isArray(rawEventFilter)) return rawEventFilter;
+    if (rawEventFilter.indexOf('all') > -1) return [];
     return [rawEventFilter];
 }
 
@@ -277,7 +278,7 @@ function eventTiming(sessions = [], eventFilter = []) {
     }
 
     let cards = [];
-    if (sanitizedEventFilter.length === 0 || (sanitizedEventFilter.length === 1 && sanitizedEventFilter.indexOf('all') > -1)) {
+    if (sanitizedEventFilter.length === 0) {
         cards = [].concat(live, upComing, onDemand, notTimed);
         return {
             visibleSessions: cards,
@@ -311,5 +312,6 @@ export {
     defineIsOnDemand,
     defineIsOnDemandScheduled,
     defineIsUpcoming,
+    sanitizeEventFilter,
     updateTimeOverride,
 };

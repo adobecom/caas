@@ -19,6 +19,7 @@ import {
     readInclusionsFromLocalStorage,
     getTransitions,
 } from '../Helpers/general';
+import { sanitizeEventFilter } from '../Helpers/eventSort';
 import { configType } from '../types/config';
 import CardsCarousel from '../CardsCarousel/CardsCarousel';
 import NoResultsView from '../NoResults/View';
@@ -148,7 +149,7 @@ const Container = (props) => {
     const authoredMode = getConfig('collection', 'mode');
     const authoredLayoutContainer = getConfig('collection', 'layout.container');
     const showEmptyFilters = getConfig('filterPanel', 'showEmptyFilters');
-    const eventFilter = getConfig('filterPanel', 'eventFilter');
+    const eventFilter = sanitizeEventFilter(getConfig('filterPanel', 'eventFilter'));
     const searchEnabled = getConfig('search', 'enabled');
     const sortEnabled = getConfig('sort', 'enabled');
     const cardStyle = getConfig('collection', 'cardStyle');
