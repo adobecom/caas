@@ -14,6 +14,7 @@ import Search from '../Search/Search';
 import Loader from '../Loader/Loader';
 import {
     getByPath,
+    sanitizeEventFilter,
     saveBookmarksToLocalStorage,
     readBookmarksFromLocalStorage,
     readInclusionsFromLocalStorage,
@@ -1280,18 +1281,6 @@ const Container = (props) => {
             id: '',
             items: [],
         }, ...selectedCategories];
-    }
-
-    /**
-     * @func sanitizeEventFilter
-     * @desc Ensures backwards compatibility with both string and array values for the event filter
-     * @param {*} rawEventFilter
-     * @returns {Array} of the events that will be filtered
-     */
-    function sanitizeEventFilter(rawEventFilter) {
-        if (Array.isArray(rawEventFilter)) return rawEventFilter;
-        if (rawEventFilter.indexOf('all') > -1) return [];
-        return [rawEventFilter];
     }
 
     /**

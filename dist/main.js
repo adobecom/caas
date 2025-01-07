@@ -11,6 +11,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
  * Chimera UI Libraries - Build 0.23.28 (1/6/2025, 16:49:34)
 =======
 =======
@@ -154,6 +155,9 @@
 =======
  * Chimera UI Libraries - Build 0.23.28 (1/7/2025, 14:13:49)
 >>>>>>> e15028c (MWPW-155425: omg.... is it finally over?)
+=======
+ * Chimera UI Libraries - Build 0.23.28 (1/7/2025, 14:47:24)
+>>>>>>> 52c2eee (ok test coverage)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -346,7 +350,7 @@ $exports.store = store;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.getSearchParam = exports.getGlobalNavHeight = exports.getLinkTarget = exports.getEventBanner = exports.getCurrentDate = exports.isDateAfterInterval = exports.isDateBeforeInterval = exports.isDateWithinInterval = exports.qs = exports.mergeDeep = exports.setByPath = exports.debounce = exports.getSelectedItemsCount = exports.getByPath = exports.template = exports.getEndNumber = exports.getStartNumber = exports.getPageStartEnd = exports.generateRange = exports.stopPropagation = exports.isAtleastOneFilterSelected = exports.isNullish = exports.parseToPrimitive = exports.isObject = exports.mapObject = exports.sanitizeText = exports.sortByKey = exports.intersection = exports.isSuperset = exports.chainFromIterable = exports.chain = exports.removeDuplicatesByKey = exports.truncateList = exports.truncateString = exports.readInclusionsFromLocalStorage = exports.readBookmarksFromLocalStorage = exports.saveBookmarksToLocalStorage = undefined;
+exports.sanitizeEventFilter = exports.getSearchParam = exports.getGlobalNavHeight = exports.getLinkTarget = exports.getEventBanner = exports.getCurrentDate = exports.isDateAfterInterval = exports.isDateBeforeInterval = exports.isDateWithinInterval = exports.qs = exports.mergeDeep = exports.setByPath = exports.debounce = exports.getSelectedItemsCount = exports.getByPath = exports.template = exports.getEndNumber = exports.getStartNumber = exports.getPageStartEnd = exports.generateRange = exports.stopPropagation = exports.isAtleastOneFilterSelected = exports.isNullish = exports.parseToPrimitive = exports.isObject = exports.mapObject = exports.sanitizeText = exports.sortByKey = exports.intersection = exports.isSuperset = exports.chainFromIterable = exports.chain = exports.removeDuplicatesByKey = exports.truncateList = exports.truncateString = exports.readInclusionsFromLocalStorage = exports.readBookmarksFromLocalStorage = exports.saveBookmarksToLocalStorage = undefined;
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -1019,6 +1023,12 @@ var getSearchParam = exports.getSearchParam = function getSearchParam(url, param
     if (!url || !url.startsWith('http') || !param) return null;
     var urlObj = new URL(url);
     return urlObj.searchParams.get(param);
+};
+
+var sanitizeEventFilter = exports.sanitizeEventFilter = function sanitizeEventFilter(rawEventFilter) {
+    if (!rawEventFilter || rawEventFilter.indexOf('all') > -1) return [];
+    if (Array.isArray(rawEventFilter)) return rawEventFilter;
+    return [rawEventFilter];
 };
 
 /***/ }),
@@ -6491,7 +6501,7 @@ var Container = function Container(props) {
     // eslint-disable-next-line no-use-before-define, max-len
     var authoredCategories = isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : [];
     // eslint-disable-next-line no-use-before-define
-    var sanitizedEventFilter = eventFilter ? sanitizeEventFilter(eventFilter) : [];
+    var sanitizedEventFilter = eventFilter ? (0, _general.sanitizeEventFilter)(eventFilter) : [];
 
     /**
      **** Hooks ****
@@ -7845,18 +7855,6 @@ var Container = function Container(props) {
             id: '',
             items: []
         }].concat(_toConsumableArray(selectedCategories));
-    }
-
-    /**
-     * @func sanitizeEventFilter
-     * @desc Ensures backwards compatibility with both string and array values for the event filter
-     * @param {*} rawEventFilter
-     * @returns {Array} of the events that will be filtered
-     */
-    function sanitizeEventFilter(rawEventFilter) {
-        if (Array.isArray(rawEventFilter)) return rawEventFilter;
-        if (rawEventFilter.indexOf('all') > -1) return [];
-        return [rawEventFilter];
     }
 
     /**
