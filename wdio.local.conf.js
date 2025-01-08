@@ -16,5 +16,6 @@ exports.config = {
             ],
         },
     }],
+    logLevel: 'error',
     // Other configurations...
 };

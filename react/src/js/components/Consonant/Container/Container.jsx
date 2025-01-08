@@ -170,7 +170,6 @@ const Container = (props) => {
     const categories = getConfig('filterPanel', 'categories');
     // eslint-disable-next-line no-use-before-define, max-len
     const authoredCategories = isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : [];
-    // eslint-disable-next-line no-use-before-define
     const sanitizedEventFilter = eventFilter ? sanitizeEventFilter(eventFilter) : [];
 
     /**

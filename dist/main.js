@@ -13,6 +13,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
  * Chimera UI Libraries - Build 0.23.28 (1/6/2025, 16:49:34)
 =======
 =======
@@ -162,6 +163,9 @@
 =======
  * Chimera UI Libraries - Build 0.23.28 (1/7/2025, 15:01:29)
 >>>>>>> 683a289 (MWPW-155425: confirming the build is up to date)
+=======
+ * Chimera UI Libraries - Build 0.23.28 (1/8/2025, 14:41:08)
+>>>>>>> bddc1de (feat(mwpw-162835): husky)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6504,7 +6508,6 @@ var Container = function Container(props) {
     var categories = getConfig('filterPanel', 'categories');
     // eslint-disable-next-line no-use-before-define, max-len
     var authoredCategories = isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : [];
-    // eslint-disable-next-line no-use-before-define
     var sanitizedEventFilter = eventFilter ? (0, _general.sanitizeEventFilter)(eventFilter) : [];
 
     /**
