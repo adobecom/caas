@@ -1,5 +1,12 @@
 
 
+## [0.23.29](https://github.com/adobecom/caas/compare/0.23.28...0.23.29) (2025-01-10)
+
+
+### Bug Fixes
+
+* **MWPW-164129:** adds support for empty string in alt attribute ([#216](https://github.com/adobecom/caas/issues/216)) ([4ddd05a](https://github.com/adobecom/caas/commit/4ddd05ab3a7a56afa4a6a99c0a74503fbae67db5))
+
 ## [0.23.28](https://github.com/adobecom/caas/compare/0.23.27...0.23.28) (2024-12-19)
 
 
