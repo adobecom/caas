@@ -1,9 +1,13 @@
 /*!
 <<<<<<< HEAD
+<<<<<<< HEAD
  * Chimera UI Libraries - Build 0.24.1 (1/14/2025, 19:06:40)
 =======
  * Chimera UI Libraries - Build 0.23.29 (1/10/2025, 19:01:31)
 >>>>>>> 6a27bce (fix(MWPW-164262): makes headings and text more accessible)
+=======
+ * Chimera UI Libraries - Build 0.23.31 (1/13/2025, 13:22:34)
+>>>>>>> 631c523 (fix(MWPW-164262): updates dist files)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
