@@ -1,5 +1,24 @@
 
 
+# [0.24.0](https://github.com/adobecom/caas/compare/0.23.31...0.24.0) (2025-01-13)
+
+
+### Features
+
+* **mwpw-162835:** i think I might be done rebasing this branch ([f81d147](https://github.com/adobecom/caas/commit/f81d1471df30a7a0c873ef90e07b75c2395a5d32))
+* **mwpw-162835:** rebase ([da58841](https://github.com/adobecom/caas/commit/da58841a3f0aa52e0494e24a20aedcc3f8cee6fc))
+* **mwpw-162835:** rebase ([ed50562](https://github.com/adobecom/caas/commit/ed505629515db3beb61250ba82e1d88d9c9ac3bb))
+* **mwpw-162835:** rebase ([2eacbb9](https://github.com/adobecom/caas/commit/2eacbb91891a4f447c87ec79b96aea4e6b9f8653))
+* **mwpw-162835:** rebase ([95cf511](https://github.com/adobecom/caas/commit/95cf51142d25cc7568a3e35a6a9909150330d532))
+* **mwpw-162835:** rebase ([14280f7](https://github.com/adobecom/caas/commit/14280f7c9f4766fd467dd868d8f447d51d7a6f75))
+* **mwpw-162835:** rebase ([656d29d](https://github.com/adobecom/caas/commit/656d29dc7ae8c83af8bf3696311ab5a7e5d1f9d4))
+* **mwpw-162835:** rebasing ([cdc174d](https://github.com/adobecom/caas/commit/cdc174d706abca317f32215f1cd1c4c2f5354cfa))
+* **mwpw-162835:** rebasing event stuff ([723d3f4](https://github.com/adobecom/caas/commit/723d3f42ca41ef83369901342a5998bd380a785e))
+* **mwpw-162835:** rebasing the event stuff ([ac95d6d](https://github.com/adobecom/caas/commit/ac95d6d450d006f899fcdd3550fa0d8b04980661))
+* **mwpw-162835:** rebasing woo ([b6d24ab](https://github.com/adobecom/caas/commit/b6d24ab040c7728448b5f84956b6f1fa64176e31))
+* **mwpw-162835:** rebuilding everything for selecting multiple event filters ([30fbb21](https://github.com/adobecom/caas/commit/30fbb21edc0d83c7ac87c63bb9f62448f1c4123b))
+* **rebase:** reabse ([133ac90](https://github.com/adobecom/caas/commit/133ac9007cd0a9543f2ee3f653c29aecb8bba4bb))
+
 ## [0.23.31](https://github.com/adobecom/caas/compare/0.23.30...0.23.31) (2025-01-13)
 
 ## [0.23.30](https://github.com/adobecom/caas/compare/0.23.29...0.23.30) (2025-01-13)
