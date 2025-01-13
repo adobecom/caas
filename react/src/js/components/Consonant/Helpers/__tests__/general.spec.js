@@ -9,6 +9,7 @@ import {
     isNullish,
     isSuperset,
     intersection,
+    sanitizeEventFilter,
     sanitizeText,
     truncateList,
     truncateString,
@@ -135,6 +136,14 @@ describe('utils/general', () => {
             });
         });
     });
+    describe('sanitizeEventFilter', () => {
+        PROPS.sanitizeEventFilter.forEach(( { filter, expectedValue }) => {
+            test('should return sanitized event filter', () => {
+                const value = sanitizeEventFilter(filter);
+                expect(value).toEqual(expectedValue);
+            })
+        })
+    })
     describe('sanitizeText', () => {
         PROPS.sanitizeText.forEach(({ text, expectedValue }) => {
             test('should return sanitized text', () => {

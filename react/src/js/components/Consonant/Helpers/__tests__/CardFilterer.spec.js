@@ -80,26 +80,48 @@ describe('utils/CardFilterer', () => {
         test('Event Sort', () => {
             const cards = [
                 { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } }, tags: ['event1'] },
-                { id: 2, contentArea: { dateDetailText: { startTime: '2021-01-03', endTime: '2021-01-04' } }, tags: ['event2'] },
+                { id: 2, contentArea: { dateDetailText: { startTime: '2021-01-03', endTime: '2129-01-04' } }, tags: ['event2'] },
             ];
             const expectedValue = [
-                { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } }, tags: ['event1'] },
+                { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } },
+                    createdDate: '', ctaLink: '', description: '', endDate: '2021-01-02', footer: [], initial: {}, isBookmarked: '',
+                    modifiedDate: '', overlayLink: '', overlays: {}, search: {}, showCard: {}, startDate: '2021-01-01', styles: {},
+                    cardDate: '', tags: ['event1'] },
             ];
             const cardFilterer = new CardFilterer(cards);
-            const { filteredCards } = cardFilterer.sortCards({ sort: 'eventsort' }, 'event1');
+            const { filteredCards } = cardFilterer.sortCards({ sort: 'eventsort' }, 'on-demand');
             expect(filteredCards).toEqual(expectedValue);
         });
 
         test('Event Sort with nextTransitionMs', () => {
             const cards = [
                 { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } }, tags: ['event1'] },
-                { id: 2, contentArea: { dateDetailText: { startTime: '2021-01-03', endTime: '2021-01-04' } }, tags: ['event2'] },
+                { id: 2, contentArea: { dateDetailText: { startTime: '2021-01-03', endTime: '2129-01-04' } }, tags: ['event2'] },
             ];
             const expectedValue = [
-                { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } }, tags: ['event1'] },
+                { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } },
+                    createdDate: '', ctaLink: '', description: '', endDate: '2021-01-02', footer: [], initial: {}, isBookmarked: '',
+                    modifiedDate: '', overlayLink: '', overlays: {}, search: {}, showCard: {}, startDate: '2021-01-01', styles: {},
+                    cardDate: '', tags: ['event1'] },
             ];
             const cardFilterer = new CardFilterer(cards);
-            cardFilterer.sortCards({ sort: 'eventsort' }, 'event1');
+            cardFilterer.sortCards({ sort: 'eventsort' }, ['on-demand']);
+            expect(cardFilterer.filteredCards).toEqual(expectedValue);
+            expect(cardFilterer.nextTransitionMs).toBeGreaterThan(-1);
+        });
+        test('Event Sort with a string (legacy event sort)', () => {
+            const cards = [
+                { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } }, tags: ['event1'] },
+                { id: 2, contentArea: { dateDetailText: { startTime: '2021-01-03', endTime: '2129-01-04' } }, tags: ['event2'] },
+            ];
+            const expectedValue = [
+                { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } },
+                    createdDate: '', ctaLink: '', description: '', endDate: '2021-01-02', footer: [], initial: {}, isBookmarked: '',
+                    modifiedDate: '', overlayLink: '', overlays: {}, search: {}, showCard: {}, startDate: '2021-01-01', styles: {},
+                    cardDate: '', tags: ['event1'] },
+            ];
+            const cardFilterer = new CardFilterer(cards);
+            cardFilterer.sortCards({ sort: 'eventsort' }, 'on-demand');
             expect(cardFilterer.filteredCards).toEqual(expectedValue);
             expect(cardFilterer.nextTransitionMs).toBeGreaterThan(-1);
         });

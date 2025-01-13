@@ -5,7 +5,7 @@ module.exports = {
             rules: {
                 'jira-ticket-in-scope': ({scope}) => {
                     const pattern = /^MWPW-\d+$/;
-                    const hasValidTicket = pattern.test(scope || '');
+                    const hasValidTicket = pattern.test(scope.toUpperCase() || '');
                     return [
                         hasValidTicket,
                         'Scope must contain JIRA ticket (e.g., feat(MWPW-123): message)',
