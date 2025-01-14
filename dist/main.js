@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.23.28 (1/6/2025, 16:49:34)
+ * Chimera UI Libraries - Build 0.24.1 (1/14/2025, 13:16:51)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -47268,7 +47268,8 @@ var Card = function Card(props) {
                     startDate: startDate,
                     endDate: endDate,
                     cardStyle: cardStyle,
-                    onFocus: onFocus });
+                    onFocus: onFocus,
+                    title: title });
             }),
             (isThreeFourths || isDoubleWide || isFull) && !renderOverlay && _react2.default.createElement(_LinkBlocker2.default, {
                 target: linkBlockerTarget,
@@ -47396,7 +47397,8 @@ var CardFooter = function CardFooter(props) {
         startDate = props.startDate,
         endDate = props.endDate,
         isFluid = props.isFluid,
-        onFocus = props.onFocus;
+        onFocus = props.onFocus,
+        title = props.title;
 
     /**
      * Is the card currently live?
@@ -47511,19 +47513,19 @@ var CardFooter = function CardFooter(props) {
                 'div',
                 {
                     className: 'consonant-CardFooter-cell consonant-CardFooter-cell--right' },
-                _react2.default.createElement(_Group2.default, { renderList: right, onFocus: onFocus })
+                _react2.default.createElement(_Group2.default, { renderList: right, onFocus: onFocus, title: title })
             ),
             shouldRenderAltRightUpcoming && _react2.default.createElement(
                 'div',
                 {
                     className: 'consonant-CardFooter-cell consonant-CardFooter-cell--right' },
-                _react2.default.createElement(_Group2.default, { renderList: altRightUpcoming, onFocus: onFocus })
+                _react2.default.createElement(_Group2.default, { renderList: altRightUpcoming, onFocus: onFocus, title: title })
             ),
             shouldRenderAltRightLive && _react2.default.createElement(
                 'div',
                 {
                     className: 'consonant-CardFooter-cell consonant-CardFooter-cell--right' },
-                _react2.default.createElement(_Group2.default, { renderList: altRightLive, onFocus: onFocus })
+                _react2.default.createElement(_Group2.default, { renderList: altRightLive, onFocus: onFocus, title: title })
             )
         )
     );
@@ -47615,12 +47617,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var groupType = {
     renderList: (0, _propTypes.arrayOf)((0, _propTypes.oneOfType)([(0, _propTypes.shape)(_card.footerLeftType), (0, _propTypes.shape)(_card.footerRightType), (0, _propTypes.shape)(_card.footerCenterType)])),
-    onFocus: _propTypes.func
+    onFocus: _propTypes.func,
+    title: _propTypes.string
 };
 
 var defaultProps = {
     renderList: [],
-    onFocus: function onFocus() {}
+    onFocus: function onFocus() {},
+    title: ''
 };
 
 /**
@@ -47637,7 +47641,8 @@ var defaultProps = {
  */
 var Group = function Group(props) {
     var renderList = props.renderList,
-        onFocus = props.onFocus;
+        onFocus = props.onFocus,
+        title = props.title;
 
 
     return _react2.default.createElement(
@@ -47652,7 +47657,8 @@ var Group = function Group(props) {
                 case _constants.INFOBIT_TYPE.BUTTON:
                     return _react2.default.createElement(_Button2.default, _extends({}, infobit, {
                         key: (0, _cuid2.default)(),
-                        onFocus: onFocus }));
+                        onFocus: onFocus,
+                        title: title }));
 
                 case _constants.INFOBIT_TYPE.ICON_TEXT:
                     return _react2.default.createElement(_IconWithText2.default, _extends({}, infobit, {
@@ -47925,7 +47931,8 @@ var buttonType = {
     iconAlt: _propTypes.string,
     iconPos: _propTypes.string,
     isCta: _propTypes.bool,
-    onFocus: _propTypes.func
+    onFocus: _propTypes.func,
+    title: _propTypes.string
 };
 
 var defaultProps = {
@@ -47936,7 +47943,8 @@ var defaultProps = {
     iconPos: '',
     isCta: false,
     style: BUTTON_STYLE.CTA,
-    onFocus: function onFocus() {}
+    onFocus: function onFocus() {},
+    title: ''
 };
 
 /**
@@ -47961,7 +47969,8 @@ var Button = function Button(_ref) {
         iconAlt = _ref.iconAlt,
         iconPos = _ref.iconPos,
         isCta = _ref.isCta,
-        onFocus = _ref.onFocus;
+        onFocus = _ref.onFocus,
+        title = _ref.title;
 
     /**
      **** Authored Configs ****
@@ -48012,6 +48021,7 @@ var Button = function Button(_ref) {
     var target = (0, _general.getLinkTarget)(href, ctaAction);
     var addParams = new URLSearchParams(additionalParams);
     var buttonLink = additionalParams && addParams.keys().next().value ? href + '?' + addParams.toString() : href;
+    var ariaLabel = text + ': ' + title;
 
     return _react2.default.createElement(
         'a',
@@ -48023,7 +48033,8 @@ var Button = function Button(_ref) {
             rel: 'noopener noreferrer',
             target: target,
             href: buttonLink,
-            onFocus: onFocus },
+            onFocus: onFocus,
+            'aria-label': ariaLabel },
         iconSrc && _react2.default.createElement('img', {
             'data-testid': 'consonant-BtnInfobit-ico',
             src: iconSrc,
