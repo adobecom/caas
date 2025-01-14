@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.24.0 (1/13/2025, 13:28:59)
+ * Chimera UI Libraries - Build 0.24.1 (1/14/2025, 10:49:58)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -192,7 +192,7 @@ $exports.store = store;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.sanitizeEventFilter = exports.getSearchParam = exports.getGlobalNavHeight = exports.getLinkTarget = exports.getEventBanner = exports.getCurrentDate = exports.isDateAfterInterval = exports.isDateBeforeInterval = exports.isDateWithinInterval = exports.qs = exports.mergeDeep = exports.setByPath = exports.debounce = exports.getSelectedItemsCount = exports.getByPath = exports.template = exports.getEndNumber = exports.getStartNumber = exports.getPageStartEnd = exports.generateRange = exports.stopPropagation = exports.isAtleastOneFilterSelected = exports.isNullish = exports.parseToPrimitive = exports.isObject = exports.mapObject = exports.sanitizeText = exports.sortByKey = exports.intersection = exports.isSuperset = exports.chainFromIterable = exports.chain = exports.removeDuplicatesByKey = exports.truncateList = exports.truncateString = exports.readInclusionsFromLocalStorage = exports.readBookmarksFromLocalStorage = exports.saveBookmarksToLocalStorage = undefined;
+exports.getSearchParam = exports.getGlobalNavHeight = exports.getLinkTarget = exports.getEventBanner = exports.getCurrentDate = exports.isDateAfterInterval = exports.isDateBeforeInterval = exports.isDateWithinInterval = exports.qs = exports.mergeDeep = exports.setByPath = exports.debounce = exports.getSelectedItemsCount = exports.getByPath = exports.template = exports.getEndNumber = exports.getStartNumber = exports.getPageStartEnd = exports.generateRange = exports.stopPropagation = exports.isAtleastOneFilterSelected = exports.isNullish = exports.parseToPrimitive = exports.isObject = exports.mapObject = exports.sanitizeText = exports.sortByKey = exports.intersection = exports.isSuperset = exports.chainFromIterable = exports.chain = exports.removeDuplicatesByKey = exports.truncateList = exports.truncateString = exports.readInclusionsFromLocalStorage = exports.readBookmarksFromLocalStorage = exports.saveBookmarksToLocalStorage = undefined;
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -865,12 +865,6 @@ var getSearchParam = exports.getSearchParam = function getSearchParam(url, param
     if (!url || !url.startsWith('http') || !param) return null;
     var urlObj = new URL(url);
     return urlObj.searchParams.get(param);
-};
-
-var sanitizeEventFilter = exports.sanitizeEventFilter = function sanitizeEventFilter(rawEventFilter) {
-    if (!rawEventFilter || rawEventFilter.indexOf('all') > -1) return [];
-    if (Array.isArray(rawEventFilter)) return rawEventFilter;
-    return [rawEventFilter];
 };
 
 /***/ }),
@@ -2438,31 +2432,32 @@ var getEventSort = exports.getEventSort = function getEventSort() {
     var transformedCards = cards.map(function (card) {
         return {
             id: card.id,
-            startDate: card.contentArea.dateDetailText.startTime || card.footer[0].left[1].startTime,
-            endDate: card.contentArea.dateDetailText.endTime || card.footer[0].left[1].endTime,
-            tags: card.tags || [],
-            cardDate: card.cardDate || '',
-            contentArea: card.contentArea || {},
-            createdDate: card.createdDate || '',
-            ctaLink: card.ctaLink || '',
-            description: card.description || '',
-            footer: card.footer || [],
-            initial: card.initial || {},
-            isBookmarked: card.isBookmarked || '',
-            modifiedDate: card.modifiedDate || '',
-            overlayLink: card.overlayLink || '',
-            overlays: card.overlays || {},
-            showCard: card.showCard || {},
-            search: card.search || {},
-            styles: card.styles || {}
+            startDate: card.contentArea.dateDetailText.startTime,
+            endDate: card.contentArea.dateDetailText.endTime,
+            tags: card.tags || []
         };
     });
 
     var result = (0, _eventSort.eventTiming)(transformedCards, eventFilter);
 
+    var visibleSessions = result.visibleSessions.filter(function (session) {
+        return session.tags.includes(eventFilter);
+    }).map(function (session) {
+        return {
+            id: session.id,
+            contentArea: {
+                dateDetailText: {
+                    startTime: session.startDate,
+                    endTime: session.endDate
+                }
+            },
+            tags: session.tags
+        };
+    });
+
     return {
-        visibleSessions: result.visibleSessions,
-        nextTransitionMs: result.nextTransitionMs
+        nextTransitionMs: result.nextTransitionMs,
+        visibleSessions: visibleSessions
     };
 };
 /**
@@ -6342,7 +6337,6 @@ var Container = function Container(props) {
     var categories = getConfig('filterPanel', 'categories');
     // eslint-disable-next-line no-use-before-define, max-len
     var authoredCategories = isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : [];
-    var sanitizedEventFilter = eventFilter ? (0, _general.sanitizeEventFilter)(eventFilter) : [];
 
     /**
      **** Hooks ****
@@ -7542,7 +7536,7 @@ var Container = function Container(props) {
      * @returns {Object}
      * */
     var getFilteredCollection = function getFilteredCollection() {
-        return cardFilterer.sortCards(sortOption, sanitizedEventFilter, featuredCards, hideCtaIds, isFirstLoad).keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks).keepCardsWithinDateRange().filterCards(activeFilterIds, activePanels, filterLogic, _constants.FILTER_TYPES, currCategories).truncateList(totalCardLimit).searchCards(searchQuery, searchFields, cardStyle).removeCards(inclusionIds);
+        return cardFilterer.sortCards(sortOption, eventFilter, featuredCards, hideCtaIds, isFirstLoad).keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks).keepCardsWithinDateRange().filterCards(activeFilterIds, activePanels, filterLogic, _constants.FILTER_TYPES, currCategories).truncateList(totalCardLimit).searchCards(searchQuery, searchFields, cardStyle).removeCards(inclusionIds);
     };
 
     /**
@@ -48994,7 +48988,7 @@ var defineIsUpcoming = function defineIsUpcoming(currentTime, startTimeMls) {
  */
 function eventTiming() {
     var sessions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-    var eventFilter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+    var eventFilter = arguments[1];
 
     if (!sessions.length) return [];
 
@@ -49066,7 +49060,7 @@ function eventTiming() {
         var isTimed = !!(endMs && startMs);
         var isUpComing = isTimed ? defineIsUpcoming(curMs, startMs) : false;
         var isOnDemand = isTimed && !isUpComing ? defineIsOnDemand(curMs, endMs) : false;
-        var isLive = !!(isTimed && !isUpComing && !isOnDemand && startMs);
+        var isLive = !!(isTimed && !isUpComing && !isOnDemand && startMs) || eventFilter === 'live';
         // Tagged Exceptions
         var isOnDemandScheduled = defineIsOnDemandScheduled(tags);
         var isLiveExpired = defineIsLiveExpired(tags);
@@ -49118,20 +49112,15 @@ function eventTiming() {
         // updateTimeOverride(curMs, nextTransitionMs);
     }
 
-    var cards = [];
-    if (eventFilter.length === 0) {
-        cards = [].concat(live, upComing, onDemand, notTimed);
-        return _extends({
-            visibleSessions: cards
-        }, nextTransitionMs && { nextTransitionMs: nextTransitionMs });
-    }if (eventFilter.indexOf('live') > -1) {
-        cards = cards.concat(live);
-    }if (eventFilter.indexOf('upcoming') > -1) {
-        cards = cards.concat(upComing);
-    }if (eventFilter.indexOf('on-demand') > -1) {
-        cards = cards.concat(onDemand);
-    }if (eventFilter.indexOf('not-timed') > -1) {
-        cards = cards.concat(notTimed);
+    var cards = [].concat(live, upComing, onDemand, notTimed);
+    if (eventFilter === 'live') {
+        cards = live;
+    } else if (eventFilter === 'upcoming') {
+        cards = upComing;
+    } else if (eventFilter === 'on-demand') {
+        cards = onDemand;
+    } else if (eventFilter === 'not-timed') {
+        cards = notTimed;
     }
 
     /*
@@ -49139,9 +49128,9 @@ function eventTiming() {
         - conditionally adds next sort transition time to returns
         - returns an Array of cards sorted by Category and then Date ASC
     */
-    return _extends({
+    return _extends({}, nextTransitionMs && { nextTransitionMs: nextTransitionMs }, {
         visibleSessions: cards
-    }, nextTransitionMs && { nextTransitionMs: nextTransitionMs });
+    });
 }
 
 exports.eventTiming = eventTiming;
@@ -53278,18 +53267,10 @@ var CardFilterer = function () {
 
     }, {
         key: 'sortCards',
-        value: function sortCards(sortOption) {
-            var eventFilter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-            var featuredCardIds = arguments[2];
-            var hideCtaIds = arguments[3];
-            var isFirstLoad = arguments[4];
-
+        value: function sortCards(sortOption, eventFilter, featuredCardIds, hideCtaIds, isFirstLoad) {
             if (!this.filteredCards.length) return this;
 
             var sortType = sortOption ? sortOption.sort.toLowerCase() : null;
-            if (eventFilter.length > 0) {
-                sortType = _constants.SORT_TYPES.EVENTSORT;
-            }
 
             switch (sortType) {
                 case _constants.SORT_TYPES.DATEASC:
@@ -53307,10 +53288,9 @@ var CardFilterer = function () {
                 case _constants.SORT_TYPES.EVENTSORT:
                     {
                         var _getEventSort = (0, _Helpers.getEventSort)(this.filteredCards, eventFilter),
+                            nextTransitionMs = _getEventSort.nextTransitionMs,
                             _getEventSort$visible = _getEventSort.visibleSessions,
-                            visibleSessions = _getEventSort$visible === undefined ? [] : _getEventSort$visible,
-                            _getEventSort$nextTra = _getEventSort.nextTransitionMs,
-                            nextTransitionMs = _getEventSort$nextTra === undefined ? 0 : _getEventSort$nextTra;
+                            visibleSessions = _getEventSort$visible === undefined ? [] : _getEventSort$visible;
 
                         this.filteredCards = visibleSessions;
 

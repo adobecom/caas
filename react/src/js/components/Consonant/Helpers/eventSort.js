@@ -134,7 +134,7 @@ const defineIsUpcoming = (currentTime, startTimeMls) => {
  * @returns {Object} nextTransitionMs, value for setTimeout.
  * visibleSessions, sorted cards/sessions to be rendered.
  */
-function eventTiming(sessions = [], eventFilter = []) {
+function eventTiming(sessions = [], eventFilter) {
     if (!sessions.length) return [];
 
     const overrideTime = timeOverride();
@@ -209,7 +209,7 @@ function eventTiming(sessions = [], eventFilter = []) {
             defineIsUpcoming(curMs, startMs) : false;
         const isOnDemand = isTimed && !isUpComing ?
             defineIsOnDemand(curMs, endMs) : false;
-        const isLive = !!(isTimed && !isUpComing && !isOnDemand && startMs);
+        const isLive = !!(isTimed && !isUpComing && !isOnDemand && startMs) || eventFilter === 'live';
         // Tagged Exceptions
         const isOnDemandScheduled = defineIsOnDemandScheduled(tags);
         const isLiveExpired = defineIsLiveExpired(tags);
@@ -264,21 +264,15 @@ function eventTiming(sessions = [], eventFilter = []) {
         // updateTimeOverride(curMs, nextTransitionMs);
     }
 
-    let cards = [];
-    if (eventFilter.length === 0) {
-        cards = [].concat(live, upComing, onDemand, notTimed);
-        return {
-            visibleSessions: cards,
-            ...((nextTransitionMs && { nextTransitionMs })),
-        };
-    } if (eventFilter.indexOf('live') > -1) {
-        cards = cards.concat(live);
-    } if (eventFilter.indexOf('upcoming') > -1) {
-        cards = cards.concat(upComing);
-    } if (eventFilter.indexOf('on-demand') > -1) {
-        cards = cards.concat(onDemand);
-    } if (eventFilter.indexOf('not-timed') > -1) {
-        cards = cards.concat(notTimed);
+    let cards = [].concat(live, upComing, onDemand, notTimed);
+    if (eventFilter === 'live') {
+        cards = live;
+    } else if (eventFilter === 'upcoming') {
+        cards = upComing;
+    } else if (eventFilter === 'on-demand') {
+        cards = onDemand;
+    } else if (eventFilter === 'not-timed') {
+        cards = notTimed;
     }
 
     /*
@@ -287,8 +281,8 @@ function eventTiming(sessions = [], eventFilter = []) {
         - returns an Array of cards sorted by Category and then Date ASC
     */
     return {
-        visibleSessions: cards,
         ...((nextTransitionMs && { nextTransitionMs })),
+        visibleSessions: cards,
     };
 }
 

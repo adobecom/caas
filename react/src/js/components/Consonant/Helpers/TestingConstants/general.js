@@ -124,20 +124,6 @@ const sortByKey = [
         expectedValue: [{ id: 5 }, { id: 4 }, { id: 3 }, { id: 2 }, { id: 1 }],
     },
 ];
-const sanitizeEventFilter = [
-    {
-        filter: 'all',
-        expectedValue: [],
-    },
-    {
-        filter: 'upcoming',
-        expectedValue: ['upcoming'],
-    },
-    {
-        filter: ['upcoming', 'on-demand'],
-        expectedValue: ['upcoming', 'on-demand'],
-    },
-];
 
 const sanitizeText = [
     {
@@ -594,7 +580,6 @@ export default {
     mergeDeep,
     isSuperset,
     intersection,
-    sanitizeEventFilter,
     sanitizeText,
     truncateList,
     getEndNumber,
