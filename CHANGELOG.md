@@ -1,5 +1,12 @@
 
 
+## [0.24.2](https://github.com/adobecom/caas/compare/0.24.1...0.24.2) (2025-01-15)
+
+
+### Bug Fixes
+
+* **mwpw-165609:** restore card collection rendering by correcting getAttribute implementation ([b479095](https://github.com/adobecom/caas/commit/b4790959c2e37791eb2350afc05b88e2bc197c86))
+
 ## [0.24.1](https://github.com/adobecom/caas/compare/0.24.0...0.24.1) (2025-01-13)
 
 # [0.24.0](https://github.com/adobecom/caas/compare/0.23.31...0.24.0) (2025-01-13)
