@@ -1,13 +1,5 @@
 /*!
-<<<<<<< HEAD
-<<<<<<< HEAD
- * Chimera UI Libraries - Build 0.24.1 (1/14/2025, 19:06:40)
-=======
- * Chimera UI Libraries - Build 0.24.1 (1/15/2025, 09:35:40)
->>>>>>> 58730d8 (feat(mwpw-162835): added sanitize event filter to general)
-=======
- * Chimera UI Libraries - Build 0.24.1 (1/15/2025, 12:29:08)
->>>>>>> 0a20a65 (feat(mwpw-162835): saving work so I can rebase)
+ * Chimera UI Libraries - Build 0.24.2 (1/15/2025, 13:43:58)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
