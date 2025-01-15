@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.24.1 (1/14/2025, 10:49:58)
+ * Chimera UI Libraries - Build 0.24.3 (1/15/2025, 15:17:35)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -56126,8 +56126,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ConsonantPageModel = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _reactDomComponents = __webpack_require__(107);
 
 var _Container = __webpack_require__(108);
@@ -56152,17 +56150,10 @@ var ConsonantPageModel = exports.ConsonantPageModel = function (_DOMModel) {
 
         var _this = _possibleConstructorReturn(this, (ConsonantPageModel.__proto__ || Object.getPrototypeOf(ConsonantPageModel)).call(this, element));
 
-        _this.id = element.getAttribute('id'); // Initialize id
-        _this.dataConfig = element.getAttribute('data-config'); // Initialize dataConfig
+        _this.getAttribute('id', 'id');
+        _this.getAttribute('data-config', 'dataConfig');
         return _this;
     }
-
-    _createClass(ConsonantPageModel, [{
-        key: 'getAttribute',
-        value: function getAttribute(attr) {
-            return this[attr]; // Return the attribute value
-        }
-    }]);
 
     return ConsonantPageModel;
 }(_reactDomComponents.DOMModel);
