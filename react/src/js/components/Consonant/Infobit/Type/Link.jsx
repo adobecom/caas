@@ -7,10 +7,12 @@ const linkType = {
     linkHint: string,
     href: string.isRequired,
     text: string.isRequired,
+    title: string,
 };
 
 const defaultProps = {
     linkHint: '',
+    title: '',
 };
 
 /**
@@ -31,12 +33,14 @@ const Link = ({
     href,
     linkHint,
     text,
+    title,
 }) => {
     /**
      **** Authored Configs ****
      */
     const getConfig = useConfig();
     const ctaAction = getConfig('collection', 'ctaAction');
+    const ariaLabel = `${text} ${title}`;
 
     const target = getLinkTarget(href, ctaAction);
     return (
@@ -48,8 +52,9 @@ const Link = ({
             target={target}
             title={linkHint}
             rel="noopener noreferrer"
-            tabIndex="0">
-            {text}
+            tabIndex="0"
+            aria-label={ariaLabel}>
+            {text}*
         </a>
     );
 };

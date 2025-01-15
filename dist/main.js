@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.24.1 (1/14/2025, 13:16:51)
+ * Chimera UI Libraries - Build 0.24.1 (1/14/2025, 16:46:26)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -47678,7 +47678,8 @@ var Group = function Group(props) {
 
                 case _constants.INFOBIT_TYPE.LINK:
                     return _react2.default.createElement(_Link2.default, _extends({}, infobit, {
-                        key: (0, _cuid2.default)() }));
+                        key: (0, _cuid2.default)(),
+                        title: title }));
 
                 case _constants.INFOBIT_TYPE.PROGRESS:
                     return _react2.default.createElement(_Progress2.default, _extends({}, infobit, {
@@ -48046,7 +48047,8 @@ var Button = function Button(_ref) {
         _react2.default.createElement(
             'span',
             null,
-            text
+            text,
+            '*'
         )
     );
 };
@@ -48082,11 +48084,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var linkType = {
     linkHint: _propTypes.string,
     href: _propTypes.string.isRequired,
-    text: _propTypes.string.isRequired
+    text: _propTypes.string.isRequired,
+    title: _propTypes.string
 };
 
 var defaultProps = {
-    linkHint: ''
+    linkHint: '',
+    title: ''
 };
 
 /**
@@ -48106,13 +48110,15 @@ var defaultProps = {
 var Link = function Link(_ref) {
     var href = _ref.href,
         linkHint = _ref.linkHint,
-        text = _ref.text;
+        text = _ref.text,
+        title = _ref.title;
 
     /**
      **** Authored Configs ****
      */
     var getConfig = (0, _hooks.useConfig)();
     var ctaAction = getConfig('collection', 'ctaAction');
+    var ariaLabel = text + ': ' + title;
 
     var target = (0, _general.getLinkTarget)(href, ctaAction);
     return _react2.default.createElement(
@@ -48125,8 +48131,10 @@ var Link = function Link(_ref) {
             target: target,
             title: linkHint,
             rel: 'noopener noreferrer',
-            tabIndex: '0' },
-        text
+            tabIndex: '0',
+            'aria-label': ariaLabel },
+        text,
+        '*'
     );
 };
 

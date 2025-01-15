@@ -113,7 +113,7 @@ const Button = ({
     const target = getLinkTarget(href, ctaAction);
     const addParams = new URLSearchParams(additionalParams);
     const buttonLink = (additionalParams && addParams.keys().next().value) ? `${href}?${addParams.toString()}` : href;
-    const ariaLabel = `${text}: ${title}`;
+    const ariaLabel = `${text} ${title}`;
 
     return (
         <a
@@ -136,7 +136,7 @@ const Button = ({
                 alt={iconAlt}
                 loading="lazy" />
             }
-            <span>{text}</span>
+            <span>{text}*</span>
         </a>
     );
 };

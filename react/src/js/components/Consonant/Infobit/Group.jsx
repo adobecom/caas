@@ -115,7 +115,8 @@ const Group = (props) => {
                         return (
                             <TextLink
                                 {...infobit}
-                                key={cuid()} />
+                                key={cuid()}
+                                title={title} />
                         );
 
                     case INFOBIT_TYPE.PROGRESS:
