@@ -1,9 +1,13 @@
 /*!
 <<<<<<< HEAD
+<<<<<<< HEAD
  * Chimera UI Libraries - Build 0.24.1 (1/14/2025, 19:06:40)
 =======
  * Chimera UI Libraries - Build 0.24.1 (1/15/2025, 09:35:40)
 >>>>>>> 58730d8 (feat(mwpw-162835): added sanitize event filter to general)
+=======
+ * Chimera UI Libraries - Build 0.24.1 (1/15/2025, 12:29:08)
+>>>>>>> 0a20a65 (feat(mwpw-162835): saving work so I can rebase)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -2442,32 +2446,31 @@ var getEventSort = exports.getEventSort = function getEventSort() {
     var transformedCards = cards.map(function (card) {
         return {
             id: card.id,
-            startDate: card.contentArea.dateDetailText.startTime,
-            endDate: card.contentArea.dateDetailText.endTime,
-            tags: card.tags || []
+            startDate: card.contentArea.dateDetailText.startTime || card.footer[0].left[1].startTime || '',
+            endDate: card.contentArea.dateDetailText.endTime || card.footer[0].left[1].endTime || '',
+            tags: card.tags || [],
+            cardDate: card.cardDate || '',
+            contentArea: card.contentArea || {},
+            createdDate: card.createdDate || '',
+            ctaLink: card.ctaLink || '',
+            description: card.description || '',
+            footer: card.footer || [],
+            initial: card.initial || {},
+            isBookmarked: card.isBookmarked || '',
+            modifiedDate: card.modifiedDate || '',
+            overlayLink: card.overlayLink || '',
+            overlays: card.overlays || {},
+            showCard: card.showCard || {},
+            search: card.search || {},
+            styles: card.styles || {}
         };
     });
 
     var result = (0, _eventSort.eventTiming)(transformedCards, eventFilter);
 
-    var visibleSessions = result.visibleSessions.filter(function (session) {
-        return session.tags.includes(eventFilter);
-    }).map(function (session) {
-        return {
-            id: session.id,
-            contentArea: {
-                dateDetailText: {
-                    startTime: session.startDate,
-                    endTime: session.endDate
-                }
-            },
-            tags: session.tags
-        };
-    });
-
     return {
-        nextTransitionMs: result.nextTransitionMs,
-        visibleSessions: visibleSessions
+        visibleSessions: result.visibleSessions,
+        nextTransitionMs: result.nextTransitionMs
     };
 };
 /**
@@ -6347,6 +6350,7 @@ var Container = function Container(props) {
     var categories = getConfig('filterPanel', 'categories');
     // eslint-disable-next-line no-use-before-define, max-len
     var authoredCategories = isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : [];
+    var sanitizedEventFilter = eventFilter ? (0, _general.sanitizeEventFilter)(eventFilter) : [];
 
     /**
      **** Hooks ****
@@ -7546,7 +7550,7 @@ var Container = function Container(props) {
      * @returns {Object}
      * */
     var getFilteredCollection = function getFilteredCollection() {
-        return cardFilterer.sortCards(sortOption, eventFilter, featuredCards, hideCtaIds, isFirstLoad).keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks).keepCardsWithinDateRange().filterCards(activeFilterIds, activePanels, filterLogic, _constants.FILTER_TYPES, currCategories).truncateList(totalCardLimit).searchCards(searchQuery, searchFields, cardStyle).removeCards(inclusionIds);
+        return cardFilterer.sortCards(sortOption, sanitizedEventFilter, featuredCards, hideCtaIds, isFirstLoad).keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks).keepCardsWithinDateRange().filterCards(activeFilterIds, activePanels, filterLogic, _constants.FILTER_TYPES, currCategories).truncateList(totalCardLimit).searchCards(searchQuery, searchFields, cardStyle).removeCards(inclusionIds);
     };
 
     /**
@@ -48998,7 +49002,7 @@ var defineIsUpcoming = function defineIsUpcoming(currentTime, startTimeMls) {
  */
 function eventTiming() {
     var sessions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-    var eventFilter = arguments[1];
+    var eventFilter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
     if (!sessions.length) return [];
 
@@ -49070,7 +49074,7 @@ function eventTiming() {
         var isTimed = !!(endMs && startMs);
         var isUpComing = isTimed ? defineIsUpcoming(curMs, startMs) : false;
         var isOnDemand = isTimed && !isUpComing ? defineIsOnDemand(curMs, endMs) : false;
-        var isLive = !!(isTimed && !isUpComing && !isOnDemand && startMs) || eventFilter === 'live';
+        var isLive = !!(isTimed && !isUpComing && !isOnDemand && startMs);
         // Tagged Exceptions
         var isOnDemandScheduled = defineIsOnDemandScheduled(tags);
         var isLiveExpired = defineIsLiveExpired(tags);
@@ -49122,15 +49126,20 @@ function eventTiming() {
         // updateTimeOverride(curMs, nextTransitionMs);
     }
 
-    var cards = [].concat(live, upComing, onDemand, notTimed);
-    if (eventFilter === 'live') {
-        cards = live;
-    } else if (eventFilter === 'upcoming') {
-        cards = upComing;
-    } else if (eventFilter === 'on-demand') {
-        cards = onDemand;
-    } else if (eventFilter === 'not-timed') {
-        cards = notTimed;
+    var cards = [];
+    if (eventFilter.length === 0) {
+        cards = [].concat(live, upComing, onDemand, notTimed);
+        return _extends({
+            visibleSessions: cards
+        }, nextTransitionMs && { nextTransitionMs: nextTransitionMs });
+    }if (eventFilter.indexOf('live') > -1) {
+        cards = cards.concat(live);
+    }if (eventFilter.indexOf('upcoming') > -1) {
+        cards = cards.concat(upComing);
+    }if (eventFilter.indexOf('on-demand') > -1) {
+        cards = cards.concat(onDemand);
+    }if (eventFilter.indexOf('not-timed') > -1) {
+        cards = cards.concat(notTimed);
     }
 
     /*
@@ -49138,9 +49147,9 @@ function eventTiming() {
         - conditionally adds next sort transition time to returns
         - returns an Array of cards sorted by Category and then Date ASC
     */
-    return _extends({}, nextTransitionMs && { nextTransitionMs: nextTransitionMs }, {
+    return _extends({
         visibleSessions: cards
-    });
+    }, nextTransitionMs && { nextTransitionMs: nextTransitionMs });
 }
 
 exports.eventTiming = eventTiming;
