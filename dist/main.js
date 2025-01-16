@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.24.3 (1/16/2025, 11:22:19)
+ * Chimera UI Libraries - Build 0.24.3 (1/16/2025, 11:36:45)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -53278,7 +53278,12 @@ var CardFilterer = function () {
 
     }, {
         key: 'sortCards',
-        value: function sortCards(sortOption, eventFilter, featuredCardIds, hideCtaIds, isFirstLoad) {
+        value: function sortCards(sortOption) {
+            var eventFilter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+            var featuredCardIds = arguments[2];
+            var hideCtaIds = arguments[3];
+            var isFirstLoad = arguments[4];
+
             if (!this.filteredCards.length) return this;
 
             var sortType = sortOption ? sortOption.sort.toLowerCase() : null;

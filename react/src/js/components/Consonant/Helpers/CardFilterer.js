@@ -101,7 +101,7 @@ export default class CardFilterer {
      * @return {*} Chainable
      * @memberof CardFilterer
      */
-    sortCards(sortOption, eventFilter, featuredCardIds, hideCtaIds, isFirstLoad) {
+    sortCards(sortOption, eventFilter = [], featuredCardIds, hideCtaIds, isFirstLoad) {
         if (!this.filteredCards.length) return this;
 
         let sortType = sortOption ? sortOption.sort.toLowerCase() : null;
