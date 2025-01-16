@@ -17,7 +17,6 @@ import {
     saveBookmarksToLocalStorage,
     readBookmarksFromLocalStorage,
     readInclusionsFromLocalStorage,
-    sanitizeEventFilter,
     getTransitions,
 } from '../Helpers/general';
 import { configType } from '../types/config';
@@ -170,7 +169,6 @@ const Container = (props) => {
     const categories = getConfig('filterPanel', 'categories');
     // eslint-disable-next-line no-use-before-define, max-len
     const authoredCategories = isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : [];
-    const sanitizedEventFilter = eventFilter ? sanitizeEventFilter(eventFilter) : [];
 
     /**
      **** Hooks ****
@@ -1126,7 +1124,7 @@ const Container = (props) => {
      * @returns {Object}
      * */
     const getFilteredCollection = () => cardFilterer
-        .sortCards(sortOption, sanitizedEventFilter, featuredCards, hideCtaIds, isFirstLoad)
+        .sortCards(sortOption, eventFilter, featuredCards, hideCtaIds, isFirstLoad)
         .keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks)
         .keepCardsWithinDateRange()
         .filterCards(activeFilterIds, activePanels, filterLogic, FILTER_TYPES, currCategories)
