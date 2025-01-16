@@ -1,5 +1,17 @@
 
 
+# [0.25.0](https://github.com/adobecom/caas/compare/0.24.3...0.25.0) (2025-01-16)
+
+
+### Features
+
+* **mwpw-162835:** ability to select multiple events ([be6c199](https://github.com/adobecom/caas/commit/be6c199d446832f96cf8e712274077cd9c28ca1e))
+* **mwpw-162835:** missed a line ([b86f372](https://github.com/adobecom/caas/commit/b86f372dd1ef79ef2179b1571df37dbfa30f06e7))
+* **mwpw-162835:** rebase ([c446c5e](https://github.com/adobecom/caas/commit/c446c5e46c6b9c64c5e93f8ccc7747757184321c))
+* **mwpw-162835:** rebase ([3e895d3](https://github.com/adobecom/caas/commit/3e895d3664d6ec0c5ff1590eaf2644735b976b05))
+* **mwpw-162835:** rebase ([94da35a](https://github.com/adobecom/caas/commit/94da35ab85f743388b750084b89fe6a2f296f88d))
+* **mwpw-162835:** rebase ([d9f1fea](https://github.com/adobecom/caas/commit/d9f1fea685d656e7570c0b56d1665d82c5c51326))
+
 ## [0.24.3](https://github.com/adobecom/caas/compare/0.24.2...0.24.3) (2025-01-15)
 
 ## [0.24.2](https://github.com/adobecom/caas/compare/0.24.1...0.24.2) (2025-01-15)
