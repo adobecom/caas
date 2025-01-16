@@ -17,6 +17,7 @@ import {
     getPageStartEnd,
     getStartNumber,
     getEndNumber,
+    sanitizeEventFilter,
     stopPropagation,
     parseToPrimitive,
     chainFromIterable,
@@ -337,6 +338,15 @@ describe('utils/general', () => {
             test('should return correct value', () => {
                 const target = getLinkTarget(link, authoredPageProp, domain);
                 expect(target).toEqual(expectedValue);
+            });
+        });
+    });
+
+    describe('sanitizeEventFilter', () => {
+        PROPS.sanitizeEventFilter.forEach(( { filter, expectedValue }) => {
+            test('should return sanitized event filter', () => {
+                const value = sanitizeEventFilter(filter);
+                expect(value).toEqual(expectedValue);
             });
         });
     });
