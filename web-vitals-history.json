@@ -118,5 +118,17 @@
       "fid": 0.8000000000174623,
       "cls": null
     }
+  },
+  {
+    "date": "2025-01-16T22:36:58.854Z",
+    "pr": {
+      "number": "221",
+      "title": "Revert \"feat(mwpw-162835): ability to have multiple event sort options\""
+    },
+    "metrics": {
+      "lcp": 15614.5,
+      "fid": 1,
+      "cls": null
+    }
   }
 ]
