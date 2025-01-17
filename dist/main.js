@@ -1,9 +1,5 @@
 /*!
-<<<<<<< HEAD
- * Chimera UI Libraries - Build 0.24.1 (1/14/2025, 16:46:26)
-=======
- * Chimera UI Libraries - Build 0.24.1 (1/14/2025, 19:06:40)
->>>>>>> main
+ * Chimera UI Libraries - Build 0.25.1 (1/17/2025, 11:27:43)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -48026,7 +48022,7 @@ var Button = function Button(_ref) {
     var target = (0, _general.getLinkTarget)(href, ctaAction);
     var addParams = new URLSearchParams(additionalParams);
     var buttonLink = additionalParams && addParams.keys().next().value ? href + '?' + addParams.toString() : href;
-    var ariaLabel = text + ': ' + title;
+    var ariaLabel = text + ' ' + title;
 
     return _react2.default.createElement(
         'a',
@@ -48122,7 +48118,7 @@ var Link = function Link(_ref) {
      */
     var getConfig = (0, _hooks.useConfig)();
     var ctaAction = getConfig('collection', 'ctaAction');
-    var ariaLabel = text + ': ' + title;
+    var ariaLabel = text + ' ' + title;
 
     var target = (0, _general.getLinkTarget)(href, ctaAction);
     return _react2.default.createElement(
