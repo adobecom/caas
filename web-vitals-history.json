@@ -130,5 +130,17 @@
       "fid": 1,
       "cls": null
     }
+  },
+  {
+    "date": "2025-01-17T20:56:43.164Z",
+    "pr": {
+      "number": "223",
+      "title": "feat(mwpw-162835): ability to have multiple event sort options"
+    },
+    "metrics": {
+      "lcp": 12974.899999999965,
+      "fid": 1.2000000000116415,
+      "cls": null
+    }
   }
 ]
