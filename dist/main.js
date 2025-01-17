@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.25.1 (1/17/2025, 11:27:43)
+ * Chimera UI Libraries - Build 0.25.1 (1/17/2025, 11:30:35)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -48047,8 +48047,7 @@ var Button = function Button(_ref) {
         _react2.default.createElement(
             'span',
             null,
-            text,
-            '*'
+            text
         )
     );
 };
@@ -48133,8 +48132,7 @@ var Link = function Link(_ref) {
             rel: 'noopener noreferrer',
             tabIndex: '0',
             'aria-label': ariaLabel },
-        text,
-        '*'
+        text
     );
 };
 

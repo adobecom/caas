@@ -136,7 +136,7 @@ const Button = ({
                 alt={iconAlt}
                 loading="lazy" />
             }
-            <span>{text}*</span>
+            <span>{text}</span>
         </a>
     );
 };

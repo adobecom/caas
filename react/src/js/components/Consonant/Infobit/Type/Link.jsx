@@ -54,7 +54,7 @@ const Link = ({
             rel="noopener noreferrer"
             tabIndex="0"
             aria-label={ariaLabel}>
-            {text}*
+            {text}
         </a>
     );
 };
