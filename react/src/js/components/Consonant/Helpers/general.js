@@ -573,3 +573,9 @@ export const getSearchParam = (url, param) => {
     const urlObj = new URL(url);
     return urlObj.searchParams.get(param);
 };
+
+export const sanitizeEventFilter = (rawEventFilter) => {
+    if (!rawEventFilter || rawEventFilter.indexOf('all') > -1) return [];
+    if (Array.isArray(rawEventFilter)) return rawEventFilter;
+    return [rawEventFilter];
+};
