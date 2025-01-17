@@ -5,6 +5,7 @@ import {
     arrayOf,
     shape,
     func,
+    string,
 } from 'prop-types';
 
 import Icon from './Type/Icon';
@@ -34,11 +35,13 @@ const groupType = {
         shape(footerCenterType),
     ])),
     onFocus: func,
+    title: string,
 };
 
 const defaultProps = {
     renderList: [],
     onFocus: () => {},
+    title: '',
 };
 
 /**
@@ -57,6 +60,7 @@ const Group = (props) => {
     const {
         renderList,
         onFocus,
+        title,
     } = props;
 
     return (
@@ -75,7 +79,8 @@ const Group = (props) => {
                             <Button
                                 {...infobit}
                                 key={cuid()}
-                                onFocus={onFocus} />
+                                onFocus={onFocus}
+                                title={title} />
                         );
 
                     case INFOBIT_TYPE.ICON_TEXT:
@@ -110,7 +115,8 @@ const Group = (props) => {
                         return (
                             <TextLink
                                 {...infobit}
-                                key={cuid()} />
+                                key={cuid()}
+                                title={title} />
                         );
 
                     case INFOBIT_TYPE.PROGRESS:

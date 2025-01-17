@@ -21,6 +21,7 @@ const buttonType = {
     iconPos: string,
     isCta: bool,
     onFocus: func,
+    title: string,
 };
 
 const defaultProps = {
@@ -32,6 +33,7 @@ const defaultProps = {
     isCta: false,
     style: BUTTON_STYLE.CTA,
     onFocus: () => {},
+    title: '',
 };
 
 /**
@@ -57,6 +59,7 @@ const Button = ({
     iconPos,
     isCta,
     onFocus,
+    title,
 }) => {
     /**
      **** Authored Configs ****
@@ -110,6 +113,7 @@ const Button = ({
     const target = getLinkTarget(href, ctaAction);
     const addParams = new URLSearchParams(additionalParams);
     const buttonLink = (additionalParams && addParams.keys().next().value) ? `${href}?${addParams.toString()}` : href;
+    const ariaLabel = `${text} ${title}`;
 
     return (
         <a
@@ -120,7 +124,8 @@ const Button = ({
             rel="noopener noreferrer"
             target={target}
             href={buttonLink}
-            onFocus={onFocus}>
+            onFocus={onFocus}
+            aria-label={ariaLabel}>
             {iconSrc &&
             <img
                 data-testid="consonant-BtnInfobit-ico"

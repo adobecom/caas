@@ -497,7 +497,8 @@ const Card = (props) => {
                         startDate={startDate}
                         endDate={endDate}
                         cardStyle={cardStyle}
-                        onFocus={onFocus} />
+                        onFocus={onFocus}
+                        title={title} />
                 ))}
                 {(isThreeFourths || isDoubleWide || isFull)
                     && !renderOverlay
