@@ -1,5 +1,13 @@
 
 
+# [0.26.0](https://github.com/adobecom/caas/compare/0.25.1...0.26.0) (2025-01-17)
+
+
+### Features
+
+* **mwpw-162835:** adding back ability to select two event states for collection filters ([553e772](https://github.com/adobecom/caas/commit/553e772164ac721a2f08e1ce37fa352ac3bc8d85))
+* **mwpw-162835:** adding back event filters ([831c28c](https://github.com/adobecom/caas/commit/831c28ccbeb609e1eefd39d55f3366b29b40b768))
+
 ## [0.25.1](https://github.com/adobecom/caas/compare/0.25.0...0.25.1) (2025-01-16)
 
 # [0.25.0](https://github.com/adobecom/caas/compare/0.24.3...0.25.0) (2025-01-16)
