@@ -142,5 +142,17 @@
       "fid": 1.2000000000116415,
       "cls": null
     }
+  },
+  {
+    "date": "2025-01-21T23:43:01.820Z",
+    "pr": {
+      "number": "217",
+      "title": "fix(mwpw-164262): makes headings and text more accessible"
+    },
+    "metrics": {
+      "lcp": 12975.799999999988,
+      "fid": 0.7000000000116415,
+      "cls": null
+    }
   }
 ]
