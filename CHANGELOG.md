@@ -1,5 +1,12 @@
 
 
+## [0.26.1](https://github.com/adobecom/caas/compare/0.26.0...0.26.1) (2025-01-21)
+
+
+### Bug Fixes
+
+* **mwpw-164262:** makes headings and text more accessible ([#217](https://github.com/adobecom/caas/issues/217)) ([ba2f391](https://github.com/adobecom/caas/commit/ba2f391426a8512d62f27378188e647b41445e37))
+
 # [0.26.0](https://github.com/adobecom/caas/compare/0.25.1...0.26.0) (2025-01-17)
 
 
