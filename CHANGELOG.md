@@ -1,5 +1,14 @@
 
 
+## [0.28.1](https://github.com/adobecom/caas/compare/0.28.0...0.28.1) (2025-01-22)
+
+
+### Bug Fixes
+
+* **mwpw-162902:** accidentally left a console log ([26af0bc](https://github.com/adobecom/caas/commit/26af0bc2c254b2797faa18197747633ebc587605))
+* **mwpw-162902:** build files ([fc63081](https://github.com/adobecom/caas/commit/fc63081b445475f64b94d3ee5854419b4ca369f1))
+* **mwpw-162902:** fix the title sort so that it complies with eventFilters ([a897371](https://github.com/adobecom/caas/commit/a897371b90c9c3ea9f765f7df7d0b5d0cecc0c88))
+
 # [0.28.0](https://github.com/adobecom/caas/compare/0.27.0...0.28.0) (2025-01-22)
 
 
