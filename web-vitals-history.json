@@ -154,5 +154,17 @@
       "fid": 0.7000000000116415,
       "cls": null
     }
+  },
+  {
+    "date": "2025-01-22T17:59:38.295Z",
+    "pr": {
+      "number": "225",
+      "title": "feat(mwpw-165820): icon images should not have alt text"
+    },
+    "metrics": {
+      "lcp": 12954,
+      "fid": 0.9000000000232831,
+      "cls": null
+    }
   }
 ]
