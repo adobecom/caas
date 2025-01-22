@@ -1,5 +1,15 @@
 
 
+# [0.28.0](https://github.com/adobecom/caas/compare/0.27.0...0.28.0) (2025-01-22)
+
+
+### Features
+
+* **MWPW-164117:** adds aria-label to ctas ([adeaf6f](https://github.com/adobecom/caas/commit/adeaf6fa2a336b9619341e568a4a805cedf91e29))
+* **MWPW-164117:** adds aria-label to ctas ([2c48941](https://github.com/adobecom/caas/commit/2c489417212ce2fae3f64e79b0cfe069db88a4bd))
+* **mwpw-164117:** updates arialLabel for CTAs ([3f34f9d](https://github.com/adobecom/caas/commit/3f34f9dc522e899d67f009484bc382daade25892))
+* **mwpw-164117:** updates arialLabel for CTAs ([9739d90](https://github.com/adobecom/caas/commit/9739d907a3b3d7af4764688a71e39163ab254bd2))
+
 # [0.27.0](https://github.com/adobecom/caas/compare/0.26.1...0.27.0) (2025-01-22)
 
 
