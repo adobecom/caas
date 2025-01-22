@@ -178,5 +178,17 @@
       "fid": 0.8999999999941792,
       "cls": null
     }
+  },
+  {
+    "date": "2025-01-22T22:45:04.256Z",
+    "pr": {
+      "number": "226",
+      "title": "fix(mwpw-162902): fix the title sort so that it works with eventFilter"
+    },
+    "metrics": {
+      "lcp": 12651.100000000006,
+      "fid": 0.8999999999941792,
+      "cls": null
+    }
   }
 ]
