@@ -104,11 +104,14 @@ export default class CardFilterer {
     sortCards(sortOption, eventFilter = [], featuredCardIds, hideCtaIds, isFirstLoad) {
         if (!this.filteredCards.length) return this;
 
-        let sortType = sortOption ? sortOption.sort.toLowerCase() : null;
+        const sortType = sortOption ? sortOption.sort.toLowerCase() : null;
         if (eventFilter.length > 0) {
-            sortType = SORT_TYPES.EVENTSORT;
-        }
+            const {
+                visibleSessions = [],
+            } = getEventSort(this.filteredCards, eventFilter);
 
+            this.filteredCards = visibleSessions;
+        }
         switch (sortType) {
             case SORT_TYPES.DATEASC:
                 this.filteredCards = getDateAscSort(this.filteredCards);
