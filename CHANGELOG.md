@@ -1,5 +1,18 @@
 
 
+# [0.27.0](https://github.com/adobecom/caas/compare/0.26.1...0.27.0) (2025-01-22)
+
+
+### Bug Fixes
+
+* **mwpw-165820:** lint ([44a93f4](https://github.com/adobecom/caas/commit/44a93f4e0861a63b7bc626b5cb9d05a743fbbb0f))
+* **mwpw-165820:** unit tests lol ([2a0a1bb](https://github.com/adobecom/caas/commit/2a0a1bbb58d92986b548d16f8f2320a93e4a41f0))
+
+
+### Features
+
+* **mwpw-165820:** icon images should not have alt text ([5af7a71](https://github.com/adobecom/caas/commit/5af7a7152ffa71a23a7fcb3165c9dd09a6ff764e))
+
 ## [0.26.1](https://github.com/adobecom/caas/compare/0.26.0...0.26.1) (2025-01-21)
 
 
