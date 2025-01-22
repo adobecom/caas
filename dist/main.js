@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.27.0 (1/22/2025, 10:37:12)
+ * Chimera UI Libraries - Build 0.27.0 (1/22/2025, 14:00:14)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -53305,9 +53305,13 @@ var CardFilterer = function () {
 
             var sortType = sortOption ? sortOption.sort.toLowerCase() : null;
             if (eventFilter.length > 0) {
-                sortType = _constants.SORT_TYPES.EVENTSORT;
-            }
+                var _getEventSort = (0, _Helpers.getEventSort)(this.filteredCards, eventFilter),
+                    _getEventSort$visible = _getEventSort.visibleSessions,
+                    visibleSessions = _getEventSort$visible === undefined ? [] : _getEventSort$visible;
 
+                this.filteredCards = visibleSessions;
+            }
+            console.log(sortType);
             switch (sortType) {
                 case _constants.SORT_TYPES.DATEASC:
                     this.filteredCards = (0, _Helpers.getDateAscSort)(this.filteredCards);
@@ -53323,12 +53327,12 @@ var CardFilterer = function () {
                     break;
                 case _constants.SORT_TYPES.EVENTSORT:
                     {
-                        var _getEventSort = (0, _Helpers.getEventSort)(this.filteredCards, eventFilter),
-                            nextTransitionMs = _getEventSort.nextTransitionMs,
-                            _getEventSort$visible = _getEventSort.visibleSessions,
-                            visibleSessions = _getEventSort$visible === undefined ? [] : _getEventSort$visible;
+                        var _getEventSort2 = (0, _Helpers.getEventSort)(this.filteredCards, eventFilter),
+                            nextTransitionMs = _getEventSort2.nextTransitionMs,
+                            _getEventSort2$visibl = _getEventSort2.visibleSessions,
+                            _visibleSessions = _getEventSort2$visibl === undefined ? [] : _getEventSort2$visibl;
 
-                        this.filteredCards = visibleSessions;
+                        this.filteredCards = _visibleSessions;
 
                         if (nextTransitionMs > 0) {
                             this.nextTransitionMs = nextTransitionMs;
