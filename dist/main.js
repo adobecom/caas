@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.26.0 (1/21/2025, 14:39:28)
+ * Chimera UI Libraries - Build 0.26.1 (1/21/2025, 17:36:18)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -47214,7 +47214,7 @@ var Card = function Card(props) {
                     className: 'consonant-Card-logo' },
                 _react2.default.createElement('img', {
                     src: cardIcon,
-                    alt: iconAlt || '',
+                    alt: '',
                     loading: 'lazy',
                     width: '32',
                     'data-testid': 'consonant-Card-logoImg' })
