@@ -112,7 +112,6 @@ export default class CardFilterer {
 
             this.filteredCards = visibleSessions;
         }
-        console.log(sortType);
         switch (sortType) {
             case SORT_TYPES.DATEASC:
                 this.filteredCards = getDateAscSort(this.filteredCards);

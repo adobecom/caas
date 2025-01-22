@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.27.0 (1/22/2025, 14:00:14)
+ * Chimera UI Libraries - Build 0.27.0 (1/22/2025, 14:04:30)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -53311,7 +53311,6 @@ var CardFilterer = function () {
 
                 this.filteredCards = visibleSessions;
             }
-            console.log(sortType);
             switch (sortType) {
                 case _constants.SORT_TYPES.DATEASC:
                     this.filteredCards = (0, _Helpers.getDateAscSort)(this.filteredCards);
