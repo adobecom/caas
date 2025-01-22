@@ -426,7 +426,7 @@ const Card = (props) => {
                     className="consonant-Card-logo">
                     <img
                         src={cardIcon}
-                        alt={iconAlt || ''}
+                        alt=""
                         loading="lazy"
                         width="32"
                         data-testid="consonant-Card-logoImg" />

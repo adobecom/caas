@@ -60,8 +60,9 @@
         .consonant-Card-title {
             display: -webkit-box;
             -webkit-box-orient: vertical;
-            max-height: 1.375rem * 2;
             margin: 0 0 6px;
+
+            .line-clamp(2);
 
             .font(1.125rem, 1.375rem, 700, @consonantGray900);
         }
@@ -69,13 +70,13 @@
         .consonant-Card-text {
             display: -webkit-box;
             -webkit-box-orient: vertical;
-            max-height: 1.3125rem * 3;
             margin: 0 0 14px;
             padding: 0;
 
+            .line-clamp(3);
+
             .font(0.875rem, 1.3125rem, 400, @consonantGray700);
 
-            -webkit-line-clamp: 3;
             overflow: hidden;
 
             &:empty {
