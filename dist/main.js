@@ -1,5 +1,13 @@
 /*!
+<<<<<<< HEAD
  * Chimera UI Libraries - Build 0.28.4 (1/29/2025, 15:06:44)
+=======
+<<<<<<< HEAD
+ * Chimera UI Libraries - Build 0.28.1 (1/29/2025, 11:57:20)
+=======
+ * Chimera UI Libraries - Build 0.28.1 (1/22/2025, 15:28:09)
+>>>>>>> 6ddea69 (feat(mwpw-163904): newsroom card style)
+>>>>>>> 8bda72a (feat(mwpw-163904): news card style)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -47119,6 +47127,7 @@ var Card = function Card(props) {
     var isText = cardStyle === 'text-card';
     var isFull = cardStyle === 'full-card';
     var isIcon = cardStyle === 'icon-card';
+    var isNews = cardStyle === 'news-card';
 
     // Card elements to show
     var showHeader = !isProduct;
@@ -47128,7 +47137,7 @@ var Card = function Card(props) {
     var showLabel = !isProduct && !isText;
     var showVideoButton = !isProduct && !isText && !isIcon;
     var showText = !isHalfHeight && !isFull;
-    var showFooter = isOneHalf || isProduct || isText;
+    var showFooter = isOneHalf || isProduct || isText || isNews;
     var showFooterLeft = !isProduct;
     var showFooterCenter = !isProduct && !altCta;
     var hideBanner = false;
