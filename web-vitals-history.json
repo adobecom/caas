@@ -166,5 +166,17 @@
       "fid": 0.9000000000232831,
       "cls": null
     }
+  },
+  {
+    "date": "2025-01-22T19:19:09.754Z",
+    "pr": {
+      "number": "222",
+      "title": "feat(mwpw-164117): adds card title to CTAs aria-label"
+    },
+    "metrics": {
+      "lcp": 13130.700000000012,
+      "fid": 0.8999999999941792,
+      "cls": null
+    }
   }
 ]
