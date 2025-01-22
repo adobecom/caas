@@ -24,7 +24,6 @@ describe(`Consonant/Card/${cardStyle}`, () => {
             props: {
                 styles: {
                     icon: iconSrc,
-                    iconAlt,
                 },
             },
         } = renderCard({
