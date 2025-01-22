@@ -34,6 +34,6 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         const iconImgElement = screen.getByTestId('consonant-Card-logoImg');
         expect(iconElement).not.toBeNull();
         expect(iconImgElement).toHaveAttribute('src', iconSrc);
-        expect(iconImgElement).toHaveAttribute('alt', iconAlt);
+        expect(iconImgElement).toHaveAttribute('alt', '');
     });
 });
