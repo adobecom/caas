@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.28.1 (1/23/2025, 10:47:43)
+ * Chimera UI Libraries - Build 0.28.1 (1/23/2025, 14:09:47)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -2457,7 +2457,6 @@ var getEventSort = exports.getEventSort = function getEventSort() {
             styles: card.styles || {}
         });
     });
-    console.log(transformedCards);
 
     var result = (0, _eventSort.eventTiming)(transformedCards, eventFilter);
 

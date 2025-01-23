@@ -436,7 +436,6 @@ export const getEventSort = (cards = [], eventFilter) => {
         search: card.search || {},
         styles: card.styles || {},
     }));
-    console.log(transformedCards);
 
     const result = eventTiming(transformedCards, eventFilter);
 
