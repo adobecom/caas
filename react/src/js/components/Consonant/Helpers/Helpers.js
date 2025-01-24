@@ -413,7 +413,6 @@ export const getDateDescSort = cards => getDateAscSort(cards).reverse();
 export const getEventSort = (cards = [], eventFilter) => {
     const transformedCards = cards.map(card => ({
         id: card.id,
-        endDate: card.contentArea.dateDetailText.endTime || '',
         ...(card.footer[0].left[1] ?
             { startDate: card.footer[0].left[1].startTime } :
             { startDate: card.contentArea.dateDetailText.startTime }),

@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.28.1 (1/23/2025, 14:09:47)
+ * Chimera UI Libraries - Build 0.28.1 (1/24/2025, 12:33:40)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -2437,8 +2437,7 @@ var getEventSort = exports.getEventSort = function getEventSort() {
 
     var transformedCards = cards.map(function (card) {
         return _extends({
-            id: card.id,
-            endDate: card.contentArea.dateDetailText.endTime || ''
+            id: card.id
         }, card.footer[0].left[1] ? { startDate: card.footer[0].left[1].startTime } : { startDate: card.contentArea.dateDetailText.startTime }, card.footer[0].left[1] ? { endDate: card.footer[0].left[1].endTime } : { endDate: card.contentArea.dateDetailText.endTime }, {
             tags: card.tags || [],
             cardDate: card.cardDate || '',
