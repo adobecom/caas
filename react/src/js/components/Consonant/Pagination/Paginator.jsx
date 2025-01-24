@@ -70,6 +70,12 @@ const Paginator = (props) => {
     const nextLabel = getConfig('pagination', 'i18n.paginator.nextLabel');
 
     /**
+     * Use Light Text
+     * @type {String}
+     */
+    const useLightText = getConfig('collection', 'useLightText');
+
+    /**
      * Start and end indexes of pages to build
      * @type {Int, Int}
      */
@@ -131,7 +137,7 @@ const Paginator = (props) => {
 
     return (
         <div
-            className="consonant-Pagination">
+            className={useLightText ? 'consonant-Pagination lightText' : 'consonant-Pagination'}>
             <div
                 className="consonant-Pagination-paginator">
                 <button
