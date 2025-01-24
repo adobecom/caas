@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.28.1 (1/24/2025, 13:30:14)
+ * Chimera UI Libraries - Build 0.28.1 (1/24/2025, 15:40:20)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -44056,8 +44056,7 @@ var Search = function Search(_ref) {
                     value: value,
                     onChange: handleSearch,
                     ref: textInput,
-                    className: 'consonant-Search-input',
-                    required: true }),
+                    className: 'consonant-Search-input' }),
                 _react2.default.createElement('button', {
                     'data-testid': 'consonant-Search-inputClear',
                     type: 'button',
