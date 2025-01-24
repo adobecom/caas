@@ -291,7 +291,7 @@ const Card = (props) => {
     const showLogo = isOneHalf || isThreeFourths || isFull || isText;
     const showLabel = !isProduct && !isText;
     const showVideoButton = !isProduct && !isText && !isIcon;
-    const showText = !isHalfHeight && !isFull;
+    const showText = !isHalfHeight && !isFull && !isNews;
     const showFooter = isOneHalf || isProduct || isText || isNews;
     const showFooterLeft = !isProduct;
     const showFooterCenter = !isProduct && !altCta;
