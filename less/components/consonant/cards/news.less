@@ -1,0 +1,26 @@
+.consonant-CardsGrid {
+    .consonant-Card.news-card {
+        .card-hover;
+        .card-hover-header;
+
+        .consonant-Card-header {
+            position: relative;
+            width: 100%;
+            height: @consonant-OneHalfCard-imgHeigh;
+            background-color: @consonantGray300;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+            background-size: cover;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            overflow: hidden;
+        }
+    }
+
+    &--2up,
+    &--3up {
+        .consonant-Card.one-half {
+            min-height: @consonantCardHeight;
+        }
+    }
+}
