@@ -666,7 +666,7 @@ const getEventSort = [
                 'endDate': '2023-01-01T12:00:00Z',
                 'footer': [], 
                 'initial': {}, 
-                'isBookmarked': '', 
+                'isBookmarked': false, 
                 'modifiedDate': '', 
                 'overlayLink': '', 
                 'overlays': {}, 
@@ -709,7 +709,7 @@ const getEventSort = [
                     ]
                 } ],
                 initial: {},
-                isBookmarked: '',
+                isBookmarked: false,
                 modifiedDate: '',
                 overlayLink: '',
                 overlays: {},
@@ -751,7 +751,7 @@ const getEventSort = [
                     ]
                 } ],
                 initial: {},
-                isBookmarked: '',
+                isBookmarked: false,
                 modifiedDate: '',
                 overlayLink: '',
                 overlays: {},

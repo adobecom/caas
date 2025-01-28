@@ -84,7 +84,7 @@ describe('utils/CardFilterer', () => {
             ];
             const expectedValue = [
                 { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } },
-                    createdDate: '', ctaLink: '', description: '', endDate: '2021-01-02', footer: [{ left: [] }], initial: {}, isBookmarked: '',
+                    createdDate: '', ctaLink: '', description: '', endDate: '2021-01-02', footer: [{ left: [] }], initial: {}, isBookmarked: false,
                     modifiedDate: '', overlayLink: '', overlays: {}, search: {}, showCard: {}, startDate: '2021-01-01', styles: {},
                     cardDate: '', tags: ['event1'] },
             ];
@@ -100,7 +100,7 @@ describe('utils/CardFilterer', () => {
             ];
             const expectedValue = [
                 { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } },
-                    createdDate: '', ctaLink: '', description: '', endDate: '2021-01-02', footer: [{ left: [] }], initial: {}, isBookmarked: '',
+                    createdDate: '', ctaLink: '', description: '', endDate: '2021-01-02', footer: [{ left: [] }], initial: {}, isBookmarked: false,
                     modifiedDate: '', overlayLink: '', overlays: {}, search: {}, showCard: {}, startDate: '2021-01-01', styles: {},
                     cardDate: '', tags: ['event1'] },
             ];
@@ -116,7 +116,7 @@ describe('utils/CardFilterer', () => {
             ];
             const expectedValue = [
                 { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } },
-                    createdDate: '', ctaLink: '', description: '', endDate: '2021-01-02', footer: [{ left: [] }], initial: {}, isBookmarked: '',
+                    createdDate: '', ctaLink: '', description: '', endDate: '2021-01-02', footer: [{ left: [] }], initial: {}, isBookmarked: false,
                     modifiedDate: '', overlayLink: '', overlays: {}, search: {}, showCard: {}, startDate: '2021-01-01', styles: {},
                     cardDate: '', tags: ['event1'] },
             ];
