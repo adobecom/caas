@@ -190,5 +190,41 @@
       "fid": 0.8999999999941792,
       "cls": null
     }
+  },
+  {
+    "date": "2025-01-29T18:13:08.004Z",
+    "pr": {
+      "number": "229",
+      "title": "fix(mwpw-166135): fixes paginator accessibility when using Light Text"
+    },
+    "metrics": {
+      "lcp": 13111.699999999983,
+      "fid": 0.7000000000116415,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-01-29T20:09:38.130Z",
+    "pr": {
+      "number": "227",
+      "title": "fix(mwpw-166139): issue with footers with 0.25.0"
+    },
+    "metrics": {
+      "lcp": 10831.899999999965,
+      "fid": 0.9000000000232831,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-01-29T22:17:47.817Z",
+    "pr": {
+      "number": "232",
+      "title": "fix(mwpw-166139): fixing event sort"
+    },
+    "metrics": {
+      "lcp": 10387.200000000012,
+      "fid": 0.7999999999883585,
+      "cls": null
+    }
   }
 ]
