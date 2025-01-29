@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.28.1 (1/29/2025, 24:07:02)
+ * Chimera UI Libraries - Build 0.28.1 (1/29/2025, 11:57:20)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -1967,6 +1967,8 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _immer = __webpack_require__(270);
 
 var _immer2 = _interopRequireDefault(_immer);
@@ -2414,6 +2416,40 @@ var getDateDescSort = exports.getDateDescSort = function getDateDescSort(cards) 
 };
 
 /**
+ * Convert a path string like 'footer[0].left[1].startTime'
+ * into an array of keys: ['footer','0','left','1','startTime'].
+ */
+function parsePathString(pathString) {
+    if (pathString) {
+        return pathString.replace(/\[(\d+)\]/g, '.$1').split('.');
+    }
+    return '';
+}
+
+/**
+ * Safely get a nested property from an object
+ * using a path string with dot/bracket notation.
+ * e.g. safeGet(card, 'footer[0].left[1].startTime', '')
+ */
+function safeGet(obj, pathString, defaultVal) {
+    var parts = parsePathString(pathString);
+    var current = obj;
+
+    for (var i = 0; i < parts.length; i++) {
+        if (current == null || (typeof current === 'undefined' ? 'undefined' : _typeof(current)) !== 'object') {
+            return defaultVal;
+        }
+        var key = parts[i];
+        if (!(key in current)) {
+            return defaultVal;
+        }
+        current = current[key];
+    }
+
+    return current == null ? defaultVal : current;
+}
+
+/**
  * @func getEventSort
  * @desc This method, if needed, sets up Timing features for a collection
  (1) Has to check each card for card.contentArea.dateDetailText.startTime
@@ -2438,8 +2474,8 @@ var getEventSort = exports.getEventSort = function getEventSort() {
     var transformedCards = cards.map(function (card) {
         return {
             id: card.id,
-            startDate: card.contentArea.dateDetailText.startTime || card.footer[0].left[1].startTime || '',
-            endDate: card.contentArea.dateDetailText.endTime || card.footer[0].left[1].endTime || '',
+            startDate: safeGet(card, 'contentArea.dateDetailText.startTime', safeGet(card, 'footer[0].left[1].startTime', '')),
+            endDate: safeGet(card, 'contentArea.dateDetailText.endTime', safeGet(card, 'footer[0].left[1].endTime', '')),
             tags: card.tags || [],
             cardDate: card.cardDate || '',
             contentArea: card.contentArea || {},
@@ -2448,7 +2484,7 @@ var getEventSort = exports.getEventSort = function getEventSort() {
             description: card.description || '',
             footer: card.footer || [],
             initial: card.initial || {},
-            isBookmarked: card.isBookmarked || '',
+            isBookmarked: card.isBookmarked || false,
             modifiedDate: card.modifiedDate || '',
             overlayLink: card.overlayLink || '',
             overlays: card.overlays || {},

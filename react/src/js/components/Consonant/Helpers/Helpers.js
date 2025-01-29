@@ -393,6 +393,40 @@ export const getDateAscSort = cards => cards.sort((cardOne, cardTwo) => {
 export const getDateDescSort = cards => getDateAscSort(cards).reverse();
 
 /**
+ * Convert a path string like 'footer[0].left[1].startTime'
+ * into an array of keys: ['footer','0','left','1','startTime'].
+ */
+function parsePathString(pathString) {
+    if (pathString) {
+        return pathString.replace(/\[(\d+)\]/g, '.$1').split('.');
+    }
+    return '';
+}
+
+/**
+ * Safely get a nested property from an object
+ * using a path string with dot/bracket notation.
+ * e.g. safeGet(card, 'footer[0].left[1].startTime', '')
+ */
+function safeGet(obj, pathString, defaultVal) {
+    const parts = parsePathString(pathString);
+    let current = obj;
+
+    for (let i = 0; i < parts.length; i++) {
+        if (current == null || typeof current !== 'object') {
+            return defaultVal;
+        }
+        const key = parts[i];
+        if (!(key in current)) {
+            return defaultVal;
+        }
+        current = current[key];
+    }
+
+    return current == null ? defaultVal : current;
+}
+
+/**
  * @func getEventSort
  * @desc This method, if needed, sets up Timing features for a collection
  (1) Has to check each card for card.contentArea.dateDetailText.startTime
@@ -413,8 +447,8 @@ export const getDateDescSort = cards => getDateAscSort(cards).reverse();
 export const getEventSort = (cards = [], eventFilter) => {
     const transformedCards = cards.map(card => ({
         id: card.id,
-        startDate: card.contentArea.dateDetailText.startTime || card.footer[0].left[1].startTime || '',
-        endDate: card.contentArea.dateDetailText.endTime || card.footer[0].left[1].endTime || '',
+        startDate: safeGet(card, 'contentArea.dateDetailText.startTime', safeGet(card, 'footer[0].left[1].startTime', '')),
+        endDate: safeGet(card, 'contentArea.dateDetailText.endTime', safeGet(card, 'footer[0].left[1].endTime', '')),
         tags: card.tags || [],
         cardDate: card.cardDate || '',
         contentArea: card.contentArea || {},
@@ -423,7 +457,7 @@ export const getEventSort = (cards = [], eventFilter) => {
         description: card.description || '',
         footer: card.footer || [],
         initial: card.initial || {},
-        isBookmarked: card.isBookmarked || '',
+        isBookmarked: card.isBookmarked || false,
         modifiedDate: card.modifiedDate || '',
         overlayLink: card.overlayLink || '',
         overlays: card.overlays || {},
@@ -583,4 +617,3 @@ export const sanitizeStr = str => str
     .replaceAll('&amp;', '&')
     .replaceAll('&lt;', '<')
     .replaceAll('&gt;', '>');
-

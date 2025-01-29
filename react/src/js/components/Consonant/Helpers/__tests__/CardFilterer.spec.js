@@ -79,12 +79,12 @@ describe('utils/CardFilterer', () => {
 
         test('Event Sort', () => {
             const cards = [
-                { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } }, tags: ['event1'] },
-                { id: 2, contentArea: { dateDetailText: { startTime: '2021-01-03', endTime: '2029-01-04' } }, tags: ['event2'] },
+                { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } }, tags: ['event1'], footer: [{ left: []}] },
+                { id: 2, contentArea: { dateDetailText: { startTime: '2021-01-03', endTime: '2029-01-04' } }, tags: ['event2'], footer: [{ left: []}] },
             ];
             const expectedValue = [
                 { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } },
-                    createdDate: '', ctaLink: '', description: '', endDate: '2021-01-02', footer: [], initial: {}, isBookmarked: '',
+                    createdDate: '', ctaLink: '', description: '', endDate: '2021-01-02', footer: [{ left: [] }], initial: {}, isBookmarked: false,
                     modifiedDate: '', overlayLink: '', overlays: {}, search: {}, showCard: {}, startDate: '2021-01-01', styles: {},
                     cardDate: '', tags: ['event1'] },
             ];
@@ -95,12 +95,12 @@ describe('utils/CardFilterer', () => {
 
         test('Event Sort with nextTransitionMs', () => {
             const cards = [
-                { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } }, tags: ['event1'] },
-                { id: 2, contentArea: { dateDetailText: { startTime: '2021-01-03', endTime: '2129-01-04' } }, tags: ['event2'] },
+                { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } }, tags: ['event1'], footer: [{ left: []}] },
+                { id: 2, contentArea: { dateDetailText: { startTime: '2021-01-03', endTime: '2129-01-04' } }, tags: ['event2'], footer: [{ left: []}] },
             ];
             const expectedValue = [
                 { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } },
-                    createdDate: '', ctaLink: '', description: '', endDate: '2021-01-02', footer: [], initial: {}, isBookmarked: '',
+                    createdDate: '', ctaLink: '', description: '', endDate: '2021-01-02', footer: [{ left: [] }], initial: {}, isBookmarked: false,
                     modifiedDate: '', overlayLink: '', overlays: {}, search: {}, showCard: {}, startDate: '2021-01-01', styles: {},
                     cardDate: '', tags: ['event1'] },
             ];
@@ -111,12 +111,12 @@ describe('utils/CardFilterer', () => {
         });
         test('Event Sort with a string (legacy event sort)', () => {
             const cards = [
-                { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } }, tags: ['event1'] },
-                { id: 2, contentArea: { dateDetailText: { startTime: '2021-01-03', endTime: '2129-01-04' } }, tags: ['event2'] },
+                { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } }, tags: ['event1'], footer: [{ left: []}] },
+                { id: 2, contentArea: { dateDetailText: { startTime: '2021-01-03', endTime: '2129-01-04' } }, tags: ['event2'], footer: [{ left: []}] },
             ];
             const expectedValue = [
                 { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } },
-                    createdDate: '', ctaLink: '', description: '', endDate: '2021-01-02', footer: [], initial: {}, isBookmarked: '',
+                    createdDate: '', ctaLink: '', description: '', endDate: '2021-01-02', footer: [{ left: [] }], initial: {}, isBookmarked: false,
                     modifiedDate: '', overlayLink: '', overlays: {}, search: {}, showCard: {}, startDate: '2021-01-01', styles: {},
                     cardDate: '', tags: ['event1'] },
             ];
