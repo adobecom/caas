@@ -1,17 +1,5 @@
 /*!
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
- * Chimera UI Libraries - Build 0.28.1 (1/29/2025, 11:57:20)
-=======
- * Chimera UI Libraries - Build 0.28.1 (1/22/2025, 15:28:09)
->>>>>>> 6ddea69 (feat(mwpw-163904): newsroom card style)
-=======
- * Chimera UI Libraries - Build 0.28.1 (1/24/2025, 12:32:35)
->>>>>>> dc6ea47 (fix(mwpw-163904): new newscard style)
-=======
- * Chimera UI Libraries - Build 0.28.1 (1/29/2025, 11:51:37)
->>>>>>> a9b4442 (feat(mwpw-163904): news card styles)
+ * Chimera UI Libraries - Build 0.28.3 (1/29/2025, 12:36:38)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
