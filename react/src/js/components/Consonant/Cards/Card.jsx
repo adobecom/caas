@@ -367,7 +367,7 @@ const Card = (props) => {
                 style={{ backgroundImage: `url("${image}")` }}
                 role={altText && 'img'}
                 aria-label={altText}>
-                {hasBanner && !disableBanners && !isIcon &&
+                {hasBanner && !disableBanners && !isIcon && !isNews &&
                 <span
                     data-testid="consonant-Card-banner"
                     className="consonant-Card-banner"
