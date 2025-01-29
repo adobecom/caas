@@ -1,5 +1,15 @@
 
 
+## [0.28.2](https://github.com/adobecom/caas/compare/0.28.1...0.28.2) (2025-01-29)
+
+
+### Bug Fixes
+
+* **MWPW-157212:** Link CTA accessibility issues | Minimum color contrast ([fd01489](https://github.com/adobecom/caas/commit/fd01489db98365600632ab01ffc4294fbc401778))
+* **MWPW-166135:** css code cleanup ([627fe02](https://github.com/adobecom/caas/commit/627fe02d0ccc7bd557d8cd1275e483afd1757a2b))
+* **MWPW-166135:** fixes Use Light Text for paginator ([766c8cf](https://github.com/adobecom/caas/commit/766c8cfda0acd71d7ab7a02d61cfa851552a909c))
+* **MWPW-166328:** removes require attribute from search ([8392056](https://github.com/adobecom/caas/commit/8392056b8828688cf88d1ee1ed5ed42ca9c71054))
+
 ## [0.28.1](https://github.com/adobecom/caas/compare/0.28.0...0.28.1) (2025-01-22)
 
 
