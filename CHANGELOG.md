@@ -1,5 +1,12 @@
 
 
+## [0.28.4](https://github.com/adobecom/caas/compare/0.28.3...0.28.4) (2025-01-29)
+
+
+### Bug Fixes
+
+* **mwpw-166139:** fixing event sort ([83768f7](https://github.com/adobecom/caas/commit/83768f70b9634363e8d5beeb1ba83c3138fa57b4))
+
 ## [0.28.3](https://github.com/adobecom/caas/compare/0.28.2...0.28.3) (2025-01-29)
 
 
