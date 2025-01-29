@@ -447,8 +447,8 @@ function safeGet(obj, pathString, defaultVal) {
 export const getEventSort = (cards = [], eventFilter) => {
     const transformedCards = cards.map(card => ({
         id: card.id,
-        startDate: safeGet(card, 'contentArea.dateDetailText.startTime', safeGet(card, 'footer[0].left[1].startTime', '')),
-        endDate: safeGet(card, 'contentArea.dateDetailText.endTime', safeGet(card, 'footer[0].left[1].endTime', '')),
+        startDate: safeGet(card, 'footer[0].left[1].startTime', safeGet(card, 'contentArea.dateDetailText.startTime', '')),
+        endDate: safeGet(card, 'footer[0].left[1].endTime', safeGet(card, 'contentArea.dateDetailText.endTime', '')),
         tags: card.tags || [],
         cardDate: card.cardDate || '',
         contentArea: card.contentArea || {},

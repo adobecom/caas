@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.28.1 (1/29/2025, 11:57:20)
+ * Chimera UI Libraries - Build 0.28.3 (1/29/2025, 14:06:33)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -2474,8 +2474,8 @@ var getEventSort = exports.getEventSort = function getEventSort() {
     var transformedCards = cards.map(function (card) {
         return {
             id: card.id,
-            startDate: safeGet(card, 'contentArea.dateDetailText.startTime', safeGet(card, 'footer[0].left[1].startTime', '')),
-            endDate: safeGet(card, 'contentArea.dateDetailText.endTime', safeGet(card, 'footer[0].left[1].endTime', '')),
+            startDate: safeGet(card, 'footer[0].left[1].startTime', safeGet(card, 'contentArea.dateDetailText.startTime', '')),
+            endDate: safeGet(card, 'footer[0].left[1].endTime', safeGet(card, 'contentArea.dateDetailText.endTime', '')),
             tags: card.tags || [],
             cardDate: card.cardDate || '',
             contentArea: card.contentArea || {},
