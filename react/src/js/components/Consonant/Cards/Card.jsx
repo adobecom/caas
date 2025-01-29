@@ -282,6 +282,7 @@ const Card = (props) => {
     const isText = cardStyle === 'text-card';
     const isFull = cardStyle === 'full-card';
     const isIcon = cardStyle === 'icon-card';
+    const isNews = cardStyle === 'news-card';
 
     // Card elements to show
     const showHeader = !isProduct;
@@ -290,8 +291,8 @@ const Card = (props) => {
     const showLogo = isOneHalf || isThreeFourths || isFull || isText;
     const showLabel = !isProduct && !isText;
     const showVideoButton = !isProduct && !isText && !isIcon;
-    const showText = !isHalfHeight && !isFull;
-    const showFooter = isOneHalf || isProduct || isText;
+    const showText = !isHalfHeight && !isFull && !isNews;
+    const showFooter = isOneHalf || isProduct || isText || isNews;
     const showFooterLeft = !isProduct;
     const showFooterCenter = !isProduct && !altCta;
     let hideBanner = false;
@@ -366,7 +367,7 @@ const Card = (props) => {
                 style={{ backgroundImage: `url("${image}")` }}
                 role={altText && 'img'}
                 aria-label={altText}>
-                {hasBanner && !disableBanners && !isIcon &&
+                {hasBanner && !disableBanners && !isIcon && !isNews &&
                 <span
                     data-testid="consonant-Card-banner"
                     className="consonant-Card-banner"
