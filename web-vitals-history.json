@@ -190,5 +190,17 @@
       "fid": 0.8999999999941792,
       "cls": null
     }
+  },
+  {
+    "date": "2025-01-29T18:13:08.004Z",
+    "pr": {
+      "number": "229",
+      "title": "fix(mwpw-166135): fixes paginator accessibility when using Light Text"
+    },
+    "metrics": {
+      "lcp": 13111.699999999983,
+      "fid": 0.7000000000116415,
+      "cls": null
+    }
   }
 ]
