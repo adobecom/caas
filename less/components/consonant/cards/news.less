@@ -31,10 +31,43 @@
         overflow: hidden;
     }
 
+    .consonant-Card-label {
+        display: block;
+        max-width: 100%;
+        margin-bottom: 4px;
+
+        .font(@color: @consonantGray800);
+
+        text-decoration: none;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
     &--2up,
     &--3up {
-        .consonant-Card.one-half {
+        .consonant-Card.news-card {
             min-height: @consonantCardHeight;
+        }
+    }
+
+    &--4up {
+        .consonant-Card.news-card {
+            height: auto;
+
+            .consonant-Card-header {
+                min-height: @consonant-CardsGrid-smallerCardImgOneHalfHeight;
+                max-height: @consonant-CardsGrid-smallerCardImgOneHalfHeight;
+            }
+        }
+    }
+
+    &--4up,
+    &--5up {
+        .consonant-Card.news-card {
+            .consonant-Card-content {
+                padding: 16px 16px 20px;
+            }
         }
     }
 }
