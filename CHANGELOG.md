@@ -1,5 +1,20 @@
 
 
+## [0.28.3](https://github.com/adobecom/caas/compare/0.28.2...0.28.3) (2025-01-29)
+
+
+### Bug Fixes
+
+* **mwpw-163904:** removing extra endDate ([9e7a0d3](https://github.com/adobecom/caas/commit/9e7a0d381a8f22fdb2fb0ae663172f66a906820d))
+* **mwpw-166139:** add function for safely getting deep objects ([4c32b3a](https://github.com/adobecom/caas/commit/4c32b3a1b3d1e19594af4a321d00a579437cc9e9))
+* **mwpw-166139:** build files ([f678848](https://github.com/adobecom/caas/commit/f678848ed806a4486bc50306377d779b30314c29))
+* **mwpw-166139:** fixing unit tests ([f8d917f](https://github.com/adobecom/caas/commit/f8d917f14e7c42bc092cbb61b0bdc91f19b4f6d1))
+* **mwpw-166139:** fixing unit tests ([790b66e](https://github.com/adobecom/caas/commit/790b66e93e22b58f6c33feaf56fd29c08ea5fe6f))
+* **mwpw-166139:** forgot endDate ([fe0ce07](https://github.com/adobecom/caas/commit/fe0ce07ed37073954db894b7362e768c2efd9d5d))
+* **mwpw-166139:** issue with footers with 0.25.0 ([ac4666e](https://github.com/adobecom/caas/commit/ac4666e6ef7c7ef119011c6486781bb0c98f58fa))
+* **mwpw-166139:** just rebuilding for my sanity ([555757b](https://github.com/adobecom/caas/commit/555757b6834f31e69ddd68b0df6b07ff382b675a))
+* **mwpw-166139:** unit tests for all of the cases ([7a442ad](https://github.com/adobecom/caas/commit/7a442adf90e3b539367ec867a163bd5db6c57ffa))
+
 ## [0.28.2](https://github.com/adobecom/caas/compare/0.28.1...0.28.2) (2025-01-29)
 
 
