@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.28.1 (1/28/2025, 14:40:08)
+ * Chimera UI Libraries - Build 0.28.1 (1/29/2025, 10:11:36)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -44092,8 +44092,7 @@ var Search = function Search(_ref) {
                     value: value,
                     onChange: handleSearch,
                     ref: textInput,
-                    className: 'consonant-Search-input',
-                    required: true }),
+                    className: 'consonant-Search-input' }),
                 _react2.default.createElement('button', {
                     'data-testid': 'consonant-Search-inputClear',
                     type: 'button',
@@ -53091,6 +53090,12 @@ var Paginator = function Paginator(props) {
     var nextLabel = getConfig('pagination', 'i18n.paginator.nextLabel');
 
     /**
+     * Use Light Text
+     * @type {String}
+     */
+    var useLightText = getConfig('collection', 'useLightText');
+
+    /**
      * Start and end indexes of pages to build
      * @type {Int, Int}
      */
@@ -53155,7 +53160,7 @@ var Paginator = function Paginator(props) {
     return _react2.default.createElement(
         'div',
         {
-            className: 'consonant-Pagination' },
+            className: useLightText ? 'consonant-Pagination lightText' : 'consonant-Pagination' },
         _react2.default.createElement(
             'div',
             {

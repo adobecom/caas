@@ -34,6 +34,28 @@
             }
         }
 
+        &.lightText {
+            .consonant-Pagination-btn,
+            .consonant-Pagination-itemBtn,
+            .consonant-Pagination-summary,
+            li.consonant-Pagination-item {
+                color: @consonantWhite;
+            }
+
+            .consonant-Pagination-item.is-active {
+                .consonant-Pagination-itemBtn {
+                    background-color: @consonantDarkGrey300;
+                    color: @consonantWhite;
+                }
+            }
+
+            .consonant-Pagination-item:hover {
+                .consonant-Pagination-itemBtn {
+                    color: @consonantLightGrey600;
+                }
+            }
+        }
+
         &-items {
             display: flex;
             align-items: center;
