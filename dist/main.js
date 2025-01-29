@@ -1,6 +1,7 @@
 /*!
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
  * Chimera UI Libraries - Build 0.28.1 (1/29/2025, 11:57:20)
 =======
  * Chimera UI Libraries - Build 0.28.1 (1/22/2025, 15:28:09)
@@ -8,6 +9,9 @@
 =======
  * Chimera UI Libraries - Build 0.28.1 (1/24/2025, 12:32:35)
 >>>>>>> dc6ea47 (fix(mwpw-163904): new newscard style)
+=======
+ * Chimera UI Libraries - Build 0.28.1 (1/29/2025, 11:51:37)
+>>>>>>> a9b4442 (feat(mwpw-163904): news card styles)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -47199,7 +47203,7 @@ var Card = function Card(props) {
                 style: { backgroundImage: 'url("' + image + '")' },
                 role: altText && 'img',
                 'aria-label': altText },
-            hasBanner && !disableBanners && !isIcon && _react2.default.createElement(
+            hasBanner && !disableBanners && !isIcon && !isNews && _react2.default.createElement(
                 'span',
                 {
                     'data-testid': 'consonant-Card-banner',

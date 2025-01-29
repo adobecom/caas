@@ -17,6 +17,20 @@
         }
     }
 
+    .consonant-Card-title {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        margin: 0 0 7px;
+
+        .line-clamp(3);
+
+        .font(1.125rem, 1.375rem, 700, @consonantGray900);
+
+        text-decoration: none;
+        word-break: break-word;
+        overflow: hidden;
+    }
+
     &--2up,
     &--3up {
         .consonant-Card.one-half {
