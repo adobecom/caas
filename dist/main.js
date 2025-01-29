@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.28.1 (1/29/2025, 24:07:02)
+ * Chimera UI Libraries - Build 0.28.1 (1/29/2025, 12:01:37)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -43873,14 +43873,17 @@ var Popup = function Popup(_ref) {
                 type: 'button',
                 onClick: handleToggle,
                 className: openButtonClass,
-                tabIndex: '0' },
+                tabIndex: '0',
+                'aria-haspopup': 'menu',
+                'aria-expanded': opened },
             val.label
         ),
         opened && _react2.default.createElement(
             'div',
             {
                 'data-testid': 'consonant-Select-options',
-                className: 'consonant-Select-options consonant-Select-options--' + optionsAlignment },
+                className: 'consonant-Select-options consonant-Select-options--' + optionsAlignment,
+                role: 'menu' },
             values.map(function (item) {
                 return _react2.default.createElement(
                     'button',
@@ -43888,6 +43891,7 @@ var Popup = function Popup(_ref) {
                         'data-testid': 'consonant-Select-option',
                         key: item.label,
                         type: 'button',
+                        role: 'menuitem',
                         className: item.label === val.label ? 'consonant-Select-option is-selected' : 'consonant-Select-option',
                         onClick: function onClick(e) {
                             return handleOptionClick(e, item);
