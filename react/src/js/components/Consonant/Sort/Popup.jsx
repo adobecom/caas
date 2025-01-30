@@ -99,18 +99,22 @@ const Popup = ({
                 type="button"
                 onClick={handleToggle}
                 className={openButtonClass}
-                tabIndex="0">
+                tabIndex="0"
+                aria-haspopup="menu"
+                aria-expanded={opened}>
                 {val.label}
             </button>
             { opened &&
                 <div
                     data-testid="consonant-Select-options"
-                    className={`consonant-Select-options consonant-Select-options--${optionsAlignment}`}>
+                    className={`consonant-Select-options consonant-Select-options--${optionsAlignment}`}
+                    role="menu">
                     {values.map(item => (
                         <button
                             data-testid="consonant-Select-option"
                             key={item.label}
                             type="button"
+                            role="menuitem"
                             className={item.label === val.label ?
                                 'consonant-Select-option is-selected' :
                                 'consonant-Select-option'
