@@ -1,5 +1,12 @@
 
 
+## [0.28.6](https://github.com/adobecom/caas/compare/0.28.5...0.28.6) (2025-01-30)
+
+
+### Bug Fixes
+
+* **MWPW-166332:** sort control missing ARIA attributes ([#231](https://github.com/adobecom/caas/issues/231)) ([d84326d](https://github.com/adobecom/caas/commit/d84326d0662a5be5573739ec1194f9eefc7610cc))
+
 ## [0.28.5](https://github.com/adobecom/caas/compare/0.28.4...0.28.5) (2025-01-29)
 
 ## [0.28.4](https://github.com/adobecom/caas/compare/0.28.3...0.28.4) (2025-01-29)
