@@ -238,5 +238,17 @@
       "fid": 0.7999999999883585,
       "cls": null
     }
+  },
+  {
+    "date": "2025-01-30T00:24:12.854Z",
+    "pr": {
+      "number": "231",
+      "title": "fix(mwpw-166332): caas accessibility issues"
+    },
+    "metrics": {
+      "lcp": 13019.600000000006,
+      "fid": 0.6999999999825377,
+      "cls": null
+    }
   }
 ]
