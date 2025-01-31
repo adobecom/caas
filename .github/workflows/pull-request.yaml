@@ -99,6 +99,11 @@ jobs:
           node-version: 16
       - run: npm ci
       - run: npm run build
+
+      # Debug steps
+      - run: ls -al
+      - run: ls -al build
+      
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
