@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>React App Test</title>
+    <!-- Include required CSS files -->
+    <link rel="stylesheet" href="../../dist/app.css" type="text/css">
+    <link rel="stylesheet" href="../../dependencies/typekit.css" type="text/css">
+    <link rel="stylesheet" href="../../dependencies/dexter/publish.css" type="text/css">
+</head>
+
+<body>
+<div id="someDivId"></div>
+
+<!-- Include required JavaScript files -->
+<script type="text/javascript" src="../../dist/main.source.js"></script>
+<script type="text/javascript" src="../../dependencies/dexter/head.js"></script>
+<script type="text/javascript" src="../../dependencies/dexter/publish.js"></script>
+
+<script type="text/javascript">
+    (function () {
+        // Default configuration
+        var config = {
+            /* Include your default config here if needed */
+        };
+
+        // Parse the 'state' parameter from the URL
+        var urlSearchParams = new URLSearchParams(window.location.search);
+        var params = Object.fromEntries(urlSearchParams.entries());
+        var encoded = params.state;
+
+        if (encoded) {
+            try {
+                // Replace spaces with '+' to fix encoding issues
+                encoded = encoded.replace(/\s/g, '+');
+                var decodedConfig = JSON.parse(atob(encoded));
+                console.log('Parsed config:', decodedConfig); // For debugging
+                // Merge decodedConfig into config
+                config = Object.assign(config, decodedConfig);
+            } catch (e) {
+                console.error('Failed to parse config from state parameter:', e);
+            }
+        } else {
+            console.warn('No state parameter found in URL. Using default configuration.');
+        }
+
+        // Check if ConsonantCardCollection is available globally
+        if (typeof window.ConsonantCardCollection === 'undefined') {
+            console.error('ConsonantCardCollection component is not available globally.');
+            return;
+        }
+
+        // Render the React app with the provided config
+        new window.ConsonantCardCollection(config, document.getElementById('someDivId'));
+    })();
+</script>
+
+<style>
+    /* Include any additional styles if necessary */
+
+    .customCard * {
+        font-family: 'caas-clean';
+    }
+
+    .customCard section {
+        padding: 16px 24px;
+    }
+
+    .customCard label {
+        font-size: 14px;
+    }
+
+    .customCard p {
+        font-size: 18px;
+    }
+
+    .backgroundImg {
+        background-image: url('');
+        background-size: cover;
+        background-position: 50% 50%;
+        height: 316px;
+    }
+
+    .customCard {
+        border: solid 1px #BCBCBC;
+        border-radius: 6px;
+        max-height: 439px;
+    }
+</style>
+</body>
+
+</html>
