@@ -105,6 +105,12 @@ jobs:
         run: |
           npm ci
           npm run build
+      - name: Prepare deployment directory
+        run: |
+          mkdir -p _site
+          cp -r dist/* _site/
+          cp index.html _site/
+          cp cwv.html _site/
       - name: Debug dist directory
         run: |
           echo "Contents of dist directory:"
@@ -119,7 +125,7 @@ jobs:
         id: upload
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
+          path: '_site'
           name: 'github-pages'
       - name: Debug upload
         run: |
