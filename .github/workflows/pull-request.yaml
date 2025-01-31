@@ -105,15 +105,28 @@ jobs:
         run: |
           npm ci
           npm run build
+      - name: Debug dist directory
+        run: |
+          echo "Contents of dist directory:"
+          ls -la dist/
+          echo "Size of dist directory:"
+          du -sh dist/
       - name: List directory before upload
         run: |
           echo "Current directory contents:"
           ls -la
       - name: Upload artifact
+        id: upload
         uses: actions/upload-pages-artifact@v3
         with:
           path: './dist'
           name: 'github-pages'
+      - name: Debug upload
+        run: |
+          echo "Upload step output:"
+          echo "$PP steps.upload.outputs }}"
+          echo "GitHub workspace:"
+          echo "${{ github.workspace }}"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v3
