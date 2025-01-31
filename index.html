@@ -53,6 +53,10 @@
         var config = {
             collection: {
                 mode: "lightest", // Can be empty, "light", "dark", "darkest";
+                reservoir: {
+                    sample: 10,
+                    poll: 100,
+                },
                 layout: {
                     type: '3up', // Can be "2up", "3up", "4up", "5up";
                     gutter: '4x', // Can be "2x", "3x", "4x";

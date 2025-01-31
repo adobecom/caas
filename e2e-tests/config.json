@@ -1,0 +1,357 @@
+{
+  "collection": {
+    "mode": "lightest",
+    "reservoir":{
+      "sample": 10,
+      "poll": 100
+    },
+    "layout": {
+      "type": "4up",
+      "gutter": "4x",
+      "container": "1200MaxWidth"
+    },
+    "lazyLoad": false,
+    "button": {
+      "style": "call-to-action"
+    },
+    "banner": {
+      "upcoming": {
+        "description": "Upcoming"
+      },
+      "live": {
+        "description": "Live"
+      },
+      "onDemand": {
+        "description": "On Demand"
+      },
+      "register": {
+        "description": "Sign Up"
+      }
+    },
+    "resultsPerPage": "5",
+    "endpoint": "../../caas/mock-json/smoke.json",
+    "totalCardsToShow": "8",
+    "cardStyle": "1:2",
+    "showTotalResults": "true",
+    "i18n": {
+      "prettyDateIntervalFormat": "{LLL} {dd} | {timeRange} {timeZone}",
+      "totalResultsText": "{total} Results",
+      "title": "Lorem Ipsum",
+      "titleHeadingLevel": "h2",
+      "cardTitleAccessibilityLevel": "3",
+      "onErrorTitle": "Sorry there was a system error.",
+      "onErrorDescription": "Please try reloading the page or try coming back to the page another time.",
+      "lastModified": "Last modified {date}"
+    },
+    "setCardBorders": "true",
+    "useOverlayLinks": "false"
+  },
+  "featuredCards": [
+    "c7d34f39-397c-3727-9dff-5d0d9d8cf731"
+  ],
+  "header": {
+    "enabled": false
+  },
+  "filterPanel": {
+    "enabled": "false",
+    "type": "left",
+    "eventFilter": "all",
+    "showEmptyFilters": true,
+    "filters": [
+      {
+        "group": "Topic",
+        "id": "caas:topic",
+        "items": [
+          {
+            "label": "Business Continuity",
+            "id": "caas:topic/business-continuity"
+          },
+          {
+            "label": "Digital Media & Design",
+            "id": "caas:topic/digital-media-design"
+          },
+          {
+            "label": "Customer Intelligence",
+            "id": "caas:topic/customer-intelligence"
+          },
+          {
+            "label": "Data Management Platform",
+            "id": "caas:topic/data-management-platform"
+          },
+          {
+            "label": "Digital Foundation",
+            "id": "caas:topic/digital-foundation"
+          },
+          {
+            "label": "Digital Trends",
+            "id": "caas:topic/digital-trends"
+          },
+          {
+            "label": "Document Management",
+            "id": "caas:topic/document-management"
+          },
+          {
+            "label": "Marketing Automation",
+            "id": "caas:topic/marketing-automation"
+          },
+          {
+            "label": "Personalization",
+            "id": "caas:topic/personalization"
+          },
+          {
+            "label": "Media Assets",
+            "id": "caas:topic/media-assets"
+          }
+        ]
+      },
+      {
+        "group": "Availability",
+        "id": "caas:availability",
+        "items": [
+          {
+            "label": "On-Demand",
+            "id": "caas:availability/on-demand"
+          },
+          {
+            "label": "Upcoming",
+            "id": "caas:availability/upcoming"
+          }
+        ]
+      },
+      {
+        "group": "Duration",
+        "id": "caas:duration",
+        "items": [
+          {
+            "label": "Long",
+            "id": "caas:duration/long"
+          },
+          {
+            "label": "Short",
+            "id": "caas:duration/short"
+          }
+        ]
+      },
+      {
+        "group": "Rating",
+        "id": "caas:rating",
+        "items": [
+          {
+            "label": "5",
+            "id": "caas:rating/5"
+          },
+          {
+            "label": "4",
+            "id": "caas:rating/4"
+          }
+        ]
+      },
+      {
+        "group": "First Tag Group Label",
+        "id": "tag-namespace-1",
+        "icon": "https://www.somedomain.com/some-group-icon.svg",
+        "openedOnLoad": true,
+        "items": [
+          {
+            "label": "Tag 1 Label",
+            "id": "tag-namespace-1/tag1"
+          },
+          {
+            "label": "Tag 2 Label",
+            "id": "tag-namespace-1/tag2"
+          },
+          {
+            "label": "Tag 3 Label",
+            "id": "tag-namespace-1/tag3"
+          },
+          {
+            "label": "Tag 4 Label",
+            "id": "tag-namespace-1/tag4"
+          },
+          {
+            "label": "Tag 5 Label",
+            "id": "tag-namespace-1/tag5"
+          },
+          {
+            "label": "Tag 6 Label",
+            "id": "tag-namespace-1/tag6"
+          },
+          {
+            "label": "Tag 7 Label",
+            "id": "tag-namespace-1/tag7"
+          },
+          {
+            "label": "Tag 8 Label",
+            "id": "tag-namespace-1/tag8"
+          },
+          {
+            "label": "Tag 9 Label",
+            "id": "tag-namespace-1/tag9"
+          },
+          {
+            "label": "Tag 10 Label",
+            "id": "tag-namespace-1/tag10"
+          }
+        ]
+      },
+      {
+        "group": "Second Tag Group Label",
+        "id": "tag-namespace-2",
+        "icon": "https://www.somedomain.com/some-group-icon.svg",
+        "openedOnLoad": false,
+        "items": [
+          {
+            "label": "Tag 1 Label",
+            "id": "tag-namespace-2/tag1"
+          },
+          {
+            "label": "Tag 2 Label",
+            "id": "tag-namespace-2/tag2"
+          }
+        ]
+      }
+    ],
+    "filterLogic": "or",
+    "topPanel": {
+      "mobile": {
+        "blurFilters": true
+      }
+    },
+    "i18n": {
+      "leftPanel": {
+        "header": "My Favorites",
+        "clearAllFiltersText": "Clear All",
+        "mobile": {
+          "filtersBtnLabel": "Filters:",
+          "panel": {
+            "header": "Filters",
+            "totalResultsText": "{total Results}",
+            "applyBtnText": "Apply",
+            "clearFilterText": "Clear",
+            "doneBtnText": "Done"
+          },
+          "group": {
+            "totalResultsText": "{total} Results",
+            "applyBtnText": "Apply",
+            "clearFilterText": "Clear Left",
+            "doneBtnText": "Done"
+          }
+        }
+      },
+      "topPanel": {
+        "groupLabel": "Filters:",
+        "clearAllFiltersText": "Clear All",
+        "moreFiltersBtnText": "More +",
+        "mobile": {
+          "group": {
+            "totalResultsText": "Total {total}",
+            "applyBtnText": "Apply",
+            "clearFilterText": "Clear",
+            "doneBtnText": "Done"
+          }
+        }
+      }
+    }
+  },
+  "hideCtaIds": [
+    "card-id-to-hide"
+  ],
+  "hideCtaTags": [],
+  "sort": {
+    "enabled": "true",
+    "defaultSort": "featured",
+    "options": [
+      {
+        "label": "Random",
+        "sort": "random"
+      },
+      {
+        "label": "Featured",
+        "sort": "featured"
+      },
+      {
+        "label": "Title: (A-Z)",
+        "sort": "titleAsc"
+      },
+      {
+        "label": "Title: (Z-A)",
+        "sort": "titleDesc"
+      },
+      {
+        "label": "Date: (Oldest to newest)",
+        "sort": "dateAsc"
+      },
+      {
+        "label": "Date: (Newest to oldest)",
+        "sort": "dateDesc"
+      }
+    ]
+  },
+  "pagination": {
+    "animationStyle": "paged",
+    "enabled": "true",
+    "type": "paginator",
+    "loadMoreButton": {
+      "style": "primary",
+      "useThemeThree": "true"
+    },
+    "i18n": {
+      "loadMore": {
+        "btnText": "Load More",
+        "resultsQuantityText": "Showing {start} of {end} cards"
+      },
+      "paginator": {
+        "resultsQuantityText": "{start}-{end} of {total} results",
+        "prevLabel": "Prev",
+        "nextLabel": "Next"
+      }
+    }
+  },
+  "bookmarks": {
+    "showOnCards": "true",
+    "leftFilterPanel": {
+      "bookmarkOnlyCollection": "false",
+      "showBookmarksFilter": "true",
+      "selectBookmarksIcon": "",
+      "unselectBookmarksIcon": ""
+    },
+    "i18n": {
+      "leftFilterPanel": {
+        "filterTitle": "My Favorites"
+      }
+    }
+  },
+  "search": {
+    "enabled": "true",
+    "searchFields": [
+      "contentArea.title",
+      "contentArea.description",
+      "search.meta.author",
+      "overlays.banner.description",
+      "foo.bar"
+    ],
+    "i18n": {
+      "noResultsTitle": "No Results Found",
+      "noResultsDescription": "We could not find any results. {break} Try checking your spelling or broadening your search.",
+      "leftFilterPanel": {
+        "searchTitle": "Search",
+        "searchPlaceholderText": "Search here..."
+      },
+      "topFilterPanel": {
+        "searchPlaceholderText": "i18n.topFilterPanel.searchPlaceholderText"
+      },
+      "filterInfo": {
+        "searchPlaceholderText": "i18n.filterInfo.searchPlaceholderText"
+      }
+    }
+  },
+  "language": "en-US",
+  "country": "us",
+  "analytics": {
+    "trackImpressions": "true",
+    "collectionIdentifier": "Some Identifier"
+  },
+  "customCard": [],
+  "onCardSaved": null,
+  "onCardUnsaved": null
+}
