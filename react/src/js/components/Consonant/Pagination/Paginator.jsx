@@ -76,6 +76,12 @@ const Paginator = (props) => {
     const useLightText = getConfig('collection', 'useLightText');
 
     /**
+     * pagination - used for aria group label
+     * @type {String}
+     */
+    const pagination = getConfig('pagination', 'i18n.paginator.pagination');
+
+    /**
      * Start and end indexes of pages to build
      * @type {Int, Int}
      */
@@ -137,6 +143,8 @@ const Paginator = (props) => {
 
     return (
         <div
+            role="group"
+            aria-labelledby={pagination || 'pagination'}
             className={useLightText ? 'consonant-Pagination lightText' : 'consonant-Pagination'}>
             <div
                 className="consonant-Pagination-paginator">

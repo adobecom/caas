@@ -215,6 +215,7 @@ const Item = (props) => {
                     }
                     <section
                         id={`${id}-panel`}
+                        role="group"
                         aria-labelledby={`${id}-link`}>
                         <Items
                             items={items}
