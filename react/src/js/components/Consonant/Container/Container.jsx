@@ -97,6 +97,8 @@ const Container = (props) => {
     const searchPrefix = 'sh_';
     const CARD_HASH_LENGTH = 10;
 
+    window.alert('Hi');
+
     /**
      **** Authored Configs ****
      */
