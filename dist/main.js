@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.28.4 (1/29/2025, 15:06:44)
+ * Chimera UI Libraries - Build 0.28.6 (2/2/2025, 04:09:34)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6312,6 +6312,8 @@ var Container = function Container(props) {
     var filterGroupPrefix = 'ch_';
     var searchPrefix = 'sh_';
     var CARD_HASH_LENGTH = 10;
+
+    alert('hi');
 
     /**
      **** Authored Configs ****
