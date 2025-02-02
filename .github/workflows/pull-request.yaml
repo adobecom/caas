@@ -119,7 +119,7 @@ jobs:
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: '.'
           name: github-pages
 
       # 8. Deploy the uploaded artifact to GitHub Pages (Preview Mode)
