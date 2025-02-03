@@ -250,5 +250,17 @@
       "fid": 0.6999999999825377,
       "cls": null
     }
+  },
+  {
+    "date": "2025-02-03T20:14:56.520Z",
+    "pr": {
+      "number": "242",
+      "title": "fix(mwpw-167080): resolve GH Pages “No uploaded artifact found!” error for PR previews"
+    },
+    "metrics": {
+      "lcp": 10368.600000000006,
+      "fid": 0.7999999999883585,
+      "cls": null
+    }
   }
 ]
