@@ -154,8 +154,7 @@
       "requireCleanWorkingDir": false
     },
     "github": {
-      "release": true,
-      "releaseNotes": "conventionalChangelog"
+      "release": true
     },
     "npm": {
       "publish": false
