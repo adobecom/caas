@@ -286,5 +286,17 @@
       "fid": 0.6999999999534339,
       "cls": null
     }
+  },
+  {
+    "date": "2025-02-03T21:08:20.179Z",
+    "pr": {
+      "number": "aafb074",
+      "title": "Direct push to main"
+    },
+    "metrics": {
+      "lcp": 13628.5,
+      "fid": 0.8000000000174623,
+      "cls": null
+    }
   }
 ]
