@@ -103,38 +103,32 @@ jobs:
         with:
           node-version: 16
 
-      # 3. Install dependencies using legacy peer deps to avoid conflicts
+      # 3. Install dependencies
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
-      # 4. Run the build (Webpack should output to the dist/ folder)
+      # 4. Run the build
       - name: Build project
         run: npm run build
 
-      # 6. Configure GitHub Pages
+      # 5. Configure GitHub Pages
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v3
 
-      # 7. Upload the built site (dist/) as the artifact named "github-pages"
+      # 6. Upload the built site as the artifact named "github-pages"
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
           name: github-pages
 
-      # 8. Deploy the uploaded artifact to GitHub Pages (Preview Mode)
+      # 7. Deploy the uploaded artifact to GitHub Pages
       - name: Deploy to GitHub Pages (Preview)
         id: deployment
         uses: actions/deploy-pages@v4
         with:
           artifact_name: github-pages
           preview: true
-
-      # 9. Write the deployment URL to the job summary
-      - name: Write deployment URL to job summary
-        run: |
-          echo "## Pages Preview Deployment" >> $GITHUB_STEP_SUMMARY
-          echo "[View Deployment](${{ steps.deployment.outputs.page_url }})" >> $GITHUB_STEP_SUMMARY
 
   record-web-vitals:
     runs-on: ubuntu-latest
