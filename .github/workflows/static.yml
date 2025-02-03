@@ -1,42 +1,66 @@
-# Simple workflow for deploying static content to GitHub Pages
+# .github/workflows/static.yml
 name: Deploy static content to Pages
 
 on:
-  # Runs on pushes targeting the default branch
+  # Runs on pushes to the main branch (i.e. after merges)
   push:
-    branches: ["main"]
+    branches: [ "main2" ]
 
-  # Allows you to run this workflow manually from the Actions tab
+  # Allows manual dispatch from the Actions tab
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+# Permissions required for GitHub Pages in the new model
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow one concurrent deployment
+# Only one deployment to GitHub Pages can be in progress
 concurrency:
   group: "pages"
   cancel-in-progress: true
 
 jobs:
-  # Single deploy job since we're just deploying
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+      # 1. Check out the repo
       - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/checkout@v4
+
+      # 2. (Optional) Set up Node.js if you need to build
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          # Upload entire repository
+          node-version: 16
+
+      # 3. (Optional) Install dependencies and build
+      #    Remove these steps if you don't need to build anything
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      # 4. Configure GitHub Pages
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v3
+
+      # 5. Upload your site files to the Pages artifact
+      #    - If your final site is in dist/, set 'path: dist'.
+      #    - If your index.html is in the repo root, use 'path: "."'.
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
           path: '.'
+          name: 'github-pages'
+
+      # 6. Deploy the artifact to GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: 'github-pages'
