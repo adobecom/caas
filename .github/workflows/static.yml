@@ -4,7 +4,7 @@ name: Deploy static content to Pages
 on:
   # Runs on pushes to the main branch (i.e. after merges)
   push:
-    branches: [ "main2" ]
+    branches: [ "main" ]
 
   # Allows manual dispatch from the Actions tab
   workflow_dispatch:
