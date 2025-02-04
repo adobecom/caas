@@ -1,5 +1,144 @@
 
 
+## [0.29.1](https://github.com/adobecom/caas/compare/0.29.0...0.29.1) (2025-02-04)
+
+
+### Bug Fixes
+
+* **MWPW-163284:** color changes on hover for CAAS button is not [#274](https://github.com/adobecom/caas/issues/274)dea ([49e12ef](https://github.com/adobecom/caas/commit/49e12eff98b1f57f0f6c1594bd13153a290a100c))
+
+# [0.29.0](https://github.com/adobecom/caas/compare/0.28.10...0.29.0) (2025-02-04)
+
+
+### Features
+
+* **mwpw-163904:** news card ([769a206](https://github.com/adobecom/caas/commit/769a2064b1fee99175be3fa5587deb4b567c7c6c))
+* **mwpw-163904:** news card style ([b160c82](https://github.com/adobecom/caas/commit/b160c823932d93adbc2f8975f6645398cbf320a6))
+* **mwpw-163904:** news card style ([ed46091](https://github.com/adobecom/caas/commit/ed46091193e9d4a6799c235e46045c5650fc9f95))
+* **mwpw-163904:** news card style ([97cf4d7](https://github.com/adobecom/caas/commit/97cf4d739c25b9474f066f3c40111d2854e86328))
+* **mwpw-163904:** news card style ([c8d28b1](https://github.com/adobecom/caas/commit/c8d28b1f344372cfc7975788c6168fb88ccce438))
+* **mwpw-163904:** news room ([8887975](https://github.com/adobecom/caas/commit/888797536f543c5e580238785e65b5867f23f17f))
+* **mwpw-163904:** rebuild post rebase ([1649e57](https://github.com/adobecom/caas/commit/1649e5787da24f75575fee0a5e0860d7a1379c1e))
+
+## [0.28.10](https://github.com/adobecom/caas/compare/0.28.9...0.28.10) (2025-02-03)
+
+## [0.28.9](https://github.com/adobecom/caas/compare/0.28.8...0.28.9) (2025-02-03)
+
+## [0.28.8](https://github.com/adobecom/caas/compare/0.28.7...0.28.8) (2025-02-03)
+
+## [0.28.7](https://github.com/adobecom/caas/compare/0.28.6...0.28.7) (2025-02-03)
+
+## [0.28.6](https://github.com/adobecom/caas/compare/0.28.5...0.28.6) (2025-01-30)
+
+
+### Bug Fixes
+
+* **MWPW-166332:** sort control missing ARIA attributes ([#231](https://github.com/adobecom/caas/issues/231)) ([d84326d](https://github.com/adobecom/caas/commit/d84326d0662a5be5573739ec1194f9eefc7610cc))
+
+## [0.28.5](https://github.com/adobecom/caas/compare/0.28.4...0.28.5) (2025-01-29)
+
+## [0.28.4](https://github.com/adobecom/caas/compare/0.28.3...0.28.4) (2025-01-29)
+
+
+### Bug Fixes
+
+* **mwpw-166139:** fixing event sort ([83768f7](https://github.com/adobecom/caas/commit/83768f70b9634363e8d5beeb1ba83c3138fa57b4))
+
+## [0.28.3](https://github.com/adobecom/caas/compare/0.28.2...0.28.3) (2025-01-29)
+
+
+### Bug Fixes
+
+* **mwpw-163904:** removing extra endDate ([9e7a0d3](https://github.com/adobecom/caas/commit/9e7a0d381a8f22fdb2fb0ae663172f66a906820d))
+* **mwpw-166139:** add function for safely getting deep objects ([4c32b3a](https://github.com/adobecom/caas/commit/4c32b3a1b3d1e19594af4a321d00a579437cc9e9))
+* **mwpw-166139:** build files ([f678848](https://github.com/adobecom/caas/commit/f678848ed806a4486bc50306377d779b30314c29))
+* **mwpw-166139:** fixing unit tests ([f8d917f](https://github.com/adobecom/caas/commit/f8d917f14e7c42bc092cbb61b0bdc91f19b4f6d1))
+* **mwpw-166139:** fixing unit tests ([790b66e](https://github.com/adobecom/caas/commit/790b66e93e22b58f6c33feaf56fd29c08ea5fe6f))
+* **mwpw-166139:** forgot endDate ([fe0ce07](https://github.com/adobecom/caas/commit/fe0ce07ed37073954db894b7362e768c2efd9d5d))
+* **mwpw-166139:** issue with footers with 0.25.0 ([ac4666e](https://github.com/adobecom/caas/commit/ac4666e6ef7c7ef119011c6486781bb0c98f58fa))
+* **mwpw-166139:** just rebuilding for my sanity ([555757b](https://github.com/adobecom/caas/commit/555757b6834f31e69ddd68b0df6b07ff382b675a))
+* **mwpw-166139:** unit tests for all of the cases ([7a442ad](https://github.com/adobecom/caas/commit/7a442adf90e3b539367ec867a163bd5db6c57ffa))
+
+## [0.28.2](https://github.com/adobecom/caas/compare/0.28.1...0.28.2) (2025-01-29)
+
+
+### Bug Fixes
+
+* **MWPW-157212:** Link CTA accessibility issues | Minimum color contrast ([fd01489](https://github.com/adobecom/caas/commit/fd01489db98365600632ab01ffc4294fbc401778))
+* **MWPW-166135:** css code cleanup ([627fe02](https://github.com/adobecom/caas/commit/627fe02d0ccc7bd557d8cd1275e483afd1757a2b))
+* **MWPW-166135:** fixes Use Light Text for paginator ([766c8cf](https://github.com/adobecom/caas/commit/766c8cfda0acd71d7ab7a02d61cfa851552a909c))
+* **MWPW-166328:** removes require attribute from search ([8392056](https://github.com/adobecom/caas/commit/8392056b8828688cf88d1ee1ed5ed42ca9c71054))
+
+## [0.28.1](https://github.com/adobecom/caas/compare/0.28.0...0.28.1) (2025-01-22)
+
+
+### Bug Fixes
+
+* **mwpw-162902:** accidentally left a console log ([26af0bc](https://github.com/adobecom/caas/commit/26af0bc2c254b2797faa18197747633ebc587605))
+* **mwpw-162902:** build files ([fc63081](https://github.com/adobecom/caas/commit/fc63081b445475f64b94d3ee5854419b4ca369f1))
+* **mwpw-162902:** fix the title sort so that it complies with eventFilters ([a897371](https://github.com/adobecom/caas/commit/a897371b90c9c3ea9f765f7df7d0b5d0cecc0c88))
+
+# [0.28.0](https://github.com/adobecom/caas/compare/0.27.0...0.28.0) (2025-01-22)
+
+
+### Features
+
+* **MWPW-164117:** adds aria-label to ctas ([adeaf6f](https://github.com/adobecom/caas/commit/adeaf6fa2a336b9619341e568a4a805cedf91e29))
+* **MWPW-164117:** adds aria-label to ctas ([2c48941](https://github.com/adobecom/caas/commit/2c489417212ce2fae3f64e79b0cfe069db88a4bd))
+* **mwpw-164117:** updates arialLabel for CTAs ([3f34f9d](https://github.com/adobecom/caas/commit/3f34f9dc522e899d67f009484bc382daade25892))
+* **mwpw-164117:** updates arialLabel for CTAs ([9739d90](https://github.com/adobecom/caas/commit/9739d907a3b3d7af4764688a71e39163ab254bd2))
+
+# [0.27.0](https://github.com/adobecom/caas/compare/0.26.1...0.27.0) (2025-01-22)
+
+
+### Bug Fixes
+
+* **mwpw-165820:** lint ([44a93f4](https://github.com/adobecom/caas/commit/44a93f4e0861a63b7bc626b5cb9d05a743fbbb0f))
+* **mwpw-165820:** unit tests lol ([2a0a1bb](https://github.com/adobecom/caas/commit/2a0a1bbb58d92986b548d16f8f2320a93e4a41f0))
+
+
+### Features
+
+* **mwpw-165820:** icon images should not have alt text ([5af7a71](https://github.com/adobecom/caas/commit/5af7a7152ffa71a23a7fcb3165c9dd09a6ff764e))
+
+## [0.26.1](https://github.com/adobecom/caas/compare/0.26.0...0.26.1) (2025-01-21)
+
+
+### Bug Fixes
+
+* **mwpw-164262:** makes headings and text more accessible ([#217](https://github.com/adobecom/caas/issues/217)) ([ba2f391](https://github.com/adobecom/caas/commit/ba2f391426a8512d62f27378188e647b41445e37))
+
+# [0.26.0](https://github.com/adobecom/caas/compare/0.25.1...0.26.0) (2025-01-17)
+
+
+### Features
+
+* **mwpw-162835:** adding back ability to select two event states for collection filters ([553e772](https://github.com/adobecom/caas/commit/553e772164ac721a2f08e1ce37fa352ac3bc8d85))
+* **mwpw-162835:** adding back event filters ([831c28c](https://github.com/adobecom/caas/commit/831c28ccbeb609e1eefd39d55f3366b29b40b768))
+
+## [0.25.1](https://github.com/adobecom/caas/compare/0.25.0...0.25.1) (2025-01-16)
+
+# [0.25.0](https://github.com/adobecom/caas/compare/0.24.3...0.25.0) (2025-01-16)
+
+
+### Features
+
+* **mwpw-162835:** ability to select multiple events ([be6c199](https://github.com/adobecom/caas/commit/be6c199d446832f96cf8e712274077cd9c28ca1e))
+* **mwpw-162835:** missed a line ([b86f372](https://github.com/adobecom/caas/commit/b86f372dd1ef79ef2179b1571df37dbfa30f06e7))
+* **mwpw-162835:** rebase ([c446c5e](https://github.com/adobecom/caas/commit/c446c5e46c6b9c64c5e93f8ccc7747757184321c))
+* **mwpw-162835:** rebase ([3e895d3](https://github.com/adobecom/caas/commit/3e895d3664d6ec0c5ff1590eaf2644735b976b05))
+* **mwpw-162835:** rebase ([94da35a](https://github.com/adobecom/caas/commit/94da35ab85f743388b750084b89fe6a2f296f88d))
+* **mwpw-162835:** rebase ([d9f1fea](https://github.com/adobecom/caas/commit/d9f1fea685d656e7570c0b56d1665d82c5c51326))
+
+## [0.24.3](https://github.com/adobecom/caas/compare/0.24.2...0.24.3) (2025-01-15)
+
+## [0.24.2](https://github.com/adobecom/caas/compare/0.24.1...0.24.2) (2025-01-15)
+
+
+### Bug Fixes
+
+* **mwpw-165609:** restore card collection rendering by correcting getAttribute implementation ([b479095](https://github.com/adobecom/caas/commit/b4790959c2e37791eb2350afc05b88e2bc197c86))
+
 ## [0.24.1](https://github.com/adobecom/caas/compare/0.24.0...0.24.1) (2025-01-13)
 
 # [0.24.0](https://github.com/adobecom/caas/compare/0.23.31...0.24.0) (2025-01-13)

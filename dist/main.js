@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.24.1 (1/14/2025, 19:06:40)
+ * Chimera UI Libraries - Build 0.29.0 (2/4/2025, 10:57:35)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -192,7 +192,7 @@ $exports.store = store;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.getSearchParam = exports.getGlobalNavHeight = exports.getLinkTarget = exports.getEventBanner = exports.getCurrentDate = exports.isDateAfterInterval = exports.isDateBeforeInterval = exports.isDateWithinInterval = exports.qs = exports.mergeDeep = exports.setByPath = exports.debounce = exports.getSelectedItemsCount = exports.getByPath = exports.template = exports.getEndNumber = exports.getStartNumber = exports.getPageStartEnd = exports.generateRange = exports.stopPropagation = exports.isAtleastOneFilterSelected = exports.isNullish = exports.parseToPrimitive = exports.isObject = exports.mapObject = exports.sanitizeText = exports.sortByKey = exports.intersection = exports.isSuperset = exports.chainFromIterable = exports.chain = exports.removeDuplicatesByKey = exports.truncateList = exports.truncateString = exports.readInclusionsFromLocalStorage = exports.readBookmarksFromLocalStorage = exports.saveBookmarksToLocalStorage = undefined;
+exports.sanitizeEventFilter = exports.getSearchParam = exports.getGlobalNavHeight = exports.getLinkTarget = exports.getEventBanner = exports.getCurrentDate = exports.isDateAfterInterval = exports.isDateBeforeInterval = exports.isDateWithinInterval = exports.qs = exports.mergeDeep = exports.setByPath = exports.debounce = exports.getSelectedItemsCount = exports.getByPath = exports.template = exports.getEndNumber = exports.getStartNumber = exports.getPageStartEnd = exports.generateRange = exports.stopPropagation = exports.isAtleastOneFilterSelected = exports.isNullish = exports.parseToPrimitive = exports.isObject = exports.mapObject = exports.sanitizeText = exports.sortByKey = exports.intersection = exports.isSuperset = exports.chainFromIterable = exports.chain = exports.removeDuplicatesByKey = exports.truncateList = exports.truncateString = exports.readInclusionsFromLocalStorage = exports.readBookmarksFromLocalStorage = exports.saveBookmarksToLocalStorage = undefined;
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -865,6 +865,12 @@ var getSearchParam = exports.getSearchParam = function getSearchParam(url, param
     if (!url || !url.startsWith('http') || !param) return null;
     var urlObj = new URL(url);
     return urlObj.searchParams.get(param);
+};
+
+var sanitizeEventFilter = exports.sanitizeEventFilter = function sanitizeEventFilter(rawEventFilter) {
+    if (!rawEventFilter || rawEventFilter.indexOf('all') > -1) return [];
+    if (Array.isArray(rawEventFilter)) return rawEventFilter;
+    return [rawEventFilter];
 };
 
 /***/ }),
@@ -1961,6 +1967,8 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _immer = __webpack_require__(270);
 
 var _immer2 = _interopRequireDefault(_immer);
@@ -2408,6 +2416,40 @@ var getDateDescSort = exports.getDateDescSort = function getDateDescSort(cards) 
 };
 
 /**
+ * Convert a path string like 'footer[0].left[1].startTime'
+ * into an array of keys: ['footer','0','left','1','startTime'].
+ */
+function parsePathString(pathString) {
+    if (pathString) {
+        return pathString.replace(/\[(\d+)\]/g, '.$1').split('.');
+    }
+    return '';
+}
+
+/**
+ * Safely get a nested property from an object
+ * using a path string with dot/bracket notation.
+ * e.g. safeGet(card, 'footer[0].left[1].startTime', '')
+ */
+function safeGet(obj, pathString, defaultVal) {
+    var parts = parsePathString(pathString);
+    var current = obj;
+
+    for (var i = 0; i < parts.length; i++) {
+        if (current == null || (typeof current === 'undefined' ? 'undefined' : _typeof(current)) !== 'object') {
+            return defaultVal;
+        }
+        var key = parts[i];
+        if (!(key in current)) {
+            return defaultVal;
+        }
+        current = current[key];
+    }
+
+    return current == null ? defaultVal : current;
+}
+
+/**
  * @func getEventSort
  * @desc This method, if needed, sets up Timing features for a collection
  (1) Has to check each card for card.contentArea.dateDetailText.startTime
@@ -2432,32 +2474,31 @@ var getEventSort = exports.getEventSort = function getEventSort() {
     var transformedCards = cards.map(function (card) {
         return {
             id: card.id,
-            startDate: card.contentArea.dateDetailText.startTime,
-            endDate: card.contentArea.dateDetailText.endTime,
-            tags: card.tags || []
+            startDate: safeGet(card, 'footer[0].left[1].startTime', safeGet(card, 'contentArea.dateDetailText.startTime', '')),
+            endDate: safeGet(card, 'footer[0].left[1].endTime', safeGet(card, 'contentArea.dateDetailText.endTime', '')),
+            tags: card.tags || [],
+            cardDate: card.cardDate || '',
+            contentArea: card.contentArea || {},
+            createdDate: card.createdDate || '',
+            ctaLink: card.ctaLink || '',
+            description: card.description || '',
+            footer: card.footer || [],
+            initial: card.initial || {},
+            isBookmarked: card.isBookmarked || false,
+            modifiedDate: card.modifiedDate || '',
+            overlayLink: card.overlayLink || '',
+            overlays: card.overlays || {},
+            showCard: card.showCard || {},
+            search: card.search || {},
+            styles: card.styles || {}
         };
     });
 
     var result = (0, _eventSort.eventTiming)(transformedCards, eventFilter);
 
-    var visibleSessions = result.visibleSessions.filter(function (session) {
-        return session.tags.includes(eventFilter);
-    }).map(function (session) {
-        return {
-            id: session.id,
-            contentArea: {
-                dateDetailText: {
-                    startTime: session.startDate,
-                    endTime: session.endDate
-                }
-            },
-            tags: session.tags
-        };
-    });
-
     return {
-        nextTransitionMs: result.nextTransitionMs,
-        visibleSessions: visibleSessions
+        visibleSessions: result.visibleSessions,
+        nextTransitionMs: result.nextTransitionMs
     };
 };
 /**
@@ -6337,6 +6378,7 @@ var Container = function Container(props) {
     var categories = getConfig('filterPanel', 'categories');
     // eslint-disable-next-line no-use-before-define, max-len
     var authoredCategories = isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : [];
+    var sanitizedEventFilter = eventFilter ? (0, _general.sanitizeEventFilter)(eventFilter) : [];
 
     /**
      **** Hooks ****
@@ -7536,7 +7578,7 @@ var Container = function Container(props) {
      * @returns {Object}
      * */
     var getFilteredCollection = function getFilteredCollection() {
-        return cardFilterer.sortCards(sortOption, eventFilter, featuredCards, hideCtaIds, isFirstLoad).keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks).keepCardsWithinDateRange().filterCards(activeFilterIds, activePanels, filterLogic, _constants.FILTER_TYPES, currCategories).truncateList(totalCardLimit).searchCards(searchQuery, searchFields, cardStyle).removeCards(inclusionIds);
+        return cardFilterer.sortCards(sortOption, sanitizedEventFilter, featuredCards, hideCtaIds, isFirstLoad).keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks).keepCardsWithinDateRange().filterCards(activeFilterIds, activePanels, filterLogic, _constants.FILTER_TYPES, currCategories).truncateList(totalCardLimit).searchCards(searchQuery, searchFields, cardStyle).removeCards(inclusionIds);
     };
 
     /**
@@ -43867,14 +43909,17 @@ var Popup = function Popup(_ref) {
                 type: 'button',
                 onClick: handleToggle,
                 className: openButtonClass,
-                tabIndex: '0' },
+                tabIndex: '0',
+                'aria-haspopup': 'menu',
+                'aria-expanded': opened },
             val.label
         ),
         opened && _react2.default.createElement(
             'div',
             {
                 'data-testid': 'consonant-Select-options',
-                className: 'consonant-Select-options consonant-Select-options--' + optionsAlignment },
+                className: 'consonant-Select-options consonant-Select-options--' + optionsAlignment,
+                role: 'menu' },
             values.map(function (item) {
                 return _react2.default.createElement(
                     'button',
@@ -43882,6 +43927,7 @@ var Popup = function Popup(_ref) {
                         'data-testid': 'consonant-Select-option',
                         key: item.label,
                         type: 'button',
+                        role: 'menuitem',
                         className: item.label === val.label ? 'consonant-Select-option is-selected' : 'consonant-Select-option',
                         onClick: function onClick(e) {
                             return handleOptionClick(e, item);
@@ -44050,8 +44096,7 @@ var Search = function Search(_ref) {
                     value: value,
                     onChange: handleSearch,
                     ref: textInput,
-                    className: 'consonant-Search-input',
-                    required: true }),
+                    className: 'consonant-Search-input' }),
                 _react2.default.createElement('button', {
                     'data-testid': 'consonant-Search-inputClear',
                     type: 'button',
@@ -47074,6 +47119,7 @@ var Card = function Card(props) {
     var isText = cardStyle === 'text-card';
     var isFull = cardStyle === 'full-card';
     var isIcon = cardStyle === 'icon-card';
+    var isNews = cardStyle === 'news-card';
 
     // Card elements to show
     var showHeader = !isProduct;
@@ -47082,8 +47128,8 @@ var Card = function Card(props) {
     var showLogo = isOneHalf || isThreeFourths || isFull || isText;
     var showLabel = !isProduct && !isText;
     var showVideoButton = !isProduct && !isText && !isIcon;
-    var showText = !isHalfHeight && !isFull;
-    var showFooter = isOneHalf || isProduct || isText;
+    var showText = !isHalfHeight && !isFull && !isNews;
+    var showFooter = isOneHalf || isProduct || isText || isNews;
     var showFooterLeft = !isProduct;
     var showFooterCenter = !isProduct && !altCta;
     var hideBanner = false;
@@ -47149,7 +47195,7 @@ var Card = function Card(props) {
                 style: { backgroundImage: 'url("' + image + '")' },
                 role: altText && 'img',
                 'aria-label': altText },
-            hasBanner && !disableBanners && !isIcon && _react2.default.createElement(
+            hasBanner && !disableBanners && !isIcon && !isNews && _react2.default.createElement(
                 'span',
                 {
                     'data-testid': 'consonant-Card-banner',
@@ -47208,7 +47254,7 @@ var Card = function Card(props) {
                     className: 'consonant-Card-logo' },
                 _react2.default.createElement('img', {
                     src: cardIcon,
-                    alt: iconAlt || '',
+                    alt: '',
                     loading: 'lazy',
                     width: '32',
                     'data-testid': 'consonant-Card-logoImg' })
@@ -47268,7 +47314,8 @@ var Card = function Card(props) {
                     startDate: startDate,
                     endDate: endDate,
                     cardStyle: cardStyle,
-                    onFocus: onFocus });
+                    onFocus: onFocus,
+                    title: title });
             }),
             (isThreeFourths || isDoubleWide || isFull) && !renderOverlay && _react2.default.createElement(_LinkBlocker2.default, {
                 target: linkBlockerTarget,
@@ -47396,7 +47443,8 @@ var CardFooter = function CardFooter(props) {
         startDate = props.startDate,
         endDate = props.endDate,
         isFluid = props.isFluid,
-        onFocus = props.onFocus;
+        onFocus = props.onFocus,
+        title = props.title;
 
     /**
      * Is the card currently live?
@@ -47511,19 +47559,19 @@ var CardFooter = function CardFooter(props) {
                 'div',
                 {
                     className: 'consonant-CardFooter-cell consonant-CardFooter-cell--right' },
-                _react2.default.createElement(_Group2.default, { renderList: right, onFocus: onFocus })
+                _react2.default.createElement(_Group2.default, { renderList: right, onFocus: onFocus, title: title })
             ),
             shouldRenderAltRightUpcoming && _react2.default.createElement(
                 'div',
                 {
                     className: 'consonant-CardFooter-cell consonant-CardFooter-cell--right' },
-                _react2.default.createElement(_Group2.default, { renderList: altRightUpcoming, onFocus: onFocus })
+                _react2.default.createElement(_Group2.default, { renderList: altRightUpcoming, onFocus: onFocus, title: title })
             ),
             shouldRenderAltRightLive && _react2.default.createElement(
                 'div',
                 {
                     className: 'consonant-CardFooter-cell consonant-CardFooter-cell--right' },
-                _react2.default.createElement(_Group2.default, { renderList: altRightLive, onFocus: onFocus })
+                _react2.default.createElement(_Group2.default, { renderList: altRightLive, onFocus: onFocus, title: title })
             )
         )
     );
@@ -47615,12 +47663,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var groupType = {
     renderList: (0, _propTypes.arrayOf)((0, _propTypes.oneOfType)([(0, _propTypes.shape)(_card.footerLeftType), (0, _propTypes.shape)(_card.footerRightType), (0, _propTypes.shape)(_card.footerCenterType)])),
-    onFocus: _propTypes.func
+    onFocus: _propTypes.func,
+    title: _propTypes.string
 };
 
 var defaultProps = {
     renderList: [],
-    onFocus: function onFocus() {}
+    onFocus: function onFocus() {},
+    title: ''
 };
 
 /**
@@ -47637,7 +47687,8 @@ var defaultProps = {
  */
 var Group = function Group(props) {
     var renderList = props.renderList,
-        onFocus = props.onFocus;
+        onFocus = props.onFocus,
+        title = props.title;
 
 
     return _react2.default.createElement(
@@ -47652,7 +47703,8 @@ var Group = function Group(props) {
                 case _constants.INFOBIT_TYPE.BUTTON:
                     return _react2.default.createElement(_Button2.default, _extends({}, infobit, {
                         key: (0, _cuid2.default)(),
-                        onFocus: onFocus }));
+                        onFocus: onFocus,
+                        title: title }));
 
                 case _constants.INFOBIT_TYPE.ICON_TEXT:
                     return _react2.default.createElement(_IconWithText2.default, _extends({}, infobit, {
@@ -47672,7 +47724,8 @@ var Group = function Group(props) {
 
                 case _constants.INFOBIT_TYPE.LINK:
                     return _react2.default.createElement(_Link2.default, _extends({}, infobit, {
-                        key: (0, _cuid2.default)() }));
+                        key: (0, _cuid2.default)(),
+                        title: title }));
 
                 case _constants.INFOBIT_TYPE.PROGRESS:
                     return _react2.default.createElement(_Progress2.default, _extends({}, infobit, {
@@ -47925,7 +47978,8 @@ var buttonType = {
     iconAlt: _propTypes.string,
     iconPos: _propTypes.string,
     isCta: _propTypes.bool,
-    onFocus: _propTypes.func
+    onFocus: _propTypes.func,
+    title: _propTypes.string
 };
 
 var defaultProps = {
@@ -47936,7 +47990,8 @@ var defaultProps = {
     iconPos: '',
     isCta: false,
     style: BUTTON_STYLE.CTA,
-    onFocus: function onFocus() {}
+    onFocus: function onFocus() {},
+    title: ''
 };
 
 /**
@@ -47961,7 +48016,8 @@ var Button = function Button(_ref) {
         iconAlt = _ref.iconAlt,
         iconPos = _ref.iconPos,
         isCta = _ref.isCta,
-        onFocus = _ref.onFocus;
+        onFocus = _ref.onFocus,
+        title = _ref.title;
 
     /**
      **** Authored Configs ****
@@ -48012,6 +48068,7 @@ var Button = function Button(_ref) {
     var target = (0, _general.getLinkTarget)(href, ctaAction);
     var addParams = new URLSearchParams(additionalParams);
     var buttonLink = additionalParams && addParams.keys().next().value ? href + '?' + addParams.toString() : href;
+    var ariaLabel = text + ' ' + title;
 
     return _react2.default.createElement(
         'a',
@@ -48023,7 +48080,8 @@ var Button = function Button(_ref) {
             rel: 'noopener noreferrer',
             target: target,
             href: buttonLink,
-            onFocus: onFocus },
+            onFocus: onFocus,
+            'aria-label': ariaLabel },
         iconSrc && _react2.default.createElement('img', {
             'data-testid': 'consonant-BtnInfobit-ico',
             src: iconSrc,
@@ -48071,11 +48129,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var linkType = {
     linkHint: _propTypes.string,
     href: _propTypes.string.isRequired,
-    text: _propTypes.string.isRequired
+    text: _propTypes.string.isRequired,
+    title: _propTypes.string
 };
 
 var defaultProps = {
-    linkHint: ''
+    linkHint: '',
+    title: ''
 };
 
 /**
@@ -48095,13 +48155,15 @@ var defaultProps = {
 var Link = function Link(_ref) {
     var href = _ref.href,
         linkHint = _ref.linkHint,
-        text = _ref.text;
+        text = _ref.text,
+        title = _ref.title;
 
     /**
      **** Authored Configs ****
      */
     var getConfig = (0, _hooks.useConfig)();
     var ctaAction = getConfig('collection', 'ctaAction');
+    var ariaLabel = text + ' ' + title;
 
     var target = (0, _general.getLinkTarget)(href, ctaAction);
     return _react2.default.createElement(
@@ -48114,7 +48176,8 @@ var Link = function Link(_ref) {
             target: target,
             title: linkHint,
             rel: 'noopener noreferrer',
-            tabIndex: '0' },
+            tabIndex: '0',
+            'aria-label': ariaLabel },
         text
     );
 };
@@ -48988,7 +49051,7 @@ var defineIsUpcoming = function defineIsUpcoming(currentTime, startTimeMls) {
  */
 function eventTiming() {
     var sessions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-    var eventFilter = arguments[1];
+    var eventFilter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
     if (!sessions.length) return [];
 
@@ -49060,7 +49123,7 @@ function eventTiming() {
         var isTimed = !!(endMs && startMs);
         var isUpComing = isTimed ? defineIsUpcoming(curMs, startMs) : false;
         var isOnDemand = isTimed && !isUpComing ? defineIsOnDemand(curMs, endMs) : false;
-        var isLive = !!(isTimed && !isUpComing && !isOnDemand && startMs) || eventFilter === 'live';
+        var isLive = !!(isTimed && !isUpComing && !isOnDemand && startMs);
         // Tagged Exceptions
         var isOnDemandScheduled = defineIsOnDemandScheduled(tags);
         var isLiveExpired = defineIsLiveExpired(tags);
@@ -49112,15 +49175,20 @@ function eventTiming() {
         // updateTimeOverride(curMs, nextTransitionMs);
     }
 
-    var cards = [].concat(live, upComing, onDemand, notTimed);
-    if (eventFilter === 'live') {
-        cards = live;
-    } else if (eventFilter === 'upcoming') {
-        cards = upComing;
-    } else if (eventFilter === 'on-demand') {
-        cards = onDemand;
-    } else if (eventFilter === 'not-timed') {
-        cards = notTimed;
+    var cards = [];
+    if (eventFilter.length === 0) {
+        cards = [].concat(live, upComing, onDemand, notTimed);
+        return _extends({
+            visibleSessions: cards
+        }, nextTransitionMs && { nextTransitionMs: nextTransitionMs });
+    }if (eventFilter.indexOf('live') > -1) {
+        cards = cards.concat(live);
+    }if (eventFilter.indexOf('upcoming') > -1) {
+        cards = cards.concat(upComing);
+    }if (eventFilter.indexOf('on-demand') > -1) {
+        cards = cards.concat(onDemand);
+    }if (eventFilter.indexOf('not-timed') > -1) {
+        cards = cards.concat(notTimed);
     }
 
     /*
@@ -49128,9 +49196,9 @@ function eventTiming() {
         - conditionally adds next sort transition time to returns
         - returns an Array of cards sorted by Category and then Date ASC
     */
-    return _extends({}, nextTransitionMs && { nextTransitionMs: nextTransitionMs }, {
+    return _extends({
         visibleSessions: cards
-    });
+    }, nextTransitionMs && { nextTransitionMs: nextTransitionMs });
 }
 
 exports.eventTiming = eventTiming;
@@ -53027,6 +53095,12 @@ var Paginator = function Paginator(props) {
     var nextLabel = getConfig('pagination', 'i18n.paginator.nextLabel');
 
     /**
+     * Use Light Text
+     * @type {String}
+     */
+    var useLightText = getConfig('collection', 'useLightText');
+
+    /**
      * Start and end indexes of pages to build
      * @type {Int, Int}
      */
@@ -53091,7 +53165,7 @@ var Paginator = function Paginator(props) {
     return _react2.default.createElement(
         'div',
         {
-            className: 'consonant-Pagination' },
+            className: useLightText ? 'consonant-Pagination lightText' : 'consonant-Pagination' },
         _react2.default.createElement(
             'div',
             {
@@ -53267,11 +53341,22 @@ var CardFilterer = function () {
 
     }, {
         key: 'sortCards',
-        value: function sortCards(sortOption, eventFilter, featuredCardIds, hideCtaIds, isFirstLoad) {
+        value: function sortCards(sortOption) {
+            var eventFilter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+            var featuredCardIds = arguments[2];
+            var hideCtaIds = arguments[3];
+            var isFirstLoad = arguments[4];
+
             if (!this.filteredCards.length) return this;
 
             var sortType = sortOption ? sortOption.sort.toLowerCase() : null;
+            if (eventFilter.length > 0) {
+                var _getEventSort = (0, _Helpers.getEventSort)(this.filteredCards, eventFilter),
+                    _getEventSort$visible = _getEventSort.visibleSessions,
+                    visibleSessions = _getEventSort$visible === undefined ? [] : _getEventSort$visible;
 
+                this.filteredCards = visibleSessions;
+            }
             switch (sortType) {
                 case _constants.SORT_TYPES.DATEASC:
                     this.filteredCards = (0, _Helpers.getDateAscSort)(this.filteredCards);
@@ -53287,12 +53372,12 @@ var CardFilterer = function () {
                     break;
                 case _constants.SORT_TYPES.EVENTSORT:
                     {
-                        var _getEventSort = (0, _Helpers.getEventSort)(this.filteredCards, eventFilter),
-                            nextTransitionMs = _getEventSort.nextTransitionMs,
-                            _getEventSort$visible = _getEventSort.visibleSessions,
-                            visibleSessions = _getEventSort$visible === undefined ? [] : _getEventSort$visible;
+                        var _getEventSort2 = (0, _Helpers.getEventSort)(this.filteredCards, eventFilter),
+                            nextTransitionMs = _getEventSort2.nextTransitionMs,
+                            _getEventSort2$visibl = _getEventSort2.visibleSessions,
+                            _visibleSessions = _getEventSort2$visibl === undefined ? [] : _getEventSort2$visibl;
 
-                        this.filteredCards = visibleSessions;
+                        this.filteredCards = _visibleSessions;
 
                         if (nextTransitionMs > 0) {
                             this.nextTransitionMs = nextTransitionMs;

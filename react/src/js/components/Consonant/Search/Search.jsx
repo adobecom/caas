@@ -131,8 +131,7 @@ const Search = ({
                         value={value}
                         onChange={handleSearch}
                         ref={textInput}
-                        className="consonant-Search-input"
-                        required />
+                        className="consonant-Search-input" />
                     <button
                         data-testid="consonant-Search-inputClear"
                         type="button"
