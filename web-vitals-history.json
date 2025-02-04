@@ -250,5 +250,77 @@
       "fid": 0.6999999999825377,
       "cls": null
     }
+  },
+  {
+    "date": "2025-02-03T20:14:56.520Z",
+    "pr": {
+      "number": "242",
+      "title": "fix(mwpw-167080): resolve GH Pages “No uploaded artifact found!” error for PR previews"
+    },
+    "metrics": {
+      "lcp": 10368.600000000006,
+      "fid": 0.7999999999883585,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-03T20:37:51.305Z",
+    "pr": {
+      "number": "660197f",
+      "title": "Direct push to main"
+    },
+    "metrics": {
+      "lcp": 10354.799999999988,
+      "fid": 0.8000000000174623,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-03T21:02:48.174Z",
+    "pr": {
+      "number": "12cf450",
+      "title": "Direct push to main"
+    },
+    "metrics": {
+      "lcp": 12787.699999999953,
+      "fid": 0.6999999999534339,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-03T21:08:20.179Z",
+    "pr": {
+      "number": "aafb074",
+      "title": "Direct push to main"
+    },
+    "metrics": {
+      "lcp": 13628.5,
+      "fid": 0.8000000000174623,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-04T18:48:50.564Z",
+    "pr": {
+      "number": "230",
+      "title": "feat(mwpw-163904): news card style"
+    },
+    "metrics": {
+      "lcp": 10357.799999999988,
+      "fid": 0.7000000000116415,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-04T19:35:29.864Z",
+    "pr": {
+      "number": "233",
+      "title": "fix(mwpw-163284): color changes on hover for CAAS button is not #274dea"
+    },
+    "metrics": {
+      "lcp": 13292.099999999977,
+      "fid": 0.7000000000116415,
+      "cls": null
+    }
   }
 ]
