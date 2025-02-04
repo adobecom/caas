@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.28.6 (1/30/2025, 11:02:12)
+ * Chimera UI Libraries - Build 0.29.0 (2/4/2025, 10:57:35)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -47119,6 +47119,7 @@ var Card = function Card(props) {
     var isText = cardStyle === 'text-card';
     var isFull = cardStyle === 'full-card';
     var isIcon = cardStyle === 'icon-card';
+    var isNews = cardStyle === 'news-card';
 
     // Card elements to show
     var showHeader = !isProduct;
@@ -47127,8 +47128,8 @@ var Card = function Card(props) {
     var showLogo = isOneHalf || isThreeFourths || isFull || isText;
     var showLabel = !isProduct && !isText;
     var showVideoButton = !isProduct && !isText && !isIcon;
-    var showText = !isHalfHeight && !isFull;
-    var showFooter = isOneHalf || isProduct || isText;
+    var showText = !isHalfHeight && !isFull && !isNews;
+    var showFooter = isOneHalf || isProduct || isText || isNews;
     var showFooterLeft = !isProduct;
     var showFooterCenter = !isProduct && !altCta;
     var hideBanner = false;
@@ -47194,7 +47195,7 @@ var Card = function Card(props) {
                 style: { backgroundImage: 'url("' + image + '")' },
                 role: altText && 'img',
                 'aria-label': altText },
-            hasBanner && !disableBanners && !isIcon && _react2.default.createElement(
+            hasBanner && !disableBanners && !isIcon && !isNews && _react2.default.createElement(
                 'span',
                 {
                     'data-testid': 'consonant-Card-banner',
