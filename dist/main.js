@@ -1,43 +1,5 @@
 /*!
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
- * Chimera UI Libraries - Build 0.28.4 (1/29/2025, 15:06:44)
-=======
-=======
->>>>>>> f5ecc49 (feat(mwpw-163904): news card style)
-=======
->>>>>>> 77118cc (feat(mwpw-163904): news card style)
-<<<<<<< HEAD
- * Chimera UI Libraries - Build 0.28.1 (1/29/2025, 11:57:20)
-=======
- * Chimera UI Libraries - Build 0.28.1 (1/22/2025, 15:28:09)
->>>>>>> 6ddea69 (feat(mwpw-163904): newsroom card style)
-<<<<<<< HEAD
->>>>>>> 8bda72a (feat(mwpw-163904): news card style)
-=======
-=======
- * Chimera UI Libraries - Build 0.28.1 (1/24/2025, 12:32:35)
->>>>>>> dc6ea47 (fix(mwpw-163904): new newscard style)
-<<<<<<< HEAD
->>>>>>> f5ecc49 (feat(mwpw-163904): news card style)
-=======
-=======
- * Chimera UI Libraries - Build 0.28.1 (1/29/2025, 11:51:37)
->>>>>>> a9b4442 (feat(mwpw-163904): news card styles)
->>>>>>> 77118cc (feat(mwpw-163904): news card style)
-=======
- * Chimera UI Libraries - Build 0.28.3 (1/29/2025, 12:36:38)
->>>>>>> 212fb24 (feat(mwpw-163904): rebuild post rebase)
-=======
- * Chimera UI Libraries - Build 0.28.3 (1/29/2025, 13:02:35)
->>>>>>> a470ea5 (feat(mwpw-163904): 4 and 5 up styles)
-=======
- * Chimera UI Libraries - Build 0.28.3 (1/30/2025, 12:56:44)
->>>>>>> 5265fae (feat(mwpw-163904): news card styles)
+ * Chimera UI Libraries - Build 0.28.10 (2/4/2025, 10:33:32)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
