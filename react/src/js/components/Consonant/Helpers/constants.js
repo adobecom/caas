@@ -149,6 +149,7 @@ export const DEFAULT_CONFIG = {
             title: '',
             onErrorTitle: 'Sorry there was a system error.',
             onErrorDescription: 'Please try reloading the page or try coming back to the page another time.',
+            sortByLabel: 'Sort by {key}',
         },
     },
     featuredCards: [],

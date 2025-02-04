@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.28.4 (1/29/2025, 15:06:44)
+ * Chimera UI Libraries - Build 0.28.10 (2/4/2025, 10:51:37)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -1639,7 +1639,8 @@ var DEFAULT_CONFIG = exports.DEFAULT_CONFIG = {
             totalResultsText: '{total} results',
             title: '',
             onErrorTitle: 'Sorry there was a system error.',
-            onErrorDescription: 'Please try reloading the page or try coming back to the page another time.'
+            onErrorDescription: 'Please try reloading the page or try coming back to the page another time.',
+            sortByLabel: 'Sort by {key}'
         }
     },
     featuredCards: [],
@@ -43856,6 +43857,12 @@ var Popup = function Popup(_ref) {
         id = _ref.id;
 
     /**
+     **** Authored Configs ****
+     */
+    var getConfig = (0, _hooks.useConfig)();
+    var sortByLabel = getConfig('collection', 'i18n.sortByLabel');
+
+    /**
      * @typedef {String} OpenDropdownState - Id of a selected dropdown
      * @description — Passed in Context Provider So All Nested Components can be in sync
      *
@@ -43864,6 +43871,7 @@ var Popup = function Popup(_ref) {
      *
      * @type {[String, Function]} OpenDropdown
      */
+
     var _useExpandable = (0, _hooks.useExpandable)(id),
         _useExpandable2 = _slicedToArray(_useExpandable, 2),
         openDropdown = _useExpandable2[0],
@@ -43928,6 +43936,7 @@ var Popup = function Popup(_ref) {
                         key: item.label,
                         type: 'button',
                         role: 'menuitem',
+                        'aria-label': sortByLabel && sortByLabel.replace('{key}', item.label),
                         className: item.label === val.label ? 'consonant-Select-option is-selected' : 'consonant-Select-option',
                         onClick: function onClick(e) {
                             return handleOptionClick(e, item);

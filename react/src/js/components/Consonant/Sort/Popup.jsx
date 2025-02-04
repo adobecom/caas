@@ -8,7 +8,7 @@ import {
     string,
 } from 'prop-types';
 
-import { useExpandable } from '../Helpers/hooks';
+import { useConfig, useExpandable } from '../Helpers/hooks';
 import { sortOptionType } from '../types/config';
 
 const popupType = {
@@ -53,6 +53,12 @@ const Popup = ({
     optionsAlignment,
     id,
 }) => {
+    /**
+     **** Authored Configs ****
+     */
+    const getConfig = useConfig();
+    const sortByLabel = getConfig('collection', 'i18n.sortByLabel');
+
     /**
      * @typedef {String} OpenDropdownState - Id of a selected dropdown
      * @description — Passed in Context Provider So All Nested Components can be in sync
@@ -115,6 +121,7 @@ const Popup = ({
                             key={item.label}
                             type="button"
                             role="menuitem"
+                            aria-label={sortByLabel && sortByLabel.replace('{key}', item.label)}
                             className={item.label === val.label ?
                                 'consonant-Select-option is-selected' :
                                 'consonant-Select-option'
