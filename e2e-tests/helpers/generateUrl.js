@@ -43,9 +43,9 @@ const mergeDeep = (target, source) => {
 const generateUrl = (configOverrides = {}) => {
     const finalConfig = mergeDeep(config, configOverrides);
     const state = Buffer.from(JSON.stringify(finalConfig)).toString('base64');
-    if (process.env.GITHUB_ACTIONS){
+    if (process.env.GITHUB_ACTIONS) {
         // eslint-disable-next-line no-template-curly-in-string
-        return 'https://adobecom.github.io/caas/html/e2e/index.html?state=${state}';
+        return `https://adobecom.github.io/caas/html/e2e/index.html?state=${state}`;
     }
     return `http://localhost:8000/html/e2e/index.html?state=${state}`;
 };
