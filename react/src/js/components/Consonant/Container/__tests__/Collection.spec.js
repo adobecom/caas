@@ -40,8 +40,8 @@ describe('Container Component', () => {
         renderContainer(customConfig);
 
         // Check if the component is rendered correctly
-        const container = screen.getByRole('group');
-        expect(container).toBeInTheDocument();
+        const container = screen.getAllByRole('group');
+        expect(container[0]).toBeInTheDocument();
     });
 
     test('should render with lazyLoad set to false', async () => {
@@ -49,8 +49,8 @@ describe('Container Component', () => {
         renderContainer(customConfig);
 
         // Check if the component is rendered correctly
-        const container = screen.getByRole('group');
-        expect(container).toBeInTheDocument();
+        const container = screen.getAllByRole('group');
+        expect(container[0]).toBeInTheDocument();
     });
 
     test('should render with resultsPerPage set to 10', async () => {
@@ -58,8 +58,8 @@ describe('Container Component', () => {
         renderContainer(customConfig);
 
         // Check if the component is rendered correctly
-        const container = screen.getByRole('group');
-        expect(container).toBeInTheDocument();
+        const container = screen.getAllByRole('group');
+        expect(container[0]).toBeInTheDocument();
     });
 
     test('should render with resultsPerPage set to 20', async () => {
@@ -67,8 +67,8 @@ describe('Container Component', () => {
         renderContainer(customConfig);
 
         // Check if the component is rendered correctly
-        const container = screen.getByRole('group');
-        expect(container).toBeInTheDocument();
+        const container = screen.getAllByRole('group');
+        expect(container[0]).toBeInTheDocument();
     });
 
     test('should render with totalCardsToShow set to 50', async () => {
@@ -76,8 +76,8 @@ describe('Container Component', () => {
         renderContainer(customConfig);
 
         // Check if the component is rendered correctly
-        const container = screen.getByRole('group');
-        expect(container).toBeInTheDocument();
+        const container = screen.getAllByRole('group');
+        expect(container[0]).toBeInTheDocument();
     });
 
     test('should render with totalCardsToShow set to 100', async () => {
@@ -85,8 +85,8 @@ describe('Container Component', () => {
         renderContainer(customConfig);
 
         // Check if the component is rendered correctly
-        const container = screen.getByRole('group');
-        expect(container).toBeInTheDocument();
+        const container = screen.getAllByRole('group');
+        expect(container[0]).toBeInTheDocument();
     });
 
     test('should render with cardStyle set to "standard"', async () => {
@@ -94,8 +94,8 @@ describe('Container Component', () => {
         renderContainer(customConfig);
 
         // Check if the component is rendered correctly
-        const container = screen.getByRole('group');
-        expect(container).toBeInTheDocument();
+        const container = screen.getAllByRole('group');
+        expect(container[0]).toBeInTheDocument();
     });
 
     test('should render with cardStyle set to "carousel"', async () => {
@@ -103,8 +103,8 @@ describe('Container Component', () => {
         renderContainer(customConfig);
 
         // Check if the component is rendered correctly
-        const container = screen.getByRole('group');
-        expect(container).toBeInTheDocument();
+        const container = screen.getAllByRole('group');
+        expect(container[0]).toBeInTheDocument();
     });
 
     test('should render with showTotalResults set to true', async () => {
@@ -131,8 +131,8 @@ describe('Container Component', () => {
         renderContainer(customConfig);
 
         // Check if the component is rendered correctly
-        const container = screen.getByRole('group');
-        expect(container).toBeInTheDocument();
+        const container = screen.getAllByRole('group');
+        expect(container[0]).toBeInTheDocument();
     });
 
     test('should render with lazyLoad false and resultsPerPage 20', async () => {
@@ -140,8 +140,8 @@ describe('Container Component', () => {
         renderContainer(customConfig);
 
         // Check if the component is rendered correctly
-        const container = screen.getByRole('group');
-        expect(container).toBeInTheDocument();
+        const container = screen.getAllByRole('group');
+        expect(container[0]).toBeInTheDocument();
     });
 
     test('should render with totalCardsToShow 50 and cardStyle "standard"', async () => {
@@ -149,8 +149,8 @@ describe('Container Component', () => {
         renderContainer(customConfig);
 
         // Check if the component is rendered correctly
-        const container = screen.getByRole('group');
-        expect(container).toBeInTheDocument();
+        const container = screen.getAllByRole('group');
+        expect(container[0]).toBeInTheDocument();
     });
 
     test('should render with totalCardsToShow 100 and cardStyle "carousel"', async () => {
@@ -158,8 +158,8 @@ describe('Container Component', () => {
         renderContainer(customConfig);
 
         // Check if the component is rendered correctly
-        const container = screen.getByRole('group');
-        expect(container).toBeInTheDocument();
+        const container = screen.getAllByRole('group');
+        expect(container[0]).toBeInTheDocument();
     });
 
     test('should render with showTotalResults true and cardStyle "standard"', async () => {

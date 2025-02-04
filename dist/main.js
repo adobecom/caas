@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.29.0 (2/4/2025, 10:57:35)
+ * Chimera UI Libraries - Build 0.29.1 (2/4/2025, 11:44:35)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -53101,6 +53101,12 @@ var Paginator = function Paginator(props) {
     var useLightText = getConfig('collection', 'useLightText');
 
     /**
+     * pagination - used for aria group label
+     * @type {String}
+     */
+    var pagination = getConfig('pagination', 'i18n.paginator.pagination');
+
+    /**
      * Start and end indexes of pages to build
      * @type {Int, Int}
      */
@@ -53165,6 +53171,8 @@ var Paginator = function Paginator(props) {
     return _react2.default.createElement(
         'div',
         {
+            role: 'group',
+            'aria-labelledby': pagination || 'pagination',
             className: useLightText ? 'consonant-Pagination lightText' : 'consonant-Pagination' },
         _react2.default.createElement(
             'div',
@@ -55033,6 +55041,7 @@ var Item = function Item(props) {
                 'section',
                 {
                     id: id + '-panel',
+                    role: 'group',
                     'aria-labelledby': id + '-link' },
                 _react2.default.createElement(_Items.Items, {
                     items: items,
