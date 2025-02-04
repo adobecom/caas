@@ -322,5 +322,17 @@
       "fid": 0.7000000000116415,
       "cls": null
     }
+  },
+  {
+    "date": "2025-02-04T23:25:45.147Z",
+    "pr": {
+      "number": "239",
+      "title": "fix(mwpw-166333): adds missing role=group aria attributes"
+    },
+    "metrics": {
+      "lcp": 13034.599999999977,
+      "fid": 0.7999999999883585,
+      "cls": null
+    }
   }
 ]
