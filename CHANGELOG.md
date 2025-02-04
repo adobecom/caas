@@ -1,5 +1,40 @@
 
 
+## [0.29.2](https://github.com/adobecom/caas/compare/0.29.1...0.29.2) (2025-02-04)
+
+
+### Bug Fixes
+
+* **MWPW-166333:** fixes missing role=group aria attributes ([f60713f](https://github.com/adobecom/caas/commit/f60713f356817383566de784e87ec5b65e5afec7))
+
+## [0.29.1](https://github.com/adobecom/caas/compare/0.29.0...0.29.1) (2025-02-04)
+
+
+### Bug Fixes
+
+* **MWPW-163284:** color changes on hover for CAAS button is not [#274](https://github.com/adobecom/caas/issues/274)dea ([49e12ef](https://github.com/adobecom/caas/commit/49e12eff98b1f57f0f6c1594bd13153a290a100c))
+
+# [0.29.0](https://github.com/adobecom/caas/compare/0.28.10...0.29.0) (2025-02-04)
+
+
+### Features
+
+* **mwpw-163904:** news card ([769a206](https://github.com/adobecom/caas/commit/769a2064b1fee99175be3fa5587deb4b567c7c6c))
+* **mwpw-163904:** news card style ([b160c82](https://github.com/adobecom/caas/commit/b160c823932d93adbc2f8975f6645398cbf320a6))
+* **mwpw-163904:** news card style ([ed46091](https://github.com/adobecom/caas/commit/ed46091193e9d4a6799c235e46045c5650fc9f95))
+* **mwpw-163904:** news card style ([97cf4d7](https://github.com/adobecom/caas/commit/97cf4d739c25b9474f066f3c40111d2854e86328))
+* **mwpw-163904:** news card style ([c8d28b1](https://github.com/adobecom/caas/commit/c8d28b1f344372cfc7975788c6168fb88ccce438))
+* **mwpw-163904:** news room ([8887975](https://github.com/adobecom/caas/commit/888797536f543c5e580238785e65b5867f23f17f))
+* **mwpw-163904:** rebuild post rebase ([1649e57](https://github.com/adobecom/caas/commit/1649e5787da24f75575fee0a5e0860d7a1379c1e))
+
+## [0.28.10](https://github.com/adobecom/caas/compare/0.28.9...0.28.10) (2025-02-03)
+
+## [0.28.9](https://github.com/adobecom/caas/compare/0.28.8...0.28.9) (2025-02-03)
+
+## [0.28.8](https://github.com/adobecom/caas/compare/0.28.7...0.28.8) (2025-02-03)
+
+## [0.28.7](https://github.com/adobecom/caas/compare/0.28.6...0.28.7) (2025-02-03)
+
 ## [0.28.6](https://github.com/adobecom/caas/compare/0.28.5...0.28.6) (2025-01-30)
 
 
