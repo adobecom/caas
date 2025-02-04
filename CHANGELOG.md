@@ -1,5 +1,12 @@
 
 
+## [0.29.1](https://github.com/adobecom/caas/compare/0.29.0...0.29.1) (2025-02-04)
+
+
+### Bug Fixes
+
+* **MWPW-163284:** color changes on hover for CAAS button is not [#274](https://github.com/adobecom/caas/issues/274)dea ([49e12ef](https://github.com/adobecom/caas/commit/49e12eff98b1f57f0f6c1594bd13153a290a100c))
+
 # [0.29.0](https://github.com/adobecom/caas/compare/0.28.10...0.29.0) (2025-02-04)
 
 
