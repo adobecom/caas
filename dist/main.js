@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.28.10 (2/4/2025, 10:51:37)
+ * Chimera UI Libraries - Build 0.29.2 (2/5/2025, 10:39:26)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -47128,6 +47128,7 @@ var Card = function Card(props) {
     var isText = cardStyle === 'text-card';
     var isFull = cardStyle === 'full-card';
     var isIcon = cardStyle === 'icon-card';
+    var isNews = cardStyle === 'news-card';
 
     // Card elements to show
     var showHeader = !isProduct;
@@ -47136,8 +47137,8 @@ var Card = function Card(props) {
     var showLogo = isOneHalf || isThreeFourths || isFull || isText;
     var showLabel = !isProduct && !isText;
     var showVideoButton = !isProduct && !isText && !isIcon;
-    var showText = !isHalfHeight && !isFull;
-    var showFooter = isOneHalf || isProduct || isText;
+    var showText = !isHalfHeight && !isFull && !isNews;
+    var showFooter = isOneHalf || isProduct || isText || isNews;
     var showFooterLeft = !isProduct;
     var showFooterCenter = !isProduct && !altCta;
     var hideBanner = false;
@@ -47203,7 +47204,7 @@ var Card = function Card(props) {
                 style: { backgroundImage: 'url("' + image + '")' },
                 role: altText && 'img',
                 'aria-label': altText },
-            hasBanner && !disableBanners && !isIcon && _react2.default.createElement(
+            hasBanner && !disableBanners && !isIcon && !isNews && _react2.default.createElement(
                 'span',
                 {
                     'data-testid': 'consonant-Card-banner',
@@ -53109,6 +53110,12 @@ var Paginator = function Paginator(props) {
     var useLightText = getConfig('collection', 'useLightText');
 
     /**
+     * pagination - used for aria group label
+     * @type {String}
+     */
+    var pagination = getConfig('pagination', 'i18n.paginator.pagination');
+
+    /**
      * Start and end indexes of pages to build
      * @type {Int, Int}
      */
@@ -53173,6 +53180,8 @@ var Paginator = function Paginator(props) {
     return _react2.default.createElement(
         'div',
         {
+            role: 'group',
+            'aria-labelledby': pagination || 'pagination',
             className: useLightText ? 'consonant-Pagination lightText' : 'consonant-Pagination' },
         _react2.default.createElement(
             'div',
@@ -55041,6 +55050,7 @@ var Item = function Item(props) {
                 'section',
                 {
                     id: id + '-panel',
+                    role: 'group',
                     'aria-labelledby': id + '-link' },
                 _react2.default.createElement(_Items.Items, {
                     items: items,

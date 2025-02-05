@@ -298,5 +298,41 @@
       "fid": 0.8000000000174623,
       "cls": null
     }
+  },
+  {
+    "date": "2025-02-04T18:48:50.564Z",
+    "pr": {
+      "number": "230",
+      "title": "feat(mwpw-163904): news card style"
+    },
+    "metrics": {
+      "lcp": 10357.799999999988,
+      "fid": 0.7000000000116415,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-04T19:35:29.864Z",
+    "pr": {
+      "number": "233",
+      "title": "fix(mwpw-163284): color changes on hover for CAAS button is not #274dea"
+    },
+    "metrics": {
+      "lcp": 13292.099999999977,
+      "fid": 0.7000000000116415,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-04T23:25:45.147Z",
+    "pr": {
+      "number": "239",
+      "title": "fix(mwpw-166333): adds missing role=group aria attributes"
+    },
+    "metrics": {
+      "lcp": 13034.599999999977,
+      "fid": 0.7999999999883585,
+      "cls": null
+    }
   }
 ]
