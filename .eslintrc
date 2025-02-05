@@ -36,7 +36,9 @@
     "HTMLElement": true,
     "MutationObserver": true,
     "$": true,
-    "jQuery": true
+    "jQuery": true,
+    "browser": "readonly",
+    "$$": "readonly",
   },
   "rules": {
     "jest/no-large-snapshots": ["warn", { "maxSize": 50, "inlineMaxSize": 50 }],

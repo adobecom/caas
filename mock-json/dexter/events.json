@@ -1,0 +1,1124 @@
+{
+  "cards": [
+    {
+      "id": "3p0wp6x",
+      "showCard": {
+        "from": "",
+        "until": ""
+      },
+      "styles": {
+        "typeOverride": "event",
+        "backgroundImage": "https://events-data-prod.aws122.adobeitc.com/images/series/f51fe370-eca3-456c-a9d3-6831893373db/events/51e46a07-f7c0-4a93-ad8a-3b27fa602241/event-card-image.png",
+        "mnemonic": "",
+        "icon": "https://www.adobe.com/content/dam/cc/images/shared/icons/9-nothing.svg",
+        "iconAlt": ""
+      },
+      "overlays": {
+        "banner": {
+          "backgroundColor": "#EAEAEA",
+          "fontColor": "#323232",
+          "description": "",
+          "icon": ""
+        },
+        "logo": {
+          "src": ""
+        },
+        "label": {
+          "description": ""
+        },
+        "videoButton": {
+          "url": ""
+        }
+      },
+      "tags": [
+        {
+          "id": "98ne/d86x"
+        },
+        {
+          "id": "d2bm/hto1"
+        },
+        {
+          "id": "h1kw/9jnc"
+        },
+        {
+          "id": "g2d1/fu4n"
+        },
+        {
+          "id": "3277/l3zk"
+        },
+        {
+          "id": "jff0/l3zk"
+        },
+        {
+          "id": "jff0/epi9"
+        }
+      ],
+      "contentArea": {
+        "detailText": "",
+        "title": "Create Now Atlanta",
+        "url": "/events/create-now/create-now-atlanta/atlanta/ga/2024-11-14",
+        "description": "Dive into an evening of creativity with Adobe!  \n\nJoin the design community at Adobe Create Now to connect with  fellow local creators, explore new ways to collaborate, and enhan…",
+        "dateDetailText": {
+          "type": "date-interval",
+          "startTime": "",
+          "endTime": ""
+        }
+      },
+      "footer": [
+        {
+          "divider": false,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "",
+              "unsaveCardIcon": "",
+              "cardSaveText": "",
+              "unsaveCardText": ""
+            },
+            {
+              "type": "date-interval",
+              "startTime": "2024-11-14T22:30:00.000Z",
+              "endTime": "2024-11-15T01:00:00.000Z"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "",
+              "text": "View event",
+              "href": "/events/create-now/create-now-atlanta/atlanta/ga/2024-11-14"
+            }
+          ],
+          "altCta": []
+        }
+      ],
+      "search": {
+        "timezone": "America/New_York",
+        "venue": "Westside Cultural Arts Center",
+        "venueAddress": "760 10th Street Northwest",
+        "venueCity": "Atlanta",
+        "venueState": "Georgia",
+        "venueZipcode": "30318",
+        "startDate": "2024-11-14T22:30:00.000Z",
+        "endDate": "2024-11-15T01:00:00.000Z",
+        "creationTime": "2024-10-23T03:05:24.181Z",
+        "modificationTime": "2024-11-04T19:59:58.403Z",
+        "localStartDate": "2024-11-14",
+        "localEndDate": "2024-11-14"
+      },
+      "cardDate": "2024-10-23T03:05:24.181Z",
+      "createdDate": "2024-10-23T03:05:24.181Z",
+      "modifiedDate": "2024-11-04T19:59:58.403Z",
+      "startDate": "2024-11-14T22:30:00.000Z",
+      "endDate": "2024-11-15T01:00:00.000Z",
+      "ctaLink": "/events/create-now/create-now-atlanta/atlanta/ga/2024-11-14",
+      "overlayLink": "/events/create-now/create-now-atlanta/atlanta/ga/2024-11-14",
+      "origin": ""
+    },
+    {
+      "id": "21q2j5y",
+      "showCard": {
+        "from": "",
+        "until": ""
+      },
+      "styles": {
+        "typeOverride": "event",
+        "backgroundImage": "https://events-data-prod.aws122.adobeitc.com/images/series/1e297c0b-bcee-482b-a839-577ccf451559/events/9d1818fe-1a07-4655-a56e-3596c7063757/event-card-image.png",
+        "mnemonic": "",
+        "icon": "https://www.adobe.com/content/dam/cc/images/shared/icons/9-nothing.svg",
+        "iconAlt": ""
+      },
+      "overlays": {
+        "banner": {
+          "backgroundColor": "#EAEAEA",
+          "fontColor": "#323232",
+          "description": "",
+          "icon": ""
+        },
+        "logo": {
+          "src": ""
+        },
+        "label": {
+          "description": ""
+        },
+        "videoButton": {
+          "url": ""
+        }
+      },
+      "tags": [
+        {
+          "id": "98ne/d86x"
+        },
+        {
+          "id": "d2bm/hto1"
+        },
+        {
+          "id": "h1kw/defv"
+        },
+        {
+          "id": "g2d1/i72m"
+        },
+        {
+          "id": "3277/l3zk"
+        },
+        {
+          "id": "jff0/l3zk"
+        },
+        {
+          "id": "jff0/epi9"
+        }
+      ],
+      "contentArea": {
+        "detailText": "",
+        "title": "Creative Jam Phoenix",
+        "url": "/events/creative-jam/creative-jam-phoenix/phoenix/az/2024-11-12",
+        "description": "Join us on for a Creative Jam, a FREE event experience celebrating creativity.\n\nThe Creative Jam brings together teams of designers and illustrators to create amazing designs bas…",
+        "dateDetailText": {
+          "type": "date-interval",
+          "startTime": "",
+          "endTime": ""
+        }
+      },
+      "footer": [
+        {
+          "divider": false,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "",
+              "unsaveCardIcon": "",
+              "cardSaveText": "",
+              "unsaveCardText": ""
+            },
+            {
+              "type": "date-interval",
+              "startTime": "2024-11-13T01:00:00.000Z",
+              "endTime": "2024-11-13T04:00:00.000Z"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "",
+              "text": "View event",
+              "href": "/events/creative-jam/creative-jam-phoenix/phoenix/az/2024-11-12"
+            }
+          ],
+          "altCta": []
+        }
+      ],
+      "search": {
+        "timezone": "America/Denver",
+        "venue": "On Jackson",
+        "venueAddress": "245 East Jackson Street",
+        "venueCity": "Phoenix",
+        "venueState": "Arizona",
+        "venueZipcode": "85004",
+        "startDate": "2024-11-13T01:00:00.000Z",
+        "endDate": "2024-11-13T04:00:00.000Z",
+        "creationTime": "2024-10-16T18:16:24.878Z",
+        "modificationTime": "2024-11-11T02:39:00.965Z",
+        "localStartDate": "2024-11-12",
+        "localEndDate": "2024-11-12"
+      },
+      "cardDate": "2024-10-16T18:16:24.878Z",
+      "createdDate": "2024-10-16T18:16:24.878Z",
+      "modifiedDate": "2024-11-11T02:39:00.965Z",
+      "startDate": "2024-11-13T01:00:00.000Z",
+      "endDate": "2024-11-13T04:00:00.000Z",
+      "ctaLink": "/events/creative-jam/creative-jam-phoenix/phoenix/az/2024-11-12",
+      "overlayLink": "/events/creative-jam/creative-jam-phoenix/phoenix/az/2024-11-12",
+      "origin": ""
+    },
+    {
+      "id": "fx4l8g",
+      "showCard": {
+        "from": "",
+        "until": ""
+      },
+      "styles": {
+        "typeOverride": "event",
+        "backgroundImage": "https://events-data-prod.aws122.adobeitc.com/images/series/f51fe370-eca3-456c-a9d3-6831893373db/events/99295b28-8d46-41f6-b852-a31b8605c1f1/event-card-image.png",
+        "mnemonic": "",
+        "icon": "https://www.adobe.com/content/dam/cc/images/shared/icons/9-nothing.svg",
+        "iconAlt": ""
+      },
+      "overlays": {
+        "banner": {
+          "backgroundColor": "#EAEAEA",
+          "fontColor": "#323232",
+          "description": "",
+          "icon": ""
+        },
+        "logo": {
+          "src": ""
+        },
+        "label": {
+          "description": ""
+        },
+        "videoButton": {
+          "url": ""
+        }
+      },
+      "tags": [
+        {
+          "id": "98ne/d86x"
+        },
+        {
+          "id": "d2bm/hto1"
+        },
+        {
+          "id": "h1kw/9jnc"
+        },
+        {
+          "id": "g2d1/8jtl"
+        },
+        {
+          "id": "5ron/l1s1"
+        },
+        {
+          "id": "5ron/1tg8"
+        }
+      ],
+      "contentArea": {
+        "detailText": "",
+        "title": "Photography Create Now NYC",
+        "url": "/events/create-now/photography-create-now-nyc/new-york/ny/2024-11-14",
+        "description": "Dive into an evening of creativity and networking with Adobe!\n\nJoin the local NYC photography community at Adobe Create Now to connect with fellow photographers, explore new ways…",
+        "dateDetailText": {
+          "type": "date-interval",
+          "startTime": "",
+          "endTime": ""
+        }
+      },
+      "footer": [
+        {
+          "divider": false,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "",
+              "unsaveCardIcon": "",
+              "cardSaveText": "",
+              "unsaveCardText": ""
+            },
+            {
+              "type": "date-interval",
+              "startTime": "2024-11-14T22:30:00.000Z",
+              "endTime": "2024-11-15T01:15:00.000Z"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "",
+              "text": "View event",
+              "href": "/events/create-now/photography-create-now-nyc/new-york/ny/2024-11-14"
+            }
+          ],
+          "altCta": []
+        }
+      ],
+      "search": {
+        "timezone": "America/New_York",
+        "venue": "The Times Center",
+        "venueAddress": "242 West 41st Street",
+        "venueCity": "New York",
+        "venueState": "New York",
+        "venueZipcode": "10036",
+        "startDate": "2024-11-14T22:30:00.000Z",
+        "endDate": "2024-11-15T01:15:00.000Z",
+        "creationTime": "2024-10-23T03:19:24.699Z",
+        "modificationTime": "2024-11-14T06:20:44.373Z",
+        "localStartDate": "2024-11-14",
+        "localEndDate": "2024-11-14"
+      },
+      "cardDate": "2024-10-23T03:19:24.699Z",
+      "createdDate": "2024-10-23T03:19:24.699Z",
+      "modifiedDate": "2024-11-14T06:20:44.373Z",
+      "startDate": "2024-11-14T22:30:00.000Z",
+      "endDate": "2024-11-15T01:15:00.000Z",
+      "ctaLink": "/events/create-now/photography-create-now-nyc/new-york/ny/2024-11-14",
+      "overlayLink": "/events/create-now/photography-create-now-nyc/new-york/ny/2024-11-14",
+      "origin": ""
+    },
+    {
+      "id": "upxucb",
+      "showCard": {
+        "from": "",
+        "until": ""
+      },
+      "styles": {
+        "typeOverride": "event",
+        "backgroundImage": "https://events-data-prod.aws122.adobeitc.com/images/series/f51fe370-eca3-456c-a9d3-6831893373db/events/037b2135-95c1-4bb1-99c4-695659030789/event-card-image.png",
+        "mnemonic": "",
+        "icon": "https://www.adobe.com/content/dam/cc/images/shared/icons/9-nothing.svg",
+        "iconAlt": ""
+      },
+      "overlays": {
+        "banner": {
+          "backgroundColor": "#EAEAEA",
+          "fontColor": "#323232",
+          "description": "",
+          "icon": ""
+        },
+        "logo": {
+          "src": ""
+        },
+        "label": {
+          "description": ""
+        },
+        "videoButton": {
+          "url": ""
+        }
+      },
+      "tags": [
+        {
+          "id": "98ne/d86x"
+        },
+        {
+          "id": "d2bm/hto1"
+        },
+        {
+          "id": "h1kw/9jnc"
+        },
+        {
+          "id": "g2d1/7z5t"
+        }
+      ],
+      "contentArea": {
+        "detailText": "",
+        "title": "Create Now New Orleans",
+        "url": "/events/create-now/create-now-new-orleans/new-orleans/la/2024-12-05",
+        "description": "Dive into an evening of creativity with Adobe!  \n\n\nJoin the design community at Adobe Create Now to connect with fellow local creators, explore new ways to collaborate, and enhan…",
+        "dateDetailText": {
+          "type": "date-interval",
+          "startTime": "",
+          "endTime": ""
+        }
+      },
+      "footer": [
+        {
+          "divider": false,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "",
+              "unsaveCardIcon": "",
+              "cardSaveText": "",
+              "unsaveCardText": ""
+            },
+            {
+              "type": "date-interval",
+              "startTime": "2024-12-05T23:30:00.000Z",
+              "endTime": "2024-12-06T02:30:00.000Z"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "",
+              "text": "View event",
+              "href": "/events/create-now/create-now-new-orleans/new-orleans/la/2024-12-05"
+            }
+          ],
+          "altCta": []
+        }
+      ],
+      "search": {
+        "timezone": "America/Chicago",
+        "venue": "Fillmore New Orleans",
+        "venueAddress": "6 Canal Street",
+        "venueCity": "New Orleans",
+        "venueState": "Louisiana",
+        "venueZipcode": "70130",
+        "startDate": "2024-12-05T23:30:00.000Z",
+        "endDate": "2024-12-06T02:30:00.000Z",
+        "creationTime": "2024-11-18T03:03:06.808Z",
+        "modificationTime": "2024-11-25T17:01:33.230Z",
+        "localStartDate": "2024-12-05",
+        "localEndDate": "2024-12-05"
+      },
+      "cardDate": "2024-11-18T03:03:06.808Z",
+      "createdDate": "2024-11-18T03:03:06.808Z",
+      "modifiedDate": "2024-11-25T17:01:33.230Z",
+      "startDate": "2024-12-05T23:30:00.000Z",
+      "endDate": "2024-12-06T02:30:00.000Z",
+      "ctaLink": "/events/create-now/create-now-new-orleans/new-orleans/la/2024-12-05",
+      "overlayLink": "/events/create-now/create-now-new-orleans/new-orleans/la/2024-12-05",
+      "origin": ""
+    },
+    {
+      "id": "44j3yzs",
+      "showCard": {
+        "from": "",
+        "until": ""
+      },
+      "styles": {
+        "typeOverride": "event",
+        "backgroundImage": "https://events-data-prod.aws122.adobeitc.com/images/series/f51fe370-eca3-456c-a9d3-6831893373db/events/ae8a7e8c-2c1d-40c5-8564-12c4ef9169fd/event-card-image.png",
+        "mnemonic": "",
+        "icon": "https://www.adobe.com/content/dam/cc/images/shared/icons/9-nothing.svg",
+        "iconAlt": ""
+      },
+      "overlays": {
+        "banner": {
+          "backgroundColor": "#EAEAEA",
+          "fontColor": "#323232",
+          "description": "",
+          "icon": ""
+        },
+        "logo": {
+          "src": ""
+        },
+        "label": {
+          "description": ""
+        },
+        "videoButton": {
+          "url": ""
+        }
+      },
+      "tags": [
+        {
+          "id": "98ne/d86x"
+        },
+        {
+          "id": "d2bm/hto1"
+        },
+        {
+          "id": "h1kw/9jnc"
+        },
+        {
+          "id": "g2d1/bwpv"
+        },
+        {
+          "id": "g2d1/2g9h"
+        },
+        {
+          "id": "5ron/l1s1"
+        },
+        {
+          "id": "5ron/1tg8"
+        }
+      ],
+      "contentArea": {
+        "detailText": "",
+        "title": "Photography Create Now Salt Lake City",
+        "url": "/events/create-now/photography-create-now-salt-lake-city/salt-lake-city/ut/2024-12-03",
+        "description": "Dive into an evening of creativity and networking with Adobe!\n\nJoin the local Salt Lake City photography community at Adobe Create Now to connect with fellow photographers, explo…",
+        "dateDetailText": {
+          "type": "date-interval",
+          "startTime": "",
+          "endTime": ""
+        }
+      },
+      "footer": [
+        {
+          "divider": false,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "",
+              "unsaveCardIcon": "",
+              "cardSaveText": "",
+              "unsaveCardText": ""
+            },
+            {
+              "type": "date-interval",
+              "startTime": "2024-12-04T00:30:00.000Z",
+              "endTime": "2024-12-04T03:15:00.000Z"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "",
+              "text": "View event",
+              "href": "/events/create-now/photography-create-now-salt-lake-city/salt-lake-city/ut/2024-12-03"
+            }
+          ],
+          "altCta": []
+        }
+      ],
+      "search": {
+        "timezone": "America/Denver",
+        "venue": "The Leonardo",
+        "venueAddress": "209 East 500 South",
+        "venueCity": "Salt Lake City",
+        "venueState": "Utah",
+        "venueZipcode": "84111",
+        "startDate": "2024-12-04T00:30:00.000Z",
+        "endDate": "2024-12-04T03:15:00.000Z",
+        "creationTime": "2024-10-23T03:44:22.052Z",
+        "modificationTime": "2024-11-26T19:40:44.329Z",
+        "localStartDate": "2024-12-03",
+        "localEndDate": "2024-12-03"
+      },
+      "cardDate": "2024-10-23T03:44:22.052Z",
+      "createdDate": "2024-10-23T03:44:22.052Z",
+      "modifiedDate": "2024-11-26T19:40:44.329Z",
+      "startDate": "2024-12-04T00:30:00.000Z",
+      "endDate": "2024-12-04T03:15:00.000Z",
+      "ctaLink": "/events/create-now/photography-create-now-salt-lake-city/salt-lake-city/ut/2024-12-03",
+      "overlayLink": "/events/create-now/photography-create-now-salt-lake-city/salt-lake-city/ut/2024-12-03",
+      "origin": ""
+    },
+    {
+      "id": "po18fa",
+      "showCard": {
+        "from": "",
+        "until": ""
+      },
+      "styles": {
+        "typeOverride": "event",
+        "backgroundImage": "https://events-data-prod.aws122.adobeitc.com/images/series/f51fe370-eca3-456c-a9d3-6831893373db/events/e9e55a2a-7db3-438e-a8c9-65d6a5ab5b14/event-card-image.png",
+        "mnemonic": "",
+        "icon": "https://www.adobe.com/content/dam/cc/images/shared/icons/9-nothing.svg",
+        "iconAlt": ""
+      },
+      "overlays": {
+        "banner": {
+          "backgroundColor": "#EAEAEA",
+          "fontColor": "#323232",
+          "description": "",
+          "icon": ""
+        },
+        "logo": {
+          "src": ""
+        },
+        "label": {
+          "description": ""
+        },
+        "videoButton": {
+          "url": ""
+        }
+      },
+      "tags": [
+        {
+          "id": "98ne/d86x"
+        },
+        {
+          "id": "d2bm/hto1"
+        },
+        {
+          "id": "h1kw/9jnc"
+        },
+        {
+          "id": "g2d1/ht6q"
+        },
+        {
+          "id": "5ron/l1s1"
+        },
+        {
+          "id": "5ron/1tg8"
+        }
+      ],
+      "contentArea": {
+        "detailText": "",
+        "title": "Photography Create Now San Francisco",
+        "url": "/events/create-now/photography-create-now-san-francisco/san-francisco/ca/2024-11-19",
+        "description": "Dive into an evening of creativity and networking with Adobe!\n\nJoin the local San Francisco photography community at Adobe Create Now to connect with fellow photographers, explor…",
+        "dateDetailText": {
+          "type": "date-interval",
+          "startTime": "",
+          "endTime": ""
+        }
+      },
+      "footer": [
+        {
+          "divider": false,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "",
+              "unsaveCardIcon": "",
+              "cardSaveText": "",
+              "unsaveCardText": ""
+            },
+            {
+              "type": "date-interval",
+              "startTime": "2024-11-20T01:30:00.000Z",
+              "endTime": "2024-11-20T04:15:00.000Z"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "",
+              "text": "View event",
+              "href": "/events/create-now/photography-create-now-san-francisco/san-francisco/ca/2024-11-19"
+            }
+          ],
+          "altCta": []
+        }
+      ],
+      "search": {
+        "timezone": "America/Los_Angeles",
+        "venue": "The Pearl",
+        "venueAddress": "601 19th Street",
+        "venueCity": "San Francisco",
+        "venueState": "California",
+        "venueZipcode": "94107",
+        "startDate": "2024-11-20T01:30:00.000Z",
+        "endDate": "2024-11-20T04:15:00.000Z",
+        "creationTime": "2024-10-23T03:34:30.627Z",
+        "modificationTime": "2024-11-18T01:41:02.718Z",
+        "localStartDate": "2024-11-19",
+        "localEndDate": "2024-11-19"
+      },
+      "cardDate": "2024-10-23T03:34:30.627Z",
+      "createdDate": "2024-10-23T03:34:30.627Z",
+      "modifiedDate": "2024-11-18T01:41:02.718Z",
+      "startDate": "2024-11-20T01:30:00.000Z",
+      "endDate": "2024-11-20T04:15:00.000Z",
+      "ctaLink": "/events/create-now/photography-create-now-san-francisco/san-francisco/ca/2024-11-19",
+      "overlayLink": "/events/create-now/photography-create-now-san-francisco/san-francisco/ca/2024-11-19",
+      "origin": ""
+    },
+    {
+      "id": "32md67i",
+      "showCard": {
+        "from": "",
+        "until": ""
+      },
+      "styles": {
+        "typeOverride": "event",
+        "backgroundImage": "https://events-data-prod.aws122.adobeitc.com/images/series/f51fe370-eca3-456c-a9d3-6831893373db/events/7dae1c49-4773-4864-ae93-f416ca559899/event-card-image.png",
+        "mnemonic": "",
+        "icon": "https://www.adobe.com/content/dam/cc/images/shared/icons/9-nothing.svg",
+        "iconAlt": ""
+      },
+      "overlays": {
+        "banner": {
+          "backgroundColor": "#EAEAEA",
+          "fontColor": "#323232",
+          "description": "",
+          "icon": ""
+        },
+        "logo": {
+          "src": ""
+        },
+        "label": {
+          "description": ""
+        },
+        "videoButton": {
+          "url": ""
+        }
+      },
+      "tags": [
+        {
+          "id": "98ne/d86x"
+        },
+        {
+          "id": "d2bm/hto1"
+        },
+        {
+          "id": "h1kw/9jnc"
+        },
+        {
+          "id": "g2d1/hlpd"
+        }
+      ],
+      "contentArea": {
+        "detailText": "",
+        "title": "Adobe Creative Cafe San Diego State University",
+        "url": "/events/create-now/adobe-creative-cafe-san-diego-state-university/san-diego/ca/2025-01-29",
+        "description": "A FREE event for the new generation of designers. Open to all students, recent grads and young creators.  \n\nEnjoy light bites, drinks, swag, and a panel discussion featuring prof…",
+        "dateDetailText": {
+          "type": "date-interval",
+          "startTime": "",
+          "endTime": ""
+        }
+      },
+      "footer": [
+        {
+          "divider": false,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "",
+              "unsaveCardIcon": "",
+              "cardSaveText": "",
+              "unsaveCardText": ""
+            },
+            {
+              "type": "date-interval",
+              "startTime": "2025-01-30T01:00:00.000Z",
+              "endTime": "2025-01-30T04:00:00.000Z"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "",
+              "text": "View event",
+              "href": "/events/create-now/adobe-creative-cafe-san-diego-state-university/san-diego/ca/2025-01-29"
+            }
+          ],
+          "altCta": []
+        }
+      ],
+      "search": {
+        "timezone": "America/Los_Angeles",
+        "venue": "San Diego State University",
+        "venueAddress": "5500 Campanile Drive",
+        "venueCity": "San Diego",
+        "venueState": "California",
+        "venueZipcode": "92182",
+        "startDate": "2025-01-30T01:00:00.000Z",
+        "endDate": "2025-01-30T04:00:00.000Z",
+        "creationTime": "2024-12-12T22:06:28.944Z",
+        "modificationTime": "2025-01-10T19:01:51.208Z",
+        "localStartDate": "2025-01-29",
+        "localEndDate": "2025-01-29"
+      },
+      "cardDate": "2024-12-12T22:06:28.944Z",
+      "createdDate": "2024-12-12T22:06:28.944Z",
+      "modifiedDate": "2025-01-10T19:01:51.208Z",
+      "startDate": "2025-01-30T01:00:00.000Z",
+      "endDate": "2025-01-30T04:00:00.000Z",
+      "ctaLink": "/events/create-now/adobe-creative-cafe-san-diego-state-university/san-diego/ca/2025-01-29",
+      "overlayLink": "/events/create-now/adobe-creative-cafe-san-diego-state-university/san-diego/ca/2025-01-29",
+      "origin": ""
+    },
+    {
+      "id": "nxj51c",
+      "showCard": {
+        "from": "",
+        "until": ""
+      },
+      "styles": {
+        "typeOverride": "event",
+        "backgroundImage": "https://events-data-prod.aws122.adobeitc.com/images/series/f51fe370-eca3-456c-a9d3-6831893373db/events/6b2abe49-484a-48d6-b057-75c144212d69/event-card-image.png",
+        "mnemonic": "",
+        "icon": "https://www.adobe.com/content/dam/cc/images/shared/icons/9-nothing.svg",
+        "iconAlt": ""
+      },
+      "overlays": {
+        "banner": {
+          "backgroundColor": "#EAEAEA",
+          "fontColor": "#323232",
+          "description": "",
+          "icon": ""
+        },
+        "logo": {
+          "src": ""
+        },
+        "label": {
+          "description": ""
+        },
+        "videoButton": {
+          "url": ""
+        }
+      },
+      "tags": [
+        {
+          "id": "98ne/d86x"
+        },
+        {
+          "id": "d2bm/hto1"
+        },
+        {
+          "id": "h1kw/9jnc"
+        },
+        {
+          "id": "g2d1/ht6q"
+        }
+      ],
+      "contentArea": {
+        "detailText": "",
+        "title": "Adobe Creative Cafe San Francisco",
+        "url": "/events/create-now/adobe-creative-cafe-san-francisco/san-francisco/ca/2025-02-06",
+        "description": "An evening event to connect a new generation of graphic designers with industry leaders. Please note that our event has limited capacity, so kindly RSVP only if you plan to atten…",
+        "dateDetailText": {
+          "type": "date-interval",
+          "startTime": "",
+          "endTime": ""
+        }
+      },
+      "footer": [
+        {
+          "divider": false,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "",
+              "unsaveCardIcon": "",
+              "cardSaveText": "",
+              "unsaveCardText": ""
+            },
+            {
+              "type": "date-interval",
+              "startTime": "2025-02-07T02:00:00.000Z",
+              "endTime": "2025-02-07T05:00:00.000Z"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "",
+              "text": "View event",
+              "href": "/events/create-now/adobe-creative-cafe-san-francisco/san-francisco/ca/2025-02-06"
+            }
+          ],
+          "altCta": []
+        }
+      ],
+      "search": {
+        "timezone": "America/Los_Angeles",
+        "venue": "Adobe - San Francisco",
+        "venueAddress": "601 Townsend Street",
+        "venueCity": "San Francisco",
+        "venueState": "California",
+        "venueZipcode": "94103",
+        "startDate": "2025-02-07T02:00:00.000Z",
+        "endDate": "2025-02-07T05:00:00.000Z",
+        "creationTime": "2025-01-07T19:49:02.281Z",
+        "modificationTime": "2025-01-07T20:12:30.359Z",
+        "localStartDate": "2025-02-06",
+        "localEndDate": "2025-02-06"
+      },
+      "cardDate": "2025-01-07T19:49:02.281Z",
+      "createdDate": "2025-01-07T19:49:02.281Z",
+      "modifiedDate": "2025-01-07T20:12:30.359Z",
+      "startDate": "2025-02-07T02:00:00.000Z",
+      "endDate": "2025-02-07T05:00:00.000Z",
+      "ctaLink": "/events/create-now/adobe-creative-cafe-san-francisco/san-francisco/ca/2025-02-06",
+      "overlayLink": "/events/create-now/adobe-creative-cafe-san-francisco/san-francisco/ca/2025-02-06",
+      "origin": ""
+    },
+    {
+      "id": "29xelds",
+      "showCard": {
+        "from": "",
+        "until": ""
+      },
+      "styles": {
+        "typeOverride": "event",
+        "backgroundImage": "https://www.adobe.com/events/assets/static/images/series/f51fe370-eca3-456c-a9d3-6831893373db/events/1c4ef61a-23b3-406c-97b5-a8eba8584348/media_1923d7bd7b0c23ac53c4a7f6f8d0fa11f92ef01cc.png",
+        "mnemonic": "",
+        "icon": "https://www.adobe.com/content/dam/cc/images/shared/icons/9-nothing.svg",
+        "iconAlt": ""
+      },
+      "overlays": {
+        "banner": {
+          "backgroundColor": "#EAEAEA",
+          "fontColor": "#323232",
+          "description": "",
+          "icon": ""
+        },
+        "logo": {
+          "src": ""
+        },
+        "label": {
+          "description": ""
+        },
+        "videoButton": {
+          "url": ""
+        }
+      },
+      "tags": [
+        {
+          "id": "98ne/d86x"
+        },
+        {
+          "id": "d2bm/hto1"
+        },
+        {
+          "id": "h1kw/9jnc"
+        },
+        {
+          "id": "g2d1/kj9t"
+        }
+      ],
+      "contentArea": {
+        "detailText": "",
+        "title": "Adobe Creative Cafe San Jose",
+        "url": "https://www.adobe.com/events/create-now/adobe-creative-cafe-san-jose/san-jose/ca/2025-01-27",
+        "description": "A FREE event for the new generation of designers. Open to all students, recent grads and young creators interested in pursuing a career in graphic design or professional art.\n\nEn…",
+        "dateDetailText": {
+          "type": "date-interval",
+          "startTime": "",
+          "endTime": ""
+        }
+      },
+      "footer": [
+        {
+          "divider": false,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "",
+              "unsaveCardIcon": "",
+              "cardSaveText": "",
+              "unsaveCardText": ""
+            },
+            {
+              "type": "date-interval",
+              "startTime": "2025-01-28T01:30:00.000Z",
+              "endTime": "2025-01-28T04:00:00.000Z"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "",
+              "text": "View event",
+              "href": "https://www.adobe.com/events/create-now/adobe-creative-cafe-san-jose/san-jose/ca/2025-01-27"
+            }
+          ],
+          "altCta": []
+        }
+      ],
+      "search": {
+        "timezone": "America/Los_Angeles",
+        "venue": "Adobe World Headquarters",
+        "venueAddress": "345 Park Avenue",
+        "venueCity": "San Jose",
+        "venueState": "California",
+        "venueZipcode": "95110",
+        "startDate": "2025-01-28T01:30:00.000Z",
+        "endDate": "2025-01-28T04:00:00.000Z",
+        "creationTime": "2024-12-12T23:09:13.248Z",
+        "modificationTime": "2025-01-17T23:19:40.134Z",
+        "localStartDate": "2025-01-27",
+        "localEndDate": "2025-01-27"
+      },
+      "cardDate": "2024-12-12T23:09:13.248Z",
+      "createdDate": "2024-12-12T23:09:13.248Z",
+      "modifiedDate": "2025-01-17T23:19:40.134Z",
+      "startDate": "2025-01-28T01:30:00.000Z",
+      "endDate": "2025-01-28T04:00:00.000Z",
+      "ctaLink": "https://www.adobe.com/events/create-now/adobe-creative-cafe-san-jose/san-jose/ca/2025-01-27",
+      "overlayLink": "https://www.adobe.com/events/create-now/adobe-creative-cafe-san-jose/san-jose/ca/2025-01-27",
+      "origin": ""
+    },
+    {
+      "id": "79i29y",
+      "showCard": {
+        "from": "",
+        "until": ""
+      },
+      "styles": {
+        "typeOverride": "event",
+        "backgroundImage": "https://events-data-prod.aws122.adobeitc.com/images/series/f51fe370-eca3-456c-a9d3-6831893373db/events/685ee41c-86ed-46a8-b772-ce5c538fd639/event-card-image.png",
+        "mnemonic": "",
+        "icon": "https://www.adobe.com/content/dam/cc/images/shared/icons/9-nothing.svg",
+        "iconAlt": ""
+      },
+      "overlays": {
+        "banner": {
+          "backgroundColor": "#EAEAEA",
+          "fontColor": "#323232",
+          "description": "",
+          "icon": ""
+        },
+        "logo": {
+          "src": ""
+        },
+        "label": {
+          "description": ""
+        },
+        "videoButton": {
+          "url": ""
+        }
+      },
+      "tags": [
+        {
+          "id": "98ne/d86x"
+        },
+        {
+          "id": "d2bm/hto1"
+        },
+        {
+          "id": "h1kw/9jnc"
+        },
+        {
+          "id": "g2d1/fu4n"
+        },
+        {
+          "id": "3277/l3zk"
+        },
+        {
+          "id": "jff0/l3zk"
+        },
+        {
+          "id": "5ron/l1s1"
+        }
+      ],
+      "contentArea": {
+        "detailText": "",
+        "title": "Creative Cafe ATL",
+        "url": "/events/create-now/creative-cafe-atl/atlanta/ga/2025-01-29",
+        "description": "A FREE Event for the Next Generation of Creatives \n\nCalling all college students, recent grads, and young creators—whether you’re a designer, art director, copywriter, or photogr…",
+        "dateDetailText": {
+          "type": "date-interval",
+          "startTime": "",
+          "endTime": ""
+        }
+      },
+      "footer": [
+        {
+          "divider": false,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "",
+              "unsaveCardIcon": "",
+              "cardSaveText": "",
+              "unsaveCardText": ""
+            },
+            {
+              "type": "date-interval",
+              "startTime": "2025-01-29T15:00:00.000Z",
+              "endTime": "2025-01-29T18:00:00.000Z"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "",
+              "text": "View event",
+              "href": "/events/create-now/creative-cafe-atl/atlanta/ga/2025-01-29"
+            }
+          ],
+          "altCta": []
+        }
+      ],
+      "search": {
+        "timezone": "America/New_York",
+        "venue": "1315 Peachtree St NE",
+        "venueAddress": "1315 Peachtree Street Northeast",
+        "venueCity": "Atlanta",
+        "venueState": "Georgia",
+        "venueZipcode": "30309",
+        "startDate": "2025-01-29T15:00:00.000Z",
+        "endDate": "2025-01-29T18:00:00.000Z",
+        "creationTime": "2024-12-20T02:38:44.321Z",
+        "modificationTime": "2025-01-10T18:21:31.052Z",
+        "localStartDate": "2025-01-29",
+        "localEndDate": "2025-01-29"
+      },
+      "cardDate": "2024-12-20T02:38:44.321Z",
+      "createdDate": "2024-12-20T02:38:44.321Z",
+      "modifiedDate": "2025-01-10T18:21:31.052Z",
+      "startDate": "2025-01-29T15:00:00.000Z",
+      "endDate": "2025-01-29T18:00:00.000Z",
+      "ctaLink": "/events/create-now/creative-cafe-atl/atlanta/ga/2025-01-29",
+      "overlayLink": "/events/create-now/creative-cafe-atl/atlanta/ga/2025-01-29",
+      "origin": ""
+    }
+  ],
+  "filters": [],
+  "isHashed": true
+}
