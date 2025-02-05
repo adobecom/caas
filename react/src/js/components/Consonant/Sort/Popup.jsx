@@ -57,7 +57,7 @@ const Popup = ({
      **** Authored Configs ****
      */
     const getConfig = useConfig();
-    const sortByLabel = getConfig('collection', 'i18n.sortByLabel');
+    const sortByAria = getConfig('collection', 'i18n.sortByAria');
 
     /**
      * @typedef {String} OpenDropdownState - Id of a selected dropdown
@@ -121,7 +121,7 @@ const Popup = ({
                             key={item.label}
                             type="button"
                             role="menuitem"
-                            aria-label={sortByLabel && sortByLabel.replace('{key}', item.label)}
+                            aria-label={sortByAria && sortByAria.replace('{key}', item.label)}
                             className={item.label === val.label ?
                                 'consonant-Select-option is-selected' :
                                 'consonant-Select-option'

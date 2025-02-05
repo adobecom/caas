@@ -210,6 +210,7 @@ const Item = (props) => {
                     {
                         shouldRenderSelectedBadge &&
                         <DesktopSelectedItem
+                            name={sanitizeStr(name)}
                             handleClear={handleClear}
                             numItemsSelected={numItemsSelected} />
                     }
