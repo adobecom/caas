@@ -334,5 +334,17 @@
       "fid": 0.7999999999883585,
       "cls": null
     }
+  },
+  {
+    "date": "2025-02-05T23:28:52.114Z",
+    "pr": {
+      "number": "237",
+      "title": "fix(mwpw-165637): establish comprehensive e2e testing and eslinting"
+    },
+    "metrics": {
+      "lcp": 14170.700000000012,
+      "fid": 0.7000000000116415,
+      "cls": null
+    }
   }
 ]
