@@ -358,5 +358,17 @@
       "fid": 0.8000000000465661,
       "cls": null
     }
+  },
+  {
+    "date": "2025-02-06T22:32:24.996Z",
+    "pr": {
+      "number": "244",
+      "title": "fix(mwpw-166330): adds localizable aria label to UI controls"
+    },
+    "metrics": {
+      "lcp": 12877.900000000023,
+      "fid": 0.7999999999883585,
+      "cls": null
+    }
   }
 ]
