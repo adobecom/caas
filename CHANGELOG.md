@@ -1,5 +1,12 @@
 
 
+## [0.29.5](https://github.com/adobecom/caas/compare/0.29.4...0.29.5) (2025-02-06)
+
+
+### Bug Fixes
+
+* **mwpw-166330:** adds localizable aria label to UI controls ([#244](https://github.com/adobecom/caas/issues/244)) ([dede1d2](https://github.com/adobecom/caas/commit/dede1d2579e4a8a6168c316c5aeaba40403ab1b0))
+
 ## [0.29.4](https://github.com/adobecom/caas/compare/0.29.3...0.29.4) (2025-02-06)
 
 ## [0.29.3](https://github.com/adobecom/caas/compare/0.29.2...0.29.3) (2025-02-05)
