@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.29.1 (2/4/2025, 11:44:35)
+ * Chimera UI Libraries - Build 0.29.2 (2/5/2025, 13:01:02)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -184,6 +184,263 @@ $exports.store = store;
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.useRegistered = exports.useURLState = exports.useLazyLoading = exports.useConfig = exports.useExpandable = exports.useWindowDimensions = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+exports.debounce = debounce;
+
+var _react = __webpack_require__(0);
+
+var _general = __webpack_require__(6);
+
+var _consonant = __webpack_require__(110);
+
+var _contexts = __webpack_require__(111);
+
+var _constants = __webpack_require__(15);
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+/* eslint-disable */
+function debounce(fn, wait) {
+    var timeout = void 0;
+
+    var cancel = function cancel() {
+        if (timeout) {
+            clearTimeout(timeout);
+        }
+    };
+
+    // Return non-arrow func to preserve this context
+    var debounceFunc = function debounceFunc() {
+        var _this = this;
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        var functionCall = function functionCall() {
+            return fn.apply(_this, args);
+        };
+
+        clearTimeout(timeout);
+        timeout = setTimeout(functionCall, wait);
+    };
+
+    debounceFunc.cancel = cancel;
+
+    return debounceFunc;
+};
+/* eslint-enable */
+
+/**
+ * @typedef {function(): {Int, Int}} WindowDimensionsState - Current Window Dimensions
+ * @description — Returns Current Window Dimensions
+ *
+ * @type {function(): {Int, Int}} WindowDimensions
+ */
+var useWindowDimensions = exports.useWindowDimensions = function useWindowDimensions() {
+    return {
+        width: window.innerWidth,
+        height: window.innerHeight
+    };
+};
+
+/**
+ * @typedef {String} OpenDropdownState - Id of a selected dropdown
+ * @description — Passed in Context Provider So All Nested Components can be in sync
+ *
+ * @typedef {Function} OpenDropdownStateSetter - handleToggle sets dropdown state
+ * @description - This handles keeping multiple popup states in sync
+ *
+ * @type {[String, Function]} OpenDropdown
+ */
+var useExpandable = exports.useExpandable = function useExpandable(dropdownId) {
+    var _useContext = (0, _react.useContext)(_contexts.ExpandableContext),
+        openDropdown = _useContext.value,
+        setOpenDropdown = _useContext.setValue;
+
+    var handleToggle = (0, _react.useCallback)(function (e) {
+        e.stopPropagation();
+        if (openDropdown === dropdownId) {
+            setOpenDropdown(null);
+        } else {
+            setOpenDropdown(dropdownId);
+        }
+    }, [setOpenDropdown, openDropdown]);
+
+    return [openDropdown, handleToggle];
+};
+
+/**
+ * @typedef {Function} ConfigStateSetter
+ * @description - Configs are grabbed from Authoring Dialog and passed into React Component
+ *
+ * @type {[Number, Function]} Config
+ */
+var useConfig = exports.useConfig = function useConfig() {
+    var config = (0, _react.useContext)(_contexts.ConfigContext);
+    return (0, _react.useCallback)((0, _consonant.makeConfigGetter)(config), [config]);
+};
+
+/**
+ * @typedef {Image} LazyLoadedImageState
+ * @description — Has image as state after image is lazy loaded
+ *
+ * @typedef {Function} LazyLoadedImageStateSetter
+ * @description - Sets state once image is lazy loaded
+ *
+ * @type {[Image]} LazyLoadedImage
+ */
+var useLazyLoading = exports.useLazyLoading = function useLazyLoading(imageRef, image) {
+    var options = {
+        rootMargin: _constants.ROOT_MARGIN_DEFAULT
+    };
+
+    var _useState = (0, _react.useState)(''),
+        _useState2 = _slicedToArray(_useState, 2),
+        lazyLoadImage = _useState2[0],
+        setLazyLoadImage = _useState2[1];
+
+    var _useState3 = (0, _react.useState)(''),
+        _useState4 = _slicedToArray(_useState3, 2),
+        intersectionImage = _useState4[0],
+        setIntersectionImage = _useState4[1];
+
+    var imageObserver = new IntersectionObserver(function (elements) {
+        if (elements[0].intersectionRatio !== 0) {
+            setIntersectionImage(image);
+        }
+    }, options);
+
+    (0, _react.useEffect)(function () {
+        var img = void 0;
+        if (intersectionImage) {
+            img = new Image();
+
+            img.src = intersectionImage;
+            img.onload = function () {
+                setLazyLoadImage(intersectionImage);
+            };
+        }
+        return function () {
+            if (img) {
+                img.onload = function () {};
+            }
+        };
+    }, [intersectionImage]);
+
+    (0, _react.useEffect)(function () {
+        if (imageRef.current) {
+            imageObserver.observe(imageRef.current);
+        }
+        return function () {
+            imageObserver.unobserve(imageRef.current);
+        };
+    }, [imageRef]);
+
+    return [lazyLoadImage];
+};
+
+/**
+ * Create a state that is sync with url search param.
+ *
+ * @type {Object, Function, Function]} urlState, handleSetQuery, handleClearQuery
+ */
+var useURLState = exports.useURLState = function useURLState() {
+    var _window = window,
+        _window$location = _window.location,
+        search = _window$location.search,
+        pathname = _window$location.pathname,
+        hash = _window$location.hash;
+
+    var _useState5 = (0, _react.useState)(_general.qs.parse(search)),
+        _useState6 = _slicedToArray(_useState5, 2),
+        urlState = _useState6[0],
+        setUrlState = _useState6[1];
+
+    var handleSetQuery = (0, _react.useCallback)(function (key, value) {
+        setUrlState(function (origin) {
+            if (!value || Array.isArray(value) && !value.length) {
+                var cloneOrigin = _extends({}, origin);
+                delete cloneOrigin[key];
+
+                return cloneOrigin;
+            }
+
+            return _extends({}, origin, _defineProperty({}, key, value));
+        });
+    }, []);
+
+    var handleClearQuery = (0, _react.useCallback)(function () {
+        setUrlState({});
+    }, []);
+
+    (0, _react.useEffect)(function () {
+        var searchString = _general.qs.stringify(urlState, { array: 'comma' });
+        var urlString = '' + pathname + (searchString ? '?' : '') + searchString + hash;
+
+        window.history.replaceState(null, '', urlString);
+    }, [urlState]);
+
+    return [urlState, handleSetQuery, handleClearQuery];
+};
+
+var useRegistered = exports.useRegistered = function useRegistered() {
+    var _useState7 = (0, _react.useState)(false),
+        _useState8 = _slicedToArray(_useState7, 2),
+        registered = _useState8[0],
+        setRegistered = _useState8[1];
+
+    function isRegisteredForEvent() {
+        var fedsData = (0, _general.getByPath)(window, 'feds.data', null);
+        var eventName = (0, _general.getByPath)(fedsData, 'eventName', null);
+        var eventData = eventName && fedsData[eventName] ? fedsData[eventName] : null;
+        var isUserRegistered = eventData ? eventData.isRegistered : null;
+
+        var isRegisteredForMax = (0, _general.getByPath)(fedsData, 'isRegisteredForMax', null);
+
+        return !!(isUserRegistered || isRegisteredForMax);
+    }
+
+    (0, _react.useEffect)(function () {
+        if (!registered) {
+            var fedsUtilities = (0, _general.getByPath)(window, 'feds.utilities', null);
+            var getEventData = fedsUtilities ? fedsUtilities.getEventData : null;
+            if (getEventData) {
+                getEventData().then(function () {
+                    var response = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+                    var isRegistered = response.isRegistered;
+
+                    if (isRegistered) {
+                        setRegistered(true);
+                    }
+                }).catch(function () {
+                    var newIsRegistered = isRegisteredForEvent();
+                    if (newIsRegistered) {
+                        setRegistered(newIsRegistered);
+                    }
+                });
+            }
+        }
+    }, [registered]);
+
+    return registered;
+};
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -874,7 +1131,7 @@ var sanitizeEventFilter = exports.sanitizeEventFilter = function sanitizeEventFi
 };
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -956,263 +1213,6 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	}
 }());
 
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.useRegistered = exports.useURLState = exports.useLazyLoading = exports.useConfig = exports.useExpandable = exports.useWindowDimensions = undefined;
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-exports.debounce = debounce;
-
-var _react = __webpack_require__(0);
-
-var _general = __webpack_require__(5);
-
-var _consonant = __webpack_require__(110);
-
-var _contexts = __webpack_require__(111);
-
-var _constants = __webpack_require__(15);
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-/* eslint-disable */
-function debounce(fn, wait) {
-    var timeout = void 0;
-
-    var cancel = function cancel() {
-        if (timeout) {
-            clearTimeout(timeout);
-        }
-    };
-
-    // Return non-arrow func to preserve this context
-    var debounceFunc = function debounceFunc() {
-        var _this = this;
-
-        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-            args[_key] = arguments[_key];
-        }
-
-        var functionCall = function functionCall() {
-            return fn.apply(_this, args);
-        };
-
-        clearTimeout(timeout);
-        timeout = setTimeout(functionCall, wait);
-    };
-
-    debounceFunc.cancel = cancel;
-
-    return debounceFunc;
-};
-/* eslint-enable */
-
-/**
- * @typedef {function(): {Int, Int}} WindowDimensionsState - Current Window Dimensions
- * @description — Returns Current Window Dimensions
- *
- * @type {function(): {Int, Int}} WindowDimensions
- */
-var useWindowDimensions = exports.useWindowDimensions = function useWindowDimensions() {
-    return {
-        width: window.innerWidth,
-        height: window.innerHeight
-    };
-};
-
-/**
- * @typedef {String} OpenDropdownState - Id of a selected dropdown
- * @description — Passed in Context Provider So All Nested Components can be in sync
- *
- * @typedef {Function} OpenDropdownStateSetter - handleToggle sets dropdown state
- * @description - This handles keeping multiple popup states in sync
- *
- * @type {[String, Function]} OpenDropdown
- */
-var useExpandable = exports.useExpandable = function useExpandable(dropdownId) {
-    var _useContext = (0, _react.useContext)(_contexts.ExpandableContext),
-        openDropdown = _useContext.value,
-        setOpenDropdown = _useContext.setValue;
-
-    var handleToggle = (0, _react.useCallback)(function (e) {
-        e.stopPropagation();
-        if (openDropdown === dropdownId) {
-            setOpenDropdown(null);
-        } else {
-            setOpenDropdown(dropdownId);
-        }
-    }, [setOpenDropdown, openDropdown]);
-
-    return [openDropdown, handleToggle];
-};
-
-/**
- * @typedef {Function} ConfigStateSetter
- * @description - Configs are grabbed from Authoring Dialog and passed into React Component
- *
- * @type {[Number, Function]} Config
- */
-var useConfig = exports.useConfig = function useConfig() {
-    var config = (0, _react.useContext)(_contexts.ConfigContext);
-    return (0, _react.useCallback)((0, _consonant.makeConfigGetter)(config), [config]);
-};
-
-/**
- * @typedef {Image} LazyLoadedImageState
- * @description — Has image as state after image is lazy loaded
- *
- * @typedef {Function} LazyLoadedImageStateSetter
- * @description - Sets state once image is lazy loaded
- *
- * @type {[Image]} LazyLoadedImage
- */
-var useLazyLoading = exports.useLazyLoading = function useLazyLoading(imageRef, image) {
-    var options = {
-        rootMargin: _constants.ROOT_MARGIN_DEFAULT
-    };
-
-    var _useState = (0, _react.useState)(''),
-        _useState2 = _slicedToArray(_useState, 2),
-        lazyLoadImage = _useState2[0],
-        setLazyLoadImage = _useState2[1];
-
-    var _useState3 = (0, _react.useState)(''),
-        _useState4 = _slicedToArray(_useState3, 2),
-        intersectionImage = _useState4[0],
-        setIntersectionImage = _useState4[1];
-
-    var imageObserver = new IntersectionObserver(function (elements) {
-        if (elements[0].intersectionRatio !== 0) {
-            setIntersectionImage(image);
-        }
-    }, options);
-
-    (0, _react.useEffect)(function () {
-        var img = void 0;
-        if (intersectionImage) {
-            img = new Image();
-
-            img.src = intersectionImage;
-            img.onload = function () {
-                setLazyLoadImage(intersectionImage);
-            };
-        }
-        return function () {
-            if (img) {
-                img.onload = function () {};
-            }
-        };
-    }, [intersectionImage]);
-
-    (0, _react.useEffect)(function () {
-        if (imageRef.current) {
-            imageObserver.observe(imageRef.current);
-        }
-        return function () {
-            imageObserver.unobserve(imageRef.current);
-        };
-    }, [imageRef]);
-
-    return [lazyLoadImage];
-};
-
-/**
- * Create a state that is sync with url search param.
- *
- * @type {Object, Function, Function]} urlState, handleSetQuery, handleClearQuery
- */
-var useURLState = exports.useURLState = function useURLState() {
-    var _window = window,
-        _window$location = _window.location,
-        search = _window$location.search,
-        pathname = _window$location.pathname,
-        hash = _window$location.hash;
-
-    var _useState5 = (0, _react.useState)(_general.qs.parse(search)),
-        _useState6 = _slicedToArray(_useState5, 2),
-        urlState = _useState6[0],
-        setUrlState = _useState6[1];
-
-    var handleSetQuery = (0, _react.useCallback)(function (key, value) {
-        setUrlState(function (origin) {
-            if (!value || Array.isArray(value) && !value.length) {
-                var cloneOrigin = _extends({}, origin);
-                delete cloneOrigin[key];
-
-                return cloneOrigin;
-            }
-
-            return _extends({}, origin, _defineProperty({}, key, value));
-        });
-    }, []);
-
-    var handleClearQuery = (0, _react.useCallback)(function () {
-        setUrlState({});
-    }, []);
-
-    (0, _react.useEffect)(function () {
-        var searchString = _general.qs.stringify(urlState, { array: 'comma' });
-        var urlString = '' + pathname + (searchString ? '?' : '') + searchString + hash;
-
-        window.history.replaceState(null, '', urlString);
-    }, [urlState]);
-
-    return [urlState, handleSetQuery, handleClearQuery];
-};
-
-var useRegistered = exports.useRegistered = function useRegistered() {
-    var _useState7 = (0, _react.useState)(false),
-        _useState8 = _slicedToArray(_useState7, 2),
-        registered = _useState8[0],
-        setRegistered = _useState8[1];
-
-    function isRegisteredForEvent() {
-        var fedsData = (0, _general.getByPath)(window, 'feds.data', null);
-        var eventName = (0, _general.getByPath)(fedsData, 'eventName', null);
-        var eventData = eventName && fedsData[eventName] ? fedsData[eventName] : null;
-        var isUserRegistered = eventData ? eventData.isRegistered : null;
-
-        var isRegisteredForMax = (0, _general.getByPath)(fedsData, 'isRegisteredForMax', null);
-
-        return !!(isUserRegistered || isRegisteredForMax);
-    }
-
-    (0, _react.useEffect)(function () {
-        if (!registered) {
-            var fedsUtilities = (0, _general.getByPath)(window, 'feds.utilities', null);
-            var getEventData = fedsUtilities ? fedsUtilities.getEventData : null;
-            if (getEventData) {
-                getEventData().then(function () {
-                    var response = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-                    var isRegistered = response.isRegistered;
-
-                    if (isRegistered) {
-                        setRegistered(true);
-                    }
-                }).catch(function () {
-                    var newIsRegistered = isRegisteredForEvent();
-                    if (newIsRegistered) {
-                        setRegistered(newIsRegistered);
-                    }
-                });
-            }
-        }
-    }, [registered]);
-
-    return registered;
-};
 
 /***/ }),
 /* 8 */
@@ -1639,7 +1639,10 @@ var DEFAULT_CONFIG = exports.DEFAULT_CONFIG = {
             totalResultsText: '{total} results',
             title: '',
             onErrorTitle: 'Sorry there was a system error.',
-            onErrorDescription: 'Please try reloading the page or try coming back to the page another time.'
+            onErrorDescription: 'Please try reloading the page or try coming back to the page another time.',
+            sortByAria: 'Sort by {key}',
+            removeFilterAria: 'Remove {filter} filter',
+            removeAllFiltersAria: 'Remove {num} {filter} filters'
         }
     },
     featuredCards: [],
@@ -1975,7 +1978,7 @@ var _immer2 = _interopRequireDefault(_immer);
 
 var _rendering = __webpack_require__(40);
 
-var _general = __webpack_require__(5);
+var _general = __webpack_require__(6);
 
 var _constants = __webpack_require__(15);
 
@@ -6201,7 +6204,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(6);
+var _classnames = __webpack_require__(7);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -6223,7 +6226,7 @@ var _Loader = __webpack_require__(235);
 
 var _Loader2 = _interopRequireDefault(_Loader);
 
-var _general = __webpack_require__(5);
+var _general = __webpack_require__(6);
 
 var _config = __webpack_require__(20);
 
@@ -6267,7 +6270,7 @@ var _JsonProcessor = __webpack_require__(310);
 
 var _JsonProcessor2 = _interopRequireDefault(_JsonProcessor);
 
-var _hooks = __webpack_require__(7);
+var _hooks = __webpack_require__(5);
 
 var _Info = __webpack_require__(311);
 
@@ -8113,7 +8116,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.makeConfigGetter = exports.getNumSelectedFilterItems = undefined;
 exports.getDefaultSortOption = getDefaultSortOption;
 
-var _general = __webpack_require__(5);
+var _general = __webpack_require__(6);
 
 var _constants = __webpack_require__(15);
 
@@ -8221,7 +8224,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(6);
+var _classnames = __webpack_require__(7);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -8233,9 +8236,9 @@ var _htmlReactParser2 = _interopRequireDefault(_htmlReactParser);
 
 var _card = __webpack_require__(39);
 
-var _general = __webpack_require__(5);
+var _general = __webpack_require__(6);
 
-var _hooks = __webpack_require__(7);
+var _hooks = __webpack_require__(5);
 
 var _Card = __webpack_require__(252);
 
@@ -9437,7 +9440,7 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _reactDomComponents = __webpack_require__(107);
 
-var _general = __webpack_require__(5);
+var _general = __webpack_require__(6);
 
 var _lana = __webpack_require__(50);
 
@@ -43801,13 +43804,13 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(6);
+var _classnames = __webpack_require__(7);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
 var _propTypes = __webpack_require__(1);
 
-var _hooks = __webpack_require__(7);
+var _hooks = __webpack_require__(5);
 
 var _config = __webpack_require__(20);
 
@@ -43856,6 +43859,12 @@ var Popup = function Popup(_ref) {
         id = _ref.id;
 
     /**
+     **** Authored Configs ****
+     */
+    var getConfig = (0, _hooks.useConfig)();
+    var sortByAria = getConfig('collection', 'i18n.sortByAria');
+
+    /**
      * @typedef {String} OpenDropdownState - Id of a selected dropdown
      * @description — Passed in Context Provider So All Nested Components can be in sync
      *
@@ -43864,6 +43873,7 @@ var Popup = function Popup(_ref) {
      *
      * @type {[String, Function]} OpenDropdown
      */
+
     var _useExpandable = (0, _hooks.useExpandable)(id),
         _useExpandable2 = _slicedToArray(_useExpandable, 2),
         openDropdown = _useExpandable2[0],
@@ -43928,6 +43938,7 @@ var Popup = function Popup(_ref) {
                         key: item.label,
                         type: 'button',
                         role: 'menuitem',
+                        'aria-label': sortByAria && sortByAria.replace('{key}', item.label),
                         className: item.label === val.label ? 'consonant-Select-option is-selected' : 'consonant-Select-option',
                         onClick: function onClick(e) {
                             return handleOptionClick(e, item);
@@ -43962,7 +43973,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _propTypes = __webpack_require__(1);
 
-var _hooks = __webpack_require__(7);
+var _hooks = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -44130,7 +44141,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(6);
+var _classnames = __webpack_require__(7);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -44213,7 +44224,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(6);
+var _classnames = __webpack_require__(7);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -44221,7 +44232,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _hooks = __webpack_require__(7);
+var _hooks = __webpack_require__(5);
 
 var _Grid = __webpack_require__(112);
 
@@ -46833,7 +46844,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(6);
+var _classnames = __webpack_require__(7);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -46855,9 +46866,9 @@ var _constants = __webpack_require__(15);
 
 var _Helpers = __webpack_require__(22);
 
-var _general = __webpack_require__(5);
+var _general = __webpack_require__(6);
 
-var _hooks = __webpack_require__(7);
+var _hooks = __webpack_require__(5);
 
 var _card = __webpack_require__(39);
 
@@ -47393,7 +47404,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(6);
+var _classnames = __webpack_require__(7);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -47405,7 +47416,7 @@ var _card = __webpack_require__(39);
 
 var _constants = __webpack_require__(15);
 
-var _general = __webpack_require__(5);
+var _general = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47655,7 +47666,7 @@ var _Gated2 = _interopRequireDefault(_Gated);
 
 var _constants = __webpack_require__(15);
 
-var _general = __webpack_require__(5);
+var _general = __webpack_require__(6);
 
 var _card = __webpack_require__(39);
 
@@ -47951,15 +47962,15 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(6);
+var _classnames = __webpack_require__(7);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
 var _propTypes = __webpack_require__(1);
 
-var _hooks = __webpack_require__(7);
+var _hooks = __webpack_require__(5);
 
-var _general = __webpack_require__(5);
+var _general = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48120,9 +48131,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _propTypes = __webpack_require__(1);
 
-var _hooks = __webpack_require__(7);
+var _hooks = __webpack_require__(5);
 
-var _general = __webpack_require__(5);
+var _general = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48202,7 +48213,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(6);
+var _classnames = __webpack_require__(7);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -48657,7 +48668,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(6);
+var _classnames = __webpack_require__(7);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -48667,7 +48678,7 @@ var _Tooltip = __webpack_require__(268);
 
 var _Tooltip2 = _interopRequireDefault(_Tooltip);
 
-var _hooks = __webpack_require__(7);
+var _hooks = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48903,7 +48914,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _Helpers = __webpack_require__(22);
 
-var _general = __webpack_require__(5);
+var _general = __webpack_require__(6);
 
 /* eslint-disable */
 function fixSpaceInDate(date) {
@@ -52524,7 +52535,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _hooks = __webpack_require__(7);
+var _hooks = __webpack_require__(5);
 
 var _lana = __webpack_require__(50);
 
@@ -52676,13 +52687,13 @@ var _react2 = _interopRequireDefault(_react);
 
 var _propTypes = __webpack_require__(1);
 
-var _classnames = __webpack_require__(6);
+var _classnames = __webpack_require__(7);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
 var _rendering = __webpack_require__(40);
 
-var _hooks = __webpack_require__(7);
+var _hooks = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -52772,13 +52783,13 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(6);
+var _classnames = __webpack_require__(7);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
 var _propTypes = __webpack_require__(1);
 
-var _hooks = __webpack_require__(7);
+var _hooks = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -52902,13 +52913,13 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(6);
+var _classnames = __webpack_require__(7);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
 var _propTypes = __webpack_require__(1);
 
-var _hooks = __webpack_require__(7);
+var _hooks = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -53033,9 +53044,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _propTypes = __webpack_require__(1);
 
-var _hooks = __webpack_require__(7);
+var _hooks = __webpack_require__(5);
 
-var _general = __webpack_require__(5);
+var _general = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -53259,7 +53270,7 @@ var _constants = __webpack_require__(15);
 
 var _cards = __webpack_require__(294);
 
-var _general = __webpack_require__(5);
+var _general = __webpack_require__(6);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -53499,7 +53510,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.filterCardsByDateRange = exports.getCardDate = undefined;
 
-var _general = __webpack_require__(5);
+var _general = __webpack_require__(6);
 
 /**
  * Converts date to milliseconds
@@ -53551,7 +53562,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(6);
+var _classnames = __webpack_require__(7);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -53567,9 +53578,9 @@ var _Group = __webpack_require__(297);
 
 var _rendering = __webpack_require__(40);
 
-var _general = __webpack_require__(5);
+var _general = __webpack_require__(6);
 
-var _hooks = __webpack_require__(7);
+var _hooks = __webpack_require__(5);
 
 var _constants = __webpack_require__(15);
 
@@ -53989,7 +54000,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(6);
+var _classnames = __webpack_require__(7);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -54001,9 +54012,9 @@ var _Footer = __webpack_require__(299);
 
 var _config = __webpack_require__(20);
 
-var _general = __webpack_require__(5);
+var _general = __webpack_require__(6);
 
-var _hooks = __webpack_require__(7);
+var _hooks = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54288,7 +54299,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(6);
+var _classnames = __webpack_require__(7);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -54532,7 +54543,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(6);
+var _classnames = __webpack_require__(7);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -54542,7 +54553,7 @@ var _Item = __webpack_require__(301);
 
 var _Item2 = _interopRequireDefault(_Item);
 
-var _hooks = __webpack_require__(7);
+var _hooks = __webpack_require__(5);
 
 var _config = __webpack_require__(20);
 
@@ -54558,7 +54569,7 @@ var _PanelFooter = __webpack_require__(308);
 
 var _ClearButton = __webpack_require__(309);
 
-var _general = __webpack_require__(5);
+var _general = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54818,7 +54829,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(6);
+var _classnames = __webpack_require__(7);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -54826,7 +54837,7 @@ var _propTypes = __webpack_require__(1);
 
 var _Items = __webpack_require__(302);
 
-var _hooks = __webpack_require__(7);
+var _hooks = __webpack_require__(5);
 
 var _config = __webpack_require__(20);
 
@@ -55035,6 +55046,7 @@ var Item = function Item(props) {
                 )
             ),
             shouldRenderSelectedBadge && _react2.default.createElement(_SelectedItem.SelectedItem, {
+                name: (0, _Helpers.sanitizeStr)(name),
                 handleClear: handleClear,
                 numItemsSelected: numItemsSelected }),
             _react2.default.createElement(
@@ -55271,9 +55283,12 @@ var _react2 = _interopRequireDefault(_react);
 
 var _propTypes = __webpack_require__(1);
 
+var _hooks = __webpack_require__(5);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var selectedItemType = {
+    name: _propTypes.string.isRequired,
     numItemsSelected: _propTypes.number,
     handleClear: _propTypes.func.isRequired
 };
@@ -55297,15 +55312,24 @@ var defaultProps = {
  * )
  */
 var SelectedItem = function SelectedItem(props) {
-    var numItemsSelected = props.numItemsSelected,
+    var name = props.name,
+        numItemsSelected = props.numItemsSelected,
         handleClear = props.handleClear;
+
+    /**
+     **** Authored Configs ****
+        */
+
+    var getConfig = (0, _hooks.useConfig)();
+    var removeAllFiltersAria = getConfig('collection', 'i18n.removeAllFiltersAria');
 
     /**
      * Text - quantity of selected left filter options
      * @type {String}
      */
-
     var displayNumItemsSelected = numItemsSelected > 0 ? '' + numItemsSelected : '';
+
+    var ariaLabel = removeAllFiltersAria && removeAllFiltersAria.replace('{num}', displayNumItemsSelected).replace('{filter}', name);
 
     return _react2.default.createElement(
         'button',
@@ -55314,7 +55338,8 @@ var SelectedItem = function SelectedItem(props) {
             type: 'button',
             className: 'consonant-LeftFilter-itemBadge',
             onClick: handleClear,
-            tabIndex: '0' },
+            tabIndex: '0',
+            'aria-label': ariaLabel },
         displayNumItemsSelected
     );
 };
@@ -55343,6 +55368,8 @@ var _react2 = _interopRequireDefault(_react);
 var _propTypes = __webpack_require__(1);
 
 var _Helpers = __webpack_require__(22);
+
+var _hooks = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -55376,11 +55403,17 @@ var ChosenFilterItem = function ChosenFilterItem(props) {
         onClick = props.onClick;
 
     /**
+     **** Authored Configs ****
+        */
+
+    var getConfig = (0, _hooks.useConfig)();
+    var removeFilterAria = getConfig('collection', 'i18n.removeFilterAria');
+
+    /**
      * Unselects the chosen filter option when the filter is clicked
      * @param {ClickEvent} e
      * @listens ClickEvent
      */
-
     var handleClick = function handleClick() {
         onClick(parentId, id, false);
     };
@@ -55392,6 +55425,7 @@ var ChosenFilterItem = function ChosenFilterItem(props) {
             onClick: handleClick,
             'data-testid': 'consonant-ChosenFilter',
             className: 'consonant-ChosenFilter',
+            'aria-label': removeFilterAria && removeFilterAria.replace('{filter}', (0, _Helpers.sanitizeStr)(name)),
             tabIndex: '0' },
         (0, _Helpers.sanitizeStr)(name)
     );
@@ -55783,7 +55817,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _general = __webpack_require__(5);
+var _general = __webpack_require__(6);
 
 var _Helpers = __webpack_require__(22);
 
@@ -55913,13 +55947,13 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(6);
+var _classnames = __webpack_require__(7);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
 var _propTypes = __webpack_require__(1);
 
-var _hooks = __webpack_require__(7);
+var _hooks = __webpack_require__(5);
 
 var _config = __webpack_require__(20);
 
@@ -56119,7 +56153,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(6);
+var _classnames = __webpack_require__(7);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -56271,7 +56305,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _general = __webpack_require__(5);
+var _general = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
