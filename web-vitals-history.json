@@ -346,5 +346,17 @@
       "fid": 0.7000000000116415,
       "cls": null
     }
+  },
+  {
+    "date": "2025-02-06T21:33:00.170Z",
+    "pr": {
+      "number": "224",
+      "title": "chore(mwpw-165522): update critical dependencies for security fixes"
+    },
+    "metrics": {
+      "lcp": 10479.399999999965,
+      "fid": 0.8000000000465661,
+      "cls": null
+    }
   }
 ]
