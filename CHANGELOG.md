@@ -1,5 +1,14 @@
 
 
+## [0.29.3](https://github.com/adobecom/caas/compare/0.29.2...0.29.3) (2025-02-05)
+
+## [0.29.2](https://github.com/adobecom/caas/compare/0.29.1...0.29.2) (2025-02-04)
+
+
+### Bug Fixes
+
+* **MWPW-166333:** fixes missing role=group aria attributes ([f60713f](https://github.com/adobecom/caas/commit/f60713f356817383566de784e87ec5b65e5afec7))
+
 ## [0.29.1](https://github.com/adobecom/caas/compare/0.29.0...0.29.1) (2025-02-04)
 
 
