@@ -593,4 +593,86 @@ describe('Container Component', () => {
         const totalCardLimitElement = screen.getByTestId('consonant-Select-btn');
         expect(totalCardLimitElement).toHaveTextContent('Titledesc');
     });
+
+    test('should be able to render with old event filter', () => {
+        const customConfig = {
+            collection: {
+                totalCardsToShow: 50,
+                reservoir: {
+                    sample: 10,
+                    pool: 100,
+                },
+                lazyLoad: false,
+                resultsPerPage: 10,
+                endpoint: 'https://www.somedomain.com/some-test-api.json',
+                cardStyle: 'none',
+                showTotalResults: true,
+                i18n: {
+                    prettyDateIntervalFormat: '{LLL} {dd} | {timeRange} {timeZone}',
+                    totalResultsText: '{total} Results',
+                    title: 'Your Top Picks',
+                    titleHeadingLevel: 'h2',
+                },
+            },
+            filterPanel: {
+                enabled: true,
+                eventFilter: 'not-timed',
+                filters: [
+                    {
+                        group: 'Category Group',
+                        id: 'caas:product-categories:category-1',
+                        title: 'Category 1',
+                        icon: 'https://www.somedomain.com/category-icon-1.svg',
+                        items: [{ name: 'item1' }, { name: 'item2' }],
+                    },
+                    {
+                        group: 'Category Group',
+                        id: 'caas:product-categories:category-2',
+                        title: 'Category 2',
+                        icon: 'https://www.somedomain.com/category-icon-2.svg',
+                        items: [{ name: 'item3' }, { name: 'item4' }],
+                    },
+                ],
+                categories: [
+                    {
+                        group: 'Category Group',
+                        id: 'caas:product-categories:category-1',
+                        title: 'Category 1',
+                        icon: 'https://www.somedomain.com/category-icon-1.svg',
+                        items: [{ name: 'item1' }, { name: 'item2' }],
+                    },
+                    {
+                        group: 'Category Group',
+                        id: 'caas:product-categories:category-2',
+                        title: 'Category 2',
+                        icon: 'https://www.somedomain.com/category-icon-2.svg',
+                        items: [{ name: 'item3' }, { name: 'item4' }],
+                    },
+                ],
+                i18n: {
+                    leftPanel: {
+                        mobile: {
+                            group: {
+                                totalResultsText: '{total} Results',
+                                applyBtnText: 'Apply',
+                                doneBtnText: 'Done',
+                            },
+                        },
+                    },
+                },
+            },
+            sort: {
+                options: [
+                    { label: 'Titledesc', sort: SORT_TYPES.TITLEDESC },
+                ],
+                defaultSort: SORT_TYPES.TITLEDESC,
+            },
+        };
+        render(<Container config={customConfig} />);
+
+        // Check the totalCardLimit element
+        const totalCardLimitElement = screen.getByTestId('consonant-Select-btn');
+        expect(totalCardLimitElement).toHaveTextContent('Titledesc');
+    });
+    
 });

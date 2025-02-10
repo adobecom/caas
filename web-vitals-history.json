@@ -106,5 +106,269 @@
       "fid": 0.7999999999883585,
       "cls": null
     }
+  },
+  {
+    "date": "2025-01-16T21:44:56.733Z",
+    "pr": {
+      "number": "220",
+      "title": "feat(mwpw-162835): ability to have multiple event sort options"
+    },
+    "metrics": {
+      "lcp": 12663,
+      "fid": 0.8000000000174623,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-01-16T22:36:58.854Z",
+    "pr": {
+      "number": "221",
+      "title": "Revert \"feat(mwpw-162835): ability to have multiple event sort options\""
+    },
+    "metrics": {
+      "lcp": 15614.5,
+      "fid": 1,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-01-17T20:56:43.164Z",
+    "pr": {
+      "number": "223",
+      "title": "feat(mwpw-162835): ability to have multiple event sort options"
+    },
+    "metrics": {
+      "lcp": 12974.899999999965,
+      "fid": 1.2000000000116415,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-01-21T23:43:01.820Z",
+    "pr": {
+      "number": "217",
+      "title": "fix(mwpw-164262): makes headings and text more accessible"
+    },
+    "metrics": {
+      "lcp": 12975.799999999988,
+      "fid": 0.7000000000116415,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-01-22T17:59:38.295Z",
+    "pr": {
+      "number": "225",
+      "title": "feat(mwpw-165820): icon images should not have alt text"
+    },
+    "metrics": {
+      "lcp": 12954,
+      "fid": 0.9000000000232831,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-01-22T19:19:09.754Z",
+    "pr": {
+      "number": "222",
+      "title": "feat(mwpw-164117): adds card title to CTAs aria-label"
+    },
+    "metrics": {
+      "lcp": 13130.700000000012,
+      "fid": 0.8999999999941792,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-01-22T22:45:04.256Z",
+    "pr": {
+      "number": "226",
+      "title": "fix(mwpw-162902): fix the title sort so that it works with eventFilter"
+    },
+    "metrics": {
+      "lcp": 12651.100000000006,
+      "fid": 0.8999999999941792,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-01-29T18:13:08.004Z",
+    "pr": {
+      "number": "229",
+      "title": "fix(mwpw-166135): fixes paginator accessibility when using Light Text"
+    },
+    "metrics": {
+      "lcp": 13111.699999999983,
+      "fid": 0.7000000000116415,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-01-29T20:09:38.130Z",
+    "pr": {
+      "number": "227",
+      "title": "fix(mwpw-166139): issue with footers with 0.25.0"
+    },
+    "metrics": {
+      "lcp": 10831.899999999965,
+      "fid": 0.9000000000232831,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-01-29T22:17:47.817Z",
+    "pr": {
+      "number": "232",
+      "title": "fix(mwpw-166139): fixing event sort"
+    },
+    "metrics": {
+      "lcp": 10387.200000000012,
+      "fid": 0.7999999999883585,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-01-29T23:11:52.125Z",
+    "pr": {
+      "number": "8610407",
+      "title": "Direct push to main"
+    },
+    "metrics": {
+      "lcp": 13067.900000000023,
+      "fid": 0.7999999999883585,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-01-30T00:24:12.854Z",
+    "pr": {
+      "number": "231",
+      "title": "fix(mwpw-166332): caas accessibility issues"
+    },
+    "metrics": {
+      "lcp": 13019.600000000006,
+      "fid": 0.6999999999825377,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-03T20:14:56.520Z",
+    "pr": {
+      "number": "242",
+      "title": "fix(mwpw-167080): resolve GH Pages “No uploaded artifact found!” error for PR previews"
+    },
+    "metrics": {
+      "lcp": 10368.600000000006,
+      "fid": 0.7999999999883585,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-03T20:37:51.305Z",
+    "pr": {
+      "number": "660197f",
+      "title": "Direct push to main"
+    },
+    "metrics": {
+      "lcp": 10354.799999999988,
+      "fid": 0.8000000000174623,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-03T21:02:48.174Z",
+    "pr": {
+      "number": "12cf450",
+      "title": "Direct push to main"
+    },
+    "metrics": {
+      "lcp": 12787.699999999953,
+      "fid": 0.6999999999534339,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-03T21:08:20.179Z",
+    "pr": {
+      "number": "aafb074",
+      "title": "Direct push to main"
+    },
+    "metrics": {
+      "lcp": 13628.5,
+      "fid": 0.8000000000174623,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-04T18:48:50.564Z",
+    "pr": {
+      "number": "230",
+      "title": "feat(mwpw-163904): news card style"
+    },
+    "metrics": {
+      "lcp": 10357.799999999988,
+      "fid": 0.7000000000116415,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-04T19:35:29.864Z",
+    "pr": {
+      "number": "233",
+      "title": "fix(mwpw-163284): color changes on hover for CAAS button is not #274dea"
+    },
+    "metrics": {
+      "lcp": 13292.099999999977,
+      "fid": 0.7000000000116415,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-04T23:25:45.147Z",
+    "pr": {
+      "number": "239",
+      "title": "fix(mwpw-166333): adds missing role=group aria attributes"
+    },
+    "metrics": {
+      "lcp": 13034.599999999977,
+      "fid": 0.7999999999883585,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-05T23:28:52.114Z",
+    "pr": {
+      "number": "237",
+      "title": "fix(mwpw-165637): establish comprehensive e2e testing and eslinting"
+    },
+    "metrics": {
+      "lcp": 14170.700000000012,
+      "fid": 0.7000000000116415,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-06T21:33:00.170Z",
+    "pr": {
+      "number": "224",
+      "title": "chore(mwpw-165522): update critical dependencies for security fixes"
+    },
+    "metrics": {
+      "lcp": 10479.399999999965,
+      "fid": 0.8000000000465661,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-06T22:32:24.996Z",
+    "pr": {
+      "number": "244",
+      "title": "fix(mwpw-166330): adds localizable aria label to UI controls"
+    },
+    "metrics": {
+      "lcp": 12877.900000000023,
+      "fid": 0.7999999999883585,
+      "cls": null
+    }
   }
 ]

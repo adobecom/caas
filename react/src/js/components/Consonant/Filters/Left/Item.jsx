@@ -210,11 +210,13 @@ const Item = (props) => {
                     {
                         shouldRenderSelectedBadge &&
                         <DesktopSelectedItem
+                            name={sanitizeStr(name)}
                             handleClear={handleClear}
                             numItemsSelected={numItemsSelected} />
                     }
                     <section
                         id={`${id}-panel`}
+                        role="group"
                         aria-labelledby={`${id}-link`}>
                         <Items
                             items={items}

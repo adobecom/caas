@@ -42,6 +42,7 @@ const CardFooter = (props) => {
         endDate,
         isFluid,
         onFocus,
+        title,
     } = props;
 
     /**
@@ -150,19 +151,19 @@ const CardFooter = (props) => {
                 {shouldRenderRight &&
                 <div
                     className="consonant-CardFooter-cell consonant-CardFooter-cell--right">
-                    <Group renderList={right} onFocus={onFocus} />
+                    <Group renderList={right} onFocus={onFocus} title={title} />
                 </div>
                 }
                 {shouldRenderAltRightUpcoming &&
                 <div
                     className="consonant-CardFooter-cell consonant-CardFooter-cell--right">
-                    <Group renderList={altRightUpcoming} onFocus={onFocus} />
+                    <Group renderList={altRightUpcoming} onFocus={onFocus} title={title} />
                 </div>
                 }
                 {shouldRenderAltRightLive &&
                 <div
                     className="consonant-CardFooter-cell consonant-CardFooter-cell--right">
-                    <Group renderList={altRightLive} onFocus={onFocus} />
+                    <Group renderList={altRightLive} onFocus={onFocus} title={title} />
                 </div>
                 }
             </div>

@@ -101,11 +101,17 @@ export default class CardFilterer {
      * @return {*} Chainable
      * @memberof CardFilterer
      */
-    sortCards(sortOption, eventFilter, featuredCardIds, hideCtaIds, isFirstLoad) {
+    sortCards(sortOption, eventFilter = [], featuredCardIds, hideCtaIds, isFirstLoad) {
         if (!this.filteredCards.length) return this;
 
         const sortType = sortOption ? sortOption.sort.toLowerCase() : null;
+        if (eventFilter.length > 0) {
+            const {
+                visibleSessions = [],
+            } = getEventSort(this.filteredCards, eventFilter);
 
+            this.filteredCards = visibleSessions;
+        }
         switch (sortType) {
             case SORT_TYPES.DATEASC:
                 this.filteredCards = getDateAscSort(this.filteredCards);

@@ -125,6 +125,21 @@ const sortByKey = [
     },
 ];
 
+const sanitizeEventFilter = [
+    {
+        filter: 'all',
+        expectedValue: [],
+    },
+    {
+        filter: 'upcoming',
+        expectedValue: ['upcoming'],
+    },
+    {
+        filter: ['upcoming', 'on-demand'],
+        expectedValue: ['upcoming', 'on-demand'],
+    },
+];
+
 const sanitizeText = [
     {
         text: 'text text',
@@ -585,6 +600,7 @@ export default {
     getEndNumber,
     generateRange,
     getStartNumber,
+    sanitizeEventFilter,
     truncateString,
     getPageStartEnd,
     parseToPrimitive,

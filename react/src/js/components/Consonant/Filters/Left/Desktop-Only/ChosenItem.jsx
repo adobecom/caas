@@ -4,6 +4,7 @@ import {
     func,
 } from 'prop-types';
 import { sanitizeStr } from '../../../Helpers/Helpers';
+import { useConfig } from '../../../Helpers/hooks';
 
 const chosenFilterItemType = {
     id: string.isRequired,
@@ -37,6 +38,12 @@ const ChosenFilterItem = (props) => {
     } = props;
 
     /**
+     **** Authored Configs ****
+        */
+    const getConfig = useConfig();
+    const removeFilterAria = getConfig('collection', 'i18n.removeFilterAria');
+
+    /**
      * Unselects the chosen filter option when the filter is clicked
      * @param {ClickEvent} e
      * @listens ClickEvent
@@ -51,6 +58,7 @@ const ChosenFilterItem = (props) => {
             onClick={handleClick}
             data-testid="consonant-ChosenFilter"
             className="consonant-ChosenFilter"
+            aria-label={removeFilterAria && removeFilterAria.replace('{filter}', sanitizeStr(name))}
             tabIndex="0">
             {sanitizeStr(name)}
         </button>
