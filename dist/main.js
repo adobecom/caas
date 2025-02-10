@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.29.5 (2/10/2025, 11:08:45)
+ * Chimera UI Libraries - Build 0.29.5 (2/10/2025, 15:21:38)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -7980,6 +7980,7 @@ var Container = function Container(props) {
                         isTopFilterPanel && isStandardContainer && _react2.default.createElement(_Panel2.default, {
                             filterPanelEnabled: filterPanelEnabled,
                             filters: filters,
+                            searchQuery: searchQuery,
                             windowWidth: windowWidth,
                             resQty: gridCardLen,
                             onCheckboxClick: handleCheckBoxChange,
@@ -53594,6 +53595,7 @@ var filtersPanelTopType = {
     onFilterClick: _propTypes.func.isRequired,
     onShowAllClick: _propTypes.func.isRequired,
     searchComponent: _propTypes.node.isRequired,
+    searchQuery: _propTypes.string,
     filters: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_config.filterType)),
     onCheckboxClick: _propTypes.func.isRequired,
     onClearAllFilters: _propTypes.func.isRequired,
@@ -53604,6 +53606,7 @@ var filtersPanelTopType = {
 var defaultProps = {
     resQty: 0,
     filters: [],
+    searchQuery: '',
     showLimitedFiltersQty: false
 };
 
@@ -53641,6 +53644,7 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
         onShowAllClick = props.onShowAllClick,
         windowWidth = props.windowWidth,
         searchComponent = props.searchComponent,
+        searchQuery = props.searchQuery,
         sortComponent = props.sortComponent,
         filterPanelEnabled = props.filterPanelEnabled;
 
@@ -53800,7 +53804,7 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
      * Whether the search bar should be visible
      * @type {Boolean}
      */
-    var shouldShowSearchBar = openExpandable === searchId;
+    var shouldShowSearchBar = searchQuery.length || openExpandable === searchId;
 
     var shouldRenderInnerWrapper = shouldDisplayFilters || searchEnabled || shouldDisplaySortComponent || shouldDisplayCollectionInfo;
 

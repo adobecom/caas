@@ -7,6 +7,7 @@ import {
     bool,
     func,
     node,
+    string,
 } from 'prop-types';
 
 import { filterType } from '../../types/config';
@@ -36,6 +37,7 @@ const filtersPanelTopType = {
     onFilterClick: func.isRequired,
     onShowAllClick: func.isRequired,
     searchComponent: node.isRequired,
+    searchQuery: string,
     filters: arrayOf(shape(filterType)),
     onCheckboxClick: func.isRequired,
     onClearAllFilters: func.isRequired,
@@ -46,6 +48,7 @@ const filtersPanelTopType = {
 const defaultProps = {
     resQty: 0,
     filters: [],
+    searchQuery: '',
     showLimitedFiltersQty: false,
 };
 
@@ -84,6 +87,7 @@ const FiltersPanelTop = (props) => {
         onShowAllClick,
         windowWidth,
         searchComponent,
+        searchQuery,
         sortComponent,
         filterPanelEnabled,
     } = props;
@@ -240,7 +244,7 @@ const FiltersPanelTop = (props) => {
      * Whether the search bar should be visible
      * @type {Boolean}
      */
-    const shouldShowSearchBar = openExpandable === searchId;
+    const shouldShowSearchBar = searchQuery.length || (openExpandable === searchId);
 
     const shouldRenderInnerWrapper = shouldDisplayFilters
         || searchEnabled || shouldDisplaySortComponent || shouldDisplayCollectionInfo;
