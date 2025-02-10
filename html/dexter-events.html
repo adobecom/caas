@@ -225,10 +225,10 @@
     <script>
         (function() {
             if (window.location.hostname.includes('github.io')) {
-                var coll = document.querySelector('consonant-card-collection');
+                const coll = document.querySelector('consonant-card-collection');
                 if (coll) {
-                    var rawConfig = coll.getAttribute('data-config');
-                    var parsed = JSON.parse(rawConfig);
+                    const rawConfig = coll.getAttribute('data-config');
+                    const parsed = JSON.parse(rawConfig);
 
                     // Override endpoint for GitHub Pages
                     parsed.collection.endpoint = './caas/mock-json/dexter/events.json';
