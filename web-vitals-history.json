@@ -370,5 +370,17 @@
       "fid": 0.7999999999883585,
       "cls": null
     }
+  },
+  {
+    "date": "2025-02-11T23:37:09.918Z",
+    "pr": {
+      "number": "245",
+      "title": "test(mwpw-167330): create e2e/integration tests for dexter event page to check in GH Action"
+    },
+    "metrics": {
+      "lcp": 10392.900000000023,
+      "fid": 0.8999999999941792,
+      "cls": null
+    }
   }
 ]
