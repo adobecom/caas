@@ -146,6 +146,20 @@ const Grid = (props) => {
         },
     };
 
+    /* *** MWPW-164509 *** */
+    const cardsPerPage = () => {
+        switch (cardsGridLayout) {
+            case GRID_TYPE.FIVE_UP:
+                return 5;
+            case GRID_TYPE.FOUR_UP:
+                return 4;
+            case GRID_TYPE.THREE_UP:
+                return 3;
+            default:
+                return 2;
+        }
+    };
+
     /**
      * Whether the paginator component is being used
      * @type {Boolean}
@@ -221,6 +235,7 @@ const Grid = (props) => {
                 const { contentArea: { title = '' } = {}, id } = card;
                 const cardNumber = index + 1;
                 const hideCTA = getHideCta(card, collectionButtonStyle);
+                const ariaHidden = index >= cardsPerPage();
 
                 switch (cardStyle) {
                     /* istanbul ignore next */
@@ -241,6 +256,7 @@ const Grid = (props) => {
                                 renderDivider={renderFooterDivider}
                                 renderOverlay={renderCardsOverlay}
                                 hideCTA={hideCTA}
+                                ariaHidden={ariaHidden}
                                 /* istanbul ignore next */
                                 onFocus={() => scrollCardIntoView(card.id)} />
                         );
