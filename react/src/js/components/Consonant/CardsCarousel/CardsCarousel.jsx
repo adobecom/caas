@@ -25,6 +25,7 @@ function CardsCarousel({
     const showTotalResultsText = getConfig('collection', 'i18n.totalResultsText');
     const useLightText = getConfig('collection', 'useLightText');
     const isIncremental = getConfig('pagination', 'animationStyle') === 'incremental';
+    let currentPage = 1;
 
     if (cardsUp.includes('2up')) {
         cardWidth = 500;
@@ -156,12 +157,36 @@ function CardsCarousel({
         carousel.scrollLeft += (-window.innerWidth / 2 + 620);
     }
 
+    /* *** MWPW-164509 *** */
+    function setAriaHidden(carousel) {
+        const firstCard = currentPage === 1 ? 1 : ((currentPage - 1) * cardsPerPage) + 1;
+        const lastCard = currentPage === 1
+            ? cardsPerPage : ((currentPage - 1) * cardsPerPage) + cardsPerPage;
+        console.log(firstCard, lastCard);
+
+        carousel.querySelectorAll('.consonant-Card').forEach((card, index) => {
+            const cardLink = card.querySelector('.consonant-LinkBlocker');
+            if (index + 1 >= firstCard && index + 1 <= lastCard) {
+                console.log(`Show card ${index}`);
+                cardLink.removeAttribute('aria-hidden');
+                cardLink.removeAttribute('inert');
+                cardLink.setAttribute('tabindex', '0');
+            } else {
+                cardLink.setAttribute('aria-hidden', 'true');
+                cardLink.setAttribute('inert', '');
+                cardLink.setAttribute('tabindex', '-1');
+            }
+        });
+    }
+
     function nextButtonClick() {
         if (isResponsive()) {
             centerClick();
         } else {
             const carousel = carouselRef.current;
             carousel.scrollLeft += ((cardWidth + gridGap) * cardsShiftedPerClick);
+            currentPage += 1;
+            setAriaHidden(carousel);
             shouldHideNextButton();
         }
     }
@@ -172,6 +197,8 @@ function CardsCarousel({
         } else {
             const carousel = carouselRef.current;
             carousel.scrollLeft -= ((cardWidth + gridGap) * cardsShiftedPerClick);
+            currentPage -= 1;
+            setAriaHidden(carousel);
             shouldHidePrevButton();
         }
     }
@@ -194,6 +221,7 @@ function CardsCarousel({
 
     return (
         <Fragment>
+            <p><a href="#top">BEFORE</a></p>
             <div className="consonant-Navigation--carousel">
                 <button
                     aria-label="Previous button"
@@ -248,6 +276,7 @@ function CardsCarousel({
                     pages={pages} />
             </div>
             {/* eslint-enable jsx-a11y/no-static-element-interactions */}
+            <p><a href="#top">AFTER</a></p>
         </Fragment>
     );
 }

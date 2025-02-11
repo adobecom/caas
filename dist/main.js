@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.29.2 (2/5/2025, 13:01:02)
+ * Chimera UI Libraries - Build 0.29.5 (2/11/2025, 11:46:27)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -8370,6 +8370,20 @@ var Grid = function Grid(props) {
         }
     };
 
+    /* *** MWPW-164509 *** */
+    var cardsPerPage = function cardsPerPage() {
+        switch (cardsGridLayout) {
+            case _constants.GRID_TYPE.FIVE_UP:
+                return 5;
+            case _constants.GRID_TYPE.FOUR_UP:
+                return 4;
+            case _constants.GRID_TYPE.THREE_UP:
+                return 3;
+            default:
+                return 2;
+        }
+    };
+
     /**
      * Whether the paginator component is being used
      * @type {Boolean}
@@ -8453,6 +8467,7 @@ var Grid = function Grid(props) {
 
             var cardNumber = index + 1;
             var hideCTA = getHideCta(card, collectionButtonStyle);
+            var ariaHidden = index >= cardsPerPage();
 
             switch (cardStyle) {
                 /* istanbul ignore next */
@@ -8471,7 +8486,8 @@ var Grid = function Grid(props) {
                         renderBorder: renderCardsBorders,
                         renderDivider: renderFooterDivider,
                         renderOverlay: renderCardsOverlay,
-                        hideCTA: hideCTA
+                        hideCTA: hideCTA,
+                        ariaHidden: ariaHidden
                         /* istanbul ignore next */
                         , onFocus: function onFocus() {
                             return scrollCardIntoView(card.id);
@@ -44262,6 +44278,7 @@ function CardsCarousel() {
     var showTotalResultsText = getConfig('collection', 'i18n.totalResultsText');
     var useLightText = getConfig('collection', 'useLightText');
     var isIncremental = getConfig('pagination', 'animationStyle') === 'incremental';
+    var currentPage = 1;
 
     if (cardsUp.includes('2up')) {
         cardWidth = 500;
@@ -44396,12 +44413,35 @@ function CardsCarousel() {
         carousel.scrollLeft += -window.innerWidth / 2 + 620;
     }
 
+    /* *** MWPW-164509 *** */
+    function setAriaHidden(carousel) {
+        var firstCard = currentPage === 1 ? 1 : (currentPage - 1) * cardsPerPage + 1;
+        var lastCard = currentPage === 1 ? cardsPerPage : (currentPage - 1) * cardsPerPage + cardsPerPage;
+        console.log(firstCard, lastCard);
+
+        carousel.querySelectorAll('.consonant-Card').forEach(function (card, index) {
+            var cardLink = card.querySelector('.consonant-LinkBlocker');
+            if (index + 1 >= firstCard && index + 1 <= lastCard) {
+                console.log('Show card ' + index);
+                cardLink.removeAttribute('aria-hidden');
+                cardLink.removeAttribute('inert');
+                cardLink.setAttribute('tabindex', '0');
+            } else {
+                cardLink.setAttribute('aria-hidden', 'true');
+                cardLink.setAttribute('inert', '');
+                cardLink.setAttribute('tabindex', '-1');
+            }
+        });
+    }
+
     function nextButtonClick() {
         if (isResponsive()) {
             centerClick();
         } else {
             var carousel = carouselRef.current;
             carousel.scrollLeft += (cardWidth + gridGap) * cardsShiftedPerClick;
+            currentPage += 1;
+            setAriaHidden(carousel);
             shouldHideNextButton();
         }
     }
@@ -44412,6 +44452,8 @@ function CardsCarousel() {
         } else {
             var carousel = carouselRef.current;
             carousel.scrollLeft -= (cardWidth + gridGap) * cardsShiftedPerClick;
+            currentPage -= 1;
+            setAriaHidden(carousel);
             shouldHidePrevButton();
         }
     }
@@ -44435,6 +44477,15 @@ function CardsCarousel() {
     return _react2.default.createElement(
         _react.Fragment,
         null,
+        _react2.default.createElement(
+            'p',
+            null,
+            _react2.default.createElement(
+                'a',
+                { href: '#top' },
+                'BEFORE'
+            )
+        ),
         _react2.default.createElement(
             'div',
             { className: 'consonant-Navigation--carousel' },
@@ -44492,6 +44543,15 @@ function CardsCarousel() {
                 resultsPerPage: cardsPerPage,
                 onCardBookmark: onCardBookmark,
                 pages: pages })
+        ),
+        _react2.default.createElement(
+            'p',
+            null,
+            _react2.default.createElement(
+                'a',
+                { href: '#top' },
+                'AFTER'
+            )
         )
     );
 }
@@ -46906,7 +46966,8 @@ var CardType = {
     bannerMap: (0, _propTypes.shape)(Object).isRequired,
     tags: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_card.tagsType)),
     onFocus: _propTypes.func.isRequired,
-    origin: _propTypes.string
+    origin: _propTypes.string,
+    ariaHidden: _propTypes.bool
 };
 
 var defaultProps = {
@@ -46929,7 +46990,8 @@ var defaultProps = {
     cardDate: '',
     modifiedDate: '',
     tags: [],
-    origin: ''
+    origin: '',
+    ariaHidden: false
 };
 
 /**
@@ -47008,7 +47070,8 @@ var Card = function Card(props) {
         endDate = props.endDate,
         bannerMap = props.bannerMap,
         onFocus = props.onFocus,
-        origin = props.origin;
+        origin = props.origin,
+        ariaHidden = props.ariaHidden;
 
 
     var bannerBackgroundColorToUse = bannerBackgroundColor;
@@ -47332,13 +47395,15 @@ var Card = function Card(props) {
                 target: linkBlockerTarget,
                 link: overlay,
                 title: title,
-                getsFocus: getsFocus })
+                getsFocus: getsFocus || true })
         ),
         (renderOverlay || hideCTA || isHalfHeight || isIcon) && _react2.default.createElement(_LinkBlocker2.default, {
             target: linkBlockerTarget,
             link: overlay,
             title: title,
-            getsFocus: getsFocus })
+            getsFocus: getsFocus || true,
+            ariaHidden: ariaHidden,
+            tabIndex: ariaHidden ? -1 : 0 })
     );
 };
 
@@ -49243,6 +49308,7 @@ var LinkBlockerType = {
     link: _propTypes.string,
     target: _propTypes.string,
     title: _propTypes.string,
+    ariaHidden: Boolean,
     getsFocus: Boolean
 };
 
@@ -49250,6 +49316,7 @@ var defaultProps = {
     link: '',
     target: '',
     title: '',
+    ariaHidden: false,
     getsFocus: false
 };
 
@@ -49271,7 +49338,8 @@ var LinkBlocker = function LinkBlocker(props) {
     var link = props.link,
         target = props.target,
         title = props.title,
-        getsFocus = props.getsFocus;
+        getsFocus = props.getsFocus,
+        ariaHidden = props.ariaHidden;
 
     return (
         // eslint-disable-next-line jsx-a11y/anchor-has-content
@@ -49280,7 +49348,8 @@ var LinkBlocker = function LinkBlocker(props) {
             target: target,
             rel: 'noopener noreferrer',
             'aria-label': title,
-            tabIndex: getsFocus ? 0 : -1,
+            'aria-hidden': ariaHidden,
+            tabIndex: !ariaHidden && getsFocus ? 0 : -1,
             className: 'consonant-LinkBlocker' })
     );
 };

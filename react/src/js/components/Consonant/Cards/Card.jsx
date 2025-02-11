@@ -50,6 +50,7 @@ const CardType = {
     tags: arrayOf(shape(tagsType)),
     onFocus: func.isRequired,
     origin: string,
+    ariaHidden: bool,
 };
 
 const defaultProps = {
@@ -73,6 +74,7 @@ const defaultProps = {
     modifiedDate: '',
     tags: [],
     origin: '',
+    ariaHidden: false,
 };
 
 /**
@@ -152,6 +154,7 @@ const Card = (props) => {
         bannerMap,
         onFocus,
         origin,
+        ariaHidden,
     } = props;
 
     let bannerBackgroundColorToUse = bannerBackgroundColor;
@@ -507,14 +510,16 @@ const Card = (props) => {
                         target={linkBlockerTarget}
                         link={overlay}
                         title={title}
-                        getsFocus={getsFocus} />}
+                        getsFocus={getsFocus || true} />}
             </div>
             {(renderOverlay || hideCTA || isHalfHeight || isIcon)
             && <LinkBlocker
                 target={linkBlockerTarget}
                 link={overlay}
                 title={title}
-                getsFocus={getsFocus} />}
+                getsFocus={getsFocus || true}
+                ariaHidden={ariaHidden}
+                tabIndex={ariaHidden ? -1 : 0} />}
         </div>
     );
 };
