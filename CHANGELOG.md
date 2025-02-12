@@ -1,5 +1,18 @@
 
 
+# [0.30.0](https://github.com/adobecom/caas/compare/0.29.7...0.30.0) (2025-02-12)
+
+
+### Bug Fixes
+
+* **mwpw-157306:** search bar does not collapse when authored ([9a8787f](https://github.com/adobecom/caas/commit/9a8787fa6007999d1ca22c1dd1e08fee84ba9783))
+
+
+### Features
+
+* **mwpw-157306:** does not automatically hide search when there is a search text ([bea552e](https://github.com/adobecom/caas/commit/bea552e54c15ff013307f97d54905cd29062c8eb))
+* **mwpw-157306:** saving work ([1335225](https://github.com/adobecom/caas/commit/1335225a9ae135a2042b25e9729a6103ad1bf0f8))
+
 ## [0.29.7](https://github.com/adobecom/caas/compare/0.29.6...0.29.7) (2025-02-12)
 
 

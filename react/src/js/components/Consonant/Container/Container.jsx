@@ -1460,6 +1460,7 @@ const Container = (props) => {
                             <FiltersPanelTop
                                 filterPanelEnabled={filterPanelEnabled}
                                 filters={filters}
+                                searchQuery={searchQuery}
                                 windowWidth={windowWidth}
                                 resQty={gridCardLen}
                                 onCheckboxClick={handleCheckBoxChange}
