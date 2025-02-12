@@ -125,10 +125,10 @@ const Paginator = (props) => {
         }
         const caasWrapper = target.closest('.consonant-Wrapper') || target.closest('section');
         if (caasWrapper && caasWrapper.getBoundingClientRect().y < 0) {
-            const caasWrapperTop = caasWrapper.getBoundingClientRect().top
+            const scrollTargetPosition = caasWrapper.getBoundingClientRect().top
                 + window.scrollY
                 - globalNavHeight;
-            window.scrollTo({ left: 0, top: caasWrapperTop, behavior: 'smooth' });
+            window.scrollTo({ left: 0, top: scrollTargetPosition, behavior: 'smooth' });
         }
         onClick(nextPage);
     };
