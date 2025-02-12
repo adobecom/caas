@@ -394,5 +394,17 @@
       "fid": 0.6999999999534339,
       "cls": null
     }
+  },
+  {
+    "date": "2025-02-12T18:50:35.777Z",
+    "pr": {
+      "number": "246",
+      "title": "feat(mwpw-157306): search closes after search is executed even with query present in search"
+    },
+    "metrics": {
+      "lcp": 13621.300000000017,
+      "fid": 0.6000000000058208,
+      "cls": null
+    }
   }
 ]
