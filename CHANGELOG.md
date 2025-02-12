@@ -1,5 +1,14 @@
 
 
+## [0.29.7](https://github.com/adobecom/caas/compare/0.29.6...0.29.7) (2025-02-12)
+
+
+### Bug Fixes
+
+* **mwpw-167234:** fixes paginator scroll to top of page issue ([#247](https://github.com/adobecom/caas/issues/247)) ([00449b3](https://github.com/adobecom/caas/commit/00449b3e537d1d08f9465b0e1b37b4a793d2091a))
+
+## [0.29.6](https://github.com/adobecom/caas/compare/0.29.5...0.29.6) (2025-02-11)
+
 ## [0.29.5](https://github.com/adobecom/caas/compare/0.29.4...0.29.5) (2025-02-06)
 
 

@@ -294,3 +294,17 @@ describe('Analytics Tracking', () => {
         expect(analyticsAttr).toContain('Test Collection');
     });
 });
+
+describe('Dexter Events Page', () => {
+    let url = 'http://localhost:8000/html/dexter-events.html';
+    if (process.env.GITHUB_ACTIONS) {
+        // eslint-disable-next-line no-template-curly-in-string
+        url = 'https://adobecom.github.io/caas/html/dexter-events.html';
+    }
+    it('should load the events data and display at least one card', async () => {
+        await browser.url(url);
+        const cardSelector = '.consonant-Card';
+        await $(cardSelector).waitForExist({ timeout: 10000 });
+        expect(await $(cardSelector).isDisplayed()).toBe(true);
+    });
+});
