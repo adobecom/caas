@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.29.7 (2/12/2025, 09:45:39)
+ * Chimera UI Libraries - Build 0.30.0 (2/12/2025, 11:38:38)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -7368,6 +7368,13 @@ var Container = function Container(props) {
                 }
 
                 setCards(processedCards);
+
+                // check if the current page is greater than the last page
+                var lastPage = Math.ceil(processedCards.length / resultsPerPage);
+                if (currentPage > lastPage) {
+                    setCurrentPage(1);
+                }
+
                 if (!showEmptyFilters) {
                     setFilters(function (prevFilters) {
                         return removeEmptyFilters(prevFilters, processedCards);

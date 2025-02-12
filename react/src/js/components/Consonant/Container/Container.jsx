@@ -909,6 +909,13 @@ const Container = (props) => {
                     }
 
                     setCards(processedCards);
+
+                    // check if the current page is greater than the last page
+                    const lastPage = Math.ceil(processedCards.length / resultsPerPage);
+                    if (currentPage > lastPage) {
+                        setCurrentPage(1);
+                    }
+
                     if (!showEmptyFilters) {
                         setFilters(prevFilters => removeEmptyFilters(prevFilters, processedCards));
                     }

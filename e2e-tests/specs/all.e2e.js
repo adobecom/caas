@@ -296,7 +296,7 @@ describe('Analytics Tracking', () => {
 });
 
 describe('Dexter Events Page', () => {
-    let url = 'http://localhost:8000/html/dexter-events.html';
+    let url = 'http://localhost:5000/html/dexter-events.html';
     if (process.env.GITHUB_ACTIONS) {
         // eslint-disable-next-line no-template-curly-in-string
         url = 'https://adobecom.github.io/caas/html/dexter-events.html';
@@ -306,5 +306,19 @@ describe('Dexter Events Page', () => {
         const cardSelector = '.consonant-Card';
         await $(cardSelector).waitForExist({ timeout: 10000 });
         expect(await $(cardSelector).isDisplayed()).toBe(true);
+    });
+});
+
+describe('Paginator out of Range', () => {
+    let url = 'http://localhost:5000/html/test-page.html?page=100';
+    if (process.env.GITHUB_ACTIONS) {
+        // eslint-disable-next-line no-template-curly-in-string
+        url = 'https://adobecom.github.io/caas/html/test-page.html';
+    }
+    it('should load page 1 of the card collection', async () => {
+        await browser.url(url);
+        const gridSelector = '.consonant-CardsGrid';
+        await $(gridSelector).waitForExist({ timeout: 10000 });
+        expect(await $(gridSelector).isDisplayed()).toBe(true);
     });
 });
