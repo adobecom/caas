@@ -313,7 +313,7 @@ describe('Paginator out of Range', () => {
     let url = 'http://localhost:5000/html/test-page.html?page=100';
     if (process.env.GITHUB_ACTIONS) {
         // eslint-disable-next-line no-template-curly-in-string
-        url = 'https://adobecom.github.io/caas/html/test-page.html?page=100';
+        url = 'https://adobecom.github.io/caas/html/test-page.html';
     }
     it('should load page 1 of the card collection', async () => {
         await browser.url(url);
