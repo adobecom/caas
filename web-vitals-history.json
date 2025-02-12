@@ -406,5 +406,17 @@
       "fid": 0.6000000000058208,
       "cls": null
     }
+  },
+  {
+    "date": "2025-02-12T19:48:33.858Z",
+    "pr": {
+      "number": "248",
+      "title": "fix(mwpw-167679): fixes pagination issue with multiple card collections on page"
+    },
+    "metrics": {
+      "lcp": 12717.800000000017,
+      "fid": 0.7000000000116415,
+      "cls": null
+    }
   }
 ]
