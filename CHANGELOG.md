@@ -1,5 +1,12 @@
 
 
+## [0.30.2](https://github.com/adobecom/caas/compare/0.30.1...0.30.2) (2025-02-13)
+
+
+### Bug Fixes
+
+* **mwpw-167753:** add a check to make sure search is enabled on mobile search display ([fbe6a74](https://github.com/adobecom/caas/commit/fbe6a744857f471f845fbcab407b0d51c354cdcf))
+
 ## [0.30.1](https://github.com/adobecom/caas/compare/0.30.0...0.30.1) (2025-02-12)
 
 
