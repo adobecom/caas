@@ -418,5 +418,17 @@
       "fid": 0.7000000000116415,
       "cls": null
     }
+  },
+  {
+    "date": "2025-02-13T21:37:44.550Z",
+    "pr": {
+      "number": "249",
+      "title": "fix(mwpw-167753): add a check to make sure search is enabled on mobil…"
+    },
+    "metrics": {
+      "lcp": 12770.600000000006,
+      "fid": 0.8000000000174623,
+      "cls": null
+    }
   }
 ]
