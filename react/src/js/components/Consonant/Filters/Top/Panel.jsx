@@ -201,7 +201,7 @@ const FiltersPanelTop = (props) => {
      * Whether the search bar should be displayed
      * @type {Boolean}
      */
-    const shouldDisplaySearchBar = searchComponent && TABLET_OR_MOBILE_SCREEN_SIZE;
+    const shouldDisplaySearchBar = searchEnabled && searchComponent && TABLET_OR_MOBILE_SCREEN_SIZE;
 
     /**
      * Whether the "Clear all filters" button should be displayed
