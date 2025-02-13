@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.30.0 (2/12/2025, 11:38:38)
+ * Chimera UI Libraries - Build 0.30.1 (2/13/2025, 10:45:34)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -53770,7 +53770,7 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
      * Whether the search bar should be displayed
      * @type {Boolean}
      */
-    var shouldDisplaySearchBar = searchComponent && TABLET_OR_MOBILE_SCREEN_SIZE;
+    var shouldDisplaySearchBar = searchEnabled && searchComponent && TABLET_OR_MOBILE_SCREEN_SIZE;
 
     /**
      * Whether the "Clear all filters" button should be displayed
