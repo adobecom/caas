@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.30.1 (2/13/2025, 10:45:34)
+ * Chimera UI Libraries - Build 0.30.2 (2/24/2025, 13:28:56)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -47042,7 +47042,7 @@ var Card = function Card(props) {
     var registrationUrl = getConfig('collection', 'banner.register.url');
     var hideDateInterval = getConfig('collection', 'hideDateInterval');
     var showCardBadges = getConfig('collection', 'showCardBadges');
-    var altCta = getConfig('collection', 'dynamicCTAForLiveEvents');
+    var altCtaUsed = getConfig('collection', 'dynamicCTAForLiveEvents');
     var ctaAction = getConfig('collection', 'ctaAction');
 
     /**
@@ -47129,6 +47129,26 @@ var Card = function Card(props) {
         });
     }
 
+    /**
+     * Extends footer data and extracts an alt CTA if it exists
+     * this is important for when overlay links are being used for live events
+     * @param {Array} footerData
+     * @return {String}
+     */
+    function getAltCtaLink(footerData) {
+        if (!footerData) return '';
+        if (footerData.length === 1) {
+            var _footerData$0$altCta = footerData[0].altCta,
+                altCta = _footerData$0$altCta === undefined ? [] : _footerData$0$altCta;
+
+            if (altCta.length === 1) {
+                return altCta[0].href;
+            }
+        }
+        // default value is an unauthored alt cta
+        return '';
+    }
+
     // Card styles
     var isOneHalf = cardStyle === 'one-half';
     var isThreeFourths = cardStyle === 'three-fourths';
@@ -47150,7 +47170,7 @@ var Card = function Card(props) {
     var showText = !isHalfHeight && !isFull && !isNews;
     var showFooter = isOneHalf || isProduct || isText || isNews;
     var showFooterLeft = !isProduct;
-    var showFooterCenter = !isProduct && !altCta;
+    var showFooterCenter = !isProduct && !altCtaUsed;
     var hideBanner = false;
     var eventBanner = '';
     var hideOnDemandDates = hideDateInterval && (0, _general.isDateAfterInterval)((0, _general.getCurrentDate)(), endDate);
@@ -47195,7 +47215,10 @@ var Card = function Card(props) {
 
     var linkBlockerTarget = (0, _general.getLinkTarget)(overlayLink, ctaAction);
     var addParams = new URLSearchParams(additionalParams);
-    var overlay = additionalParams && addParams.keys().next().value ? overlayLink + '?' + addParams.toString() : overlayLink;
+    var overlayParams = additionalParams && addParams.keys().next().value ? overlayLink + '?' + addParams.toString() : overlayLink;
+    var isLive = (0, _general.isDateWithinInterval)((0, _general.getCurrentDate)(), startDate, endDate);
+    var altCtaLink = getAltCtaLink(footer);
+    var overlay = altCtaUsed && isLive && altCtaLink !== '' ? altCtaLink : overlayParams;
     var getsFocus = isHalfHeight || isThreeFourths || isFull || isDoubleWide || isIcon || hideCTA;
 
     return _react2.default.createElement(
@@ -47329,7 +47352,7 @@ var Card = function Card(props) {
                     left: showFooterLeft && !hideOnDemandDates ? extendFooterData(footerItem.left) : [],
                     center: showFooterCenter ? extendFooterData(footerItem.center) : [],
                     right: extendFooterData(footerItem.right),
-                    altRight: altCta ? extendFooterData(footerItem.altCta) : [],
+                    altRight: altCtaUsed ? extendFooterData(footerItem.altCta) : [],
                     startDate: startDate,
                     endDate: endDate,
                     cardStyle: cardStyle,
