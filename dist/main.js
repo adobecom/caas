@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.30.1 (2/13/2025, 10:45:34)
+ * Chimera UI Libraries - Build 0.30.2 (2/24/2025, 09:27:47)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -54239,7 +54239,7 @@ var Group = function Group(props) {
                 {
                     className: 'consonant-TopFilter-inner' },
                 _react2.default.createElement(
-                    'h3',
+                    'div',
                     {
                         className: 'consonant-TopFilter-name',
                         'daa-ll': filterName },
