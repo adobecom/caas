@@ -430,5 +430,17 @@
       "fid": 0.8000000000174623,
       "cls": null
     }
+  },
+  {
+    "date": "2025-02-24T22:00:49.874Z",
+    "pr": {
+      "number": "250",
+      "title": "fix(mwpw-168106): changes top filter dropdown from H3 to DIV"
+    },
+    "metrics": {
+      "lcp": 13305.299999999988,
+      "fid": 0.7000000000116415,
+      "cls": null
+    }
   }
 ]
