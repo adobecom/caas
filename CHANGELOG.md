@@ -1,5 +1,12 @@
 
 
+## [0.30.3](https://github.com/adobecom/caas/compare/0.30.2...0.30.3) (2025-02-24)
+
+
+### Bug Fixes
+
+* **MWPW-168106:** changes top files from h3 to div ([#250](https://github.com/adobecom/caas/issues/250)) ([1661e85](https://github.com/adobecom/caas/commit/1661e857a7c87b5e6f2b1a1704ea77205cc1184a))
+
 ## [0.30.2](https://github.com/adobecom/caas/compare/0.30.1...0.30.2) (2025-02-13)
 
 
