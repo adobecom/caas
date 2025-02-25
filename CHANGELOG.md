@@ -1,5 +1,17 @@
 
 
+# [0.31.0](https://github.com/adobecom/caas/compare/0.30.3...0.31.0) (2025-02-25)
+
+
+### Bug Fixes
+
+* **mwpw-167662:** rebuilding ([85f3f0b](https://github.com/adobecom/caas/commit/85f3f0bd208bccc5a8477990ab42454b8550444c))
+
+
+### Features
+
+* **mwpw-167662:** add ability to have alt cta work with overlays ([29cb09f](https://github.com/adobecom/caas/commit/29cb09ff19074de5415c56a887c916324e02b168))
+
 ## [0.30.3](https://github.com/adobecom/caas/compare/0.30.2...0.30.3) (2025-02-24)
 
 
