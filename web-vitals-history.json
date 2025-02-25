@@ -442,5 +442,17 @@
       "fid": 0.7000000000116415,
       "cls": null
     }
+  },
+  {
+    "date": "2025-02-25T20:12:38.848Z",
+    "pr": {
+      "number": "251",
+      "title": "feat(mwpw-167662): add ability to have alt cta work with overlays"
+    },
+    "metrics": {
+      "lcp": 10359.199999999983,
+      "fid": 0.7999999999883585,
+      "cls": null
+    }
   }
 ]
