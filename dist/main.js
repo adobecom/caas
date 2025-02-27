@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.29.5 (2/11/2025, 11:46:27)
+ * Chimera UI Libraries - Build 0.29.5 (2/27/2025, 11:48:47)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -44346,11 +44346,22 @@ function CardsCarousel() {
         showNextButton();
     }
 
+    function setFocusPrevBtn() {
+        var prevBtn = prev.current;
+        if (prevBtn) prevBtn.focus();
+    }
+
+    function setFocusNextBtn() {
+        var nextBtn = next.current;
+        if (nextBtn) nextBtn.focus();
+    }
+
     function shouldHidePrevButton() {
         var carousel = carouselRef.current;
         var atStartOfCarousel = carousel.scrollLeft < cardWidth;
         if (atStartOfCarousel) {
             hidePrevButton();
+            setFocusNextBtn();
         }
     }
 
@@ -44359,6 +44370,7 @@ function CardsCarousel() {
         var atEndOfCarousel = carousel.scrollWidth - carousel.clientWidth < carousel.scrollLeft + cardWidth;
         if (atEndOfCarousel) {
             hideNextButton();
+            setFocusPrevBtn();
         }
     }
 

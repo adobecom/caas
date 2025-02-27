@@ -89,11 +89,22 @@ function CardsCarousel({
         showNextButton();
     }
 
+    function setFocusPrevBtn() {
+        const prevBtn = prev.current;
+        if (prevBtn) prevBtn.focus();
+    }
+
+    function setFocusNextBtn() {
+        const nextBtn = next.current;
+        if (nextBtn) nextBtn.focus();
+    }
+
     function shouldHidePrevButton() {
         const carousel = carouselRef.current;
         const atStartOfCarousel = (carousel.scrollLeft < cardWidth);
         if (atStartOfCarousel) {
             hidePrevButton();
+            setFocusNextBtn();
         }
     }
 
@@ -103,6 +114,7 @@ function CardsCarousel({
             (carousel.scrollWidth - carousel.clientWidth < carousel.scrollLeft + cardWidth);
         if (atEndOfCarousel) {
             hideNextButton();
+            setFocusPrevBtn();
         }
     }
 
