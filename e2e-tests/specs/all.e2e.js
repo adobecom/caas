@@ -322,3 +322,29 @@ describe('Paginator out of Range', () => {
         expect(await $(gridSelector).isDisplayed()).toBe(true);
     });
 });
+
+describe('Live Pages with ?caasbeta=true', () => {
+    // Array of pages we want to test with ?caasbeta=true
+    const pages = [
+        'https://business.adobe.com/customer-success-stories.html',
+        'https://www.adobe.com/trust/resources.html',
+        'https://business.adobe.com/resources/main.html',
+    ];
+
+    pages.forEach((page) => {
+        it(`should load the first card collection on: ${page}`, async () => {
+            // Append ?caasbeta=true to force the beta pipeline
+            const urlWithBeta = `${page}?caasbeta=true`;
+            await browser.url(urlWithBeta);
+
+            // Wait for the first consonant card to appear
+            const firstCardSelector = '.consonant-Card';
+            await $(firstCardSelector).waitForExist({ timeout: 30000 });
+            await $(firstCardSelector).waitForDisplayed({ timeout: 30000 });
+
+            // Check that the card is indeed displayed
+            const isDisplayed = await $(firstCardSelector).isDisplayed();
+            expect(isDisplayed).toBe(true);
+        });
+    });
+});
