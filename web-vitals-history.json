@@ -454,5 +454,17 @@
       "fid": 0.7999999999883585,
       "cls": null
     }
+  },
+  {
+    "date": "2025-02-27T21:28:10.665Z",
+    "pr": {
+      "number": "252",
+      "title": "feat(mwpw-167478): enable analytics cta tracking with overlay links"
+    },
+    "metrics": {
+      "lcp": 13073.5,
+      "fid": 0.8000000000465661,
+      "cls": null
+    }
   }
 ]
