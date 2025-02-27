@@ -1,5 +1,12 @@
 
 
+# [0.32.0](https://github.com/adobecom/caas/compare/0.31.0...0.32.0) (2025-02-27)
+
+
+### Features
+
+* **mwpw-167478:** enable analytics cta tracking with overlay links ([a14c4f9](https://github.com/adobecom/caas/commit/a14c4f9d1cb91e440c4b55307c77179e733ac158))
+
 # [0.31.0](https://github.com/adobecom/caas/compare/0.30.3...0.31.0) (2025-02-25)
 
 
