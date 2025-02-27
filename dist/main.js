@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.30.3 (2/25/2025, 12:39:16)
+ * Chimera UI Libraries - Build 0.31.0 (2/27/2025, 14:05:47)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -47149,6 +47149,30 @@ var Card = function Card(props) {
         return '';
     }
 
+    /**
+     * Get CTA text from footer data for analytics on overlay cards
+     * @param {Array} footerData
+     * @return {String}
+     */
+    function getCtaText(footerData, ctaUsed) {
+        if (!footerData) return '';
+        if (footerData.length === 1) {
+            var _footerData$ = footerData[0],
+                _footerData$$altCta = _footerData$.altCta,
+                altCta = _footerData$$altCta === undefined ? [] : _footerData$$altCta,
+                _footerData$$right = _footerData$.right,
+                right = _footerData$$right === undefined ? [] : _footerData$$right;
+
+            if (ctaUsed === 'right' && right.length === 1) {
+                return right[0].text;
+            } else if (ctaUsed === 'alt' && altCta.length === 1) {
+                return altCta[0].text;
+            }
+            return '';
+        }
+        return '';
+    }
+
     // Card styles
     var isOneHalf = cardStyle === 'one-half';
     var isThreeFourths = cardStyle === 'three-fourths';
@@ -47217,7 +47241,9 @@ var Card = function Card(props) {
     var addParams = new URLSearchParams(additionalParams);
     var overlayParams = additionalParams && addParams.keys().next().value ? overlayLink + '?' + addParams.toString() : overlayLink;
     var isLive = (0, _general.isDateWithinInterval)((0, _general.getCurrentDate)(), startDate, endDate);
+    var isUpcoming = (0, _general.isDateBeforeInterval)((0, _general.getCurrentDate)(), startDate);
     var altCtaLink = getAltCtaLink(footer);
+    var ctaText = altCtaUsed && isUpcoming && altCtaLink !== '' ? getCtaText(footer, 'alt') : getCtaText(footer, 'right');
     var overlay = altCtaUsed && isLive && altCtaLink !== '' ? altCtaLink : overlayParams;
     var getsFocus = isHalfHeight || isThreeFourths || isFull || isDoubleWide || isIcon || hideCTA;
 
@@ -47363,13 +47389,15 @@ var Card = function Card(props) {
                 target: linkBlockerTarget,
                 link: overlay,
                 title: title,
-                getsFocus: getsFocus })
+                getsFocus: getsFocus,
+                daa: ctaText })
         ),
         (renderOverlay || hideCTA || isHalfHeight || isIcon) && _react2.default.createElement(_LinkBlocker2.default, {
             target: linkBlockerTarget,
             link: overlay,
             title: title,
-            getsFocus: getsFocus })
+            getsFocus: getsFocus,
+            daa: ctaText })
     );
 };
 
@@ -49274,14 +49302,16 @@ var LinkBlockerType = {
     link: _propTypes.string,
     target: _propTypes.string,
     title: _propTypes.string,
-    getsFocus: Boolean
+    getsFocus: Boolean,
+    daa: _propTypes.string
 };
 
 var defaultProps = {
     link: '',
     target: '',
     title: '',
-    getsFocus: false
+    getsFocus: false,
+    daa: ''
 };
 
 /**
@@ -49293,6 +49323,7 @@ var defaultProps = {
     link: String,
     target: String,
     title: String,
+    daa: String,
  * }
  * return (
  *   <LinkBlocker {...props}/>
@@ -49302,7 +49333,8 @@ var LinkBlocker = function LinkBlocker(props) {
     var link = props.link,
         target = props.target,
         title = props.title,
-        getsFocus = props.getsFocus;
+        getsFocus = props.getsFocus,
+        daa = props.daa;
 
     return (
         // eslint-disable-next-line jsx-a11y/anchor-has-content
@@ -49312,6 +49344,7 @@ var LinkBlocker = function LinkBlocker(props) {
             rel: 'noopener noreferrer',
             'aria-label': title,
             tabIndex: getsFocus ? 0 : -1,
+            'daa-ll': daa,
             className: 'consonant-LinkBlocker' })
     );
 };

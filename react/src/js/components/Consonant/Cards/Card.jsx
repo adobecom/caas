@@ -293,6 +293,28 @@ const Card = (props) => {
         return '';
     }
 
+    /**
+     * Get CTA text from footer data for analytics on overlay cards
+     * @param {Array} footerData
+     * @return {String}
+     */
+    function getCtaText(footerData, ctaUsed) {
+        if (!footerData) return '';
+        if (footerData.length === 1) {
+            const {
+                altCta = [],
+                right = [],
+            } = footerData[0];
+            if (ctaUsed === 'right' && right.length === 1) {
+                return right[0].text;
+            } else if (ctaUsed === 'alt' && altCta.length === 1) {
+                return altCta[0].text;
+            }
+            return '';
+        }
+        return '';
+    }
+
     // Card styles
     const isOneHalf = cardStyle === 'one-half';
     const isThreeFourths = cardStyle === 'three-fourths';
@@ -367,7 +389,9 @@ const Card = (props) => {
     const addParams = new URLSearchParams(additionalParams);
     const overlayParams = (additionalParams && addParams.keys().next().value) ? `${overlayLink}?${addParams.toString()}` : overlayLink;
     const isLive = isDateWithinInterval(getCurrentDate(), startDate, endDate);
+    const isUpcoming = isDateBeforeInterval(getCurrentDate(), startDate);
     const altCtaLink = getAltCtaLink(footer);
+    const ctaText = (altCtaUsed && isUpcoming && altCtaLink !== '') ? getCtaText(footer, 'alt') : getCtaText(footer, 'right');
     const overlay = (altCtaUsed && isLive && altCtaLink !== '') ? altCtaLink : overlayParams;
     const getsFocus = isHalfHeight
         || isThreeFourths
@@ -530,14 +554,16 @@ const Card = (props) => {
                         target={linkBlockerTarget}
                         link={overlay}
                         title={title}
-                        getsFocus={getsFocus} />}
+                        getsFocus={getsFocus}
+                        daa={ctaText} />}
             </div>
             {(renderOverlay || hideCTA || isHalfHeight || isIcon)
             && <LinkBlocker
                 target={linkBlockerTarget}
                 link={overlay}
                 title={title}
-                getsFocus={getsFocus} />}
+                getsFocus={getsFocus}
+                daa={ctaText} />}
         </div>
     );
 };
