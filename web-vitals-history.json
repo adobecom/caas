@@ -466,5 +466,17 @@
       "fid": 0.8000000000465661,
       "cls": null
     }
+  },
+  {
+    "date": "2025-02-28T04:49:34.981Z",
+    "pr": {
+      "number": "253",
+      "title": "test(mwpw-168628): adds smoke tests for main prod pages so we can check them before PR is merged"
+    },
+    "metrics": {
+      "lcp": 13047.600000000035,
+      "fid": 0.8000000000465661,
+      "cls": null
+    }
   }
 ]
