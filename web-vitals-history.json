@@ -478,5 +478,17 @@
       "fid": 0.8000000000465661,
       "cls": null
     }
+  },
+  {
+    "date": "2025-02-28T22:11:31.889Z",
+    "pr": {
+      "number": "b81aaaf",
+      "title": "Direct push to main"
+    },
+    "metrics": {
+      "lcp": 12661.699999999983,
+      "fid": 0.7000000000116415,
+      "cls": null
+    }
   }
 ]
