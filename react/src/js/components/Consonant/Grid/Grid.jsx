@@ -260,6 +260,7 @@ const Grid = (props) => {
                                 renderOverlay={renderOverlay}
                                 hideCTA={hideCTA}
                                 ariaHidden={ariaHidden}
+                                tabIndex={ariaHidden ? '-1' : ''}
                                 /* istanbul ignore next */
                                 onFocus={() => scrollCardIntoView(card.id)} />
                         );

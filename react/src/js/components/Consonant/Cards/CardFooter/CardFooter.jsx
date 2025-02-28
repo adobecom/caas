@@ -43,6 +43,7 @@ const CardFooter = (props) => {
         isFluid,
         onFocus,
         title,
+        tabIndex,
         renderOverlay,
     } = props;
 
@@ -156,6 +157,7 @@ const CardFooter = (props) => {
                         renderList={right}
                         onFocus={onFocus}
                         title={title}
+                        tabIndex={tabIndex}
                         renderOverlay={renderOverlay}
                     />
                 </div>

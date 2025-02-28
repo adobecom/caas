@@ -51,6 +51,7 @@ const CardType = {
     onFocus: func.isRequired,
     origin: string,
     ariaHidden: bool,
+    tabIndex: string,
 };
 
 const defaultProps = {
@@ -75,6 +76,7 @@ const defaultProps = {
     tags: [],
     origin: '',
     ariaHidden: false,
+    tabIndex: '',
 };
 
 /**
@@ -155,6 +157,7 @@ const Card = (props) => {
         onFocus,
         origin,
         ariaHidden,
+        tabIndex,
     } = props;
 
     let bannerBackgroundColorToUse = bannerBackgroundColor;
@@ -503,6 +506,7 @@ const Card = (props) => {
                         cardStyle={cardStyle}
                         onFocus={onFocus}
                         title={title}
+                        tabIndex={tabIndex}
                         renderOverlay={renderOverlay} />
                 ))}
                 {(isThreeFourths || isDoubleWide || isFull)

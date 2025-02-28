@@ -37,6 +37,7 @@ const groupType = {
     ])),
     onFocus: func,
     title: string,
+    tabIndex: string,
     renderOverlay: bool,
 };
 
@@ -44,6 +45,7 @@ const defaultProps = {
     renderList: [],
     onFocus: () => {},
     title: '',
+    tabIndex: '',
     renderOverlay: false,
 };
 
@@ -64,6 +66,7 @@ const Group = (props) => {
         renderList,
         onFocus,
         title,
+        tabIndex,
         renderOverlay,
     } = props;
 
@@ -85,6 +88,7 @@ const Group = (props) => {
                                 key={cuid()}
                                 onFocus={onFocus}
                                 title={title}
+                                tabIndex={tabIndex}
                                 renderOverlay={renderOverlay} />
                         );
 

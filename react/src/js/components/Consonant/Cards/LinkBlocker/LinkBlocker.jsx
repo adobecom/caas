@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { string } from 'prop-types';
+import { bool, string } from 'prop-types';
 
 const LinkBlockerType = {
     link: string,
     target: string,
     title: string,
-    ariaHidden: Boolean,
-    getsFocus: Boolean,
+    ariaHidden: bool,
+    getsFocus: bool,
 };
 
 const defaultProps = {

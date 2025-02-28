@@ -171,22 +171,16 @@ function CardsCarousel({
     }
 
     /* *** MWPW-164509 *** */
-    // let firstCard = 1;
-    // let lastCard = 3;
     function setAriaHidden(carousel) {
-        // firstCard = currentPage === 1 ? 1 : ((currentPage - 1) * cardsPerPage) + 1;
-        // lastCard = currentPage === 1
         const firstCard = currentPage === 1 ? 1 : ((currentPage - 1) * cardsPerPage) + 1;
         const lastCard = currentPage === 1
             ? cardsPerPage : ((currentPage - 1) * cardsPerPage) + cardsPerPage;
-        console.log('setAriaHidden()', firstCard, lastCard);
 
         carousel.querySelectorAll('.consonant-Card').forEach((card, index) => {
             const cardLink = renderOverlay
                 ? card.querySelector('.consonant-LinkBlocker')
                 : card.querySelector('.consonant-BtnInfobit--cta');
             if (index + 1 >= firstCard && index + 1 <= lastCard) {
-                console.log(`Show card ${index}`);
                 cardLink.removeAttribute('aria-hidden');
                 cardLink.removeAttribute('inert');
                 cardLink.setAttribute('tabindex', '0');

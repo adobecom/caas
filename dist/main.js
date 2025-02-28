@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.29.5 (2/27/2025, 20:54:05)
+ * Chimera UI Libraries - Build 0.29.5 (2/28/2025, 10:09:06)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -8490,7 +8490,8 @@ var Grid = function Grid(props) {
                         renderDivider: renderFooterDivider,
                         renderOverlay: renderOverlay,
                         hideCTA: hideCTA,
-                        ariaHidden: ariaHidden
+                        ariaHidden: ariaHidden,
+                        tabIndex: ariaHidden ? '-1' : ''
                         /* istanbul ignore next */
                         , onFocus: function onFocus() {
                             return scrollCardIntoView(card.id);
@@ -44430,19 +44431,13 @@ function CardsCarousel() {
     }
 
     /* *** MWPW-164509 *** */
-    // let firstCard = 1;
-    // let lastCard = 3;
     function setAriaHidden(carousel) {
-        // firstCard = currentPage === 1 ? 1 : ((currentPage - 1) * cardsPerPage) + 1;
-        // lastCard = currentPage === 1
         var firstCard = currentPage === 1 ? 1 : (currentPage - 1) * cardsPerPage + 1;
         var lastCard = currentPage === 1 ? cardsPerPage : (currentPage - 1) * cardsPerPage + cardsPerPage;
-        console.log('setAriaHidden()', firstCard, lastCard);
 
         carousel.querySelectorAll('.consonant-Card').forEach(function (card, index) {
             var cardLink = renderOverlay ? card.querySelector('.consonant-LinkBlocker') : card.querySelector('.consonant-BtnInfobit--cta');
             if (index + 1 >= firstCard && index + 1 <= lastCard) {
-                console.log('Show card ' + index);
                 cardLink.removeAttribute('aria-hidden');
                 cardLink.removeAttribute('inert');
                 cardLink.setAttribute('tabindex', '0');
@@ -46988,7 +46983,8 @@ var CardType = {
     tags: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_card.tagsType)),
     onFocus: _propTypes.func.isRequired,
     origin: _propTypes.string,
-    ariaHidden: _propTypes.bool
+    ariaHidden: _propTypes.bool,
+    tabIndex: _propTypes.string
 };
 
 var defaultProps = {
@@ -47012,7 +47008,8 @@ var defaultProps = {
     modifiedDate: '',
     tags: [],
     origin: '',
-    ariaHidden: false
+    ariaHidden: false,
+    tabIndex: ''
 };
 
 /**
@@ -47092,7 +47089,8 @@ var Card = function Card(props) {
         bannerMap = props.bannerMap,
         onFocus = props.onFocus,
         origin = props.origin,
-        ariaHidden = props.ariaHidden;
+        ariaHidden = props.ariaHidden,
+        tabIndex = props.tabIndex;
 
 
     var bannerBackgroundColorToUse = bannerBackgroundColor;
@@ -47411,6 +47409,7 @@ var Card = function Card(props) {
                     cardStyle: cardStyle,
                     onFocus: onFocus,
                     title: title,
+                    tabIndex: tabIndex,
                     renderOverlay: renderOverlay });
             }),
             (isThreeFourths || isDoubleWide || isFull) && !renderOverlay && _react2.default.createElement(_LinkBlocker2.default, {
@@ -47543,6 +47542,7 @@ var CardFooter = function CardFooter(props) {
         isFluid = props.isFluid,
         onFocus = props.onFocus,
         title = props.title,
+        tabIndex = props.tabIndex,
         renderOverlay = props.renderOverlay;
 
     /**
@@ -47662,6 +47662,7 @@ var CardFooter = function CardFooter(props) {
                     renderList: right,
                     onFocus: onFocus,
                     title: title,
+                    tabIndex: tabIndex,
                     renderOverlay: renderOverlay
                 })
             ),
@@ -47769,6 +47770,7 @@ var groupType = {
     renderList: (0, _propTypes.arrayOf)((0, _propTypes.oneOfType)([(0, _propTypes.shape)(_card.footerLeftType), (0, _propTypes.shape)(_card.footerRightType), (0, _propTypes.shape)(_card.footerCenterType)])),
     onFocus: _propTypes.func,
     title: _propTypes.string,
+    tabIndex: _propTypes.string,
     renderOverlay: _propTypes.bool
 };
 
@@ -47776,6 +47778,7 @@ var defaultProps = {
     renderList: [],
     onFocus: function onFocus() {},
     title: '',
+    tabIndex: '',
     renderOverlay: false
 };
 
@@ -47795,6 +47798,7 @@ var Group = function Group(props) {
     var renderList = props.renderList,
         onFocus = props.onFocus,
         title = props.title,
+        tabIndex = props.tabIndex,
         renderOverlay = props.renderOverlay;
 
 
@@ -47812,6 +47816,7 @@ var Group = function Group(props) {
                         key: (0, _cuid2.default)(),
                         onFocus: onFocus,
                         title: title,
+                        tabIndex: tabIndex,
                         renderOverlay: renderOverlay }));
 
                 case _constants.INFOBIT_TYPE.ICON_TEXT:
@@ -48088,6 +48093,7 @@ var buttonType = {
     isCta: _propTypes.bool,
     onFocus: _propTypes.func,
     title: _propTypes.string,
+    tabIndex: _propTypes.string,
     renderOverlay: _propTypes.bool
 };
 
@@ -48101,6 +48107,7 @@ var defaultProps = {
     style: BUTTON_STYLE.CTA,
     onFocus: function onFocus() {},
     title: '',
+    tabIndex: '',
     renderOverlay: false
 };
 
@@ -48128,6 +48135,7 @@ var Button = function Button(_ref) {
         isCta = _ref.isCta,
         onFocus = _ref.onFocus,
         title = _ref.title,
+        tabIndex = _ref.tabIndex,
         renderOverlay = _ref.renderOverlay;
 
     /**
@@ -48187,7 +48195,7 @@ var Button = function Button(_ref) {
             className: buttonClass,
             'daa-ll': text,
             'data-testid': 'consonant-BtnInfobit',
-            tabIndex: renderOverlay ? '-1' : '',
+            tabIndex: renderOverlay ? '-1' : tabIndex,
             rel: 'noopener noreferrer',
             target: target,
             href: buttonLink,
@@ -49343,8 +49351,8 @@ var LinkBlockerType = {
     link: _propTypes.string,
     target: _propTypes.string,
     title: _propTypes.string,
-    ariaHidden: Boolean,
-    getsFocus: Boolean
+    ariaHidden: _propTypes.bool,
+    getsFocus: _propTypes.bool
 };
 
 var defaultProps = {
