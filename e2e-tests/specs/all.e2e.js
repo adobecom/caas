@@ -1,6 +1,12 @@
 // tests/e2e/collection.spec.js
 const generateUrl = require('../helpers/generateUrl');
 const config = require('../config.json');
+const fs = require('fs');
+const path = 'e2e-tests/screenshots';
+
+if (!fs.existsSync(path)) {
+    fs.mkdirSync(path, { recursive: true });
+}
 
 describe('Sort Options', () => {
     // Corrected line: Remove JSON.parse since config.sort.options is already an array
@@ -324,6 +330,11 @@ describe('Paginator out of Range', () => {
 });
 
 describe('Live Pages with ?caasbeta=true', () => {
+    // Ensure the screenshot directory exists
+    if (!fs.existsSync(path)) {
+        fs.mkdirSync(path, { recursive: true });
+    }
+
     const pages = [
         'https://www.adobe.com/acrobat/resources.html',
         'https://www.adobe.com/acrobat/hub/change-page-size-of-pdf-in-4-steps.html',
@@ -334,32 +345,43 @@ describe('Live Pages with ?caasbeta=true', () => {
 
     pages.forEach((page) => {
         it(`should display the first card on: ${page}`, async () => {
-            await browser.url(`${page}?caasbeta=true`);
+            // 1) Navigate with ?caasbeta=true
+            const url = `${page}?caasbeta=true`;
+            console.log(`Navigating to: ${url}`);
+            await browser.url(url);
 
-            // Attempt a big scroll
+            // 2) Scroll if needed (lazy loading for below-the-fold content)
             await browser.scroll(0, 9999);
-            await browser.pause(3000); // wait 3s after scrolling
+            await browser.pause(3000);
 
+            // 3) Check for .consonant-Card
             const cardSelector = '.consonant-Card';
+
             try {
                 await $(cardSelector).waitForExist({ timeout: 30000 });
                 await $(cardSelector).waitForDisplayed({ timeout: 30000 });
             } catch (err) {
-                // Screenshot on failure
-                const screenshotName = `debug-${encodeURIComponent(page)}.png`;
-                console.log(`Test failed for ${page}, saving screenshot: ${screenshotName}`);
-                await browser.saveScreenshot(screenshotName);
+                // If the card doesn't appear, take a screenshot for debugging
+                const failurePath = `${path}/failure-${encodeURIComponent(page)}.png`;
+                console.log(`Test failed for ${page}, saving screenshot: ${failurePath}`);
+                await browser.saveScreenshot(failurePath);
 
-                // Dump <body> HTML to the console
+                // Optionally log <body> HTML to see what's really in the DOM
                 const bodyHTML = await $('body').getHTML();
-                console.log(`Body HTML for ${page}:\n`, bodyHTML);
+                console.log(`BODY HTML for ${page} on failure:\n${bodyHTML}\n\n`);
 
-                // Re-throw to fail the test
-                throw err;
+                throw err; // re-throw so the test is marked as failed
             }
 
-            const cardIsDisplayed = await $(cardSelector).isDisplayed();
-            expect(cardIsDisplayed).toBe(true);
+            // 4) If we reach here, the test passed
+            //    Still take a screenshot so we can see the final rendered state on success
+            const successPath = `${path}/success-${encodeURIComponent(page)}.png`;
+            console.log(`Test passed for ${page}, saving screenshot: ${successPath}`);
+            await browser.saveScreenshot(successPath);
+
+            // Final verification
+            const isDisplayed = await $(cardSelector).isDisplayed();
+            expect(isDisplayed).toBe(true);
         });
     });
 });
