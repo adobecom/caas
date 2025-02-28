@@ -324,11 +324,6 @@ describe('Paginator out of Range', () => {
 });
 
 describe('Live Pages with ?caasbeta=true', () => {
-    // Ensure the screenshot directory exists
-    if (!fs.existsSync(path)) {
-        fs.mkdirSync(path, { recursive: true });
-    }
-
     const pages = [
         'https://www.adobe.com/acrobat/resources.html',
         'https://www.adobe.com/acrobat/hub/change-page-size-of-pdf-in-4-steps.html',
@@ -349,30 +344,10 @@ describe('Live Pages with ?caasbeta=true', () => {
 
             // 3) Check for .consonant-Card
             const cardSelector = '.consonant-Card';
+            await $(cardSelector).waitForExist({ timeout: 30000 });
+            await $(cardSelector).waitForDisplayed({ timeout: 30000 });
 
-            try {
-                await $(cardSelector).waitForExist({ timeout: 30000 });
-                await $(cardSelector).waitForDisplayed({ timeout: 30000 });
-            } catch (err) {
-                // If the card doesn't appear, take a screenshot for debugging
-                const failurePath = `${path}/failure-${encodeURIComponent(page)}.png`;
-                console.log(`Test failed for ${page}, saving screenshot: ${failurePath}`);
-                await browser.saveScreenshot(failurePath);
-
-                // Optionally log <body> HTML to see what's really in the DOM
-                const bodyHTML = await $('body').getHTML();
-                console.log(`BODY HTML for ${page} on failure:\n${bodyHTML}\n\n`);
-
-                throw err; // re-throw so the test is marked as failed
-            }
-
-            // 4) If we reach here, the test passed
-            //    Still take a screenshot so we can see the final rendered state on success
-            const successPath = `${path}/success-${encodeURIComponent(page)}.png`;
-            console.log(`Test passed for ${page}, saving screenshot: ${successPath}`);
-            await browser.saveScreenshot(successPath);
-
-            // Final verification
+            // 4) Final verification
             const isDisplayed = await $(cardSelector).isDisplayed();
             expect(isDisplayed).toBe(true);
         });
