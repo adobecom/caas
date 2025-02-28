@@ -238,7 +238,7 @@ jobs:
       # Upload the screenshots as artifacts so you can download and inspect them
       - name: Upload E2E Screenshots
         if: always()   # ensures the upload runs even if tests fail
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: e2e-screenshots
           path: |
