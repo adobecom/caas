@@ -232,6 +232,15 @@ jobs:
           CHROME_VERSION=$(google-chrome --version | cut -d' ' -f3 | cut -d'.' -f1) 
           npm install chromedriver@$CHROME_VERSION
 
+      - name: Quick cURL Test (HTTP/1.1)
+        run: |
+          echo "Running a quick cURL test in HTTP/1.1 mode..."
+          curl -I --http1.1 https://www.adobe.com/acrobat/resources.html
+          curl -I --http1.1 https://www.adobe.com/acrobat/hub/change-page-size-of-pdf-in-4-steps.html
+          curl -I --http1.1 https://www.adobe.com/creativecloud/video/discover.html
+          curl -I --http1.1 https://www.adobe.com/in/acrobat/roc/blog/how-to-convert-zip-files-to-pdf-document.html
+          curl -I --http1.1 https://www.adobe.com/au/acrobat/resources.html
+
       - name: E2E
         run: npm run test:e2e-prod
 
