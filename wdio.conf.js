@@ -26,6 +26,7 @@ exports.config = {
                 + 'AppleWebKit/537.36 (KHTML, like Gecko) '
                 + 'Chrome/98.0.4758.102 Safari/537.36',
             ],
+            w3c: true,
         },
     }],
     logLevel: 'info',
