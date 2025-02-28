@@ -322,3 +322,34 @@ describe('Paginator out of Range', () => {
         expect(await $(gridSelector).isDisplayed()).toBe(true);
     });
 });
+
+describe('Live Pages with ?caasbeta=true', () => {
+    const pages = [
+        'https://www.adobe.com/acrobat/resources.html',
+        'https://www.adobe.com/acrobat/hub/change-page-size-of-pdf-in-4-steps.html',
+        'https://www.adobe.com/creativecloud/video/discover.html',
+        'https://www.adobe.com/au/acrobat/resources.html',
+    ];
+
+    pages.forEach((page) => {
+        it(`should display the first card on: ${page}`, async () => {
+            // 1) Navigate with ?caasbeta=true
+            const url = `${page}?caasbeta=true`;
+            console.log(`Navigating to: ${url}`);
+            await browser.url(url);
+
+            // 2) Scroll if needed (lazy loading for below-the-fold content)
+            await browser.scroll(0, 9999);
+            await browser.pause(3000);
+
+            // 3) Check for .consonant-Card
+            const cardSelector = '.consonant-Card';
+            await $(cardSelector).waitForExist({ timeout: 30000 });
+            await $(cardSelector).waitForDisplayed({ timeout: 30000 });
+
+            // 4) Final verification
+            const isDisplayed = await $(cardSelector).isDisplayed();
+            expect(isDisplayed).toBe(true);
+        });
+    });
+});

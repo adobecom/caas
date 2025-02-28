@@ -17,7 +17,14 @@ exports.config = {
                 '--disable-infobars',
                 '--headless',
                 '--disable-gpu',
+                '--disable-http2', // Force HTTP/1.1
+                '--disable-dev-shm-usage', // Avoid /dev/shm issues in Docker
                 '--window-size=1440,735',
+                '--ignore-certificate-errors', // sometimes needed if SSL handshake fails
+                '--disable-web-security', // not typically recommended, but can help in some embed scenarios,
+                '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+                + 'AppleWebKit/537.36 (KHTML, like Gecko) '
+                + 'Chrome/98.0.4758.102 Safari/537.36',
             ],
             w3c: true,
         },
