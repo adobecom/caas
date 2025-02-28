@@ -22,6 +22,7 @@ const buttonType = {
     isCta: bool,
     onFocus: func,
     title: string,
+    renderOverlay: bool,
 };
 
 const defaultProps = {
@@ -34,6 +35,7 @@ const defaultProps = {
     style: BUTTON_STYLE.CTA,
     onFocus: () => {},
     title: '',
+    renderOverlay: false,
 };
 
 /**
@@ -60,6 +62,7 @@ const Button = ({
     isCta,
     onFocus,
     title,
+    renderOverlay,
 }) => {
     /**
      **** Authored Configs ****
@@ -120,7 +123,7 @@ const Button = ({
             className={buttonClass}
             daa-ll={text}
             data-testid="consonant-BtnInfobit"
-            tabIndex="0"
+            tabIndex={renderOverlay ? '-1' : ''}
             rel="noopener noreferrer"
             target={target}
             href={buttonLink}

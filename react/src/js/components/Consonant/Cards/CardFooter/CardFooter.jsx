@@ -43,6 +43,7 @@ const CardFooter = (props) => {
         isFluid,
         onFocus,
         title,
+        renderOverlay,
     } = props;
 
     /**
@@ -151,7 +152,12 @@ const CardFooter = (props) => {
                 {shouldRenderRight &&
                 <div
                     className="consonant-CardFooter-cell consonant-CardFooter-cell--right">
-                    <Group renderList={right} onFocus={onFocus} title={title} />
+                    <Group
+                        renderList={right}
+                        onFocus={onFocus}
+                        title={title}
+                        renderOverlay={renderOverlay}
+                    />
                 </div>
                 }
                 {shouldRenderAltRightUpcoming &&

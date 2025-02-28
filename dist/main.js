@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.29.5 (2/27/2025, 11:48:47)
+ * Chimera UI Libraries - Build 0.29.5 (2/27/2025, 20:54:05)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -8262,7 +8262,8 @@ var cardsGridType = {
     containerType: _propTypes.string,
     isAriaLiveActive: _propTypes.bool,
     // eslint-disable-next-line react/forbid-prop-types
-    forwardedRef: _propTypes.object
+    forwardedRef: _propTypes.object,
+    renderOverlay: _propTypes.bool
 };
 
 var defaultProps = {
@@ -8271,7 +8272,8 @@ var defaultProps = {
     resultsPerPage: _constants.DEFAULT_SHOW_ITEMS_PER_PAGE,
     containerType: 'default',
     isAriaLiveActive: false,
-    forwardedRef: null
+    forwardedRef: null,
+    renderOverlay: false
 };
 
 /**
@@ -8296,7 +8298,8 @@ var Grid = function Grid(props) {
         cards = props.cards,
         containerType = props.containerType,
         isAriaLiveActive = props.isAriaLiveActive,
-        forwardedRef = props.forwardedRef;
+        forwardedRef = props.forwardedRef,
+        renderOverlay = props.renderOverlay;
 
     /**
      **** Authored Configs ****
@@ -8308,7 +8311,7 @@ var Grid = function Grid(props) {
     var cardsGridGutter = getConfig('collection', 'layout.gutter');
     var renderCardsBorders = getConfig('collection', 'setCardBorders');
     var renderFooterDivider = getConfig('collection', 'showFooterDivider');
-    var renderCardsOverlay = getConfig('collection', 'useOverlayLinks');
+    // const renderCardsOverlay = getConfig('collection', 'useOverlayLinks');
     var dateFormat = getConfig('collection', 'i18n.prettyDateIntervalFormat');
     var locale = getConfig('language', '');
     var paginationType = getConfig('pagination', 'type');
@@ -8485,7 +8488,7 @@ var Grid = function Grid(props) {
                         locale: locale,
                         renderBorder: renderCardsBorders,
                         renderDivider: renderFooterDivider,
-                        renderOverlay: renderCardsOverlay,
+                        renderOverlay: renderOverlay,
                         hideCTA: hideCTA,
                         ariaHidden: ariaHidden
                         /* istanbul ignore next */
@@ -44278,6 +44281,7 @@ function CardsCarousel() {
     var showTotalResultsText = getConfig('collection', 'i18n.totalResultsText');
     var useLightText = getConfig('collection', 'useLightText');
     var isIncremental = getConfig('pagination', 'animationStyle') === 'incremental';
+    var renderOverlay = getConfig('collection', 'useOverlayLinks');
     var currentPage = 1;
 
     if (cardsUp.includes('2up')) {
@@ -44426,13 +44430,17 @@ function CardsCarousel() {
     }
 
     /* *** MWPW-164509 *** */
+    // let firstCard = 1;
+    // let lastCard = 3;
     function setAriaHidden(carousel) {
+        // firstCard = currentPage === 1 ? 1 : ((currentPage - 1) * cardsPerPage) + 1;
+        // lastCard = currentPage === 1
         var firstCard = currentPage === 1 ? 1 : (currentPage - 1) * cardsPerPage + 1;
         var lastCard = currentPage === 1 ? cardsPerPage : (currentPage - 1) * cardsPerPage + cardsPerPage;
-        console.log(firstCard, lastCard);
+        console.log('setAriaHidden()', firstCard, lastCard);
 
         carousel.querySelectorAll('.consonant-Card').forEach(function (card, index) {
-            var cardLink = card.querySelector('.consonant-LinkBlocker');
+            var cardLink = renderOverlay ? card.querySelector('.consonant-LinkBlocker') : card.querySelector('.consonant-BtnInfobit--cta');
             if (index + 1 >= firstCard && index + 1 <= lastCard) {
                 console.log('Show card ' + index);
                 cardLink.removeAttribute('aria-hidden');
@@ -44554,7 +44562,8 @@ function CardsCarousel() {
                 containerType: 'carousel',
                 resultsPerPage: cardsPerPage,
                 onCardBookmark: onCardBookmark,
-                pages: pages })
+                pages: pages,
+                renderOverlay: renderOverlay })
         ),
         _react2.default.createElement(
             'p',
@@ -47401,7 +47410,8 @@ var Card = function Card(props) {
                     endDate: endDate,
                     cardStyle: cardStyle,
                     onFocus: onFocus,
-                    title: title });
+                    title: title,
+                    renderOverlay: renderOverlay });
             }),
             (isThreeFourths || isDoubleWide || isFull) && !renderOverlay && _react2.default.createElement(_LinkBlocker2.default, {
                 target: linkBlockerTarget,
@@ -47532,7 +47542,8 @@ var CardFooter = function CardFooter(props) {
         endDate = props.endDate,
         isFluid = props.isFluid,
         onFocus = props.onFocus,
-        title = props.title;
+        title = props.title,
+        renderOverlay = props.renderOverlay;
 
     /**
      * Is the card currently live?
@@ -47647,7 +47658,12 @@ var CardFooter = function CardFooter(props) {
                 'div',
                 {
                     className: 'consonant-CardFooter-cell consonant-CardFooter-cell--right' },
-                _react2.default.createElement(_Group2.default, { renderList: right, onFocus: onFocus, title: title })
+                _react2.default.createElement(_Group2.default, {
+                    renderList: right,
+                    onFocus: onFocus,
+                    title: title,
+                    renderOverlay: renderOverlay
+                })
             ),
             shouldRenderAltRightUpcoming && _react2.default.createElement(
                 'div',
@@ -47752,13 +47768,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var groupType = {
     renderList: (0, _propTypes.arrayOf)((0, _propTypes.oneOfType)([(0, _propTypes.shape)(_card.footerLeftType), (0, _propTypes.shape)(_card.footerRightType), (0, _propTypes.shape)(_card.footerCenterType)])),
     onFocus: _propTypes.func,
-    title: _propTypes.string
+    title: _propTypes.string,
+    renderOverlay: _propTypes.bool
 };
 
 var defaultProps = {
     renderList: [],
     onFocus: function onFocus() {},
-    title: ''
+    title: '',
+    renderOverlay: false
 };
 
 /**
@@ -47776,7 +47794,8 @@ var defaultProps = {
 var Group = function Group(props) {
     var renderList = props.renderList,
         onFocus = props.onFocus,
-        title = props.title;
+        title = props.title,
+        renderOverlay = props.renderOverlay;
 
 
     return _react2.default.createElement(
@@ -47792,7 +47811,8 @@ var Group = function Group(props) {
                     return _react2.default.createElement(_Button2.default, _extends({}, infobit, {
                         key: (0, _cuid2.default)(),
                         onFocus: onFocus,
-                        title: title }));
+                        title: title,
+                        renderOverlay: renderOverlay }));
 
                 case _constants.INFOBIT_TYPE.ICON_TEXT:
                     return _react2.default.createElement(_IconWithText2.default, _extends({}, infobit, {
@@ -48067,7 +48087,8 @@ var buttonType = {
     iconPos: _propTypes.string,
     isCta: _propTypes.bool,
     onFocus: _propTypes.func,
-    title: _propTypes.string
+    title: _propTypes.string,
+    renderOverlay: _propTypes.bool
 };
 
 var defaultProps = {
@@ -48079,7 +48100,8 @@ var defaultProps = {
     isCta: false,
     style: BUTTON_STYLE.CTA,
     onFocus: function onFocus() {},
-    title: ''
+    title: '',
+    renderOverlay: false
 };
 
 /**
@@ -48105,7 +48127,8 @@ var Button = function Button(_ref) {
         iconPos = _ref.iconPos,
         isCta = _ref.isCta,
         onFocus = _ref.onFocus,
-        title = _ref.title;
+        title = _ref.title,
+        renderOverlay = _ref.renderOverlay;
 
     /**
      **** Authored Configs ****
@@ -48164,7 +48187,7 @@ var Button = function Button(_ref) {
             className: buttonClass,
             'daa-ll': text,
             'data-testid': 'consonant-BtnInfobit',
-            tabIndex: '0',
+            tabIndex: renderOverlay ? '-1' : '',
             rel: 'noopener noreferrer',
             target: target,
             href: buttonLink,

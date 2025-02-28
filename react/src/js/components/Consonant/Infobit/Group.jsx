@@ -6,6 +6,7 @@ import {
     shape,
     func,
     string,
+    bool,
 } from 'prop-types';
 
 import Icon from './Type/Icon';
@@ -36,12 +37,14 @@ const groupType = {
     ])),
     onFocus: func,
     title: string,
+    renderOverlay: bool,
 };
 
 const defaultProps = {
     renderList: [],
     onFocus: () => {},
     title: '',
+    renderOverlay: false,
 };
 
 /**
@@ -61,6 +64,7 @@ const Group = (props) => {
         renderList,
         onFocus,
         title,
+        renderOverlay,
     } = props;
 
     return (
@@ -80,7 +84,8 @@ const Group = (props) => {
                                 {...infobit}
                                 key={cuid()}
                                 onFocus={onFocus}
-                                title={title} />
+                                title={title}
+                                renderOverlay={renderOverlay} />
                         );
 
                     case INFOBIT_TYPE.ICON_TEXT:
