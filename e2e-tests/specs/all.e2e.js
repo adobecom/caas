@@ -296,7 +296,7 @@ describe('Analytics Tracking', () => {
 });
 
 describe('Dexter Events Page', () => {
-    let url = 'http://localhost:8000/html/dexter-events.html';
+    let url = 'http://localhost:5000/html/dexter-events.html';
     if (process.env.GITHUB_ACTIONS) {
         // eslint-disable-next-line no-template-curly-in-string
         url = 'https://adobecom.github.io/caas/html/dexter-events.html';
@@ -310,7 +310,7 @@ describe('Dexter Events Page', () => {
 });
 
 describe('Paginator out of Range', () => {
-    let url = 'http://localhost:8000/html/test-page.html?page=100';
+    let url = 'http://localhost:5000/html/test-page.html?page=100';
     if (process.env.GITHUB_ACTIONS) {
         // eslint-disable-next-line no-template-curly-in-string
         url = 'https://adobecom.github.io/caas/html/test-page.html';
