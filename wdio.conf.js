@@ -18,6 +18,7 @@ exports.config = {
                 '--headless',
                 '--disable-gpu',
                 '--window-size=1440,735',
+                '--disable-http2',
             ],
             w3c: true,
         },
