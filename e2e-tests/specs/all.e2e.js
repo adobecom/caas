@@ -324,7 +324,6 @@ describe('Paginator out of Range', () => {
 });
 
 describe('Live Pages with ?caasbeta=true', () => {
-    // Use an array to test multiple pages with minimal logic
     const pages = [
         'https://www.adobe.com/acrobat/resources.html',
         'https://www.adobe.com/acrobat/hub/change-page-size-of-pdf-in-4-steps.html',
@@ -335,21 +334,30 @@ describe('Live Pages with ?caasbeta=true', () => {
 
     pages.forEach((page) => {
         it(`should display the first card on: ${page}`, async () => {
-            // 1) Navigate with ?caasbeta=true
             await browser.url(`${page}?caasbeta=true`);
 
-            // 2) Scroll to ensure any lazy-loaded content is triggered.
-            //    Use a large scroll value to reach the bottom.
+            // Attempt a big scroll
             await browser.scroll(0, 9999);
-            // Short pause to allow content to load after scrolling
-            await browser.pause(2000);
+            await browser.pause(3000); // wait 3s after scrolling
 
-            // 3) Check for the first .consonant-Card
             const cardSelector = '.consonant-Card';
-            await $(cardSelector).waitForExist({ timeout: 30000 });
-            await $(cardSelector).waitForDisplayed({ timeout: 30000 });
+            try {
+                await $(cardSelector).waitForExist({ timeout: 30000 });
+                await $(cardSelector).waitForDisplayed({ timeout: 30000 });
+            } catch (err) {
+                // Screenshot on failure
+                const screenshotName = `debug-${encodeURIComponent(page)}.png`;
+                console.log(`Test failed for ${page}, saving screenshot: ${screenshotName}`);
+                await browser.saveScreenshot(screenshotName);
 
-            // 4) Confirm it’s displayed
+                // Dump <body> HTML to the console
+                const bodyHTML = await $('body').getHTML();
+                console.log(`Body HTML for ${page}:\n`, bodyHTML);
+
+                // Re-throw to fail the test
+                throw err;
+            }
+
             const cardIsDisplayed = await $(cardSelector).isDisplayed();
             expect(cardIsDisplayed).toBe(true);
         });
