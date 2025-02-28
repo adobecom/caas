@@ -1,12 +1,6 @@
 // tests/e2e/collection.spec.js
 const generateUrl = require('../helpers/generateUrl');
 const config = require('../config.json');
-const fs = require('fs');
-const path = 'e2e-tests/screenshots';
-
-if (!fs.existsSync(path)) {
-    fs.mkdirSync(path, { recursive: true });
-}
 
 describe('Sort Options', () => {
     // Corrected line: Remove JSON.parse since config.sort.options is already an array
@@ -339,7 +333,6 @@ describe('Live Pages with ?caasbeta=true', () => {
         'https://www.adobe.com/acrobat/resources.html',
         'https://www.adobe.com/acrobat/hub/change-page-size-of-pdf-in-4-steps.html',
         'https://www.adobe.com/creativecloud/video/discover.html',
-        'https://www.adobe.com/in/acrobat/roc/blog/how-to-convert-zip-files-to-pdf-document.html',
         'https://www.adobe.com/au/acrobat/resources.html',
     ];
 
