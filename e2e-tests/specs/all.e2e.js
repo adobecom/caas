@@ -296,7 +296,7 @@ describe('Analytics Tracking', () => {
 });
 
 describe('Dexter Events Page', () => {
-    let url = 'http://localhost:5000/html/dexter-events.html';
+    let url = 'http://localhost:8000/html/dexter-events.html';
     if (process.env.GITHUB_ACTIONS) {
         // eslint-disable-next-line no-template-curly-in-string
         url = 'https://adobecom.github.io/caas/html/dexter-events.html';
@@ -310,7 +310,7 @@ describe('Dexter Events Page', () => {
 });
 
 describe('Paginator out of Range', () => {
-    let url = 'http://localhost:5000/html/test-page.html?page=100';
+    let url = 'http://localhost:8000/html/test-page.html?page=100';
     if (process.env.GITHUB_ACTIONS) {
         // eslint-disable-next-line no-template-curly-in-string
         url = 'https://adobecom.github.io/caas/html/test-page.html';
@@ -324,27 +324,34 @@ describe('Paginator out of Range', () => {
 });
 
 describe('Live Pages with ?caasbeta=true', () => {
-    // Array of pages we want to test with ?caasbeta=true
+    // Use an array to test multiple pages with minimal logic
     const pages = [
-        'https://business.adobe.com/customer-success-stories.html',
-        'https://www.adobe.com/trust/resources.html',
-        'https://business.adobe.com/resources/main.html',
+        'https://www.adobe.com/acrobat/resources.html',
+        'https://www.adobe.com/acrobat/hub/change-page-size-of-pdf-in-4-steps.html',
+        'https://www.adobe.com/creativecloud/video/discover.html',
+        'https://www.adobe.com/in/acrobat/roc/blog/how-to-convert-zip-files-to-pdf-document.html',
+        'https://www.adobe.com/au/acrobat/resources.html',
     ];
 
     pages.forEach((page) => {
-        it(`should load the first card collection on: ${page}`, async () => {
-            // Append ?caasbeta=true to force the beta pipeline
-            const urlWithBeta = `${page}?caasbeta=true`;
-            await browser.url(urlWithBeta);
+        it(`should display the first card on: ${page}`, async () => {
+            // 1) Navigate with ?caasbeta=true
+            await browser.url(`${page}?caasbeta=true`);
 
-            // Wait for the first consonant card to appear
-            const firstCardSelector = '.consonant-Card';
-            await $(firstCardSelector).waitForExist({ timeout: 30000 });
-            await $(firstCardSelector).waitForDisplayed({ timeout: 30000 });
+            // 2) Scroll to ensure any lazy-loaded content is triggered.
+            //    Use a large scroll value to reach the bottom.
+            await browser.scroll(0, 9999);
+            // Short pause to allow content to load after scrolling
+            await browser.pause(2000);
 
-            // Check that the card is indeed displayed
-            const isDisplayed = await $(firstCardSelector).isDisplayed();
-            expect(isDisplayed).toBe(true);
+            // 3) Check for the first .consonant-Card
+            const cardSelector = '.consonant-Card';
+            await $(cardSelector).waitForExist({ timeout: 30000 });
+            await $(cardSelector).waitForDisplayed({ timeout: 30000 });
+
+            // 4) Confirm it’s displayed
+            const cardIsDisplayed = await $(cardSelector).isDisplayed();
+            expect(cardIsDisplayed).toBe(true);
         });
     });
 });
