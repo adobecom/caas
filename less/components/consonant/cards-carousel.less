@@ -31,6 +31,13 @@
                         min-height: 496px;
                     }
                 }
+
+                &.tabbing {
+                    button:focus {
+                        outline: @consonantFocusedColor solid 4px;
+                        outline-offset: 3px;
+                    }
+                }
             }
         }
 
@@ -293,11 +300,11 @@
                         }
                     }
 
-                    &:focus {
-                        outline: @consonantFocusedColor solid 4px;
-                        // outline-style: groove;
-                        outline-offset: 3px;
-                    }
+                    // &:focus {
+                    //     outline: @consonantFocusedColor solid 4px;
+                    //     // outline-style: groove;
+                    //     outline-offset: 3px;
+                    // }
                 }
             }
         }

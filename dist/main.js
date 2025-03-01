@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.29.5 (2/28/2025, 10:09:06)
+ * Chimera UI Libraries - Build 0.29.5 (2/28/2025, 10:36:30)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -44487,6 +44487,24 @@ function CardsCarousel() {
 
     (0, _react.useEffect)(function () {
         responsiveLogic();
+
+        function handleKeyDown(e) {
+            if (e.key === 'Tab') {
+                carouselRef.current.parentElement.classList.add('tabbing');
+            }
+        }
+
+        function handleMouseDown() {
+            carouselRef.current.parentElement.classList.remove('tabbing');
+        }
+
+        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('mousedown', handleMouseDown);
+
+        return function () {
+            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('mousedown', handleMouseDown);
+        };
     }, []);
 
     return _react2.default.createElement(
