@@ -490,5 +490,17 @@
       "fid": 0.7000000000116415,
       "cls": null
     }
+  },
+  {
+    "date": "2025-03-04T23:02:13.297Z",
+    "pr": {
+      "number": "255",
+      "title": "fix(mwpw-168566): fixes loadMore button border"
+    },
+    "metrics": {
+      "lcp": 13841.700000000012,
+      "fid": 0.7999999999883585,
+      "cls": null
+    }
   }
 ]
