@@ -252,7 +252,6 @@ function CardsCarousel({
 
     return (
         <Fragment>
-            <p><a href="#top">BEFORE</a></p>
             <div className="consonant-Navigation--carousel">
                 <button
                     aria-label="Previous button"
@@ -308,7 +307,6 @@ function CardsCarousel({
                     renderOverlay={renderOverlay} />
             </div>
             {/* eslint-enable jsx-a11y/no-static-element-interactions */}
-            <p><a href="#top">AFTER</a></p>
         </Fragment>
     );
 }

@@ -7,8 +7,9 @@
     .consonant {
         &-Wrapper {
             &-inner {
-                max-width: @consonantDesktopMinWidth;
-                width: 83.4%;
+                // max-width: @consonantDesktopMinWidth;
+                // width: 83.4%;
+                max-width: 1160px;
 
                 @media @consonant-carousel-down {
                     padding: 0;
@@ -124,7 +125,8 @@
             }
 
             &--2up {
-                grid-template-columns: repeat(auto-fill, minmax(@consonant-DoubleWideCard-desktopMinWidth, @consonant-DoubleWideCard-desktopMinWidth));
+                // grid-template-columns: repeat(auto-fill, minmax(@consonant-DoubleWideCard-desktopMinWidth, @consonant-DoubleWideCard-desktopMinWidth));
+                grid-template-columns: auto;
 
                 .consonant-Card {
                     min-width: 500px;
@@ -150,7 +152,8 @@
             }
 
             &--3up {
-                grid-template-columns: repeat(auto-fill, minmax(@consonantCardMaxWidth, @consonantCardMaxWidth-3up));
+                // grid-template-columns: repeat(auto-fill, minmax(@consonantCardMaxWidth, @consonantCardMaxWidth-3up));
+                grid-template-columns: auto;
 
                 .consonant-Card {
                     min-width: @consonantCardMaxWidth-3up;
@@ -176,7 +179,8 @@
             }
 
             &--4up {
-                grid-template-columns: repeat(auto-fill, minmax(@consonant-CardsGrid-smallerCardMaxWidth, @consonant-CardsGrid-smallerCardMaxWidth));
+                // grid-template-columns: repeat(auto-fill, minmax(@consonant-CardsGrid-smallerCardMaxWidth, @consonant-CardsGrid-smallerCardMaxWidth));
+                grid-template-columns: auto;
 
                 .consonant-Card {
                     min-width: @consonant-CardsGrid-smallerCardMaxWidth;
@@ -197,7 +201,8 @@
             }
 
             &--5up {
-                grid-template-columns: repeat(auto-fill, minmax(@consonant-CardsGrid-smallestCardMaxWidth, @consonant-CardsGrid-smallestCardMaxWidth));
+                // grid-template-columns: repeat(auto-fill, minmax(@consonant-CardsGrid-smallestCardMaxWidth, @consonant-CardsGrid-smallestCardMaxWidth));
+                grid-template-columns: auto;
 
                 .consonant-Card {
                     min-width: @consonant-CardsGrid-smallestCardMaxWidth;

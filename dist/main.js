@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.29.5 (2/28/2025, 10:36:30)
+ * Chimera UI Libraries - Build 0.29.5 (3/3/2025, 11:47:18)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -44511,15 +44511,6 @@ function CardsCarousel() {
         _react.Fragment,
         null,
         _react2.default.createElement(
-            'p',
-            null,
-            _react2.default.createElement(
-                'a',
-                { href: '#top' },
-                'BEFORE'
-            )
-        ),
-        _react2.default.createElement(
             'div',
             { className: 'consonant-Navigation--carousel' },
             _react2.default.createElement('button', {
@@ -44577,15 +44568,6 @@ function CardsCarousel() {
                 onCardBookmark: onCardBookmark,
                 pages: pages,
                 renderOverlay: renderOverlay })
-        ),
-        _react2.default.createElement(
-            'p',
-            null,
-            _react2.default.createElement(
-                'a',
-                { href: '#top' },
-                'AFTER'
-            )
         )
     );
 }
@@ -47289,6 +47271,8 @@ var Card = function Card(props) {
     var addParams = new URLSearchParams(additionalParams);
     var overlay = additionalParams && addParams.keys().next().value ? overlayLink + '?' + addParams.toString() : overlayLink;
     var getsFocus = isHalfHeight || isThreeFourths || isFull || isDoubleWide || isIcon || hideCTA;
+
+    console.log('getsFocus', getsFocus);
 
     return _react2.default.createElement(
         'div',

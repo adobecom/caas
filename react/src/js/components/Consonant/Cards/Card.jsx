@@ -359,6 +359,8 @@ const Card = (props) => {
         || isIcon
         || hideCTA;
 
+    console.log('getsFocus', getsFocus);
+
     return (
         <div
             daa-lh={lh}
