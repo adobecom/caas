@@ -231,14 +231,16 @@ function CardsCarousel({
     useEffect(() => {
         responsiveLogic();
 
+        const carousels = document.querySelectorAll('.consonant-Container--carousel');
+
         function handleKeyDown(e) {
             if (e.key === 'Tab') {
-                carouselRef.current.parentElement.classList.add('tabbing');
+                carousels.forEach(carousel => carousel.parentElement.classList.add('tabbing'));
             }
         }
 
         function handleMouseDown() {
-            carouselRef.current.parentElement.classList.remove('tabbing');
+            carousels.forEach(carousel => carousel.parentElement.classList.remove('tabbing'));
         }
 
         document.addEventListener('keydown', handleKeyDown);

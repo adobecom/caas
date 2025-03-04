@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.29.5 (3/3/2025, 11:47:18)
+ * Chimera UI Libraries - Build 0.29.5 (3/4/2025, 14:59:16)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -44488,14 +44488,20 @@ function CardsCarousel() {
     (0, _react.useEffect)(function () {
         responsiveLogic();
 
+        var carousels = document.querySelectorAll('.consonant-Container--carousel');
+
         function handleKeyDown(e) {
             if (e.key === 'Tab') {
-                carouselRef.current.parentElement.classList.add('tabbing');
+                carousels.forEach(function (carousel) {
+                    return carousel.parentElement.classList.add('tabbing');
+                });
             }
         }
 
         function handleMouseDown() {
-            carouselRef.current.parentElement.classList.remove('tabbing');
+            carousels.forEach(function (carousel) {
+                return carousel.parentElement.classList.remove('tabbing');
+            });
         }
 
         document.addEventListener('keydown', handleKeyDown);
