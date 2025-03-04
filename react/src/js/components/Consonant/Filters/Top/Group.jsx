@@ -220,7 +220,7 @@ const Group = (props) => {
                     className={`${containerClassname} FILTER-ID-${id}`}>
                     <div
                         className="consonant-TopFilter-inner">
-                        <h3
+                        <div
                             className="consonant-TopFilter-name"
                             daa-ll={filterName}>
                             <button
@@ -235,7 +235,7 @@ const Group = (props) => {
                                     {selectedItemQtyText}
                                 </span>
                             </button>
-                        </h3>
+                        </div>
                         <div
                             className="consonant-TopFilter-selectedItems">
                             <div

@@ -13,7 +13,7 @@ import CardFooter from './CardFooter/CardFooter';
 import prettyFormatDate from '../Helpers/prettyFormat';
 import { INFOBIT_TYPE } from '../Helpers/constants';
 import { hasTag } from '../Helpers/Helpers';
-import { getEventBanner, getLinkTarget, isDateBeforeInterval, isDateAfterInterval, getCurrentDate, getSearchParam } from '../Helpers/general';
+import { getEventBanner, getLinkTarget, isDateBeforeInterval, isDateWithinInterval, isDateAfterInterval, getCurrentDate, getSearchParam } from '../Helpers/general';
 import { useConfig, useRegistered } from '../Helpers/hooks';
 import {
     stylesType,
@@ -183,7 +183,7 @@ const Card = (props) => {
     const registrationUrl = getConfig('collection', 'banner.register.url');
     const hideDateInterval = getConfig('collection', 'hideDateInterval');
     const showCardBadges = getConfig('collection', 'showCardBadges');
-    const altCta = getConfig('collection', 'dynamicCTAForLiveEvents');
+    const altCtaUsed = getConfig('collection', 'dynamicCTAForLiveEvents');
     const ctaAction = getConfig('collection', 'ctaAction');
 
     /**
@@ -279,6 +279,48 @@ const Card = (props) => {
         });
     }
 
+    /**
+     * Extends footer data and extracts an alt CTA if it exists
+     * this is important for when overlay links are being used for live events
+     * @param {Array} footerData
+     * @return {String}
+     */
+    function getAltCtaLink(footerData) {
+        if (!footerData) return '';
+        if (footerData.length === 1) {
+            const {
+                altCta = [],
+            } = footerData[0];
+            if (altCta.length === 1) {
+                return altCta[0].href;
+            }
+        }
+        // default value is an unauthored alt cta
+        return '';
+    }
+
+    /**
+     * Get CTA text from footer data for analytics on overlay cards
+     * @param {Array} footerData
+     * @return {String}
+     */
+    function getCtaText(footerData, ctaUsed) {
+        if (!footerData) return '';
+        if (footerData.length === 1) {
+            const {
+                altCta = [],
+                right = [],
+            } = footerData[0];
+            if (ctaUsed === 'right' && right.length === 1) {
+                return right[0].text;
+            } else if (ctaUsed === 'alt' && altCta.length === 1) {
+                return altCta[0].text;
+            }
+            return '';
+        }
+        return '';
+    }
+
     // Card styles
     const isOneHalf = cardStyle === 'one-half';
     const isThreeFourths = cardStyle === 'three-fourths';
@@ -300,7 +342,7 @@ const Card = (props) => {
     const showText = !isHalfHeight && !isFull && !isNews;
     const showFooter = isOneHalf || isProduct || isText || isNews;
     const showFooterLeft = !isProduct;
-    const showFooterCenter = !isProduct && !altCta;
+    const showFooterCenter = !isProduct && !altCtaUsed;
     let hideBanner = false;
     let eventBanner = '';
     const hideOnDemandDates = hideDateInterval && isDateAfterInterval(getCurrentDate(), endDate);
@@ -351,7 +393,12 @@ const Card = (props) => {
 
     const linkBlockerTarget = getLinkTarget(overlayLink, ctaAction);
     const addParams = new URLSearchParams(additionalParams);
-    const overlay = (additionalParams && addParams.keys().next().value) ? `${overlayLink}?${addParams.toString()}` : overlayLink;
+    const overlayParams = (additionalParams && addParams.keys().next().value) ? `${overlayLink}?${addParams.toString()}` : overlayLink;
+    const isLive = isDateWithinInterval(getCurrentDate(), startDate, endDate);
+    const isUpcoming = isDateBeforeInterval(getCurrentDate(), startDate);
+    const altCtaLink = getAltCtaLink(footer);
+    const ctaText = (altCtaUsed && isUpcoming && altCtaLink !== '') ? getCtaText(footer, 'alt') : getCtaText(footer, 'right');
+    const overlay = (altCtaUsed && isLive && altCtaLink !== '') ? altCtaLink : overlayParams;
     const getsFocus = isHalfHeight
         || isThreeFourths
         || isFull
@@ -502,7 +549,7 @@ const Card = (props) => {
                             extendFooterData(footerItem.left) : []}
                         center={showFooterCenter ? extendFooterData(footerItem.center) : []}
                         right={extendFooterData(footerItem.right)}
-                        altRight={altCta ? extendFooterData(footerItem.altCta) : []}
+                        altRight={altCtaUsed ? extendFooterData(footerItem.altCta) : []}
                         startDate={startDate}
                         endDate={endDate}
                         cardStyle={cardStyle}
@@ -517,7 +564,8 @@ const Card = (props) => {
                         target={linkBlockerTarget}
                         link={overlay}
                         title={title}
-                        getsFocus={getsFocus || true} />}
+                        getsFocus={getsFocus || true}
+                        daa={ctaText} />}
             </div>
             {(renderOverlay || hideCTA || isHalfHeight || isIcon)
             && <LinkBlocker
@@ -526,7 +574,8 @@ const Card = (props) => {
                 title={title}
                 getsFocus={getsFocus || true}
                 ariaHidden={ariaHidden}
-                tabIndex={ariaHidden ? -1 : 0} />}
+                tabIndex={ariaHidden ? -1 : 0}
+                daa={ctaText} />}
         </div>
     );
 };

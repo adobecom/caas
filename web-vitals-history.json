@@ -370,5 +370,125 @@
       "fid": 0.7999999999883585,
       "cls": null
     }
+  },
+  {
+    "date": "2025-02-11T23:37:09.918Z",
+    "pr": {
+      "number": "245",
+      "title": "test(mwpw-167330): create e2e/integration tests for dexter event page to check in GH Action"
+    },
+    "metrics": {
+      "lcp": 10392.900000000023,
+      "fid": 0.8999999999941792,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-12T00:36:26.577Z",
+    "pr": {
+      "number": "247",
+      "title": "fix(mwpw-167234): fixes paginator scroll to top of page issue"
+    },
+    "metrics": {
+      "lcp": 12832.100000000035,
+      "fid": 0.6999999999534339,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-12T18:50:35.777Z",
+    "pr": {
+      "number": "246",
+      "title": "feat(mwpw-157306): search closes after search is executed even with query present in search"
+    },
+    "metrics": {
+      "lcp": 13621.300000000017,
+      "fid": 0.6000000000058208,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-12T19:48:33.858Z",
+    "pr": {
+      "number": "248",
+      "title": "fix(mwpw-167679): fixes pagination issue with multiple card collections on page"
+    },
+    "metrics": {
+      "lcp": 12717.800000000017,
+      "fid": 0.7000000000116415,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-13T21:37:44.550Z",
+    "pr": {
+      "number": "249",
+      "title": "fix(mwpw-167753): add a check to make sure search is enabled on mobil…"
+    },
+    "metrics": {
+      "lcp": 12770.600000000006,
+      "fid": 0.8000000000174623,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-24T22:00:49.874Z",
+    "pr": {
+      "number": "250",
+      "title": "fix(mwpw-168106): changes top filter dropdown from H3 to DIV"
+    },
+    "metrics": {
+      "lcp": 13305.299999999988,
+      "fid": 0.7000000000116415,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-25T20:12:38.848Z",
+    "pr": {
+      "number": "251",
+      "title": "feat(mwpw-167662): add ability to have alt cta work with overlays"
+    },
+    "metrics": {
+      "lcp": 10359.199999999983,
+      "fid": 0.7999999999883585,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-27T21:28:10.665Z",
+    "pr": {
+      "number": "252",
+      "title": "feat(mwpw-167478): enable analytics cta tracking with overlay links"
+    },
+    "metrics": {
+      "lcp": 13073.5,
+      "fid": 0.8000000000465661,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-28T04:49:34.981Z",
+    "pr": {
+      "number": "253",
+      "title": "test(mwpw-168628): adds smoke tests for main prod pages so we can check them before PR is merged"
+    },
+    "metrics": {
+      "lcp": 13047.600000000035,
+      "fid": 0.8000000000465661,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-02-28T22:11:31.889Z",
+    "pr": {
+      "number": "b81aaaf",
+      "title": "Direct push to main"
+    },
+    "metrics": {
+      "lcp": 12661.699999999983,
+      "fid": 0.7000000000116415,
+      "cls": null
+    }
   }
 ]

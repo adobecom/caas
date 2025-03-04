@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.29.5 (3/4/2025, 14:59:16)
+ * Chimera UI Libraries - Build 0.32.3 (3/4/2025, 15:06:46)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -7368,6 +7368,13 @@ var Container = function Container(props) {
                 }
 
                 setCards(processedCards);
+
+                // check if the current page is greater than the last page
+                var lastPage = Math.ceil(processedCards.length / resultsPerPage);
+                if (currentPage > lastPage) {
+                    setCurrentPage(1);
+                }
+
                 if (!showEmptyFilters) {
                     setFilters(function (prevFilters) {
                         return removeEmptyFilters(prevFilters, processedCards);
@@ -7980,6 +7987,7 @@ var Container = function Container(props) {
                         isTopFilterPanel && isStandardContainer && _react2.default.createElement(_Panel2.default, {
                             filterPanelEnabled: filterPanelEnabled,
                             filters: filters,
+                            searchQuery: searchQuery,
                             windowWidth: windowWidth,
                             resQty: gridCardLen,
                             onCheckboxClick: handleCheckBoxChange,
@@ -47122,7 +47130,7 @@ var Card = function Card(props) {
     var registrationUrl = getConfig('collection', 'banner.register.url');
     var hideDateInterval = getConfig('collection', 'hideDateInterval');
     var showCardBadges = getConfig('collection', 'showCardBadges');
-    var altCta = getConfig('collection', 'dynamicCTAForLiveEvents');
+    var altCtaUsed = getConfig('collection', 'dynamicCTAForLiveEvents');
     var ctaAction = getConfig('collection', 'ctaAction');
 
     /**
@@ -47209,6 +47217,50 @@ var Card = function Card(props) {
         });
     }
 
+    /**
+     * Extends footer data and extracts an alt CTA if it exists
+     * this is important for when overlay links are being used for live events
+     * @param {Array} footerData
+     * @return {String}
+     */
+    function getAltCtaLink(footerData) {
+        if (!footerData) return '';
+        if (footerData.length === 1) {
+            var _footerData$0$altCta = footerData[0].altCta,
+                altCta = _footerData$0$altCta === undefined ? [] : _footerData$0$altCta;
+
+            if (altCta.length === 1) {
+                return altCta[0].href;
+            }
+        }
+        // default value is an unauthored alt cta
+        return '';
+    }
+
+    /**
+     * Get CTA text from footer data for analytics on overlay cards
+     * @param {Array} footerData
+     * @return {String}
+     */
+    function getCtaText(footerData, ctaUsed) {
+        if (!footerData) return '';
+        if (footerData.length === 1) {
+            var _footerData$ = footerData[0],
+                _footerData$$altCta = _footerData$.altCta,
+                altCta = _footerData$$altCta === undefined ? [] : _footerData$$altCta,
+                _footerData$$right = _footerData$.right,
+                right = _footerData$$right === undefined ? [] : _footerData$$right;
+
+            if (ctaUsed === 'right' && right.length === 1) {
+                return right[0].text;
+            } else if (ctaUsed === 'alt' && altCta.length === 1) {
+                return altCta[0].text;
+            }
+            return '';
+        }
+        return '';
+    }
+
     // Card styles
     var isOneHalf = cardStyle === 'one-half';
     var isThreeFourths = cardStyle === 'three-fourths';
@@ -47230,7 +47282,7 @@ var Card = function Card(props) {
     var showText = !isHalfHeight && !isFull && !isNews;
     var showFooter = isOneHalf || isProduct || isText || isNews;
     var showFooterLeft = !isProduct;
-    var showFooterCenter = !isProduct && !altCta;
+    var showFooterCenter = !isProduct && !altCtaUsed;
     var hideBanner = false;
     var eventBanner = '';
     var hideOnDemandDates = hideDateInterval && (0, _general.isDateAfterInterval)((0, _general.getCurrentDate)(), endDate);
@@ -47275,7 +47327,12 @@ var Card = function Card(props) {
 
     var linkBlockerTarget = (0, _general.getLinkTarget)(overlayLink, ctaAction);
     var addParams = new URLSearchParams(additionalParams);
-    var overlay = additionalParams && addParams.keys().next().value ? overlayLink + '?' + addParams.toString() : overlayLink;
+    var overlayParams = additionalParams && addParams.keys().next().value ? overlayLink + '?' + addParams.toString() : overlayLink;
+    var isLive = (0, _general.isDateWithinInterval)((0, _general.getCurrentDate)(), startDate, endDate);
+    var isUpcoming = (0, _general.isDateBeforeInterval)((0, _general.getCurrentDate)(), startDate);
+    var altCtaLink = getAltCtaLink(footer);
+    var ctaText = altCtaUsed && isUpcoming && altCtaLink !== '' ? getCtaText(footer, 'alt') : getCtaText(footer, 'right');
+    var overlay = altCtaUsed && isLive && altCtaLink !== '' ? altCtaLink : overlayParams;
     var getsFocus = isHalfHeight || isThreeFourths || isFull || isDoubleWide || isIcon || hideCTA;
 
     console.log('getsFocus', getsFocus);
@@ -47411,7 +47468,7 @@ var Card = function Card(props) {
                     left: showFooterLeft && !hideOnDemandDates ? extendFooterData(footerItem.left) : [],
                     center: showFooterCenter ? extendFooterData(footerItem.center) : [],
                     right: extendFooterData(footerItem.right),
-                    altRight: altCta ? extendFooterData(footerItem.altCta) : [],
+                    altRight: altCtaUsed ? extendFooterData(footerItem.altCta) : [],
                     startDate: startDate,
                     endDate: endDate,
                     cardStyle: cardStyle,
@@ -47424,7 +47481,8 @@ var Card = function Card(props) {
                 target: linkBlockerTarget,
                 link: overlay,
                 title: title,
-                getsFocus: getsFocus || true })
+                getsFocus: getsFocus || true,
+                daa: ctaText })
         ),
         (renderOverlay || hideCTA || isHalfHeight || isIcon) && _react2.default.createElement(_LinkBlocker2.default, {
             target: linkBlockerTarget,
@@ -47432,7 +47490,8 @@ var Card = function Card(props) {
             title: title,
             getsFocus: getsFocus || true,
             ariaHidden: ariaHidden,
-            tabIndex: ariaHidden ? -1 : 0 })
+            tabIndex: ariaHidden ? -1 : 0,
+            daa: ctaText })
     );
 };
 
@@ -49360,7 +49419,8 @@ var LinkBlockerType = {
     target: _propTypes.string,
     title: _propTypes.string,
     ariaHidden: _propTypes.bool,
-    getsFocus: _propTypes.bool
+    getsFocus: _propTypes.bool,
+    daa: _propTypes.string
 };
 
 var defaultProps = {
@@ -49368,7 +49428,8 @@ var defaultProps = {
     target: '',
     title: '',
     ariaHidden: false,
-    getsFocus: false
+    getsFocus: false,
+    daa: ''
 };
 
 /**
@@ -49380,6 +49441,7 @@ var defaultProps = {
     link: String,
     target: String,
     title: String,
+    daa: String,
  * }
  * return (
  *   <LinkBlocker {...props}/>
@@ -49390,7 +49452,8 @@ var LinkBlocker = function LinkBlocker(props) {
         target = props.target,
         title = props.title,
         getsFocus = props.getsFocus,
-        ariaHidden = props.ariaHidden;
+        ariaHidden = props.ariaHidden,
+        daa = props.daa;
 
     return (
         // eslint-disable-next-line jsx-a11y/anchor-has-content
@@ -49401,6 +49464,7 @@ var LinkBlocker = function LinkBlocker(props) {
             'aria-label': title,
             'aria-hidden': ariaHidden,
             tabIndex: !ariaHidden && getsFocus ? 0 : -1,
+            'daa-ll': daa,
             className: 'consonant-LinkBlocker' })
     );
 };
@@ -53286,9 +53350,10 @@ var Paginator = function Paginator(props) {
         } else {
             nextPage = parseInt(target.firstChild.nodeValue, BASE_10);
         }
-        var caasWrapper = target.closest('.section') || target.closest('.consonant-Wrapper');
-        if (caasWrapper && caasWrapper.getBoundingClientRect().y < 0 && typeof caasWrapper.scrollIntoView === 'function') {
-            window.scrollTo({ left: 0, top: caasWrapper.offsetTop - globalNavHeight, behavior: 'smooth' });
+        var caasWrapper = target.closest('.consonant-Wrapper') || target.closest('section');
+        if (caasWrapper && caasWrapper.getBoundingClientRect().y < 0) {
+            var scrollTargetPosition = caasWrapper.getBoundingClientRect().top + window.scrollY - globalNavHeight;
+            window.scrollTo({ left: 0, top: scrollTargetPosition, behavior: 'smooth' });
         }
         onClick(nextPage);
     };
@@ -53714,6 +53779,7 @@ var filtersPanelTopType = {
     onFilterClick: _propTypes.func.isRequired,
     onShowAllClick: _propTypes.func.isRequired,
     searchComponent: _propTypes.node.isRequired,
+    searchQuery: _propTypes.string,
     filters: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_config.filterType)),
     onCheckboxClick: _propTypes.func.isRequired,
     onClearAllFilters: _propTypes.func.isRequired,
@@ -53724,6 +53790,7 @@ var filtersPanelTopType = {
 var defaultProps = {
     resQty: 0,
     filters: [],
+    searchQuery: '',
     showLimitedFiltersQty: false
 };
 
@@ -53761,6 +53828,7 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
         onShowAllClick = props.onShowAllClick,
         windowWidth = props.windowWidth,
         searchComponent = props.searchComponent,
+        searchQuery = props.searchQuery,
         sortComponent = props.sortComponent,
         filterPanelEnabled = props.filterPanelEnabled;
 
@@ -53878,7 +53946,7 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
      * Whether the search bar should be displayed
      * @type {Boolean}
      */
-    var shouldDisplaySearchBar = searchComponent && TABLET_OR_MOBILE_SCREEN_SIZE;
+    var shouldDisplaySearchBar = searchEnabled && searchComponent && TABLET_OR_MOBILE_SCREEN_SIZE;
 
     /**
      * Whether the "Clear all filters" button should be displayed
@@ -53920,7 +53988,7 @@ var FiltersPanelTop = function FiltersPanelTop(props) {
      * Whether the search bar should be visible
      * @type {Boolean}
      */
-    var shouldShowSearchBar = openExpandable === searchId;
+    var shouldShowSearchBar = searchQuery.length || openExpandable === searchId;
 
     var shouldRenderInnerWrapper = shouldDisplayFilters || searchEnabled || shouldDisplaySortComponent || shouldDisplayCollectionInfo;
 
@@ -54347,7 +54415,7 @@ var Group = function Group(props) {
                 {
                     className: 'consonant-TopFilter-inner' },
                 _react2.default.createElement(
-                    'h3',
+                    'div',
                     {
                         className: 'consonant-TopFilter-name',
                         'daa-ll': filterName },

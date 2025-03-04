@@ -1,5 +1,78 @@
 
 
+## [0.32.3](https://github.com/adobecom/caas/compare/0.32.2...0.32.3) (2025-03-04)
+
+
+### Bug Fixes
+
+* **mwpw-168566:** fixes loadMore button border ([#255](https://github.com/adobecom/caas/issues/255)) ([454cc2e](https://github.com/adobecom/caas/commit/454cc2ede555bdd6b110a98b34420c64a4e074c9))
+
+## [0.32.2](https://github.com/adobecom/caas/compare/0.32.1...0.32.2) (2025-02-28)
+
+## [0.32.1](https://github.com/adobecom/caas/compare/0.32.0...0.32.1) (2025-02-28)
+
+# [0.32.0](https://github.com/adobecom/caas/compare/0.31.0...0.32.0) (2025-02-27)
+
+
+### Features
+
+* **mwpw-167478:** enable analytics cta tracking with overlay links ([a14c4f9](https://github.com/adobecom/caas/commit/a14c4f9d1cb91e440c4b55307c77179e733ac158))
+
+# [0.31.0](https://github.com/adobecom/caas/compare/0.30.3...0.31.0) (2025-02-25)
+
+
+### Bug Fixes
+
+* **mwpw-167662:** rebuilding ([85f3f0b](https://github.com/adobecom/caas/commit/85f3f0bd208bccc5a8477990ab42454b8550444c))
+
+
+### Features
+
+* **mwpw-167662:** add ability to have alt cta work with overlays ([29cb09f](https://github.com/adobecom/caas/commit/29cb09ff19074de5415c56a887c916324e02b168))
+
+## [0.30.3](https://github.com/adobecom/caas/compare/0.30.2...0.30.3) (2025-02-24)
+
+
+### Bug Fixes
+
+* **MWPW-168106:** changes top files from h3 to div ([#250](https://github.com/adobecom/caas/issues/250)) ([1661e85](https://github.com/adobecom/caas/commit/1661e857a7c87b5e6f2b1a1704ea77205cc1184a))
+
+## [0.30.2](https://github.com/adobecom/caas/compare/0.30.1...0.30.2) (2025-02-13)
+
+
+### Bug Fixes
+
+* **mwpw-167753:** add a check to make sure search is enabled on mobile search display ([fbe6a74](https://github.com/adobecom/caas/commit/fbe6a744857f471f845fbcab407b0d51c354cdcf))
+
+## [0.30.1](https://github.com/adobecom/caas/compare/0.30.0...0.30.1) (2025-02-12)
+
+
+### Bug Fixes
+
+* **mwpw-167679:** fixes paginator scroll to top of page issue ([9bf4dc1](https://github.com/adobecom/caas/commit/9bf4dc11554ac603e6d204803f03b7a2155a3b16))
+
+# [0.30.0](https://github.com/adobecom/caas/compare/0.29.7...0.30.0) (2025-02-12)
+
+
+### Bug Fixes
+
+* **mwpw-157306:** search bar does not collapse when authored ([9a8787f](https://github.com/adobecom/caas/commit/9a8787fa6007999d1ca22c1dd1e08fee84ba9783))
+
+
+### Features
+
+* **mwpw-157306:** does not automatically hide search when there is a search text ([bea552e](https://github.com/adobecom/caas/commit/bea552e54c15ff013307f97d54905cd29062c8eb))
+* **mwpw-157306:** saving work ([1335225](https://github.com/adobecom/caas/commit/1335225a9ae135a2042b25e9729a6103ad1bf0f8))
+
+## [0.29.7](https://github.com/adobecom/caas/compare/0.29.6...0.29.7) (2025-02-12)
+
+
+### Bug Fixes
+
+* **mwpw-167234:** fixes paginator scroll to top of page issue ([#247](https://github.com/adobecom/caas/issues/247)) ([00449b3](https://github.com/adobecom/caas/commit/00449b3e537d1d08f9465b0e1b37b4a793d2091a))
+
+## [0.29.6](https://github.com/adobecom/caas/compare/0.29.5...0.29.6) (2025-02-11)
+
 ## [0.29.5](https://github.com/adobecom/caas/compare/0.29.4...0.29.5) (2025-02-06)
 
 

@@ -8,6 +8,7 @@ const LinkBlockerType = {
     title: string,
     ariaHidden: bool,
     getsFocus: bool,
+    daa: string,
 };
 
 const defaultProps = {
@@ -16,6 +17,7 @@ const defaultProps = {
     title: '',
     ariaHidden: false,
     getsFocus: false,
+    daa: '',
 };
 
 /**
@@ -27,6 +29,7 @@ const defaultProps = {
     link: String,
     target: String,
     title: String,
+    daa: String,
  * }
  * return (
  *   <LinkBlocker {...props}/>
@@ -39,6 +42,7 @@ const LinkBlocker = (props) => {
         title,
         getsFocus,
         ariaHidden,
+        daa,
     } = props;
     return (
         // eslint-disable-next-line jsx-a11y/anchor-has-content
@@ -49,6 +53,7 @@ const LinkBlocker = (props) => {
             aria-label={title}
             aria-hidden={ariaHidden}
             tabIndex={(!ariaHidden && getsFocus) ? 0 : -1}
+            daa-ll={daa}
             className="consonant-LinkBlocker" />
     );
 };
