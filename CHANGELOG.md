@@ -1,5 +1,12 @@
 
 
+## [0.32.3](https://github.com/adobecom/caas/compare/0.32.2...0.32.3) (2025-03-04)
+
+
+### Bug Fixes
+
+* **mwpw-168566:** fixes loadMore button border ([#255](https://github.com/adobecom/caas/issues/255)) ([454cc2e](https://github.com/adobecom/caas/commit/454cc2ede555bdd6b110a98b34420c64a4e074c9))
+
 ## [0.32.2](https://github.com/adobecom/caas/compare/0.32.1...0.32.2) (2025-02-28)
 
 ## [0.32.1](https://github.com/adobecom/caas/compare/0.32.0...0.32.1) (2025-02-28)
