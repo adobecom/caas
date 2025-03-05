@@ -323,7 +323,7 @@ describe('Paginator out of Range', () => {
     });
 });
 
-describe('Live Pages with ?caasalpha=true (TESTS MILO PAGES ONLY)', () => {
+describe('Live Pages with ?caasver=alpha (TESTS MILO PAGES ONLY)', () => {
     const pages = [
         'https://www.adobe.com/acrobat/resources.html',
         'https://www.adobe.com/acrobat/hub/change-page-size-of-pdf-in-4-steps.html',
@@ -333,8 +333,8 @@ describe('Live Pages with ?caasalpha=true (TESTS MILO PAGES ONLY)', () => {
 
     pages.forEach((page) => {
         it(`should display the first card on: ${page}`, async () => {
-            // 1) Navigate with ?caasalpha=true
-            const url = `${page}?caasalpha=true`;
+            // 1) Navigate with ?caasver=alpha
+            const url = `${page}?caasver=alpha`;
             console.log(`Navigating to: ${url}`);
             await browser.url(url);
 
