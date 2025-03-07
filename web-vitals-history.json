@@ -502,5 +502,17 @@
       "fid": 0.7999999999883585,
       "cls": null
     }
+  },
+  {
+    "date": "2025-03-07T18:56:01.450Z",
+    "pr": {
+      "number": "256",
+      "title": "refactor(mwpw-167478): removes the daa tag for overlay analytics"
+    },
+    "metrics": {
+      "lcp": 12638.399999999965,
+      "fid": 0.7000000000116415,
+      "cls": null
+    }
   }
 ]
