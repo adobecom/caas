@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.32.3 (3/6/2025, 15:31:43)
+ * Chimera UI Libraries - Build 0.32.4 (3/10/2025, 13:31:48)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -7065,7 +7065,7 @@ var Container = function Container(props) {
     (0, _react.useEffect)(function () {
         setFilters(authoredFilters.map(function (filterGroup) {
             return _extends({}, filterGroup, {
-                opened: DESKTOP_SCREEN_SIZE ? filterGroup.openedOnLoad : false,
+                opened: DESKTOP_SCREEN_SIZE ? filterGroup.openedOnLoad : true,
                 items: filterGroup.items.map(function (filterItem) {
                     return _extends({}, filterItem, {
                         selected: false
@@ -7132,6 +7132,7 @@ var Container = function Container(props) {
 
         return allFilters.map(function (filter) {
             return _extends({}, filter, {
+                opened: DESKTOP_SCREEN_SIZE ? filter.openedOnLoad : true,
                 /* istanbul ignore next */
                 items: filter.items.filter(function (item) {
                     return tags.includes(item.id) || tags.includes(item.label) || tags.toString().includes('/' + item.id) // ***** FIX  HERE *****
