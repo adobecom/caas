@@ -514,5 +514,17 @@
       "fid": 0.7000000000116415,
       "cls": null
     }
+  },
+  {
+    "date": "2025-03-11T21:49:11.612Z",
+    "pr": {
+      "number": "257",
+      "title": "fix(mwpw-169047): filter flickering on load fixed"
+    },
+    "metrics": {
+      "lcp": 10355.200000000012,
+      "fid": 0.8000000000465661,
+      "cls": null
+    }
   }
 ]
