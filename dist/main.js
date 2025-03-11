@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.32.4 (3/11/2025, 05:56:22)
+ * Chimera UI Libraries - Build 0.32.4 (3/11/2025, 14:25:25)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -47062,12 +47062,6 @@ var Card = function Card(props) {
      */
     var prettyDate = startTime ? (0, _prettyFormat2.default)(startTime, endTime, locale, i18nFormat) : '';
 
-    var getLocalDate = function getLocalDate(date) {
-        // it the timestamp is set to 00:00:00.000Z, remove Z to ignore the GMT timezone
-        var localDateString = date.endsWith('T00:00:00.000Z') ? date.replace('000Z', '000') : date;
-        return new Date(localDateString);
-    };
-
     /**
      * Detail text
      * @type {String}
@@ -47076,9 +47070,12 @@ var Card = function Card(props) {
     if (detailsTextOption === 'modifiedDate' && modifiedDate) {
         var localModifiedDate = new Date(modifiedDate);
         detailText = lastModified && lastModified.replace('{date}', localModifiedDate.toLocaleDateString()) || localModifiedDate.toLocaleDateString();
+        // } else if (detailsTextOption === 'createdDate' && cardDate) {
+        //     const localCreatedDate = new Date(cardDate);
+        //     detailText = localCreatedDate.toLocaleDateString();
     } else if (detailsTextOption === 'createdDate' && cardDate) {
-        var localCreatedDate = getLocalDate(cardDate);
-        detailText = localCreatedDate.toLocaleDateString();
+        var staticDate = new Date(cardDate.replace(/Z$/, ''));
+        detailText = staticDate.toLocaleDateString();
     }
 
     /**

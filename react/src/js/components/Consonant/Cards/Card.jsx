@@ -197,12 +197,6 @@ const Card = (props) => {
      */
     const prettyDate = startTime ? prettyFormatDate(startTime, endTime, locale, i18nFormat) : '';
 
-    const getLocalDate = (date) => {
-        // it the timestamp is set to 00:00:00.000Z, remove Z to ignore the GMT timezone
-        const localDateString = date.endsWith('T00:00:00.000Z') ? date.replace('000Z', '000') : date;
-        return new Date(localDateString);
-    };
-
     /**
      * Detail text
      * @type {String}
@@ -214,8 +208,11 @@ const Card = (props) => {
             && lastModified.replace('{date}', localModifiedDate.toLocaleDateString())
             || localModifiedDate.toLocaleDateString();
     } else if (detailsTextOption === 'createdDate' && cardDate) {
-        const localCreatedDate = getLocalDate(cardDate);
+        const localCreatedDate = new Date(cardDate);
         detailText = localCreatedDate.toLocaleDateString();
+    } else if (detailsTextOption === 'staticDate' && cardDate) {
+        const staticDate = new Date(cardDate.replace(/Z$/, ''));
+        detailText = staticDate.toLocaleDateString();
     }
 
     /**
