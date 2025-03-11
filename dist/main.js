@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.31.0 (2/27/2025, 14:05:47)
+ * Chimera UI Libraries - Build 0.32.4 (3/10/2025, 13:31:48)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -7065,7 +7065,7 @@ var Container = function Container(props) {
     (0, _react.useEffect)(function () {
         setFilters(authoredFilters.map(function (filterGroup) {
             return _extends({}, filterGroup, {
-                opened: DESKTOP_SCREEN_SIZE ? filterGroup.openedOnLoad : false,
+                opened: DESKTOP_SCREEN_SIZE ? filterGroup.openedOnLoad : true,
                 items: filterGroup.items.map(function (filterItem) {
                     return _extends({}, filterItem, {
                         selected: false
@@ -7132,6 +7132,7 @@ var Container = function Container(props) {
 
         return allFilters.map(function (filter) {
             return _extends({}, filter, {
+                opened: DESKTOP_SCREEN_SIZE ? filter.openedOnLoad : true,
                 /* istanbul ignore next */
                 items: filter.items.filter(function (item) {
                     return tags.includes(item.id) || tags.includes(item.label) || tags.toString().includes('/' + item.id) // ***** FIX  HERE *****
@@ -49302,16 +49303,14 @@ var LinkBlockerType = {
     link: _propTypes.string,
     target: _propTypes.string,
     title: _propTypes.string,
-    getsFocus: Boolean,
-    daa: _propTypes.string
+    getsFocus: Boolean
 };
 
 var defaultProps = {
     link: '',
     target: '',
     title: '',
-    getsFocus: false,
-    daa: ''
+    getsFocus: false
 };
 
 /**
@@ -49333,8 +49332,7 @@ var LinkBlocker = function LinkBlocker(props) {
     var link = props.link,
         target = props.target,
         title = props.title,
-        getsFocus = props.getsFocus,
-        daa = props.daa;
+        getsFocus = props.getsFocus;
 
     return (
         // eslint-disable-next-line jsx-a11y/anchor-has-content
@@ -49344,7 +49342,6 @@ var LinkBlocker = function LinkBlocker(props) {
             rel: 'noopener noreferrer',
             'aria-label': title,
             tabIndex: getsFocus ? 0 : -1,
-            'daa-ll': daa,
             className: 'consonant-LinkBlocker' })
     );
 };
