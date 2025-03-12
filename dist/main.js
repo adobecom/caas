@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.32.4 (3/10/2025, 13:31:48)
+ * Chimera UI Libraries - Build 0.32.5 (3/12/2025, 12:54:09)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -48699,13 +48699,17 @@ var DateInterval = function DateInterval(_ref) {
         dateFormat = _ref.dateFormat;
 
     var prettyDateInterval = (0, _prettyFormat2.default)(startTime, endTime, locale, dateFormat);
+
+    var _ref2 = JSON.parse(sessionStorage.getItem('feds_location')) || '',
+        country = _ref2.country;
+
     return _react2.default.createElement(
         'span',
         {
             title: prettyDateInterval,
             'data-testid': 'consonant-DateIntervalInfobit',
             className: 'consonant-DateIntervalInfobit' },
-        prettyDateInterval
+        country === 'GB' ? prettyDateInterval.replace(/GMT.*$/, 'BST') : prettyDateInterval
     );
 };
 

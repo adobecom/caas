@@ -32,12 +32,13 @@ const DateInterval = ({
     dateFormat,
 }) => {
     const prettyDateInterval = getPrettyDateInterval(startTime, endTime, locale, dateFormat);
+    const { country } = JSON.parse(sessionStorage.getItem('feds_location')) || '';
     return (
         <span
             title={prettyDateInterval}
             data-testid="consonant-DateIntervalInfobit"
             className="consonant-DateIntervalInfobit">
-            {prettyDateInterval}
+            {country === 'GB' ? prettyDateInterval.replace(/GMT.*$/, 'BST') : prettyDateInterval}
         </span>
     );
 };
