@@ -695,7 +695,7 @@ const Container = (props) => {
     useEffect(() => {
         setFilters(authoredFilters.map(filterGroup => ({
             ...filterGroup,
-            opened: DESKTOP_SCREEN_SIZE ? filterGroup.openedOnLoad : false,
+            opened: DESKTOP_SCREEN_SIZE ? filterGroup.openedOnLoad : true,
             items: filterGroup.items.map(filterItem => ({
                 ...filterItem,
                 selected: false,
@@ -754,6 +754,7 @@ const Container = (props) => {
 
         return allFilters.map(filter => ({
             ...filter,
+            opened: DESKTOP_SCREEN_SIZE ? filter.openedOnLoad : true,
             /* istanbul ignore next */
             items: filter.items.filter(item => tags.includes(item.id)
             || tags.includes(item.label)

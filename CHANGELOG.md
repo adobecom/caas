@@ -1,5 +1,12 @@
 
 
+## [0.32.5](https://github.com/adobecom/caas/compare/0.32.4...0.32.5) (2025-03-11)
+
+
+### Bug Fixes
+
+* **mwpw-169047:** filter flickering on load ([eefeebd](https://github.com/adobecom/caas/commit/eefeebdbcaee833c8aede387e084219424887cd3))
+
 ## [0.32.4](https://github.com/adobecom/caas/compare/0.32.3...0.32.4) (2025-03-07)
 
 ## [0.32.3](https://github.com/adobecom/caas/compare/0.32.2...0.32.3) (2025-03-04)

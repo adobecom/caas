@@ -1,6 +1,6 @@
 {
   "name": "CaaS",
-  "version": "0.32.4",
+  "version": "0.32.5",
   "private": false,
   "description": "",
   "scripts": {
@@ -128,6 +128,13 @@
     "uglifyjs-webpack-plugin": "^1.2.4",
     "wdio-chromedriver-service": "^8.0.1",
     "webpack": "^3.9.1"
+  },
+  "husky": {
+    "hooks": {
+      "prepare-commit-msg": "exec < /dev/tty && npx cz --hook || true",
+      "pre-commit": "npm run build && git add . && enforce-branch-name '.*'",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   },
   "config": {
     "commitizen": {
