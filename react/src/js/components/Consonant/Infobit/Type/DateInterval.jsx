@@ -32,7 +32,8 @@ const DateInterval = ({
     dateFormat,
 }) => {
     const prettyDateInterval = getPrettyDateInterval(startTime, endTime, locale, dateFormat);
-    const { country } = JSON.parse(sessionStorage.getItem('feds_location')) || '';
+    // const { country } = JSON.parse(sessionStorage.getItem('feds_location')) || '';
+    const country = navigator.language.slice(-2);
     return (
         <span
             title={prettyDateInterval}
