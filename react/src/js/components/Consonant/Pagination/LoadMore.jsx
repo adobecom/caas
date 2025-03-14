@@ -41,6 +41,12 @@ const LoadMore = ({
     const loadMoreButtonStyle = getConfig('pagination', 'loadMoreButton.style');
 
     /**
+     * Whether we should show the quantity of results shown
+     * @type {string}
+     */
+    const showQuantity = getConfig('pagination', 'resultsQuantityShown');
+
+    /**
      * Whether we should apply theme "Three" for the load more button;
      * @type {String}
      */
@@ -85,11 +91,13 @@ const LoadMore = ({
             data-testid="consonant-LoadMore"
             className={loadMoreClass}>
             <div className="consonant-LoadMore-inner">
-                <p
-                    data-testid="consonant-LoadMore-text"
-                    className="consonant-LoadMore-text">
-                    {summaryText}
-                </p>
+                {showQuantity &&
+                    <p
+                        data-testid="consonant-LoadMore-text"
+                        className="consonant-LoadMore-text">
+                        {summaryText}
+                    </p>
+                }
                 {shouldDisplayLoadMoreBtn &&
                     <button
                         type="button"

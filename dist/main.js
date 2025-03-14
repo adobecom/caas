@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.32.4 (3/10/2025, 13:31:48)
+ * Chimera UI Libraries - Build 0.32.5 (3/14/2025, 11:34:51)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -49303,7 +49303,7 @@ var LinkBlockerType = {
     link: _propTypes.string,
     target: _propTypes.string,
     title: _propTypes.string,
-    getsFocus: Boolean
+    getsFocus: _propTypes.bool
 };
 
 var defaultProps = {
@@ -52888,6 +52888,12 @@ var LoadMore = function LoadMore(_ref) {
     var loadMoreButtonStyle = getConfig('pagination', 'loadMoreButton.style');
 
     /**
+     * Whether we should show the quantity of results shown
+     * @type {string}
+     */
+    var showQuantity = getConfig('pagination', 'resultsQuantityShown');
+
+    /**
      * Whether we should apply theme "Three" for the load more button;
      * @type {String}
      */
@@ -52933,7 +52939,7 @@ var LoadMore = function LoadMore(_ref) {
         _react2.default.createElement(
             'div',
             { className: 'consonant-LoadMore-inner' },
-            _react2.default.createElement(
+            showQuantity && _react2.default.createElement(
                 'p',
                 {
                     'data-testid': 'consonant-LoadMore-text',
@@ -53155,6 +53161,12 @@ var Paginator = function Paginator(props) {
     var quantityText = getConfig('pagination', 'i18n.paginator.resultsQuantityText');
 
     /**
+     * Whether we should show the quantity of results shown
+     * @type {string}
+     */
+    var showQuantity = getConfig('pagination', 'resultsQuantityShown');
+
+    /**
      * Authored Previous Label
      * @type {String}
      */
@@ -53295,7 +53307,7 @@ var Paginator = function Paginator(props) {
                 nextLabel
             )
         ),
-        _react2.default.createElement(
+        showQuantity && _react2.default.createElement(
             'div',
             {
                 'data-testid': 'consonant-Pagination-summary',
