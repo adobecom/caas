@@ -526,5 +526,17 @@
       "fid": 0.8000000000465661,
       "cls": null
     }
+  },
+  {
+    "date": "2025-03-14T17:04:17.609Z",
+    "pr": {
+      "number": "258",
+      "title": "fix(mwpw-169194): sanitizes createdDate format used by the detailsText"
+    },
+    "metrics": {
+      "lcp": 12808.299999999988,
+      "fid": 0.7999999999883585,
+      "cls": null
+    }
   }
 ]

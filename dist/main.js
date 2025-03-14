@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.32.5 (3/14/2025, 11:34:51)
+ * Chimera UI Libraries - Build 0.32.6 (3/14/2025, 11:44:11)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -47074,6 +47074,9 @@ var Card = function Card(props) {
     } else if (detailsTextOption === 'createdDate' && cardDate) {
         var localCreatedDate = new Date(cardDate);
         detailText = localCreatedDate.toLocaleDateString();
+    } else if (detailsTextOption === 'staticDate' && cardDate) {
+        var staticDate = new Date(cardDate.replace(/Z$/, ''));
+        detailText = staticDate.toLocaleDateString();
     }
 
     /**
