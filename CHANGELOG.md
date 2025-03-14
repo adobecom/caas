@@ -1,5 +1,12 @@
 
 
+## [0.32.6](https://github.com/adobecom/caas/compare/0.32.5...0.32.6) (2025-03-14)
+
+
+### Bug Fixes
+
+* **mwpw-169194:** sanitizes createdDate format used by the detailsText ([#258](https://github.com/adobecom/caas/issues/258)) ([3de1303](https://github.com/adobecom/caas/commit/3de13030362e9f228d27ce36c5993f6a4e2a4e1b))
+
 ## [0.32.5](https://github.com/adobecom/caas/compare/0.32.4...0.32.5) (2025-03-11)
 
 
