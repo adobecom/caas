@@ -210,6 +210,9 @@ const Card = (props) => {
     } else if (detailsTextOption === 'createdDate' && cardDate) {
         const localCreatedDate = new Date(cardDate);
         detailText = localCreatedDate.toLocaleDateString();
+    } else if (detailsTextOption === 'staticDate' && cardDate) {
+        const staticDate = new Date(cardDate.replace(/Z$/, ''));
+        detailText = staticDate.toLocaleDateString();
     }
 
     /**
