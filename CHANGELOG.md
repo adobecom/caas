@@ -1,5 +1,12 @@
 
 
+## [0.32.7](https://github.com/adobecom/caas/compare/0.32.6...0.32.7) (2025-03-21)
+
+
+### Bug Fixes
+
+* **mwpw-169314:** fixes Show Pagination Quantity functionality ([#260](https://github.com/adobecom/caas/issues/260)) ([9e98412](https://github.com/adobecom/caas/commit/9e98412588a5e83f48a10d9a47c2a72840bd61b2))
+
 ## [0.32.6](https://github.com/adobecom/caas/compare/0.32.5...0.32.6) (2025-03-14)
 
 
