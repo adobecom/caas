@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { string } from 'prop-types';
+import { string, bool } from 'prop-types';
 
 const LinkBlockerType = {
     link: string,
     target: string,
     title: string,
-    getsFocus: Boolean,
+    getsFocus: bool,
 };
 
 const defaultProps = {

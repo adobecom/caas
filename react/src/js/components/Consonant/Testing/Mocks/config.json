@@ -155,6 +155,7 @@
     "pagination": {
         "enabled": true,
         "type": "paginator",
+        "resultsQuantityShown": true,
         "i18n": {
             "loadMore": {
                 "btnText": "Load More",
