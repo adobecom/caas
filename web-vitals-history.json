@@ -538,5 +538,17 @@
       "fid": 0.7999999999883585,
       "cls": null
     }
+  },
+  {
+    "date": "2025-03-21T18:05:06.322Z",
+    "pr": {
+      "number": "260",
+      "title": "fix(mwpw-169314): fixes Show Pagination Quantity functionality"
+    },
+    "metrics": {
+      "lcp": 12832.399999999994,
+      "fid": 0.7000000000116415,
+      "cls": null
+    }
   }
 ]
