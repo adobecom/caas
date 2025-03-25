@@ -1,5 +1,12 @@
 
 
+# [0.33.0](https://github.com/adobecom/caas/compare/0.32.7...0.33.0) (2025-03-25)
+
+
+### Features
+
+* **mwpw-167478:** adding back daa analytics elements ([e8c535c](https://github.com/adobecom/caas/commit/e8c535c05e61a2ad53e6b37de158d0864d224ff7))
+
 ## [0.32.7](https://github.com/adobecom/caas/compare/0.32.6...0.32.7) (2025-03-21)
 
 
