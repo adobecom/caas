@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.32.6 (3/21/2025, 09:54:17)
+ * Chimera UI Libraries - Build 0.32.7 (3/25/2025, 13:02:04)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -49306,14 +49306,16 @@ var LinkBlockerType = {
     link: _propTypes.string,
     target: _propTypes.string,
     title: _propTypes.string,
-    getsFocus: _propTypes.bool
+    getsFocus: _propTypes.bool,
+    daa: _propTypes.string
 };
 
 var defaultProps = {
     link: '',
     target: '',
     title: '',
-    getsFocus: false
+    getsFocus: false,
+    daa: ''
 };
 
 /**
@@ -49335,7 +49337,8 @@ var LinkBlocker = function LinkBlocker(props) {
     var link = props.link,
         target = props.target,
         title = props.title,
-        getsFocus = props.getsFocus;
+        getsFocus = props.getsFocus,
+        daa = props.daa;
 
     return (
         // eslint-disable-next-line jsx-a11y/anchor-has-content
@@ -49345,6 +49348,7 @@ var LinkBlocker = function LinkBlocker(props) {
             rel: 'noopener noreferrer',
             'aria-label': title,
             tabIndex: getsFocus ? 0 : -1,
+            'daa-ll': daa,
             className: 'consonant-LinkBlocker' })
     );
 };
