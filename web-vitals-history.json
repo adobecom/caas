@@ -550,5 +550,17 @@
       "fid": 0.7000000000116415,
       "cls": null
     }
+  },
+  {
+    "date": "2025-03-25T23:04:11.585Z",
+    "pr": {
+      "number": "261",
+      "title": "feat(mwpw-167478): adding back daa analytics elements"
+    },
+    "metrics": {
+      "lcp": 14635,
+      "fid": 0.9000000000232831,
+      "cls": null
+    }
   }
 ]
