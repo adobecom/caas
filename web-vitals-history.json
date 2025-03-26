@@ -562,5 +562,17 @@
       "fid": 0.9000000000232831,
       "cls": null
     }
+  },
+  {
+    "date": "2025-03-26T17:58:10.240Z",
+    "pr": {
+      "number": "262",
+      "title": "fix(mwpw-169777): fixes load-more button padding"
+    },
+    "metrics": {
+      "lcp": 16343.799999999988,
+      "fid": 0.8000000000465661,
+      "cls": null
+    }
   }
 ]
