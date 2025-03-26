@@ -58,6 +58,12 @@ const Paginator = (props) => {
     const quantityText = getConfig('pagination', 'i18n.paginator.resultsQuantityText');
 
     /**
+     * Whether we should show the quantity of results shown
+     * @type {string}
+     */
+    const showQuantity = getConfig('pagination', 'resultsQuantityShown');
+
+    /**
      * Authored Previous Label
      * @type {String}
      */
@@ -187,13 +193,15 @@ const Paginator = (props) => {
                     {nextLabel}
                 </button>
             </div>
-            <div
-                data-testid="consonant-Pagination-summary"
-                className="consonant-Pagination-summary">
-                <strong>
-                    {paginationSummary}
-                </strong>
-            </div>
+            {showQuantity &&
+                <div
+                    data-testid="consonant-Pagination-summary"
+                    className="consonant-Pagination-summary">
+                    <strong>
+                        {paginationSummary}
+                    </strong>
+                </div>
+            }
         </div>
     );
 };

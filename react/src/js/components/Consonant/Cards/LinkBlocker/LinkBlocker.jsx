@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { bool, string } from 'prop-types';
+import { string, bool } from 'prop-types';
 
 const LinkBlockerType = {
     link: string,

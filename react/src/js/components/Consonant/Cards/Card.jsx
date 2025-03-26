@@ -216,6 +216,9 @@ const Card = (props) => {
     } else if (detailsTextOption === 'createdDate' && cardDate) {
         const localCreatedDate = new Date(cardDate);
         detailText = localCreatedDate.toLocaleDateString();
+    } else if (detailsTextOption === 'staticDate' && cardDate) {
+        const staticDate = new Date(cardDate.replace(/Z$/, ''));
+        detailText = staticDate.toLocaleDateString();
     }
 
     /**
@@ -406,7 +409,7 @@ const Card = (props) => {
         || isIcon
         || hideCTA;
 
-    console.log('getsFocus', getsFocus);
+    console.log('*** Card.jsx: getsFocus', getsFocus); // *** MWPW-164509 ***
 
     return (
         <div

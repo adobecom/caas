@@ -14,6 +14,7 @@ let cardWidth = null;
 
 function CardsCarousel({
     cards,
+    cardStyle,
     onCardBookmark,
     resQty,
 } = {}) {
@@ -176,8 +177,10 @@ function CardsCarousel({
         const lastCard = currentPage === 1
             ? cardsPerPage : ((currentPage - 1) * cardsPerPage) + cardsPerPage;
 
+        const shouldRenderOverlay = renderOverlay || cardStyle === 'half-height';
+
         carousel.querySelectorAll('.consonant-Card').forEach((card, index) => {
-            const cardLink = renderOverlay
+            const cardLink = shouldRenderOverlay
                 ? card.querySelector('.consonant-LinkBlocker')
                 : card.querySelector('.consonant-BtnInfobit--cta');
             if (index + 1 >= firstCard && index + 1 <= lastCard) {
@@ -320,4 +323,5 @@ CardsCarousel.propTypes = {
     cards: PropTypes.arrayOf(PropTypes.object).isRequired,
     onCardBookmark: PropTypes.func.isRequired,
     resQty: PropTypes.number.isRequired,
+    cardStyle: PropTypes.string.isRequired,
 };

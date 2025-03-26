@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.32.3 (3/4/2025, 15:06:46)
+ * Chimera UI Libraries - Build 0.33.0 (3/26/2025, 08:15:34)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -7065,7 +7065,7 @@ var Container = function Container(props) {
     (0, _react.useEffect)(function () {
         setFilters(authoredFilters.map(function (filterGroup) {
             return _extends({}, filterGroup, {
-                opened: DESKTOP_SCREEN_SIZE ? filterGroup.openedOnLoad : false,
+                opened: DESKTOP_SCREEN_SIZE ? filterGroup.openedOnLoad : true,
                 items: filterGroup.items.map(function (filterItem) {
                     return _extends({}, filterItem, {
                         selected: false
@@ -7132,6 +7132,7 @@ var Container = function Container(props) {
 
         return allFilters.map(function (filter) {
             return _extends({}, filter, {
+                opened: DESKTOP_SCREEN_SIZE ? filter.openedOnLoad : true,
                 /* istanbul ignore next */
                 items: filter.items.filter(function (item) {
                     return tags.includes(item.id) || tags.includes(item.label) || tags.toString().includes('/' + item.id) // ***** FIX  HERE *****
@@ -8061,6 +8062,7 @@ var Container = function Container(props) {
                         atLeastOneCard && isCarouselContainer && !(cardStyle === 'custom-card') && _react2.default.createElement(_CardsCarousel2.default, {
                             resQty: gridCardLen,
                             cards: gridCards,
+                            cardStyle: cardStyle,
                             role: 'tablist',
                             onCardBookmark: handleCardBookmarking }),
                         atLeastOneCard && isCarouselContainer && cardStyle === 'custom-card' && _react2.default.createElement(_View2.default, {
@@ -44279,6 +44281,7 @@ var cardWidth = null;
 function CardsCarousel() {
     var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
         cards = _ref.cards,
+        cardStyle = _ref.cardStyle,
         onCardBookmark = _ref.onCardBookmark,
         resQty = _ref.resQty;
 
@@ -44443,8 +44446,10 @@ function CardsCarousel() {
         var firstCard = currentPage === 1 ? 1 : (currentPage - 1) * cardsPerPage + 1;
         var lastCard = currentPage === 1 ? cardsPerPage : (currentPage - 1) * cardsPerPage + cardsPerPage;
 
+        var shouldRenderOverlay = renderOverlay || cardStyle === 'half-height';
+
         carousel.querySelectorAll('.consonant-Card').forEach(function (card, index) {
-            var cardLink = renderOverlay ? card.querySelector('.consonant-LinkBlocker') : card.querySelector('.consonant-BtnInfobit--cta');
+            var cardLink = shouldRenderOverlay ? card.querySelector('.consonant-LinkBlocker') : card.querySelector('.consonant-BtnInfobit--cta');
             if (index + 1 >= firstCard && index + 1 <= lastCard) {
                 cardLink.removeAttribute('aria-hidden');
                 cardLink.removeAttribute('inert');
@@ -44592,7 +44597,8 @@ exports.default = CardsCarousel;
 CardsCarousel.propTypes = {
     cards: _propTypes2.default.arrayOf(_propTypes2.default.object).isRequired,
     onCardBookmark: _propTypes2.default.func.isRequired,
-    resQty: _propTypes2.default.number.isRequired
+    resQty: _propTypes2.default.number.isRequired,
+    cardStyle: _propTypes2.default.string.isRequired
 };
 
 /***/ }),
@@ -47161,6 +47167,9 @@ var Card = function Card(props) {
     } else if (detailsTextOption === 'createdDate' && cardDate) {
         var localCreatedDate = new Date(cardDate);
         detailText = localCreatedDate.toLocaleDateString();
+    } else if (detailsTextOption === 'staticDate' && cardDate) {
+        var staticDate = new Date(cardDate.replace(/Z$/, ''));
+        detailText = staticDate.toLocaleDateString();
     }
 
     /**
@@ -47335,7 +47344,7 @@ var Card = function Card(props) {
     var overlay = altCtaUsed && isLive && altCtaLink !== '' ? altCtaLink : overlayParams;
     var getsFocus = isHalfHeight || isThreeFourths || isFull || isDoubleWide || isIcon || hideCTA;
 
-    console.log('getsFocus', getsFocus);
+    console.log('*** Card.jsx: getsFocus', getsFocus); // *** MWPW-164509 ***
 
     return _react2.default.createElement(
         'div',
@@ -53011,6 +53020,12 @@ var LoadMore = function LoadMore(_ref) {
     var loadMoreButtonStyle = getConfig('pagination', 'loadMoreButton.style');
 
     /**
+     * Whether we should show the quantity of results shown
+     * @type {string}
+     */
+    var showQuantity = getConfig('pagination', 'resultsQuantityShown');
+
+    /**
      * Whether we should apply theme "Three" for the load more button;
      * @type {String}
      */
@@ -53056,7 +53071,7 @@ var LoadMore = function LoadMore(_ref) {
         _react2.default.createElement(
             'div',
             { className: 'consonant-LoadMore-inner' },
-            _react2.default.createElement(
+            showQuantity && _react2.default.createElement(
                 'p',
                 {
                     'data-testid': 'consonant-LoadMore-text',
@@ -53278,6 +53293,12 @@ var Paginator = function Paginator(props) {
     var quantityText = getConfig('pagination', 'i18n.paginator.resultsQuantityText');
 
     /**
+     * Whether we should show the quantity of results shown
+     * @type {string}
+     */
+    var showQuantity = getConfig('pagination', 'resultsQuantityShown');
+
+    /**
      * Authored Previous Label
      * @type {String}
      */
@@ -53418,7 +53439,7 @@ var Paginator = function Paginator(props) {
                 nextLabel
             )
         ),
-        _react2.default.createElement(
+        showQuantity && _react2.default.createElement(
             'div',
             {
                 'data-testid': 'consonant-Pagination-summary',

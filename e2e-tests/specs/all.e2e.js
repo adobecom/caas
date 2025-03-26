@@ -191,6 +191,56 @@ describe('Pagination Types', () => {
     });
 });
 
+describe ('Pagination quantity', () => {
+    const paginationTypes = ['loadMore', 'paginator'];
+
+    paginationTypes.forEach((paginationType) => {
+        it(`should display pagination quantity for ${paginationType}`, async () => {
+            const url = generateUrl({
+                pagination: {
+                    type: paginationType,
+                    resultsQuantityShown: 'true',
+                },
+                collection: {
+                    resultsPerPage: 2,
+                },
+            });
+
+            await browser.url(url);
+            if (paginationType === 'loadMore') {
+                const loadMoreTextExists = await $('.consonant-LoadMore-text').isExisting();
+                expect(loadMoreTextExists).toBe(true);
+            } else {
+                const paginationSummaryExists = await $('.consonant-Pagination-summary').isExisting();
+                expect(paginationSummaryExists).toBe(true);
+            }
+        });
+    });
+
+    paginationTypes.forEach((paginationType) => {
+        it(`should NOT display pagination quantity for ${paginationType}`, async () => {
+            const url = generateUrl({
+                pagination: {
+                    type: paginationType,
+                    resultsQuantityShown: 'false',
+                },
+                collection: {
+                    resultsPerPage: 2,
+                },
+            });
+
+            await browser.url(url);
+            if (paginationType === 'loadMore') {
+                const loadMoreTextExists = await $('.consonant-LoadMore-text').isExisting();
+                expect(loadMoreTextExists).toBe(false);
+            } else {
+                const paginationSummaryExists = await $('.consonant-Pagination-summary').isExisting();
+                expect(paginationSummaryExists).toBe(false);
+            }
+        });
+    });
+});
+
 describe('Themes', () => {
     const themes = ['light', 'dark', 'darkest'];
 
