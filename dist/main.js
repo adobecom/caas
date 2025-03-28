@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.33.0 (3/26/2025, 08:15:34)
+ * Chimera UI Libraries - Build 0.33.0 (3/27/2025, 21:14:17)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -47342,7 +47342,7 @@ var Card = function Card(props) {
     var altCtaLink = getAltCtaLink(footer);
     var ctaText = altCtaUsed && isUpcoming && altCtaLink !== '' ? getCtaText(footer, 'alt') : getCtaText(footer, 'right');
     var overlay = altCtaUsed && isLive && altCtaLink !== '' ? altCtaLink : overlayParams;
-    var getsFocus = isHalfHeight || isThreeFourths || isFull || isDoubleWide || isIcon || hideCTA;
+    var getsFocus = isHalfHeight && !videoURLToUse || isThreeFourths || isFull || isDoubleWide || isIcon || hideCTA;
 
     console.log('*** Card.jsx: getsFocus', getsFocus); // *** MWPW-164509 ***
 
@@ -47497,7 +47497,7 @@ var Card = function Card(props) {
             target: linkBlockerTarget,
             link: overlay,
             title: title,
-            getsFocus: getsFocus || true,
+            getsFocus: getsFocus,
             ariaHidden: ariaHidden,
             tabIndex: ariaHidden ? -1 : 0,
             daa: ctaText })
@@ -49464,6 +49464,8 @@ var LinkBlocker = function LinkBlocker(props) {
         ariaHidden = props.ariaHidden,
         daa = props.daa;
 
+    console.log('LinkBlocker: getsFocus', getsFocus);
+    console.log('LinkBlocker: ariaHidden', ariaHidden);
     return (
         // eslint-disable-next-line jsx-a11y/anchor-has-content
         _react2.default.createElement('a', {

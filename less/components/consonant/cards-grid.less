@@ -74,7 +74,8 @@
 
         &--3up {
             .consonant-Card {
-                width: @consonantCardMaxWidth;
+                /* width: @consonantCardMaxWidth; // *** MWPW-164509 *** */
+                width: calc(@consonantDesktopMinWidth / 3 - @consonant-CardsGrid-gutterSize * 2);
                 max-width: 100%;
 
                 &-content {
@@ -88,8 +89,9 @@
             grid-template-columns: repeat(auto-fit, minmax(@consonant-CardsGrid-smallerCardMinWidth, max-content));
 
             .consonant-Card {
+                /* width: @consonant-CardsGrid-smallerCardMaxWidth; // *** MWPW-164509 *** */
+                width: calc(@consonantDesktopMinWidth / 4 - @consonant-CardsGrid-gutterSize * 3);
                 min-width: @consonant-CardsGrid-smallerCardMinWidth;
-                width: @consonant-CardsGrid-smallerCardMaxWidth;
                 max-width: 100%;
                 height: @consonant-CardsGrid-smallerCardheight;
 
@@ -105,8 +107,9 @@
             grid-template-columns: repeat(auto-fit, minmax(@consonant-CardsGrid-smallestCardMinWidth, max-content));
 
             .consonant-Card {
+                /* max-width: @consonant-CardsGrid-smallestCardMaxWidth; // *** MWPW-164509 *** */
+                width: calc(@consonantDesktopMinWidth / 5 - @consonant-CardsGrid-gutterSize * 4);
                 min-width: @consonant-CardsGrid-smallestCardMinWidth;
-                max-width: @consonant-CardsGrid-smallestCardMaxWidth;
                 height: @consonant-CardsGrid-smallestCardHeight;
 
                 &-content {
