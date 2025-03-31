@@ -1,5 +1,33 @@
 
 
+## [0.33.1](https://github.com/adobecom/caas/compare/0.33.0...0.33.1) (2025-03-26)
+
+
+### Bug Fixes
+
+* **PW-169777:** fixes load-more button padding ([ee1afac](https://github.com/adobecom/caas/commit/ee1afac0bc560800e9534b202d58ea08050a9cb3))
+
+# [0.33.0](https://github.com/adobecom/caas/compare/0.32.7...0.33.0) (2025-03-25)
+
+
+### Features
+
+* **mwpw-167478:** adding back daa analytics elements ([e8c535c](https://github.com/adobecom/caas/commit/e8c535c05e61a2ad53e6b37de158d0864d224ff7))
+
+## [0.32.7](https://github.com/adobecom/caas/compare/0.32.6...0.32.7) (2025-03-21)
+
+
+### Bug Fixes
+
+* **mwpw-169314:** fixes Show Pagination Quantity functionality ([#260](https://github.com/adobecom/caas/issues/260)) ([9e98412](https://github.com/adobecom/caas/commit/9e98412588a5e83f48a10d9a47c2a72840bd61b2))
+
+## [0.32.6](https://github.com/adobecom/caas/compare/0.32.5...0.32.6) (2025-03-14)
+
+
+### Bug Fixes
+
+* **mwpw-169194:** sanitizes createdDate format used by the detailsText ([#258](https://github.com/adobecom/caas/issues/258)) ([3de1303](https://github.com/adobecom/caas/commit/3de13030362e9f228d27ce36c5993f6a4e2a4e1b))
+
 ## [0.32.5](https://github.com/adobecom/caas/compare/0.32.4...0.32.5) (2025-03-11)
 
 

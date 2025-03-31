@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.32.4 (3/10/2025, 13:31:48)
+ * Chimera UI Libraries - Build 0.33.0 (3/26/2025, 08:31:48)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -47074,6 +47074,9 @@ var Card = function Card(props) {
     } else if (detailsTextOption === 'createdDate' && cardDate) {
         var localCreatedDate = new Date(cardDate);
         detailText = localCreatedDate.toLocaleDateString();
+    } else if (detailsTextOption === 'staticDate' && cardDate) {
+        var staticDate = new Date(cardDate.replace(/Z$/, ''));
+        detailText = staticDate.toLocaleDateString();
     }
 
     /**
@@ -49303,14 +49306,16 @@ var LinkBlockerType = {
     link: _propTypes.string,
     target: _propTypes.string,
     title: _propTypes.string,
-    getsFocus: Boolean
+    getsFocus: _propTypes.bool,
+    daa: _propTypes.string
 };
 
 var defaultProps = {
     link: '',
     target: '',
     title: '',
-    getsFocus: false
+    getsFocus: false,
+    daa: ''
 };
 
 /**
@@ -49332,7 +49337,8 @@ var LinkBlocker = function LinkBlocker(props) {
     var link = props.link,
         target = props.target,
         title = props.title,
-        getsFocus = props.getsFocus;
+        getsFocus = props.getsFocus,
+        daa = props.daa;
 
     return (
         // eslint-disable-next-line jsx-a11y/anchor-has-content
@@ -49342,6 +49348,7 @@ var LinkBlocker = function LinkBlocker(props) {
             rel: 'noopener noreferrer',
             'aria-label': title,
             tabIndex: getsFocus ? 0 : -1,
+            'daa-ll': daa,
             className: 'consonant-LinkBlocker' })
     );
 };
@@ -52888,6 +52895,12 @@ var LoadMore = function LoadMore(_ref) {
     var loadMoreButtonStyle = getConfig('pagination', 'loadMoreButton.style');
 
     /**
+     * Whether we should show the quantity of results shown
+     * @type {string}
+     */
+    var showQuantity = getConfig('pagination', 'resultsQuantityShown');
+
+    /**
      * Whether we should apply theme "Three" for the load more button;
      * @type {String}
      */
@@ -52933,7 +52946,7 @@ var LoadMore = function LoadMore(_ref) {
         _react2.default.createElement(
             'div',
             { className: 'consonant-LoadMore-inner' },
-            _react2.default.createElement(
+            showQuantity && _react2.default.createElement(
                 'p',
                 {
                     'data-testid': 'consonant-LoadMore-text',
@@ -53155,6 +53168,12 @@ var Paginator = function Paginator(props) {
     var quantityText = getConfig('pagination', 'i18n.paginator.resultsQuantityText');
 
     /**
+     * Whether we should show the quantity of results shown
+     * @type {string}
+     */
+    var showQuantity = getConfig('pagination', 'resultsQuantityShown');
+
+    /**
      * Authored Previous Label
      * @type {String}
      */
@@ -53295,7 +53314,7 @@ var Paginator = function Paginator(props) {
                 nextLabel
             )
         ),
-        _react2.default.createElement(
+        showQuantity && _react2.default.createElement(
             'div',
             {
                 'data-testid': 'consonant-Pagination-summary',

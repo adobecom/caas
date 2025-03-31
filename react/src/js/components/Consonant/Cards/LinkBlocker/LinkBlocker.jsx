@@ -1,12 +1,13 @@
 import React from 'react';
 
-import { string } from 'prop-types';
+import { string, bool } from 'prop-types';
 
 const LinkBlockerType = {
     link: string,
     target: string,
     title: string,
-    getsFocus: Boolean,
+    getsFocus: bool,
+    daa: string,
 };
 
 const defaultProps = {
@@ -14,6 +15,7 @@ const defaultProps = {
     target: '',
     title: '',
     getsFocus: false,
+    daa: '',
 };
 
 /**
@@ -37,6 +39,7 @@ const LinkBlocker = (props) => {
         target,
         title,
         getsFocus,
+        daa,
     } = props;
     return (
         // eslint-disable-next-line jsx-a11y/anchor-has-content
@@ -46,6 +49,7 @@ const LinkBlocker = (props) => {
             rel="noopener noreferrer"
             aria-label={title}
             tabIndex={getsFocus ? 0 : -1}
+            daa-ll={daa}
             className="consonant-LinkBlocker" />
     );
 };

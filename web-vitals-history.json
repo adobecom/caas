@@ -526,5 +526,53 @@
       "fid": 0.8000000000465661,
       "cls": null
     }
+  },
+  {
+    "date": "2025-03-14T17:04:17.609Z",
+    "pr": {
+      "number": "258",
+      "title": "fix(mwpw-169194): sanitizes createdDate format used by the detailsText"
+    },
+    "metrics": {
+      "lcp": 12808.299999999988,
+      "fid": 0.7999999999883585,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-03-21T18:05:06.322Z",
+    "pr": {
+      "number": "260",
+      "title": "fix(mwpw-169314): fixes Show Pagination Quantity functionality"
+    },
+    "metrics": {
+      "lcp": 12832.399999999994,
+      "fid": 0.7000000000116415,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-03-25T23:04:11.585Z",
+    "pr": {
+      "number": "261",
+      "title": "feat(mwpw-167478): adding back daa analytics elements"
+    },
+    "metrics": {
+      "lcp": 14635,
+      "fid": 0.9000000000232831,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-03-26T17:58:10.240Z",
+    "pr": {
+      "number": "262",
+      "title": "fix(mwpw-169777): fixes load-more button padding"
+    },
+    "metrics": {
+      "lcp": 16343.799999999988,
+      "fid": 0.8000000000465661,
+      "cls": null
+    }
   }
 ]

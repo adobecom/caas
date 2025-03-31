@@ -9,7 +9,7 @@
 
         .margin-auto;
 
-        padding-bottom: 115px;
+        padding-bottom: 48px;
         text-align: center;
         user-select: none;
 
@@ -35,7 +35,6 @@
 
             .font(@line-height: 1.1875rem, @weight: 700, @color: @consonantGray800, @align: center);
 
-            text-transform: capitalize;
             background-color: transparent;
             border: 2px solid @consonantGray800;
             border-radius: 30px;
@@ -117,12 +116,8 @@
             color: @consonantBaseColor;
         }
 
-        @media @consonant-tablet-up {
-            padding-bottom: 121px;
-        }
-
-        @media @consonant-big-desktop-up {
-            padding-bottom: 140px;
+        @media @consonant-desktop-up {
+            padding-bottom: 112px;
         }
     }
 }
