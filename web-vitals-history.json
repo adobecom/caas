@@ -574,5 +574,17 @@
       "fid": 0.8000000000465661,
       "cls": null
     }
+  },
+  {
+    "date": "2025-03-31T17:52:16.399Z",
+    "pr": {
+      "number": "254",
+      "title": "test(mwpw-169106): updating to point to caasver=alpha for once that is merged"
+    },
+    "metrics": {
+      "lcp": 10386.699999999953,
+      "fid": 0.9000000000232831,
+      "cls": null
+    }
   }
 ]
