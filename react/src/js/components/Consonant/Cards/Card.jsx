@@ -399,7 +399,6 @@ const Card = (props) => {
     const altCtaLink = getAltCtaLink(footer);
     const ctaText = (altCtaUsed && isUpcoming && altCtaLink !== '') ? getCtaText(footer, 'alt') : getCtaText(footer, 'right');
     const overlay = (altCtaUsed && isLive && altCtaLink !== '') ? altCtaLink : overlayParams;
-    // const getsFocus = isHalfHeight
     const getsFocus = (isHalfHeight && !videoURLToUse)
         || isThreeFourths
         || isFull
