@@ -29,17 +29,47 @@ function CardsCarousel({
     const renderOverlay = getConfig('collection', 'useOverlayLinks');
     let currentPage = 1;
 
+    function getCardWidth(size, gap) {
+        const cardWidths = {
+            '2up': {
+                '1xGutter': 579,
+                '2xGutter': 575,
+                '3xGutter': 571,
+                '4xGutter': 566,
+            },
+            '3up': {
+                '8px': 394,
+                '16px': 389,
+                '24px': 384,
+                '32px': 378,
+            },
+            '4up': {
+                '8px': 294,
+                '16px': 288,
+                '24px': 282,
+                '32px': 276,
+            },
+            '5up': {
+                '8px': 226,
+                '16px': 220,
+                '24px': 214,
+                '32px': 207,
+            },
+        };
+        return cardWidths[size] ? cardWidths[size][`${gap}px`] : 0;
+    }
+
     if (cardsUp.includes('2up')) {
-        cardWidth = 500;
+        cardWidth = getCardWidth('2up', gridGap);
         cardsShiftedPerClick = isIncremental ? 1 : 2;
     } else if (cardsUp.includes('3up')) {
-        cardWidth = 378;
+        cardWidth = getCardWidth('3up', gridGap);
         cardsShiftedPerClick = isIncremental ? 1 : 3;
     } else if (cardsUp.includes('4up')) {
-        cardWidth = 276;
+        cardWidth = getCardWidth('4up', gridGap);
         cardsShiftedPerClick = isIncremental ? 1 : 4;
     } else if (cardsUp.includes('5up')) {
-        cardWidth = 228;
+        cardWidth = getCardWidth('5up', gridGap);
         cardsShiftedPerClick = isIncremental ? 1 : 5;
     }
     const HeadingLevel = getConfig('collection', 'i18n.titleHeadingLevel');

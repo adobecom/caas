@@ -8,8 +8,8 @@
         &-Wrapper {
             &-inner {
                 max-width: @consonantDesktopMinWidth;
-                // width: 83.4%;
-                // max-width: 1160px;
+                width: 83.4%;
+                // padding: 0 10px;
 
                 @media @consonant-carousel-down {
                     padding: 0;
@@ -155,8 +155,34 @@
                 // grid-template-columns: repeat(auto-fill, minmax(@consonantCardMaxWidth, @consonantCardMaxWidth-3up));
                 grid-template-columns: auto;
 
-                .consonant-Card {
-                    min-width: @consonantCardMaxWidth-3up;
+                // '3up': {
+                //     '8px': 394,
+                //     '16px': 389,
+                //     '24px': 372,
+                //     '32px': 367,
+                // },
+                &.consonant-CardsGrid--with1xGutter {
+                    .consonant-Card {
+                        width: 394px;
+                    }
+                }
+
+                &.consonant-CardsGrid--with2xGutter {
+                    .consonant-Card {
+                        width: 389px;
+                    }
+                }
+
+                &.consonant-CardsGrid--with3xGutter {
+                    .consonant-Card {
+                        width: 384px;
+                    }
+                }
+
+                &.consonant-CardsGrid--with4xGutter {
+                    .consonant-Card {
+                        width: 378px;
+                    }
                 }
 
                 &:after {
@@ -182,8 +208,28 @@
                 // grid-template-columns: repeat(auto-fill, minmax(@consonant-CardsGrid-smallerCardMaxWidth, @consonant-CardsGrid-smallerCardMaxWidth));
                 grid-template-columns: auto;
 
-                .consonant-Card {
-                    min-width: @consonant-CardsGrid-smallerCardMaxWidth;
+                &.consonant-CardsGrid--with1xGutter {
+                    .consonant-Card {
+                        width: 294px;
+                    }
+                }
+
+                &.consonant-CardsGrid--with2xGutter {
+                    .consonant-Card {
+                        width: 288px;
+                    }
+                }
+
+                &.consonant-CardsGrid--with3xGutter {
+                    .consonant-Card {
+                        width: 282px;
+                    }
+                }
+
+                &.consonant-CardsGrid--with4xGutter {
+                    .consonant-Card {
+                        width: 276px;
+                    }
                 }
 
                 &:after {
