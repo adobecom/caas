@@ -34,7 +34,7 @@
                 }
 
                 &.tabbing {
-                    button:focus {
+                    *:focus {
                         outline: @consonantFocusedColor solid 4px;
                         outline-offset: 3px;
                     }
@@ -152,15 +152,8 @@
             }
 
             &--3up {
-                // grid-template-columns: repeat(auto-fill, minmax(@consonantCardMaxWidth, @consonantCardMaxWidth-3up));
                 grid-template-columns: auto;
 
-                // '3up': {
-                //     '8px': 394,
-                //     '16px': 389,
-                //     '24px': 372,
-                //     '32px': 367,
-                // },
                 &.consonant-CardsGrid--with1xGutter {
                     .consonant-Card {
                         width: 394px;
@@ -205,7 +198,6 @@
             }
 
             &--4up {
-                // grid-template-columns: repeat(auto-fill, minmax(@consonant-CardsGrid-smallerCardMaxWidth, @consonant-CardsGrid-smallerCardMaxWidth));
                 grid-template-columns: auto;
 
                 &.consonant-CardsGrid--with1xGutter {
@@ -247,7 +239,6 @@
             }
 
             &--5up {
-                // grid-template-columns: repeat(auto-fill, minmax(@consonant-CardsGrid-smallestCardMaxWidth, @consonant-CardsGrid-smallestCardMaxWidth));
                 grid-template-columns: auto;
 
                 .consonant-Card {
@@ -350,12 +341,6 @@
                             background-color: rgba(0, 0, 0, 1);
                         }
                     }
-
-                    // &:focus {
-                    //     outline: @consonantFocusedColor solid 4px;
-                    //     // outline-style: groove;
-                    //     outline-offset: 3px;
-                    // }
                 }
             }
         }
