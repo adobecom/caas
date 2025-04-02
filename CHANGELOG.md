@@ -1,5 +1,14 @@
 
 
+## [0.33.2](https://github.com/adobecom/caas/compare/0.33.1...0.33.2) (2025-03-31)
+
+## [0.33.1](https://github.com/adobecom/caas/compare/0.33.0...0.33.1) (2025-03-26)
+
+
+### Bug Fixes
+
+* **PW-169777:** fixes load-more button padding ([ee1afac](https://github.com/adobecom/caas/commit/ee1afac0bc560800e9534b202d58ea08050a9cb3))
+
 # [0.33.0](https://github.com/adobecom/caas/compare/0.32.7...0.33.0) (2025-03-25)
 
 
