@@ -28,6 +28,12 @@ function CardsCarousel({
     const isIncremental = getConfig('pagination', 'animationStyle') === 'incremental';
     const renderOverlay = getConfig('collection', 'useOverlayLinks');
 
+    /**
+     * Gets the width of the card based on the size and gap.
+     * @param {string} size - The size of the card based on the layout.
+     * @param {number} gap - The gap between the cards.
+     * @returns {number} - The width of the card.
+     */
     function getCardWidth(size, gap) {
         const cardWidths = {
             '2up': {
@@ -203,14 +209,19 @@ function CardsCarousel({
         carousel.scrollLeft += (-window.innerWidth / 2 + 620);
     }
 
-    /* *** MWPW-164509 *** */
+    /**
+     * Jira ticket: MWPW-164509
+     * Sets the ARIA attributes for the cards based on their visibility.
+     * @param {HTMLElement} carousel - The carousel element.
+     */
     function setAriaAttributes(carousel) {
         const shouldRenderOverlay = renderOverlay || cardStyle === 'half-height';
 
         carousel.querySelectorAll('.consonant-Card').forEach((card, index) => {
             const cardLink = shouldRenderOverlay
                 ? card.querySelector('.consonant-LinkBlocker')
-                : card.querySelector('.consonant-BtnInfobit--cta');
+                : card.querySelector('.consonant-BtnInfobit');
+
             if (index + 1 >= firstVisibleCard && index + 1 <= lastVisibleCard) {
                 cardLink.removeAttribute('aria-hidden');
                 cardLink.removeAttribute('inert');
@@ -223,6 +234,11 @@ function CardsCarousel({
         });
     }
 
+    /**
+     * Jira ticket: MWPW-164509
+     * Sets first and last visible cards based on the navigation direction and pagination type.
+     * @param {string} direction - The direction of the click.
+     */
     function setVisibleCards(direction) {
         if (isIncremental) {
             if (direction === 'next') {
