@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.33.2 (4/2/2025, 13:29:31)
+ * Chimera UI Libraries - Build 0.33.2 (4/2/2025, 23:06:31)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -44294,7 +44294,6 @@ function CardsCarousel() {
     var useLightText = getConfig('collection', 'useLightText');
     var isIncremental = getConfig('pagination', 'animationStyle') === 'incremental';
     var renderOverlay = getConfig('collection', 'useOverlayLinks');
-    var currentPage = 1;
 
     function getCardWidth(size, gap) {
         var cardWidths = {
@@ -44355,6 +44354,9 @@ function CardsCarousel() {
     /* eslint-disable-next-line no-unused-vars */
     var isMouseMove = false;
     var interactedWith = false;
+
+    var firstVisibleCard = 1;
+    var lastVisibleCard = firstVisibleCard + cardsPerPage - 1;
 
     function isResponsive() {
         return window.innerWidth < TABLET_BREAKPOINT;
@@ -44472,15 +44474,12 @@ function CardsCarousel() {
     }
 
     /* *** MWPW-164509 *** */
-    function setAriaHidden(carousel) {
-        var firstCard = currentPage === 1 ? 1 : (currentPage - 1) * cardsPerPage + 1;
-        var lastCard = currentPage === 1 ? cardsPerPage : (currentPage - 1) * cardsPerPage + cardsPerPage;
-
+    function setAriaAttributes(carousel) {
         var shouldRenderOverlay = renderOverlay || cardStyle === 'half-height';
 
         carousel.querySelectorAll('.consonant-Card').forEach(function (card, index) {
             var cardLink = shouldRenderOverlay ? card.querySelector('.consonant-LinkBlocker') : card.querySelector('.consonant-BtnInfobit--cta');
-            if (index + 1 >= firstCard && index + 1 <= lastCard) {
+            if (index + 1 >= firstVisibleCard && index + 1 <= lastVisibleCard) {
                 cardLink.removeAttribute('aria-hidden');
                 cardLink.removeAttribute('inert');
                 cardLink.setAttribute('tabindex', '0');
@@ -44492,14 +44491,32 @@ function CardsCarousel() {
         });
     }
 
+    function setVisibleCards(direction) {
+        if (isIncremental) {
+            if (direction === 'next') {
+                firstVisibleCard++;
+                lastVisibleCard++;
+            } else {
+                firstVisibleCard--;
+                lastVisibleCard--;
+            }
+        } else if (direction === 'next') {
+            firstVisibleCard += cardsPerPage;
+            lastVisibleCard += cardsPerPage;
+        } else {
+            firstVisibleCard -= cardsPerPage;
+            lastVisibleCard -= cardsPerPage;
+        }
+    }
+
     function nextButtonClick() {
         if (isResponsive()) {
             centerClick();
         } else {
             var carousel = carouselRef.current;
             carousel.scrollLeft += (cardWidth + gridGap) * cardsShiftedPerClick;
-            currentPage += 1;
-            setAriaHidden(carousel);
+            setVisibleCards('next');
+            setAriaAttributes(carousel);
             shouldHideNextButton();
         }
     }
@@ -44510,8 +44527,8 @@ function CardsCarousel() {
         } else {
             var carousel = carouselRef.current;
             carousel.scrollLeft -= (cardWidth + gridGap) * cardsShiftedPerClick;
-            currentPage -= 1;
-            setAriaHidden(carousel);
+            setVisibleCards('prev');
+            setAriaAttributes(carousel);
             shouldHidePrevButton();
         }
     }

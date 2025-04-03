@@ -27,7 +27,6 @@ function CardsCarousel({
     const useLightText = getConfig('collection', 'useLightText');
     const isIncremental = getConfig('pagination', 'animationStyle') === 'incremental';
     const renderOverlay = getConfig('collection', 'useOverlayLinks');
-    let currentPage = 1;
 
     function getCardWidth(size, gap) {
         const cardWidths = {
@@ -84,6 +83,9 @@ function CardsCarousel({
     /* eslint-disable-next-line no-unused-vars */
     let isMouseMove = false;
     let interactedWith = false;
+
+    let firstVisibleCard = 1;
+    let lastVisibleCard = firstVisibleCard + cardsPerPage - 1;
 
     function isResponsive() {
         return window.innerWidth < TABLET_BREAKPOINT;
@@ -202,18 +204,14 @@ function CardsCarousel({
     }
 
     /* *** MWPW-164509 *** */
-    function setAriaHidden(carousel) {
-        const firstCard = currentPage === 1 ? 1 : ((currentPage - 1) * cardsPerPage) + 1;
-        const lastCard = currentPage === 1
-            ? cardsPerPage : ((currentPage - 1) * cardsPerPage) + cardsPerPage;
-
+    function setAriaAttributes(carousel) {
         const shouldRenderOverlay = renderOverlay || cardStyle === 'half-height';
 
         carousel.querySelectorAll('.consonant-Card').forEach((card, index) => {
             const cardLink = shouldRenderOverlay
                 ? card.querySelector('.consonant-LinkBlocker')
                 : card.querySelector('.consonant-BtnInfobit--cta');
-            if (index + 1 >= firstCard && index + 1 <= lastCard) {
+            if (index + 1 >= firstVisibleCard && index + 1 <= lastVisibleCard) {
                 cardLink.removeAttribute('aria-hidden');
                 cardLink.removeAttribute('inert');
                 cardLink.setAttribute('tabindex', '0');
@@ -225,14 +223,32 @@ function CardsCarousel({
         });
     }
 
+    function setVisibleCards(direction) {
+        if (isIncremental) {
+            if (direction === 'next') {
+                firstVisibleCard++;
+                lastVisibleCard++;
+            } else {
+                firstVisibleCard--;
+                lastVisibleCard--;
+            }
+        } else if (direction === 'next') {
+            firstVisibleCard += cardsPerPage;
+            lastVisibleCard += cardsPerPage;
+        } else {
+            firstVisibleCard -= cardsPerPage;
+            lastVisibleCard -= cardsPerPage;
+        }
+    }
+
     function nextButtonClick() {
         if (isResponsive()) {
             centerClick();
         } else {
             const carousel = carouselRef.current;
             carousel.scrollLeft += ((cardWidth + gridGap) * cardsShiftedPerClick);
-            currentPage += 1;
-            setAriaHidden(carousel);
+            setVisibleCards('next');
+            setAriaAttributes(carousel);
             shouldHideNextButton();
         }
     }
@@ -243,8 +259,8 @@ function CardsCarousel({
         } else {
             const carousel = carouselRef.current;
             carousel.scrollLeft -= ((cardWidth + gridGap) * cardsShiftedPerClick);
-            currentPage -= 1;
-            setAriaHidden(carousel);
+            setVisibleCards('prev');
+            setAriaAttributes(carousel);
             shouldHidePrevButton();
         }
     }
