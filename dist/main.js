@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.33.0 (3/26/2025, 08:31:48)
+ * Chimera UI Libraries - Build 0.33.1 (3/28/2025, 08:18:29)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -46915,7 +46915,8 @@ var CardType = {
     bannerMap: (0, _propTypes.shape)(Object).isRequired,
     tags: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_card.tagsType)),
     onFocus: _propTypes.func.isRequired,
-    origin: _propTypes.string
+    origin: _propTypes.string,
+    ariaHidden: _propTypes.bool
 };
 
 var defaultProps = {
@@ -46938,7 +46939,8 @@ var defaultProps = {
     cardDate: '',
     modifiedDate: '',
     tags: [],
-    origin: ''
+    origin: '',
+    ariaHidden: false
 };
 
 /**
@@ -47017,7 +47019,8 @@ var Card = function Card(props) {
         endDate = props.endDate,
         bannerMap = props.bannerMap,
         onFocus = props.onFocus,
-        origin = props.origin;
+        origin = props.origin,
+        ariaHidden = props.ariaHidden;
 
 
     var bannerBackgroundColorToUse = bannerBackgroundColor;
@@ -47249,7 +47252,8 @@ var Card = function Card(props) {
     var altCtaLink = getAltCtaLink(footer);
     var ctaText = altCtaUsed && isUpcoming && altCtaLink !== '' ? getCtaText(footer, 'alt') : getCtaText(footer, 'right');
     var overlay = altCtaUsed && isLive && altCtaLink !== '' ? altCtaLink : overlayParams;
-    var getsFocus = isHalfHeight || isThreeFourths || isFull || isDoubleWide || isIcon || hideCTA;
+    // const getsFocus = isHalfHeight
+    var getsFocus = isHalfHeight && !videoURLToUse || isThreeFourths || isFull || isDoubleWide || isIcon || hideCTA;
 
     return _react2.default.createElement(
         'div',
@@ -47401,6 +47405,7 @@ var Card = function Card(props) {
             link: overlay,
             title: title,
             getsFocus: getsFocus,
+            tabIndex: ariaHidden ? -1 : 0,
             daa: ctaText })
     );
 };

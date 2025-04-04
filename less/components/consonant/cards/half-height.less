@@ -36,7 +36,7 @@
             top: -118px;
             background: transparent;
             position: absolute;
-            height: 208px;
+            height: 100%;
             left: 0;
             right: 0;
             z-index: 2;
@@ -51,15 +51,18 @@
             right: auto;
         }
 
-        .consonant-Card-videoIco:focus {
+        .consonant-Card-videoButton-wrapper:focus .consonant-Card-videoIco {
             transform: scale(1.1);
             transition: transform @consonantTransitionTime @consonantTransitionFunc;
             outline: 2px solid @consonantFocusedColor;
+            border-radius: 50%;
         }
 
         .consonant-Card-content {
             position: absolute;
             text-decoration: none;
+            left: 0;
+            right: 0;
             bottom: 0;
             background-color: transparent;
             flex-direction: column-reverse;

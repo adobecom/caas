@@ -50,6 +50,7 @@ const CardType = {
     tags: arrayOf(shape(tagsType)),
     onFocus: func.isRequired,
     origin: string,
+    ariaHidden: bool,
 };
 
 const defaultProps = {
@@ -73,6 +74,7 @@ const defaultProps = {
     modifiedDate: '',
     tags: [],
     origin: '',
+    ariaHidden: false,
 };
 
 /**
@@ -152,6 +154,7 @@ const Card = (props) => {
         bannerMap,
         onFocus,
         origin,
+        ariaHidden,
     } = props;
 
     let bannerBackgroundColorToUse = bannerBackgroundColor;
@@ -396,7 +399,7 @@ const Card = (props) => {
     const altCtaLink = getAltCtaLink(footer);
     const ctaText = (altCtaUsed && isUpcoming && altCtaLink !== '') ? getCtaText(footer, 'alt') : getCtaText(footer, 'right');
     const overlay = (altCtaUsed && isLive && altCtaLink !== '') ? altCtaLink : overlayParams;
-    const getsFocus = isHalfHeight
+    const getsFocus = (isHalfHeight && !videoURLToUse)
         || isThreeFourths
         || isFull
         || isDoubleWide
@@ -566,6 +569,7 @@ const Card = (props) => {
                 link={overlay}
                 title={title}
                 getsFocus={getsFocus}
+                tabIndex={ariaHidden ? -1 : 0}
                 daa={ctaText} />}
         </div>
     );
