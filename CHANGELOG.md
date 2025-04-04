@@ -1,5 +1,12 @@
 
 
+## [0.33.3](https://github.com/adobecom/caas/compare/0.33.2...0.33.3) (2025-04-04)
+
+
+### Bug Fixes
+
+* **mwpw-127194:** adds visual focus to the video play button ([#263](https://github.com/adobecom/caas/issues/263)) ([2358378](https://github.com/adobecom/caas/commit/235837846b16394bc3dfc86cb3da4df1365a719f))
+
 ## [0.33.2](https://github.com/adobecom/caas/compare/0.33.1...0.33.2) (2025-03-31)
 
 ## [0.33.1](https://github.com/adobecom/caas/compare/0.33.0...0.33.1) (2025-03-26)
