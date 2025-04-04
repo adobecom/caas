@@ -586,5 +586,17 @@
       "fid": 0.9000000000232831,
       "cls": null
     }
+  },
+  {
+    "date": "2025-04-04T19:27:48.815Z",
+    "pr": {
+      "number": "263",
+      "title": "fix(mwpw-127194): adds visual focus to the video play button"
+    },
+    "metrics": {
+      "lcp": 13050.700000000012,
+      "fid": 0.7999999999883585,
+      "cls": null
+    }
   }
 ]
