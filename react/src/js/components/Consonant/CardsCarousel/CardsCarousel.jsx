@@ -222,6 +222,8 @@ function CardsCarousel({
                 ? card.querySelector('.consonant-LinkBlocker')
                 : card.querySelector('.consonant-BtnInfobit');
 
+            if (!cardLink) return;
+
             if (index + 1 >= firstVisibleCard && index + 1 <= lastVisibleCard) {
                 cardLink.removeAttribute('aria-hidden');
                 cardLink.removeAttribute('inert');

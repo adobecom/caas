@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.33.3 (4/7/2025, 10:24:58)
+ * Chimera UI Libraries - Build 0.33.3 (4/7/2025, 22:32:09)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -44489,6 +44489,8 @@ function CardsCarousel() {
 
         carousel.querySelectorAll('.consonant-Card').forEach(function (card, index) {
             var cardLink = shouldRenderOverlay ? card.querySelector('.consonant-LinkBlocker') : card.querySelector('.consonant-BtnInfobit');
+
+            if (!cardLink) return;
 
             if (index + 1 >= firstVisibleCard && index + 1 <= lastVisibleCard) {
                 cardLink.removeAttribute('aria-hidden');
