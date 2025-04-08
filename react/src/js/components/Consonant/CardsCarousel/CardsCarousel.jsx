@@ -12,6 +12,42 @@ const TABLET_BREAKPOINT = 1199;
 let cardsShiftedPerClick = null;
 let cardWidth = null;
 
+/**
+ * Gets the width of the card based on the size and gap.
+ * @param {string} size - The size of the card based on the layout.
+ * @param {number} gap - The gap between the cards.
+ * @returns {number} - The width of the card.
+ */
+export function getCardWidth(size, gap) {
+    const cardWidths = {
+        '2up': {
+            '8px': 579,
+            '16px': 575,
+            '24px': 571,
+            '32px': 566,
+        },
+        '3up': {
+            '8px': 394,
+            '16px': 389,
+            '24px': 384,
+            '32px': 378,
+        },
+        '4up': {
+            '8px': 294,
+            '16px': 288,
+            '24px': 282,
+            '32px': 276,
+        },
+        '5up': {
+            '8px': 226,
+            '16px': 220,
+            '24px': 214,
+            '32px': 207,
+        },
+    };
+    return cardWidths[size] ? cardWidths[size][`${gap}px`] : 0;
+}
+
 function CardsCarousel({
     cards,
     cardStyle,
@@ -27,42 +63,6 @@ function CardsCarousel({
     const useLightText = getConfig('collection', 'useLightText');
     const isIncremental = getConfig('pagination', 'animationStyle') === 'incremental';
     const renderOverlay = getConfig('collection', 'useOverlayLinks');
-
-    /**
-     * Gets the width of the card based on the size and gap.
-     * @param {string} size - The size of the card based on the layout.
-     * @param {number} gap - The gap between the cards.
-     * @returns {number} - The width of the card.
-     */
-    function getCardWidth(size, gap) {
-        const cardWidths = {
-            '2up': {
-                '1xGutter': 579,
-                '2xGutter': 575,
-                '3xGutter': 571,
-                '4xGutter': 566,
-            },
-            '3up': {
-                '8px': 394,
-                '16px': 389,
-                '24px': 384,
-                '32px': 378,
-            },
-            '4up': {
-                '8px': 294,
-                '16px': 288,
-                '24px': 282,
-                '32px': 276,
-            },
-            '5up': {
-                '8px': 226,
-                '16px': 220,
-                '24px': 214,
-                '32px': 207,
-            },
-        };
-        return cardWidths[size] ? cardWidths[size][`${gap}px`] : 0;
-    }
 
     if (cardsUp.includes('2up')) {
         cardWidth = getCardWidth('2up', gridGap);
@@ -242,20 +242,13 @@ function CardsCarousel({
      * @param {string} direction - The direction of the click.
      */
     function setVisibleCards(direction) {
-        if (isIncremental) {
-            if (direction === 'next') {
-                firstVisibleCard++;
-                lastVisibleCard++;
-            } else {
-                firstVisibleCard--;
-                lastVisibleCard--;
-            }
-        } else if (direction === 'next') {
-            firstVisibleCard += cardsPerPage;
-            lastVisibleCard += cardsPerPage;
+        const incrementBy = isIncremental ? 1 : cardsPerPage;
+        if (direction === 'next') {
+            firstVisibleCard += incrementBy;
+            lastVisibleCard += incrementBy;
         } else {
-            firstVisibleCard -= cardsPerPage;
-            lastVisibleCard -= cardsPerPage;
+            firstVisibleCard -= incrementBy;
+            lastVisibleCard -= incrementBy;
         }
     }
 

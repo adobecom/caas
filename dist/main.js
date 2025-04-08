@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.33.3 (4/7/2025, 22:56:38)
+ * Chimera UI Libraries - Build 0.33.3 (4/8/2025, 16:11:53)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -44250,6 +44250,8 @@ Object.defineProperty(exports, "__esModule", {
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); /* eslint-disable react/jsx-no-bind,react/forbid-prop-types,react/jsx-no-bind */
 
 
+exports.getCardWidth = getCardWidth;
+
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
@@ -44278,6 +44280,42 @@ var TABLET_BREAKPOINT = 1199;
 var cardsShiftedPerClick = null;
 var cardWidth = null;
 
+/**
+ * Gets the width of the card based on the size and gap.
+ * @param {string} size - The size of the card based on the layout.
+ * @param {number} gap - The gap between the cards.
+ * @returns {number} - The width of the card.
+ */
+function getCardWidth(size, gap) {
+    var cardWidths = {
+        '2up': {
+            '8px': 579,
+            '16px': 575,
+            '24px': 571,
+            '32px': 566
+        },
+        '3up': {
+            '8px': 394,
+            '16px': 389,
+            '24px': 384,
+            '32px': 378
+        },
+        '4up': {
+            '8px': 294,
+            '16px': 288,
+            '24px': 282,
+            '32px': 276
+        },
+        '5up': {
+            '8px': 226,
+            '16px': 220,
+            '24px': 214,
+            '32px': 207
+        }
+    };
+    return cardWidths[size] ? cardWidths[size][gap + 'px'] : 0;
+}
+
 function CardsCarousel() {
     var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
         cards = _ref.cards,
@@ -44294,42 +44332,6 @@ function CardsCarousel() {
     var useLightText = getConfig('collection', 'useLightText');
     var isIncremental = getConfig('pagination', 'animationStyle') === 'incremental';
     var renderOverlay = getConfig('collection', 'useOverlayLinks');
-
-    /**
-     * Gets the width of the card based on the size and gap.
-     * @param {string} size - The size of the card based on the layout.
-     * @param {number} gap - The gap between the cards.
-     * @returns {number} - The width of the card.
-     */
-    function getCardWidth(size, gap) {
-        var cardWidths = {
-            '2up': {
-                '1xGutter': 579,
-                '2xGutter': 575,
-                '3xGutter': 571,
-                '4xGutter': 566
-            },
-            '3up': {
-                '8px': 394,
-                '16px': 389,
-                '24px': 384,
-                '32px': 378
-            },
-            '4up': {
-                '8px': 294,
-                '16px': 288,
-                '24px': 282,
-                '32px': 276
-            },
-            '5up': {
-                '8px': 226,
-                '16px': 220,
-                '24px': 214,
-                '32px': 207
-            }
-        };
-        return cardWidths[size] ? cardWidths[size][gap + 'px'] : 0;
-    }
 
     if (cardsUp.includes('2up')) {
         cardWidth = getCardWidth('2up', gridGap);
@@ -44510,20 +44512,13 @@ function CardsCarousel() {
      * @param {string} direction - The direction of the click.
      */
     function setVisibleCards(direction) {
-        if (isIncremental) {
-            if (direction === 'next') {
-                firstVisibleCard++;
-                lastVisibleCard++;
-            } else {
-                firstVisibleCard--;
-                lastVisibleCard--;
-            }
-        } else if (direction === 'next') {
-            firstVisibleCard += cardsPerPage;
-            lastVisibleCard += cardsPerPage;
+        var incrementBy = isIncremental ? 1 : cardsPerPage;
+        if (direction === 'next') {
+            firstVisibleCard += incrementBy;
+            lastVisibleCard += incrementBy;
         } else {
-            firstVisibleCard -= cardsPerPage;
-            lastVisibleCard -= cardsPerPage;
+            firstVisibleCard -= incrementBy;
+            lastVisibleCard -= incrementBy;
         }
     }
 
