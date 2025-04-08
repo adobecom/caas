@@ -1,6 +1,5 @@
 import '@testing-library/jest-dom/extend-expect';
 import {
-    screen,
     fireEvent,
 } from '@testing-library/react';
 

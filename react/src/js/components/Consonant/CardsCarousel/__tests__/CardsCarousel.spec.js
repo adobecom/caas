@@ -75,8 +75,6 @@ describe('Consonant/Container/CardsCarousel', () => {
         });
 
         // Check if navigation buttons are rendered
-        const nextButton = screen.getByRole('button', { name: 'Next button' });
-        const prevButton = screen.getByRole('button', { name: 'Previous button' });
         expect(nextButton).toBeInTheDocument();
         expect(prevButton).toBeInTheDocument();
 
@@ -432,9 +430,6 @@ describe('Consonant/Container/CardsCarousel', () => {
             configToUse.pagination = { animationStyle: 'incremental' };
             await act(async () => render(<Container config={configToUse} />));
             
-            // Get the CardsCarousel component
-            const carousel = document.querySelector('.consonant-Container--carousel');
-            
             // Mock the initial state
             let firstVisibleCard = 1;
             let lastVisibleCard = 3;
@@ -465,9 +460,6 @@ describe('Consonant/Container/CardsCarousel', () => {
             // Set up non-incremental animation
             configToUse.pagination = { animationStyle: 'non-incremental' };
             await act(async () => render(<Container config={configToUse} />));
-            
-            // Get the CardsCarousel component
-            const carousel = document.querySelector('.consonant-Container--carousel');
 
             // Mock the initial state
             let firstVisibleCard = 1;
@@ -499,9 +491,6 @@ describe('Consonant/Container/CardsCarousel', () => {
             // Set up incremental animation
             configToUse.pagination = { animationStyle: 'incremental' };
             await act(async () => render(<Container config={configToUse} />));
-            
-            // Get the CardsCarousel component
-            const carousel = document.querySelector('.consonant-Container--carousel');
 
             // Mock the initial state
             let firstVisibleCard = 4;
@@ -533,9 +522,6 @@ describe('Consonant/Container/CardsCarousel', () => {
             // Set up non-incremental animation
             configToUse.pagination = { animationStyle: 'non-incremental' };
             await act(async () => render(<Container config={configToUse} />));
-            
-            // Get the CardsCarousel component
-            const carousel = document.querySelector('.consonant-Container--carousel');
             
             // Mock the initial state
             let firstVisibleCard = 7;
