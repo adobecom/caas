@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.33.3 (4/7/2025, 22:32:09)
+ * Chimera UI Libraries - Build 0.33.3 (4/7/2025, 22:56:38)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -47408,8 +47408,6 @@ var Card = function Card(props) {
     var ctaText = altCtaUsed && isUpcoming && altCtaLink !== '' ? getCtaText(footer, 'alt') : getCtaText(footer, 'right');
     var overlay = altCtaUsed && isLive && altCtaLink !== '' ? altCtaLink : overlayParams;
     var getsFocus = isHalfHeight || isThreeFourths || isFull || isDoubleWide || isIcon || hideCTA;
-
-    console.log('*** Card.jsx: getsFocus', getsFocus); // *** MWPW-164509 ***
 
     return _react2.default.createElement(
         'div',

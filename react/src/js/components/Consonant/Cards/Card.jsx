@@ -409,8 +409,6 @@ const Card = (props) => {
         || isIcon
         || hideCTA;
 
-    console.log('*** Card.jsx: getsFocus', getsFocus); // *** MWPW-164509 ***
-
     return (
         <div
             daa-lh={lh}
