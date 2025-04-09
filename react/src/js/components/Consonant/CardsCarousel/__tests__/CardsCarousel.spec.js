@@ -77,9 +77,6 @@ describe('Consonant/Container/CardsCarousel', () => {
         // Check if navigation buttons are rendered
         expect(nextButton).toBeInTheDocument();
         expect(prevButton).toBeInTheDocument();
-
-        // Check if cards are rendered
-        const cards = screen.getAllByTestId('consonant-Card');
         expect(cards).toHaveLength(22);
     });
 
