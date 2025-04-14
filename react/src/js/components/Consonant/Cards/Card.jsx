@@ -51,6 +51,7 @@ const CardType = {
     onFocus: func.isRequired,
     origin: string,
     ariaHidden: bool,
+    tabIndex: string,
 };
 
 const defaultProps = {
@@ -75,6 +76,7 @@ const defaultProps = {
     tags: [],
     origin: '',
     ariaHidden: false,
+    tabIndex: '',
 };
 
 /**
@@ -155,6 +157,7 @@ const Card = (props) => {
         onFocus,
         origin,
         ariaHidden,
+        tabIndex,
     } = props;
 
     let bannerBackgroundColorToUse = bannerBackgroundColor;
@@ -399,7 +402,7 @@ const Card = (props) => {
     const altCtaLink = getAltCtaLink(footer);
     const ctaText = (altCtaUsed && isUpcoming && altCtaLink !== '') ? getCtaText(footer, 'alt') : getCtaText(footer, 'right');
     const overlay = (altCtaUsed && isLive && altCtaLink !== '') ? altCtaLink : overlayParams;
-    const getsFocus = (isHalfHeight && !videoURLToUse)
+    const getsFocus = isHalfHeight
         || isThreeFourths
         || isFull
         || isDoubleWide
@@ -552,7 +555,9 @@ const Card = (props) => {
                         endDate={endDate}
                         cardStyle={cardStyle}
                         onFocus={onFocus}
-                        title={title} />
+                        title={title}
+                        tabIndex={tabIndex}
+                        renderOverlay={renderOverlay} />
                 ))}
                 {(isThreeFourths || isDoubleWide || isFull)
                     && !renderOverlay
@@ -560,7 +565,7 @@ const Card = (props) => {
                         target={linkBlockerTarget}
                         link={overlay}
                         title={title}
-                        getsFocus={getsFocus}
+                        getsFocus={getsFocus || true}
                         daa={ctaText} />}
             </div>
             {(renderOverlay || hideCTA || isHalfHeight || isIcon)
@@ -568,7 +573,8 @@ const Card = (props) => {
                 target={linkBlockerTarget}
                 link={overlay}
                 title={title}
-                getsFocus={getsFocus}
+                getsFocus={getsFocus || true}
+                ariaHidden={ariaHidden}
                 tabIndex={ariaHidden ? -1 : 0}
                 daa={ctaText} />}
         </div>
