@@ -598,5 +598,17 @@
       "fid": 0.7999999999883585,
       "cls": null
     }
+  },
+  {
+    "date": "2025-04-14T16:31:51.802Z",
+    "pr": {
+      "number": "264",
+      "title": "feat(mwpw-164509): refactors carousel for accessibility"
+    },
+    "metrics": {
+      "lcp": 13133,
+      "fid": 0.7000000000116415,
+      "cls": null
+    }
   }
 ]
