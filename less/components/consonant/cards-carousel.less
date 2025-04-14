@@ -31,13 +31,6 @@
                         min-height: 496px;
                     }
                 }
-
-                &.tabbing {
-                    *:focus {
-                        outline: @consonantFocusedColor solid 4px;
-                        outline-offset: 3px;
-                    }
-                }
             }
         }
 
@@ -124,7 +117,7 @@
             }
 
             &--2up {
-                grid-template-columns: auto;
+                grid-template-columns: repeat(auto-fill, minmax(@consonant-DoubleWideCard-desktopMinWidth, @consonant-DoubleWideCard-desktopMinWidth));
 
                 .consonant-Card {
                     min-width: 500px;
@@ -150,30 +143,10 @@
             }
 
             &--3up {
-                grid-template-columns: auto;
+                grid-template-columns: repeat(auto-fill, minmax(@consonantCardMaxWidth, @consonantCardMaxWidth-3up));
 
-                &.consonant-CardsGrid--with1xGutter {
-                    .consonant-Card {
-                        width: 394px;
-                    }
-                }
-
-                &.consonant-CardsGrid--with2xGutter {
-                    .consonant-Card {
-                        width: 389px;
-                    }
-                }
-
-                &.consonant-CardsGrid--with3xGutter {
-                    .consonant-Card {
-                        width: 384px;
-                    }
-                }
-
-                &.consonant-CardsGrid--with4xGutter {
-                    .consonant-Card {
-                        width: 378px;
-                    }
+                .consonant-Card {
+                    min-width: @consonantCardMaxWidth-3up;
                 }
 
                 &:after {
@@ -196,30 +169,10 @@
             }
 
             &--4up {
-                grid-template-columns: auto;
+                grid-template-columns: repeat(auto-fill, minmax(@consonant-CardsGrid-smallerCardMaxWidth, @consonant-CardsGrid-smallerCardMaxWidth));
 
-                &.consonant-CardsGrid--with1xGutter {
-                    .consonant-Card {
-                        width: 294px;
-                    }
-                }
-
-                &.consonant-CardsGrid--with2xGutter {
-                    .consonant-Card {
-                        width: 288px;
-                    }
-                }
-
-                &.consonant-CardsGrid--with3xGutter {
-                    .consonant-Card {
-                        width: 282px;
-                    }
-                }
-
-                &.consonant-CardsGrid--with4xGutter {
-                    .consonant-Card {
-                        width: 276px;
-                    }
+                .consonant-Card {
+                    min-width: @consonant-CardsGrid-smallerCardMaxWidth;
                 }
 
                 &:after {
@@ -237,7 +190,7 @@
             }
 
             &--5up {
-                grid-template-columns: auto;
+                grid-template-columns: repeat(auto-fill, minmax(@consonant-CardsGrid-smallestCardMaxWidth, @consonant-CardsGrid-smallestCardMaxWidth));
 
                 .consonant-Card {
                     min-width: @consonant-CardsGrid-smallestCardMaxWidth;

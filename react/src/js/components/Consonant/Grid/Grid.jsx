@@ -35,7 +35,6 @@ const cardsGridType = {
     isAriaLiveActive: bool,
     // eslint-disable-next-line react/forbid-prop-types
     forwardedRef: object,
-    renderOverlay: bool,
 };
 
 const defaultProps = {
@@ -45,7 +44,6 @@ const defaultProps = {
     containerType: 'default',
     isAriaLiveActive: false,
     forwardedRef: null,
-    renderOverlay: false,
 };
 
 /**
@@ -73,7 +71,6 @@ const Grid = (props) => {
         isAriaLiveActive,
         // eslint-disable-next-line react/forbid-prop-types
         forwardedRef,
-        renderOverlay,
     } = props;
 
     /**
@@ -87,7 +84,7 @@ const Grid = (props) => {
     const cardsGridGutter = getConfig('collection', 'layout.gutter');
     const renderCardsBorders = getConfig('collection', 'setCardBorders');
     const renderFooterDivider = getConfig('collection', 'showFooterDivider');
-    // const renderCardsOverlay = getConfig('collection', 'useOverlayLinks');
+    const renderCardsOverlay = getConfig('collection', 'useOverlayLinks');
     const dateFormat = getConfig('collection', 'i18n.prettyDateIntervalFormat');
     const locale = getConfig('language', '');
     const paginationType = getConfig('pagination', 'type');
@@ -147,20 +144,6 @@ const Grid = (props) => {
             fontColor: '#323232',
             icon: '',
         },
-    };
-
-    /* *** MWPW-164509 *** */
-    const cardsPerPage = () => {
-        switch (cardsGridLayout) {
-            case GRID_TYPE.FIVE_UP:
-                return 5;
-            case GRID_TYPE.FOUR_UP:
-                return 4;
-            case GRID_TYPE.THREE_UP:
-                return 3;
-            default:
-                return 2;
-        }
     };
 
     /**
@@ -238,7 +221,6 @@ const Grid = (props) => {
                 const { contentArea: { title = '' } = {}, id } = card;
                 const cardNumber = index + 1;
                 const hideCTA = getHideCta(card, collectionButtonStyle);
-                const ariaHidden = index >= cardsPerPage();
 
                 switch (cardStyle) {
                     /* istanbul ignore next */
@@ -257,10 +239,8 @@ const Grid = (props) => {
                                 locale={locale}
                                 renderBorder={renderCardsBorders}
                                 renderDivider={renderFooterDivider}
-                                renderOverlay={renderOverlay}
+                                renderOverlay={renderCardsOverlay}
                                 hideCTA={hideCTA}
-                                ariaHidden={ariaHidden}
-                                tabIndex={ariaHidden ? '-1' : ''}
                                 /* istanbul ignore next */
                                 onFocus={() => scrollCardIntoView(card.id)} />
                         );

@@ -14,7 +14,6 @@ import config from '../../Testing/Mocks/config.json';
 import cards from '../../Testing/Mocks/cards.json';
 import setupIntersectionObserverMock from '../../Testing/Mocks/intersectionObserver';
 import jestMocks from '../../Testing/Utils/JestMocks';
-import { getCardWidth } from '../CardsCarousel';
 
 global.fetch = jest.fn(() =>
     Promise.resolve({
@@ -68,18 +67,6 @@ beforeEach(async () => {
 });
 
 describe('Consonant/Container/CardsCarousel', () => {
-    test('should render Carousel with default props', async () => {        
-        // Check if the carousel container is rendered
-        await waitFor(() => {
-            expect(carouselContainer).toBeInTheDocument();
-        });
-
-        // Check if navigation buttons are rendered
-        expect(nextButton).toBeInTheDocument();
-        expect(prevButton).toBeInTheDocument();
-        expect(cards).toHaveLength(22);
-    });
-
     test('should render the Next button on load', () => {
         expect(inner).toBeInTheDocument();
         expect(grid).toBeInTheDocument();
@@ -373,6 +360,7 @@ describe('Consonant/Container/CardsCarousel', () => {
         expect(nextButton).not.toHaveClass('hide');
     });
 
+
     test('should not throw an error when nextBtn is not defined', () => {
         // Mock the showNextButton function
         const showNextButton = jest.fn(() => {
@@ -382,200 +370,4 @@ describe('Consonant/Container/CardsCarousel', () => {
         // Call the mock function
         expect(() => showNextButton()).not.toThrow();
     });
-
-    describe('getCardWidth', () => {
-        test('should return correct width for 2up with different gaps', () => {
-            expect(getCardWidth('2up', 8)).toBe(579);
-            expect(getCardWidth('2up', 16)).toBe(575);
-            expect(getCardWidth('2up', 24)).toBe(571);
-            expect(getCardWidth('2up', 32)).toBe(566);
-        });
-
-        test('should return correct width for 3up with different gaps', () => {
-            expect(getCardWidth('3up', 8)).toBe(394);
-            expect(getCardWidth('3up', 16)).toBe(389);
-            expect(getCardWidth('3up', 24)).toBe(384);
-            expect(getCardWidth('3up', 32)).toBe(378);
-        });
-
-        test('should return correct width for 4up with different gaps', () => {
-            expect(getCardWidth('4up', 8)).toBe(294);
-            expect(getCardWidth('4up', 16)).toBe(288);
-            expect(getCardWidth('4up', 24)).toBe(282);
-            expect(getCardWidth('4up', 32)).toBe(276);
-        });
-
-        test('should return correct width for 5up with different gaps', () => {
-            expect(getCardWidth('5up', 8)).toBe(226);
-            expect(getCardWidth('5up', 16)).toBe(220);
-            expect(getCardWidth('5up', 24)).toBe(214);
-            expect(getCardWidth('5up', 32)).toBe(207);
-        });
-
-        test('should return undefined for invalid layout type', () => {
-            expect(getCardWidth('', 8)).toBe(0);
-        });
-
-        test('should return undefined for invalid gap type', () => {
-            expect(getCardWidth('2up', '')).toBe(undefined);
-        });
-    });
-
-    describe('setVisibleCards', () => {
-        test('should increment firstVisibleCard and lastVisibleCard by 1 when direction is next and animation is incremental', async () => {
-            // Set up incremental animation
-            configToUse.pagination = { animationStyle: 'incremental' };
-            await act(async () => render(<Container config={configToUse} />));
-            
-            // Mock the initial state
-            let firstVisibleCard = 1;
-            let lastVisibleCard = 3;
-            const cardsPerPage = 3;
-            const isIncremental = true;
-            
-            // Define the setVisibleCards function
-            const setVisibleCards = (direction) => {
-                const incrementBy = isIncremental ? 1 : cardsPerPage;
-                if (direction === 'next') {
-                    firstVisibleCard += incrementBy;
-                    lastVisibleCard += incrementBy;
-                } else {
-                    firstVisibleCard -= incrementBy;
-                    lastVisibleCard -= incrementBy;
-                }
-            };
-            
-            // Call the function with 'next' direction
-            setVisibleCards('next');
-            
-            // Assert that values are incremented by 1
-            expect(firstVisibleCard).toBe(2);
-            expect(lastVisibleCard).toBe(4);
-        });
-        
-        test('should increment firstVisibleCard and lastVisibleCard by cardsPerPage when direction is next and animation is not incremental', async () => {
-            // Set up non-incremental animation
-            configToUse.pagination = { animationStyle: 'non-incremental' };
-            await act(async () => render(<Container config={configToUse} />));
-
-            // Mock the initial state
-            let firstVisibleCard = 1;
-            let lastVisibleCard = 3;
-            const cardsPerPage = 3;
-            const isIncremental = false;
-            
-            // Define the setVisibleCards function
-            const setVisibleCards = (direction) => {
-                const incrementBy = isIncremental ? 1 : cardsPerPage;
-                if (direction === 'next') {
-                    firstVisibleCard += incrementBy;
-                    lastVisibleCard += incrementBy;
-                } else {
-                    firstVisibleCard -= incrementBy;
-                    lastVisibleCard -= incrementBy;
-                }
-            };
-            
-            // Call the function with 'next' direction
-            setVisibleCards('next');
-            
-            // Assert that values are incremented by cardsPerPage
-            expect(firstVisibleCard).toBe(4);
-            expect(lastVisibleCard).toBe(6);
-        });
-        
-        test('should decrement firstVisibleCard and lastVisibleCard by 1 when direction is prev and animation is incremental', async () => {
-            // Set up incremental animation
-            configToUse.pagination = { animationStyle: 'incremental' };
-            await act(async () => render(<Container config={configToUse} />));
-
-            // Mock the initial state
-            let firstVisibleCard = 4;
-            let lastVisibleCard = 6;
-            const cardsPerPage = 3;
-            const isIncremental = true;
-            
-            // Define the setVisibleCards function
-            const setVisibleCards = (direction) => {
-                const incrementBy = isIncremental ? 1 : cardsPerPage;
-                if (direction === 'next') {
-                    firstVisibleCard += incrementBy;
-                    lastVisibleCard += incrementBy;
-                } else {
-                    firstVisibleCard -= incrementBy;
-                    lastVisibleCard -= incrementBy;
-                }
-            };
-            
-            // Call the function with 'prev' direction
-            setVisibleCards('prev');
-            
-            // Assert that values are decremented by 1
-            expect(firstVisibleCard).toBe(3);
-            expect(lastVisibleCard).toBe(5);
-        });
-        
-        test('should decrement firstVisibleCard and lastVisibleCard by cardsPerPage when direction is prev and animation is not incremental', async () => {
-            // Set up non-incremental animation
-            configToUse.pagination = { animationStyle: 'non-incremental' };
-            await act(async () => render(<Container config={configToUse} />));
-            
-            // Mock the initial state
-            let firstVisibleCard = 7;
-            let lastVisibleCard = 9;
-            const cardsPerPage = 3;
-            const isIncremental = false;
-            
-            // Define the setVisibleCards function
-            const setVisibleCards = (direction) => {
-                const incrementBy = isIncremental ? 1 : cardsPerPage;
-                if (direction === 'next') {
-                    firstVisibleCard += incrementBy;
-                    lastVisibleCard += incrementBy;
-                } else {
-                    firstVisibleCard -= incrementBy;
-                    lastVisibleCard -= incrementBy;
-                }
-            };
-            
-            // Call the function with 'prev' direction
-            setVisibleCards('prev');
-            
-            // Assert that values are decremented by cardsPerPage
-            expect(firstVisibleCard).toBe(4);
-            expect(lastVisibleCard).toBe(6);
-        });
-    });
-
-   describe('Tab key press functionality', () => {
-        test('should add tabbing class to carousel parent element when Tab key is pressed', async () => {
-            // Set up the carousel
-            configToUse.collection.layout.container = 'carousel';
-            await act(async () => render(<Container config={configToUse} />));
-
-            // Get the carousel parent element
-            const carouselParent = document.querySelector('.consonant-Container--carousel').parentElement;
-
-            // Simulate tabbing to the carousel 
-            fireEvent.keyDown(carouselParent, { key: 'Tab' });
-
-            // Confirm the carousel parent element has the tabbing class
-            expect(carouselParent).toHaveClass('tabbing');
-        });
-
-        test('should remove tabbing class from carousel parent element when the mouse is down', async () => {
-            // Set up the carousel
-            configToUse.collection.layout.container = 'carousel';
-            await act(async () => render(<Container config={configToUse} />));
-
-            // Get the carousel parent element
-            const carouselParent = document.querySelector('.consonant-Container--carousel').parentElement;
-
-            // Simulate mouse down
-            fireEvent.mouseDown(carouselParent);
-            
-            // Confirm the carousel parent element does not have the tabbing class
-            expect(carouselParent).not.toHaveClass('tabbing');
-        });
-   });
 });

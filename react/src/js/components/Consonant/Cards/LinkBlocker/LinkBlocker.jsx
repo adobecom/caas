@@ -6,7 +6,6 @@ const LinkBlockerType = {
     link: string,
     target: string,
     title: string,
-    ariaHidden: bool,
     getsFocus: bool,
     daa: string,
 };
@@ -15,7 +14,6 @@ const defaultProps = {
     link: '',
     target: '',
     title: '',
-    ariaHidden: false,
     getsFocus: false,
     daa: '',
 };
@@ -41,7 +39,6 @@ const LinkBlocker = (props) => {
         target,
         title,
         getsFocus,
-        ariaHidden,
         daa,
     } = props;
     return (
@@ -51,8 +48,7 @@ const LinkBlocker = (props) => {
             target={target}
             rel="noopener noreferrer"
             aria-label={title}
-            aria-hidden={ariaHidden}
-            tabIndex={(!ariaHidden && getsFocus) ? 0 : -1}
+            tabIndex={getsFocus ? 0 : -1}
             daa-ll={daa}
             className="consonant-LinkBlocker" />
     );
