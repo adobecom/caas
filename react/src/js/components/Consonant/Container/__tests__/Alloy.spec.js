@@ -19,17 +19,14 @@ describe('Consonant/Container/Alloy Integration', () => {
     test('should wait for satellite promise before calling alloy', async () => {
         const configToUse = { ...config, target: { enabled: true } };
         
-        // Mock the satellite promise
         window.__satelliteLoadedPromise = Promise.resolve();
         
-        // Mock alloy
         window.alloy = jest.fn().mockReturnValue(Promise.resolve({
             identity: { ECID: 'test-ecid' },
             edge: { regionId: 'test-region' }
         }));
         window.edgeConfigId = 'test-config';
 
-        // Mock fetch to succeed
         global.fetch.mockImplementationOnce(() => Promise.resolve({
             ok: true,
             status: 200,
@@ -57,14 +54,11 @@ describe('Consonant/Container/Alloy Integration', () => {
     test('should handle alloy not being available', async () => {
         const configToUse = { ...config, target: { enabled: true } };
         
-        // Mock the satellite promise
         window.__satelliteLoadedPromise = Promise.resolve();
         
-        // Don't mock alloy to simulate it not being available
         window.alloy = undefined;
         window.edgeConfigId = undefined;
 
-        // Mock fetch to succeed
         global.fetch.mockImplementationOnce(() => Promise.resolve({
             ok: true,
             status: 200,
@@ -75,7 +69,6 @@ describe('Consonant/Container/Alloy Integration', () => {
 
         await act(async () => render(<Container config={configToUse} />));
 
-        // Verify that fetch was called without alloy parameters
         await waitFor(() => {
             expect(global.fetch).toHaveBeenCalledWith(
                 expect.not.stringContaining('mcgvid'),
@@ -87,14 +80,11 @@ describe('Consonant/Container/Alloy Integration', () => {
     test('should handle satellite promise rejection', async () => {
         const configToUse = { ...config, target: { enabled: true } };
         
-        // Mock the satellite promise to reject
         window.__satelliteLoadedPromise = Promise.reject(new Error('Satellite failed'));
         
-        // Mock alloy
         window.alloy = jest.fn();
         window.edgeConfigId = 'test-config';
 
-        // Mock fetch to succeed
         global.fetch.mockImplementationOnce(() => Promise.resolve({
             ok: true,
             status: 200,
@@ -105,7 +95,6 @@ describe('Consonant/Container/Alloy Integration', () => {
 
         await act(async () => render(<Container config={configToUse} />));
 
-        // Verify that fetch was called without alloy parameters
         await waitFor(() => {
             expect(global.fetch).toHaveBeenCalledWith(
                 expect.not.stringContaining('mcgvid'),
