@@ -1,5 +1,12 @@
 
 
+## [0.34.1](https://github.com/adobecom/caas/compare/0.34.0...0.34.1) (2025-04-14)
+
+
+### Reverts
+
+* Revert "feat(mwpw-164509): refactors carousel for accessibility (#264)" (#266) ([7a16796](https://github.com/adobecom/caas/commit/7a167960afacf6d178361f5b83ae3d51ae5d3c61)), closes [#264](https://github.com/adobecom/caas/issues/264) [#266](https://github.com/adobecom/caas/issues/266)
+
 # [0.34.0](https://github.com/adobecom/caas/compare/0.33.3...0.34.0) (2025-04-14)
 
 
