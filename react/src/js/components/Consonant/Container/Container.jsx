@@ -962,12 +962,14 @@ const Container = (props) => {
 
             visitorApi.then((result) => {
                 if (window.alloy && window.edgeConfigId) {
-                    window.alloy('getIdentity')
-                        .then((res) => {
-                            collectionURI.searchParams.set('mcgvid', res.identity.ECID);
-                            collectionURI.searchParams.set('mboxMCGLH', res.edge.regionId);
-                            getCards(collectionURI.toString());
-                        });
+                    window.__satelliteLoadedPromise.then(() => {
+                        window.alloy('getIdentity')
+                            .then((res) => {
+                                collectionURI.searchParams.set('mcgvid', res.identity.ECID);
+                                collectionURI.searchParams.set('mboxMCGLH', res.edge.regionId);
+                                getCards(collectionURI.toString());
+                            });
+                    });
                 } else {
                     const visitor = result.getVisitorId();
                     collectionURI.searchParams.set('mcgvid', visitor.getMarketingCloudVisitorID());
