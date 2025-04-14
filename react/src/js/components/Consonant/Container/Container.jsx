@@ -776,7 +776,7 @@ const Container = (props) => {
         if ((isLazy && visibleStamp) || (isLazy && !hasFetched)) {
             return;
         }
-        const { __satelliteLoadedPromise: visitorPromise } = window;
+        const { __satelliteLoadedPromise: visitorPromise } = window; // eslint-disable-line no-underscore-dangle
 
         let collectionEndpoint = getConfig('collection', 'endpoint');
         const fallbackEndpoint = getConfig('collection', 'fallbackEndpoint');
@@ -962,7 +962,7 @@ const Container = (props) => {
 
             visitorApi.then((result) => {
                 if (window.alloy && window.edgeConfigId) {
-                    window.__satelliteLoadedPromise.then(() => {
+                    window.__satelliteLoadedPromise.then(() => { // eslint-disable-line no-underscore-dangle
                         window.alloy('getIdentity')
                             .then((res) => {
                                 collectionURI.searchParams.set('mcgvid', res.identity.ECID);
@@ -1003,7 +1003,7 @@ const Container = (props) => {
                         return;
                     }
 
-                    const { __satelliteLoadedPromise: visitorPromiseRetry } = window;
+                    const { __satelliteLoadedPromise: visitorPromiseRetry } = window; // eslint-disable-line no-underscore-dangle
 
                     if (visitorPromiseRetry) {
                         getVisitorData(visitorPromiseRetry);
