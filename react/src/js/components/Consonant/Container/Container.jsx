@@ -776,7 +776,9 @@ const Container = (props) => {
         if ((isLazy && visibleStamp) || (isLazy && !hasFetched)) {
             return;
         }
-        const { __satelliteLoadedPromise: visitorPromise } = window;
+        const { // eslint-disable-line no-underscore-dangle
+            __satelliteLoadedPromise: visitorPromise,
+        } = window;
 
         let collectionEndpoint = getConfig('collection', 'endpoint');
         const fallbackEndpoint = getConfig('collection', 'fallbackEndpoint');
@@ -962,11 +964,14 @@ const Container = (props) => {
 
             visitorApi.then((result) => {
                 if (window.alloy && window.edgeConfigId) {
-                    window.alloy('getIdentity')
-                        .then((res) => {
-                            collectionURI.searchParams.set('mcgvid', res.identity.ECID);
-                            collectionURI.searchParams.set('mboxMCGLH', res.edge.regionId);
-                            getCards(collectionURI.toString());
+                    window.__satelliteLoadedPromise // eslint-disable-line no-underscore-dangle
+                        .then(() => {
+                            window.alloy('getIdentity')
+                                .then((res) => {
+                                    collectionURI.searchParams.set('mcgvid', res.identity.ECID);
+                                    collectionURI.searchParams.set('mboxMCGLH', res.edge.regionId);
+                                    getCards(collectionURI.toString());
+                                });
                         });
                 } else {
                     const visitor = result.getVisitorId();
@@ -1001,7 +1006,9 @@ const Container = (props) => {
                         return;
                     }
 
-                    const { __satelliteLoadedPromise: visitorPromiseRetry } = window;
+                    const { // eslint-disable-line no-underscore-dangle
+                        __satelliteLoadedPromise: visitorPromiseRetry,
+                    } = window;
 
                     if (visitorPromiseRetry) {
                         getVisitorData(visitorPromiseRetry);
@@ -1550,6 +1557,7 @@ const Container = (props) => {
                             <CardsCarousel
                                 resQty={gridCardLen}
                                 cards={gridCards}
+                                cardStyle={cardStyle}
                                 role="tablist"
                                 onCardBookmark={handleCardBookmarking} />
                             }
