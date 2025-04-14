@@ -776,8 +776,9 @@ const Container = (props) => {
         if ((isLazy && visibleStamp) || (isLazy && !hasFetched)) {
             return;
         }
-        const { __satelliteLoadedPromise: visitorPromise } = // eslint-disable-line no-underscore-dangle
-            window;
+        const { // eslint-disable-line no-underscore-dangle
+            __satelliteLoadedPromise: visitorPromise
+        } = window;
 
         let collectionEndpoint = getConfig('collection', 'endpoint');
         const fallbackEndpoint = getConfig('collection', 'fallbackEndpoint');
@@ -1005,8 +1006,9 @@ const Container = (props) => {
                         return;
                     }
 
-                    const { __satelliteLoadedPromise: visitorPromiseRetry } = // eslint-disable-line no-underscore-dangle
-                        window;
+                    const { // eslint-disable-line no-underscore-dangle
+                        __satelliteLoadedPromise: visitorPromiseRetry
+                    } = window;
 
                     if (visitorPromiseRetry) {
                         getVisitorData(visitorPromiseRetry);
