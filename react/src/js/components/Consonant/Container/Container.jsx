@@ -777,7 +777,7 @@ const Container = (props) => {
             return;
         }
         const { // eslint-disable-line no-underscore-dangle
-            __satelliteLoadedPromise: visitorPromise
+            __satelliteLoadedPromise: visitorPromise,
         } = window;
 
         let collectionEndpoint = getConfig('collection', 'endpoint');
@@ -1007,7 +1007,7 @@ const Container = (props) => {
                     }
 
                     const { // eslint-disable-line no-underscore-dangle
-                        __satelliteLoadedPromise: visitorPromiseRetry
+                        __satelliteLoadedPromise: visitorPromiseRetry,
                     } = window;
 
                     if (visitorPromiseRetry) {
