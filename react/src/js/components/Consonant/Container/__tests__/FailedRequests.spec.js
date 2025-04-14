@@ -17,7 +17,14 @@ beforeEach(() => {
 
 describe('Consonant/Container/Failed Requests', () => {
     test('should fallback to the fallback endpoint on fetch failure', async () => {
-        const configToUse = { ...config, collection: { ...config.collection, endpoint: 'https://www.somedomain.com/some-test-api.json', fallbackEndpoint: 'https://www.somedomain.com/some-fallback-api.json' } };
+        const configToUse = {
+            ...config,
+            collection: {
+                ...config.collection,
+                endpoint: 'https://www.somedomain.com/some-test-api.json',
+                fallbackEndpoint: 'https://www.somedomain.com/some-fallback-api.json'
+            }
+        };
 
         global.fetch
             .mockImplementationOnce(() => Promise.reject(new Error('Network error')))
@@ -36,7 +43,14 @@ describe('Consonant/Container/Failed Requests', () => {
     });
 
     test('should handle fetch failure with no fallback endpoint', async () => {
-        const configToUse = { ...config, collection: { ...config.collection, endpoint: 'https://www.somedomain.com/some-test-api.json', fallbackEndpoint: null } };
+        const configToUse = {
+            ...config,
+            collection: {
+                ...config.collection,
+                endpoint: 'https://www.somedomain.com/some-test-api.json',
+                fallbackEndpoint: null
+            }
+        };
 
         // Mock fetch to fail
         global.fetch.mockImplementationOnce(() => Promise.reject(new Error('Network error')));

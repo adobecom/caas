@@ -19,7 +19,8 @@ describe('Consonant/Container/Alloy Integration', () => {
     test('should wait for satellite promise before calling alloy', async () => {
         const configToUse = { ...config, target: { enabled: true } };
         
-        window.__satelliteLoadedPromise = Promise.resolve(); // eslint-disable-line no-underscore-dangle
+        window.__satelliteLoadedPromise = // eslint-disable-line no-underscore-dangle
+            Promise.resolve();
         
         window.alloy = jest.fn().mockReturnValue(Promise.resolve({
             identity: { ECID: 'test-ecid' },
@@ -54,7 +55,8 @@ describe('Consonant/Container/Alloy Integration', () => {
     test('should handle alloy not being available', async () => {
         const configToUse = { ...config, target: { enabled: true } };
         
-        window.__satelliteLoadedPromise = Promise.resolve(); // eslint-disable-line no-underscore-dangle
+        window.__satelliteLoadedPromise = // eslint-disable-line no-underscore-dangle
+            Promise.resolve();
         
         window.alloy = undefined;
         window.edgeConfigId = undefined;
@@ -80,7 +82,8 @@ describe('Consonant/Container/Alloy Integration', () => {
     test('should handle satellite promise rejection', async () => {
         const configToUse = { ...config, target: { enabled: true } };
         
-        window.__satelliteLoadedPromise = Promise.reject(new Error('Satellite failed')); // eslint-disable-line no-underscore-dangle
+        window.__satelliteLoadedPromise = // eslint-disable-line no-underscore-dangle
+            Promise.reject(new Error('Satellite failed'));
         
         window.alloy = jest.fn();
         window.edgeConfigId = 'test-config';
