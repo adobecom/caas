@@ -776,7 +776,8 @@ const Container = (props) => {
         if ((isLazy && visibleStamp) || (isLazy && !hasFetched)) {
             return;
         }
-        const { __satelliteLoadedPromise: visitorPromise } = window; // eslint-disable-line no-underscore-dangle
+        const { __satelliteLoadedPromise: visitorPromise } = // eslint-disable-line no-underscore-dangle
+            window;
 
         let collectionEndpoint = getConfig('collection', 'endpoint');
         const fallbackEndpoint = getConfig('collection', 'fallbackEndpoint');
@@ -962,14 +963,15 @@ const Container = (props) => {
 
             visitorApi.then((result) => {
                 if (window.alloy && window.edgeConfigId) {
-                    window.__satelliteLoadedPromise.then(() => { // eslint-disable-line no-underscore-dangle
-                        window.alloy('getIdentity')
-                            .then((res) => {
-                                collectionURI.searchParams.set('mcgvid', res.identity.ECID);
-                                collectionURI.searchParams.set('mboxMCGLH', res.edge.regionId);
-                                getCards(collectionURI.toString());
-                            });
-                    });
+                    window.__satelliteLoadedPromise // eslint-disable-line no-underscore-dangle
+                        .then(() => {
+                            window.alloy('getIdentity')
+                                .then((res) => {
+                                    collectionURI.searchParams.set('mcgvid', res.identity.ECID);
+                                    collectionURI.searchParams.set('mboxMCGLH', res.edge.regionId);
+                                    getCards(collectionURI.toString());
+                                });
+                        });
                 } else {
                     const visitor = result.getVisitorId();
                     collectionURI.searchParams.set('mcgvid', visitor.getMarketingCloudVisitorID());
@@ -1003,7 +1005,8 @@ const Container = (props) => {
                         return;
                     }
 
-                    const { __satelliteLoadedPromise: visitorPromiseRetry } = window; // eslint-disable-line no-underscore-dangle
+                    const { __satelliteLoadedPromise: visitorPromiseRetry } = // eslint-disable-line no-underscore-dangle
+                        window;
 
                     if (visitorPromiseRetry) {
                         getVisitorData(visitorPromiseRetry);
