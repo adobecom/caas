@@ -1,5 +1,12 @@
 
 
+# [0.34.0](https://github.com/adobecom/caas/compare/0.33.3...0.34.0) (2025-04-14)
+
+
+### Features
+
+* **mwpw-164509:** refactors carousel for accessibility ([#264](https://github.com/adobecom/caas/issues/264)) ([99ebde1](https://github.com/adobecom/caas/commit/99ebde1f72546e39b15cd502bd79579645787820))
+
 ## [0.33.3](https://github.com/adobecom/caas/compare/0.33.2...0.33.3) (2025-04-04)
 
 
