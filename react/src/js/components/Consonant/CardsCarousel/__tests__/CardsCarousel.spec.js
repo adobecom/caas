@@ -431,7 +431,7 @@ describe('Consonant/Container/CardsCarousel', () => {
             await act(async () => render(<Container config={configToUse} />));
             
             // Mock the initial state
-            let firstVisibleCard = 1;
+            firstVisibleCard = 1;
             let lastVisibleCard = 3;
             const cardsPerPage = 3;
             const isIncremental = true;
@@ -462,7 +462,7 @@ describe('Consonant/Container/CardsCarousel', () => {
             await act(async () => render(<Container config={configToUse} />));
 
             // Mock the initial state
-            let firstVisibleCard = 1;
+            firstVisibleCard = 1;
             let lastVisibleCard = 3;
             const cardsPerPage = 3;
             const isIncremental = false;
@@ -493,7 +493,7 @@ describe('Consonant/Container/CardsCarousel', () => {
             await act(async () => render(<Container config={configToUse} />));
 
             // Mock the initial state
-            let firstVisibleCard = 4;
+            firstVisibleCard = 4;
             let lastVisibleCard = 6;
             const cardsPerPage = 3;
             const isIncremental = true;
@@ -524,7 +524,7 @@ describe('Consonant/Container/CardsCarousel', () => {
             await act(async () => render(<Container config={configToUse} />));
             
             // Mock the initial state
-            let firstVisibleCard = 7;
+            firstVisibleCard = 7;
             let lastVisibleCard = 9;
             const cardsPerPage = 3;
             const isIncremental = false;
