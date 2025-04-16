@@ -36,6 +36,7 @@ let prevButton;
 let carouselContainer;
 let cardWidth;
 let cardsShiftedPerClick;
+let firstVisibleCard;
 
 afterEach(() => {
     configToUse = {};
@@ -46,6 +47,7 @@ afterEach(() => {
     carouselContainer = undefined;
     cardWidth = undefined;
     cardsShiftedPerClick = undefined;
+    firstVisibleCard = undefined;
 });
 
 beforeEach(async () => {
@@ -241,28 +243,29 @@ describe('Consonant/Container/CardsCarousel', () => {
     test('should hide next button when at end of carousel', () => {
         Object.defineProperty(carouselContainer, 'scrollLeft', { value: 1000, writable: true });
         Object.defineProperty(carouselContainer, 'scrollWidth', { value: 2000, writable: true });
-        Object.defineProperty(carouselContainer, 'clientWidth', { value: 1000, writable: true });
+        Object.defineProperty(carouselContainer, 'clientWidth', { value: 3000, writable: true });
         fireEvent.scroll(carouselContainer);
         expect(nextButton).toHaveClass('hide');
     });
 
     test('should hide previous button when at start of carousel', () => {
-        Object.defineProperty(carouselContainer, 'scrollLeft', { value: 0, writable: true });
+        firstVisibleCard = 1;
         fireEvent.scroll(carouselContainer);
         expect(prevButton).toHaveClass('hide');
     });
 
     test('should show next button when not at end of carousel', () => {
+        cardWidth = 250;
         Object.defineProperty(carouselContainer, 'scrollLeft', { value: 500, writable: true });
         Object.defineProperty(carouselContainer, 'scrollWidth', { value: 2000, writable: true });
         Object.defineProperty(carouselContainer, 'clientWidth', { value: 1000, writable: true });
+        nextButton.classList.remove('hide');
         fireEvent.scroll(carouselContainer);
         expect(nextButton).not.toHaveClass('hide');
     });
 
     test('should show previous button when not at start of carousel', () => {
-        Object.defineProperty(carouselContainer, 'scrollLeft', { value: 500, writable: true });
-        fireEvent.scroll(carouselContainer);
+        fireEvent.click(nextButton);
         expect(prevButton).not.toHaveClass('hide');
     });
 
