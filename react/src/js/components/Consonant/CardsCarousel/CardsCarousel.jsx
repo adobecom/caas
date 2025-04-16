@@ -84,24 +84,16 @@ function CardsCarousel({
     const prev = useRef(null);
     const next = useRef(null);
 
-    let isDown = null;
-    let startX = null;
-    /* eslint-disable-next-line no-unused-vars */
-    let isMouseMove = false;
-    let interactedWith = false;
-
     let firstVisibleCard = 1;
     let lastVisibleCard = firstVisibleCard + cardsPerPage - 1;
 
-    function isResponsive() {
+    function isMobile() {
         return window.innerWidth < TABLET_BREAKPOINT;
     }
 
     function hideNextButton() {
         const nextBtn = next.current;
-        if (nextBtn) {
-            nextBtn.classList.add('hide');
-        }
+        if (nextBtn) nextBtn.classList.add('hide');
     }
 
     function hidePrevButton() {
@@ -140,6 +132,7 @@ function CardsCarousel({
     }
 
     function shouldHidePrevButton() {
+        console.log('*** shouldHidePrevButton');
         const carousel = carouselRef.current;
         const atStartOfCarousel = (carousel.scrollLeft < cardWidth);
         if (atStartOfCarousel) {
@@ -149,6 +142,7 @@ function CardsCarousel({
     }
 
     function shouldHideNextButton() {
+        console.log('*** shouldHideNextButton');
         const carousel = carouselRef.current;
         const atEndOfCarousel =
             (carousel.scrollWidth - carousel.clientWidth < carousel.scrollLeft + cardWidth);
@@ -158,45 +152,15 @@ function CardsCarousel({
         }
     }
 
-    function responsiveLogic() {
-        if (isResponsive() && interactedWith) {
+    function mobileLogic() {
+        console.log('*** mobileLogic');
+        if (isMobile()) {
             hideNav();
         } else {
             showNav();
             shouldHidePrevButton();
             shouldHideNextButton();
         }
-    }
-
-    function mouseDownHandler(e) {
-        e.preventDefault();
-        interactedWith = true;
-        responsiveLogic();
-        isDown = true;
-        startX = e.pageX;
-    }
-
-    function mouseUpHandler() {
-        isDown = false;
-        isMouseMove = false;
-    }
-
-    function mouseLeaveHandler() {
-        isDown = false;
-        isMouseMove = false;
-    }
-
-    function mouseMoveHandler(e) {
-        if (!isDown) return;
-        isMouseMove = true;
-        const carousel = carouselRef.current;
-        const x = e.pageX - carousel.offsetLeft;
-        carousel.scrollLeft -= (x - startX);
-    }
-
-    function scrollHandler() {
-        interactedWith = true;
-        responsiveLogic();
     }
 
     /**
@@ -253,19 +217,20 @@ function CardsCarousel({
     }
 
     function nextButtonClick() {
-        if (isResponsive()) {
+        if (isMobile()) {
             centerClick();
         } else {
             const carousel = carouselRef.current;
             carousel.scrollLeft += ((cardWidth + gridGap) * cardsShiftedPerClick);
             setVisibleCards('next');
             setAriaAttributes(carousel);
+            showPrevButton();
             shouldHideNextButton();
         }
     }
 
     function prevButtonClick() {
-        if (isResponsive()) {
+        if (isMobile()) {
             centerClick();
         } else {
             const carousel = carouselRef.current;
@@ -289,7 +254,7 @@ function CardsCarousel({
     const totalResultsHtml = RenderTotalResults(showTotalResultsText, resQty);
 
     useEffect(() => {
-        responsiveLogic();
+        mobileLogic();
 
         const carousels = document.querySelectorAll('.consonant-Container--carousel');
 
@@ -354,11 +319,6 @@ function CardsCarousel({
             {/* eslint-disable jsx-a11y/no-static-element-interactions */}
             <div
                 className="consonant-Container--carousel"
-                onMouseDown={mouseDownHandler}
-                onMouseUp={mouseUpHandler}
-                onMouseMove={mouseMoveHandler}
-                onMouseLeave={mouseLeaveHandler}
-                onScroll={scrollHandler}
                 ref={carouselRef}>
                 <Grid
                     cards={cards}
@@ -374,8 +334,6 @@ function CardsCarousel({
 }
 
 export default CardsCarousel;
-
-
 CardsCarousel.propTypes = {
     cards: PropTypes.arrayOf(PropTypes.object).isRequired,
     onCardBookmark: PropTypes.func.isRequired,

@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.33.3 (4/8/2025, 16:11:53)
+ * Chimera UI Libraries - Build 0.34.0 (4/16/2025, 10:00:27)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -44357,24 +44357,16 @@ function CardsCarousel() {
     var prev = (0, _react.useRef)(null);
     var next = (0, _react.useRef)(null);
 
-    var isDown = null;
-    var startX = null;
-    /* eslint-disable-next-line no-unused-vars */
-    var isMouseMove = false;
-    var interactedWith = false;
-
     var firstVisibleCard = 1;
     var lastVisibleCard = firstVisibleCard + cardsPerPage - 1;
 
-    function isResponsive() {
+    function isMobile() {
         return window.innerWidth < TABLET_BREAKPOINT;
     }
 
     function hideNextButton() {
         var nextBtn = next.current;
-        if (nextBtn) {
-            nextBtn.classList.add('hide');
-        }
+        if (nextBtn) nextBtn.classList.add('hide');
     }
 
     function hidePrevButton() {
@@ -44413,6 +44405,7 @@ function CardsCarousel() {
     }
 
     function shouldHidePrevButton() {
+        console.log('*** shouldHidePrevButton');
         var carousel = carouselRef.current;
         var atStartOfCarousel = carousel.scrollLeft < cardWidth;
         if (atStartOfCarousel) {
@@ -44422,6 +44415,7 @@ function CardsCarousel() {
     }
 
     function shouldHideNextButton() {
+        console.log('*** shouldHideNextButton');
         var carousel = carouselRef.current;
         var atEndOfCarousel = carousel.scrollWidth - carousel.clientWidth < carousel.scrollLeft + cardWidth;
         if (atEndOfCarousel) {
@@ -44430,45 +44424,15 @@ function CardsCarousel() {
         }
     }
 
-    function responsiveLogic() {
-        if (isResponsive() && interactedWith) {
+    function mobileLogic() {
+        console.log('*** mobileLogic');
+        if (isMobile()) {
             hideNav();
         } else {
             showNav();
             shouldHidePrevButton();
             shouldHideNextButton();
         }
-    }
-
-    function mouseDownHandler(e) {
-        e.preventDefault();
-        interactedWith = true;
-        responsiveLogic();
-        isDown = true;
-        startX = e.pageX;
-    }
-
-    function mouseUpHandler() {
-        isDown = false;
-        isMouseMove = false;
-    }
-
-    function mouseLeaveHandler() {
-        isDown = false;
-        isMouseMove = false;
-    }
-
-    function mouseMoveHandler(e) {
-        if (!isDown) return;
-        isMouseMove = true;
-        var carousel = carouselRef.current;
-        var x = e.pageX - carousel.offsetLeft;
-        carousel.scrollLeft -= x - startX;
-    }
-
-    function scrollHandler() {
-        interactedWith = true;
-        responsiveLogic();
     }
 
     /**
@@ -44523,19 +44487,20 @@ function CardsCarousel() {
     }
 
     function nextButtonClick() {
-        if (isResponsive()) {
+        if (isMobile()) {
             centerClick();
         } else {
             var carousel = carouselRef.current;
             carousel.scrollLeft += (cardWidth + gridGap) * cardsShiftedPerClick;
             setVisibleCards('next');
             setAriaAttributes(carousel);
+            showPrevButton();
             shouldHideNextButton();
         }
     }
 
     function prevButtonClick() {
-        if (isResponsive()) {
+        if (isMobile()) {
             centerClick();
         } else {
             var carousel = carouselRef.current;
@@ -44559,7 +44524,7 @@ function CardsCarousel() {
     var totalResultsHtml = (0, _rendering.RenderTotalResults)(showTotalResultsText, resQty);
 
     (0, _react.useEffect)(function () {
-        responsiveLogic();
+        mobileLogic();
 
         var carousels = document.querySelectorAll('.consonant-Container--carousel');
 
@@ -44634,11 +44599,6 @@ function CardsCarousel() {
             'div',
             {
                 className: 'consonant-Container--carousel',
-                onMouseDown: mouseDownHandler,
-                onMouseUp: mouseUpHandler,
-                onMouseMove: mouseMoveHandler,
-                onMouseLeave: mouseLeaveHandler,
-                onScroll: scrollHandler,
                 ref: carouselRef },
             _react2.default.createElement(_Grid2.default, {
                 cards: cards,
@@ -44652,7 +44612,6 @@ function CardsCarousel() {
 }
 
 exports.default = CardsCarousel;
-
 
 CardsCarousel.propTypes = {
     cards: _propTypes2.default.arrayOf(_propTypes2.default.object).isRequired,
