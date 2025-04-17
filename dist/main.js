@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.34.1 (4/16/2025, 19:40:06)
+ * Chimera UI Libraries - Build 0.34.1 (4/16/2025, 20:16:31)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -8086,7 +8086,6 @@ var Container = function Container(props) {
                         atLeastOneCard && isCarouselContainer && !(cardStyle === 'custom-card') && _react2.default.createElement(_CardsCarousel2.default, {
                             resQty: gridCardLen,
                             cards: gridCards,
-                            cardStyle: cardStyle,
                             role: 'tablist',
                             onCardBookmark: handleCardBookmarking }),
                         atLeastOneCard && isCarouselContainer && cardStyle === 'custom-card' && _react2.default.createElement(_View2.default, {

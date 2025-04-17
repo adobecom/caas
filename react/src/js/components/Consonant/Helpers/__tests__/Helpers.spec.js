@@ -442,12 +442,12 @@ describe('utils/Helpers', () => {
     });
 
     describe('getEventSort', () => {
-         PROPS.getEventSort.forEach(({ cards, eventFilter, expectedValue }) => {
-             test(`should return sorted cards by event filter: ${eventFilter}`, () => {
-                 const sortedCards = getEventSort(cards, eventFilter).visibleSessions;
-                 expect(sortedCards).toEqual(expectedValue);
-             });
-         });
+        PROPS.getEventSort.forEach(({ cards, eventFilter, expectedValue }) => {
+            test(`should return sorted cards by event filter: ${eventFilter}`, () => {
+                const sortedCards = getEventSort(cards, eventFilter).visibleSessions;
+                expect(sortedCards).toEqual(expectedValue);
+            });
+        });
     });
     describe('joinCardSets', () => {
         PROPS.joinCardSets.forEach(({ cardSetOne, cardSetTwo, expectedValue }) => {

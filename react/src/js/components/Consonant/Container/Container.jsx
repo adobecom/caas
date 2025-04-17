@@ -1589,7 +1589,6 @@ const Container = (props) => {
                             <CardsCarousel
                                 resQty={gridCardLen}
                                 cards={gridCards}
-                                cardStyle={cardStyle}
                                 role="tablist"
                                 onCardBookmark={handleCardBookmarking} />
                             }

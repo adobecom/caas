@@ -79,14 +79,34 @@ describe('utils/CardFilterer', () => {
 
         test('Event Sort', () => {
             const cards = [
-                { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } }, tags: ['event1'], footer: [{ left: []}] },
-                { id: 2, contentArea: { dateDetailText: { startTime: '2021-01-03', endTime: '2029-01-04' } }, tags: ['event2'], footer: [{ left: []}] },
+                {
+                    id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } }, tags: ['event1'], footer: [{ left: [] }],
+                },
+                {
+                    id: 2, contentArea: { dateDetailText: { startTime: '2021-01-03', endTime: '2029-01-04' } }, tags: ['event2'], footer: [{ left: [] }],
+                },
             ];
             const expectedValue = [
-                { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } },
-                    createdDate: '', ctaLink: '', description: '', endDate: '2021-01-02', footer: [{ left: [] }], initial: {}, isBookmarked: false,
-                    modifiedDate: '', overlayLink: '', overlays: {}, search: {}, showCard: {}, startDate: '2021-01-01', styles: {},
-                    cardDate: '', tags: ['event1'] },
+                {
+                    id: 1,
+                    contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } },
+                    createdDate: '',
+                    ctaLink: '',
+                    description: '',
+                    endDate: '2021-01-02',
+                    footer: [{ left: [] }],
+                    initial: {},
+                    isBookmarked: false,
+                    modifiedDate: '',
+                    overlayLink: '',
+                    overlays: {},
+                    search: {},
+                    showCard: {},
+                    startDate: '2021-01-01',
+                    styles: {},
+                    cardDate: '',
+                    tags: ['event1'],
+                },
             ];
             const cardFilterer = new CardFilterer(cards);
             const { filteredCards } = cardFilterer.sortCards({ sort: 'eventsort' }, 'on-demand');
@@ -95,14 +115,34 @@ describe('utils/CardFilterer', () => {
 
         test('Event Sort with nextTransitionMs', () => {
             const cards = [
-                { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } }, tags: ['event1'], footer: [{ left: []}] },
-                { id: 2, contentArea: { dateDetailText: { startTime: '2021-01-03', endTime: '2129-01-04' } }, tags: ['event2'], footer: [{ left: []}] },
+                {
+                    id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } }, tags: ['event1'], footer: [{ left: [] }],
+                },
+                {
+                    id: 2, contentArea: { dateDetailText: { startTime: '2021-01-03', endTime: '2129-01-04' } }, tags: ['event2'], footer: [{ left: [] }],
+                },
             ];
             const expectedValue = [
-                { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } },
-                    createdDate: '', ctaLink: '', description: '', endDate: '2021-01-02', footer: [{ left: [] }], initial: {}, isBookmarked: false,
-                    modifiedDate: '', overlayLink: '', overlays: {}, search: {}, showCard: {}, startDate: '2021-01-01', styles: {},
-                    cardDate: '', tags: ['event1'] },
+                {
+                    id: 1,
+                    contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } },
+                    createdDate: '',
+                    ctaLink: '',
+                    description: '',
+                    endDate: '2021-01-02',
+                    footer: [{ left: [] }],
+                    initial: {},
+                    isBookmarked: false,
+                    modifiedDate: '',
+                    overlayLink: '',
+                    overlays: {},
+                    search: {},
+                    showCard: {},
+                    startDate: '2021-01-01',
+                    styles: {},
+                    cardDate: '',
+                    tags: ['event1'],
+                },
             ];
             const cardFilterer = new CardFilterer(cards);
             cardFilterer.sortCards({ sort: 'eventsort' }, ['on-demand']);
@@ -111,14 +151,34 @@ describe('utils/CardFilterer', () => {
         });
         test('Event Sort with a string (legacy event sort)', () => {
             const cards = [
-                { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } }, tags: ['event1'], footer: [{ left: []}] },
-                { id: 2, contentArea: { dateDetailText: { startTime: '2021-01-03', endTime: '2129-01-04' } }, tags: ['event2'], footer: [{ left: []}] },
+                {
+                    id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } }, tags: ['event1'], footer: [{ left: [] }],
+                },
+                {
+                    id: 2, contentArea: { dateDetailText: { startTime: '2021-01-03', endTime: '2129-01-04' } }, tags: ['event2'], footer: [{ left: [] }],
+                },
             ];
             const expectedValue = [
-                { id: 1, contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } },
-                    createdDate: '', ctaLink: '', description: '', endDate: '2021-01-02', footer: [{ left: [] }], initial: {}, isBookmarked: false,
-                    modifiedDate: '', overlayLink: '', overlays: {}, search: {}, showCard: {}, startDate: '2021-01-01', styles: {},
-                    cardDate: '', tags: ['event1'] },
+                {
+                    id: 1,
+                    contentArea: { dateDetailText: { startTime: '2021-01-01', endTime: '2021-01-02' } },
+                    createdDate: '',
+                    ctaLink: '',
+                    description: '',
+                    endDate: '2021-01-02',
+                    footer: [{ left: [] }],
+                    initial: {},
+                    isBookmarked: false,
+                    modifiedDate: '',
+                    overlayLink: '',
+                    overlays: {},
+                    search: {},
+                    showCard: {},
+                    startDate: '2021-01-01',
+                    styles: {},
+                    cardDate: '',
+                    tags: ['event1'],
+                },
             ];
             const cardFilterer = new CardFilterer(cards);
             cardFilterer.sortCards({ sort: 'eventsort' }, 'on-demand');
@@ -146,7 +206,7 @@ describe('utils/CardFilterer', () => {
             const cards = [{ id: 1 }, { id: 2 }, { id: 3 }];
             const cardFilterer = new CardFilterer(cards, 1, 2, 3);
             const { filteredCards } = cardFilterer.sortCards({ sort: 'random' });
-            expect(filteredCards.length).toBe(2); // Assuming sampleSize is 2
+            expect(filteredCards).toHaveLength(2); // Assuming sampleSize is 2
         });
     });
     describe('keepCardsWithinDateRange', () => {

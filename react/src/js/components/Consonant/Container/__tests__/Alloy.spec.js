@@ -19,8 +19,9 @@ beforeEach(() => {
     // Clear localStorage before each test
     localStorage.clear();
     // Mock _satellite object
-    window._satellite = {
-        alloyConfigurePromise: Promise.resolve()
+
+    window._satellite = { // eslint-disable-line no-underscore-dangle
+        alloyConfigurePromise: Promise.resolve(),
     };
 
     // Mock successful fetch response
@@ -37,7 +38,7 @@ afterEach(() => {
     delete window.__satelliteLoadedPromise; // eslint-disable-line no-underscore-dangle
     delete window.alloy;
     delete window.edgeConfigId;
-    delete window._satellite;
+    delete window._satellite; // eslint-disable-line no-underscore-dangle
     jest.clearAllMocks();
 });
 
@@ -51,16 +52,16 @@ describe('Consonant/Container/Alloy Integration', () => {
             ...defaultConfig,
             target: {
                 enabled: true,
-                lastViewedSession: true
+                lastViewedSession: true,
             },
             headers: {
-                'Content-Type': 'application/json'
-            }
+                'Content-Type': 'application/json',
+            },
         };
         props = {
             config,
         };
-        window._satellite = {
+        window._satellite = { // eslint-disable-line no-underscore-dangle
             alloyConfigurePromise: Promise.resolve(),
         };
 
@@ -74,11 +75,12 @@ describe('Consonant/Container/Alloy Integration', () => {
             }),
         });
 
+        /* eslint-disable no-underscore-dangle */
         window.__satelliteLoadedPromise = mockVisitorApi;
     });
 
     afterEach(() => {
-        delete window._satellite;
+        delete window._satellite; // eslint-disable-line no-underscore-dangle
         delete window.alloy;
         delete window.edgeConfigId;
         jest.clearAllMocks();
@@ -86,17 +88,15 @@ describe('Consonant/Container/Alloy Integration', () => {
 
     it('should use targetValueRevealID from localStorage when useLastViewedSession is true', async () => {
         localStorage.setItem('targetValueRevealID', 'test-reveal-id');
-        
+
         // Mock fetch to capture the URL
-        global.fetch.mockImplementation((url) => {
-            return Promise.resolve({
-                ok: true,
-                status: 200,
-                statusText: 'success',
-                url,
-                json: () => Promise.resolve({ cards: [{ id: '1' }] }),
-            });
-        });
+        global.fetch.mockImplementation(url => Promise.resolve({
+            ok: true,
+            status: 200,
+            statusText: 'success',
+            url,
+            json: () => Promise.resolve({ cards: [{ id: '1' }] }),
+        }));
 
         await act(async () => {
             render(<Container {...props} />);
@@ -108,7 +108,7 @@ describe('Consonant/Container/Alloy Integration', () => {
         // Verify that fetch was called with the correct currentEntityId
         expect(global.fetch).toHaveBeenCalledWith(
             expect.stringMatching(/currentEntityId=test-reveal-id/),
-            expect.any(Object)
+            expect.any(Object),
         );
     });
 
@@ -175,6 +175,7 @@ describe('Consonant/Container/Alloy Integration', () => {
         const rejectedPromise = Promise.reject(new Error('Satellite failed'))
             .catch(() => mockVisitorApi); // Return fallback visitor object explicitly here
 
+        /* eslint-disable no-underscore-dangle */
         window.__satelliteLoadedPromise = rejectedPromise;
         window.alloy = undefined;
         window.edgeConfigId = undefined;
@@ -197,12 +198,12 @@ describe('Consonant/Container/Alloy Integration', () => {
     });
 
     test('should not use targetValueRevealID when useLastViewedSession is false', async () => {
-        const configToUse = { 
-            ...config, 
-            target: { 
+        const configToUse = {
+            ...config,
+            target: {
                 enabled: true,
-                useLastViewedSession: false 
-            } 
+                useLastViewedSession: false,
+            },
         };
 
         // Set targetValueRevealID in localStorage
@@ -257,8 +258,8 @@ describe('Consonant/Container/Alloy Integration', () => {
     });
 
     test('should fallback to base endpoint if visitorApi fails', async () => {
-        window.__satelliteLoadedPromise = Promise.reject(new Error('visitor failed'));
-        
+        window.__satelliteLoadedPromise = Promise.reject(new Error('visitor failed')); // eslint-disable-line no-underscore-dangle
+
         await act(async () => {
             render(<Container {...props} />);
         });
@@ -267,6 +268,94 @@ describe('Consonant/Container/Alloy Integration', () => {
 
         expect(global.fetch).toHaveBeenCalledWith(
             'https://www.somedomain.com/some-test-api.json?flatFile=false',
+            expect.any(Object),
+        );
+    });
+    test('should fallback to visitor API when alloy exists without config or promise', async () => {
+        window.alloy = jest.fn();
+        window.edgeConfigId = null;
+        delete window._satellite.alloyConfigurePromise;
+
+        await act(async () => {
+            render(<Container {...props} />);
+        });
+
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        expect(global.fetch).toHaveBeenCalledWith(
+            expect.stringContaining('mcgvid=test-mcgvid'),
+            expect.any(Object),
+        );
+    });
+    test('should fallback to base endpoint when visitorApi.getVisitorId throws', async () => {
+        /* eslint-disable no-underscore-dangle */
+        window.__satelliteLoadedPromise = Promise.resolve({
+            getVisitorId: () => { throw new Error('Broken visitor'); },
+        });
+
+        await act(async () => {
+            render(<Container {...props} />);
+        });
+
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        expect(global.fetch).toHaveBeenCalledWith(
+            expect.stringContaining('flatFile=false'),
+            expect.any(Object),
+        );
+    });
+    test('should call visitorApiFallback when alloy getIdentity returns incomplete identity info', async () => {
+        const configToUse = { ...config, target: { enabled: true } };
+
+        window.alloy = jest.fn().mockReturnValue(Promise.resolve({
+            identity: null, // triggers the "else" fallback
+            edge: null,
+        }));
+        window.edgeConfigId = 'test-config';
+
+        await act(async () => {
+            render(<Container config={configToUse} />);
+        });
+
+        // This should fallback to visitor API
+        expect(global.fetch).toHaveBeenCalledWith(
+            expect.stringContaining('mcgvid=test-mcgvid'),
+            expect.any(Object),
+        );
+    });
+    test('should call visitorApiFallback when alloy getIdentity throws', async () => {
+        const configToUse = { ...config, target: { enabled: true } };
+
+        window.alloy = jest.fn().mockImplementation(() => Promise.reject(new Error('alloy failure')));
+        window.edgeConfigId = 'test-config';
+
+        await act(async () => {
+            render(<Container config={configToUse} />);
+        });
+
+        expect(global.fetch).toHaveBeenCalledWith(
+            expect.stringContaining('mcgvid=test-mcgvid'),
+            expect.any(Object),
+        );
+    });
+    test('should call getCards with alloy_getIdentity values when valid identity is returned', async () => {
+        const configToUse = { ...config, target: { enabled: true } };
+
+        window.alloy_getIdentity = Promise.resolve({
+            identity: { ECID: 'from-alloy' },
+            edge: { regionId: 'edge-region' },
+        });
+
+        await act(async () => {
+            render(<Container config={configToUse} />);
+        });
+
+        expect(global.fetch).toHaveBeenCalledWith(
+            expect.stringContaining('mcgvid=from-alloy'),
+            expect.any(Object),
+        );
+        expect(global.fetch).toHaveBeenCalledWith(
+            expect.stringContaining('mboxMCGLH=edge-region'),
             expect.any(Object),
         );
     });

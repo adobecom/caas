@@ -674,5 +674,4 @@ describe('Container Component', () => {
         const totalCardLimitElement = screen.getByTestId('consonant-Select-btn');
         expect(totalCardLimitElement).toHaveTextContent('Titledesc');
     });
-    
 });

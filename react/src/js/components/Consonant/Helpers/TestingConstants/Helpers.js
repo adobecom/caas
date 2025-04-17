@@ -652,38 +652,38 @@ const getEventSort = [
         eventFilter: 'on-demand',
         expectedValue: [
             {
-                'id': 1,
-                'cardDate': '',
-                'contentArea': {
-                    'dateDetailText': {
-                        'endTime': '2023-01-01T12:00:00Z',
-                        'startTime': '2023-01-01T10:00:00Z'
-                    }
-                }, 
-                'createdDate': '',
-                'ctaLink': '',
-                'description': '',
-                'endDate': '2023-01-01T12:00:00Z',
-                'footer': [], 
-                'initial': {}, 
-                'isBookmarked': false, 
-                'modifiedDate': '', 
-                'overlayLink': '', 
-                'overlays': {}, 
-                'search': {}, 
-                'showCard': {}, 
-                'startDate': '2023-01-01T10:00:00Z',
-                'styles': {},
-                'tags': []
-            }
-        ]
+                id: 1,
+                cardDate: '',
+                contentArea: {
+                    dateDetailText: {
+                        endTime: '2023-01-01T12:00:00Z',
+                        startTime: '2023-01-01T10:00:00Z',
+                    },
+                },
+                createdDate: '',
+                ctaLink: '',
+                description: '',
+                endDate: '2023-01-01T12:00:00Z',
+                footer: [],
+                initial: {},
+                isBookmarked: false,
+                modifiedDate: '',
+                overlayLink: '',
+                overlays: {},
+                search: {},
+                showCard: {},
+                startDate: '2023-01-01T10:00:00Z',
+                styles: {},
+                tags: [],
+            },
+        ],
     },
-    // footer 
+    // footer
     {
         cards: [
-            { id: 1, contentArea: { }, footer: [{ left: [{type: 'bookmark'}, {type: 'date-interval', startTime: '2023-01-01T10:00:00Z', endTime: '2023-01-01T12:00:00Z' }] } ] },
-            { id: 2, contentArea: { }, footer: [{ left: [{type: 'bookmark'}, {type: 'date-interval', startTime: '2023-01-02T10:00:00Z', endTime: '2029-01-02T12:00:00Z' }] } ] },
-            { id: 3, contentArea: { }, footer: [{ left: [{type: 'bookmark'}, {type: 'date-interval', startTime: '2029-01-03T10:00:00Z', endTime: '2029-01-03T12:00:00Z' }] } ] },
+            { id: 1, contentArea: { }, footer: [{ left: [{ type: 'bookmark' }, { type: 'date-interval', startTime: '2023-01-01T10:00:00Z', endTime: '2023-01-01T12:00:00Z' }] }] },
+            { id: 2, contentArea: { }, footer: [{ left: [{ type: 'bookmark' }, { type: 'date-interval', startTime: '2023-01-02T10:00:00Z', endTime: '2029-01-02T12:00:00Z' }] }] },
+            { id: 3, contentArea: { }, footer: [{ left: [{ type: 'bookmark' }, { type: 'date-interval', startTime: '2029-01-03T10:00:00Z', endTime: '2029-01-03T12:00:00Z' }] }] },
         ],
         eventFilter: 'live',
         expectedValue: [
@@ -696,18 +696,18 @@ const getEventSort = [
                 description: '',
                 endDate: '2029-01-02T12:00:00Z',
                 startDate: '2023-01-02T10:00:00Z',
-                footer: [ {
+                footer: [{
                     left: [
                         {
-                            type: 'bookmark'
+                            type: 'bookmark',
                         },
                         {
                             type: 'date-interval',
                             endTime: '2029-01-02T12:00:00Z',
                             startTime: '2023-01-02T10:00:00Z',
-                        }
-                    ]
-                } ],
+                        },
+                    ],
+                }],
                 initial: {},
                 isBookmarked: false,
                 modifiedDate: '',
@@ -718,14 +718,14 @@ const getEventSort = [
                 styles: {},
                 tags: [],
             },
-        ]
+        ],
     },
     // footer but without a date-interval
     {
         cards: [
-            { id: 1, contentArea: { dateDetailText: { startTime: '2023-01-01T10:00:00Z', endTime: '2023-01-01T12:00:00Z' }}, footer: [{ left: [{type: 'bookmark'}] } ] },
-            { id: 2, contentArea: { dateDetailText: { startTime: '2023-01-02T10:00:00Z', endTime: '2029-01-02T12:00:00Z' } }, footer: [{ left: [{type: 'bookmark'}] } ] },
-            { id: 3, contentArea: { dateDetailText: { startTime: '2029-01-03T10:00:00Z', endTime: '2029-01-03T12:00:00Z' } }, footer: [{ left: [{type: 'bookmark'}] } ] },
+            { id: 1, contentArea: { dateDetailText: { startTime: '2023-01-01T10:00:00Z', endTime: '2023-01-01T12:00:00Z' } }, footer: [{ left: [{ type: 'bookmark' }] }] },
+            { id: 2, contentArea: { dateDetailText: { startTime: '2023-01-02T10:00:00Z', endTime: '2029-01-02T12:00:00Z' } }, footer: [{ left: [{ type: 'bookmark' }] }] },
+            { id: 3, contentArea: { dateDetailText: { startTime: '2029-01-03T10:00:00Z', endTime: '2029-01-03T12:00:00Z' } }, footer: [{ left: [{ type: 'bookmark' }] }] },
         ],
         eventFilter: 'upcoming',
         expectedValue: [
@@ -736,20 +736,20 @@ const getEventSort = [
                     dateDetailText: {
                         endTime: '2029-01-03T12:00:00Z',
                         startTime: '2029-01-03T10:00:00Z',
-                    }
+                    },
                 },
                 createdDate: '',
                 ctaLink: '',
                 description: '',
                 endDate: '2029-01-03T12:00:00Z',
                 startDate: '2029-01-03T10:00:00Z',
-                footer: [ {
+                footer: [{
                     left: [
                         {
-                            type: 'bookmark'
-                        }
-                    ]
-                } ],
+                            type: 'bookmark',
+                        },
+                    ],
+                }],
                 initial: {},
                 isBookmarked: false,
                 modifiedDate: '',
@@ -760,8 +760,8 @@ const getEventSort = [
                 styles: {},
                 tags: [],
             },
-        ]
-    }
+        ],
+    },
 ];
 const joinCardSets = [
     {
