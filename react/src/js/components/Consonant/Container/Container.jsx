@@ -943,45 +943,77 @@ const Container = (props) => {
                     setApiFailure(true);
                 });
         }
-        /**
-         * @func getVisitorData
-         * @desc wraps fetching Visitor API data in a function for reuse, also if
-         * last used session is checked, update currentEntityId with targetValueRevealID
-         *
-         * @param {Promise} visitorApi, window.__satelliteLoadedPromise when accessed
-         * @returns {Void} - an updated state, thru calling getCards
-         */
-        /* istanbul ignore next */
-        function getVisitorData(visitorApi) {
-            const collectionURI = new URL(collectionEndpoint);
 
-            if (useLastViewedSession) {
-                const targetRevealId = localStorage.getItem('targetValueRevealID');
-                if (targetRevealId) {
-                    collectionURI.searchParams.set('currentEntityId', targetRevealId);
-                }
+        function visitorApiFallback(visitor, url) {
+            try {
+                const v = visitor.getVisitorId();
+                url.searchParams.set('mcgvid', v.getMarketingCloudVisitorID());
+                url.searchParams.set('sdid', v.getSupplementalDataID());
+                url.searchParams.set('mboxAAMB', v.getAudienceManagerBlob());
+                url.searchParams.set('mboxMCGLH', v.getAudienceManagerLocationHint());
+                getCards(url.toString());
+            } catch (e) {
+                getCards(collectionEndpoint);
             }
+        }
 
-            visitorApi.then((result) => {
-                if (window.alloy && window.edgeConfigId) {
-                    window.__satelliteLoadedPromise // eslint-disable-line no-underscore-dangle
-                        .then(() => {
-                            window.alloy('getIdentity')
-                                .then((res) => {
-                                    collectionURI.searchParams.set('mcgvid', res.identity.ECID);
-                                    collectionURI.searchParams.set('mboxMCGLH', res.edge.regionId);
-                                    getCards(collectionURI.toString());
-                                });
-                        });
-                } else {
-                    const visitor = result.getVisitorId();
-                    collectionURI.searchParams.set('mcgvid', visitor.getMarketingCloudVisitorID());
-                    collectionURI.searchParams.set('sdid', visitor.getSupplementalDataID());
-                    collectionURI.searchParams.set('mboxAAMB', visitor.getAudienceManagerBlob());
-                    collectionURI.searchParams.set('mboxMCGLH', visitor.getAudienceManagerLocationHint());
-                    getCards(collectionURI.toString());
-                }
-            });
+        function alloyApiFallback(visitor, url) {
+            const satellite = window._satellite; // eslint-disable-line no-underscore-dangle
+            if (window.alloy && window.edgeConfigId && satellite
+                && satellite.alloyConfigurePromise) {
+                satellite.alloyConfigurePromise
+                    .then(() => window.alloy('getIdentity'))
+                    .then((res) => {
+                        if (
+                            res && res.identity && res.identity.ECID &&
+                            res.edge && res.edge.regionId
+                        ) {
+                            url.searchParams.set('mcgvid', res.identity.ECID);
+                            url.searchParams.set('mboxMCGLH', res.edge.regionId);
+                            getCards(url.toString());
+                        } else {
+                            visitorApiFallback(visitor, url);
+                        }
+                    })
+                    .catch(() => {
+                        visitorApiFallback(visitor, url);
+                    });
+            } else {
+                visitorApiFallback(visitor, url);
+            }
+        }
+
+        function getVisitorData(visitorApi) {
+            const url = new URL(collectionEndpoint);
+            const revealId = useLastViewedSession && localStorage.getItem('targetValueRevealID');
+            if (revealId) url.searchParams.set('currentEntityId', revealId);
+            visitorApi
+                .then((visitor) => {
+                    const identity = window.alloy_getIdentity;
+                    if (identity) {
+                        identity
+                            .then((res) => {
+                                if (
+                                    res && res.identity && res.identity.ECID &&
+                                    res.edge && res.edge.regionId
+                                ) {
+                                    url.searchParams.set('mcgvid', res.identity.ECID);
+                                    url.searchParams.set('mboxMCGLH', res.edge.regionId);
+                                    getCards(url.toString());
+                                } else {
+                                    alloyApiFallback(visitor, url);
+                                }
+                            })
+                            .catch(() => {
+                                alloyApiFallback(visitor, url);
+                            });
+                    } else {
+                        alloyApiFallback(visitor, url);
+                    }
+                })
+                .catch(() => {
+                    getCards(collectionEndpoint);
+                });
         }
 
         /**
