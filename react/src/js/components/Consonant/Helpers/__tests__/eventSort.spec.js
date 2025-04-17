@@ -119,7 +119,7 @@ describe('utils/timeSorting', () => {
 
             const result = eventTiming(sessions);
 
-            expect(result.visibleSessions).toHaveLength(4);
+            expect(result.visibleSessions.length).toBe(4);
             expect(result.visibleSessions[0].startDate).toBe('2023-09-30T10:00:00Z'); // on-demand
             expect(result.visibleSessions[1].startDate).toBe('2023-10-01T10:00:00Z'); // live
             expect(result.visibleSessions[2].startDate).toBe('2023-10-02T10:00:00Z'); // upcoming
@@ -134,7 +134,7 @@ describe('utils/timeSorting', () => {
 
             const result = eventTiming(sessions);
 
-            expect(result.visibleSessions).toHaveLength(2);
+            expect(result.visibleSessions.length).toBe(2);
             expect(result.visibleSessions[0].startDate).toBe('2023-10-01T10:00:00Z'); // live expired
             expect(result.visibleSessions[1].startDate).toBe('2023-10-02T10:00:00Z'); // on-demand scheduled
         });
@@ -174,7 +174,7 @@ describe('utils/timeSorting', () => {
 
             const result = eventTiming(sessions);
 
-            expect(result.visibleSessions).toHaveLength(3);
+            expect(result.visibleSessions.length).toBe(3);
             expect(result.visibleSessions[0].startDate).toBe('invalid-date'); // invalid dates
             expect(result.visibleSessions[1].startDate).toBe('2023-10-01T10:00:00Z'); // missing end date
             expect(result.visibleSessions[2].startDate).toBe(''); // missing start date
@@ -203,7 +203,7 @@ describe('utils/timeSorting', () => {
 
             const result = eventTiming(sessions);
 
-            expect(result.visibleSessions).toHaveLength(1);
+            expect(result.visibleSessions.length).toBe(1);
             expect(result.visibleSessions[0].startDate).toBe('2023-10-01T10:00:00Z'); // live
 
             performance.now = originalPerformanceNow;

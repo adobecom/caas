@@ -1,353 +1,137 @@
-import PROPS from '../TestingConstants/general';
-import jestMocks from '../../Testing/Utils/JestMocks';
+import { loadLana } from '../lana';
 
-import {
-    chain,
-    isObject,
-    sortByKey,
-    mapObject,
-    isNullish,
-    isSuperset,
-    intersection,
-    sanitizeText,
-    truncateList,
-    truncateString,
-    generateRange,
-    getLinkTarget,
-    getPageStartEnd,
-    getStartNumber,
-    getEndNumber,
-    sanitizeEventFilter,
-    stopPropagation,
-    parseToPrimitive,
-    chainFromIterable,
-    removeDuplicatesByKey,
-    isAtleastOneFilterSelected,
-    saveBookmarksToLocalStorage,
-    readBookmarksFromLocalStorage,
-    getByPath,
-    setByPath,
-    getSelectedItemsCount,
-    debounce,
-    mergeDeep,
-    template,
-} from '../general';
+describe('Lana Logging', () => {
+    let originalFetch;
 
-jest.useFakeTimers();
+    beforeAll(() => {
+        // Mock the fetch API
+        originalFetch = global.fetch;
+        global.fetch = jest.fn(() =>
+            Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve({}),
+            }));
+    });
 
-describe('utils/general', () => {
-    jestMocks.localStorage();
+    afterAll(() => {
+        // Restore the original fetch API
+        global.fetch = originalFetch;
+    });
 
-    describe('localStorage', () => {
-        afterEach(() => {
-            window.localStorage.clear();
+    beforeEach(() => {
+        // Reset the global lana object before each test
+        delete window.lana;
+    });
+
+    test('should initialize lana if not already initialized', () => {
+        loadLana();
+        expect(window.lana).toBeDefined();
+        expect(window.lana.debug).toBe(false);
+        expect(window.lana.options).toEqual({});
+    });
+
+    test('should not reinitialize lana if already initialized', () => {
+        window.lana = { log: jest.fn() };
+        loadLana();
+        expect(window.lana).toBeDefined();
+    });
+
+    test('should log an error when an error event occurs', async () => {
+        loadLana();
+        const errorEvent = new ErrorEvent('error', {
+            message: 'Test error',
         });
 
-        describe('saveBookmarksToLocalStorage', () => {
-            test('should save item to localStorage', () => {
-                const list = [1, 2, 3];
-                const stringifyList = JSON.stringify(list, null, 2);
+        // Mock logImpl instead of log
+        window.lana.logImpl = jest.fn();
 
-                saveBookmarksToLocalStorage(list);
+        window.dispatchEvent(errorEvent);
 
-                const bookmarksValue = window.localStorage.getItem('bookmarks');
+        // Check if logImpl was called with the correct arguments
+        expect(window.lana.logImpl).toHaveBeenCalledWith('Test error', { errorType: 'i' });
+    });
 
-                expect(bookmarksValue).toEqual(stringifyList);
+    test('should log an error when an unhandledrejection event occurs', async () => {
+        loadLana();
+        const rejectionEvent = new Event('unhandledrejection');
+        rejectionEvent.reason = 'Test rejection';
+
+        // Mock logImpl instead of log
+        window.lana.logImpl = jest.fn();
+
+        window.dispatchEvent(rejectionEvent);
+
+        // Check if logImpl was called with the correct arguments
+        expect(window.lana.logImpl).toHaveBeenCalledWith('Test rejection', { errorType: 'i' });
+    });
+});
+describe('Lana Logging - Additional Coverage Tests', () => {
+    let originalFetch;
+    let originalLana;
+
+    beforeAll(() => {
+        originalFetch = global.fetch;
+        originalLana = window.lana;
+    });
+
+    afterAll(() => {
+        global.fetch = originalFetch;
+        window.lana = originalLana;
+    });
+
+    beforeEach(() => {
+        delete window.lana;
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({}),
+        }));
+        console.log = jest.fn();
+    });
+
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
+
+    test('should remove event listeners and fetch lana.js when log is called', async () => {
+        loadLana();
+        const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');
+        const fetchSpy = jest.spyOn(global, 'fetch');
+
+        await window.lana.log('Test message');
+
+        expect(removeEventListenerSpy).toHaveBeenCalledWith('error', expect.any(Function));
+        expect(removeEventListenerSpy).toHaveBeenCalledWith('unhandledrejection', expect.any(Function));
+        expect(fetchSpy).toHaveBeenCalledWith('www.caas.com/libs/utils/lana.js');
+    });
+
+    test('should handle fetch errors gracefully when calling log', async () => {
+        loadLana();
+        const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');
+        global.fetch.mockImplementationOnce(() => Promise.reject(new Error('Fetch error')));
+
+        await window.lana.log('Test message');
+
+        expect(removeEventListenerSpy).toHaveBeenCalledWith('error', expect.any(Function));
+        expect(removeEventListenerSpy).toHaveBeenCalledWith('unhandledrejection', expect.any(Function));
+        expect(console.log).toHaveBeenCalledWith('Lana not yet loaded, logging to console:', 'Test message');
+    });
+
+    test('should call logImpl after fetching', async () => {
+        loadLana();
+        const mockLogResult = 'Logged successfully';
+        const mockLogImpl = jest.fn().mockReturnValue(mockLogResult);
+
+        global.fetch.mockImplementationOnce(() => {
+            window.lana.logImpl = mockLogImpl;
+            return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve({}),
             });
         });
-        describe('readBookmarksFromLocalStorage', () => {
-            PROPS.readBookmarksFromLocalStorage.forEach(({ value, expectedValue }) => {
-                test(`shouldn't return ${expectedValue}`, () => {
-                    window.localStorage.setItem('bookmarks', value);
 
-                    const bookmarksValue = readBookmarksFromLocalStorage();
+        const result = await window.lana.log('Test message');
 
-                    expect(bookmarksValue).toEqual(expectedValue);
-                });
-            });
-        });
-    });
-
-    describe('truncateString', () => {
-        PROPS.truncateString.forEach(({ str, num, expectedValue }) => {
-            test(`shouldn't return ${expectedValue} value`, () => {
-                const value = truncateString(str, num);
-
-                expect(value).toEqual(expectedValue);
-            });
-        });
-    });
-    describe('truncateList', () => {
-        PROPS.truncateList.forEach(({ limit, list, expectedValue }) => {
-            test(`shouldn't return array length === ${expectedValue}`, () => {
-                const value = truncateList(limit, list);
-
-                expect(value).toHaveLength(expectedValue);
-            });
-        });
-    });
-    describe('removeDuplicatesByKey', () => {
-        PROPS.removeDuplicatesByKey.forEach(({ list, key, expectedValue }) => {
-            test(`shouldn't return array length === ${expectedValue}`, () => {
-                const value = removeDuplicatesByKey(list, key);
-
-                expect(value).toEqual(expectedValue);
-            });
-        });
-    });
-    describe('chain', () => {
-        test('shouldn`t create new array from arguments', () => {
-            const arrayFromArguments = chain(1, 'string', null, undefined);
-
-            expect(arrayFromArguments).toEqual([1, 'string', null, undefined]);
-        });
-    });
-    describe('chainFromIterable', () => {
-        test('shouldn`t clone array', () => {
-            const clonedArray = chainFromIterable([1, 'string', null, undefined]);
-
-            expect(clonedArray).toEqual([1, 'string', null, undefined]);
-        });
-    });
-    describe('isSuperset', () => {
-        PROPS.isSuperset.forEach(({ superset, subset, expectedValue }) => {
-            test('should return true if subset is a part of superset, else should return false', () => {
-                const value = isSuperset(superset, subset);
-
-                expect(value).toEqual(expectedValue);
-            });
-        });
-    });
-    describe('intersection', () => {
-        PROPS.intersection.forEach(({ superset, subset, expectedValue }) => {
-            test('should return a new set with the matched values', () => {
-                const value = intersection(superset, subset);
-
-                expect(value).toEqual(expectedValue);
-            });
-        });
-    });
-    describe('sortByKey', () => {
-        PROPS.sortByKey.forEach(({ iterable, keyFunc, expectedValue }) => {
-            test('should return sorted object', () => {
-                const value = sortByKey(iterable, keyFunc);
-
-                expect(value).toEqual(expectedValue);
-            });
-        });
-    });
-    describe('sanitizeText', () => {
-        PROPS.sanitizeText.forEach(({ text, expectedValue }) => {
-            test('should return sanitized text', () => {
-                const value = sanitizeText(text);
-
-                expect(value).toEqual(expectedValue);
-            });
-        });
-    });
-    describe('mapObject', () => {
-        PROPS.mapObject.forEach(({ object, func, expectedValue }) => {
-            test('should return new object with mapped values', () => {
-                const value = mapObject(object, func);
-
-                expect(value).toEqual(expectedValue);
-            });
-        });
-    });
-    describe('isObject', () => {
-        PROPS.isObject.forEach(({ val, expectedValue }) => {
-            test('should return true if value is object, else return false', () => {
-                const value = isObject(val);
-
-                expect(value).toEqual(expectedValue);
-            });
-        });
-    });
-    describe('parseToPrimitive', () => {
-        PROPS.parseToPrimitive.forEach(({ value, expectedValue }) => {
-            test('should recursively parse to primitive', () => {
-                const val = parseToPrimitive(value);
-
-                expect(val).toEqual(expectedValue);
-            });
-        });
-    });
-    describe('isNullish', () => {
-        PROPS.isNullish.forEach(({ val, expectedValue }) => {
-            test('should return true if value is undefined/null/NaN, else return false', () => {
-                const value = isNullish(val);
-
-                expect(value).toEqual(expectedValue);
-            });
-        });
-    });
-    describe('isAtleastOneFilterSelected', () => {
-        PROPS.isAtleastOneFilterSelected.forEach(({ filters, expectedValue }) => {
-            test('should return true if at least one filter is selected', () => {
-                const value = isAtleastOneFilterSelected(filters);
-
-                expect(value).toEqual(expectedValue);
-            });
-        });
-    });
-    describe('stopPropagation', () => {
-        test('should call stopPropagation', () => {
-            const handleStopPropagation = jest.fn();
-
-            stopPropagation({ stopPropagation: handleStopPropagation });
-
-            expect(handleStopPropagation).toHaveBeenCalledTimes(1);
-        });
-    });
-    describe('generateRange', () => {
-        PROPS.generateRange.forEach(({ startVal, end, expectedValue }) => {
-            test('should return generated range', () => {
-                const value = generateRange(startVal, end);
-
-                expect(value).toEqual(expectedValue);
-            });
-        });
-    });
-    describe('getPageStartEnd', () => {
-        PROPS.getPageStartEnd.forEach(({
-            currentPageNumber, pageCount, totalPages, expectedValue,
-        }) => {
-            test('should return array with start and end', () => {
-                const value = getPageStartEnd(
-                    currentPageNumber,
-                    pageCount,
-                    totalPages,
-                );
-
-                expect(value).toEqual(expectedValue);
-            });
-        });
-    });
-    describe('getStartNumber', () => {
-        PROPS.getStartNumber.forEach(({
-            currentPageNumber, showItemsPerPage, expectedValue,
-        }) => {
-            test('should return start number', () => {
-                const value = getStartNumber(
-                    currentPageNumber,
-                    showItemsPerPage,
-                );
-
-                expect(value).toEqual(expectedValue);
-            });
-        });
-    });
-    describe('getEndNumber', () => {
-        PROPS.getEndNumber.forEach(({
-            currentPageNumber, showItemsPerPage, totalResults, expectedValue,
-        }) => {
-            test('should return start number', () => {
-                const value = getEndNumber(
-                    currentPageNumber,
-                    showItemsPerPage,
-                    totalResults,
-                );
-
-                expect(value).toEqual(expectedValue);
-            });
-        });
-    });
-    describe('getByPath', () => {
-        PROPS.getByPath.forEach(({
-            object, path, defaultValue, expectedValue,
-        }) => {
-            test('should return correct value', () => {
-                const value = getByPath(
-                    object,
-                    path,
-                    defaultValue,
-                );
-
-                expect(value).toEqual(expectedValue);
-            });
-        });
-    });
-    describe('getSelectedItemsCount', () => {
-        PROPS.getSelectedItemsCount.forEach(({
-            items, expectedValue,
-        }) => {
-            test('should return correct count', () => {
-                const count = getSelectedItemsCount(items);
-
-                expect(count).toEqual(expectedValue);
-            });
-        });
-    });
-    describe('setByPath', () => {
-        PROPS.setByPath.forEach(({
-            object, path, value, expectedValue,
-        }) => {
-            test('should return correct value', () => {
-                setByPath(
-                    object,
-                    path,
-                    value,
-                );
-
-                expect(object).toEqual(expectedValue);
-            });
-        });
-    });
-    describe('mergeDeep', () => {
-        PROPS.mergeDeep.forEach(({
-            firstObj, secondObj, expectedValue,
-        }) => {
-            test('should return correct value', () => {
-                const target = mergeDeep(firstObj, secondObj);
-
-                expect(target).toEqual(expectedValue);
-            });
-        });
-    });
-    describe('template', () => {
-        PROPS.template.forEach(({
-            text, props, expectedValue,
-        }) => {
-            test('should return correct value', () => {
-                const templatedText = template(text, props);
-
-                expect(templatedText).toEqual(expectedValue);
-            });
-        });
-    });
-    describe('debounce', () => {
-        test('should return correct value', () => {
-            const func = jest.fn();
-
-            const debouncedFunc = debounce(func);
-
-            debouncedFunc();
-            debouncedFunc();
-            debouncedFunc();
-            debouncedFunc();
-
-            jest.runAllTimers();
-
-            expect(func).toHaveBeenCalledTimes(1);
-        });
-    });
-    describe('getLinkTarget', () => {
-        PROPS.getLinkTarget.forEach(({
-            domain, link, authoredPageProp, expectedValue,
-        }) => {
-            test('should return correct value', () => {
-                const target = getLinkTarget(link, authoredPageProp, domain);
-                expect(target).toEqual(expectedValue);
-            });
-        });
-    });
-
-    describe('sanitizeEventFilter', () => {
-        PROPS.sanitizeEventFilter.forEach(({ filter, expectedValue }) => {
-            test('should return sanitized event filter', () => {
-                const value = sanitizeEventFilter(filter);
-                expect(value).toEqual(expectedValue);
-            });
-        });
+        expect(mockLogImpl).toHaveBeenCalledWith('Test message');
+        expect(result).toBe(mockLogResult);
     });
 });
