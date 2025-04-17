@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.34.1 (4/16/2025, 21:25:24)
+ * Chimera UI Libraries - Build 0.34.1 (4/17/2025, 16:03:47)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -7422,9 +7422,11 @@ var Container = function Container(props) {
                 satellite.alloyConfigurePromise.then(function () {
                     return window.alloy('getIdentity');
                 }).then(function (res) {
-                    if (res && res.identity && res.identity.ECID && res.edge && res.edge.regionId) {
-                        url.searchParams.set('mcgvid', res.identity.ECID);
-                        url.searchParams.set('mboxMCGLH', res.edge.regionId);
+                    var ecid = (0, _general.getByPath)(res, 'identity.ECID');
+                    var regionId = (0, _general.getByPath)(res, 'edge.regionId');
+                    if (ecid && regionId) {
+                        url.searchParams.set('mcgvid', ecid);
+                        url.searchParams.set('mboxMCGLH', regionId);
                         getCards(url.toString());
                     } else {
                         visitorApiFallback(visitor, url);
@@ -7445,9 +7447,11 @@ var Container = function Container(props) {
                 var identity = window.alloy_getIdentity;
                 if (identity) {
                     identity.then(function (res) {
-                        if (res && res.identity && res.identity.ECID && res.edge && res.edge.regionId) {
-                            url.searchParams.set('mcgvid', res.identity.ECID);
-                            url.searchParams.set('mboxMCGLH', res.edge.regionId);
+                        var ecid = (0, _general.getByPath)(res, 'identity.ECID');
+                        var regionId = (0, _general.getByPath)(res, 'edge.regionId');
+                        if (ecid && regionId) {
+                            url.searchParams.set('mcgvid', ecid);
+                            url.searchParams.set('mboxMCGLH', regionId);
                             getCards(url.toString());
                         } else {
                             alloyApiFallback(visitor, url);

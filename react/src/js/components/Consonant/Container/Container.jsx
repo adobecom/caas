@@ -964,12 +964,11 @@ const Container = (props) => {
                 satellite.alloyConfigurePromise
                     .then(() => window.alloy('getIdentity'))
                     .then((res) => {
-                        if (
-                            res && res.identity && res.identity.ECID &&
-                            res.edge && res.edge.regionId
-                        ) {
-                            url.searchParams.set('mcgvid', res.identity.ECID);
-                            url.searchParams.set('mboxMCGLH', res.edge.regionId);
+                        const ecid = getByPath(res, 'identity.ECID');
+                        const regionId = getByPath(res, 'edge.regionId');
+                        if (ecid && regionId) {
+                            url.searchParams.set('mcgvid', ecid);
+                            url.searchParams.set('mboxMCGLH', regionId);
                             getCards(url.toString());
                         } else {
                             visitorApiFallback(visitor, url);
@@ -993,12 +992,11 @@ const Container = (props) => {
                     if (identity) {
                         identity
                             .then((res) => {
-                                if (
-                                    res && res.identity && res.identity.ECID &&
-                                    res.edge && res.edge.regionId
-                                ) {
-                                    url.searchParams.set('mcgvid', res.identity.ECID);
-                                    url.searchParams.set('mboxMCGLH', res.edge.regionId);
+                                const ecid = getByPath(res, 'identity.ECID');
+                                const regionId = getByPath(res, 'edge.regionId');
+                                if (ecid && regionId) {
+                                    url.searchParams.set('mcgvid', ecid);
+                                    url.searchParams.set('mboxMCGLH', regionId);
                                     getCards(url.toString());
                                 } else {
                                     alloyApiFallback(visitor, url);
