@@ -701,10 +701,6 @@ describe('Consonant/Container/CardsCarousel', () => {
             }
             
             const centerClick = jest.fn();
-            const setVisibleCards = jest.fn();
-            const setAriaAttributes = jest.fn();
-            const showPrevButton = jest.fn();
-            const shouldHideNextButton = jest.fn();
 
             function nextButtonClick() {
                 if (isMobile()) {
