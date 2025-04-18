@@ -106,56 +106,48 @@ describe('Consonant/Grid', () => {
     
     test('should apply one-half card style class when specified', () => {
         renderCardsGrid({}, { collection: { cardStyle: '1:2' } });
-        const gridElement = screen.getByTestId('consonant-CardsGrid');
         const cardElement = screen.getByTestId('consonant-Card');
         expect(cardElement).toHaveClass('one-half');
     });
 
     test('should apply three-fourths card style class when specified', () => {
         renderCardsGrid({}, { collection: { cardStyle: '3:4' } });
-        const gridElement = screen.getByTestId('consonant-CardsGrid');
         const cardElement = screen.getByTestId('consonant-Card');
         expect(cardElement).toHaveClass('three-fourths');
     });
 
     test('should apply full card style class when specified', () => {
         renderCardsGrid({}, { collection: { cardStyle: 'full' } });
-        const gridElement = screen.getByTestId('consonant-CardsGrid');
         const cardElement = screen.getByTestId('consonant-Card');
         expect(cardElement).toHaveClass('full');
     });
 
     test('should apply half-height card style class when specified', () => {
         renderCardsGrid({}, { collection: { cardStyle: 'half-height' } });
-        const gridElement = screen.getByTestId('consonant-CardsGrid');
         const cardElement = screen.getByTestId('consonant-Card');
         expect(cardElement).toHaveClass('half-height');
     });
     
     test('should apply product card style class when specified', () => {
         renderCardsGrid({}, { collection: { cardStyle: 'product' } });
-        const gridElement = screen.getByTestId('consonant-CardsGrid');
         const cardElement = screen.getByTestId('consonant-Card');
         expect(cardElement).toHaveClass('product');
     });
 
     test('should apply text card style class when specified', () => {
         renderCardsGrid({}, { collection: { cardStyle: 'text' } });
-        const gridElement = screen.getByTestId('consonant-CardsGrid');
         const cardElement = screen.getByTestId('consonant-Card');
         expect(cardElement).toHaveClass('text');
     });
 
     test('should apply icon card style class when specified', () => {
         renderCardsGrid({}, { collection: { cardStyle: 'icon' } });
-        const gridElement = screen.getByTestId('consonant-CardsGrid');
         const cardElement = screen.getByTestId('consonant-Card');
         expect(cardElement).toHaveClass('icon');
     });
 
     test('should apply news card style class when specified', () => {
         renderCardsGrid({}, { collection: { cardStyle: 'news' } });
-        const gridElement = screen.getByTestId('consonant-CardsGrid');
         const cardElement = screen.getByTestId('consonant-Card');
         expect(cardElement).toHaveClass('news');
     });
