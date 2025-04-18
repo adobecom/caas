@@ -159,7 +159,7 @@ describe('Consonant/Grid', () => {
     });
     
     test('should correctly handle paginator type pagination', () => {
-        const { props: { cards } } = renderCardsGrid(
+        const {} = renderCardsGrid(
             { resultsPerPage: 2, pages: 1 },
             { pagination: { type: 'paginator' } }
         );
@@ -191,5 +191,11 @@ describe('Consonant/Grid', () => {
         // The component should not crash
         const gridElement = screen.queryByTestId('consonant-CardsGrid');
         expect(gridElement).toBeInTheDocument();
+    });
+
+    test('should not show CTA button when showCTA prop is false', () => {
+        renderCardsGrid({}, { collection: { button: {style: 'hidden' } } });
+        const ctaButton = screen.queryByTestId('consonant-BtnInfobit');
+        expect(ctaButton).not.toBeInTheDocument();
     });
 });
