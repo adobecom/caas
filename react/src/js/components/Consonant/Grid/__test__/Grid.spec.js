@@ -159,7 +159,7 @@ describe('Consonant/Grid', () => {
     });
     
     test('should correctly handle paginator type pagination', () => {
-        const {} = renderCardsGrid(
+        renderCardsGrid(
             { resultsPerPage: 2, pages: 1 },
             { pagination: { type: 'paginator' } }
         );
