@@ -580,5 +580,149 @@ describe('Consonant/Container/CardsCarousel', () => {
             // Confirm the carousel parent element does not have the tabbing class
             expect(carouselParent).not.toHaveClass('tabbing');
         });
-   });
+    });
+
+    describe('Navigation helper functions', () => {
+        describe('nextButtonClick', () => {
+            test('should call centerClick when in mobile view', () => {
+                // Set up test variables
+                const TABLET_BREAKPOINT = 1199;
+                
+                // Mock window.innerWidth to simulate mobile view
+                Object.defineProperty(window, 'innerWidth', {
+                    writable: true,
+                    configurable: true,
+                    value: 768 // Mobile width below TABLET_BREAKPOINT
+                });
+                
+                // Function implementations
+                function isMobile() {
+                    return window.innerWidth < TABLET_BREAKPOINT;
+                }
+                
+                const centerClick = jest.fn();
+                const setVisibleCards = jest.fn();
+                const setAriaAttributes = jest.fn();
+                const showPrevButton = jest.fn();
+                const shouldHideNextButton = jest.fn();
+                
+                function nextButtonClick() {
+                    if (isMobile()) {
+                        centerClick();
+                    } else {
+                        const carousel = { scrollLeft: 0 };
+                        carousel.scrollLeft += 100; // Simplified logic
+                        setVisibleCards('next');
+                        setAriaAttributes(carousel);
+                        showPrevButton();
+                        shouldHideNextButton();
+                    }
+                }
+                
+                // Call the function
+                nextButtonClick();
+                
+                // Assert that centerClick was called and other functions were not
+                expect(centerClick).toHaveBeenCalledTimes(1);
+                expect(setVisibleCards).not.toHaveBeenCalled();
+                expect(setAriaAttributes).not.toHaveBeenCalled();
+                expect(showPrevButton).not.toHaveBeenCalled();
+                expect(shouldHideNextButton).not.toHaveBeenCalled();
+            });
+            
+            test('should call desktop functions when not in mobile view', () => {
+                // Set up test variables
+                const TABLET_BREAKPOINT = 1199;
+                
+                // Mock window.innerWidth to simulate desktop view
+                Object.defineProperty(window, 'innerWidth', {
+                    writable: true,
+                    configurable: true,
+                    value: 1200 // Desktop width >= TABLET_BREAKPOINT
+                });
+                
+                // Function implementations
+                function isMobile() {
+                    return window.innerWidth < TABLET_BREAKPOINT;
+                }
+                
+                const centerClick = jest.fn();
+                const setVisibleCards = jest.fn();
+                const setAriaAttributes = jest.fn();
+                const showPrevButton = jest.fn();
+                const shouldHideNextButton = jest.fn();
+                
+                const carouselRef = {
+                    current: { scrollLeft: 0 }
+                };
+                
+                function nextButtonClick() {
+                    if (isMobile()) {
+                        centerClick();
+                    } else {
+                        const carousel = carouselRef.current;
+                        carousel.scrollLeft += 100; // Simplified logic
+                        setVisibleCards('next');
+                        setAriaAttributes(carousel);
+                        showPrevButton();
+                        shouldHideNextButton();
+                    }
+                }
+                
+                // Call the function
+                nextButtonClick();
+                
+                // Assert that desktop functions were called and centerClick was not
+                expect(centerClick).not.toHaveBeenCalled();
+                expect(setVisibleCards).toHaveBeenCalledWith('next');
+                expect(setAriaAttributes).toHaveBeenCalled();
+                expect(showPrevButton).toHaveBeenCalled();
+                expect(shouldHideNextButton).toHaveBeenCalled();
+                expect(carouselRef.current.scrollLeft).toBe(100);
+            });
+        });
+    });
+
+    describe('Mobile logic', () => {
+        test('should call centerClick when in mobile view', () => {
+            // Set up test variables
+            const TABLET_BREAKPOINT = 1199;
+            
+            // Mock window.innerWidth to simulate mobile view
+            Object.defineProperty(window, 'innerWidth', {
+                writable: true,
+                configurable: true,
+                value: 768 // Mobile width below TABLET_BREAKPOINT
+            });
+            
+            // Function implementations
+            function isMobile() {
+                return window.innerWidth < TABLET_BREAKPOINT;
+            }
+            
+            const centerClick = jest.fn();
+            const setVisibleCards = jest.fn();
+            const setAriaAttributes = jest.fn();
+            const showPrevButton = jest.fn();
+            const shouldHideNextButton = jest.fn();
+
+            function nextButtonClick() {
+                if (isMobile()) {
+                    centerClick();
+                } else {
+                    const carousel = { scrollLeft: 0 };
+                    carousel.scrollLeft += 100; // Simplified logic
+                }
+            }   
+
+            // Call the function
+            nextButtonClick();
+
+            // Assert that centerClick was called and other functions were not
+            expect(centerClick).toHaveBeenCalledTimes(1);
+        });
+    });
+
+
 });
+

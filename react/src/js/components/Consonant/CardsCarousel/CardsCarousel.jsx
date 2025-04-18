@@ -93,22 +93,26 @@ function CardsCarousel({
 
     function hideNextButton() {
         const nextBtn = next.current;
-        if (nextBtn) nextBtn.classList.add('hide');
+        // eslint-disable-next-line no-unused-expressions
+        nextBtn && nextBtn.classList.add('hide');
     }
 
     function hidePrevButton() {
         const prevBtn = prev.current;
-        if (prevBtn) prevBtn.classList.add('hide');
+        // eslint-disable-next-line no-unused-expressions
+        prevBtn && prevBtn.classList.add('hide');
     }
 
     function showNextButton() {
         const nextBtn = next.current;
-        if (nextBtn) nextBtn.classList.remove('hide');
+        // eslint-disable-next-line no-unused-expressions
+        nextBtn && nextBtn.classList.remove('hide');
     }
 
     function showPrevButton() {
         const prevBtn = prev.current;
-        if (prevBtn) prevBtn.classList.remove('hide');
+        // eslint-disable-next-line no-unused-expressions
+        prevBtn && prevBtn.classList.remove('hide');
     }
 
     function hideNav() {

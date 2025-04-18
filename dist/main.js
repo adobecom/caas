@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.34.1 (4/16/2025, 12:15:35)
+ * Chimera UI Libraries - Build 0.34.1 (4/17/2025, 23:46:34)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -44366,22 +44366,26 @@ function CardsCarousel() {
 
     function hideNextButton() {
         var nextBtn = next.current;
-        if (nextBtn) nextBtn.classList.add('hide');
+        // eslint-disable-next-line no-unused-expressions
+        nextBtn && nextBtn.classList.add('hide');
     }
 
     function hidePrevButton() {
         var prevBtn = prev.current;
-        if (prevBtn) prevBtn.classList.add('hide');
+        // eslint-disable-next-line no-unused-expressions
+        prevBtn && prevBtn.classList.add('hide');
     }
 
     function showNextButton() {
         var nextBtn = next.current;
-        if (nextBtn) nextBtn.classList.remove('hide');
+        // eslint-disable-next-line no-unused-expressions
+        nextBtn && nextBtn.classList.remove('hide');
     }
 
     function showPrevButton() {
         var prevBtn = prev.current;
-        if (prevBtn) prevBtn.classList.remove('hide');
+        // eslint-disable-next-line no-unused-expressions
+        prevBtn && prevBtn.classList.remove('hide');
     }
 
     function hideNav() {
