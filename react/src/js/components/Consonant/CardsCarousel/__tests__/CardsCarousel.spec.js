@@ -9,7 +9,7 @@ import cards from '../../Testing/Mocks/cards.json';
 import setupIntersectionObserverMock from '../../Testing/Mocks/intersectionObserver';
 import jestMocks from '../../Testing/Utils/JestMocks';
 import { getCardWidth } from '../CardsCarousel';
-import { generateCards } from '../../Testing/Utils/MockCards';
+import generateCards from '../../Testing/Utils/MockCards';
 
 // Mock fetch for cards data
 global.fetch = jest.fn(() =>

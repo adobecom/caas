@@ -5,7 +5,7 @@ import { DEFAULT_PROPS_ONE_HALF } from '../Constants/Card';
  * @param {number} count - Number of cards to generate
  * @returns {Array} Array of mock card objects
  */
-export const generateCards = (count) => {
+const generateCards = (count) => {
   const cards = [];
   for (let i = 0; i < count; i++) {
     cards.push({
@@ -21,3 +21,5 @@ export const generateCards = (count) => {
   }
   return cards;
 };
+
+export default generateCards;
