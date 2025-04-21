@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { useConfig } from '../Helpers/hooks';
 import Grid from '../Grid/Grid';
 import { RenderTotalResults } from '../Helpers/rendering';
+import { hidePrevButton as hidePrevBtn, hideNextButton as hideNextBtn, hideNav as hideNavUtil } from './CardsCarouselUtils';
 
 const NEXT_BUTTON_NAME = 'next';
 const PREV_BUTTON_NAME = 'previous';
@@ -91,33 +92,14 @@ function CardsCarousel({
         return window.innerWidth < TABLET_BREAKPOINT;
     }
 
-    function hideNextButton() {
-        const nextBtn = next.current;
-        // eslint-disable-next-line no-unused-expressions
-        nextBtn && nextBtn.classList.add('hide');
-    }
-
-    function hidePrevButton() {
-        const prevBtn = prev.current;
-        // eslint-disable-next-line no-unused-expressions
-        prevBtn && prevBtn.classList.add('hide');
-    }
-
     function showNextButton() {
         const nextBtn = next.current;
-        // eslint-disable-next-line no-unused-expressions
         nextBtn && nextBtn.classList.remove('hide');
     }
 
     function showPrevButton() {
         const prevBtn = prev.current;
-        // eslint-disable-next-line no-unused-expressions
         prevBtn && prevBtn.classList.remove('hide');
-    }
-
-    function hideNav() {
-        hidePrevButton();
-        hideNextButton();
     }
 
     function showNav() {
@@ -137,7 +119,7 @@ function CardsCarousel({
 
     function shouldHidePrevButton() {
         if (firstVisibleCard === 1) {
-            hidePrevButton();
+            hidePrevBtn(prev);
             setFocusNextBtn();
         }
     }
@@ -147,14 +129,14 @@ function CardsCarousel({
         const atEndOfCarousel =
             (carousel.scrollWidth - carousel.clientWidth < carousel.scrollLeft + cardWidth);
         if (atEndOfCarousel) {
-            hideNextButton();
+            hideNextBtn(next);
             setFocusPrevBtn();
         }
     }
 
     function mobileLogic() {
         if (isMobile()) {
-            hideNav();
+            hideNavUtil(prev, next);
         } else {
             showNav();
             shouldHidePrevButton();
