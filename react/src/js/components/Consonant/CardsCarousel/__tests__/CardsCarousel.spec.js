@@ -20,7 +20,7 @@ import {
     hidePrevButton, 
     hideNextButton, 
     setAriaAttributes 
-} from '../CardsCarouselUtils';
+} from '../CardsCarousel';
 
 global.fetch = jest.fn(() =>
     Promise.resolve({

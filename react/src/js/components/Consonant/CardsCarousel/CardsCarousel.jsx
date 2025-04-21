@@ -5,7 +5,41 @@ import PropTypes from 'prop-types';
 import { useConfig } from '../Helpers/hooks';
 import Grid from '../Grid/Grid';
 import { RenderTotalResults } from '../Helpers/rendering';
-import { hidePrevButton as hidePrevBtn, hideNextButton as hideNextBtn, hideNav as hideNavUtil } from './CardsCarouselUtils';
+// Navigation helper functions for CardsCarousel
+// Hide the previous button
+export function hidePrevButton(prevRef) {
+    const prevBtn = prevRef && prevRef.current;
+    prevBtn && prevBtn.classList.add('hide');
+}
+// Hide the next button
+export function hideNextButton(nextRef) {
+    const nextBtn = nextRef && nextRef.current;
+    nextBtn && nextBtn.classList.add('hide');
+}
+// Hide both navigation buttons
+export function hideNav(prevRef, nextRef) {
+    hidePrevButton(prevRef);
+    hideNextButton(nextRef);
+}
+// Set ARIA attributes for card links based on visibility
+export function setAriaAttributes(carousel, firstVisibleCard, lastVisibleCard, renderOverlay, cardStyle) {
+    const shouldRenderOverlay = renderOverlay || cardStyle === 'half-height';
+    carousel.querySelectorAll('.consonant-Card').forEach((card, index) => {
+        const cardLink = shouldRenderOverlay
+            ? card.querySelector('.consonant-LinkBlocker')
+            : card.querySelector('.consonant-BtnInfobit');
+        if (!cardLink) return;
+        if (index + 1 >= firstVisibleCard && index + 1 <= lastVisibleCard) {
+            cardLink.removeAttribute('aria-hidden');
+            cardLink.removeAttribute('inert');
+            cardLink.setAttribute('tabindex', '0');
+        } else {
+            cardLink.setAttribute('aria-hidden', 'true');
+            cardLink.setAttribute('inert', '');
+            cardLink.setAttribute('tabindex', '-1');
+        }
+    });
+}
 
 const NEXT_BUTTON_NAME = 'next';
 const PREV_BUTTON_NAME = 'previous';
@@ -119,7 +153,7 @@ function CardsCarousel({
 
     function shouldHidePrevButton() {
         if (firstVisibleCard === 1) {
-            hidePrevBtn(prev);
+            hidePrevButton(prev);
             setFocusNextBtn();
         }
     }
@@ -129,14 +163,14 @@ function CardsCarousel({
         const atEndOfCarousel =
             (carousel.scrollWidth - carousel.clientWidth < carousel.scrollLeft + cardWidth);
         if (atEndOfCarousel) {
-            hideNextBtn(next);
+            hideNextButton(next);
             setFocusPrevBtn();
         }
     }
 
     function mobileLogic() {
         if (isMobile()) {
-            hideNavUtil(prev, next);
+            hideNav(prev, next);
         } else {
             showNav();
             shouldHidePrevButton();
@@ -154,32 +188,6 @@ function CardsCarousel({
         carousel.scrollLeft += (-window.innerWidth / 2 + 620);
     }
 
-    /**
-     * Jira ticket: MWPW-164509
-     * Sets the ARIA attributes for the cards based on their visibility.
-     * @param {HTMLElement} carousel - The carousel element.
-     */
-    function setAriaAttributes(carousel) {
-        const shouldRenderOverlay = renderOverlay || cardStyle === 'half-height';
-
-        carousel.querySelectorAll('.consonant-Card').forEach((card, index) => {
-            const cardLink = shouldRenderOverlay
-                ? card.querySelector('.consonant-LinkBlocker')
-                : card.querySelector('.consonant-BtnInfobit');
-
-            if (!cardLink) return;
-
-            if (index + 1 >= firstVisibleCard && index + 1 <= lastVisibleCard) {
-                cardLink.removeAttribute('aria-hidden');
-                cardLink.removeAttribute('inert');
-                cardLink.setAttribute('tabindex', '0');
-            } else {
-                cardLink.setAttribute('aria-hidden', 'true');
-                cardLink.setAttribute('inert', '');
-                cardLink.setAttribute('tabindex', '-1');
-            }
-        });
-    }
 
     /**
      * Jira ticket: MWPW-164509
@@ -204,7 +212,7 @@ function CardsCarousel({
             const carousel = carouselRef.current;
             carousel.scrollLeft += ((cardWidth + gridGap) * cardsShiftedPerClick);
             setVisibleCards('next');
-            setAriaAttributes(carousel);
+            setAriaAttributes(carousel, firstVisibleCard, lastVisibleCard, renderOverlay, cardStyle);
             showPrevButton();
             shouldHideNextButton();
         }
@@ -217,7 +225,7 @@ function CardsCarousel({
             const carousel = carouselRef.current;
             carousel.scrollLeft -= ((cardWidth + gridGap) * cardsShiftedPerClick);
             setVisibleCards('prev');
-            setAriaAttributes(carousel);
+            setAriaAttributes(carousel, firstVisibleCard, lastVisibleCard, renderOverlay, cardStyle);
             shouldHidePrevButton();
         }
     }
