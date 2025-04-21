@@ -9,12 +9,16 @@ import { RenderTotalResults } from '../Helpers/rendering';
 // Hide the previous button
 export function hidePrevButton(prevRef) {
     const prevBtn = prevRef && prevRef.current;
-    prevBtn && prevBtn.classList.add('hide');
+    if (prevBtn) {
+        prevBtn.classList.add('hide');
+    }
 }
 // Hide the next button
 export function hideNextButton(nextRef) {
     const nextBtn = nextRef && nextRef.current;
-    nextBtn && nextBtn.classList.add('hide');
+    if (nextBtn) {
+        nextBtn.classList.add('hide');
+    }
 }
 // Hide both navigation buttons
 export function hideNav(prevRef, nextRef) {
@@ -22,7 +26,13 @@ export function hideNav(prevRef, nextRef) {
     hideNextButton(nextRef);
 }
 // Set ARIA attributes for card links based on visibility
-export function setAriaAttributes(carousel, firstVisibleCard, lastVisibleCard, renderOverlay, cardStyle) {
+export function setAriaAttributes(
+    carousel,
+    firstVisibleCard,
+    lastVisibleCard,
+    renderOverlay,
+    cardStyle,
+) {
     const shouldRenderOverlay = renderOverlay || cardStyle === 'half-height';
     carousel.querySelectorAll('.consonant-Card').forEach((card, index) => {
         const cardLink = shouldRenderOverlay
@@ -128,12 +138,16 @@ function CardsCarousel({
 
     function showNextButton() {
         const nextBtn = next.current;
-        nextBtn && nextBtn.classList.remove('hide');
+        if (nextBtn) {
+            nextBtn.classList.remove('hide');
+        }
     }
 
     function showPrevButton() {
         const prevBtn = prev.current;
-        prevBtn && prevBtn.classList.remove('hide');
+        if (prevBtn) {
+            prevBtn.classList.remove('hide');
+        }
     }
 
     function showNav() {
@@ -212,7 +226,13 @@ function CardsCarousel({
             const carousel = carouselRef.current;
             carousel.scrollLeft += ((cardWidth + gridGap) * cardsShiftedPerClick);
             setVisibleCards('next');
-            setAriaAttributes(carousel, firstVisibleCard, lastVisibleCard, renderOverlay, cardStyle);
+            setAriaAttributes(
+                carousel,
+                firstVisibleCard,
+                lastVisibleCard,
+                renderOverlay,
+                cardStyle,
+            );
             showPrevButton();
             shouldHideNextButton();
         }
@@ -225,7 +245,13 @@ function CardsCarousel({
             const carousel = carouselRef.current;
             carousel.scrollLeft -= ((cardWidth + gridGap) * cardsShiftedPerClick);
             setVisibleCards('prev');
-            setAriaAttributes(carousel, firstVisibleCard, lastVisibleCard, renderOverlay, cardStyle);
+            setAriaAttributes(
+                carousel,
+                firstVisibleCard,
+                lastVisibleCard,
+                renderOverlay,
+                cardStyle,
+            );
             shouldHidePrevButton();
         }
     }

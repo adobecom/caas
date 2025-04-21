@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow, max-len */
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import '@testing-library/jest-dom';
@@ -14,12 +15,12 @@ import config from '../../Testing/Mocks/config.json';
 import cards from '../../Testing/Mocks/cards.json';
 import setupIntersectionObserverMock from '../../Testing/Mocks/intersectionObserver';
 import jestMocks from '../../Testing/Utils/JestMocks';
-import { getCardWidth } from '../CardsCarousel';
-import { 
-    hideNav, 
-    hidePrevButton, 
-    hideNextButton, 
-    setAriaAttributes 
+import {
+    getCardWidth,
+    hideNav,
+    hidePrevButton,
+    hideNextButton,
+    setAriaAttributes,
 } from '../CardsCarousel';
 
 global.fetch = jest.fn(() =>
@@ -76,7 +77,7 @@ beforeEach(async () => {
 });
 
 describe('Consonant/Container/CardsCarousel', () => {
-    test('should render Carousel with default props', async () => {        
+    test('should render Carousel with default props', async () => {
         // Check if the carousel container is rendered
         await waitFor(() => {
             expect(carouselContainer).toBeInTheDocument();
@@ -435,13 +436,13 @@ describe('Consonant/Container/CardsCarousel', () => {
             // Set up incremental animation
             configToUse.pagination = { animationStyle: 'incremental' };
             await act(async () => render(<Container config={configToUse} />));
-            
+
             // Mock the initial state
             firstVisibleCard = 1;
             let lastVisibleCard = 3;
             const cardsPerPage = 3;
             const isIncremental = true;
-            
+
             // Define the setVisibleCards function
             const setVisibleCards = (direction) => {
                 const incrementBy = isIncremental ? 1 : cardsPerPage;
@@ -453,15 +454,15 @@ describe('Consonant/Container/CardsCarousel', () => {
                     lastVisibleCard -= incrementBy;
                 }
             };
-            
+
             // Call the function with 'next' direction
             setVisibleCards('next');
-            
+
             // Assert that values are incremented by 1
             expect(firstVisibleCard).toBe(2);
             expect(lastVisibleCard).toBe(4);
         });
-        
+
         test('should increment firstVisibleCard and lastVisibleCard by cardsPerPage when direction is next and animation is not incremental', async () => {
             // Set up non-incremental animation
             configToUse.pagination = { animationStyle: 'non-incremental' };
@@ -472,7 +473,7 @@ describe('Consonant/Container/CardsCarousel', () => {
             let lastVisibleCard = 3;
             const cardsPerPage = 3;
             const isIncremental = false;
-            
+
             // Define the setVisibleCards function
             const setVisibleCards = (direction) => {
                 const incrementBy = isIncremental ? 1 : cardsPerPage;
@@ -484,15 +485,15 @@ describe('Consonant/Container/CardsCarousel', () => {
                     lastVisibleCard -= incrementBy;
                 }
             };
-            
+
             // Call the function with 'next' direction
             setVisibleCards('next');
-            
+
             // Assert that values are incremented by cardsPerPage
             expect(firstVisibleCard).toBe(4);
             expect(lastVisibleCard).toBe(6);
         });
-        
+
         test('should decrement firstVisibleCard and lastVisibleCard by 1 when direction is prev and animation is incremental', async () => {
             // Set up incremental animation
             configToUse.pagination = { animationStyle: 'incremental' };
@@ -503,7 +504,7 @@ describe('Consonant/Container/CardsCarousel', () => {
             let lastVisibleCard = 6;
             const cardsPerPage = 3;
             const isIncremental = true;
-            
+
             // Define the setVisibleCards function
             const setVisibleCards = (direction) => {
                 const incrementBy = isIncremental ? 1 : cardsPerPage;
@@ -515,26 +516,26 @@ describe('Consonant/Container/CardsCarousel', () => {
                     lastVisibleCard -= incrementBy;
                 }
             };
-            
+
             // Call the function with 'prev' direction
             setVisibleCards('prev');
-            
+
             // Assert that values are decremented by 1
             expect(firstVisibleCard).toBe(3);
             expect(lastVisibleCard).toBe(5);
         });
-        
+
         test('should decrement firstVisibleCard and lastVisibleCard by cardsPerPage when direction is prev and animation is not incremental', async () => {
             // Set up non-incremental animation
             configToUse.pagination = { animationStyle: 'non-incremental' };
             await act(async () => render(<Container config={configToUse} />));
-            
+
             // Mock the initial state
             firstVisibleCard = 7;
             let lastVisibleCard = 9;
             const cardsPerPage = 3;
             const isIncremental = false;
-            
+
             // Define the setVisibleCards function
             const setVisibleCards = (direction) => {
                 const incrementBy = isIncremental ? 1 : cardsPerPage;
@@ -546,17 +547,17 @@ describe('Consonant/Container/CardsCarousel', () => {
                     lastVisibleCard -= incrementBy;
                 }
             };
-            
+
             // Call the function with 'prev' direction
             setVisibleCards('prev');
-            
+
             // Assert that values are decremented by cardsPerPage
             expect(firstVisibleCard).toBe(4);
             expect(lastVisibleCard).toBe(6);
         });
     });
 
-   describe('Tab key press functionality', () => {
+    describe('Tab key press functionality', () => {
         test('should add tabbing class to carousel parent element when Tab key is pressed', async () => {
             // Set up the carousel
             configToUse.collection.layout.container = 'carousel';
@@ -565,7 +566,7 @@ describe('Consonant/Container/CardsCarousel', () => {
             // Get the carousel parent element
             const carouselParent = document.querySelector('.consonant-Container--carousel').parentElement;
 
-            // Simulate tabbing to the carousel 
+            // Simulate tabbing to the carousel
             fireEvent.keyDown(carouselParent, { key: 'Tab' });
 
             // Confirm the carousel parent element has the tabbing class
@@ -582,7 +583,7 @@ describe('Consonant/Container/CardsCarousel', () => {
 
             // Simulate mouse down
             fireEvent.mouseDown(carouselParent);
-            
+
             // Confirm the carousel parent element does not have the tabbing class
             expect(carouselParent).not.toHaveClass('tabbing');
         });
@@ -593,25 +594,25 @@ describe('Consonant/Container/CardsCarousel', () => {
             test('should call centerClick when in mobile view', () => {
                 // Set up test variables
                 const TABLET_BREAKPOINT = 1199;
-                
+
                 // Mock window.innerWidth to simulate mobile view
                 Object.defineProperty(window, 'innerWidth', {
                     writable: true,
                     configurable: true,
-                    value: 768 // Mobile width below TABLET_BREAKPOINT
+                    value: 768, // Mobile width below TABLET_BREAKPOINT
                 });
-                
+
                 // Function implementations
                 function isMobile() {
                     return window.innerWidth < TABLET_BREAKPOINT;
                 }
-                
+
                 const centerClick = jest.fn();
                 const setVisibleCards = jest.fn();
                 const setAriaAttributes = jest.fn();
                 const showPrevButton = jest.fn();
                 const shouldHideNextButton = jest.fn();
-                
+
                 function nextButtonClick() {
                     if (isMobile()) {
                         centerClick();
@@ -624,10 +625,10 @@ describe('Consonant/Container/CardsCarousel', () => {
                         shouldHideNextButton();
                     }
                 }
-                
+
                 // Call the function
                 nextButtonClick();
-                
+
                 // Assert that centerClick was called and other functions were not
                 expect(centerClick).toHaveBeenCalledTimes(1);
                 expect(setVisibleCards).not.toHaveBeenCalled();
@@ -635,33 +636,33 @@ describe('Consonant/Container/CardsCarousel', () => {
                 expect(showPrevButton).not.toHaveBeenCalled();
                 expect(shouldHideNextButton).not.toHaveBeenCalled();
             });
-            
+
             test('should call desktop functions when not in mobile view', () => {
                 // Set up test variables
                 const TABLET_BREAKPOINT = 1199;
-                
+
                 // Mock window.innerWidth to simulate desktop view
                 Object.defineProperty(window, 'innerWidth', {
                     writable: true,
                     configurable: true,
-                    value: 1200 // Desktop width >= TABLET_BREAKPOINT
+                    value: 1200, // Desktop width >= TABLET_BREAKPOINT
                 });
-                
+
                 // Function implementations
                 function isMobile() {
                     return window.innerWidth < TABLET_BREAKPOINT;
                 }
-                
+
                 const centerClick = jest.fn();
                 const setVisibleCards = jest.fn();
                 const setAriaAttributes = jest.fn();
                 const showPrevButton = jest.fn();
                 const shouldHideNextButton = jest.fn();
-                
+
                 const carouselRef = {
-                    current: { scrollLeft: 0 }
+                    current: { scrollLeft: 0 },
                 };
-                
+
                 function nextButtonClick() {
                     if (isMobile()) {
                         centerClick();
@@ -674,10 +675,10 @@ describe('Consonant/Container/CardsCarousel', () => {
                         shouldHideNextButton();
                     }
                 }
-                
+
                 // Call the function
                 nextButtonClick();
-                
+
                 // Assert that desktop functions were called and centerClick was not
                 expect(centerClick).not.toHaveBeenCalled();
                 expect(setVisibleCards).toHaveBeenCalledWith('next');
@@ -693,19 +694,19 @@ describe('Consonant/Container/CardsCarousel', () => {
         test('should call centerClick when in mobile view for prevButtonClick', () => {
             // Set up test variables
             const TABLET_BREAKPOINT = 1199;
-            
+
             // Mock window.innerWidth to simulate mobile view
             Object.defineProperty(window, 'innerWidth', {
                 writable: true,
                 configurable: true,
-                value: 768 // Mobile width below TABLET_BREAKPOINT
+                value: 768, // Mobile width below TABLET_BREAKPOINT
             });
-            
+
             // Function implementations
             function isMobile() {
                 return window.innerWidth < TABLET_BREAKPOINT;
             }
-            
+
             const centerClick = jest.fn();
             const setVisibleCards = jest.fn();
             const setAriaAttributes = jest.fn();
@@ -721,7 +722,7 @@ describe('Consonant/Container/CardsCarousel', () => {
                     setAriaAttributes(carousel);
                     shouldHidePrevButton();
                 }
-            }   
+            }
 
             // Call the function
             prevButtonClick();
@@ -736,19 +737,19 @@ describe('Consonant/Container/CardsCarousel', () => {
         test('should call centerClick when in mobile view for nextButtonClick', () => {
             // Set up test variables
             const TABLET_BREAKPOINT = 1199;
-            
+
             // Mock window.innerWidth to simulate mobile view
             Object.defineProperty(window, 'innerWidth', {
                 writable: true,
                 configurable: true,
-                value: 768 // Mobile width below TABLET_BREAKPOINT
+                value: 768, // Mobile width below TABLET_BREAKPOINT
             });
-            
+
             // Function implementations
             function isMobile() {
                 return window.innerWidth < TABLET_BREAKPOINT;
             }
-            
+
             const centerClick = jest.fn();
 
             function nextButtonClick() {
@@ -758,7 +759,7 @@ describe('Consonant/Container/CardsCarousel', () => {
                     const carousel = { scrollLeft: 0 };
                     carousel.scrollLeft += 100; // Simplified logic
                 }
-            }   
+            }
 
             // Call the function
             nextButtonClick();
@@ -773,14 +774,14 @@ describe('Consonant/Container/CardsCarousel', () => {
             // Create mock DOM elements for buttons
             const prevButton = document.createElement('button');
             const nextButton = document.createElement('button');
-            
+
             // Create refs
             const prevRef = { current: prevButton };
             const nextRef = { current: nextButton };
-            
+
             // Call the exported hideNav function directly
             hideNav(prevRef, nextRef);
-            
+
             // Verify that both buttons have the hide class
             expect(prevButton.classList.contains('hide')).toBe(true);
             expect(nextButton.classList.contains('hide')).toBe(true);
@@ -790,40 +791,40 @@ describe('Consonant/Container/CardsCarousel', () => {
             // Create a mock button
             const buttonElement = document.createElement('button');
             const prevRef = { current: buttonElement };
-            
+
             // Call the exported function directly
             hidePrevButton(prevRef);
-            
+
             // Check if the class was added
             expect(buttonElement.classList.contains('hide')).toBe(true);
         });
-        
+
         test('hideNextButton should add hide class to next button', () => {
             // Create a mock button
             const buttonElement = document.createElement('button');
             const nextRef = { current: buttonElement };
-            
+
             // Call the exported function directly
             hideNextButton(nextRef);
-            
+
             // Check if the class was added
             expect(buttonElement.classList.contains('hide')).toBe(true);
         });
-        
+
         test('hideNav should handle null refs gracefully', () => {
             // Call hideNav with null refs
             expect(() => {
                 hideNav(null, null);
             }).not.toThrow();
         });
-        
+
         test('hidePrevButton should handle null refs gracefully', () => {
             // Call hidePrevButton with null ref
             expect(() => {
                 hidePrevButton(null);
             }).not.toThrow();
         });
-        
+
         test('hideNextButton should handle null refs gracefully', () => {
             // Call hideNextButton with null ref
             expect(() => {
@@ -831,165 +832,165 @@ describe('Consonant/Container/CardsCarousel', () => {
             }).not.toThrow();
         });
     });
-    
+
     describe('setAriaAttributes from CardsCarouselUtils', () => {
         test('should set aria attributes for visible cards with LinkBlocker', () => {
             // Create a mock carousel with cards
             const carouselElement = document.createElement('div');
-            
+
             // Create cards
             for (let i = 0; i < 5; i++) {
                 const cardElement = document.createElement('div');
                 cardElement.className = 'consonant-Card';
-                
+
                 const linkBlocker = document.createElement('a');
                 linkBlocker.className = 'consonant-LinkBlocker';
                 cardElement.appendChild(linkBlocker);
-                
+
                 carouselElement.appendChild(cardElement);
             }
-            
+
             // Mock variables
             const firstVisibleCard = 2;
             const lastVisibleCard = 3;
             const renderOverlay = true;
             const cardStyle = '';
-            
+
             // Call the exported setAriaAttributes function
             setAriaAttributes(carouselElement, firstVisibleCard, lastVisibleCard, renderOverlay, cardStyle);
-            
+
             // Check visible cards
             const visibleCards = Array.from(carouselElement.querySelectorAll('.consonant-Card')).slice(1, 3);
-            visibleCards.forEach(card => {
+            visibleCards.forEach((card) => {
                 const link = card.querySelector('.consonant-LinkBlocker');
                 expect(link.getAttribute('aria-hidden')).toBe(null);
                 expect(link.getAttribute('inert')).toBe(null);
                 expect(link.getAttribute('tabindex')).toBe('0');
             });
-            
+
             // Check hidden cards
             const hiddenCards = [
                 ...Array.from(carouselElement.querySelectorAll('.consonant-Card')).slice(0, 1),
-                ...Array.from(carouselElement.querySelectorAll('.consonant-Card')).slice(3)
+                ...Array.from(carouselElement.querySelectorAll('.consonant-Card')).slice(3),
             ];
-            hiddenCards.forEach(card => {
+            hiddenCards.forEach((card) => {
                 const link = card.querySelector('.consonant-LinkBlocker');
                 expect(link.getAttribute('aria-hidden')).toBe('true');
                 expect(link.getAttribute('inert')).toBe('');
                 expect(link.getAttribute('tabindex')).toBe('-1');
             });
         });
-        
+
         test('should set aria attributes for visible cards with BtnInfobit', () => {
             // Create a mock carousel with cards
             const carouselElement = document.createElement('div');
-            
+
             // Create cards
             for (let i = 0; i < 5; i++) {
                 const cardElement = document.createElement('div');
                 cardElement.className = 'consonant-Card';
-                
+
                 const btnInfobit = document.createElement('a');
                 btnInfobit.className = 'consonant-BtnInfobit';
                 cardElement.appendChild(btnInfobit);
-                
+
                 carouselElement.appendChild(cardElement);
             }
-            
+
             // Mock variables
             const firstVisibleCard = 2;
             const lastVisibleCard = 3;
             const renderOverlay = false;
             const cardStyle = '';
-            
+
             // Call the exported function
             setAriaAttributes(carouselElement, firstVisibleCard, lastVisibleCard, renderOverlay, cardStyle);
-            
+
             // Check visible cards
             const visibleCards = Array.from(carouselElement.querySelectorAll('.consonant-Card')).slice(1, 3);
-            visibleCards.forEach(card => {
+            visibleCards.forEach((card) => {
                 const link = card.querySelector('.consonant-BtnInfobit');
                 expect(link.getAttribute('aria-hidden')).toBe(null);
                 expect(link.getAttribute('inert')).toBe(null);
                 expect(link.getAttribute('tabindex')).toBe('0');
             });
-            
+
             // Check hidden cards
             const hiddenCards = [
                 ...Array.from(carouselElement.querySelectorAll('.consonant-Card')).slice(0, 1),
-                ...Array.from(carouselElement.querySelectorAll('.consonant-Card')).slice(3)
+                ...Array.from(carouselElement.querySelectorAll('.consonant-Card')).slice(3),
             ];
-            hiddenCards.forEach(card => {
+            hiddenCards.forEach((card) => {
                 const link = card.querySelector('.consonant-BtnInfobit');
                 expect(link.getAttribute('aria-hidden')).toBe('true');
                 expect(link.getAttribute('inert')).toBe('');
                 expect(link.getAttribute('tabindex')).toBe('-1');
             });
         });
-        
+
         test('should handle cards with half-height style even when renderOverlay is false', () => {
             // Create a mock carousel with cards
             const carouselElement = document.createElement('div');
-            
+
             // Create cards
             for (let i = 0; i < 5; i++) {
                 const cardElement = document.createElement('div');
                 cardElement.className = 'consonant-Card';
-                
+
                 const linkBlocker = document.createElement('a');
                 linkBlocker.className = 'consonant-LinkBlocker';
                 cardElement.appendChild(linkBlocker);
-                
+
                 carouselElement.appendChild(cardElement);
             }
-            
+
             // Mock variables
             const firstVisibleCard = 2;
             const lastVisibleCard = 3;
             const renderOverlay = false;
             const cardStyle = 'half-height';
-            
+
             // Call the exported function
             setAriaAttributes(carouselElement, firstVisibleCard, lastVisibleCard, renderOverlay, cardStyle);
-            
+
             // Check that LinkBlocker was used due to half-height style
             const visibleCards = Array.from(carouselElement.querySelectorAll('.consonant-Card')).slice(1, 3);
-            visibleCards.forEach(card => {
+            visibleCards.forEach((card) => {
                 const link = card.querySelector('.consonant-LinkBlocker');
                 expect(link.getAttribute('aria-hidden')).toBe(null);
                 expect(link.getAttribute('inert')).toBe(null);
                 expect(link.getAttribute('tabindex')).toBe('0');
             });
         });
-        
+
         test('should handle cards with no cardLink element', () => {
             // Create a mock carousel with cards
             const carouselElement = document.createElement('div');
-            
+
             // Create cards, some without links
             for (let i = 0; i < 5; i++) {
                 const cardElement = document.createElement('div');
                 cardElement.className = 'consonant-Card';
-                
+
                 // Only add links to some cards
                 if (i !== 2) {
                     const linkBlocker = document.createElement('a');
                     linkBlocker.className = 'consonant-LinkBlocker';
                     cardElement.appendChild(linkBlocker);
                 }
-                
+
                 carouselElement.appendChild(cardElement);
             }
-            
+
             // Mock variables
             const firstVisibleCard = 2;
             const lastVisibleCard = 4;
             const renderOverlay = true;
             const cardStyle = '';
-            
+
             // Should not throw an error when a card has no link
             expect(() => setAriaAttributes(carouselElement, firstVisibleCard, lastVisibleCard, renderOverlay, cardStyle)).not.toThrow();
-            
+
             // Card at index 2 (third card) has no link and should be skipped
             const thirdCard = carouselElement.querySelectorAll('.consonant-Card')[2];
             expect(thirdCard.querySelector('.consonant-LinkBlocker')).toBe(null);
