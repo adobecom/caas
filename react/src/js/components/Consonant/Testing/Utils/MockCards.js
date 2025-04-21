@@ -5,6 +5,8 @@ import { DEFAULT_PROPS_ONE_HALF } from '../Constants/Card';
  * @param {number} count - Number of cards to generate
  * @returns {Array} Array of mock card objects
  */
+
+/* eslint-disable import/prefer-default-export */
 export const generateCards = (count) => {
   const cards = [];
   for (let i = 0; i < count; i++) {
