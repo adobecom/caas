@@ -16,8 +16,8 @@ export const generateCards = (count) => {
         title: `Mock Card ${i}`,
         description: `This is a mock card description for card ${i}`,
       },
-      ctaLink: `https://example.com/card-${i}`,
+      ctaLink: `https://adobe.com/card-${i}`,
     });
   }
   return cards;
-}; 
+};
