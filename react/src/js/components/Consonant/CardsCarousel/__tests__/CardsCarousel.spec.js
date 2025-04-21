@@ -2,7 +2,7 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import '@testing-library/jest-dom';
-import { render, act, fireEvent, cleanup, waitFor } from '@testing-library/react';
+import { render, act, fireEvent, cleanup } from '@testing-library/react';
 import Container from '../../Container/Container';
 import config from '../../Testing/Mocks/config.json';
 import cards from '../../Testing/Mocks/cards.json';
@@ -230,7 +230,6 @@ describe('CardsCarousel comprehensive behaviors', () => {
     cfg.collection.resultsPerPage = 3;
     cfg.cards = generateCards(6);
 
-    let container;
     await act(async () => {
       ({ container } = render(<Container config={cfg} />));
     });
@@ -240,7 +239,6 @@ describe('CardsCarousel comprehensive behaviors', () => {
       await new Promise(resolve => setTimeout(resolve, 0));
     });
 
-    const carousel = container.querySelector('.consonant-Container--carousel');
     const links = container.querySelectorAll('.consonant-LinkBlocker');
     const nextButton = container.querySelector('[name="next"]');
     expect(nextButton).toBeTruthy();
@@ -283,7 +281,6 @@ describe('CardsCarousel comprehensive behaviors', () => {
     const cfg = JSON.parse(JSON.stringify(config));
     cfg.pagination.animationStyle = 'incremental';
     cfg.collection.layout = { container: 'carousel', gutter: '3x', type: '2up' };
-    let container;
     await act(async () => {
       ({ container } = render(<Container config={cfg} />));
     });
