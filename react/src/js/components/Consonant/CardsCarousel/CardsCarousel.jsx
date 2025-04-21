@@ -14,9 +14,9 @@ let cardWidth = null;
 
 /**
  * Gets the width of the card based on the size and gap.
- * @param {string} size - The size of the card based on the layout.
- * @param {number} gap - The gap between the cards.
- * @returns {number} - The width of the card.
+ * @param {string} size - The layout type ('2up', '3up', '4up', or '5up').
+ * @param {number} gap - The gutter gap (in px).
+ * @returns {number} - The card width for that size+gap, or 0 if invalid.
  */
 export function getCardWidth(size, gap) {
     const cardWidths = {
@@ -45,7 +45,21 @@ export function getCardWidth(size, gap) {
             '32px': 207,
         },
     };
-    return cardWidths[size] ? cardWidths[size][`${gap}px`] : 0;
+
+    // Look up the map for this size; if none, return 0
+    const sizeMap = cardWidths[size];
+    if (!sizeMap) {
+        return 0;
+    }
+
+    // Build the gap key and only return it if it actually exists
+    const key = `${gap}px`;
+    if (Object.prototype.hasOwnProperty.call(sizeMap, key)) {
+        return sizeMap[key];
+    }
+
+    // Fallback when the gap isn't defined for this size
+    return 0;
 }
 
 function CardsCarousel({
