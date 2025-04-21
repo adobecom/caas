@@ -15,7 +15,12 @@ import cards from '../../Testing/Mocks/cards.json';
 import setupIntersectionObserverMock from '../../Testing/Mocks/intersectionObserver';
 import jestMocks from '../../Testing/Utils/JestMocks';
 import { getCardWidth } from '../CardsCarousel';
-import { hideNav, hidePrevButton, hideNextButton, setAriaAttributes } from '../CardsCarouselUtils';
+import { 
+    hideNav, 
+    hidePrevButton, 
+    hideNextButton, 
+    setAriaAttributes 
+} from '../CardsCarouselUtils';
 
 global.fetch = jest.fn(() =>
     Promise.resolve({

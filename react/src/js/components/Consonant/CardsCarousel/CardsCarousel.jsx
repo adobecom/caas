@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import { useConfig } from '../Helpers/hooks';
 import Grid from '../Grid/Grid';
 import { RenderTotalResults } from '../Helpers/rendering';
-import { hideNav, hidePrevButton, hideNextButton, setAriaAttributes as setAriaAttrs } from './CardsCarouselUtils';
 
 const NEXT_BUTTON_NAME = 'next';
 const PREV_BUTTON_NAME = 'previous';
@@ -92,12 +91,16 @@ function CardsCarousel({
         return window.innerWidth < TABLET_BREAKPOINT;
     }
 
-    function hideNextBtn() {
-        hideNextButton(next);
+    function hideNextButton() {
+        const nextBtn = next.current;
+        // eslint-disable-next-line no-unused-expressions
+        nextBtn && nextBtn.classList.add('hide');
     }
 
-    function hidePrevBtn() {
-        hidePrevButton(prev);
+    function hidePrevButton() {
+        const prevBtn = prev.current;
+        // eslint-disable-next-line no-unused-expressions
+        prevBtn && prevBtn.classList.add('hide');
     }
 
     function showNextButton() {
@@ -112,8 +115,9 @@ function CardsCarousel({
         prevBtn && prevBtn.classList.remove('hide');
     }
 
-    function hideNavigation() {
-        hideNav(prev, next);
+    function hideNav() {
+        hidePrevButton();
+        hideNextButton();
     }
 
     function showNav() {
@@ -133,7 +137,7 @@ function CardsCarousel({
 
     function shouldHidePrevButton() {
         if (firstVisibleCard === 1) {
-            hidePrevBtn();
+            hidePrevButton();
             setFocusNextBtn();
         }
     }
@@ -143,14 +147,14 @@ function CardsCarousel({
         const atEndOfCarousel =
             (carousel.scrollWidth - carousel.clientWidth < carousel.scrollLeft + cardWidth);
         if (atEndOfCarousel) {
-            hideNextBtn();
+            hideNextButton();
             setFocusPrevBtn();
         }
     }
 
     function mobileLogic() {
         if (isMobile()) {
-            hideNavigation();
+            hideNav();
         } else {
             showNav();
             shouldHidePrevButton();
@@ -174,7 +178,25 @@ function CardsCarousel({
      * @param {HTMLElement} carousel - The carousel element.
      */
     function setAriaAttributes(carousel) {
-        setAriaAttrs(carousel, firstVisibleCard, lastVisibleCard, renderOverlay, cardStyle);
+        const shouldRenderOverlay = renderOverlay || cardStyle === 'half-height';
+
+        carousel.querySelectorAll('.consonant-Card').forEach((card, index) => {
+            const cardLink = shouldRenderOverlay
+                ? card.querySelector('.consonant-LinkBlocker')
+                : card.querySelector('.consonant-BtnInfobit');
+
+            if (!cardLink) return;
+
+            if (index + 1 >= firstVisibleCard && index + 1 <= lastVisibleCard) {
+                cardLink.removeAttribute('aria-hidden');
+                cardLink.removeAttribute('inert');
+                cardLink.setAttribute('tabindex', '0');
+            } else {
+                cardLink.setAttribute('aria-hidden', 'true');
+                cardLink.setAttribute('inert', '');
+                cardLink.setAttribute('tabindex', '-1');
+            }
+        });
     }
 
     /**
