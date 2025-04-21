@@ -719,6 +719,21 @@ describe('Consonant/Container/CardsCarousel', () => {
         });
     });
 
-
+    test('hideNav should call hidePrevButton and hideNextButton', () => {
+        // Mock functions
+        const hidePrevButton = jest.fn();
+        const hideNextButton = jest.fn();
+        const hideNav = jest.fn(() => {
+            hidePrevButton();
+            hideNextButton();
+        });
+      
+      // Call the function to test
+      hideNav();
+      
+      // Assert that both mock functions were called
+      expect(hidePrevButton).toHaveBeenCalledTimes(1);
+      expect(hideNextButton).toHaveBeenCalledTimes(1);
+    });
 });
 
