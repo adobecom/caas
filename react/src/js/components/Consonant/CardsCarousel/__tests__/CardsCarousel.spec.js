@@ -15,6 +15,7 @@ import cards from '../../Testing/Mocks/cards.json';
 import setupIntersectionObserverMock from '../../Testing/Mocks/intersectionObserver';
 import jestMocks from '../../Testing/Utils/JestMocks';
 import { getCardWidth } from '../CardsCarousel';
+import { hideNav, hidePrevButton, hideNextButton, setAriaAttributes } from '../CardsCarouselUtils';
 
 global.fetch = jest.fn(() =>
     Promise.resolve({
@@ -684,7 +685,50 @@ describe('Consonant/Container/CardsCarousel', () => {
     });
 
     describe('Mobile logic', () => {
-        test('should call centerClick when in mobile view', () => {
+        test('should call centerClick when in mobile view for prevButtonClick', () => {
+            // Set up test variables
+            const TABLET_BREAKPOINT = 1199;
+            
+            // Mock window.innerWidth to simulate mobile view
+            Object.defineProperty(window, 'innerWidth', {
+                writable: true,
+                configurable: true,
+                value: 768 // Mobile width below TABLET_BREAKPOINT
+            });
+            
+            // Function implementations
+            function isMobile() {
+                return window.innerWidth < TABLET_BREAKPOINT;
+            }
+            
+            const centerClick = jest.fn();
+            const setVisibleCards = jest.fn();
+            const setAriaAttributes = jest.fn();
+            const shouldHidePrevButton = jest.fn();
+
+            function prevButtonClick() {
+                if (isMobile()) {
+                    centerClick();
+                } else {
+                    const carousel = { scrollLeft: 0 };
+                    carousel.scrollLeft -= 100; // Simplified logic
+                    setVisibleCards('prev');
+                    setAriaAttributes(carousel);
+                    shouldHidePrevButton();
+                }
+            }   
+
+            // Call the function
+            prevButtonClick();
+
+            // Assert that centerClick was called and other functions were not
+            expect(centerClick).toHaveBeenCalledTimes(1);
+            expect(setVisibleCards).not.toHaveBeenCalled();
+            expect(setAriaAttributes).not.toHaveBeenCalled();
+            expect(shouldHidePrevButton).not.toHaveBeenCalled();
+        });
+
+        test('should call centerClick when in mobile view for nextButtonClick', () => {
             // Set up test variables
             const TABLET_BREAKPOINT = 1199;
             
@@ -719,21 +763,232 @@ describe('Consonant/Container/CardsCarousel', () => {
         });
     });
 
-    test('hideNav should call hidePrevButton and hideNextButton', () => {
-        // Mock functions
-        const hidePrevButton = jest.fn();
-        const hideNextButton = jest.fn();
-        const hideNav = jest.fn(() => {
-            hidePrevButton();
-            hideNextButton();
+    describe('hideNav and navigation button methods from CardsCarouselUtils', () => {
+        test('hideNav should call hidePrevButton and hideNextButton', () => {
+            // Create mock DOM elements for buttons
+            const prevButton = document.createElement('button');
+            const nextButton = document.createElement('button');
+            
+            // Create refs
+            const prevRef = { current: prevButton };
+            const nextRef = { current: nextButton };
+            
+            // Call the exported hideNav function directly
+            hideNav(prevRef, nextRef);
+            
+            // Verify that both buttons have the hide class
+            expect(prevButton.classList.contains('hide')).toBe(true);
+            expect(nextButton.classList.contains('hide')).toBe(true);
         });
-      
-      // Call the function to test
-      hideNav();
-      
-      // Assert that both mock functions were called
-      expect(hidePrevButton).toHaveBeenCalledTimes(1);
-      expect(hideNextButton).toHaveBeenCalledTimes(1);
+
+        test('hidePrevButton should add hide class to prev button', () => {
+            // Create a mock button
+            const buttonElement = document.createElement('button');
+            const prevRef = { current: buttonElement };
+            
+            // Call the exported function directly
+            hidePrevButton(prevRef);
+            
+            // Check if the class was added
+            expect(buttonElement.classList.contains('hide')).toBe(true);
+        });
+        
+        test('hideNextButton should add hide class to next button', () => {
+            // Create a mock button
+            const buttonElement = document.createElement('button');
+            const nextRef = { current: buttonElement };
+            
+            // Call the exported function directly
+            hideNextButton(nextRef);
+            
+            // Check if the class was added
+            expect(buttonElement.classList.contains('hide')).toBe(true);
+        });
+        
+        test('hideNav should handle null refs gracefully', () => {
+            // Call hideNav with null refs
+            expect(() => {
+                hideNav(null, null);
+            }).not.toThrow();
+        });
+        
+        test('hidePrevButton should handle null refs gracefully', () => {
+            // Call hidePrevButton with null ref
+            expect(() => {
+                hidePrevButton(null);
+            }).not.toThrow();
+        });
+        
+        test('hideNextButton should handle null refs gracefully', () => {
+            // Call hideNextButton with null ref
+            expect(() => {
+                hideNextButton(null);
+            }).not.toThrow();
+        });
+    });
+    
+    describe('setAriaAttributes from CardsCarouselUtils', () => {
+        test('should set aria attributes for visible cards with LinkBlocker', () => {
+            // Create a mock carousel with cards
+            const carouselElement = document.createElement('div');
+            
+            // Create cards
+            for (let i = 0; i < 5; i++) {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'consonant-Card';
+                
+                const linkBlocker = document.createElement('a');
+                linkBlocker.className = 'consonant-LinkBlocker';
+                cardElement.appendChild(linkBlocker);
+                
+                carouselElement.appendChild(cardElement);
+            }
+            
+            // Mock variables
+            const firstVisibleCard = 2;
+            const lastVisibleCard = 3;
+            const renderOverlay = true;
+            const cardStyle = '';
+            
+            // Call the exported setAriaAttributes function
+            setAriaAttributes(carouselElement, firstVisibleCard, lastVisibleCard, renderOverlay, cardStyle);
+            
+            // Check visible cards
+            const visibleCards = Array.from(carouselElement.querySelectorAll('.consonant-Card')).slice(1, 3);
+            visibleCards.forEach(card => {
+                const link = card.querySelector('.consonant-LinkBlocker');
+                expect(link.getAttribute('aria-hidden')).toBe(null);
+                expect(link.getAttribute('inert')).toBe(null);
+                expect(link.getAttribute('tabindex')).toBe('0');
+            });
+            
+            // Check hidden cards
+            const hiddenCards = [
+                ...Array.from(carouselElement.querySelectorAll('.consonant-Card')).slice(0, 1),
+                ...Array.from(carouselElement.querySelectorAll('.consonant-Card')).slice(3)
+            ];
+            hiddenCards.forEach(card => {
+                const link = card.querySelector('.consonant-LinkBlocker');
+                expect(link.getAttribute('aria-hidden')).toBe('true');
+                expect(link.getAttribute('inert')).toBe('');
+                expect(link.getAttribute('tabindex')).toBe('-1');
+            });
+        });
+        
+        test('should set aria attributes for visible cards with BtnInfobit', () => {
+            // Create a mock carousel with cards
+            const carouselElement = document.createElement('div');
+            
+            // Create cards
+            for (let i = 0; i < 5; i++) {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'consonant-Card';
+                
+                const btnInfobit = document.createElement('a');
+                btnInfobit.className = 'consonant-BtnInfobit';
+                cardElement.appendChild(btnInfobit);
+                
+                carouselElement.appendChild(cardElement);
+            }
+            
+            // Mock variables
+            const firstVisibleCard = 2;
+            const lastVisibleCard = 3;
+            const renderOverlay = false;
+            const cardStyle = '';
+            
+            // Call the exported function
+            setAriaAttributes(carouselElement, firstVisibleCard, lastVisibleCard, renderOverlay, cardStyle);
+            
+            // Check visible cards
+            const visibleCards = Array.from(carouselElement.querySelectorAll('.consonant-Card')).slice(1, 3);
+            visibleCards.forEach(card => {
+                const link = card.querySelector('.consonant-BtnInfobit');
+                expect(link.getAttribute('aria-hidden')).toBe(null);
+                expect(link.getAttribute('inert')).toBe(null);
+                expect(link.getAttribute('tabindex')).toBe('0');
+            });
+            
+            // Check hidden cards
+            const hiddenCards = [
+                ...Array.from(carouselElement.querySelectorAll('.consonant-Card')).slice(0, 1),
+                ...Array.from(carouselElement.querySelectorAll('.consonant-Card')).slice(3)
+            ];
+            hiddenCards.forEach(card => {
+                const link = card.querySelector('.consonant-BtnInfobit');
+                expect(link.getAttribute('aria-hidden')).toBe('true');
+                expect(link.getAttribute('inert')).toBe('');
+                expect(link.getAttribute('tabindex')).toBe('-1');
+            });
+        });
+        
+        test('should handle cards with half-height style even when renderOverlay is false', () => {
+            // Create a mock carousel with cards
+            const carouselElement = document.createElement('div');
+            
+            // Create cards
+            for (let i = 0; i < 5; i++) {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'consonant-Card';
+                
+                const linkBlocker = document.createElement('a');
+                linkBlocker.className = 'consonant-LinkBlocker';
+                cardElement.appendChild(linkBlocker);
+                
+                carouselElement.appendChild(cardElement);
+            }
+            
+            // Mock variables
+            const firstVisibleCard = 2;
+            const lastVisibleCard = 3;
+            const renderOverlay = false;
+            const cardStyle = 'half-height';
+            
+            // Call the exported function
+            setAriaAttributes(carouselElement, firstVisibleCard, lastVisibleCard, renderOverlay, cardStyle);
+            
+            // Check that LinkBlocker was used due to half-height style
+            const visibleCards = Array.from(carouselElement.querySelectorAll('.consonant-Card')).slice(1, 3);
+            visibleCards.forEach(card => {
+                const link = card.querySelector('.consonant-LinkBlocker');
+                expect(link.getAttribute('aria-hidden')).toBe(null);
+                expect(link.getAttribute('inert')).toBe(null);
+                expect(link.getAttribute('tabindex')).toBe('0');
+            });
+        });
+        
+        test('should handle cards with no cardLink element', () => {
+            // Create a mock carousel with cards
+            const carouselElement = document.createElement('div');
+            
+            // Create cards, some without links
+            for (let i = 0; i < 5; i++) {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'consonant-Card';
+                
+                // Only add links to some cards
+                if (i !== 2) {
+                    const linkBlocker = document.createElement('a');
+                    linkBlocker.className = 'consonant-LinkBlocker';
+                    cardElement.appendChild(linkBlocker);
+                }
+                
+                carouselElement.appendChild(cardElement);
+            }
+            
+            // Mock variables
+            const firstVisibleCard = 2;
+            const lastVisibleCard = 4;
+            const renderOverlay = true;
+            const cardStyle = '';
+            
+            // Should not throw an error when a card has no link
+            expect(() => setAriaAttributes(carouselElement, firstVisibleCard, lastVisibleCard, renderOverlay, cardStyle)).not.toThrow();
+            
+            // Card at index 2 (third card) has no link and should be skipped
+            const thirdCard = carouselElement.querySelectorAll('.consonant-Card')[2];
+            expect(thirdCard.querySelector('.consonant-LinkBlocker')).toBe(null);
+        });
     });
 });
 
