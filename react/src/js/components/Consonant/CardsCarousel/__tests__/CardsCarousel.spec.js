@@ -77,7 +77,7 @@ beforeEach(async () => {
 });
 
 describe('Consonant/Container/CardsCarousel', () => {
-    test('should render Carousel with default props', async () => {
+    test('should render Carousel with default props', async () => {        
         // Check if the carousel container is rendered
         await waitFor(() => {
             expect(carouselContainer).toBeInTheDocument();
@@ -436,13 +436,13 @@ describe('Consonant/Container/CardsCarousel', () => {
             // Set up incremental animation
             configToUse.pagination = { animationStyle: 'incremental' };
             await act(async () => render(<Container config={configToUse} />));
-
+            
             // Mock the initial state
             firstVisibleCard = 1;
             let lastVisibleCard = 3;
             const cardsPerPage = 3;
             const isIncremental = true;
-
+            
             // Define the setVisibleCards function
             const setVisibleCards = (direction) => {
                 const incrementBy = isIncremental ? 1 : cardsPerPage;
@@ -454,15 +454,15 @@ describe('Consonant/Container/CardsCarousel', () => {
                     lastVisibleCard -= incrementBy;
                 }
             };
-
+            
             // Call the function with 'next' direction
             setVisibleCards('next');
-
+            
             // Assert that values are incremented by 1
             expect(firstVisibleCard).toBe(2);
             expect(lastVisibleCard).toBe(4);
         });
-
+        
         test('should increment firstVisibleCard and lastVisibleCard by cardsPerPage when direction is next and animation is not incremental', async () => {
             // Set up non-incremental animation
             configToUse.pagination = { animationStyle: 'non-incremental' };
@@ -473,7 +473,7 @@ describe('Consonant/Container/CardsCarousel', () => {
             let lastVisibleCard = 3;
             const cardsPerPage = 3;
             const isIncremental = false;
-
+            
             // Define the setVisibleCards function
             const setVisibleCards = (direction) => {
                 const incrementBy = isIncremental ? 1 : cardsPerPage;
@@ -485,15 +485,15 @@ describe('Consonant/Container/CardsCarousel', () => {
                     lastVisibleCard -= incrementBy;
                 }
             };
-
+            
             // Call the function with 'next' direction
             setVisibleCards('next');
-
+            
             // Assert that values are incremented by cardsPerPage
             expect(firstVisibleCard).toBe(4);
             expect(lastVisibleCard).toBe(6);
         });
-
+        
         test('should decrement firstVisibleCard and lastVisibleCard by 1 when direction is prev and animation is incremental', async () => {
             // Set up incremental animation
             configToUse.pagination = { animationStyle: 'incremental' };
@@ -504,7 +504,7 @@ describe('Consonant/Container/CardsCarousel', () => {
             let lastVisibleCard = 6;
             const cardsPerPage = 3;
             const isIncremental = true;
-
+            
             // Define the setVisibleCards function
             const setVisibleCards = (direction) => {
                 const incrementBy = isIncremental ? 1 : cardsPerPage;
@@ -516,26 +516,26 @@ describe('Consonant/Container/CardsCarousel', () => {
                     lastVisibleCard -= incrementBy;
                 }
             };
-
+            
             // Call the function with 'prev' direction
             setVisibleCards('prev');
-
+            
             // Assert that values are decremented by 1
             expect(firstVisibleCard).toBe(3);
             expect(lastVisibleCard).toBe(5);
         });
-
+        
         test('should decrement firstVisibleCard and lastVisibleCard by cardsPerPage when direction is prev and animation is not incremental', async () => {
             // Set up non-incremental animation
             configToUse.pagination = { animationStyle: 'non-incremental' };
             await act(async () => render(<Container config={configToUse} />));
-
+            
             // Mock the initial state
             firstVisibleCard = 7;
             let lastVisibleCard = 9;
             const cardsPerPage = 3;
             const isIncremental = false;
-
+            
             // Define the setVisibleCards function
             const setVisibleCards = (direction) => {
                 const incrementBy = isIncremental ? 1 : cardsPerPage;
@@ -547,17 +547,17 @@ describe('Consonant/Container/CardsCarousel', () => {
                     lastVisibleCard -= incrementBy;
                 }
             };
-
+            
             // Call the function with 'prev' direction
             setVisibleCards('prev');
-
+            
             // Assert that values are decremented by cardsPerPage
             expect(firstVisibleCard).toBe(4);
             expect(lastVisibleCard).toBe(6);
         });
     });
 
-    describe('Tab key press functionality', () => {
+   describe('Tab key press functionality', () => {
         test('should add tabbing class to carousel parent element when Tab key is pressed', async () => {
             // Set up the carousel
             configToUse.collection.layout.container = 'carousel';
@@ -566,7 +566,7 @@ describe('Consonant/Container/CardsCarousel', () => {
             // Get the carousel parent element
             const carouselParent = document.querySelector('.consonant-Container--carousel').parentElement;
 
-            // Simulate tabbing to the carousel
+            // Simulate tabbing to the carousel 
             fireEvent.keyDown(carouselParent, { key: 'Tab' });
 
             // Confirm the carousel parent element has the tabbing class
@@ -583,7 +583,7 @@ describe('Consonant/Container/CardsCarousel', () => {
 
             // Simulate mouse down
             fireEvent.mouseDown(carouselParent);
-
+            
             // Confirm the carousel parent element does not have the tabbing class
             expect(carouselParent).not.toHaveClass('tabbing');
         });
@@ -594,25 +594,25 @@ describe('Consonant/Container/CardsCarousel', () => {
             test('should call centerClick when in mobile view', () => {
                 // Set up test variables
                 const TABLET_BREAKPOINT = 1199;
-
+                
                 // Mock window.innerWidth to simulate mobile view
                 Object.defineProperty(window, 'innerWidth', {
                     writable: true,
                     configurable: true,
                     value: 768, // Mobile width below TABLET_BREAKPOINT
                 });
-
+                
                 // Function implementations
                 function isMobile() {
                     return window.innerWidth < TABLET_BREAKPOINT;
                 }
-
+                
                 const centerClick = jest.fn();
                 const setVisibleCards = jest.fn();
                 const setAriaAttributes = jest.fn();
                 const showPrevButton = jest.fn();
                 const shouldHideNextButton = jest.fn();
-
+                
                 function nextButtonClick() {
                     if (isMobile()) {
                         centerClick();
@@ -625,10 +625,10 @@ describe('Consonant/Container/CardsCarousel', () => {
                         shouldHideNextButton();
                     }
                 }
-
+                
                 // Call the function
                 nextButtonClick();
-
+                
                 // Assert that centerClick was called and other functions were not
                 expect(centerClick).toHaveBeenCalledTimes(1);
                 expect(setVisibleCards).not.toHaveBeenCalled();
@@ -636,33 +636,33 @@ describe('Consonant/Container/CardsCarousel', () => {
                 expect(showPrevButton).not.toHaveBeenCalled();
                 expect(shouldHideNextButton).not.toHaveBeenCalled();
             });
-
+            
             test('should call desktop functions when not in mobile view', () => {
                 // Set up test variables
                 const TABLET_BREAKPOINT = 1199;
-
+                
                 // Mock window.innerWidth to simulate desktop view
                 Object.defineProperty(window, 'innerWidth', {
                     writable: true,
                     configurable: true,
                     value: 1200, // Desktop width >= TABLET_BREAKPOINT
                 });
-
+                
                 // Function implementations
                 function isMobile() {
                     return window.innerWidth < TABLET_BREAKPOINT;
                 }
-
+                
                 const centerClick = jest.fn();
                 const setVisibleCards = jest.fn();
                 const setAriaAttributes = jest.fn();
                 const showPrevButton = jest.fn();
                 const shouldHideNextButton = jest.fn();
-
+                
                 const carouselRef = {
                     current: { scrollLeft: 0 },
                 };
-
+                
                 function nextButtonClick() {
                     if (isMobile()) {
                         centerClick();
@@ -675,10 +675,10 @@ describe('Consonant/Container/CardsCarousel', () => {
                         shouldHideNextButton();
                     }
                 }
-
+                
                 // Call the function
                 nextButtonClick();
-
+                
                 // Assert that desktop functions were called and centerClick was not
                 expect(centerClick).not.toHaveBeenCalled();
                 expect(setVisibleCards).toHaveBeenCalledWith('next');
@@ -694,7 +694,7 @@ describe('Consonant/Container/CardsCarousel', () => {
         test('should call centerClick when in mobile view for prevButtonClick', () => {
             // Set up test variables
             const TABLET_BREAKPOINT = 1199;
-
+            
             // Mock window.innerWidth to simulate mobile view
             Object.defineProperty(window, 'innerWidth', {
                 writable: true,
@@ -744,12 +744,12 @@ describe('Consonant/Container/CardsCarousel', () => {
                 configurable: true,
                 value: 768, // Mobile width below TABLET_BREAKPOINT
             });
-
+            
             // Function implementations
             function isMobile() {
                 return window.innerWidth < TABLET_BREAKPOINT;
             }
-
+            
             const centerClick = jest.fn();
 
             function nextButtonClick() {
@@ -759,7 +759,7 @@ describe('Consonant/Container/CardsCarousel', () => {
                     const carousel = { scrollLeft: 0 };
                     carousel.scrollLeft += 100; // Simplified logic
                 }
-            }
+            }   
 
             // Call the function
             nextButtonClick();
@@ -770,7 +770,7 @@ describe('Consonant/Container/CardsCarousel', () => {
     });
 
     describe('hideNav and navigation button methods from CardsCarouselUtils', () => {
-        test('hideNav should call hidePrevButton and hideNextButton', () => {
+    test('hideNav should call hidePrevButton and hideNextButton', () => {
             // Create mock DOM elements for buttons
             const prevButton = document.createElement('button');
             const nextButton = document.createElement('button');
@@ -810,14 +810,14 @@ describe('Consonant/Container/CardsCarousel', () => {
             // Check if the class was added
             expect(buttonElement.classList.contains('hide')).toBe(true);
         });
-
+      
         test('hideNav should handle null refs gracefully', () => {
             // Call hideNav with null refs
             expect(() => {
                 hideNav(null, null);
             }).not.toThrow();
         });
-
+      
         test('hidePrevButton should handle null refs gracefully', () => {
             // Call hidePrevButton with null ref
             expect(() => {

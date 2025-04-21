@@ -147,7 +147,7 @@ function CardsCarousel({
         const prevBtn = prev.current;
         if (prevBtn) {
             prevBtn.classList.remove('hide');
-        }
+    }
     }
 
     function showNav() {
