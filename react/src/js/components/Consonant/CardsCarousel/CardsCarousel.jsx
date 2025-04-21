@@ -12,8 +12,59 @@ const TABLET_BREAKPOINT = 1199;
 let cardsShiftedPerClick = null;
 let cardWidth = null;
 
+/**
+ * Gets the width of the card based on the size and gap.
+ * @param {string} size - The layout type ('2up', '3up', '4up', or '5up').
+ * @param {number} gap - The gutter gap (in px).
+ * @returns {number} - The card width for that size+gap, or 0 if invalid.
+ */
+export function getCardWidth(size, gap) {
+    const cardWidths = {
+        '2up': {
+            '8px': 579,
+            '16px': 575,
+            '24px': 571,
+            '32px': 566,
+        },
+        '3up': {
+            '8px': 394,
+            '16px': 389,
+            '24px': 384,
+            '32px': 378,
+        },
+        '4up': {
+            '8px': 294,
+            '16px': 288,
+            '24px': 282,
+            '32px': 276,
+        },
+        '5up': {
+            '8px': 226,
+            '16px': 220,
+            '24px': 214,
+            '32px': 207,
+        },
+    };
+
+    // Look up the map for this size; if none, return 0
+    const sizeMap = cardWidths[size];
+    if (!sizeMap) {
+        return 0;
+    }
+
+    // Build the gap key and only return it if it actually exists
+    const key = `${gap}px`;
+    if (Object.prototype.hasOwnProperty.call(sizeMap, key)) {
+        return sizeMap[key];
+    }
+
+    // Fallback when the gap isn't defined for this size
+    return 0;
+}
+
 function CardsCarousel({
     cards,
+    cardStyle,
     onCardBookmark,
     resQty,
 } = {}) {
@@ -25,18 +76,19 @@ function CardsCarousel({
     const showTotalResultsText = getConfig('collection', 'i18n.totalResultsText');
     const useLightText = getConfig('collection', 'useLightText');
     const isIncremental = getConfig('pagination', 'animationStyle') === 'incremental';
+    const renderOverlay = getConfig('collection', 'useOverlayLinks');
 
     if (cardsUp.includes('2up')) {
-        cardWidth = 500;
+        cardWidth = getCardWidth('2up', gridGap);
         cardsShiftedPerClick = isIncremental ? 1 : 2;
     } else if (cardsUp.includes('3up')) {
-        cardWidth = 378;
+        cardWidth = getCardWidth('3up', gridGap);
         cardsShiftedPerClick = isIncremental ? 1 : 3;
     } else if (cardsUp.includes('4up')) {
-        cardWidth = 276;
+        cardWidth = getCardWidth('4up', gridGap);
         cardsShiftedPerClick = isIncremental ? 1 : 4;
     } else if (cardsUp.includes('5up')) {
-        cardWidth = 228;
+        cardWidth = getCardWidth('5up', gridGap);
         cardsShiftedPerClick = isIncremental ? 1 : 5;
     }
     const HeadingLevel = getConfig('collection', 'i18n.titleHeadingLevel');
@@ -46,36 +98,35 @@ function CardsCarousel({
     const prev = useRef(null);
     const next = useRef(null);
 
-    let isDown = null;
-    let startX = null;
-    /* eslint-disable-next-line no-unused-vars */
-    let isMouseMove = false;
-    let interactedWith = false;
+    let firstVisibleCard = 1;
+    let lastVisibleCard = firstVisibleCard + cardsPerPage - 1;
 
-    function isResponsive() {
+    function isMobile() {
         return window.innerWidth < TABLET_BREAKPOINT;
     }
 
     function hideNextButton() {
         const nextBtn = next.current;
-        if (nextBtn) {
-            nextBtn.classList.add('hide');
-        }
+        // eslint-disable-next-line no-unused-expressions
+        nextBtn && nextBtn.classList.add('hide');
     }
 
     function hidePrevButton() {
         const prevBtn = prev.current;
-        if (prevBtn) prevBtn.classList.add('hide');
+        // eslint-disable-next-line no-unused-expressions
+        prevBtn && prevBtn.classList.add('hide');
     }
 
     function showNextButton() {
         const nextBtn = next.current;
-        if (nextBtn) nextBtn.classList.remove('hide');
+        // eslint-disable-next-line no-unused-expressions
+        nextBtn && nextBtn.classList.remove('hide');
     }
 
     function showPrevButton() {
         const prevBtn = prev.current;
-        if (prevBtn) prevBtn.classList.remove('hide');
+        // eslint-disable-next-line no-unused-expressions
+        prevBtn && prevBtn.classList.remove('hide');
     }
 
     function hideNav() {
@@ -88,11 +139,20 @@ function CardsCarousel({
         showNextButton();
     }
 
+    function setFocusPrevBtn() {
+        const prevBtn = prev.current;
+        if (prevBtn) prevBtn.focus();
+    }
+
+    function setFocusNextBtn() {
+        const nextBtn = next.current;
+        if (nextBtn) nextBtn.focus();
+    }
+
     function shouldHidePrevButton() {
-        const carousel = carouselRef.current;
-        const atStartOfCarousel = (carousel.scrollLeft < cardWidth);
-        if (atStartOfCarousel) {
+        if (firstVisibleCard === 1) {
             hidePrevButton();
+            setFocusNextBtn();
         }
     }
 
@@ -102,48 +162,18 @@ function CardsCarousel({
             (carousel.scrollWidth - carousel.clientWidth < carousel.scrollLeft + cardWidth);
         if (atEndOfCarousel) {
             hideNextButton();
+            setFocusPrevBtn();
         }
     }
 
-    function responsiveLogic() {
-        if (isResponsive() && interactedWith) {
+    function mobileLogic() {
+        if (isMobile()) {
             hideNav();
         } else {
             showNav();
             shouldHidePrevButton();
             shouldHideNextButton();
         }
-    }
-
-    function mouseDownHandler(e) {
-        e.preventDefault();
-        interactedWith = true;
-        responsiveLogic();
-        isDown = true;
-        startX = e.pageX;
-    }
-
-    function mouseUpHandler() {
-        isDown = false;
-        isMouseMove = false;
-    }
-
-    function mouseLeaveHandler() {
-        isDown = false;
-        isMouseMove = false;
-    }
-
-    function mouseMoveHandler(e) {
-        if (!isDown) return;
-        isMouseMove = true;
-        const carousel = carouselRef.current;
-        const x = e.pageX - carousel.offsetLeft;
-        carousel.scrollLeft -= (x - startX);
-    }
-
-    function scrollHandler() {
-        interactedWith = true;
-        responsiveLogic();
     }
 
     /**
@@ -156,22 +186,70 @@ function CardsCarousel({
         carousel.scrollLeft += (-window.innerWidth / 2 + 620);
     }
 
+    /**
+     * Jira ticket: MWPW-164509
+     * Sets the ARIA attributes for the cards based on their visibility.
+     * @param {HTMLElement} carousel - The carousel element.
+     */
+    function setAriaAttributes(carousel) {
+        const shouldRenderOverlay = renderOverlay || cardStyle === 'half-height';
+
+        carousel.querySelectorAll('.consonant-Card').forEach((card, index) => {
+            const cardLink = shouldRenderOverlay
+                ? card.querySelector('.consonant-LinkBlocker')
+                : card.querySelector('.consonant-BtnInfobit');
+
+            if (!cardLink) return;
+
+            if (index + 1 >= firstVisibleCard && index + 1 <= lastVisibleCard) {
+                cardLink.removeAttribute('aria-hidden');
+                cardLink.removeAttribute('inert');
+                cardLink.setAttribute('tabindex', '0');
+            } else {
+                cardLink.setAttribute('aria-hidden', 'true');
+                cardLink.setAttribute('inert', '');
+                cardLink.setAttribute('tabindex', '-1');
+            }
+        });
+    }
+
+    /**
+     * Jira ticket: MWPW-164509
+     * Sets first and last visible cards based on the navigation direction and pagination type.
+     * @param {string} direction - The direction of the click.
+     */
+    function setVisibleCards(direction) {
+        const incrementBy = isIncremental ? 1 : cardsPerPage;
+        if (direction === 'next') {
+            firstVisibleCard += incrementBy;
+            lastVisibleCard += incrementBy;
+        } else {
+            firstVisibleCard -= incrementBy;
+            lastVisibleCard -= incrementBy;
+        }
+    }
+
     function nextButtonClick() {
-        if (isResponsive()) {
+        if (isMobile()) {
             centerClick();
         } else {
             const carousel = carouselRef.current;
             carousel.scrollLeft += ((cardWidth + gridGap) * cardsShiftedPerClick);
+            setVisibleCards('next');
+            setAriaAttributes(carousel);
+            showPrevButton();
             shouldHideNextButton();
         }
     }
 
     function prevButtonClick() {
-        if (isResponsive()) {
+        if (isMobile()) {
             centerClick();
         } else {
             const carousel = carouselRef.current;
             carousel.scrollLeft -= ((cardWidth + gridGap) * cardsShiftedPerClick);
+            setVisibleCards('prev');
+            setAriaAttributes(carousel);
             shouldHidePrevButton();
         }
     }
@@ -189,7 +267,27 @@ function CardsCarousel({
     const totalResultsHtml = RenderTotalResults(showTotalResultsText, resQty);
 
     useEffect(() => {
-        responsiveLogic();
+        mobileLogic();
+
+        const carousels = document.querySelectorAll('.consonant-Container--carousel');
+
+        function handleKeyDown(e) {
+            if (e.key === 'Tab') {
+                carousels.forEach(carousel => carousel.parentElement.classList.add('tabbing'));
+            }
+        }
+
+        function handleMouseDown() {
+            carousels.forEach(carousel => carousel.parentElement.classList.remove('tabbing'));
+        }
+
+        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('mousedown', handleMouseDown);
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('mousedown', handleMouseDown);
+        };
     }, []);
 
     return (
@@ -234,18 +332,14 @@ function CardsCarousel({
             {/* eslint-disable jsx-a11y/no-static-element-interactions */}
             <div
                 className="consonant-Container--carousel"
-                onMouseDown={mouseDownHandler}
-                onMouseUp={mouseUpHandler}
-                onMouseMove={mouseMoveHandler}
-                onMouseLeave={mouseLeaveHandler}
-                onScroll={scrollHandler}
                 ref={carouselRef}>
                 <Grid
                     cards={cards}
                     containerType="carousel"
                     resultsPerPage={cardsPerPage}
                     onCardBookmark={onCardBookmark}
-                    pages={pages} />
+                    pages={pages}
+                    renderOverlay={renderOverlay} />
             </div>
             {/* eslint-enable jsx-a11y/no-static-element-interactions */}
         </Fragment>
@@ -253,10 +347,9 @@ function CardsCarousel({
 }
 
 export default CardsCarousel;
-
-
 CardsCarousel.propTypes = {
     cards: PropTypes.arrayOf(PropTypes.object).isRequired,
     onCardBookmark: PropTypes.func.isRequired,
     resQty: PropTypes.number.isRequired,
+    cardStyle: PropTypes.string.isRequired,
 };

@@ -1,11 +1,18 @@
 {
     "collection": {
         "lazyLoad": false,
+        "layout": {
+            "type": "3up",
+            "gutter": "4x",
+            "container": "1200MaxWidth"
+        },
         "resultsPerPage": 10,
         "endpoint": "https://www.somedomain.com/some-test-api.json",
         "totalCardsToShow": 150,
         "cardStyle": "none",
         "showTotalResults": true,
+        "useOverlayLinks": false,
+        "cardHoverEffect": "default",
         "i18n": {
             "prettyDateIntervalFormat": "{LLL} {dd} | {timeRange} {timeZone}",
             "totalResultsText": "{total} Results",
