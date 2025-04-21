@@ -194,7 +194,9 @@ describe('Consonant/Grid', () => {
     });
 
     test('should not show CTA button when showCTA prop is false', () => {
-        renderCardsGrid({}, { collection: { button: {style: 'hidden' } } });
+        renderCardsGrid({}, { collection: { button: {style: 'primary' } } });
+        const gridElement = screen.getByTestId('consonant-CardsGrid');
+        screen.debug(gridElement);
         const ctaButton = screen.queryByTestId('consonant-BtnInfobit');
         expect(ctaButton).not.toBeInTheDocument();
     });

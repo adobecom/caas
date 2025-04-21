@@ -1,7 +1,9 @@
 import React from 'react';
+
 import '@testing-library/jest-dom/extend-expect';
 import {
     render,
+    fireEvent,
     screen,
 } from '@testing-library/react';
 import { ConfigContext } from '../../../Helpers/contexts'; // Adjust the import path as necessary
@@ -77,7 +79,6 @@ describe('Consonant/Infobits/Type/Button', () => {
         expect(iconElement).toBeInTheDocument();
         expect(iconElement).toHaveClass('consonant-BtnInfobit-ico');
     });
-
     test('Icon should render after the text when iconPos is "aftertext"', async () => {
         render(<Button {...{ iconSrc: 'some-icon.svg', iconPos: 'aftertext' }} />);
 
@@ -90,5 +91,19 @@ describe('Consonant/Infobits/Type/Button', () => {
 
         const buttonElement = screen.getByTestId('consonant-BtnInfobit');
         expect(buttonElement).toBeInTheDocument();
+    });
+    
+    test('Should set tabIndex to -1 when renderOverlay is true', () => {
+        const customTabIndex = '0';
+        render(<Button tabIndex={customTabIndex} renderOverlay={true} />);
+        
+        const buttonElement = screen.getByTestId('consonant-BtnInfobit');
+        expect(buttonElement).toHaveAttribute('tabIndex', '-1');
+    });
+    test('Should use provided tabIndex when renderOverlay is false', () => {
+        const customTabIndex = '0';
+        render(<Button tabIndex={customTabIndex} renderOverlay={false} />);
+        const buttonElement = screen.getByTestId('consonant-BtnInfobit');
+        expect(buttonElement).toHaveAttribute('tabIndex', customTabIndex);
     });
 });
