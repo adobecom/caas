@@ -49,4 +49,4 @@ describe('Consonant/Filters/Top/Group', () => {
         fireEvent.click(filterButton);
         expect(filterNameElement).toHaveAttribute('daa-ll', `${name} Open`);
     });
-}); 
+});
