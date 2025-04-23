@@ -1,5 +1,17 @@
 
 
+## [0.34.2](https://github.com/adobecom/caas/compare/0.34.1...0.34.2) (2025-04-23)
+
+
+### Bug Fixes
+
+* **mwpw-169861:** ensure alloy SDK is configured before loading visitor data ([5279dc3](https://github.com/adobecom/caas/commit/5279dc386bc775481706df3dc18d113f51df2c83))
+* **mwpw-169861:** linting and coverage ([238d3d1](https://github.com/adobecom/caas/commit/238d3d11a4489d34479f378aee8dced872958bde))
+* **mwpw-169861:** removing uneeded linting changes ([4c5054c](https://github.com/adobecom/caas/commit/4c5054c3ddfa1c26f3cc0894054e696c59fbbd35))
+* **mwpw-169861:** removing uneeded lints ([5f2429e](https://github.com/adobecom/caas/commit/5f2429e929c40e5c6fb3a5554c36a5127f3b2cf4))
+* **mwpw-169861:** using getByPath mehthod ([caba667](https://github.com/adobecom/caas/commit/caba667e3651db0cf3ca73a55c3f77dcbe7bf33a))
+* **mwpw-169861:** using new get identity api ([c127e5d](https://github.com/adobecom/caas/commit/c127e5df6922fff346b3e5db16883506699f844f))
+
 ## [0.34.1](https://github.com/adobecom/caas/compare/0.34.0...0.34.1) (2025-04-14)
 
 
