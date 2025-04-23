@@ -610,5 +610,17 @@
       "fid": 0.7000000000116415,
       "cls": null
     }
+  },
+  {
+    "date": "2025-04-23T18:07:19.500Z",
+    "pr": {
+      "number": "267",
+      "title": "fix(mwpw-169861): properly chaining promises before calling alloy "
+    },
+    "metrics": {
+      "lcp": 10450.299999999988,
+      "fid": 0.7999999999883585,
+      "cls": null
+    }
   }
 ]
