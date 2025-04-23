@@ -21,6 +21,7 @@ import {
     overlaysType,
     footerType,
     tagsType,
+    bannerMapType,
 } from '../types/card';
 import LinkBlocker from './LinkBlocker/LinkBlocker';
 import VideoButton from '../Modal/videoButton';
@@ -46,7 +47,7 @@ const CardType = {
     endDate: string,
     cardDate: string,
     modifiedDate: string,
-    bannerMap: shape(Object).isRequired,
+    bannerMap: shape(bannerMapType),
     tags: arrayOf(shape(tagsType)),
     onFocus: func.isRequired,
     origin: string,
@@ -73,6 +74,7 @@ const defaultProps = {
     cardDate: '',
     modifiedDate: '',
     tags: [],
+    bannerMap: {},
     origin: '',
     ariaHidden: false,
 };
