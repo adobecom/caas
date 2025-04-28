@@ -7,6 +7,7 @@ import {
     func,
     string,
     bool,
+    number,
 } from 'prop-types';
 
 import Icon from './Type/Icon';
@@ -37,7 +38,7 @@ const groupType = {
     ])),
     onFocus: func,
     title: string,
-    tabIndex: string,
+    tabIndex: number,
     renderOverlay: bool,
 };
 
@@ -45,7 +46,7 @@ const defaultProps = {
     renderList: [],
     onFocus: () => {},
     title: '',
-    tabIndex: '',
+    tabIndex: 0,
     renderOverlay: false,
 };
 

@@ -96,6 +96,7 @@ const Container = (props) => {
     const filterGroupPrefix = 'ch_';
     const searchPrefix = 'sh_';
     const CARD_HASH_LENGTH = 10;
+    const BODY = document.body;
 
     /**
      **** Authored Configs ****
@@ -1076,6 +1077,24 @@ const Container = (props) => {
                 });
             });
         }
+
+        function handleKeyDown(e) {
+            if (e.key === 'Tab') {
+                BODY.classList.add('tabbing');
+            }
+        }
+
+        function handleMouseDown() {
+            BODY.classList.remove('tabbing');
+        }
+
+        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('mousedown', handleMouseDown);
+
+        // return () => {
+        //     document.removeEventListener('keydown', handleKeyDown);
+        //     document.removeEventListener('mousedown', handleMouseDown);
+        // };
     }, [visibleStamp, hasFetched]);
 
     /**
@@ -1134,6 +1153,27 @@ const Container = (props) => {
             io.observe(box.current);
         }
     }, [box]);
+
+    // useEffect(() => {
+    //     function handleKeyDown(e) {
+    //         if (e.key === 'Tab') {
+    //             BODY.classList.add('tabbing');
+    //         }
+    //     }
+
+    //     function handleMouseDown() {
+    //         BODY.classList.remove('tabbing');
+    //     }
+
+    //     document.addEventListener('keydown', handleKeyDown);
+    //     document.addEventListener('mousedown', handleMouseDown);
+
+    //     return () => {
+    //         document.removeEventListener('keydown', handleKeyDown);
+    //         document.removeEventListener('mousedown', handleMouseDown);
+    //     };
+    // }, []);
+
 
     /**
      **** Derived State ****
