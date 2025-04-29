@@ -1,10 +1,19 @@
 body.tabbing {
     .consonant-Wrapper {
-        *:focus {
-            border: @consonantFocusedColor solid 3px;
+        .consonant-FiltersInfo,
+        .consonant-LeftFilters,
+        .consonant-TopFilters,
+        .consonant-Pagination {
+            *:focus {
+                border: @consonantFocusedColor solid 2px;
+            }
         }
 
         .consonant-CardsGrid {
+            *:focus {
+                outline: @consonantFocusedColor solid 3px;
+            }
+
             .consonant-Card {
                 &-videoButton-wrapper:focus {
                     border: none;
