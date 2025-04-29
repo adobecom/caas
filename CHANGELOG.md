@@ -1,5 +1,12 @@
 
 
+## [0.34.3](https://github.com/adobecom/caas/compare/0.34.2...0.34.3) (2025-04-29)
+
+
+### Bug Fixes
+
+* **mwpw-170361:** fixes bannerMap prop-type issues ([#273](https://github.com/adobecom/caas/issues/273)) ([96068b4](https://github.com/adobecom/caas/commit/96068b4f0e768b8a701e1b0be556d2b0178e4cb4))
+
 ## [0.34.2](https://github.com/adobecom/caas/compare/0.34.1...0.34.2) (2025-04-23)
 
 

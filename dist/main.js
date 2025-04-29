@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.34.2 (4/28/2025, 22:46:40)
+ * Chimera UI Libraries - Build 0.34.3 (4/29/2025, 11:35:29)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -3076,7 +3076,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.cardType = exports.footerType = exports.overlaysType = exports.contentAreaType = exports.stylesType = exports.footerRightType = exports.footerCenterType = exports.footerLeftType = exports.tagsType = undefined;
+exports.bannerMapType = exports.cardType = exports.footerType = exports.overlaysType = exports.contentAreaType = exports.stylesType = exports.footerRightType = exports.footerCenterType = exports.footerLeftType = exports.tagsType = undefined;
 
 var _propTypes = __webpack_require__(1);
 
@@ -3195,6 +3195,33 @@ var cardType = exports.cardType = {
     footer: (0, _propTypes.arrayOf)((0, _propTypes.shape)(footerType)),
     contentArea: (0, _propTypes.shape)(contentAreaType),
     appliesTo: (0, _propTypes.arrayOf)((0, _propTypes.shape)(appliesToType))
+};
+
+var bannerMapType = exports.bannerMapType = {
+    live: (0, _propTypes.shape)({
+        description: _propTypes.string,
+        backgroundColor: _propTypes.string,
+        fontColor: _propTypes.string,
+        icon: _propTypes.string
+    }),
+    upcoming: (0, _propTypes.shape)({
+        description: _propTypes.string,
+        backgroundColor: _propTypes.string,
+        fontColor: _propTypes.string,
+        icon: _propTypes.string
+    }),
+    onDemand: (0, _propTypes.shape)({
+        description: _propTypes.string,
+        backgroundColor: _propTypes.string,
+        fontColor: _propTypes.string,
+        icon: _propTypes.string
+    }),
+    register: (0, _propTypes.shape)({
+        description: _propTypes.string,
+        backgroundColor: _propTypes.string,
+        fontColor: _propTypes.string,
+        icon: _propTypes.string
+    })
 };
 
 /***/ }),
@@ -46954,7 +46981,7 @@ var CardType = {
     endDate: _propTypes.string,
     cardDate: _propTypes.string,
     modifiedDate: _propTypes.string,
-    bannerMap: (0, _propTypes.shape)(Object).isRequired,
+    bannerMap: (0, _propTypes.shape)(_card.bannerMapType),
     tags: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_card.tagsType)),
     onFocus: _propTypes.func.isRequired,
     origin: _propTypes.string,
@@ -46981,6 +47008,7 @@ var defaultProps = {
     cardDate: '',
     modifiedDate: '',
     tags: [],
+    bannerMap: {},
     origin: '',
     ariaHidden: false
 };

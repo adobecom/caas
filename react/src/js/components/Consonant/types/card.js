@@ -124,3 +124,30 @@ export const cardType = {
     contentArea: shape(contentAreaType),
     appliesTo: arrayOf(shape(appliesToType)),
 };
+
+export const bannerMapType = {
+    live: shape({
+        description: string,
+        backgroundColor: string,
+        fontColor: string,
+        icon: string,
+    }),
+    upcoming: shape({
+        description: string,
+        backgroundColor: string,
+        fontColor: string,
+        icon: string,
+    }),
+    onDemand: shape({
+        description: string,
+        backgroundColor: string,
+        fontColor: string,
+        icon: string,
+    }),
+    register: shape({
+        description: string,
+        backgroundColor: string,
+        fontColor: string,
+        icon: string,
+    }),
+};
