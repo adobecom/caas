@@ -1,0 +1,21 @@
+body.tabbing {
+    .consonant-Wrapper {
+        *:focus {
+            border: @consonantFocusedColor solid 3px;
+        }
+
+        .consonant-CardsGrid {
+            .consonant-Card {
+                &-videoButton-wrapper:focus {
+                    border: none;
+
+                    .consonant-Card-videoIco {
+                        outline: @consonantFocusedColor solid 4px;
+                        outline-offset: 3px;
+                        border-radius: 50%;
+                    }
+                }
+            }
+        }
+    }
+}
