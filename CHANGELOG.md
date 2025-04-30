@@ -1,5 +1,12 @@
 
 
+## [0.34.4](https://github.com/adobecom/caas/compare/0.34.3...0.34.4) (2025-04-30)
+
+
+### Bug Fixes
+
+* **mwpw-171947:** adds focus to video play button, filters, and navigation controls ([#275](https://github.com/adobecom/caas/issues/275)) ([d1284bc](https://github.com/adobecom/caas/commit/d1284bcb45f48bd33eefac227938b08ccf095eba))
+
 ## [0.34.3](https://github.com/adobecom/caas/compare/0.34.2...0.34.3) (2025-04-29)
 
 
