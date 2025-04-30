@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.34.2 (4/23/2025, 13:57:49)
+ * Chimera UI Libraries - Build 0.34.3 (4/29/2025, 15:08:37)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6342,6 +6342,7 @@ var Container = function Container(props) {
     var filterGroupPrefix = 'ch_';
     var searchPrefix = 'sh_';
     var CARD_HASH_LENGTH = 10;
+    var BODY = document.body;
 
     /**
      **** Authored Configs ****
@@ -7556,6 +7557,19 @@ var Container = function Container(props) {
                 });
             });
         }
+
+        function handleKeyDown(e) {
+            if (e.key === 'Tab') {
+                BODY.classList.add('tabbing');
+            }
+        }
+
+        function handleMouseDown() {
+            BODY.classList.remove('tabbing');
+        }
+
+        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('mousedown', handleMouseDown);
     }, [visibleStamp, hasFetched]);
 
     /**
