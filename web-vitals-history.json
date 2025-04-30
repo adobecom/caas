@@ -634,5 +634,17 @@
       "fid": 0.9000000000232831,
       "cls": null
     }
+  },
+  {
+    "date": "2025-04-30T23:55:42.589Z",
+    "pr": {
+      "number": "275",
+      "title": "fix(mwpw-171947): adds focus to video play button, filters, and navigation controls"
+    },
+    "metrics": {
+      "lcp": 14588,
+      "fid": 0.8999999999650754,
+      "cls": null
+    }
   }
 ]
