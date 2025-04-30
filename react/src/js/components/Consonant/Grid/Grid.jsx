@@ -164,11 +164,17 @@ const Grid = (props) => {
     };
 
     /**
+     * Whether the grid is a carousel
+     * @type {Boolean}
+     */
+    const isCarousel = containerType === 'carousel';
+
+    /**
      * Whether the paginator component is being used
      * @type {Boolean}
      */
     const isPaginator = paginationType === 'paginator';
-    const isLoadMore = paginationType === 'loadMore' || containerType === 'carousel';
+    const isLoadMore = paginationType === 'loadMore';
 
     /**
      * Total pages to show (used if paginator component is set)
@@ -194,9 +200,10 @@ const Grid = (props) => {
 
     /**
      * Current page (used if load more button is authored)
+     * Or if the grid is a carousel
      * @type {Number}
      */
-    if (isLoadMore) {
+    if (isLoadMore || isCarousel) {
         cardsToshow = cards.slice(0, resultsPerPage * pages);
     }
 
@@ -260,7 +267,7 @@ const Grid = (props) => {
                                 renderOverlay={renderOverlay}
                                 hideCTA={hideCTA}
                                 ariaHidden={ariaHidden}
-                                tabIndex={ariaHidden ? '-1' : ''}
+                                tabIndex={ariaHidden ? -1 : 0}
                                 /* istanbul ignore next */
                                 onFocus={() => scrollCardIntoView(card.id)} />
                         );

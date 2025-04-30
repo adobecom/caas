@@ -1,5 +1,5 @@
 import React, { memo, Fragment, useState, useEffect, useRef } from 'react';
-import { string, bool } from 'prop-types';
+import { string, bool, number } from 'prop-types';
 import { createPortal } from 'react-dom';
 import ModalWindow from './videoModal';
 import Modal from './modal';
@@ -10,6 +10,7 @@ const VideoButton = ({
     gateVideo,
     className,
     videoPolicy,
+    tabIndex,
 }) => {
     const modalContainer = document.querySelector('.modalContainer');
 
@@ -52,14 +53,16 @@ const VideoButton = ({
 
     return (
         <Fragment>
-            <button
+            <div
                 className="consonant-Card-videoButton-wrapper"
-                data-testid="consonant-Card-videoButton-wrapper"
-                daa-ll="play"
-                aria-label="Play"
-                onClick={handleShowModal}>
-                <div className={className} />
-            </button>
+                data-testid="consonant-Card-videoButton-wrapper">
+                <button
+                    daa-ll="play"
+                    aria-label="Play"
+                    onClick={handleShowModal}
+                    tabIndex={tabIndex}
+                    className={className} />
+            </div>
             {isOpen && createPortal(
                 <ModalWindow
                     name={name}
@@ -78,12 +81,14 @@ VideoButton.propTypes = {
     videoURL: string.isRequired,
     gateVideo: bool,
     className: string.isRequired,
+    tabIndex: number,
 };
 
 VideoButton.defaultProps = {
     name: 'video-modal',
     videoPolicy: 'autoplay; fullscreen',
     gateVideo: false,
+    tabIndex: 0,
 };
 
 export default memo(VideoButton);

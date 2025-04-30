@@ -7,6 +7,7 @@ import {
     bool,
     func,
     arrayOf,
+    number,
 } from 'prop-types';
 
 import CardFooter from './CardFooter/CardFooter';
@@ -51,7 +52,7 @@ const CardType = {
     onFocus: func.isRequired,
     origin: string,
     ariaHidden: bool,
-    tabIndex: string,
+    tabIndex: number,
 };
 
 const defaultProps = {
@@ -76,7 +77,7 @@ const defaultProps = {
     tags: [],
     origin: '',
     ariaHidden: false,
-    tabIndex: '',
+    tabIndex: 0,
 };
 
 /**
@@ -402,7 +403,7 @@ const Card = (props) => {
     const altCtaLink = getAltCtaLink(footer);
     const ctaText = (altCtaUsed && isUpcoming && altCtaLink !== '') ? getCtaText(footer, 'alt') : getCtaText(footer, 'right');
     const overlay = (altCtaUsed && isLive && altCtaLink !== '') ? altCtaLink : overlayParams;
-    const getsFocus = isHalfHeight
+    const getsFocus = (isHalfHeight && !videoURLToUse)
         || isThreeFourths
         || isFull
         || isDoubleWide
@@ -458,6 +459,7 @@ const Card = (props) => {
                     videoURL={videoURLToUse}
                     gateVideo={gateVideo}
                     onFocus={onFocus}
+                    tabIndex={tabIndex}
                     className="consonant-Card-videoIco" />
                 }
                 {showLogo &&
@@ -500,6 +502,7 @@ const Card = (props) => {
                     videoURL={videoURLToUse}
                     gateVideo={gateVideo}
                     onFocus={onFocus}
+                    tabIndex={tabIndex}
                     className="consonant-Card-videoIco" />
                 }
 

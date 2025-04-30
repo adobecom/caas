@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.34.2 (4/23/2025, 12:46:16)
+ * Chimera UI Libraries - Build 0.34.2 (4/30/2025, 16:14:03)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6315,6 +6315,7 @@ var Container = function Container(props) {
     var filterGroupPrefix = 'ch_';
     var searchPrefix = 'sh_';
     var CARD_HASH_LENGTH = 10;
+    var BODY = document.body;
 
     /**
      **** Authored Configs ****
@@ -7529,6 +7530,19 @@ var Container = function Container(props) {
                 });
             });
         }
+
+        function handleKeyDown(e) {
+            if (e.key === 'Tab') {
+                BODY.classList.add('tabbing');
+            }
+        }
+
+        function handleMouseDown() {
+            BODY.classList.remove('tabbing');
+        }
+
+        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('mousedown', handleMouseDown);
     }, [visibleStamp, hasFetched]);
 
     /**
@@ -8426,11 +8440,17 @@ var Grid = function Grid(props) {
     };
 
     /**
+     * Whether the grid is a carousel
+     * @type {Boolean}
+     */
+    var isCarousel = containerType === 'carousel';
+
+    /**
      * Whether the paginator component is being used
      * @type {Boolean}
      */
     var isPaginator = paginationType === 'paginator';
-    var isLoadMore = paginationType === 'loadMore' || containerType === 'carousel';
+    var isLoadMore = paginationType === 'loadMore';
 
     /**
      * Total pages to show (used if paginator component is set)
@@ -8456,9 +8476,10 @@ var Grid = function Grid(props) {
 
     /**
      * Current page (used if load more button is authored)
+     * Or if the grid is a carousel
      * @type {Number}
      */
-    if (isLoadMore) {
+    if (isLoadMore || isCarousel) {
         cardsToshow = cards.slice(0, resultsPerPage * pages);
     }
 
@@ -8529,7 +8550,7 @@ var Grid = function Grid(props) {
                         renderOverlay: renderOverlay,
                         hideCTA: hideCTA,
                         ariaHidden: ariaHidden,
-                        tabIndex: ariaHidden ? '-1' : ''
+                        tabIndex: ariaHidden ? -1 : 0
                         /* istanbul ignore next */
                         , onFocus: function onFocus() {
                             return scrollCardIntoView(card.id);
@@ -44494,19 +44515,29 @@ function CardsCarousel() {
     function setAriaAttributes(carousel) {
         var shouldRenderOverlay = renderOverlay || cardStyle === 'half-height';
 
-        carousel.querySelectorAll('.consonant-Card').forEach(function (card, index) {
-            var cardLink = shouldRenderOverlay ? card.querySelector('.consonant-LinkBlocker') : card.querySelector('.consonant-BtnInfobit');
+        console.log('setAriaAttributes()');
+        console.log('firstVisibleCard', firstVisibleCard);
+        console.log('lastVisibleCard', lastVisibleCard);
 
-            if (!cardLink) return;
+        carousel.querySelectorAll('.consonant-Card').forEach(function (card, index) {
+            var cardLinks = shouldRenderOverlay ? card.querySelectorAll('.consonant-LinkBlocker') : card.querySelectorAll('a, button');
+
+            if (!cardLinks.length) return;
 
             if (index + 1 >= firstVisibleCard && index + 1 <= lastVisibleCard) {
-                cardLink.removeAttribute('aria-hidden');
-                cardLink.removeAttribute('inert');
-                cardLink.setAttribute('tabindex', '0');
+                // Make all elements in visible cards accessible
+                cardLinks.forEach(function (link) {
+                    link.removeAttribute('aria-hidden');
+                    link.removeAttribute('inert');
+                    link.setAttribute('tabindex', '0');
+                });
             } else {
-                cardLink.setAttribute('aria-hidden', 'true');
-                cardLink.setAttribute('inert', '');
-                cardLink.setAttribute('tabindex', '-1');
+                // Hide all elements in non-visible cards
+                cardLinks.forEach(function (link) {
+                    link.setAttribute('aria-hidden', 'true');
+                    link.setAttribute('inert', '');
+                    link.setAttribute('tabindex', '-1');
+                });
             }
         });
     }
@@ -44566,30 +44597,7 @@ function CardsCarousel() {
 
     (0, _react.useEffect)(function () {
         mobileLogic();
-
-        var carousels = document.querySelectorAll('.consonant-Container--carousel');
-
-        function handleKeyDown(e) {
-            if (e.key === 'Tab') {
-                carousels.forEach(function (carousel) {
-                    return carousel.parentElement.classList.add('tabbing');
-                });
-            }
-        }
-
-        function handleMouseDown() {
-            carousels.forEach(function (carousel) {
-                return carousel.parentElement.classList.remove('tabbing');
-            });
-        }
-
-        document.addEventListener('keydown', handleKeyDown);
-        document.addEventListener('mousedown', handleMouseDown);
-
-        return function () {
-            document.removeEventListener('keydown', handleKeyDown);
-            document.removeEventListener('mousedown', handleMouseDown);
-        };
+        // setAriaAttributes(carouselRef.current);
     }, []);
 
     return _react2.default.createElement(
@@ -47064,7 +47072,7 @@ var CardType = {
     onFocus: _propTypes.func.isRequired,
     origin: _propTypes.string,
     ariaHidden: _propTypes.bool,
-    tabIndex: _propTypes.string
+    tabIndex: _propTypes.number
 };
 
 var defaultProps = {
@@ -47089,7 +47097,7 @@ var defaultProps = {
     tags: [],
     origin: '',
     ariaHidden: false,
-    tabIndex: ''
+    tabIndex: 0
 };
 
 /**
@@ -47402,7 +47410,7 @@ var Card = function Card(props) {
     var altCtaLink = getAltCtaLink(footer);
     var ctaText = altCtaUsed && isUpcoming && altCtaLink !== '' ? getCtaText(footer, 'alt') : getCtaText(footer, 'right');
     var overlay = altCtaUsed && isLive && altCtaLink !== '' ? altCtaLink : overlayParams;
-    var getsFocus = isHalfHeight || isThreeFourths || isFull || isDoubleWide || isIcon || hideCTA;
+    var getsFocus = isHalfHeight && !videoURLToUse || isThreeFourths || isFull || isDoubleWide || isIcon || hideCTA;
 
     return _react2.default.createElement(
         'div',
@@ -47455,6 +47463,7 @@ var Card = function Card(props) {
                 videoURL: videoURLToUse,
                 gateVideo: gateVideo,
                 onFocus: onFocus,
+                tabIndex: tabIndex,
                 className: 'consonant-Card-videoIco' }),
             showLogo && (logoSrc || isText && image) && _react2.default.createElement(
                 'div',
@@ -47493,6 +47502,7 @@ var Card = function Card(props) {
                 videoURL: videoURLToUse,
                 gateVideo: gateVideo,
                 onFocus: onFocus,
+                tabIndex: tabIndex,
                 className: 'consonant-Card-videoIco' }),
             showLabel && detailText && _react2.default.createElement(
                 'span',
@@ -47786,7 +47796,7 @@ var CardFooter = function CardFooter(props) {
                 'div',
                 {
                     className: 'consonant-CardFooter-cell consonant-CardFooter-cell--center' },
-                _react2.default.createElement(_Group2.default, { renderList: center, onFocus: onFocus })
+                _react2.default.createElement(_Group2.default, { renderList: center, tabIndex: tabIndex, onFocus: onFocus })
             ),
             shouldRenderRight && _react2.default.createElement(
                 'div',
@@ -47904,7 +47914,7 @@ var groupType = {
     renderList: (0, _propTypes.arrayOf)((0, _propTypes.oneOfType)([(0, _propTypes.shape)(_card.footerLeftType), (0, _propTypes.shape)(_card.footerRightType), (0, _propTypes.shape)(_card.footerCenterType)])),
     onFocus: _propTypes.func,
     title: _propTypes.string,
-    tabIndex: _propTypes.string,
+    tabIndex: _propTypes.number,
     renderOverlay: _propTypes.bool
 };
 
@@ -47912,7 +47922,7 @@ var defaultProps = {
     renderList: [],
     onFocus: function onFocus() {},
     title: '',
-    tabIndex: '',
+    tabIndex: 0,
     renderOverlay: false
 };
 
@@ -47955,10 +47965,12 @@ var Group = function Group(props) {
 
                 case _constants.INFOBIT_TYPE.ICON_TEXT:
                     return _react2.default.createElement(_IconWithText2.default, _extends({}, infobit, {
+                        tabIndex: tabIndex,
                         key: (0, _cuid2.default)() }));
 
                 case _constants.INFOBIT_TYPE.LINK_ICON:
                     return _react2.default.createElement(_LinkWithIcon2.default, _extends({}, infobit, {
+                        tabIndex: tabIndex,
                         key: (0, _cuid2.default)() }));
 
                 case _constants.INFOBIT_TYPE.TEXT:
@@ -47971,6 +47983,7 @@ var Group = function Group(props) {
 
                 case _constants.INFOBIT_TYPE.LINK:
                     return _react2.default.createElement(_Link2.default, _extends({}, infobit, {
+                        tabIndex: tabIndex,
                         key: (0, _cuid2.default)(),
                         title: title }));
 
@@ -48227,7 +48240,7 @@ var buttonType = {
     isCta: _propTypes.bool,
     onFocus: _propTypes.func,
     title: _propTypes.string,
-    tabIndex: _propTypes.string,
+    tabIndex: _propTypes.number,
     renderOverlay: _propTypes.bool
 };
 
@@ -48241,7 +48254,7 @@ var defaultProps = {
     style: BUTTON_STYLE.CTA,
     onFocus: function onFocus() {},
     title: '',
-    tabIndex: '',
+    tabIndex: 0,
     renderOverlay: false
 };
 
@@ -48383,12 +48396,14 @@ var linkType = {
     linkHint: _propTypes.string,
     href: _propTypes.string.isRequired,
     text: _propTypes.string.isRequired,
-    title: _propTypes.string
+    title: _propTypes.string,
+    tabIndex: _propTypes.number
 };
 
 var defaultProps = {
     linkHint: '',
-    title: ''
+    title: '',
+    tabIndex: 0
 };
 
 /**
@@ -48409,7 +48424,8 @@ var Link = function Link(_ref) {
     var href = _ref.href,
         linkHint = _ref.linkHint,
         text = _ref.text,
-        title = _ref.title;
+        title = _ref.title,
+        tabIndex = _ref.tabIndex;
 
     /**
      **** Authored Configs ****
@@ -48429,7 +48445,7 @@ var Link = function Link(_ref) {
             target: target,
             title: linkHint,
             rel: 'noopener noreferrer',
-            tabIndex: '0',
+            tabIndex: tabIndex,
             'aria-label': ariaLabel },
         text
     );
@@ -49577,7 +49593,8 @@ var VideoButton = function VideoButton(_ref) {
         videoURL = _ref.videoURL,
         gateVideo = _ref.gateVideo,
         className = _ref.className,
-        videoPolicy = _ref.videoPolicy;
+        videoPolicy = _ref.videoPolicy,
+        tabIndex = _ref.tabIndex;
 
     var modalContainer = document.querySelector('.modalContainer');
 
@@ -49624,14 +49641,16 @@ var VideoButton = function VideoButton(_ref) {
         _react.Fragment,
         null,
         _react2.default.createElement(
-            'button',
+            'div',
             {
                 className: 'consonant-Card-videoButton-wrapper',
-                'data-testid': 'consonant-Card-videoButton-wrapper',
+                'data-testid': 'consonant-Card-videoButton-wrapper' },
+            _react2.default.createElement('button', {
                 'daa-ll': 'play',
                 'aria-label': 'Play',
-                onClick: handleShowModal },
-            _react2.default.createElement('div', { className: className })
+                onClick: handleShowModal,
+                tabIndex: tabIndex,
+                className: className })
         ),
         isOpen && (0, _reactDom.createPortal)(_react2.default.createElement(_videoModal2.default, {
             name: name,
@@ -49646,13 +49665,15 @@ VideoButton.propTypes = {
     videoPolicy: _propTypes.string,
     videoURL: _propTypes.string.isRequired,
     gateVideo: _propTypes.bool,
-    className: _propTypes.string.isRequired
+    className: _propTypes.string.isRequired,
+    tabIndex: _propTypes.number
 };
 
 VideoButton.defaultProps = {
     name: 'video-modal',
     videoPolicy: 'autoplay; fullscreen',
-    gateVideo: false
+    gateVideo: false,
+    tabIndex: 0
 };
 
 exports.default = (0, _react.memo)(VideoButton);

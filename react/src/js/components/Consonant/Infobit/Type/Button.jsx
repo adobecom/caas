@@ -1,6 +1,6 @@
 import React from 'react';
 import className from 'classnames';
-import { string, func, bool } from 'prop-types';
+import { string, func, bool, number } from 'prop-types';
 
 import { useConfig } from '../../Helpers/hooks';
 import { getLinkTarget } from '../../Helpers/general';
@@ -22,7 +22,7 @@ const buttonType = {
     isCta: bool,
     onFocus: func,
     title: string,
-    tabIndex: string,
+    tabIndex: number,
     renderOverlay: bool,
 };
 
@@ -36,7 +36,7 @@ const defaultProps = {
     style: BUTTON_STYLE.CTA,
     onFocus: () => {},
     title: '',
-    tabIndex: '',
+    tabIndex: 0,
     renderOverlay: false,
 };
 

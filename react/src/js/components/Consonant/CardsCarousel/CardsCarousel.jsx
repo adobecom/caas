@@ -194,21 +194,31 @@ function CardsCarousel({
     function setAriaAttributes(carousel) {
         const shouldRenderOverlay = renderOverlay || cardStyle === 'half-height';
 
-        carousel.querySelectorAll('.consonant-Card').forEach((card, index) => {
-            const cardLink = shouldRenderOverlay
-                ? card.querySelector('.consonant-LinkBlocker')
-                : card.querySelector('.consonant-BtnInfobit');
+        console.log('setAriaAttributes()');
+        console.log('firstVisibleCard', firstVisibleCard);
+        console.log('lastVisibleCard', lastVisibleCard);
 
-            if (!cardLink) return;
+        carousel.querySelectorAll('.consonant-Card').forEach((card, index) => {
+            const cardLinks = shouldRenderOverlay
+                ? card.querySelectorAll('.consonant-LinkBlocker')
+                : card.querySelectorAll('a, button');
+
+            if (!cardLinks.length) return;
 
             if (index + 1 >= firstVisibleCard && index + 1 <= lastVisibleCard) {
-                cardLink.removeAttribute('aria-hidden');
-                cardLink.removeAttribute('inert');
-                cardLink.setAttribute('tabindex', '0');
+                // Make all elements in visible cards accessible
+                cardLinks.forEach((link) => {
+                    link.removeAttribute('aria-hidden');
+                    link.removeAttribute('inert');
+                    link.setAttribute('tabindex', '0');
+                });
             } else {
-                cardLink.setAttribute('aria-hidden', 'true');
-                cardLink.setAttribute('inert', '');
-                cardLink.setAttribute('tabindex', '-1');
+                // Hide all elements in non-visible cards
+                cardLinks.forEach((link) => {
+                    link.setAttribute('aria-hidden', 'true');
+                    link.setAttribute('inert', '');
+                    link.setAttribute('tabindex', '-1');
+                });
             }
         });
     }
@@ -268,26 +278,7 @@ function CardsCarousel({
 
     useEffect(() => {
         mobileLogic();
-
-        const carousels = document.querySelectorAll('.consonant-Container--carousel');
-
-        function handleKeyDown(e) {
-            if (e.key === 'Tab') {
-                carousels.forEach(carousel => carousel.parentElement.classList.add('tabbing'));
-            }
-        }
-
-        function handleMouseDown() {
-            carousels.forEach(carousel => carousel.parentElement.classList.remove('tabbing'));
-        }
-
-        document.addEventListener('keydown', handleKeyDown);
-        document.addEventListener('mousedown', handleMouseDown);
-
-        return () => {
-            document.removeEventListener('keydown', handleKeyDown);
-            document.removeEventListener('mousedown', handleMouseDown);
-        };
+        // setAriaAttributes(carouselRef.current);
     }, []);
 
     return (
