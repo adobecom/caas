@@ -1090,11 +1090,6 @@ const Container = (props) => {
 
         document.addEventListener('keydown', handleKeyDown);
         document.addEventListener('mousedown', handleMouseDown);
-
-        // return () => {
-        //     document.removeEventListener('keydown', handleKeyDown);
-        //     document.removeEventListener('mousedown', handleMouseDown);
-        // };
     }, [visibleStamp, hasFetched]);
 
     /**
@@ -1153,27 +1148,6 @@ const Container = (props) => {
             io.observe(box.current);
         }
     }, [box]);
-
-    // useEffect(() => {
-    //     function handleKeyDown(e) {
-    //         if (e.key === 'Tab') {
-    //             BODY.classList.add('tabbing');
-    //         }
-    //     }
-
-    //     function handleMouseDown() {
-    //         BODY.classList.remove('tabbing');
-    //     }
-
-    //     document.addEventListener('keydown', handleKeyDown);
-    //     document.addEventListener('mousedown', handleMouseDown);
-
-    //     return () => {
-    //         document.removeEventListener('keydown', handleKeyDown);
-    //         document.removeEventListener('mousedown', handleMouseDown);
-    //     };
-    // }, []);
-
 
     /**
      **** Derived State ****

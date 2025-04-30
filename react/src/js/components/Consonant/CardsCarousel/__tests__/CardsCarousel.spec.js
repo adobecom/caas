@@ -160,12 +160,11 @@ describe('CardsCarousel comprehensive behaviors', () => {
   });
 
   test('keyboard Tab and mouseDown toggle tabbing class', async () => {
-    const c = await setupCarousel(1400);
-    const parent = c.querySelector('.consonant-Container--carousel').parentElement;
+    await setupCarousel(1400);
     fireEvent.keyDown(document, { key: 'Tab' });
-    expect(parent).toHaveClass('tabbing');
+    expect(document.body).toHaveClass('tabbing');
     fireEvent.mouseDown(document);
-    expect(parent).not.toHaveClass('tabbing');
+    expect(document.body).not.toHaveClass('tabbing');
   });
 
   // --- Additional targeted tests to improve branch coverage ---

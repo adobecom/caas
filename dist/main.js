@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.34.2 (4/28/2025, 08:27:23)
+ * Chimera UI Libraries - Build 0.34.2 (4/29/2025, 17:28:49)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -7543,11 +7543,6 @@ var Container = function Container(props) {
 
         document.addEventListener('keydown', handleKeyDown);
         document.addEventListener('mousedown', handleMouseDown);
-
-        // return () => {
-        //     document.removeEventListener('keydown', handleKeyDown);
-        //     document.removeEventListener('mousedown', handleMouseDown);
-        // };
     }, [visibleStamp, hasFetched]);
 
     /**
@@ -7605,27 +7600,6 @@ var Container = function Container(props) {
             io.observe(box.current);
         }
     }, [box]);
-
-    // useEffect(() => {
-    //     function handleKeyDown(e) {
-    //         if (e.key === 'Tab') {
-    //             BODY.classList.add('tabbing');
-    //         }
-    //     }
-
-    //     function handleMouseDown() {
-    //         BODY.classList.remove('tabbing');
-    //     }
-
-    //     document.addEventListener('keydown', handleKeyDown);
-    //     document.addEventListener('mousedown', handleMouseDown);
-
-    //     return () => {
-    //         document.removeEventListener('keydown', handleKeyDown);
-    //         document.removeEventListener('mousedown', handleMouseDown);
-    //     };
-    // }, []);
-
 
     /**
      **** Derived State ****
@@ -44541,6 +44515,10 @@ function CardsCarousel() {
     function setAriaAttributes(carousel) {
         var shouldRenderOverlay = renderOverlay || cardStyle === 'half-height';
 
+        console.log('setAriaAttributes()');
+        console.log('firstVisibleCard', firstVisibleCard);
+        console.log('lastVisibleCard', lastVisibleCard);
+
         carousel.querySelectorAll('.consonant-Card').forEach(function (card, index) {
             var cardLinks = shouldRenderOverlay ? card.querySelectorAll('.consonant-LinkBlocker') : card.querySelectorAll('a, button');
 
@@ -44619,26 +44597,7 @@ function CardsCarousel() {
 
     (0, _react.useEffect)(function () {
         mobileLogic();
-
-        // const carousels = document.querySelectorAll('.consonant-Container--carousel');
-
-        // function handleKeyDown(e) {
-        //     if (e.key === 'Tab') {
-        //         carousels.forEach(carousel => carousel.parentElement.classList.add('tabbing'));
-        //     }
-        // }
-
-        // function handleMouseDown() {
-        //     carousels.forEach(carousel => carousel.parentElement.classList.remove('tabbing'));
-        // }
-
-        // document.addEventListener('keydown', handleKeyDown);
-        // document.addEventListener('mousedown', handleMouseDown);
-
-        // return () => {
-        //     document.removeEventListener('keydown', handleKeyDown);
-        //     document.removeEventListener('mousedown', handleMouseDown);
-        // };
+        // setAriaAttributes(carouselRef.current);
     }, []);
 
     return _react2.default.createElement(
@@ -47248,8 +47207,6 @@ var Card = function Card(props) {
     var altCtaUsed = getConfig('collection', 'dynamicCTAForLiveEvents');
     var ctaAction = getConfig('collection', 'ctaAction');
 
-    console.log('tabIndex: ' + tabIndex + ' | ' + lh);
-
     /**
      * Class name for the card:
      * whether card border should be rendered or no;
@@ -47839,7 +47796,7 @@ var CardFooter = function CardFooter(props) {
                 'div',
                 {
                     className: 'consonant-CardFooter-cell consonant-CardFooter-cell--center' },
-                _react2.default.createElement(_Group2.default, { renderList: center, onFocus: onFocus })
+                _react2.default.createElement(_Group2.default, { renderList: center, tabIndex: tabIndex, onFocus: onFocus })
             ),
             shouldRenderRight && _react2.default.createElement(
                 'div',
@@ -48008,10 +47965,12 @@ var Group = function Group(props) {
 
                 case _constants.INFOBIT_TYPE.ICON_TEXT:
                     return _react2.default.createElement(_IconWithText2.default, _extends({}, infobit, {
+                        tabIndex: tabIndex,
                         key: (0, _cuid2.default)() }));
 
                 case _constants.INFOBIT_TYPE.LINK_ICON:
                     return _react2.default.createElement(_LinkWithIcon2.default, _extends({}, infobit, {
+                        tabIndex: tabIndex,
                         key: (0, _cuid2.default)() }));
 
                 case _constants.INFOBIT_TYPE.TEXT:
@@ -48024,6 +47983,7 @@ var Group = function Group(props) {
 
                 case _constants.INFOBIT_TYPE.LINK:
                     return _react2.default.createElement(_Link2.default, _extends({}, infobit, {
+                        tabIndex: tabIndex,
                         key: (0, _cuid2.default)(),
                         title: title }));
 
@@ -48436,12 +48396,14 @@ var linkType = {
     linkHint: _propTypes.string,
     href: _propTypes.string.isRequired,
     text: _propTypes.string.isRequired,
-    title: _propTypes.string
+    title: _propTypes.string,
+    tabIndex: _propTypes.number
 };
 
 var defaultProps = {
     linkHint: '',
-    title: ''
+    title: '',
+    tabIndex: 0
 };
 
 /**
@@ -48462,7 +48424,8 @@ var Link = function Link(_ref) {
     var href = _ref.href,
         linkHint = _ref.linkHint,
         text = _ref.text,
-        title = _ref.title;
+        title = _ref.title,
+        tabIndex = _ref.tabIndex;
 
     /**
      **** Authored Configs ****
@@ -48482,7 +48445,7 @@ var Link = function Link(_ref) {
             target: target,
             title: linkHint,
             rel: 'noopener noreferrer',
-            tabIndex: '0',
+            tabIndex: tabIndex,
             'aria-label': ariaLabel },
         text
     );

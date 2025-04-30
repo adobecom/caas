@@ -1,29 +1,37 @@
 body.tabbing {
     .consonant-Wrapper {
-        *:focus {
-            outline: @consonantFocusedColor solid 2px;
+        .consonant-FiltersInfo,
+        .consonant-LeftFilters,
+        .consonant-TopFilters,
+        .consonant-Pagination {
+            *:focus {
+                border: @consonantFocusedColor solid 2px;
+            }
         }
 
-        .consonant-CardsGrid,
         .consonant-Navigation--carousel {
             *:focus {
-                outline: @consonantFocusedColor solid 4px;
+                outline: @consonantFocusedColor solid 3px;
                 outline-offset: 3px;
             }
         }
+
+        .consonant-CardsGrid {
+            *:focus {
+                outline: @consonantFocusedColor solid 3px;
+            }
+
+            .consonant-Card {
+                &-videoButton-wrapper:focus {
+                    border: none;
+
+                    .consonant-Card-videoIco {
+                        outline: @consonantFocusedColor solid 4px;
+                        outline-offset: 3px;
+                        border-radius: 50%;
+                    }
+                }
+            }
+        }
     }
-
-    // .consonant-Navigation--carousel,
-    // .consonant-CardsGrid {
-    //     *:focus {
-    //         outline: @consonantFocusedColor solid 4px;
-    //         outline-offset: 3px;
-    //     }
-    // }
-
-    // .consonant-Pagination {
-    //     *:focus {
-    //         outline: @consonantFocusedColor solid 2px;
-    //     }
-    // }
 }

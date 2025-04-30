@@ -97,6 +97,7 @@ const Group = (props) => {
                         return (
                             <IconWithText
                                 {...infobit}
+                                tabIndex={tabIndex}
                                 key={cuid()} />
                         );
 
@@ -104,6 +105,7 @@ const Group = (props) => {
                         return (
                             <LinkWithIcon
                                 {...infobit}
+                                tabIndex={tabIndex}
                                 key={cuid()} />
                         );
 
@@ -125,6 +127,7 @@ const Group = (props) => {
                         return (
                             <TextLink
                                 {...infobit}
+                                tabIndex={tabIndex}
                                 key={cuid()}
                                 title={title} />
                         );

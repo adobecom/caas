@@ -187,8 +187,6 @@ const Card = (props) => {
     const altCtaUsed = getConfig('collection', 'dynamicCTAForLiveEvents');
     const ctaAction = getConfig('collection', 'ctaAction');
 
-    console.log(`tabIndex: ${tabIndex} | ${lh}`);
-
     /**
      * Class name for the card:
      * whether card border should be rendered or no;

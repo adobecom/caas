@@ -194,6 +194,10 @@ function CardsCarousel({
     function setAriaAttributes(carousel) {
         const shouldRenderOverlay = renderOverlay || cardStyle === 'half-height';
 
+        console.log('setAriaAttributes()');
+        console.log('firstVisibleCard', firstVisibleCard);
+        console.log('lastVisibleCard', lastVisibleCard);
+
         carousel.querySelectorAll('.consonant-Card').forEach((card, index) => {
             const cardLinks = shouldRenderOverlay
                 ? card.querySelectorAll('.consonant-LinkBlocker')
@@ -274,26 +278,7 @@ function CardsCarousel({
 
     useEffect(() => {
         mobileLogic();
-
-        // const carousels = document.querySelectorAll('.consonant-Container--carousel');
-
-        // function handleKeyDown(e) {
-        //     if (e.key === 'Tab') {
-        //         carousels.forEach(carousel => carousel.parentElement.classList.add('tabbing'));
-        //     }
-        // }
-
-        // function handleMouseDown() {
-        //     carousels.forEach(carousel => carousel.parentElement.classList.remove('tabbing'));
-        // }
-
-        // document.addEventListener('keydown', handleKeyDown);
-        // document.addEventListener('mousedown', handleMouseDown);
-
-        // return () => {
-        //     document.removeEventListener('keydown', handleKeyDown);
-        //     document.removeEventListener('mousedown', handleMouseDown);
-        // };
+        // setAriaAttributes(carouselRef.current);
     }, []);
 
     return (

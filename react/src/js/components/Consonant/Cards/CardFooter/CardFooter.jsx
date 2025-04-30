@@ -147,7 +147,7 @@ const CardFooter = (props) => {
                 {shouldRenderCenter &&
                 <div
                     className="consonant-CardFooter-cell consonant-CardFooter-cell--center">
-                    <Group renderList={center} onFocus={onFocus} />
+                    <Group renderList={center} tabIndex={tabIndex} onFocus={onFocus} />
                 </div>
                 }
                 {shouldRenderRight &&

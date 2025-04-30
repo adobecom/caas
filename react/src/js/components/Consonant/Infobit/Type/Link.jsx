@@ -1,5 +1,5 @@
 import React from 'react';
-import { string } from 'prop-types';
+import { string, number } from 'prop-types';
 import { useConfig } from '../../Helpers/hooks';
 import { getLinkTarget } from '../../Helpers/general';
 
@@ -8,11 +8,13 @@ const linkType = {
     href: string.isRequired,
     text: string.isRequired,
     title: string,
+    tabIndex: number,
 };
 
 const defaultProps = {
     linkHint: '',
     title: '',
+    tabIndex: 0,
 };
 
 /**
@@ -34,6 +36,7 @@ const Link = ({
     linkHint,
     text,
     title,
+    tabIndex,
 }) => {
     /**
      **** Authored Configs ****
@@ -52,7 +55,7 @@ const Link = ({
             target={target}
             title={linkHint}
             rel="noopener noreferrer"
-            tabIndex="0"
+            tabIndex={tabIndex}
             aria-label={ariaLabel}>
             {text}
         </a>
