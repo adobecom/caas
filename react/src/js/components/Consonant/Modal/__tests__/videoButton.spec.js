@@ -2,12 +2,13 @@ import React from 'react';
 import { mount } from 'enzyme';
 import VideoButton from '../videoButton';
 
-// Mock the Modal class
-jest.mock('../modal', () => {
-  return jest.fn().mockImplementation(() => {
-    return { open: jest.fn() };
-  });
+// Store modal mock reference at the module level
+const modalMock = jest.fn().mockImplementation(() => {
+  return { open: jest.fn() };
 });
+
+// Mock the Modal class
+jest.mock('../modal', () => modalMock);
 
 // Mock createPortal to render children directly
 jest.mock('react-dom', () => ({
@@ -73,7 +74,7 @@ describe('VideoButton Component', () => {
     
     // Since we use a state update, we need to force update
     expect(wrapper.find('VideoModal').exists()).toBe(true);
-    expect(require('../modal')).toHaveBeenCalled();
+    expect(modalMock).toHaveBeenCalled();
   });
 
   it('should update window.location.hash when clicked with an authored modal URL', () => {
@@ -115,8 +116,7 @@ describe('VideoButton Component', () => {
     expect(wrapper.find('VideoModal').exists()).toBe(true);
 
     // Simulate modal close
-    const Modal = require('../modal');
-    const mockHandleClose = Modal.mock.calls[0][1].buttonClose;
+    const mockHandleClose = modalMock.mock.calls[0][1].buttonClose;
     mockHandleClose();
     
     wrapper.update();
