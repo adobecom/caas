@@ -622,5 +622,29 @@
       "fid": 0.7999999999883585,
       "cls": null
     }
+  },
+  {
+    "date": "2025-04-29T18:36:12.822Z",
+    "pr": {
+      "number": "273",
+      "title": "fix(mwpw-170361): fixes bannerMap prop-type issues"
+    },
+    "metrics": {
+      "lcp": 12963,
+      "fid": 0.9000000000232831,
+      "cls": null
+    }
+  },
+  {
+    "date": "2025-04-30T23:55:42.589Z",
+    "pr": {
+      "number": "275",
+      "title": "fix(mwpw-171947): adds focus to video play button, filters, and navigation controls"
+    },
+    "metrics": {
+      "lcp": 14588,
+      "fid": 0.8999999999650754,
+      "cls": null
+    }
   }
 ]

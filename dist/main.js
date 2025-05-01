@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.34.2 (5/1/2025, 14:11:05)
+ * Chimera UI Libraries - Build 0.34.4 (5/1/2025, 14:14:15)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -3076,7 +3076,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.cardType = exports.footerType = exports.overlaysType = exports.contentAreaType = exports.stylesType = exports.footerRightType = exports.footerCenterType = exports.footerLeftType = exports.tagsType = undefined;
+exports.bannerMapType = exports.cardType = exports.footerType = exports.overlaysType = exports.contentAreaType = exports.stylesType = exports.footerRightType = exports.footerCenterType = exports.footerLeftType = exports.tagsType = undefined;
 
 var _propTypes = __webpack_require__(1);
 
@@ -3195,6 +3195,33 @@ var cardType = exports.cardType = {
     footer: (0, _propTypes.arrayOf)((0, _propTypes.shape)(footerType)),
     contentArea: (0, _propTypes.shape)(contentAreaType),
     appliesTo: (0, _propTypes.arrayOf)((0, _propTypes.shape)(appliesToType))
+};
+
+var bannerMapType = exports.bannerMapType = {
+    live: (0, _propTypes.shape)({
+        description: _propTypes.string,
+        backgroundColor: _propTypes.string,
+        fontColor: _propTypes.string,
+        icon: _propTypes.string
+    }),
+    upcoming: (0, _propTypes.shape)({
+        description: _propTypes.string,
+        backgroundColor: _propTypes.string,
+        fontColor: _propTypes.string,
+        icon: _propTypes.string
+    }),
+    onDemand: (0, _propTypes.shape)({
+        description: _propTypes.string,
+        backgroundColor: _propTypes.string,
+        fontColor: _propTypes.string,
+        icon: _propTypes.string
+    }),
+    register: (0, _propTypes.shape)({
+        description: _propTypes.string,
+        backgroundColor: _propTypes.string,
+        fontColor: _propTypes.string,
+        icon: _propTypes.string
+    })
 };
 
 /***/ }),
