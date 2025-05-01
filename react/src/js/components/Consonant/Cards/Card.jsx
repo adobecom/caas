@@ -7,7 +7,6 @@ import {
     bool,
     func,
     arrayOf,
-    number,
 } from 'prop-types';
 
 import CardFooter from './CardFooter/CardFooter';
@@ -22,6 +21,7 @@ import {
     overlaysType,
     footerType,
     tagsType,
+    bannerMapType,
 } from '../types/card';
 import LinkBlocker from './LinkBlocker/LinkBlocker';
 import VideoButton from '../Modal/videoButton';
@@ -47,12 +47,11 @@ const CardType = {
     endDate: string,
     cardDate: string,
     modifiedDate: string,
-    bannerMap: shape(Object).isRequired,
+    bannerMap: shape(bannerMapType),
     tags: arrayOf(shape(tagsType)),
     onFocus: func.isRequired,
     origin: string,
     ariaHidden: bool,
-    tabIndex: number,
 };
 
 const defaultProps = {
@@ -75,9 +74,9 @@ const defaultProps = {
     cardDate: '',
     modifiedDate: '',
     tags: [],
+    bannerMap: {},
     origin: '',
     ariaHidden: false,
-    tabIndex: 0,
 };
 
 /**
@@ -158,7 +157,6 @@ const Card = (props) => {
         onFocus,
         origin,
         ariaHidden,
-        tabIndex,
     } = props;
 
     let bannerBackgroundColorToUse = bannerBackgroundColor;
@@ -459,7 +457,6 @@ const Card = (props) => {
                     videoURL={videoURLToUse}
                     gateVideo={gateVideo}
                     onFocus={onFocus}
-                    tabIndex={tabIndex}
                     className="consonant-Card-videoIco" />
                 }
                 {showLogo &&
@@ -502,7 +499,6 @@ const Card = (props) => {
                     videoURL={videoURLToUse}
                     gateVideo={gateVideo}
                     onFocus={onFocus}
-                    tabIndex={tabIndex}
                     className="consonant-Card-videoIco" />
                 }
 
@@ -558,9 +554,7 @@ const Card = (props) => {
                         endDate={endDate}
                         cardStyle={cardStyle}
                         onFocus={onFocus}
-                        title={title}
-                        tabIndex={tabIndex}
-                        renderOverlay={renderOverlay} />
+                        title={title} />
                 ))}
                 {(isThreeFourths || isDoubleWide || isFull)
                     && !renderOverlay
@@ -568,7 +562,7 @@ const Card = (props) => {
                         target={linkBlockerTarget}
                         link={overlay}
                         title={title}
-                        getsFocus={getsFocus || true}
+                        getsFocus={getsFocus}
                         daa={ctaText} />}
             </div>
             {(renderOverlay || hideCTA || isHalfHeight || isIcon)
@@ -576,8 +570,7 @@ const Card = (props) => {
                 target={linkBlockerTarget}
                 link={overlay}
                 title={title}
-                getsFocus={getsFocus || true}
-                ariaHidden={ariaHidden}
+                getsFocus={getsFocus}
                 tabIndex={ariaHidden ? -1 : 0}
                 daa={ctaText} />}
         </div>
