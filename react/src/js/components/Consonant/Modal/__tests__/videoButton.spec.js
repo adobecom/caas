@@ -2,19 +2,21 @@ import React from 'react';
 import { mount } from 'enzyme';
 import VideoButton from '../videoButton';
 
-// Store modal mock reference at the module level
-const modalMock = jest.fn().mockImplementation(() => {
-  return { open: jest.fn() };
-});
-
 // Mock the Modal class
-jest.mock('../modal', () => modalMock);
+jest.mock('../modal', () => {
+  return jest.fn().mockImplementation(() => {
+    return { open: jest.fn() };
+  });
+});
 
 // Mock createPortal to render children directly
 jest.mock('react-dom', () => ({
   ...jest.requireActual('react-dom'),
   createPortal: (node) => node,
 }));
+
+// Get the mocked modal constructor
+const modalMock = require('../modal');
 
 describe('VideoButton Component', () => {
   beforeEach(() => {
