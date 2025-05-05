@@ -1,5 +1,12 @@
 
 
+## [0.34.5](https://github.com/adobecom/caas/compare/0.34.4...0.34.5) (2025-05-05)
+
+
+### Bug Fixes
+
+* **mwpw-163748:** added the React check to halt any DFS and added a WeakSet to cache the  calls ([fa6b02d](https://github.com/adobecom/caas/commit/fa6b02d03d620c9f4223d2434119e1179b518d63))
+
 ## [0.34.4](https://github.com/adobecom/caas/compare/0.34.3...0.34.4) (2025-04-30)
 
 
