@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { isValidElement } from 'react';
 import { useConfig } from '../Helpers/hooks';
 import { logLana } from '../Helpers/lana';
 
@@ -22,20 +22,29 @@ function transformLink(url, patterns) {
     return url;
 }
 
-function transformNestedProps(obj, hostnameTransforms) {
+function transformNestedProps(obj, hostnameTransforms, seen = new WeakSet()) {
+    // Skips React elements as they contain cycles
+    if (isValidElement(obj)) {
+        return obj;
+    }
     if (typeof obj !== 'object' || obj === null) {
         return typeof obj === 'string' && isValidURL(obj) ? transformLink(obj, hostnameTransforms) : obj;
     }
     if (Array.isArray(obj)) {
-        return obj.map(item => transformNestedProps(item, hostnameTransforms));
+        return obj.map(item => transformNestedProps(item, hostnameTransforms, seen));
     }
+
+    if (seen.has(obj)) {
+        return obj;
+    }
+    seen.add(obj);
 
     const newObj = {};
     for (const [key, value] of Object.entries(obj)) {
         if (typeof value === 'string' && isValidURL(value)) {
-            newObj[key] = transformLink(value, hostnameTransforms);
+            newObj[key] = transformLink(value, hostnameTransforms, seen);
         } else if (typeof value === 'object' && value !== null) {
-            newObj[key] = transformNestedProps(value, hostnameTransforms);
+            newObj[key] = transformNestedProps(value, hostnameTransforms, seen);
         } else {
             newObj[key] = value;
         }
