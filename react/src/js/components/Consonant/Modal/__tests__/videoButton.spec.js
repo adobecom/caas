@@ -15,9 +15,6 @@ jest.mock('react-dom', () => ({
   createPortal: (node) => node,
 }));
 
-// Get the mocked modal constructor
-const modalMock = require('../modal');
-
 describe('VideoButton Component', () => {
   beforeEach(() => {
     // Add modalContainer for portal rendering
@@ -76,7 +73,7 @@ describe('VideoButton Component', () => {
     
     // Since we use a state update, we need to force update
     expect(wrapper.find('VideoModal').exists()).toBe(true);
-    expect(modalMock).toHaveBeenCalled();
+    expect(require('../modal')).toHaveBeenCalled();
   });
 
   it('should update window.location.hash when clicked with an authored modal URL', () => {
@@ -118,7 +115,8 @@ describe('VideoButton Component', () => {
     expect(wrapper.find('VideoModal').exists()).toBe(true);
 
     // Simulate modal close
-    const mockHandleClose = modalMock.mock.calls[0][1].buttonClose;
+    const Modal = require('../modal');
+    const mockHandleClose = Modal.mock.calls[0][1].buttonClose;
     mockHandleClose();
     
     wrapper.update();

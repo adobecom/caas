@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.34.4 (5/1/2025, 14:14:15)
+ * Chimera UI Libraries - Build 0.34.4 (5/5/2025, 09:47:52)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -44542,6 +44542,10 @@ function CardsCarousel() {
     function setAriaAttributes(carousel) {
         var shouldRenderOverlay = renderOverlay || cardStyle === 'half-height';
 
+        console.log('setAriaAttributes()');
+        console.log('firstVisibleCard', firstVisibleCard);
+        console.log('lastVisibleCard', lastVisibleCard);
+
         carousel.querySelectorAll('.consonant-Card').forEach(function (card, index) {
             var cardLinks = shouldRenderOverlay ? card.querySelectorAll('.consonant-LinkBlocker') : card.querySelectorAll('a, button');
 
@@ -44602,7 +44606,6 @@ function CardsCarousel() {
             carousel.scrollLeft -= (cardWidth + gridGap) * cardsShiftedPerClick;
             setVisibleCards('prev');
             setAriaAttributes(carousel);
-            showNextButton();
             shouldHidePrevButton();
         }
     }
@@ -47091,11 +47094,12 @@ var CardType = {
     endDate: _propTypes.string,
     cardDate: _propTypes.string,
     modifiedDate: _propTypes.string,
-    bannerMap: (0, _propTypes.shape)(_card.bannerMapType),
+    bannerMap: (0, _propTypes.shape)(Object).isRequired,
     tags: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_card.tagsType)),
     onFocus: _propTypes.func.isRequired,
     origin: _propTypes.string,
-    ariaHidden: _propTypes.bool
+    ariaHidden: _propTypes.bool,
+    tabIndex: _propTypes.number
 };
 
 var defaultProps = {
@@ -47118,9 +47122,9 @@ var defaultProps = {
     cardDate: '',
     modifiedDate: '',
     tags: [],
-    bannerMap: {},
     origin: '',
-    ariaHidden: false
+    ariaHidden: false,
+    tabIndex: 0
 };
 
 /**
@@ -47200,7 +47204,8 @@ var Card = function Card(props) {
         bannerMap = props.bannerMap,
         onFocus = props.onFocus,
         origin = props.origin,
-        ariaHidden = props.ariaHidden;
+        ariaHidden = props.ariaHidden,
+        tabIndex = props.tabIndex;
 
 
     var bannerBackgroundColorToUse = bannerBackgroundColor;
@@ -47485,6 +47490,7 @@ var Card = function Card(props) {
                 videoURL: videoURLToUse,
                 gateVideo: gateVideo,
                 onFocus: onFocus,
+                tabIndex: tabIndex,
                 className: 'consonant-Card-videoIco' }),
             showLogo && (logoSrc || isText && image) && _react2.default.createElement(
                 'div',
@@ -47523,6 +47529,7 @@ var Card = function Card(props) {
                 videoURL: videoURLToUse,
                 gateVideo: gateVideo,
                 onFocus: onFocus,
+                tabIndex: tabIndex,
                 className: 'consonant-Card-videoIco' }),
             showLabel && detailText && _react2.default.createElement(
                 'span',
@@ -47570,20 +47577,23 @@ var Card = function Card(props) {
                     endDate: endDate,
                     cardStyle: cardStyle,
                     onFocus: onFocus,
-                    title: title });
+                    title: title,
+                    tabIndex: tabIndex,
+                    renderOverlay: renderOverlay });
             }),
             (isThreeFourths || isDoubleWide || isFull) && !renderOverlay && _react2.default.createElement(_LinkBlocker2.default, {
                 target: linkBlockerTarget,
                 link: overlay,
                 title: title,
-                getsFocus: getsFocus,
+                getsFocus: getsFocus || true,
                 daa: ctaText })
         ),
         (renderOverlay || hideCTA || isHalfHeight || isIcon) && _react2.default.createElement(_LinkBlocker2.default, {
             target: linkBlockerTarget,
             link: overlay,
             title: title,
-            getsFocus: getsFocus,
+            getsFocus: getsFocus || true,
+            ariaHidden: ariaHidden,
             tabIndex: ariaHidden ? -1 : 0,
             daa: ctaText })
     );

@@ -194,6 +194,10 @@ function CardsCarousel({
     function setAriaAttributes(carousel) {
         const shouldRenderOverlay = renderOverlay || cardStyle === 'half-height';
 
+        console.log('setAriaAttributes()');
+        console.log('firstVisibleCard', firstVisibleCard);
+        console.log('lastVisibleCard', lastVisibleCard);
+
         carousel.querySelectorAll('.consonant-Card').forEach((card, index) => {
             const cardLinks = shouldRenderOverlay
                 ? card.querySelectorAll('.consonant-LinkBlocker')
@@ -256,7 +260,6 @@ function CardsCarousel({
             carousel.scrollLeft -= ((cardWidth + gridGap) * cardsShiftedPerClick);
             setVisibleCards('prev');
             setAriaAttributes(carousel);
-            showNextButton();
             shouldHidePrevButton();
         }
     }
