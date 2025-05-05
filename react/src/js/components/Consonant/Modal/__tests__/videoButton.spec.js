@@ -1,6 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import VideoButton from '../videoButton';
+import Modal from '../modal';
 
 // Mock the Modal class
 jest.mock('../modal', () => {
@@ -73,7 +74,7 @@ describe('VideoButton Component', () => {
     
     // Since we use a state update, we need to force update
     expect(wrapper.find('VideoModal').exists()).toBe(true);
-    expect(require('../modal')).toHaveBeenCalled();
+    expect(Modal).toHaveBeenCalled();
   });
 
   it('should update window.location.hash when clicked with an authored modal URL', () => {
@@ -115,7 +116,6 @@ describe('VideoButton Component', () => {
     expect(wrapper.find('VideoModal').exists()).toBe(true);
 
     // Simulate modal close
-    const Modal = require('../modal');
     const mockHandleClose = Modal.mock.calls[0][1].buttonClose;
     mockHandleClose();
     
