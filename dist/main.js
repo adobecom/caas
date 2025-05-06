@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.34.4 (5/5/2025, 22:15:24)
+ * Chimera UI Libraries - Build 0.34.5 (5/6/2025, 11:49:18)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -52898,14 +52898,25 @@ function transformLink(url, patterns) {
 }
 
 function transformNestedProps(obj, hostnameTransforms) {
+    var seen = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : new WeakSet();
+
+    // Skips React elements as they contain cycles
+    if ((0, _react.isValidElement)(obj)) {
+        return obj;
+    }
     if ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) !== 'object' || obj === null) {
         return typeof obj === 'string' && isValidURL(obj) ? transformLink(obj, hostnameTransforms) : obj;
     }
     if (Array.isArray(obj)) {
         return obj.map(function (item) {
-            return transformNestedProps(item, hostnameTransforms);
+            return transformNestedProps(item, hostnameTransforms, seen);
         });
     }
+
+    if (seen.has(obj)) {
+        return obj;
+    }
+    seen.add(obj);
 
     var newObj = {};
     var _iteratorNormalCompletion2 = true;
@@ -52922,9 +52933,9 @@ function transformNestedProps(obj, hostnameTransforms) {
             var value = _ref2[1];
 
             if (typeof value === 'string' && isValidURL(value)) {
-                newObj[key] = transformLink(value, hostnameTransforms);
+                newObj[key] = transformLink(value, hostnameTransforms, seen);
             } else if ((typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' && value !== null) {
-                newObj[key] = transformNestedProps(value, hostnameTransforms);
+                newObj[key] = transformNestedProps(value, hostnameTransforms, seen);
             } else {
                 newObj[key] = value;
             }

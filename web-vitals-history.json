@@ -646,5 +646,17 @@
       "fid": 0.8999999999650754,
       "cls": null
     }
+  },
+  {
+    "date": "2025-05-05T21:37:12.521Z",
+    "pr": {
+      "number": "274",
+      "title": "fix(mwpw-163748): search functionality is broken in stage in caas"
+    },
+    "metrics": {
+      "lcp": 10394.199999999983,
+      "fid": 0.8999999999941792,
+      "cls": null
+    }
   }
 ]
