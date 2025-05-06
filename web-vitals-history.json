@@ -658,5 +658,17 @@
       "fid": 0.8999999999941792,
       "cls": null
     }
+  },
+  {
+    "date": "2025-05-06T21:57:11.300Z",
+    "pr": {
+      "number": "268",
+      "title": "feat(mwpw-164509): fixes carousel navigation issues"
+    },
+    "metrics": {
+      "lcp": 14214.399999999994,
+      "fid": 0.7000000000116415,
+      "cls": null
+    }
   }
 ]
