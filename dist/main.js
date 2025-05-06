@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.34.4 (5/5/2025, 14:21:23)
+ * Chimera UI Libraries - Build 0.34.5 (5/6/2025, 12:24:06)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6396,6 +6396,8 @@ var Container = function Container(props) {
     var headers = getConfig('headers', '');
     var partialLoadWithBackgroundFetch = getConfig('collection', 'partialLoadWithBackgroundFetch.enabled');
     var partialLoadCount = getConfig('collection', 'partialLoadWithBackgroundFetch.partialLoadCount');
+    var renderOverlay = getConfig('collection', 'useOverlayLinks');
+
     /**
      **** Constants ****
      */
@@ -8115,7 +8117,8 @@ var Container = function Container(props) {
                                 cards: gridCards,
                                 forwardedRef: scrollElementRef,
                                 onCardBookmark: handleCardBookmarking,
-                                isAriaLiveActive: isGridAreaLive }),
+                                isAriaLiveActive: isGridAreaLive,
+                                renderOverlay: renderOverlay }),
                             displayLoadMore && _react2.default.createElement(_LoadMore2.default, {
                                 onClick: onLoadMoreClick,
                                 show: numCardsToShow,
@@ -8131,6 +8134,7 @@ var Container = function Container(props) {
                         atLeastOneCard && isCarouselContainer && !(cardStyle === 'custom-card') && _react2.default.createElement(_CardsCarousel2.default, {
                             resQty: gridCardLen,
                             cards: gridCards,
+                            cardStyle: cardStyle,
                             role: 'tablist',
                             onCardBookmark: handleCardBookmarking }),
                         atLeastOneCard && isCarouselContainer && cardStyle === 'custom-card' && _react2.default.createElement(_View2.default, {
@@ -8340,7 +8344,8 @@ var cardsGridType = {
     containerType: _propTypes.string,
     isAriaLiveActive: _propTypes.bool,
     // eslint-disable-next-line react/forbid-prop-types
-    forwardedRef: _propTypes.object
+    forwardedRef: _propTypes.object,
+    renderOverlay: _propTypes.bool
 };
 
 var defaultProps = {
@@ -8349,7 +8354,8 @@ var defaultProps = {
     resultsPerPage: _constants.DEFAULT_SHOW_ITEMS_PER_PAGE,
     containerType: 'default',
     isAriaLiveActive: false,
-    forwardedRef: null
+    forwardedRef: null,
+    renderOverlay: false
 };
 
 /**
@@ -8374,7 +8380,8 @@ var Grid = function Grid(props) {
         cards = props.cards,
         containerType = props.containerType,
         isAriaLiveActive = props.isAriaLiveActive,
-        forwardedRef = props.forwardedRef;
+        forwardedRef = props.forwardedRef,
+        renderOverlay = props.renderOverlay;
 
     /**
      **** Authored Configs ****
@@ -8386,7 +8393,7 @@ var Grid = function Grid(props) {
     var cardsGridGutter = getConfig('collection', 'layout.gutter');
     var renderCardsBorders = getConfig('collection', 'setCardBorders');
     var renderFooterDivider = getConfig('collection', 'showFooterDivider');
-    var renderCardsOverlay = getConfig('collection', 'useOverlayLinks');
+    // const renderCardsOverlay = getConfig('collection', 'useOverlayLinks');
     var dateFormat = getConfig('collection', 'i18n.prettyDateIntervalFormat');
     var locale = getConfig('language', '');
     var paginationType = getConfig('pagination', 'type');
@@ -8448,12 +8455,32 @@ var Grid = function Grid(props) {
         }
     };
 
+    /* *** MWPW-164509 *** */
+    var cardsPerPage = function cardsPerPage() {
+        switch (cardsGridLayout) {
+            case _constants.GRID_TYPE.FIVE_UP:
+                return 5;
+            case _constants.GRID_TYPE.FOUR_UP:
+                return 4;
+            case _constants.GRID_TYPE.THREE_UP:
+                return 3;
+            default:
+                return 2;
+        }
+    };
+
+    /**
+     * Whether the grid is a carousel
+     * @type {Boolean}
+     */
+    var isCarousel = containerType === 'carousel';
+
     /**
      * Whether the paginator component is being used
      * @type {Boolean}
      */
     var isPaginator = paginationType === 'paginator';
-    var isLoadMore = paginationType === 'loadMore' || containerType === 'carousel';
+    var isLoadMore = paginationType === 'loadMore';
 
     /**
      * Total pages to show (used if paginator component is set)
@@ -8479,9 +8506,10 @@ var Grid = function Grid(props) {
 
     /**
      * Current page (used if load more button is authored)
+     * Or if the grid is a carousel
      * @type {Number}
      */
-    if (isLoadMore) {
+    if (isLoadMore || isCarousel) {
         cardsToshow = cards.slice(0, resultsPerPage * pages);
     }
 
@@ -8531,6 +8559,7 @@ var Grid = function Grid(props) {
 
             var cardNumber = index + 1;
             var hideCTA = getHideCta(card, collectionButtonStyle);
+            var ariaHidden = index >= cardsPerPage();
 
             switch (cardStyle) {
                 /* istanbul ignore next */
@@ -8548,8 +8577,10 @@ var Grid = function Grid(props) {
                         locale: locale,
                         renderBorder: renderCardsBorders,
                         renderDivider: renderFooterDivider,
-                        renderOverlay: renderCardsOverlay,
-                        hideCTA: hideCTA
+                        renderOverlay: renderOverlay,
+                        hideCTA: hideCTA,
+                        ariaHidden: ariaHidden,
+                        tabIndex: ariaHidden ? -1 : 0
                         /* istanbul ignore next */
                         , onFocus: function onFocus() {
                             return scrollCardIntoView(card.id);
@@ -44298,6 +44329,8 @@ Object.defineProperty(exports, "__esModule", {
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); /* eslint-disable react/jsx-no-bind,react/forbid-prop-types,react/jsx-no-bind */
 
 
+exports.getCardWidth = getCardWidth;
+
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
@@ -44326,9 +44359,60 @@ var TABLET_BREAKPOINT = 1199;
 var cardsShiftedPerClick = null;
 var cardWidth = null;
 
+/**
+ * Gets the width of the card based on the size and gap.
+ * @param {string} size - The layout type ('2up', '3up', '4up', or '5up').
+ * @param {number} gap - The gutter gap (in px).
+ * @returns {number} - The card width for that size+gap, or 0 if invalid.
+ */
+function getCardWidth(size, gap) {
+    var cardWidths = {
+        '2up': {
+            '8px': 579,
+            '16px': 575,
+            '24px': 571,
+            '32px': 566
+        },
+        '3up': {
+            '8px': 394,
+            '16px': 389,
+            '24px': 384,
+            '32px': 378
+        },
+        '4up': {
+            '8px': 294,
+            '16px': 288,
+            '24px': 282,
+            '32px': 276
+        },
+        '5up': {
+            '8px': 226,
+            '16px': 220,
+            '24px': 214,
+            '32px': 207
+        }
+    };
+
+    // Look up the map for this size; if none, return 0
+    var sizeMap = cardWidths[size];
+    if (!sizeMap) {
+        return 0;
+    }
+
+    // Build the gap key and only return it if it actually exists
+    var key = gap + 'px';
+    if (Object.prototype.hasOwnProperty.call(sizeMap, key)) {
+        return sizeMap[key];
+    }
+
+    // Fallback when the gap isn't defined for this size
+    return 0;
+}
+
 function CardsCarousel() {
     var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
         cards = _ref.cards,
+        cardStyle = _ref.cardStyle,
         onCardBookmark = _ref.onCardBookmark,
         resQty = _ref.resQty;
 
@@ -44340,18 +44424,19 @@ function CardsCarousel() {
     var showTotalResultsText = getConfig('collection', 'i18n.totalResultsText');
     var useLightText = getConfig('collection', 'useLightText');
     var isIncremental = getConfig('pagination', 'animationStyle') === 'incremental';
+    var renderOverlay = getConfig('collection', 'useOverlayLinks');
 
     if (cardsUp.includes('2up')) {
-        cardWidth = 500;
+        cardWidth = getCardWidth('2up', gridGap);
         cardsShiftedPerClick = isIncremental ? 1 : 2;
     } else if (cardsUp.includes('3up')) {
-        cardWidth = 378;
+        cardWidth = getCardWidth('3up', gridGap);
         cardsShiftedPerClick = isIncremental ? 1 : 3;
     } else if (cardsUp.includes('4up')) {
-        cardWidth = 276;
+        cardWidth = getCardWidth('4up', gridGap);
         cardsShiftedPerClick = isIncremental ? 1 : 4;
     } else if (cardsUp.includes('5up')) {
-        cardWidth = 228;
+        cardWidth = getCardWidth('5up', gridGap);
         cardsShiftedPerClick = isIncremental ? 1 : 5;
     }
     var HeadingLevel = getConfig('collection', 'i18n.titleHeadingLevel');
@@ -44365,36 +44450,35 @@ function CardsCarousel() {
     var prev = (0, _react.useRef)(null);
     var next = (0, _react.useRef)(null);
 
-    var isDown = null;
-    var startX = null;
-    /* eslint-disable-next-line no-unused-vars */
-    var isMouseMove = false;
-    var interactedWith = false;
+    var firstVisibleCard = 1;
+    var lastVisibleCard = firstVisibleCard + cardsPerPage - 1;
 
-    function isResponsive() {
+    function isMobile() {
         return window.innerWidth < TABLET_BREAKPOINT;
     }
 
     function hideNextButton() {
         var nextBtn = next.current;
-        if (nextBtn) {
-            nextBtn.classList.add('hide');
-        }
+        // eslint-disable-next-line no-unused-expressions
+        nextBtn && nextBtn.classList.add('hide');
     }
 
     function hidePrevButton() {
         var prevBtn = prev.current;
-        if (prevBtn) prevBtn.classList.add('hide');
+        // eslint-disable-next-line no-unused-expressions
+        prevBtn && prevBtn.classList.add('hide');
     }
 
     function showNextButton() {
         var nextBtn = next.current;
-        if (nextBtn) nextBtn.classList.remove('hide');
+        // eslint-disable-next-line no-unused-expressions
+        nextBtn && nextBtn.classList.remove('hide');
     }
 
     function showPrevButton() {
         var prevBtn = prev.current;
-        if (prevBtn) prevBtn.classList.remove('hide');
+        // eslint-disable-next-line no-unused-expressions
+        prevBtn && prevBtn.classList.remove('hide');
     }
 
     function hideNav() {
@@ -44407,11 +44491,20 @@ function CardsCarousel() {
         showNextButton();
     }
 
+    function setFocusPrevBtn() {
+        var prevBtn = prev.current;
+        if (prevBtn) prevBtn.focus();
+    }
+
+    function setFocusNextBtn() {
+        var nextBtn = next.current;
+        if (nextBtn) nextBtn.focus();
+    }
+
     function shouldHidePrevButton() {
-        var carousel = carouselRef.current;
-        var atStartOfCarousel = carousel.scrollLeft < cardWidth;
-        if (atStartOfCarousel) {
+        if (firstVisibleCard === 1) {
             hidePrevButton();
+            setFocusNextBtn();
         }
     }
 
@@ -44420,48 +44513,18 @@ function CardsCarousel() {
         var atEndOfCarousel = carousel.scrollWidth - carousel.clientWidth < carousel.scrollLeft + cardWidth;
         if (atEndOfCarousel) {
             hideNextButton();
+            setFocusPrevBtn();
         }
     }
 
-    function responsiveLogic() {
-        if (isResponsive() && interactedWith) {
+    function mobileLogic() {
+        if (isMobile()) {
             hideNav();
         } else {
             showNav();
             shouldHidePrevButton();
             shouldHideNextButton();
         }
-    }
-
-    function mouseDownHandler(e) {
-        e.preventDefault();
-        interactedWith = true;
-        responsiveLogic();
-        isDown = true;
-        startX = e.pageX;
-    }
-
-    function mouseUpHandler() {
-        isDown = false;
-        isMouseMove = false;
-    }
-
-    function mouseLeaveHandler() {
-        isDown = false;
-        isMouseMove = false;
-    }
-
-    function mouseMoveHandler(e) {
-        if (!isDown) return;
-        isMouseMove = true;
-        var carousel = carouselRef.current;
-        var x = e.pageX - carousel.offsetLeft;
-        carousel.scrollLeft -= x - startX;
-    }
-
-    function scrollHandler() {
-        interactedWith = true;
-        responsiveLogic();
     }
 
     /**
@@ -44474,22 +44537,87 @@ function CardsCarousel() {
         carousel.scrollLeft += -window.innerWidth / 2 + 620;
     }
 
+    /**
+     * Jira ticket: MWPW-164509
+     * Sets the ARIA attributes for the cards based on their visibility.
+     * @param {HTMLElement} carousel - The carousel element.
+     */
+    function setAriaAttributes(carousel) {
+        var shouldRenderOverlay = renderOverlay || cardStyle === 'half-height';
+
+        carousel.querySelectorAll('.consonant-Card').forEach(function (card, index) {
+            var cardLinks = card.querySelectorAll('a, button');
+
+            if (!cardLinks.length) return;
+            cardLinks.forEach(function (link) {
+                link.setAttribute('aria-hidden', 'true');
+                link.setAttribute('inert', '');
+                link.setAttribute('tabindex', '-1');
+            });
+
+            if (index + 1 >= firstVisibleCard && index + 1 <= lastVisibleCard) {
+                if (shouldRenderOverlay) {
+                    var linkBlockers = card.querySelectorAll('.consonant-LinkBlocker');
+                    linkBlockers.forEach(function (link) {
+                        link.removeAttribute('aria-hidden');
+                        link.removeAttribute('inert');
+                        link.setAttribute('tabindex', '0');
+                    });
+                    var modalVideo = card.querySelector('.consonant-Card-videoIco');
+                    if (modalVideo) {
+                        modalVideo.removeAttribute('aria-hidden');
+                        modalVideo.removeAttribute('inert');
+                        modalVideo.setAttribute('tabindex', '0');
+                    }
+                } else {
+                    cardLinks.forEach(function (link) {
+                        link.removeAttribute('aria-hidden');
+                        link.removeAttribute('inert');
+                        link.setAttribute('tabindex', '0');
+                    });
+                }
+            }
+        });
+    }
+
+    /**
+     * Jira ticket: MWPW-164509
+     * Sets first and last visible cards based on the navigation direction and pagination type.
+     * @param {string} direction - The direction of the click.
+     */
+    function setVisibleCards(direction) {
+        var incrementBy = isIncremental ? 1 : cardsPerPage;
+        if (direction === 'next') {
+            firstVisibleCard += incrementBy;
+            lastVisibleCard += incrementBy;
+        } else {
+            firstVisibleCard -= incrementBy;
+            lastVisibleCard -= incrementBy;
+        }
+    }
+
     function nextButtonClick() {
-        if (isResponsive()) {
+        if (isMobile()) {
             centerClick();
         } else {
             var carousel = carouselRef.current;
             carousel.scrollLeft += (cardWidth + gridGap) * cardsShiftedPerClick;
+            setVisibleCards('next');
+            setAriaAttributes(carousel);
+            showPrevButton();
             shouldHideNextButton();
         }
     }
 
     function prevButtonClick() {
-        if (isResponsive()) {
+        if (isMobile()) {
             centerClick();
         } else {
             var carousel = carouselRef.current;
             carousel.scrollLeft -= (cardWidth + gridGap) * cardsShiftedPerClick;
+            setVisibleCards('prev');
+            setAriaAttributes(carousel);
+            showNextButton();
             shouldHidePrevButton();
         }
     }
@@ -44507,7 +44635,8 @@ function CardsCarousel() {
     var totalResultsHtml = (0, _rendering.RenderTotalResults)(showTotalResultsText, resQty);
 
     (0, _react.useEffect)(function () {
-        responsiveLogic();
+        mobileLogic();
+        setAriaAttributes(carouselRef.current);
     }, []);
 
     return _react2.default.createElement(
@@ -44558,29 +44687,25 @@ function CardsCarousel() {
             'div',
             {
                 className: 'consonant-Container--carousel',
-                onMouseDown: mouseDownHandler,
-                onMouseUp: mouseUpHandler,
-                onMouseMove: mouseMoveHandler,
-                onMouseLeave: mouseLeaveHandler,
-                onScroll: scrollHandler,
                 ref: carouselRef },
             _react2.default.createElement(_Grid2.default, {
                 cards: cards,
                 containerType: 'carousel',
                 resultsPerPage: cardsPerPage,
                 onCardBookmark: onCardBookmark,
-                pages: pages })
+                pages: pages,
+                renderOverlay: renderOverlay })
         )
     );
 }
 
 exports.default = CardsCarousel;
 
-
 CardsCarousel.propTypes = {
     cards: _propTypes2.default.arrayOf(_propTypes2.default.object).isRequired,
     onCardBookmark: _propTypes2.default.func.isRequired,
-    resQty: _propTypes2.default.number.isRequired
+    resQty: _propTypes2.default.number.isRequired,
+    cardStyle: _propTypes2.default.string.isRequired
 };
 
 /***/ }),
@@ -46981,11 +47106,12 @@ var CardType = {
     endDate: _propTypes.string,
     cardDate: _propTypes.string,
     modifiedDate: _propTypes.string,
-    bannerMap: (0, _propTypes.shape)(_card.bannerMapType),
+    bannerMap: (0, _propTypes.shape)(Object).isRequired,
     tags: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_card.tagsType)),
     onFocus: _propTypes.func.isRequired,
     origin: _propTypes.string,
-    ariaHidden: _propTypes.bool
+    ariaHidden: _propTypes.bool,
+    tabIndex: _propTypes.number
 };
 
 var defaultProps = {
@@ -47008,9 +47134,9 @@ var defaultProps = {
     cardDate: '',
     modifiedDate: '',
     tags: [],
-    bannerMap: {},
     origin: '',
-    ariaHidden: false
+    ariaHidden: false,
+    tabIndex: 0
 };
 
 /**
@@ -47090,7 +47216,8 @@ var Card = function Card(props) {
         bannerMap = props.bannerMap,
         onFocus = props.onFocus,
         origin = props.origin,
-        ariaHidden = props.ariaHidden;
+        ariaHidden = props.ariaHidden,
+        tabIndex = props.tabIndex;
 
 
     var bannerBackgroundColorToUse = bannerBackgroundColor;
@@ -47375,6 +47502,7 @@ var Card = function Card(props) {
                 videoURL: videoURLToUse,
                 gateVideo: gateVideo,
                 onFocus: onFocus,
+                tabIndex: tabIndex,
                 className: 'consonant-Card-videoIco' }),
             showLogo && (logoSrc || isText && image) && _react2.default.createElement(
                 'div',
@@ -47413,6 +47541,7 @@ var Card = function Card(props) {
                 videoURL: videoURLToUse,
                 gateVideo: gateVideo,
                 onFocus: onFocus,
+                tabIndex: tabIndex,
                 className: 'consonant-Card-videoIco' }),
             showLabel && detailText && _react2.default.createElement(
                 'span',
@@ -47460,20 +47589,23 @@ var Card = function Card(props) {
                     endDate: endDate,
                     cardStyle: cardStyle,
                     onFocus: onFocus,
-                    title: title });
+                    title: title,
+                    tabIndex: tabIndex,
+                    renderOverlay: renderOverlay });
             }),
             (isThreeFourths || isDoubleWide || isFull) && !renderOverlay && _react2.default.createElement(_LinkBlocker2.default, {
                 target: linkBlockerTarget,
                 link: overlay,
                 title: title,
-                getsFocus: getsFocus,
+                getsFocus: getsFocus || true,
                 daa: ctaText })
         ),
         (renderOverlay || hideCTA || isHalfHeight || isIcon) && _react2.default.createElement(_LinkBlocker2.default, {
             target: linkBlockerTarget,
             link: overlay,
             title: title,
-            getsFocus: getsFocus,
+            getsFocus: getsFocus || true,
+            ariaHidden: ariaHidden,
             tabIndex: ariaHidden ? -1 : 0,
             daa: ctaText })
     );
@@ -47592,7 +47724,9 @@ var CardFooter = function CardFooter(props) {
         endDate = props.endDate,
         isFluid = props.isFluid,
         onFocus = props.onFocus,
-        title = props.title;
+        title = props.title,
+        tabIndex = props.tabIndex,
+        renderOverlay = props.renderOverlay;
 
     /**
      * Is the card currently live?
@@ -47701,13 +47835,19 @@ var CardFooter = function CardFooter(props) {
                 'div',
                 {
                     className: 'consonant-CardFooter-cell consonant-CardFooter-cell--center' },
-                _react2.default.createElement(_Group2.default, { renderList: center, onFocus: onFocus })
+                _react2.default.createElement(_Group2.default, { renderList: center, tabIndex: tabIndex, onFocus: onFocus })
             ),
             shouldRenderRight && _react2.default.createElement(
                 'div',
                 {
                     className: 'consonant-CardFooter-cell consonant-CardFooter-cell--right' },
-                _react2.default.createElement(_Group2.default, { renderList: right, onFocus: onFocus, title: title })
+                _react2.default.createElement(_Group2.default, {
+                    renderList: right,
+                    onFocus: onFocus,
+                    title: title,
+                    tabIndex: tabIndex,
+                    renderOverlay: renderOverlay
+                })
             ),
             shouldRenderAltRightUpcoming && _react2.default.createElement(
                 'div',
@@ -47812,13 +47952,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var groupType = {
     renderList: (0, _propTypes.arrayOf)((0, _propTypes.oneOfType)([(0, _propTypes.shape)(_card.footerLeftType), (0, _propTypes.shape)(_card.footerRightType), (0, _propTypes.shape)(_card.footerCenterType)])),
     onFocus: _propTypes.func,
-    title: _propTypes.string
+    title: _propTypes.string,
+    tabIndex: _propTypes.number,
+    renderOverlay: _propTypes.bool
 };
 
 var defaultProps = {
     renderList: [],
     onFocus: function onFocus() {},
-    title: ''
+    title: '',
+    tabIndex: 0,
+    renderOverlay: false
 };
 
 /**
@@ -47836,7 +47980,9 @@ var defaultProps = {
 var Group = function Group(props) {
     var renderList = props.renderList,
         onFocus = props.onFocus,
-        title = props.title;
+        title = props.title,
+        tabIndex = props.tabIndex,
+        renderOverlay = props.renderOverlay;
 
 
     return _react2.default.createElement(
@@ -47852,14 +47998,18 @@ var Group = function Group(props) {
                     return _react2.default.createElement(_Button2.default, _extends({}, infobit, {
                         key: (0, _cuid2.default)(),
                         onFocus: onFocus,
-                        title: title }));
+                        title: title,
+                        tabIndex: tabIndex,
+                        renderOverlay: renderOverlay }));
 
                 case _constants.INFOBIT_TYPE.ICON_TEXT:
                     return _react2.default.createElement(_IconWithText2.default, _extends({}, infobit, {
+                        tabIndex: tabIndex,
                         key: (0, _cuid2.default)() }));
 
                 case _constants.INFOBIT_TYPE.LINK_ICON:
                     return _react2.default.createElement(_LinkWithIcon2.default, _extends({}, infobit, {
+                        tabIndex: tabIndex,
                         key: (0, _cuid2.default)() }));
 
                 case _constants.INFOBIT_TYPE.TEXT:
@@ -47872,6 +48022,7 @@ var Group = function Group(props) {
 
                 case _constants.INFOBIT_TYPE.LINK:
                     return _react2.default.createElement(_Link2.default, _extends({}, infobit, {
+                        tabIndex: tabIndex,
                         key: (0, _cuid2.default)(),
                         title: title }));
 
@@ -48127,7 +48278,9 @@ var buttonType = {
     iconPos: _propTypes.string,
     isCta: _propTypes.bool,
     onFocus: _propTypes.func,
-    title: _propTypes.string
+    title: _propTypes.string,
+    tabIndex: _propTypes.number,
+    renderOverlay: _propTypes.bool
 };
 
 var defaultProps = {
@@ -48139,7 +48292,9 @@ var defaultProps = {
     isCta: false,
     style: BUTTON_STYLE.CTA,
     onFocus: function onFocus() {},
-    title: ''
+    title: '',
+    tabIndex: 0,
+    renderOverlay: false
 };
 
 /**
@@ -48165,7 +48320,9 @@ var Button = function Button(_ref) {
         iconPos = _ref.iconPos,
         isCta = _ref.isCta,
         onFocus = _ref.onFocus,
-        title = _ref.title;
+        title = _ref.title,
+        tabIndex = _ref.tabIndex,
+        renderOverlay = _ref.renderOverlay;
 
     /**
      **** Authored Configs ****
@@ -48224,7 +48381,7 @@ var Button = function Button(_ref) {
             className: buttonClass,
             'daa-ll': text,
             'data-testid': 'consonant-BtnInfobit',
-            tabIndex: '0',
+            tabIndex: renderOverlay ? '-1' : tabIndex,
             rel: 'noopener noreferrer',
             target: target,
             href: buttonLink,
@@ -48278,12 +48435,14 @@ var linkType = {
     linkHint: _propTypes.string,
     href: _propTypes.string.isRequired,
     text: _propTypes.string.isRequired,
-    title: _propTypes.string
+    title: _propTypes.string,
+    tabIndex: _propTypes.number
 };
 
 var defaultProps = {
     linkHint: '',
-    title: ''
+    title: '',
+    tabIndex: 0
 };
 
 /**
@@ -48304,7 +48463,8 @@ var Link = function Link(_ref) {
     var href = _ref.href,
         linkHint = _ref.linkHint,
         text = _ref.text,
-        title = _ref.title;
+        title = _ref.title,
+        tabIndex = _ref.tabIndex;
 
     /**
      **** Authored Configs ****
@@ -48324,7 +48484,7 @@ var Link = function Link(_ref) {
             target: target,
             title: linkHint,
             rel: 'noopener noreferrer',
-            tabIndex: '0',
+            tabIndex: tabIndex,
             'aria-label': ariaLabel },
         text
     );
@@ -49380,6 +49540,7 @@ var LinkBlockerType = {
     link: _propTypes.string,
     target: _propTypes.string,
     title: _propTypes.string,
+    ariaHidden: _propTypes.bool,
     getsFocus: _propTypes.bool,
     daa: _propTypes.string
 };
@@ -49388,6 +49549,7 @@ var defaultProps = {
     link: '',
     target: '',
     title: '',
+    ariaHidden: false,
     getsFocus: false,
     daa: ''
 };
@@ -49412,6 +49574,7 @@ var LinkBlocker = function LinkBlocker(props) {
         target = props.target,
         title = props.title,
         getsFocus = props.getsFocus,
+        ariaHidden = props.ariaHidden,
         daa = props.daa;
 
     return (
@@ -49421,7 +49584,8 @@ var LinkBlocker = function LinkBlocker(props) {
             target: target,
             rel: 'noopener noreferrer',
             'aria-label': title,
-            tabIndex: getsFocus ? 0 : -1,
+            'aria-hidden': ariaHidden,
+            tabIndex: !ariaHidden && getsFocus ? 0 : -1,
             'daa-ll': daa,
             className: 'consonant-LinkBlocker' })
     );
@@ -49468,7 +49632,8 @@ var VideoButton = function VideoButton(_ref) {
         videoURL = _ref.videoURL,
         gateVideo = _ref.gateVideo,
         className = _ref.className,
-        videoPolicy = _ref.videoPolicy;
+        videoPolicy = _ref.videoPolicy,
+        tabIndex = _ref.tabIndex;
 
     var modalContainer = document.querySelector('.modalContainer');
 
@@ -49515,14 +49680,16 @@ var VideoButton = function VideoButton(_ref) {
         _react.Fragment,
         null,
         _react2.default.createElement(
-            'button',
+            'div',
             {
                 className: 'consonant-Card-videoButton-wrapper',
-                'data-testid': 'consonant-Card-videoButton-wrapper',
+                'data-testid': 'consonant-Card-videoButton-wrapper' },
+            _react2.default.createElement('button', {
                 'daa-ll': 'play',
                 'aria-label': 'Play',
-                onClick: handleShowModal },
-            _react2.default.createElement('div', { className: className })
+                onClick: handleShowModal,
+                tabIndex: tabIndex,
+                className: className })
         ),
         isOpen && (0, _reactDom.createPortal)(_react2.default.createElement(_videoModal2.default, {
             name: name,
@@ -49537,13 +49704,15 @@ VideoButton.propTypes = {
     videoPolicy: _propTypes.string,
     videoURL: _propTypes.string.isRequired,
     gateVideo: _propTypes.bool,
-    className: _propTypes.string.isRequired
+    className: _propTypes.string.isRequired,
+    tabIndex: _propTypes.number
 };
 
 VideoButton.defaultProps = {
     name: 'video-modal',
     videoPolicy: 'autoplay; fullscreen',
-    gateVideo: false
+    gateVideo: false,
+    tabIndex: 0
 };
 
 exports.default = (0, _react.memo)(VideoButton);

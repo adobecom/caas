@@ -158,6 +158,8 @@ const Container = (props) => {
     const headers = getConfig('headers', '');
     const partialLoadWithBackgroundFetch = getConfig('collection', 'partialLoadWithBackgroundFetch.enabled');
     const partialLoadCount = getConfig('collection', 'partialLoadWithBackgroundFetch.partialLoadCount');
+    const renderOverlay = getConfig('collection', 'useOverlayLinks');
+
     /**
      **** Constants ****
      */
@@ -1580,7 +1582,8 @@ const Container = (props) => {
                                     cards={gridCards}
                                     forwardedRef={scrollElementRef}
                                     onCardBookmark={handleCardBookmarking}
-                                    isAriaLiveActive={isGridAreaLive} />
+                                    isAriaLiveActive={isGridAreaLive}
+                                    renderOverlay={renderOverlay} />
                                 {displayLoadMore &&
                                 <LoadMore
                                     onClick={onLoadMoreClick}
@@ -1601,6 +1604,7 @@ const Container = (props) => {
                             <CardsCarousel
                                 resQty={gridCardLen}
                                 cards={gridCards}
+                                cardStyle={cardStyle}
                                 role="tablist"
                                 onCardBookmark={handleCardBookmarking} />
                             }
