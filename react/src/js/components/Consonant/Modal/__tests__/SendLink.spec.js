@@ -103,6 +103,7 @@ describe('SendLink Component', () => {
         
         // Mock digitalData and _satellite
         originalDigitalData = window.digitalData;
+        // eslint-disable-next-line no-underscore-dangle
         originalSatellite = window._satellite;
         
         window.digitalData = {
@@ -110,6 +111,7 @@ describe('SendLink Component', () => {
             _snapshot: jest.fn().mockReturnValue({}),
         };
         
+        // eslint-disable-next-line no-underscore-dangle
         window._satellite = {
             track: jest.fn(),
         };
@@ -119,6 +121,7 @@ describe('SendLink Component', () => {
         // Restore original values
         window.branch = originalBranch;
         window.digitalData = originalDigitalData;
+        // eslint-disable-next-line no-underscore-dangle
         window._satellite = originalSatellite;
         delete window.branchPromise;
         delete window.adobePrivacy;
@@ -144,9 +147,10 @@ describe('SendLink Component', () => {
     test('should add class in editor mode', () => {
         isEditor.mockReturnValue(true);
         
-        const { testEl, parent } = setupTestElement();
+        const { testEl } = setupTestElement();
         
         // Element now has a parent element before creating SendLink
+        // eslint-disable-next-line no-unused-vars
         const sendLink = new SendLink(testEl);
         
         expect(testEl.parentElement.classList.contains('sendlink-desktop-auto')).toBe(true);
@@ -297,7 +301,7 @@ describe('SendLink Component', () => {
         const { testEl } = setupTestElement();
         
         // Save the original branch value to restore later
-        const originalBranch = window.branch;
+        originalBranch = window.branch;
         
         // Set branch to undefined for this test
         window.branch = undefined;
@@ -327,6 +331,7 @@ describe('SendLink Component', () => {
             _snapshot: jest.fn().mockReturnValue({})
         };
         
+        // eslint-disable-next-line no-underscore-dangle
         window._satellite = {
             track: jest.fn()
         };
@@ -340,14 +345,17 @@ describe('SendLink Component', () => {
         sendLink.sendCustomAnalytics('test-event');
         
         // Verify analytics calls
+        // eslint-disable-next-line no-underscore-dangle
         expect(window.digitalData._set).toHaveBeenCalledWith(
             'primaryEvent.eventInfo.eventName',
             'branch:TestProduct:text_app_link:test-event'
         );
+        // eslint-disable-next-line no-underscore-dangle
         expect(window.digitalData._set).toHaveBeenCalledWith(
             'primaryEvent.eventInfo.interaction.click',
             'branch:TestProduct:text_app_link:test-event'
         );
+        // eslint-disable-next-line no-underscore-dangle
         expect(window._satellite.track).toHaveBeenCalledWith('event', {
             digitalData: expect.any(Object)
         });
