@@ -1,5 +1,12 @@
 
 
+# [0.35.0](https://github.com/adobecom/caas/compare/0.34.5...0.35.0) (2025-05-06)
+
+
+### Features
+
+* **mwpw-164509:** fixes carousel tab navigation issues ([#268](https://github.com/adobecom/caas/issues/268)) ([913af6c](https://github.com/adobecom/caas/commit/913af6c032c46bcac8793ecbbac9755de5f2bd22))
+
 ## [0.34.5](https://github.com/adobecom/caas/compare/0.34.4...0.34.5) (2025-05-05)
 
 
