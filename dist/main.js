@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.34.5 (5/6/2025, 11:49:18)
+ * Chimera UI Libraries - Build 0.34.5 (5/6/2025, 12:24:06)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -44545,10 +44545,6 @@ function CardsCarousel() {
     function setAriaAttributes(carousel) {
         var shouldRenderOverlay = renderOverlay || cardStyle === 'half-height';
 
-        console.log('setAriaAttributes()');
-        console.log('firstVisibleCard', firstVisibleCard);
-        console.log('lastVisibleCard', lastVisibleCard);
-
         carousel.querySelectorAll('.consonant-Card').forEach(function (card, index) {
             var cardLinks = card.querySelectorAll('a, button');
 
@@ -44621,6 +44617,7 @@ function CardsCarousel() {
             carousel.scrollLeft -= (cardWidth + gridGap) * cardsShiftedPerClick;
             setVisibleCards('prev');
             setAriaAttributes(carousel);
+            showNextButton();
             shouldHidePrevButton();
         }
     }
@@ -44639,7 +44636,7 @@ function CardsCarousel() {
 
     (0, _react.useEffect)(function () {
         mobileLogic();
-        // setAriaAttributes(carouselRef.current);
+        setAriaAttributes(carouselRef.current);
     }, []);
 
     return _react2.default.createElement(

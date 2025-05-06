@@ -245,7 +245,7 @@ describe('CardsCarousel comprehensive behaviors', () => {
     // Initial state: first three links should be accessible
     for (let i = 0; i < 3; i++) {
       expect(links[i].getAttribute('tabindex')).toBe('0');
-      expect(links[i].getAttribute('aria-hidden')).toBe("false");
+      expect(links[i].getAttribute('aria-hidden')).toBeNull();
       expect(links[i].getAttribute('inert')).toBe(null);
     }
 
@@ -253,7 +253,7 @@ describe('CardsCarousel comprehensive behaviors', () => {
     for (let i = 3; i < 6; i++) {
       expect(links[i].getAttribute('tabindex')).toBe('-1');
       expect(links[i].getAttribute('aria-hidden')).toBe('true');
-      expect(links[i].getAttribute('inert')).toBeNull();
+      expect(links[i].getAttribute('inert')).toBe('');
     }
 
     // Click next button
