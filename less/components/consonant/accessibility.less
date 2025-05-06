@@ -26,10 +26,24 @@ body.tabbing {
                     border: none;
 
                     .consonant-Card-videoIco {
-                        outline: @consonantFocusedColor solid 4px;
+                        transform: scale(1.1);
+                        transition: transform @consonantTransitionTime @consonantTransitionFunc;
+                        outline: @consonantFocusedColor solid 3px;
                         outline-offset: 3px;
                         border-radius: 50%;
                     }
+                }
+
+                .consonant-Card-videoIco:focus {
+                    transform: scale(1.1);
+                    transition: transform @consonantTransitionTime @consonantTransitionFunc;
+                    outline: @consonantFocusedColor solid 3px;
+                    outline-offset: 3px;
+                    border-radius: 50%;
+                }
+
+                .consonant-LinkBlocker:focus {
+                    border: solid 3px @consonantFocusedColor;
                 }
             }
         }

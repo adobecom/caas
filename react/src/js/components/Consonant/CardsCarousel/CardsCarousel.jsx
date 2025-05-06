@@ -199,26 +199,36 @@ function CardsCarousel({
         console.log('lastVisibleCard', lastVisibleCard);
 
         carousel.querySelectorAll('.consonant-Card').forEach((card, index) => {
-            const cardLinks = shouldRenderOverlay
-                ? card.querySelectorAll('.consonant-LinkBlocker')
-                : card.querySelectorAll('a, button');
+            const cardLinks = card.querySelectorAll('a, button');
 
             if (!cardLinks.length) return;
+            cardLinks.forEach((link) => {
+                link.setAttribute('aria-hidden', 'true');
+                link.setAttribute('inert', '');
+                link.setAttribute('tabindex', '-1');
+            });
 
             if (index + 1 >= firstVisibleCard && index + 1 <= lastVisibleCard) {
-                // Make all elements in visible cards accessible
-                cardLinks.forEach((link) => {
-                    link.removeAttribute('aria-hidden');
-                    link.removeAttribute('inert');
-                    link.setAttribute('tabindex', '0');
-                });
-            } else {
-                // Hide all elements in non-visible cards
-                cardLinks.forEach((link) => {
-                    link.setAttribute('aria-hidden', 'true');
-                    link.setAttribute('inert', '');
-                    link.setAttribute('tabindex', '-1');
-                });
+                if (shouldRenderOverlay) {
+                    const linkBlockers = card.querySelectorAll('.consonant-LinkBlocker');
+                    linkBlockers.forEach((link) => {
+                        link.removeAttribute('aria-hidden');
+                        link.removeAttribute('inert');
+                        link.setAttribute('tabindex', '0');
+                    });
+                    const modalVideo = card.querySelector('.consonant-Card-videoIco');
+                    if (modalVideo) {
+                        modalVideo.removeAttribute('aria-hidden');
+                        modalVideo.removeAttribute('inert');
+                        modalVideo.setAttribute('tabindex', '0');
+                    }
+                } else {
+                    cardLinks.forEach((link) => {
+                        link.removeAttribute('aria-hidden');
+                        link.removeAttribute('inert');
+                        link.setAttribute('tabindex', '0');
+                    });
+                }
             }
         });
     }

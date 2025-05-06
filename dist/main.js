@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.34.4 (5/5/2025, 09:47:52)
+ * Chimera UI Libraries - Build 0.34.4 (5/5/2025, 22:15:24)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6396,6 +6396,8 @@ var Container = function Container(props) {
     var headers = getConfig('headers', '');
     var partialLoadWithBackgroundFetch = getConfig('collection', 'partialLoadWithBackgroundFetch.enabled');
     var partialLoadCount = getConfig('collection', 'partialLoadWithBackgroundFetch.partialLoadCount');
+    var renderOverlay = getConfig('collection', 'useOverlayLinks');
+
     /**
      **** Constants ****
      */
@@ -8115,7 +8117,8 @@ var Container = function Container(props) {
                                 cards: gridCards,
                                 forwardedRef: scrollElementRef,
                                 onCardBookmark: handleCardBookmarking,
-                                isAriaLiveActive: isGridAreaLive }),
+                                isAriaLiveActive: isGridAreaLive,
+                                renderOverlay: renderOverlay }),
                             displayLoadMore && _react2.default.createElement(_LoadMore2.default, {
                                 onClick: onLoadMoreClick,
                                 show: numCardsToShow,
@@ -44547,24 +44550,36 @@ function CardsCarousel() {
         console.log('lastVisibleCard', lastVisibleCard);
 
         carousel.querySelectorAll('.consonant-Card').forEach(function (card, index) {
-            var cardLinks = shouldRenderOverlay ? card.querySelectorAll('.consonant-LinkBlocker') : card.querySelectorAll('a, button');
+            var cardLinks = card.querySelectorAll('a, button');
 
             if (!cardLinks.length) return;
+            cardLinks.forEach(function (link) {
+                link.setAttribute('aria-hidden', 'true');
+                link.setAttribute('inert', '');
+                link.setAttribute('tabindex', '-1');
+            });
 
             if (index + 1 >= firstVisibleCard && index + 1 <= lastVisibleCard) {
-                // Make all elements in visible cards accessible
-                cardLinks.forEach(function (link) {
-                    link.removeAttribute('aria-hidden');
-                    link.removeAttribute('inert');
-                    link.setAttribute('tabindex', '0');
-                });
-            } else {
-                // Hide all elements in non-visible cards
-                cardLinks.forEach(function (link) {
-                    link.setAttribute('aria-hidden', 'true');
-                    link.setAttribute('inert', '');
-                    link.setAttribute('tabindex', '-1');
-                });
+                if (shouldRenderOverlay) {
+                    var linkBlockers = card.querySelectorAll('.consonant-LinkBlocker');
+                    linkBlockers.forEach(function (link) {
+                        link.removeAttribute('aria-hidden');
+                        link.removeAttribute('inert');
+                        link.setAttribute('tabindex', '0');
+                    });
+                    var modalVideo = card.querySelector('.consonant-Card-videoIco');
+                    if (modalVideo) {
+                        modalVideo.removeAttribute('aria-hidden');
+                        modalVideo.removeAttribute('inert');
+                        modalVideo.setAttribute('tabindex', '0');
+                    }
+                } else {
+                    cardLinks.forEach(function (link) {
+                        link.removeAttribute('aria-hidden');
+                        link.removeAttribute('inert');
+                        link.setAttribute('tabindex', '0');
+                    });
+                }
             }
         });
     }
