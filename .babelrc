@@ -2,19 +2,20 @@
     "env": {
         "test": {
             "presets": [
-                "react",
-                ["env", {
+                "@babel/preset-react",
+                ["@babel/preset-env", {
                     "modules": "commonjs",
                     "targets": {
                         "browsers": [">0.25%", "ie >= 11", "not ie < 11"]
                     },
-                    "useBuiltIns": true,
+                    "useBuiltIns": false,
                     "exclude": ["transform-regenerator", "transform-async-to-generator"]
                 }]
             ],
             "plugins": [
-                "transform-class-properties",
-                "transform-object-rest-spread",
+                "@babel/plugin-proposal-class-properties",
+                "@babel/plugin-proposal-object-rest-spread",
+                "@babel/plugin-proposal-optional-chaining",
                 ["istanbul", {
                     "exclude": [
                         "**/Modal/**",
@@ -40,16 +41,20 @@
             ]
         }
     },
+  "plugins": [
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-object-rest-spread",
+    "@babel/plugin-proposal-optional-chaining"
+  ],
     "presets": [
-        ["env", {
+        ["@babel/preset-env", {
             "modules": false,
             "targets": {
                 "browsers": [">0.25%", "ie >= 11", "not ie < 11"]
             },
-            "useBuiltIns": true,
-            "plugins": ["transform-class-properties", "transform-object-rest-spread"],
+            "useBuiltIns": false,
             "exclude": ["transform-regenerator", "transform-async-to-generator"]
         }],
-        "react"
+        "@babel/preset-react"
     ]
 }

@@ -70,17 +70,14 @@
     "@wdio/mocha-framework": "^8.1.2",
     "@wdio/spec-reporter": "^8.1.2",
     "aemsync": "^3.0.2",
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-eslint": "^8.0.1",
-    "babel-jest": "^23.6.0",
-    "babel-loader": "^7.1.4",
-    "babel-plugin-istanbul": "^4.1.6",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-jest": "^22.4.4",
-    "babel-preset-react": "^6.24.1",
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.0.0",
+    "babel-loader": "^8.0.0",
+    "babel-eslint": "^10.1.0",
     "commitizen": "^4.2.6",
     "copy-webpack-plugin": "^4.6.0",
     "cross-env": "^5.2.1",
@@ -129,13 +126,7 @@
     "wdio-chromedriver-service": "^8.0.1",
     "webpack": "^3.9.1"
   },
-  "husky": {
-    "hooks": {
-      "prepare-commit-msg": "exec < /dev/tty && npx cz --hook || true",
-      "pre-commit": "npm run build && git add . && enforce-branch-name '.*'",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
+  "husky": {},
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
@@ -164,6 +155,9 @@
         "preset": "angular",
         "infile": "CHANGELOG.md"
       }
+    },
+    "hooks": {
+      "before:git:add": "npm run build"
     }
   },
   "engines": {

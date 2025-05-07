@@ -18,8 +18,9 @@
     "node": true
   },
   "parserOptions": {
+    "ecmaVersion": 2020,
+    
     "ecmaFeatures": {
-      "experimentalObjectRestSpread": true,
       "jsx": true
     },
     "sourceType": "module"
