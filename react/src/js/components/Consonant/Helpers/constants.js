@@ -246,6 +246,7 @@ export const GRID_TYPE = {
     THREE_UP: '3up',
     FOUR_UP: '4up',
     FIVE_UP: '5up',
+    SLIDE: 'slide',
 };
 
 /**
