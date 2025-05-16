@@ -1,5 +1,33 @@
 
 
+# [0.35.0](https://github.com/adobecom/caas/compare/0.34.5...0.35.0) (2025-05-06)
+
+
+### Features
+
+* **mwpw-164509:** fixes carousel tab navigation issues ([#268](https://github.com/adobecom/caas/issues/268)) ([913af6c](https://github.com/adobecom/caas/commit/913af6c032c46bcac8793ecbbac9755de5f2bd22))
+
+## [0.34.5](https://github.com/adobecom/caas/compare/0.34.4...0.34.5) (2025-05-05)
+
+
+### Bug Fixes
+
+* **mwpw-163748:** added the React check to halt any DFS and added a WeakSet to cache the  calls ([fa6b02d](https://github.com/adobecom/caas/commit/fa6b02d03d620c9f4223d2434119e1179b518d63))
+
+## [0.34.4](https://github.com/adobecom/caas/compare/0.34.3...0.34.4) (2025-04-30)
+
+
+### Bug Fixes
+
+* **mwpw-171947:** adds focus to video play button, filters, and navigation controls ([#275](https://github.com/adobecom/caas/issues/275)) ([d1284bc](https://github.com/adobecom/caas/commit/d1284bcb45f48bd33eefac227938b08ccf095eba))
+
+## [0.34.3](https://github.com/adobecom/caas/compare/0.34.2...0.34.3) (2025-04-29)
+
+
+### Bug Fixes
+
+* **mwpw-170361:** fixes bannerMap prop-type issues ([#273](https://github.com/adobecom/caas/issues/273)) ([96068b4](https://github.com/adobecom/caas/commit/96068b4f0e768b8a701e1b0be556d2b0178e4cb4))
+
 ## [0.34.2](https://github.com/adobecom/caas/compare/0.34.1...0.34.2) (2025-04-23)
 
 

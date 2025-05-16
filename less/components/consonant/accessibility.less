@@ -1,0 +1,51 @@
+body.tabbing {
+    .consonant-Wrapper {
+        .consonant-FiltersInfo,
+        .consonant-LeftFilters,
+        .consonant-TopFilters,
+        .consonant-Pagination {
+            *:focus {
+                border: @consonantFocusedColor solid 2px;
+            }
+        }
+
+        .consonant-Navigation--carousel {
+            *:focus {
+                outline: @consonantFocusedColor solid 3px;
+                outline-offset: 3px;
+            }
+        }
+
+        .consonant-CardsGrid {
+            *:focus {
+                outline: @consonantFocusedColor solid 3px;
+            }
+
+            .consonant-Card {
+                &-videoButton-wrapper:focus {
+                    border: none;
+
+                    .consonant-Card-videoIco {
+                        transform: scale(1.1);
+                        transition: transform @consonantTransitionTime @consonantTransitionFunc;
+                        outline: @consonantFocusedColor solid 3px;
+                        outline-offset: 3px;
+                        border-radius: 50%;
+                    }
+                }
+
+                .consonant-Card-videoIco:focus {
+                    transform: scale(1.1);
+                    transition: transform @consonantTransitionTime @consonantTransitionFunc;
+                    outline: @consonantFocusedColor solid 3px;
+                    outline-offset: 3px;
+                    border-radius: 50%;
+                }
+
+                .consonant-LinkBlocker:focus {
+                    border: solid 3px @consonantFocusedColor;
+                }
+            }
+        }
+    }
+}

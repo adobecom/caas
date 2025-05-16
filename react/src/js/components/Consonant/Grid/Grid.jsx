@@ -35,6 +35,7 @@ const cardsGridType = {
     isAriaLiveActive: bool,
     // eslint-disable-next-line react/forbid-prop-types
     forwardedRef: object,
+    renderOverlay: bool,
 };
 
 const defaultProps = {
@@ -44,6 +45,7 @@ const defaultProps = {
     containerType: 'default',
     isAriaLiveActive: false,
     forwardedRef: null,
+    renderOverlay: false,
 };
 
 /**
@@ -71,6 +73,7 @@ const Grid = (props) => {
         isAriaLiveActive,
         // eslint-disable-next-line react/forbid-prop-types
         forwardedRef,
+        renderOverlay,
     } = props;
 
     /**
@@ -84,7 +87,7 @@ const Grid = (props) => {
     const cardsGridGutter = getConfig('collection', 'layout.gutter');
     const renderCardsBorders = getConfig('collection', 'setCardBorders');
     const renderFooterDivider = getConfig('collection', 'showFooterDivider');
-    const renderCardsOverlay = getConfig('collection', 'useOverlayLinks');
+    // const renderCardsOverlay = getConfig('collection', 'useOverlayLinks');
     const dateFormat = getConfig('collection', 'i18n.prettyDateIntervalFormat');
     const locale = getConfig('language', '');
     const paginationType = getConfig('pagination', 'type');
@@ -146,12 +149,32 @@ const Grid = (props) => {
         },
     };
 
+    /* *** MWPW-164509 *** */
+    const cardsPerPage = () => {
+        switch (cardsGridLayout) {
+            case GRID_TYPE.FIVE_UP:
+                return 5;
+            case GRID_TYPE.FOUR_UP:
+                return 4;
+            case GRID_TYPE.THREE_UP:
+                return 3;
+            default:
+                return 2;
+        }
+    };
+
+    /**
+     * Whether the grid is a carousel
+     * @type {Boolean}
+     */
+    const isCarousel = containerType === 'carousel';
+
     /**
      * Whether the paginator component is being used
      * @type {Boolean}
      */
     const isPaginator = paginationType === 'paginator';
-    const isLoadMore = paginationType === 'loadMore' || containerType === 'carousel';
+    const isLoadMore = paginationType === 'loadMore';
 
     /**
      * Total pages to show (used if paginator component is set)
@@ -177,9 +200,10 @@ const Grid = (props) => {
 
     /**
      * Current page (used if load more button is authored)
+     * Or if the grid is a carousel
      * @type {Number}
      */
-    if (isLoadMore) {
+    if (isLoadMore || isCarousel) {
         cardsToshow = cards.slice(0, resultsPerPage * pages);
     }
 
@@ -221,6 +245,7 @@ const Grid = (props) => {
                 const { contentArea: { title = '' } = {}, id } = card;
                 const cardNumber = index + 1;
                 const hideCTA = getHideCta(card, collectionButtonStyle);
+                const ariaHidden = index >= cardsPerPage();
 
                 switch (cardStyle) {
                     /* istanbul ignore next */
@@ -239,8 +264,10 @@ const Grid = (props) => {
                                 locale={locale}
                                 renderBorder={renderCardsBorders}
                                 renderDivider={renderFooterDivider}
-                                renderOverlay={renderCardsOverlay}
+                                renderOverlay={renderOverlay}
                                 hideCTA={hideCTA}
+                                ariaHidden={ariaHidden}
+                                tabIndex={ariaHidden ? -1 : 0}
                                 /* istanbul ignore next */
                                 onFocus={() => scrollCardIntoView(card.id)} />
                         );

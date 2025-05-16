@@ -96,6 +96,7 @@ const Container = (props) => {
     const filterGroupPrefix = 'ch_';
     const searchPrefix = 'sh_';
     const CARD_HASH_LENGTH = 10;
+    const BODY = document.body;
 
     /**
      **** Authored Configs ****
@@ -157,6 +158,8 @@ const Container = (props) => {
     const headers = getConfig('headers', '');
     const partialLoadWithBackgroundFetch = getConfig('collection', 'partialLoadWithBackgroundFetch.enabled');
     const partialLoadCount = getConfig('collection', 'partialLoadWithBackgroundFetch.partialLoadCount');
+    const renderOverlay = getConfig('collection', 'useOverlayLinks');
+
     /**
      **** Constants ****
      */
@@ -1076,6 +1079,19 @@ const Container = (props) => {
                 });
             });
         }
+
+        function handleKeyDown(e) {
+            if (e.key === 'Tab') {
+                BODY.classList.add('tabbing');
+            }
+        }
+
+        function handleMouseDown() {
+            BODY.classList.remove('tabbing');
+        }
+
+        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('mousedown', handleMouseDown);
     }, [visibleStamp, hasFetched]);
 
     /**
@@ -1566,7 +1582,8 @@ const Container = (props) => {
                                     cards={gridCards}
                                     forwardedRef={scrollElementRef}
                                     onCardBookmark={handleCardBookmarking}
-                                    isAriaLiveActive={isGridAreaLive} />
+                                    isAriaLiveActive={isGridAreaLive}
+                                    renderOverlay={renderOverlay} />
                                 {displayLoadMore &&
                                 <LoadMore
                                     onClick={onLoadMoreClick}
@@ -1587,6 +1604,7 @@ const Container = (props) => {
                             <CardsCarousel
                                 resQty={gridCardLen}
                                 cards={gridCards}
+                                cardStyle={cardStyle}
                                 role="tablist"
                                 onCardBookmark={handleCardBookmarking} />
                             }
