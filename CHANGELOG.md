@@ -1,5 +1,12 @@
 
 
+## [0.35.1](https://github.com/adobecom/caas/compare/0.35.0...0.35.1) (2025-05-16)
+
+
+### Bug Fixes
+
+* **MWPW-166334:** adds contrast to left filter expand icon ([#276](https://github.com/adobecom/caas/issues/276)) ([8807ad2](https://github.com/adobecom/caas/commit/8807ad287c589b2f809f138346a356ea89fb13c7))
+
 # [0.35.0](https://github.com/adobecom/caas/compare/0.34.5...0.35.0) (2025-05-06)
 
 
