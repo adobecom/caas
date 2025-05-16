@@ -1,5 +1,9 @@
 /*!
+<<<<<<< HEAD
+ * Chimera UI Libraries - Build 0.35.0 (5/16/2025, 13:44:38)
+=======
  * Chimera UI Libraries - Build 0.35.0 (5/14/2025, 09:30:37)
+>>>>>>> main
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -47106,7 +47110,7 @@ var CardType = {
     endDate: _propTypes.string,
     cardDate: _propTypes.string,
     modifiedDate: _propTypes.string,
-    bannerMap: (0, _propTypes.shape)(Object).isRequired,
+    bannerMap: (0, _propTypes.shape)(_card.bannerMapType),
     tags: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_card.tagsType)),
     onFocus: _propTypes.func.isRequired,
     origin: _propTypes.string,
@@ -47134,6 +47138,7 @@ var defaultProps = {
     cardDate: '',
     modifiedDate: '',
     tags: [],
+    bannerMap: {},
     origin: '',
     ariaHidden: false,
     tabIndex: 0
