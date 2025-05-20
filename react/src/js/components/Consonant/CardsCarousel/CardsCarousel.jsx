@@ -62,6 +62,10 @@ export function getCardWidth(size, gap) {
     return 0;
 }
 
+export function userIsTabbing() {
+    return document.body.classList.contains('tabbing');
+}
+
 function CardsCarousel({
     cards,
     cardStyle,
@@ -137,10 +141,6 @@ function CardsCarousel({
     function showNav() {
         showPrevButton();
         showNextButton();
-    }
-
-    function userIsTabbing() {
-        return document.body.classList.contains('tabbing');
     }
 
     function setFocusPrevBtn() {

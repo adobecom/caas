@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.2 (5/20/2025, 14:00:29)
+ * Chimera UI Libraries - Build 0.35.2 (5/20/2025, 14:21:47)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -44330,6 +44330,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 
 exports.getCardWidth = getCardWidth;
+exports.userIsTabbing = userIsTabbing;
 
 var _react = __webpack_require__(0);
 
@@ -44407,6 +44408,10 @@ function getCardWidth(size, gap) {
 
     // Fallback when the gap isn't defined for this size
     return 0;
+}
+
+function userIsTabbing() {
+    return document.body.classList.contains('tabbing');
 }
 
 function CardsCarousel() {
@@ -44489,10 +44494,6 @@ function CardsCarousel() {
     function showNav() {
         showPrevButton();
         showNextButton();
-    }
-
-    function userIsTabbing() {
-        return document.body.classList.contains('tabbing');
     }
 
     function setFocusPrevBtn() {

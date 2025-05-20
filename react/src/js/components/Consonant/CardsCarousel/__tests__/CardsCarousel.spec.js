@@ -8,7 +8,7 @@ import config from '../../Testing/Mocks/config.json';
 import cards from '../../Testing/Mocks/cards.json';
 import setupIntersectionObserverMock from '../../Testing/Mocks/intersectionObserver';
 import jestMocks from '../../Testing/Utils/JestMocks';
-import { getCardWidth } from '../CardsCarousel';
+import { getCardWidth, userIsTabbing } from '../CardsCarousel';
 import { generateCards } from '../../Testing/Utils/MockCards';
 
 // Mock fetch for cards data
@@ -43,6 +43,15 @@ describe('CardsCarousel comprehensive behaviors', () => {
     expect(getCardWidth('3up', 32)).toBe(378);
     expect(getCardWidth('invalid', 8)).toBe(0);
     expect(getCardWidth('2up', 999)).toBe(0);
+  });
+
+  test('userIsTabbing should be false by default', () => {
+    expect(userIsTabbing()).toBe(false);
+  });
+
+  test('userIsTabbing should be true when tabbing', () => {
+    document.body.classList.add('tabbing');
+    expect(userIsTabbing()).toBe(true);
   });
 
   test('mobile: initial hideNav hides both nav buttons', async () => {
