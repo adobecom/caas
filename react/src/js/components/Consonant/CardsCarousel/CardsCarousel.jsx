@@ -139,6 +139,10 @@ function CardsCarousel({
         showNextButton();
     }
 
+    function userIsTabbing() {
+        return document.body.classList.contains('tabbing');
+    }
+
     function setFocusPrevBtn() {
         const prevBtn = prev.current;
         if (prevBtn) prevBtn.focus();
@@ -152,7 +156,9 @@ function CardsCarousel({
     function shouldHidePrevButton() {
         if (firstVisibleCard === 1) {
             hidePrevButton();
-            setFocusNextBtn();
+            if (userIsTabbing()) {
+                setFocusNextBtn();
+            }
         }
     }
 
@@ -162,7 +168,9 @@ function CardsCarousel({
             (carousel.scrollWidth - carousel.clientWidth < carousel.scrollLeft + cardWidth);
         if (atEndOfCarousel) {
             hideNextButton();
-            setFocusPrevBtn();
+            if (userIsTabbing()) {
+                setFocusPrevBtn();
+            }
         }
     }
 
