@@ -1,5 +1,12 @@
 
 
+## [0.35.3](https://github.com/adobecom/caas/compare/0.35.2...0.35.3) (2025-05-21)
+
+
+### Bug Fixes
+
+* **mwpw-173764:** fixes focus issues on page load ([#278](https://github.com/adobecom/caas/issues/278)) ([4d46822](https://github.com/adobecom/caas/commit/4d46822301aaab51ae575e62d251904b09c3cf26)), closes [#279](https://github.com/adobecom/caas/issues/279)
+
 ## [0.35.2](https://github.com/adobecom/caas/compare/0.35.1...0.35.2) (2025-05-19)
 
 
