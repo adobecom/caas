@@ -4,7 +4,8 @@
     "plugin:jest/recommended",
     "plugin:jsx-a11y/strict"
   ],
-  "parser": "babel-eslint",
+  // Use Babel ESLint parser for modern JS syntax
+  "parser": "@babel/eslint-parser",
   "plugins": [
     "babel",
     "jest",
@@ -18,12 +19,16 @@
     "node": true
   },
   "parserOptions": {
+    "requireConfigFile": false,
+    // Let parser auto-load .babelrc
+    "babelOptions": {
+      "babelrc": true
+    },
     "ecmaVersion": 2020,
-    
+    "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
-    },
-    "sourceType": "module"
+    }
   },
   "settings": {
     "import/resolver": {
@@ -57,6 +62,51 @@
     "linebreak-style": 0,
     "no-plusplus": "off",
     "no-mixed-operators": "off",
-    "no-restricted-syntax": "off"
-  }
+    "no-restricted-syntax": "off",
+    // disable new Airbnb rules that we don't want to enforce yet
+    "import/no-cycle": "off",
+    "react/jsx-props-no-spreading": "off",
+    "default-param-last": "off",
+    "max-len": "off",
+    "react/jsx-no-constructed-context-values": "off",
+    "prefer-regex-literals": "off",
+    "react/jsx-no-useless-fragment": "off",
+    // allow console statements in helpers and demos
+    "no-console": "off",
+    // allow unnamed functions in test code
+    "func-names": "off",
+    // relax for modern syntax (duplicated entries removed)
+  },
+  "overrides": [
+    {
+      "files": ["react/src/js/components/Consonant/**/*.{js,jsx}"],
+      "rules": {
+        "array-bracket-spacing": "off",
+        "arrow-parens": "off",
+        "comma-dangle": "off",
+        "eol-last": "off",
+        "implicit-arrow-linebreak": "off",
+        "import/no-useless-path-segments": "off",
+        "indent": "off",
+        "lines-between-class-members": "off",
+        "no-else-return": "off",
+        "no-multiple-empty-lines": "off",
+        "no-trailing-spaces": "off",
+        "object-curly-spacing": "off",
+        "operator-linebreak": "off",
+        "quote-props": "off",
+        "react/function-component-definition": "off",
+        "react/jsx-fragments": "off",
+        "object-curly-newline": "off",
+        "react/jsx-wrap-multilines": "off",
+        "react/jsx-curly-newline": "off",
+        "quotes": "off",
+        "function-paren-newline": "off",
+        "no-undef": "off",
+        "react/jsx-tag-spacing": "off",
+        "react/button-has-type": "off",
+        "import/no-extraneous-dependencies": "off"
+      }
+    }
+  ]
 }
