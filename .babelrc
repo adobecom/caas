@@ -27,6 +27,9 @@
                 ["@babel/plugin-proposal-private-methods", { "loose": true }],
                 ["@babel/plugin-proposal-private-property-in-object", { "loose": true }],
                 "@babel/plugin-syntax-bigint",
+                // ensure transforms use same loose mode
+                ["@babel/plugin-transform-class-properties", { "loose": true }],
+                ["@babel/plugin-transform-private-methods", { "loose": true }],
                 ["istanbul", {
                     "exclude": [
                         "**/Modal/**",
@@ -65,11 +68,14 @@
     "@babel/plugin-proposal-optional-catch-binding",
     // numeric separators (1_000_000)
     "@babel/plugin-proposal-numeric-separator",
-    // private methods and fields (optional, remove if not using private syntax)
-    // ["@babel/plugin-proposal-private-methods", { "loose": true }],
-    // ["@babel/plugin-proposal-private-property-in-object", { "loose": true }],
+    // private methods and fields (proposal)
+    ["@babel/plugin-proposal-private-methods", { "loose": true }],
+    ["@babel/plugin-proposal-private-property-in-object", { "loose": true }],
     // big integer syntax
-    "@babel/plugin-syntax-bigint"
+    "@babel/plugin-syntax-bigint",
+    // ensure transform plugins use same loose mode
+    ["@babel/plugin-transform-class-properties", { "loose": true }],
+    ["@babel/plugin-transform-private-methods", { "loose": true }]
   ],
     "presets": [
         ["@babel/preset-env", {
