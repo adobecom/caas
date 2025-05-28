@@ -13,9 +13,20 @@
                 }]
             ],
             "plugins": [
-                "@babel/plugin-proposal-class-properties",
+                // enable class properties in loose mode to match private-methods
+                ["@babel/plugin-proposal-class-properties", { "loose": true }],
                 "@babel/plugin-proposal-object-rest-spread",
                 "@babel/plugin-proposal-optional-chaining",
+                // enable new syntax in tests
+                "@babel/plugin-syntax-dynamic-import",
+                "@babel/plugin-proposal-nullish-coalescing-operator",
+                ["@babel/plugin-proposal-logical-assignment-operators", { "loose": true }],
+                "@babel/plugin-proposal-optional-catch-binding",
+                "@babel/plugin-proposal-numeric-separator",
+                // private methods and fields must match private-property-in-object
+                ["@babel/plugin-proposal-private-methods", { "loose": true }],
+                ["@babel/plugin-proposal-private-property-in-object", { "loose": true }],
+                "@babel/plugin-syntax-bigint",
                 ["istanbul", {
                     "exclude": [
                         "**/Modal/**",
@@ -42,9 +53,23 @@
         }
     },
   "plugins": [
-    "@babel/plugin-proposal-class-properties",
+    // enable class properties in loose mode to match private-methods
+    ["@babel/plugin-proposal-class-properties", { "loose": true }],
     "@babel/plugin-proposal-object-rest-spread",
-    "@babel/plugin-proposal-optional-chaining"
+    "@babel/plugin-proposal-optional-chaining",
+    // nullish coalescing (??)
+    "@babel/plugin-proposal-nullish-coalescing-operator",
+    // logical assignment (&&=, ||=, ??=)
+    ["@babel/plugin-proposal-logical-assignment-operators", { "loose": true }],
+    // optional catch binding
+    "@babel/plugin-proposal-optional-catch-binding",
+    // numeric separators (1_000_000)
+    "@babel/plugin-proposal-numeric-separator",
+    // private methods and fields (must pair with private-property-in-object)
+    ["@babel/plugin-proposal-private-methods", { "loose": true }],
+    ["@babel/plugin-proposal-private-property-in-object", { "loose": true }],
+    // big integer syntax
+    "@babel/plugin-syntax-bigint"
   ],
     "presets": [
         ["@babel/preset-env", {
