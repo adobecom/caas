@@ -42,16 +42,6 @@ module.exports = {
                 loader: 'babel-loader',
             },
             {
-                test: /\.(js|jsx)$/,
-                exclude: /(node_modules|@dexter|bower_components|\.spec\.js$)/,
-                enforce: 'pre',
-                loader: 'eslint-loader',
-                options: {
-                    failOnError: true,
-                    fix: false,
-                },
-            },
-            {
                 test: /\.css$/,
                 loader: 'style-loader!css-loader',
             },

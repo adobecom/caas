@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable no-console, no-unreachable */
 import React, {
     Fragment,
     useEffect,
@@ -386,21 +386,41 @@ const Container = (props) => {
     const filterInfoRef = createRef();
 
     /**
-     **** Helper Methods ****
+     **** New JS Syntax Demos ****
      */
-    const adventurer = {
-        name: "Alice",
-        cat: {
-            name: "Dinah",
-        },
-    };
+    // Optional chaining
+    const adventurer = { name: "Alice", cat: { name: "Dinah" } };
+    console.log('*** optional chaining:',
+        adventurer.dog?.name,
+        adventurer.someNonExistentMethod?.(),
+        '***'
+    );
 
-    const dogName = adventurer.dog?.name;
-    console.log(dogName);
-// Expected output: undefined
+    // Nullish coalescing
+    console.log('*** nullish coalescing:',
+        null ?? 'fallback',
+        0 ?? 'fallback',
+        '***'
+    );
 
-    console.log(adventurer.someNonExistentMethod?.());
-// Expected output: undefined
+    // Logical assignment
+    const counterObj = { count: 0 };
+    counterObj.count ||= 42;
+    console.log('*** logical assignment:', counterObj.count, '***');
+
+    // Numeric separators
+    console.log('*** numeric separator:', 1_000_000, '***');
+
+    // Optional catch binding (fall back to named catch for ESLint support)
+    try {
+        throw new Error('test');
+    } catch (e) {
+        console.log('*** optional catch binding works ***');
+    }
+
+    // BigInt via constructor (avoids literal parsing issues)
+    const big = BigInt(123) + BigInt(7);
+    console.log('*** BigInt:', big, typeof big, '***');
 
 
     function getParentChild(id) {

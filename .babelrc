@@ -65,9 +65,9 @@
     "@babel/plugin-proposal-optional-catch-binding",
     // numeric separators (1_000_000)
     "@babel/plugin-proposal-numeric-separator",
-    // private methods and fields (must pair with private-property-in-object)
-    ["@babel/plugin-proposal-private-methods", { "loose": true }],
-    ["@babel/plugin-proposal-private-property-in-object", { "loose": true }],
+    // private methods and fields (optional, remove if not using private syntax)
+    // ["@babel/plugin-proposal-private-methods", { "loose": true }],
+    // ["@babel/plugin-proposal-private-property-in-object", { "loose": true }],
     // big integer syntax
     "@babel/plugin-syntax-bigint"
   ],
