@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.2 (5/20/2025, 14:21:47)
+ * Chimera UI Libraries - Build 0.35.3 (5/28/2025, 20:53:40)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -47509,6 +47509,7 @@ var Card = function Card(props) {
                 badgeText
             ),
             showVideoButton && videoURL && !isHalfHeight && _react2.default.createElement(_videoButton2.default, {
+                title: title,
                 videoURL: videoURLToUse,
                 gateVideo: gateVideo,
                 onFocus: onFocus,
@@ -49638,7 +49639,8 @@ var _modal2 = _interopRequireDefault(_modal);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var VideoButton = function VideoButton(_ref) {
-    var name = _ref.name,
+    var title = _ref.title,
+        name = _ref.name,
         videoURL = _ref.videoURL,
         gateVideo = _ref.gateVideo,
         className = _ref.className,
@@ -49656,6 +49658,7 @@ var VideoButton = function VideoButton(_ref) {
 
     var isAuthoredModal = /^#[a-zA-Z0-9_-]+/.test(videoURL);
     var isFullUrl = /https?:\/\/[a-zA-Z0-9_-]+/.test(videoURL);
+    var ariaLabel = 'Play, ' + title;
 
     var handleShowModal = function handleShowModal() {
         if (isAuthoredModal) {
@@ -49696,7 +49699,7 @@ var VideoButton = function VideoButton(_ref) {
                 'data-testid': 'consonant-Card-videoButton-wrapper' },
             _react2.default.createElement('button', {
                 'daa-ll': 'play',
-                'aria-label': 'Play',
+                'aria-label': ariaLabel,
                 onClick: handleShowModal,
                 tabIndex: tabIndex,
                 className: className })
@@ -49710,6 +49713,7 @@ var VideoButton = function VideoButton(_ref) {
 };
 
 VideoButton.propTypes = {
+    title: _propTypes.string,
     name: _propTypes.string,
     videoPolicy: _propTypes.string,
     videoURL: _propTypes.string.isRequired,
@@ -49719,6 +49723,7 @@ VideoButton.propTypes = {
 };
 
 VideoButton.defaultProps = {
+    title: '',
     name: 'video-modal',
     videoPolicy: 'autoplay; fullscreen',
     gateVideo: false,

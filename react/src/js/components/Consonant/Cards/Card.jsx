@@ -458,6 +458,7 @@ const Card = (props) => {
                 videoURL &&
                 !isHalfHeight &&
                 <VideoButton
+                    title={title}
                     videoURL={videoURLToUse}
                     gateVideo={gateVideo}
                     onFocus={onFocus}
