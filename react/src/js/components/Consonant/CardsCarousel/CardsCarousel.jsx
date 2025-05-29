@@ -163,9 +163,7 @@ function CardsCarousel({
     }
 
     function shouldHideNextButton() {
-        const carousel = carouselRef.current;
-        const atEndOfCarousel =
-            (carousel.scrollWidth - carousel.clientWidth < carousel.scrollLeft + cardWidth);
+        const atEndOfCarousel = firstVisibleCard >= cards.length - cardsPerPage;
         if (atEndOfCarousel) {
             hideNextButton();
             if (userIsTabbing()) {
@@ -208,7 +206,6 @@ function CardsCarousel({
             if (!cardLinks.length) return;
             cardLinks.forEach((link) => {
                 link.setAttribute('aria-hidden', 'true');
-                link.setAttribute('inert', '');
                 link.setAttribute('tabindex', '-1');
             });
 
@@ -217,19 +214,16 @@ function CardsCarousel({
                     const linkBlockers = card.querySelectorAll('.consonant-LinkBlocker');
                     linkBlockers.forEach((link) => {
                         link.removeAttribute('aria-hidden');
-                        link.removeAttribute('inert');
                         link.setAttribute('tabindex', '0');
                     });
                     const modalVideo = card.querySelector('.consonant-Card-videoIco');
                     if (modalVideo) {
                         modalVideo.removeAttribute('aria-hidden');
-                        modalVideo.removeAttribute('inert');
                         modalVideo.setAttribute('tabindex', '0');
                     }
                 } else {
                     cardLinks.forEach((link) => {
                         link.removeAttribute('aria-hidden');
-                        link.removeAttribute('inert');
                         link.setAttribute('tabindex', '0');
                     });
                 }
