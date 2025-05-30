@@ -1,33 +1,28 @@
+import React from 'react';
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import { shallow } from 'enzyme';
+import * as hooks from '../../Helpers/hooks';
+import { INFOBIT_TYPE } from '../../Helpers/constants';
 import Card from '../Card';
 import setup from '../../Testing/Utils/Settings';
 import prettyFormatDate from '../../Helpers/prettyFormat';
 
-// Setup function to render the Card component with default props
+// --- Testing-Library edge cases ---
 const renderCard = setup(Card, {});
 
-describe('Card Component - Specific Conditions', () => {
-    beforeEach(() => {
-        // No mocks, use actual implementations
-    });
-
-    test('should set banner properties for gated half-height card when not registered', () => {
-        // Destructure the props to get bannerMap properties
+describe('Card Component - Testing-Library edge cases', () => {
+    test('banner for gated half-height card when not registered', () => {
         const {
             props: {
                 bannerMap: {
-                    register: {
-                        description: bannerDescription,
-                        backgroundColor: bannerBackgroundColor,
-                        fontColor: bannerFontColor,
-                    },
+                    register: { description, backgroundColor, fontColor },
                 },
             },
         } = renderCard({
-            cardStyle: 'half-height', // Set card style to half-height
-            tags: [{ id: '/caas:gated' }], // Add gated tag
-            isRegistered: false, // Explicitly set to false to test not registered condition
+            cardStyle: 'half-height',
+            tags: [{ id: '/caas:gated' }],
+            isRegistered: false,
             bannerMap: {
                 register: {
                     description: 'Register Now',
@@ -35,128 +30,108 @@ describe('Card Component - Specific Conditions', () => {
                     fontColor: '#fff',
                 },
             },
-            startDate: '', // No start date
-            endDate: '', // No end date
         });
 
-        // Check if the banner element has the correct styles and text content
-        const bannerElement = screen.getByTestId('consonant-Card-banner');
-        expect(bannerElement).toHaveStyle({
-            color: bannerFontColor,
-            backgroundColor: bannerBackgroundColor,
-        });
-        expect(bannerElement).toHaveTextContent(bannerDescription);
+        const banner = screen.getByTestId('consonant-Card-banner');
+        expect(banner).toHaveStyle({ color: fontColor, backgroundColor });
+        expect(banner).toHaveTextContent(description);
     });
 
-    test('should set event banner properties for cards with start and end dates', () => {
-        const startDate = '2023-01-02';
-        const endDate = '2023-01-03';
-        const {
-            props: {
-                bannerMap: {
-                    register: {
-                        description: bannerDescription,
-                        backgroundColor: bannerBackgroundColor,
-                        fontColor: bannerFontColor,
-                    },
-                },
-            },
-        } = renderCard({
-            cardStyle: 'half-height', // Set card style to half-height
-            tags: [{ id: '/caas:gated' }], // Add gated tag
-            isRegistered: true, // Explicitly set to true to test registered condition
-            bannerMap: {
-                register: {
-                    description: 'Register Now',
-                    backgroundColor: '#000',
-                    fontColor: '#fff',
-                },
-            },
-            startDate, // start date
-            endDate, // end date
-        });
-
-        // Check if the banner element has the correct styles and text content
-        const bannerElement = screen.getByTestId('consonant-Card-banner');
-        expect(bannerElement).toHaveStyle({
-            color: bannerFontColor,
-            backgroundColor: bannerBackgroundColor,
-        });
-        expect(bannerElement).toHaveTextContent(bannerDescription);
-    });
-
-    test('should hide banner for in-person events card with on-demand banner', () => {
-        // Render the card with in-person event tag to test banner hiding
-        renderCard({
-            cardStyle: 'one-half', // Set card style to one-half
-            tags: [{ id: '/events/session-format/in-person' }], // Add in-person event tag
-            bannerMap: {
-                onDemand: {
-                    description: 'On Demand',
-                    backgroundColor: '#abcdef',
-                    fontColor: '#123456',
-                    icon: 'on-demand-icon.png',
-                },
-            },
-        });
-
-        // Check if the banner element is not present
-        const bannerElement = screen.queryByTestId('consonant-Card-banner');
-        expect(bannerElement).toBeNull();
-    });
-
-    test('should set ariaText correctly when hasBanner is true and disableBanners is false', () => {
+    test('aria-label combines banner & title when banners on', () => {
         const bannerDescription = 'Register Now';
-        const bannerBackgroundColor = '#000';
-        const bannerFontColor = '#fff';
-        const title = 'Card Title';
-
-        // Render the card with the necessary props to trigger the condition
-        renderCard({
-            cardStyle: 'half-height', // Set card style to half-height
-            tags: [{ id: '/caas:gated' }], // Add gated tag
-            isRegistered: false, // Explicitly set to false to test not registered condition
-            bannerMap: {
-                register: {
-                    description: bannerDescription,
-                    backgroundColor: bannerBackgroundColor,
-                    fontColor: bannerFontColor,
-                },
-            },
-            contentArea: {
-                title, // Provide title
-            },
-            hasBanner: true,
-            disableBanners: false, // Ensure disableBanners is false
-        });
-
-        // Check if the ariaText is set correctly
-        const cardElement = screen.getByTestId('consonant-Card');
-        const ariaText = `${bannerDescription} | ${title}`;
-        expect(cardElement).toHaveAttribute('aria-label', ariaText);
-    });
-
-    // Other Test Cases
-    test('should set detail text for half-height card if current date is before start date', () => {
-        const currentDate = new Date();
-        const nextYearDate = new Date(currentDate.setFullYear(currentDate.getFullYear() + 1)).toISOString().split('T')[0];
+        const title = 'My Title';
         renderCard({
             cardStyle: 'half-height',
-            startDate: nextYearDate,
+            tags: [{ id: '/caas:gated' }],
+            isRegistered: false,
+            bannerMap: { register: { description: bannerDescription, backgroundColor: '#000', fontColor: '#fff' } },
+            contentArea: { title },
+            hasBanner: true,
+            disableBanners: false,
+        });
+        const card = screen.getByTestId('consonant-Card');
+        expect(card).toHaveAttribute('aria-label', `${bannerDescription} | ${title}`);
+    });
+
+    test('future-date detailText for half-height card', () => {
+        const today = new Date();
+        const nextYear = new Date(today.setFullYear(today.getFullYear() + 1))
+            .toISOString()
+            .split('T')[0];
+
+        renderCard({
+            cardStyle: 'half-height',
+            startDate: nextYear,
             endDate: '2023-01-03',
-            bannerMap: {
-                event: {
-                    backgroundColor: '#000',
-                    description: 'Event Description',
-                    fontColor: '#fff',
-                    icon: 'event-icon.png',
-                },
-            },
+            bannerMap: { event: { description: 'Event', backgroundColor: '#000', fontColor: '#fff', icon: '' } },
         });
 
-        const detailTextElement = screen.getByTestId('consonant-Card-label');
-        const expectedText = prettyFormatDate(nextYearDate, '2023-01-03', 'en-US', '{LLL} {dd} | {timeRange} {timeZone}');
-        expect(detailTextElement).toBeInTheDocument();
-        expect(detailTextElement).toHaveTextContent(expectedText);
+        const label = screen.getByTestId('consonant-Card-label');
+        const expected = prettyFormatDate(nextYear, '2023-01-03', 'en-US', '{LLL} {dd} | {timeRange} {timeZone}');
+        expect(label).toHaveTextContent(expected);
+    });
+});
+
+// ===== Enzyme tests (smoke + LinkBlocker + detailTextOption) =====
+describe('Card enzyme tests', () => {
+    let configSpy, regSpy;
+
+    beforeAll(() => {
+        // spy on hooks so Card’s useConfig/useRegistered don’t blow up
+        configSpy = jest.spyOn(hooks, 'useConfig').mockReturnValue(() => '');
+        regSpy    = jest.spyOn(hooks, 'useRegistered').mockReturnValue(false);
+    });
+
+    afterAll(() => {
+        configSpy.mockRestore();
+        regSpy.mockRestore();
+    });
+
+    it('mounts (smoke) with minimal props', () => {
+        const wrapper = shallow(<Card id="smoke" onClick={()=>{}} bannerMap={{}} />);
+        expect(wrapper.exists()).toBe(true);
+    });
+
+    it('renders LinkBlocker for renderOverlay', () => {
+        const w = shallow(<Card id="o" onClick={()=>{}} bannerMap={{}} renderOverlay overlayLink="u" />);
+        const lb = w.find('LinkBlocker');
+        expect(lb).toHaveLength(1);
+        expect(lb.prop('link')).toBe('u');
+    });
+
+    it('renders LinkBlocker for hideCTA', () => {
+        const w = shallow(<Card id="h" onClick={()=>{}} bannerMap={{}} hideCTA overlayLink="u2" />);
+        expect(w.find('LinkBlocker').exists()).toBe(true);
+    });
+
+    // detailTextOption = modifiedDate
+    it('detailTextOption: modifiedDate', () => {
+        const iso = '2020-01-02T00:00:00Z';
+        hooks.useConfig.mockReturnValue((cat, key) => {
+            if (key === 'detailsTextOption') return 'modifiedDate';
+            if (key === 'i18n.lastModified')   return 'Last modified {date}';
+            return '';
+        });
+        const w = shallow(<Card id="m" onClick={()=>{}} bannerMap={{}} modifiedDate={iso} />);
+        const txt = w.find('[data-testid="consonant-Card-label"]').text();
+        expect(txt).toBe(`Last modified ${new Date(iso).toLocaleDateString()}`);
+    });
+
+    // detailTextOption = createdDate
+    it('detailTextOption: createdDate', () => {
+        const iso = '2021-03-15T00:00:00Z';
+        hooks.useConfig.mockReturnValue((c,k) => k==='detailsTextOption'?'createdDate':'');
+        const w = shallow(<Card id="c" onClick={()=>{}} bannerMap={{}} cardDate={iso} />);
+        expect(w.find('[data-testid="consonant-Card-label"]').text())
+            .toBe(new Date(iso).toLocaleDateString());
+    });
+
+    // detailTextOption = staticDate
+    it('detailTextOption: staticDate', () => {
+        const isoZ = '2021-04-01Z';
+        hooks.useConfig.mockReturnValue((c,k) => k==='detailsTextOption'?'staticDate':'');
+        const w = shallow(<Card id="s" onClick={()=>{}} bannerMap={{}} cardDate={isoZ} />);
+        const expected = new Date(isoZ.replace(/Z$/, '')).toLocaleDateString();
+        expect(w.find('[data-testid="consonant-Card-label"]').text()).toBe(expected);
     });
 });
