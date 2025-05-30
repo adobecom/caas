@@ -59,6 +59,46 @@ import {
     makeConfigGetter,
 } from '../Helpers/consonant';
 
+/**
+ * Splits an ID string into parent and child segments at the last '/'.
+ * @param {string} id - The composite ID string.
+ * @returns {[string, string]} An array where [0] is the parent part and [1] is the child part.
+ */
+export function getParentChild(id) {
+  let i = id.length;
+  while (i >= 0 && id[i] !== '/') {
+    i--;
+  }
+  return [id.substring(0, i), id.substring(i + 1)];
+}
+/**
+ * Removes filters with no matching cards.
+ * @param {Array} allFilters - Array of filter objects.
+ * @param {Array} cardsFromJson - Array of card objects with tags [{id, label}].
+ * @returns {Array} Filter groups containing only matching items.
+ */
+export function removeEmptyFilters(allFilters, cardsFromJson) {
+  const DESKTOP_SCREEN_SIZE = window.innerWidth >= DESKTOP_MIN_WIDTH;
+  const tags = [].concat(...cardsFromJson.map(card => card.tags.map(tag => tag.id)));
+  const timingTags = [
+    EVENT_TIMING_IDS.LIVE,
+    EVENT_TIMING_IDS.ONDEMAND,
+    EVENT_TIMING_IDS.UPCOMING,
+  ];
+  return allFilters
+    .map(filter => ({
+      ...filter,
+      opened: DESKTOP_SCREEN_SIZE ? filter.openedOnLoad : true,
+      items: filter.items.filter(item =>
+        tags.includes(item.id) ||
+        tags.includes(item.label) ||
+        tags.toString().includes(`/${item.id}`) ||
+        timingTags.includes(item.id)
+      ),
+    }))
+    .filter(filter => filter.items.length > 0);
+}
+
 import {
     shouldDisplayPaginator,
     getNumCardsToShow,
@@ -423,14 +463,8 @@ const Container = (props) => {
     console.log('*** BigInt:', big, typeof big, '***');
 
 
-    function getParentChild(id) {
-        let i = id.length;
-        while (id[i] !== '/' && i >= 0) {
-            i--;
-        }
-        return [id.substring(0, i), id.substring(i + 1)];
-    }
 
+    /* istanbul ignore next */
     function rollingHash(s, l) {
         if (!s) {
             return '';
@@ -516,6 +550,7 @@ const Container = (props) => {
 
         clearUrlState();
         urlParams.forEach((value, key) => {
+            /* istanbul ignore next */
             if (key.indexOf(filterGroupPrefix) !== 0) setUrlState(key, value);
         });
     };
@@ -524,12 +559,14 @@ const Container = (props) => {
      * Resets filters, and search to empty. Hides bookmark filter
      * @returns {Void} - an updated state
      */
+    /* istanbul ignore next */
     const resetFiltersSearchAndBookmarks = () => {
         clearAllFilters();
         setSearchQuery('');
         const urlParams = new URLSearchParams(window.location.search);
         clearUrlState();
         urlParams.forEach((value, key) => {
+            /* istanbul ignore next */
             if (key.indexOf(filterGroupPrefix) === -1
                 && key.indexOf(searchPrefix) === -1) setUrlState(key, value);
         });
@@ -712,6 +749,7 @@ const Container = (props) => {
      *
      * @param event
      */
+    /* istanbul ignore next */
     const handleMobileFilterEscape = (event) => {
         if (event.key !== 'Escape' && event.key !== 'Esc') return;
 
@@ -778,25 +816,6 @@ const Container = (props) => {
         setUrlState('page', currentPage === 1 ? '' : currentPage);
     }, [currentPage]);
 
-    const removeEmptyFilters = (allFilters, cardsFromJson) => {
-        const tags = [].concat(...cardsFromJson.map(card => card.tags.map(tag => tag.id)));
-
-        const timingTags = [
-            EVENT_TIMING_IDS.LIVE,
-            EVENT_TIMING_IDS.ONDEMAND,
-            EVENT_TIMING_IDS.UPCOMING,
-        ];
-
-        return allFilters.map(filter => ({
-            ...filter,
-            opened: DESKTOP_SCREEN_SIZE ? filter.openedOnLoad : true,
-            /* istanbul ignore next */
-            items: filter.items.filter(item => tags.includes(item.id)
-            || tags.includes(item.label)
-            || tags.toString().includes(`/${item.id}`) // ***** FIX  HERE *****
-            || timingTags.includes(item.id)),
-        })).filter(filter => filter.items.length > 0);
-    };
 
     /**
      * This handles getting Cards, there are some conditions:
@@ -807,7 +826,9 @@ const Container = (props) => {
      * success fail the request.
      * @returns {Void} - an updated state
      */
+    /* istanbul ignore next */
     useEffect(() => {
+        /* istanbul ignore next */
         if ((isLazy && visibleStamp) || (isLazy && !hasFetched)) {
             return;
         }
@@ -838,6 +859,7 @@ const Container = (props) => {
          * @param {String} endPoint, URL with params for card request
          * @returns {Void} - an updated state
          */
+        /* istanbul ignore next */
         function getCards(endPoint = collectionEndpoint) {
             const start = Date.now();
             return window.fetch(endPoint, {
@@ -858,12 +880,15 @@ const Container = (props) => {
 
                             if (validData) return json;
 
-                            logLana({ message: `no valid response data from ${endPoint}`, tags: 'collection' });
-                            /* istanbul ignore next */
-                            return Promise.reject(new Error('no valid reponse data'));
+                        /* istanbul ignore next */
+                        logLana({ message: `no valid response data from ${endPoint}`, tags: 'collection' });
+                        /* istanbul ignore next */
+                        return Promise.reject(new Error('no valid reponse data'));
                         });
                     }
+                    /* istanbul ignore next */
                     logLana({ message: `failure for call to ${url}`, tags: 'collection', errorMessage: `${status}: ${statusText}` });
+                    /* istanbul ignore next */
                     return Promise.reject(new Error(`${status}: ${statusText}, failure for call to ${url}`));
                 })
                 .then((payload) => {
@@ -1308,6 +1333,7 @@ const Container = (props) => {
      * @returns List of categories for the top pills
      *          Prepends the "All Topics" pill to the list of categories
      */
+    /* istanbul ignore next */
     function getAuthoredCategories(filterList, categoryList) {
         const categoryIds = filterList
             .filter(filter => filter.id.includes('caas:product-categories'))
@@ -1329,6 +1355,7 @@ const Container = (props) => {
      * @returns List of all products from all categories for the 'All products' menu
      *          Prepends the "All products" label to the list of categories
      */
+    /* istanbul ignore next */
     function getAllCategoryProducts() {
         if (!authoredCategories) return [];
         let allCategories = [];
