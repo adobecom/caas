@@ -464,7 +464,6 @@ const Container = (props) => {
 
 
 
-    /* istanbul ignore next */
     function rollingHash(s, l) {
         if (!s) {
             return '';
@@ -550,7 +549,6 @@ const Container = (props) => {
 
         clearUrlState();
         urlParams.forEach((value, key) => {
-            /* istanbul ignore next */
             if (key.indexOf(filterGroupPrefix) !== 0) setUrlState(key, value);
         });
     };
@@ -559,14 +557,12 @@ const Container = (props) => {
      * Resets filters, and search to empty. Hides bookmark filter
      * @returns {Void} - an updated state
      */
-    /* istanbul ignore next */
     const resetFiltersSearchAndBookmarks = () => {
         clearAllFilters();
         setSearchQuery('');
         const urlParams = new URLSearchParams(window.location.search);
         clearUrlState();
         urlParams.forEach((value, key) => {
-            /* istanbul ignore next */
             if (key.indexOf(filterGroupPrefix) === -1
                 && key.indexOf(searchPrefix) === -1) setUrlState(key, value);
         });
@@ -749,7 +745,6 @@ const Container = (props) => {
      *
      * @param event
      */
-    /* istanbul ignore next */
     const handleMobileFilterEscape = (event) => {
         if (event.key !== 'Escape' && event.key !== 'Esc') return;
 
@@ -826,9 +821,7 @@ const Container = (props) => {
      * success fail the request.
      * @returns {Void} - an updated state
      */
-    /* istanbul ignore next */
     useEffect(() => {
-        /* istanbul ignore next */
         if ((isLazy && visibleStamp) || (isLazy && !hasFetched)) {
             return;
         }
@@ -1333,7 +1326,6 @@ const Container = (props) => {
      * @returns List of categories for the top pills
      *          Prepends the "All Topics" pill to the list of categories
      */
-    /* istanbul ignore next */
     function getAuthoredCategories(filterList, categoryList) {
         const categoryIds = filterList
             .filter(filter => filter.id.includes('caas:product-categories'))
@@ -1355,7 +1347,6 @@ const Container = (props) => {
      * @returns List of all products from all categories for the 'All products' menu
      *          Prepends the "All products" label to the list of categories
      */
-    /* istanbul ignore next */
     function getAllCategoryProducts() {
         if (!authoredCategories) return [];
         let allCategories = [];
