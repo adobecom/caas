@@ -423,6 +423,46 @@ const Container = (props) => {
      * @returns {Object} - filter info DOM reference
      */
     const filterInfoRef = createRef();
+
+    /**
+     **** New JS Syntax Demos ****
+     */
+    // Optional chaining
+    const adventurer = { name: "Alice", cat: { name: "Dinah" } };
+    console.log('*** optional chaining:',
+        adventurer.dog?.name,
+        adventurer.someNonExistentMethod?.(),
+        '***'
+    );
+
+    // Nullish coalescing
+    console.log('*** nullish coalescing:',
+        null ?? 'fallback',
+        0 ?? 'fallback',
+        '***'
+    );
+
+    // Logical assignment
+    const counterObj = { count: 0 };
+    counterObj.count ||= 42;
+    console.log('*** logical assignment:', counterObj.count, '***');
+
+    // Numeric separators
+    console.log('*** numeric separator:', 1_000_000, '***');
+
+    // Optional catch binding (fall back to named catch for ESLint support)
+    try {
+        throw new Error('test');
+    } catch (e) {
+        console.log('*** optional catch binding works ***');
+    }
+
+    // BigInt via constructor (avoids literal parsing issues)
+    const big = BigInt(123) + BigInt(7);
+    console.log('*** BigInt:', big, typeof big, '***');
+
+
+
     function rollingHash(s, l) {
         if (!s) {
             return '';
