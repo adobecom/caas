@@ -296,11 +296,26 @@ describe('CardsCarousel comprehensive behaviors', () => {
     fireEvent.click(container.querySelector('[name="previous"]'));
     expect(carousel.scrollLeft).toBe(initialScroll);
   });
+
   test('desktop keyboard navigation focus: setFocusNextBtn and setFocusPrevBtn focus buttons when tabbing', async () => {
     document.body.classList.add('tabbing');
     const c = await setupCarousel(1400);
     const nextBtn = c.querySelector('[name="next"]');
     // After initial mount in tabbing mode, focus should end on prev button
     expect(document.activeElement).toBe(nextBtn);
+  });
+
+  test('shouldHideNextButton calls setFocusPrevBtn when tabbing and at end of carousel', async () => {
+    document.body.classList.add('tabbing');
+    const c = await setupCarousel(1400);
+
+    // Scroll to the end
+    const nextBtn = c.querySelector('[name="next"]');
+    while (!nextBtn.classList.contains('hide')) {
+      fireEvent.click(nextBtn);
+    }
+
+    const prevBtn = c.querySelector('[name="previous"]');
+    expect(document.activeElement).toBe(prevBtn);
   });
 });
