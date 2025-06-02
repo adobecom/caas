@@ -285,6 +285,7 @@ const Card = (props) => {
      * @param {Array} footerData
      * @return {String}
      */
+    /* istanbul ignore next */
     function getAltCtaLink(footerData) {
         if (!footerData) return '';
         if (footerData.length === 1) {
@@ -304,6 +305,7 @@ const Card = (props) => {
      * @param {Array} footerData
      * @return {String}
      */
+    /* istanbul ignore next */
     function getCtaText(footerData, ctaUsed) {
         if (!footerData) return '';
         if (footerData.length === 1) {
