@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.33.1 (3/28/2025, 08:18:29)
+ * Chimera UI Libraries - Build 0.34.1 (6/1/2025, 23:33:51)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -184,64 +184,65 @@ $exports.store = store;
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* unused harmony export debounce */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return useWindowDimensions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return useExpandable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return useConfig; });
+/* unused harmony export useLazyLoading */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return useURLState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return useRegistered; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__general__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__consonant__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__contexts__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants__ = __webpack_require__(15);
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.useRegistered = exports.useURLState = exports.useLazyLoading = exports.useConfig = exports.useExpandable = exports.useWindowDimensions = undefined;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-exports.debounce = debounce;
-
-var _react = __webpack_require__(0);
-
-var _general = __webpack_require__(6);
-
-var _consonant = __webpack_require__(110);
-
-var _contexts = __webpack_require__(111);
-
-var _constants = __webpack_require__(15);
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 /* eslint-disable */
 function debounce(fn, wait) {
-    var timeout = void 0;
+  var timeout = void 0;
+  var cancel = function cancel() {
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+  };
 
-    var cancel = function cancel() {
-        if (timeout) {
-            clearTimeout(timeout);
-        }
+  // Return non-arrow func to preserve this context
+  var debounceFunc = function debounceFunc() {
+    var _this = this;
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+    var functionCall = function functionCall() {
+      return fn.apply(_this, args);
     };
-
-    // Return non-arrow func to preserve this context
-    var debounceFunc = function debounceFunc() {
-        var _this = this;
-
-        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-            args[_key] = arguments[_key];
-        }
-
-        var functionCall = function functionCall() {
-            return fn.apply(_this, args);
-        };
-
-        clearTimeout(timeout);
-        timeout = setTimeout(functionCall, wait);
-    };
-
-    debounceFunc.cancel = cancel;
-
-    return debounceFunc;
-};
+    clearTimeout(timeout);
+    timeout = setTimeout(functionCall, wait);
+  };
+  debounceFunc.cancel = cancel;
+  return debounceFunc;
+}
+;
 /* eslint-enable */
 
 /**
@@ -250,11 +251,11 @@ function debounce(fn, wait) {
  *
  * @type {function(): {Int, Int}} WindowDimensions
  */
-var useWindowDimensions = exports.useWindowDimensions = function useWindowDimensions() {
-    return {
-        width: window.innerWidth,
-        height: window.innerHeight
-    };
+var useWindowDimensions = function useWindowDimensions() {
+  return {
+    width: window.innerWidth,
+    height: window.innerHeight
+  };
 };
 
 /**
@@ -266,21 +267,19 @@ var useWindowDimensions = exports.useWindowDimensions = function useWindowDimens
  *
  * @type {[String, Function]} OpenDropdown
  */
-var useExpandable = exports.useExpandable = function useExpandable(dropdownId) {
-    var _useContext = (0, _react.useContext)(_contexts.ExpandableContext),
-        openDropdown = _useContext.value,
-        setOpenDropdown = _useContext.setValue;
-
-    var handleToggle = (0, _react.useCallback)(function (e) {
-        e.stopPropagation();
-        if (openDropdown === dropdownId) {
-            setOpenDropdown(null);
-        } else {
-            setOpenDropdown(dropdownId);
-        }
-    }, [setOpenDropdown, openDropdown]);
-
-    return [openDropdown, handleToggle];
+var useExpandable = function useExpandable(dropdownId) {
+  var _useContext = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useContext"])(__WEBPACK_IMPORTED_MODULE_3__contexts__["b" /* ExpandableContext */]),
+    openDropdown = _useContext.value,
+    setOpenDropdown = _useContext.setValue;
+  var handleToggle = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useCallback"])(function (e) {
+    e.stopPropagation();
+    if (openDropdown === dropdownId) {
+      setOpenDropdown(null);
+    } else {
+      setOpenDropdown(dropdownId);
+    }
+  }, [setOpenDropdown, openDropdown]);
+  return [openDropdown, handleToggle];
 };
 
 /**
@@ -289,9 +288,9 @@ var useExpandable = exports.useExpandable = function useExpandable(dropdownId) {
  *
  * @type {[Number, Function]} Config
  */
-var useConfig = exports.useConfig = function useConfig() {
-    var config = (0, _react.useContext)(_contexts.ConfigContext);
-    return (0, _react.useCallback)((0, _consonant.makeConfigGetter)(config), [config]);
+var useConfig = function useConfig() {
+  var config = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useContext"])(__WEBPACK_IMPORTED_MODULE_3__contexts__["a" /* ConfigContext */]);
+  return Object(__WEBPACK_IMPORTED_MODULE_0_react__["useCallback"])(Object(__WEBPACK_IMPORTED_MODULE_2__consonant__["c" /* makeConfigGetter */])(config), [config]);
 };
 
 /**
@@ -303,54 +302,47 @@ var useConfig = exports.useConfig = function useConfig() {
  *
  * @type {[Image]} LazyLoadedImage
  */
-var useLazyLoading = exports.useLazyLoading = function useLazyLoading(imageRef, image) {
-    var options = {
-        rootMargin: _constants.ROOT_MARGIN_DEFAULT
+var useLazyLoading = function useLazyLoading(imageRef, image) {
+  var options = {
+    rootMargin: __WEBPACK_IMPORTED_MODULE_4__constants__["q" /* ROOT_MARGIN_DEFAULT */]
+  };
+  var _useState = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(''),
+    _useState2 = _slicedToArray(_useState, 2),
+    lazyLoadImage = _useState2[0],
+    setLazyLoadImage = _useState2[1];
+  var _useState3 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(''),
+    _useState4 = _slicedToArray(_useState3, 2),
+    intersectionImage = _useState4[0],
+    setIntersectionImage = _useState4[1];
+  var imageObserver = new IntersectionObserver(function (elements) {
+    if (elements[0].intersectionRatio !== 0) {
+      setIntersectionImage(image);
+    }
+  }, options);
+  Object(__WEBPACK_IMPORTED_MODULE_0_react__["useEffect"])(function () {
+    var img;
+    if (intersectionImage) {
+      img = new Image();
+      img.src = intersectionImage;
+      img.onload = function () {
+        setLazyLoadImage(intersectionImage);
+      };
+    }
+    return function () {
+      if (img) {
+        img.onload = function () {};
+      }
     };
-
-    var _useState = (0, _react.useState)(''),
-        _useState2 = _slicedToArray(_useState, 2),
-        lazyLoadImage = _useState2[0],
-        setLazyLoadImage = _useState2[1];
-
-    var _useState3 = (0, _react.useState)(''),
-        _useState4 = _slicedToArray(_useState3, 2),
-        intersectionImage = _useState4[0],
-        setIntersectionImage = _useState4[1];
-
-    var imageObserver = new IntersectionObserver(function (elements) {
-        if (elements[0].intersectionRatio !== 0) {
-            setIntersectionImage(image);
-        }
-    }, options);
-
-    (0, _react.useEffect)(function () {
-        var img = void 0;
-        if (intersectionImage) {
-            img = new Image();
-
-            img.src = intersectionImage;
-            img.onload = function () {
-                setLazyLoadImage(intersectionImage);
-            };
-        }
-        return function () {
-            if (img) {
-                img.onload = function () {};
-            }
-        };
-    }, [intersectionImage]);
-
-    (0, _react.useEffect)(function () {
-        if (imageRef.current) {
-            imageObserver.observe(imageRef.current);
-        }
-        return function () {
-            imageObserver.unobserve(imageRef.current);
-        };
-    }, [imageRef]);
-
-    return [lazyLoadImage];
+  }, [intersectionImage]);
+  Object(__WEBPACK_IMPORTED_MODULE_0_react__["useEffect"])(function () {
+    if (imageRef.current) {
+      imageObserver.observe(imageRef.current);
+    }
+    return function () {
+      imageObserver.unobserve(imageRef.current);
+    };
+  }, [imageRef]);
+  return [lazyLoadImage];
 };
 
 /**
@@ -358,133 +350,159 @@ var useLazyLoading = exports.useLazyLoading = function useLazyLoading(imageRef, 
  *
  * @type {Object, Function, Function]} urlState, handleSetQuery, handleClearQuery
  */
-var useURLState = exports.useURLState = function useURLState() {
-    var _window = window,
-        _window$location = _window.location,
-        search = _window$location.search,
-        pathname = _window$location.pathname,
-        hash = _window$location.hash;
-
-    var _useState5 = (0, _react.useState)(_general.qs.parse(search)),
-        _useState6 = _slicedToArray(_useState5, 2),
-        urlState = _useState6[0],
-        setUrlState = _useState6[1];
-
-    var handleSetQuery = (0, _react.useCallback)(function (key, value) {
-        setUrlState(function (origin) {
-            if (!value || Array.isArray(value) && !value.length) {
-                var cloneOrigin = _extends({}, origin);
-                delete cloneOrigin[key];
-
-                return cloneOrigin;
-            }
-
-            return _extends({}, origin, _defineProperty({}, key, value));
-        });
-    }, []);
-
-    var handleClearQuery = (0, _react.useCallback)(function () {
-        setUrlState({});
-    }, []);
-
-    (0, _react.useEffect)(function () {
-        var searchString = _general.qs.stringify(urlState, { array: 'comma' });
-        var urlString = '' + pathname + (searchString ? '?' : '') + searchString + hash;
-
-        window.history.replaceState(null, '', urlString);
-    }, [urlState]);
-
-    return [urlState, handleSetQuery, handleClearQuery];
+var useURLState = function useURLState() {
+  var _window = window,
+    _window$location = _window.location,
+    search = _window$location.search,
+    pathname = _window$location.pathname,
+    hash = _window$location.hash;
+  var _useState5 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(__WEBPACK_IMPORTED_MODULE_1__general__["v" /* qs */].parse(search)),
+    _useState6 = _slicedToArray(_useState5, 2),
+    urlState = _useState6[0],
+    setUrlState = _useState6[1];
+  var handleSetQuery = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useCallback"])(function (key, value) {
+    setUrlState(function (origin) {
+      if (!value || Array.isArray(value) && !value.length) {
+        var cloneOrigin = _objectSpread({}, origin);
+        delete cloneOrigin[key];
+        return cloneOrigin;
+      }
+      return _objectSpread(_objectSpread({}, origin), {}, _defineProperty({}, key, value));
+    });
+  }, []);
+  var handleClearQuery = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useCallback"])(function () {
+    setUrlState({});
+  }, []);
+  Object(__WEBPACK_IMPORTED_MODULE_0_react__["useEffect"])(function () {
+    var searchString = __WEBPACK_IMPORTED_MODULE_1__general__["v" /* qs */].stringify(urlState, {
+      array: 'comma'
+    });
+    var urlString = "".concat(pathname).concat(searchString ? '?' : '').concat(searchString).concat(hash);
+    window.history.replaceState(null, '', urlString);
+  }, [urlState]);
+  return [urlState, handleSetQuery, handleClearQuery];
 };
-
-var useRegistered = exports.useRegistered = function useRegistered() {
-    var _useState7 = (0, _react.useState)(false),
-        _useState8 = _slicedToArray(_useState7, 2),
-        registered = _useState8[0],
-        setRegistered = _useState8[1];
-
-    function isRegisteredForEvent() {
-        var fedsData = (0, _general.getByPath)(window, 'feds.data', null);
-        var eventName = (0, _general.getByPath)(fedsData, 'eventName', null);
-        var eventData = eventName && fedsData[eventName] ? fedsData[eventName] : null;
-        var isUserRegistered = eventData ? eventData.isRegistered : null;
-
-        var isRegisteredForMax = (0, _general.getByPath)(fedsData, 'isRegisteredForMax', null);
-
-        return !!(isUserRegistered || isRegisteredForMax);
+var useRegistered = function useRegistered() {
+  var _useState7 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(false),
+    _useState8 = _slicedToArray(_useState7, 2),
+    registered = _useState8[0],
+    setRegistered = _useState8[1];
+  function isRegisteredForEvent() {
+    var fedsData = Object(__WEBPACK_IMPORTED_MODULE_1__general__["c" /* getByPath */])(window, 'feds.data', null);
+    var eventName = Object(__WEBPACK_IMPORTED_MODULE_1__general__["c" /* getByPath */])(fedsData, 'eventName', null);
+    var eventData = eventName && fedsData[eventName] ? fedsData[eventName] : null;
+    var isUserRegistered = eventData ? eventData.isRegistered : null;
+    var isRegisteredForMax = Object(__WEBPACK_IMPORTED_MODULE_1__general__["c" /* getByPath */])(fedsData, 'isRegisteredForMax', null);
+    return !!(isUserRegistered || isRegisteredForMax);
+  }
+  Object(__WEBPACK_IMPORTED_MODULE_0_react__["useEffect"])(function () {
+    if (!registered) {
+      var fedsUtilities = Object(__WEBPACK_IMPORTED_MODULE_1__general__["c" /* getByPath */])(window, 'feds.utilities', null);
+      var getEventData = fedsUtilities ? fedsUtilities.getEventData : null;
+      if (getEventData) {
+        getEventData().then(function () {
+          var response = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+          var isRegistered = response.isRegistered;
+          if (isRegistered) {
+            setRegistered(true);
+          }
+        }).catch(function () {
+          var newIsRegistered = isRegisteredForEvent();
+          if (newIsRegistered) {
+            setRegistered(newIsRegistered);
+          }
+        });
+      }
     }
-
-    (0, _react.useEffect)(function () {
-        if (!registered) {
-            var fedsUtilities = (0, _general.getByPath)(window, 'feds.utilities', null);
-            var getEventData = fedsUtilities ? fedsUtilities.getEventData : null;
-            if (getEventData) {
-                getEventData().then(function () {
-                    var response = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-                    var isRegistered = response.isRegistered;
-
-                    if (isRegistered) {
-                        setRegistered(true);
-                    }
-                }).catch(function () {
-                    var newIsRegistered = isRegisteredForEvent();
-                    if (newIsRegistered) {
-                        setRegistered(newIsRegistered);
-                    }
-                });
-            }
-        }
-    }, [registered]);
-
-    return registered;
+  }, [registered]);
+  return registered;
 };
 
 /***/ }),
 /* 6 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "B", function() { return saveBookmarksToLocalStorage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "w", function() { return readBookmarksFromLocalStorage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "x", function() { return readInclusionsFromLocalStorage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "F", function() { return truncateString; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "E", function() { return truncateList; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "y", function() { return removeDuplicatesByKey; });
+/* unused harmony export chain */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return chainFromIterable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "t", function() { return isSuperset; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return intersection; });
+/* unused harmony export sortByKey */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "A", function() { return sanitizeText; });
+/* unused harmony export mapObject */
+/* unused harmony export isObject */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "u", function() { return _parseToPrimitive; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "s", function() { return isNullish; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return isAtleastOneFilterSelected; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "D", function() { return stopPropagation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return generateRange; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return getPageStartEnd; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return getStartNumber; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getEndNumber; });
+/* unused harmony export template */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getByPath; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return getSelectedItemsCount; });
+/* unused harmony export debounce */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "C", function() { return setByPath; });
+/* unused harmony export mergeDeep */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "v", function() { return qs; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "r", function() { return isDateWithinInterval; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return isDateBeforeInterval; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "p", function() { return isDateAfterInterval; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getCurrentDate; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return getEventBanner; });
+/* harmony export (immutable) */ __webpack_exports__["m"] = getTransitions;
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return getLinkTarget; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return getGlobalNavHeight; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return getSearchParam; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "z", function() { return sanitizeEventFilter; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__datastructures_js_priority_queue__ = __webpack_require__(222);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__datastructures_js_priority_queue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__datastructures_js_priority_queue__);
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.sanitizeEventFilter = exports.getSearchParam = exports.getGlobalNavHeight = exports.getLinkTarget = exports.getEventBanner = exports.getCurrentDate = exports.isDateAfterInterval = exports.isDateBeforeInterval = exports.isDateWithinInterval = exports.qs = exports.mergeDeep = exports.setByPath = exports.debounce = exports.getSelectedItemsCount = exports.getByPath = exports.template = exports.getEndNumber = exports.getStartNumber = exports.getPageStartEnd = exports.generateRange = exports.stopPropagation = exports.isAtleastOneFilterSelected = exports.isNullish = exports.parseToPrimitive = exports.isObject = exports.mapObject = exports.sanitizeText = exports.sortByKey = exports.intersection = exports.isSuperset = exports.chainFromIterable = exports.chain = exports.removeDuplicatesByKey = exports.truncateList = exports.truncateString = exports.readInclusionsFromLocalStorage = exports.readBookmarksFromLocalStorage = exports.saveBookmarksToLocalStorage = undefined;
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-exports.getTransitions = getTransitions;
-
-var _priorityQueue = __webpack_require__(222);
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /**
  * Saves a card to local storage
  * @param {Number} bookmarksValue - The id of the card to save
  * @return {Void}
  */
-var saveBookmarksToLocalStorage = exports.saveBookmarksToLocalStorage = function saveBookmarksToLocalStorage(bookmarksValue) {
-    localStorage.setItem('bookmarks', JSON.stringify(bookmarksValue, null, 2));
+var saveBookmarksToLocalStorage = function saveBookmarksToLocalStorage(bookmarksValue) {
+  localStorage.setItem('bookmarks', JSON.stringify(bookmarksValue, null, 2));
 };
 
 /**
  * Returns all cards saved in local storage
  * @return {Array} - All saved bookmarks
  */
-var readBookmarksFromLocalStorage = exports.readBookmarksFromLocalStorage = function readBookmarksFromLocalStorage() {
-    var bookmarks = JSON.parse(localStorage.getItem('bookmarks'));
-    return Array.isArray(bookmarks) ? bookmarks : [];
+var readBookmarksFromLocalStorage = function readBookmarksFromLocalStorage() {
+  var bookmarks = JSON.parse(localStorage.getItem('bookmarks'));
+  return Array.isArray(bookmarks) ? bookmarks : [];
 };
-
-var readInclusionsFromLocalStorage = exports.readInclusionsFromLocalStorage = function readInclusionsFromLocalStorage() {
-    var favorites = JSON.parse(localStorage.getItem('chimera.favorites')) || [];
-    var schedule = JSON.parse(localStorage.getItem('chimera.schedule')) || [];
-    var lastWatched = localStorage.getItem('chimera.lastWatched') || '';
-
-    return new Set([].concat(favorites, [lastWatched], schedule));
+var readInclusionsFromLocalStorage = function readInclusionsFromLocalStorage() {
+  var favorites = JSON.parse(localStorage.getItem('chimera.favorites')) || [];
+  var schedule = JSON.parse(localStorage.getItem('chimera.schedule')) || [];
+  var lastWatched = localStorage.getItem('chimera.lastWatched') || '';
+  return new Set([].concat(favorites, [lastWatched], schedule));
 };
 
 /**
@@ -493,9 +511,9 @@ var readInclusionsFromLocalStorage = exports.readInclusionsFromLocalStorage = fu
  * @param {Number} num - How much to truncate
  * @return {String} - The truncated string
  */
-var truncateString = exports.truncateString = function truncateString(str, num) {
-    if (str.length <= num) return str;
-    return str.slice(0, num) + '...';
+var truncateString = function truncateString(str, num) {
+  if (str.length <= num) return str;
+  return "".concat(str.slice(0, num), "...");
 };
 
 /**
@@ -504,12 +522,12 @@ var truncateString = exports.truncateString = function truncateString(str, num) 
  * @param {Array} list - What to truncate
  * @return {Array} - The truncated list
  */
-var truncateList = exports.truncateList = function truncateList(limit, list) {
-    // No limit, return all;
-    if (limit < 0) return list;
+var truncateList = function truncateList(limit, list) {
+  // No limit, return all;
+  if (limit < 0) return list;
 
-    // Slice received data to required q-ty;
-    return list.slice(0, limit);
+  // Slice received data to required q-ty;
+  return list.slice(0, limit);
 };
 
 /**
@@ -518,16 +536,16 @@ var truncateList = exports.truncateList = function truncateList(limit, list) {
  * @param {key} key - What key to search for duplicates for
  * @return {Array} - A list of cards with no duplicates
  */
-var removeDuplicatesByKey = exports.removeDuplicatesByKey = function removeDuplicatesByKey(list, key) {
-    var newList = [];
-    var ids = new Set();
-    list.forEach(function (item) {
-        if (!ids.has(item[key])) {
-            newList.push(item);
-            ids.add(item[key]);
-        }
-    });
-    return newList;
+var removeDuplicatesByKey = function removeDuplicatesByKey(list, key) {
+  var newList = [];
+  var ids = new Set();
+  list.forEach(function (item) {
+    if (!ids.has(item[key])) {
+      newList.push(item);
+      ids.add(item[key]);
+    }
+  });
+  return newList;
 };
 
 /**
@@ -535,14 +553,13 @@ var removeDuplicatesByKey = exports.removeDuplicatesByKey = function removeDupli
  * @param {Any} args - Any set of args
  * @example chain(['A', 'B', 'C'], ['D', 'E', 'F']) --> ['A' 'B' 'C' 'D' 'E' 'F']
  */
-var chain = exports.chain = function chain() {
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-    }
-
-    return args.reduce(function (a, b) {
-        return a.concat(b);
-    }, []);
+var chain = function chain() {
+  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+    args[_key] = arguments[_key];
+  }
+  return args.reduce(function (a, b) {
+    return a.concat(b);
+  }, []);
 };
 
 /**
@@ -550,8 +567,8 @@ var chain = exports.chain = function chain() {
  * @param {Any} args - Any set of iterable arguments
  * @example chainFromIterable(someIterable) --> ['A' 'B' 'C' 'D' 'E' 'F']
  */
-var chainFromIterable = exports.chainFromIterable = function chainFromIterable(args) {
-    return chain.apply(undefined, _toConsumableArray(args));
+var chainFromIterable = function chainFromIterable(args) {
+  return chain.apply(void 0, _toConsumableArray(args));
 };
 
 /**
@@ -560,36 +577,23 @@ var chainFromIterable = exports.chainFromIterable = function chainFromIterable(a
  * @param {Set} subset - The second set
  * @return {Boolean} - Whether set A is a superset of set B
  */
-var isSuperset = exports.isSuperset = function isSuperset(superset, subset) {
-    // eslint-disable-next-line no-restricted-syntax
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
-
-    try {
-        for (var _iterator = subset[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var elem = _step.value;
-
-            if (!superset.has(elem)) {
-                return false;
-            }
-        }
-    } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-    } finally {
-        try {
-            if (!_iteratorNormalCompletion && _iterator.return) {
-                _iterator.return();
-            }
-        } finally {
-            if (_didIteratorError) {
-                throw _iteratorError;
-            }
-        }
+var isSuperset = function isSuperset(superset, subset) {
+  // eslint-disable-next-line no-restricted-syntax
+  var _iterator = _createForOfIteratorHelper(subset),
+    _step;
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var elem = _step.value;
+      if (!superset.has(elem)) {
+        return false;
+      }
     }
-
-    return true;
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+  return true;
 };
 
 /**
@@ -598,37 +602,24 @@ var isSuperset = exports.isSuperset = function isSuperset(superset, subset) {
  * @param {Set} setB - The second set
  * @return {Boolean} - Whether there is an intersection of elements between the sets
  */
-var intersection = exports.intersection = function intersection(setA, setB) {
-    var intersectionSet = new Set();
-    // eslint-disable-next-line no-restricted-syntax
-    var _iteratorNormalCompletion2 = true;
-    var _didIteratorError2 = false;
-    var _iteratorError2 = undefined;
-
-    try {
-        for (var _iterator2 = setB[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-            var elem = _step2.value;
-
-            if (setA.has(elem)) {
-                intersectionSet.add(elem);
-            }
-        }
-    } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-    } finally {
-        try {
-            if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                _iterator2.return();
-            }
-        } finally {
-            if (_didIteratorError2) {
-                throw _iteratorError2;
-            }
-        }
+var intersection = function intersection(setA, setB) {
+  var intersectionSet = new Set();
+  // eslint-disable-next-line no-restricted-syntax
+  var _iterator2 = _createForOfIteratorHelper(setB),
+    _step2;
+  try {
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+      var elem = _step2.value;
+      if (setA.has(elem)) {
+        intersectionSet.add(elem);
+      }
     }
-
-    return intersectionSet;
+  } catch (err) {
+    _iterator2.e(err);
+  } finally {
+    _iterator2.f();
+  }
+  return intersectionSet;
 };
 
 /**
@@ -636,14 +627,13 @@ var intersection = exports.intersection = function intersection(setA, setB) {
  * @param {Iterable} iterable - The iterable object
  * @param {Function} keyFunc - The function to apply
  */
-var sortByKey = exports.sortByKey = function sortByKey(iterable, keyFunc) {
-    return [].concat(_toConsumableArray(iterable)).sort(function (a, b) {
-        if (keyFunc(a) < keyFunc(b)) return -1;
-        if (keyFunc(a) > keyFunc(b)) return 1;
-        return 0;
-    });
+var sortByKey = function sortByKey(iterable, keyFunc) {
+  return _toConsumableArray(iterable).sort(function (a, b) {
+    if (keyFunc(a) < keyFunc(b)) return -1;
+    if (keyFunc(a) > keyFunc(b)) return 1;
+    return 0;
+  });
 };
-
 var allowedChars = /[a-zA-Z0-9\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF\s.]/g;
 
 /**
@@ -652,13 +642,13 @@ var allowedChars = /[a-zA-Z0-9\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF\s.]/g;
  * @param {String} text - The text so sanitize
  * @return {String} - The cleaned up text
  */
-var sanitizeText = exports.sanitizeText = function sanitizeText(text) {
-    if (!text) return '';
-    var sanitized = text.toLowerCase().trim();
-    // remove any invalid chars
-    var matchedAllowedChars = sanitized.match(allowedChars);
-    sanitized = matchedAllowedChars ? matchedAllowedChars.join('') : '';
-    return sanitized;
+var sanitizeText = function sanitizeText(text) {
+  if (!text) return '';
+  var sanitized = text.toLowerCase().trim();
+  // remove any invalid chars
+  var matchedAllowedChars = sanitized.match(allowedChars);
+  sanitized = matchedAllowedChars ? matchedAllowedChars.join('') : '';
+  return sanitized;
 };
 
 /**
@@ -667,15 +657,13 @@ var sanitizeText = exports.sanitizeText = function sanitizeText(text) {
  * @param {Function} func - The function to apply to the entries in the object
  * @return {Object} - The new object
  */
-var mapObject = exports.mapObject = function mapObject(object, func) {
-    var newObj = {};
-    var keys = Object.keys(object);
-
-    keys.forEach(function (key) {
-        newObj[key] = func(object[key]);
-    });
-
-    return newObj;
+var mapObject = function mapObject(object, func) {
+  var newObj = {};
+  var keys = Object.keys(object);
+  keys.forEach(function (key) {
+    newObj[key] = func(object[key]);
+  });
+  return newObj;
 };
 
 /**
@@ -683,8 +671,8 @@ var mapObject = exports.mapObject = function mapObject(object, func) {
  * @param {Any} val - Start value in the range array;
  * @return {Boolean} - Whether the passed in value is nullish or not
  */
-var isObject = exports.isObject = function isObject(val) {
-    return !!val && val.constructor === Object;
+var isObject = function isObject(val) {
+  return !!val && val.constructor === Object;
 };
 
 /**
@@ -692,18 +680,17 @@ var isObject = exports.isObject = function isObject(val) {
  * @param {Object} value - Start value in the range array;
  * @return {Object} - Authored config used by react component
  */
-var parseToPrimitive = exports.parseToPrimitive = function parseToPrimitive(value) {
-    if (isObject(value)) {
-        return mapObject(value, parseToPrimitive);
-    } else if (Array.isArray(value)) {
-        return value.map(parseToPrimitive);
-    }
-
-    try {
-        return parseToPrimitive(JSON.parse(value));
-    } catch (e) {
-        return value;
-    }
+var _parseToPrimitive = function parseToPrimitive(value) {
+  if (isObject(value)) {
+    return mapObject(value, _parseToPrimitive);
+  } else if (Array.isArray(value)) {
+    return value.map(_parseToPrimitive);
+  }
+  try {
+    return _parseToPrimitive(JSON.parse(value));
+  } catch (e) {
+    return value;
+  }
 };
 
 /**
@@ -711,16 +698,16 @@ var parseToPrimitive = exports.parseToPrimitive = function parseToPrimitive(valu
  * @param {Any} val - Start value in the range array;
  * @return {Boolean} - Whether the passed in value is nullish or not
  */
-var isNullish = exports.isNullish = function isNullish(val) {
-    return val === undefined || val === null || Number.isNaN(val);
-};
 
-var isAtleastOneFilterSelected = exports.isAtleastOneFilterSelected = function isAtleastOneFilterSelected(filters) {
-    return chainFromIterable(filters.map(function (f) {
-        return f.items;
-    })).some(function (item) {
-        return item.selected;
-    });
+var isNullish = function isNullish(val) {
+  return val === undefined || val === null || Number.isNaN(val);
+};
+var isAtleastOneFilterSelected = function isAtleastOneFilterSelected(filters) {
+  return chainFromIterable(filters.map(function (f) {
+    return f.items;
+  })).some(function (item) {
+    return item.selected;
+  });
 };
 
 /**
@@ -728,8 +715,8 @@ var isAtleastOneFilterSelected = exports.isAtleastOneFilterSelected = function i
  * @param {Event} e - The event to stop propagation for
  * @return {Void}
  */
-var stopPropagation = exports.stopPropagation = function stopPropagation(e) {
-    return e.stopPropagation();
+var stopPropagation = function stopPropagation(e) {
+  return e.stopPropagation();
 };
 
 /**
@@ -738,21 +725,18 @@ var stopPropagation = exports.stopPropagation = function stopPropagation(e) {
  * @param {number} end - End value in the range array;
  * @return {Array}
  */
-var generateRange = exports.generateRange = function generateRange(startVal, end) {
-    var start = startVal;
-    var step = 1;
-    var range = [];
-
-    if (end < start) {
-        step = -step;
-    }
-
-    while (step > 0 ? end >= start : end <= start) {
-        range.push(start);
-        start += step;
-    }
-
-    return range;
+var generateRange = function generateRange(startVal, end) {
+  var start = startVal;
+  var step = 1;
+  var range = [];
+  if (end < start) {
+    step = -step;
+  }
+  while (step > 0 ? end >= start : end <= start) {
+    range.push(start);
+    start += step;
+  }
+  return range;
 };
 
 /**
@@ -762,21 +746,19 @@ var generateRange = exports.generateRange = function generateRange(startVal, end
  * @param {number} totalPages - Total number of pages available
  * @return {Array} - The start and end page numbers
  */
-var getPageStartEnd = exports.getPageStartEnd = function getPageStartEnd(currentPageNumber, pageCount, totalPages) {
-    var halfPageCount = Math.floor(pageCount / 2);
-    var start = void 0;
-    var end = void 0;
-
-    if (totalPages <= pageCount + 1) {
-        // show all pages
-        start = 1;
-        end = totalPages;
-    } else {
-        start = Math.min(Math.max(1, currentPageNumber - halfPageCount), totalPages - pageCount);
-        end = Math.max(Math.min(currentPageNumber + halfPageCount, totalPages), pageCount + 1);
-    }
-
-    return [start, end];
+var getPageStartEnd = function getPageStartEnd(currentPageNumber, pageCount, totalPages) {
+  var halfPageCount = Math.floor(pageCount / 2);
+  var start;
+  var end;
+  if (totalPages <= pageCount + 1) {
+    // show all pages
+    start = 1;
+    end = totalPages;
+  } else {
+    start = Math.min(Math.max(1, currentPageNumber - halfPageCount), totalPages - pageCount);
+    end = Math.max(Math.min(currentPageNumber + halfPageCount, totalPages), pageCount + 1);
+  }
+  return [start, end];
 };
 
 /**
@@ -785,9 +767,9 @@ var getPageStartEnd = exports.getPageStartEnd = function getPageStartEnd(current
  * @param {Number} showItemsPerPage - How many items to show per page
  * @returns {Number} - The start number for Paginator Component
  */
-var getStartNumber = exports.getStartNumber = function getStartNumber(currentPageNumber, showItemsPerPage) {
-    if (currentPageNumber === 1) return 1;
-    return currentPageNumber * showItemsPerPage - (showItemsPerPage - 1);
+var getStartNumber = function getStartNumber(currentPageNumber, showItemsPerPage) {
+  if (currentPageNumber === 1) return 1;
+  return currentPageNumber * showItemsPerPage - (showItemsPerPage - 1);
 };
 
 /**
@@ -797,9 +779,9 @@ var getStartNumber = exports.getStartNumber = function getStartNumber(currentPag
  * @param {Number} totalResults - Total count of cards in collection
  * @returns {Number} - The end number for Paginator Component
  */
-var getEndNumber = exports.getEndNumber = function getEndNumber(currentPageNumber, showItemsPerPage, totalResults) {
-    var res = currentPageNumber * showItemsPerPage;
-    return res < totalResults ? res : totalResults;
+var getEndNumber = function getEndNumber(currentPageNumber, showItemsPerPage, totalResults) {
+  var res = currentPageNumber * showItemsPerPage;
+  return res < totalResults ? res : totalResults;
 };
 
 /**
@@ -809,18 +791,15 @@ var getEndNumber = exports.getEndNumber = function getEndNumber(currentPageNumbe
  * @returns {string} - ('{placeholderKey}', { placeholderKey: 'placeholderValue' })
  *  => 'placeholderValue'
  */
-var template = exports.template = function template() {
-    var text = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-    var props = arguments[1];
-
-    if (!props) return text;
-
-    var regExp = /{([A-z]*)}/gi;
-    var replacer = function replacer(fullMatch, key) {
-        return props[key] || fullMatch;
-    };
-
-    return text.replace(regExp, replacer);
+var template = function template() {
+  var text = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+  var props = arguments.length > 1 ? arguments[1] : undefined;
+  if (!props) return text;
+  var regExp = /{([A-z]*)}/gi;
+  var replacer = function replacer(fullMatch, key) {
+    return props[key] || fullMatch;
+  };
+  return text.replace(regExp, replacer);
 };
 
 /**
@@ -830,25 +809,22 @@ var template = exports.template = function template() {
  * @param {any} defaultValue - will return when no value was found
  * @returns {any} - searched value
  */
-var getByPath = exports.getByPath = function getByPath(object, path, defaultValue) {
-    if (!object || !path) return defaultValue;
+var getByPath = function getByPath(object, path, defaultValue) {
+  if (!object || !path) return defaultValue;
+  var result = object;
+  var chunks = path.split('.');
+  for (var index = 0; index < chunks.length; index += 1) {
+    var chunk = chunks[index];
 
-    var result = object;
-    var chunks = path.split('.');
-
-    for (var index = 0; index < chunks.length; index += 1) {
-        var chunk = chunks[index];
-
-        /* eslint-disable-next-line no-prototype-builtins */
-        if (result != null && result.hasOwnProperty(chunk)) {
-            result = result[chunk];
-        } else {
-            result = defaultValue;
-            break;
-        }
+    /* eslint-disable-next-line no-prototype-builtins */
+    if (result != null && result.hasOwnProperty(chunk)) {
+      result = result[chunk];
+    } else {
+      result = defaultValue;
+      break;
     }
-
-    return result;
+  }
+  return result;
 };
 
 /**
@@ -856,11 +832,11 @@ var getByPath = exports.getByPath = function getByPath(object, path, defaultValu
  * @param {items} array - filter items
  * @returns {number} - selected items count
  */
-var getSelectedItemsCount = exports.getSelectedItemsCount = function getSelectedItemsCount(items) {
-    return items.filter(function (_ref) {
-        var selected = _ref.selected;
-        return Boolean(selected);
-    }).length;
+var getSelectedItemsCount = function getSelectedItemsCount(items) {
+  return items.filter(function (_ref) {
+    var selected = _ref.selected;
+    return Boolean(selected);
+  }).length;
 };
 
 /**
@@ -869,22 +845,18 @@ var getSelectedItemsCount = exports.getSelectedItemsCount = function getSelected
  * @param {number} timeout - debounce delay
  * @returns {func} - debounced function
  */
-var debounce = exports.debounce = function debounce(func) {
-    var timeout = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-
-    var timer = void 0;
-
-    return function () {
-        for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-            args[_key2] = arguments[_key2];
-        }
-
-        clearTimeout(timer);
-
-        timer = setTimeout(function () {
-            func.apply(undefined, args);
-        }, timeout);
-    };
+var debounce = function debounce(func) {
+  var timeout = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+  var timer;
+  return function () {
+    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
+    }
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      func.apply(void 0, args);
+    }, timeout);
+  };
 };
 
 /**
@@ -893,21 +865,18 @@ var debounce = exports.debounce = function debounce(func) {
  * @param {string} path - destination path
  * @param {any} value - value which should be assign
  */
-var setByPath = exports.setByPath = function setByPath(object, path, value) {
-    if (!object || !path) return;
-
-    var chunks = path.split('.');
-    var withoutLast = chunks.slice(0, -1);
-    var lastChunk = chunks[chunks.length - 1];
-
-    var target = withoutLast.reduce(function (accumulator, chunk) {
-        if (!isObject(accumulator[chunk])) {
-            accumulator[chunk] = {};
-        }
-        return accumulator[chunk];
-    }, object);
-
-    target[lastChunk] = value;
+var setByPath = function setByPath(object, path, value) {
+  if (!object || !path) return;
+  var chunks = path.split('.');
+  var withoutLast = chunks.slice(0, -1);
+  var lastChunk = chunks[chunks.length - 1];
+  var target = withoutLast.reduce(function (accumulator, chunk) {
+    if (!isObject(accumulator[chunk])) {
+      accumulator[chunk] = {};
+    }
+    return accumulator[chunk];
+  }, object);
+  target[lastChunk] = value;
 };
 
 /**
@@ -916,218 +885,188 @@ var setByPath = exports.setByPath = function setByPath(object, path, value) {
  * @param {...Object} sources - objects to merge
  * @return {Obect} merge object
  */
-var mergeDeep = exports.mergeDeep = function mergeDeep(target) {
-    for (var _len3 = arguments.length, sources = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
-        sources[_key3 - 1] = arguments[_key3];
-    }
-
-    if (!sources.length) return target;
-
-    var source = sources.shift();
-
-    if (isObject(target) && isObject(source)) {
-        var keys = Object.keys(source);
-
-        keys.forEach(function (key) {
-            if (isObject(source[key])) {
-                if (!target[key]) target[key] = {};
-
-                mergeDeep(target[key], source[key]);
-            } else if (source[key] !== undefined) {
-                Object.assign(target, _defineProperty({}, key, source[key]));
-            }
-        });
-    }
-
-    return mergeDeep.apply(undefined, [target].concat(sources));
+var _mergeDeep = function mergeDeep(target) {
+  for (var _len3 = arguments.length, sources = new Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+    sources[_key3 - 1] = arguments[_key3];
+  }
+  if (!sources.length) return target;
+  var source = sources.shift();
+  if (isObject(target) && isObject(source)) {
+    var keys = Object.keys(source);
+    keys.forEach(function (key) {
+      if (isObject(source[key])) {
+        if (!target[key]) target[key] = {};
+        _mergeDeep(target[key], source[key]);
+      } else if (source[key] !== undefined) {
+        Object.assign(target, _defineProperty({}, key, source[key]));
+      }
+    });
+  }
+  return _mergeDeep.apply(void 0, [target].concat(sources));
 };
 
 var isCaasGroup = function isCaasGroup(group) {
-    return group.indexOf('ch_') === 0;
+  return group.indexOf('ch_') === 0;
 };
 
 /**
  * Methods to create/parse queryString
  */
-var qs = exports.qs = {
-    parse: function parse(string) {
-        var searchParams = new URLSearchParams(string);
-
-        return [].concat(_toConsumableArray(searchParams.keys())).reduce(function (accumulator, key) {
-            if (!accumulator[key]) {
-                var value = searchParams.getAll(key);
-
-                if (isCaasGroup(key)) {
-                    if (value.length === 1) {
-                        var _value = value,
-                            _value2 = _slicedToArray(_value, 1),
-                            firstItem = _value2[0];
-                        /* istanbul ignore if */
-
-
-                        if (firstItem.includes('|')) {
-                            value = firstItem.split('|');
-                        }
-                    }
-                    accumulator[key] = decodeURIComponent(value);
-                } else {
-                    accumulator[key] = value;
-                }
+var qs = {
+  parse: function parse(string) {
+    var searchParams = new URLSearchParams(string);
+    return _toConsumableArray(searchParams.keys()).reduce(function (accumulator, key) {
+      if (!accumulator[key]) {
+        var value = searchParams.getAll(key);
+        if (isCaasGroup(key)) {
+          if (value.length === 1) {
+            var _value = value,
+              _value2 = _slicedToArray(_value, 1),
+              firstItem = _value2[0];
+            /* istanbul ignore if */
+            if (firstItem.includes('|')) {
+              value = firstItem.split('|');
             }
-
-            return accumulator;
-        }, {});
-    },
-    stringify: function stringify(obj) {
-        var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
-            array = _ref2.array;
-
-        var searchParams = new URLSearchParams();
-        Object.entries(obj).forEach(function (_ref3) {
-            var _ref4 = _slicedToArray(_ref3, 2),
-                key = _ref4[0],
-                value = _ref4[1];
-
-            if (isCaasGroup(key)) {
-                if (Array.isArray(value)) {
-                    if (array === 'comma') {
-                        searchParams.append(key, encodeURIComponent(value));
-                    } else {
-                        searchParams.append(key, encodeURIComponent(value.join('|')));
-                    }
-                } else {
-                    searchParams.append(key, encodeURIComponent(value));
-                }
-            } else {
-                searchParams.append(key, value);
-            }
-        });
-
-        return searchParams.toString();
-    }
+          }
+          accumulator[key] = decodeURIComponent(value);
+        } else {
+          accumulator[key] = value;
+        }
+      }
+      return accumulator;
+    }, {});
+  },
+  stringify: function stringify(obj) {
+    var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+      array = _ref2.array;
+    var searchParams = new URLSearchParams();
+    Object.entries(obj).forEach(function (_ref3) {
+      var _ref4 = _slicedToArray(_ref3, 2),
+        key = _ref4[0],
+        value = _ref4[1];
+      if (isCaasGroup(key)) {
+        if (Array.isArray(value)) {
+          if (array === 'comma') {
+            searchParams.append(key, encodeURIComponent(value));
+          } else {
+            searchParams.append(key, encodeURIComponent(value.join('|')));
+          }
+        } else {
+          searchParams.append(key, encodeURIComponent(value));
+        }
+      } else {
+        searchParams.append(key, value);
+      }
+    });
+    return searchParams.toString();
+  }
 };
-
-var isDateWithinInterval = exports.isDateWithinInterval = function isDateWithinInterval(currentDate, startDate, endDate) {
-    var curr = Date.parse(currentDate);
-    var start = Date.parse(startDate);
-    var end = Date.parse(endDate);
-
-    return start <= curr && end > curr;
+var isDateWithinInterval = function isDateWithinInterval(currentDate, startDate, endDate) {
+  var curr = Date.parse(currentDate);
+  var start = Date.parse(startDate);
+  var end = Date.parse(endDate);
+  return start <= curr && end > curr;
 };
-
-var isDateBeforeInterval = exports.isDateBeforeInterval = function isDateBeforeInterval(currentDate, startDate) {
-    var curr = Date.parse(currentDate);
-    var start = Date.parse(startDate);
-
-    return curr < start;
+var isDateBeforeInterval = function isDateBeforeInterval(currentDate, startDate) {
+  var curr = Date.parse(currentDate);
+  var start = Date.parse(startDate);
+  return curr < start;
 };
 /* istanbul ignore next */
-var isDateAfterInterval = exports.isDateAfterInterval = function isDateAfterInterval(currentDate, endDate) {
-    var curr = Date.parse(currentDate);
-    var end = Date.parse(endDate);
-
-    return curr > end;
+var isDateAfterInterval = function isDateAfterInterval(currentDate, endDate) {
+  var curr = Date.parse(currentDate);
+  var end = Date.parse(endDate);
+  return curr > end;
 };
-
-var getCurrentDate = exports.getCurrentDate = function getCurrentDate() {
-    var urlParams = new URLSearchParams(window.location.search);
-    var servertime = parseInt(urlParams.get('servertime'), 10);
-    var timeSinceArrival = performance.now();
-    var currDate = servertime ? new Date(servertime + timeSinceArrival) : new Date();
-    return currDate;
+var getCurrentDate = function getCurrentDate() {
+  var urlParams = new URLSearchParams(window.location.search);
+  var servertime = parseInt(urlParams.get('servertime'), 10);
+  var timeSinceArrival = performance.now();
+  var currDate = servertime ? new Date(servertime + timeSinceArrival) : new Date();
+  return currDate;
 };
-
-var getEventBanner = exports.getEventBanner = function foo(startDate, endDate, bannerMap) {
-    var currDate = getCurrentDate();
-    /* istanbul ignore if */
-    if (isDateWithinInterval(currDate, startDate, endDate)) {
-        return bannerMap.live || {
-            backgroundColor: '',
-            description: '',
-            fontColor: '',
-            icon: ''
-        };
-    } else if (isDateBeforeInterval(currDate, startDate)) {
-        return bannerMap.upcoming || {
-            backgroundColor: '',
-            description: '',
-            fontColor: '',
-            icon: ''
-        };
-    }
-    return bannerMap.onDemand || {
-        backgroundColor: '',
-        description: '',
-        fontColor: '',
-        icon: ''
+var getEventBanner = function foo(startDate, endDate, bannerMap) {
+  var currDate = getCurrentDate();
+  /* istanbul ignore if */
+  if (isDateWithinInterval(currDate, startDate, endDate)) {
+    return bannerMap.live || {
+      backgroundColor: '',
+      description: '',
+      fontColor: '',
+      icon: ''
     };
+  } else if (isDateBeforeInterval(currDate, startDate)) {
+    return bannerMap.upcoming || {
+      backgroundColor: '',
+      description: '',
+      fontColor: '',
+      icon: ''
+    };
+  }
+  return bannerMap.onDemand || {
+    backgroundColor: '',
+    description: '',
+    fontColor: '',
+    icon: ''
+  };
 };
-
 function getTransitions(cardsPtr) {
-    var cards = [].concat(_toConsumableArray(cardsPtr));
-    var currentDate = getCurrentDate();
-    var transitions = new _priorityQueue.MinPriorityQueue();
+  var cards = _toConsumableArray(cardsPtr);
+  var currentDate = getCurrentDate();
+  var transitions = new __WEBPACK_IMPORTED_MODULE_0__datastructures_js_priority_queue__["MinPriorityQueue"]();
 
-    /* eslint-disable no-plusplus */
-    for (var i = 0; i < cards.length; i++) {
-        var priority = Date.parse(cards[i].startDate) - currentDate;
-        /* istanbul ignore if */
-        if (priority && priority > 0) {
-            transitions.enqueue(cards[i], priority);
-        }
-        var endPriority = Date.parse(Date.parse(cards[i].endDate) - currentDate);
-        /* istanbul ignore if */
-        if (cards[i].endDate && endPriority > 0) {
-            transitions.enqueue(null, endPriority);
-        }
+  /* eslint-disable no-plusplus */
+  for (var i = 0; i < cards.length; i++) {
+    var priority = Date.parse(cards[i].startDate) - currentDate;
+    /* istanbul ignore if */
+    if (priority && priority > 0) {
+      transitions.enqueue(cards[i], priority);
     }
-    return transitions;
+    var endPriority = Date.parse(Date.parse(cards[i].endDate) - currentDate);
+    /* istanbul ignore if */
+    if (cards[i].endDate && endPriority > 0) {
+      transitions.enqueue(null, endPriority);
+    }
+  }
+  return transitions;
 }
-
-var getLinkTarget = exports.getLinkTarget = function getLinkTarget(link) {
-    var ctaAction = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-    var domain = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : window.location.hostname;
-
-    if (ctaAction || link.startsWith('#')) {
-        return ctaAction;
+var getLinkTarget = function getLinkTarget(link) {
+  var ctaAction = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+  var domain = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : window.location.hostname;
+  if (ctaAction || link.startsWith('#')) {
+    return ctaAction;
+  }
+  var target = '_blank';
+  try {
+    var _URL = new URL(link),
+      _URL$hostname = _URL.hostname,
+      linkHostName = _URL$hostname === void 0 ? '' : _URL$hostname;
+    if (domain === linkHostName) {
+      target = '_self';
     }
-    var target = '_blank';
-    try {
-        var _ref5 = new URL(link),
-            _ref5$hostname = _ref5.hostname,
-            linkHostName = _ref5$hostname === undefined ? '' : _ref5$hostname;
-
-        if (domain === linkHostName) {
-            target = '_self';
-        }
-    } catch (e) {
-        /* eslint-disable-line no-empty */
-    }
-    return target;
+  } catch (e) {
+    /* eslint-disable-line no-empty */
+  }
+  return target;
 };
-
-var getGlobalNavHeight = exports.getGlobalNavHeight = function getGlobalNavHeight() {
-    var header = document.querySelector('header');
-    var offSet = 20; // margin above card collection
-    /* istanbul ignore else */
-    if (!header) return offSet;
-
-    var isBacom = header.getAttribute('daa-lh') && header.getAttribute('daa-lh').includes('bacom');
-    var headerWrapper = isBacom ? header : document.querySelector('.feds-header-wrapper');
-
-    return isBacom || headerWrapper && headerWrapper.classList.contains('feds-header-wrapper--sticky') ? header.offsetHeight + offSet : offSet;
+var getGlobalNavHeight = function getGlobalNavHeight() {
+  var header = document.querySelector('header');
+  var offSet = 20; // margin above card collection
+  /* istanbul ignore else */
+  if (!header) return offSet;
+  var isBacom = header.getAttribute('daa-lh') && header.getAttribute('daa-lh').includes('bacom');
+  var headerWrapper = isBacom ? header : document.querySelector('.feds-header-wrapper');
+  return isBacom || headerWrapper && headerWrapper.classList.contains('feds-header-wrapper--sticky') ? header.offsetHeight + offSet : offSet;
 };
-
-var getSearchParam = exports.getSearchParam = function getSearchParam(url, param) {
-    if (!url || !url.startsWith('http') || !param) return null;
-    var urlObj = new URL(url);
-    return urlObj.searchParams.get(param);
+var getSearchParam = function getSearchParam(url, param) {
+  if (!url || !url.startsWith('http') || !param) return null;
+  var urlObj = new URL(url);
+  return urlObj.searchParams.get(param);
 };
-
-var sanitizeEventFilter = exports.sanitizeEventFilter = function sanitizeEventFilter(rawEventFilter) {
-    if (!rawEventFilter || rawEventFilter.indexOf('all') > -1) return [];
-    if (Array.isArray(rawEventFilter)) return rawEventFilter;
-    return [rawEventFilter];
+var sanitizeEventFilter = function sanitizeEventFilter(rawEventFilter) {
+  if (!rawEventFilter || rawEventFilter.indexOf('all') > -1) return [];
+  if (Array.isArray(rawEventFilter)) return rawEventFilter;
+  return [rawEventFilter];
 };
 
 /***/ }),
@@ -1481,291 +1420,307 @@ module.exports = function (it) {
 
 /***/ }),
 /* 15 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return DESKTOP_MIN_WIDTH; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "t", function() { return TABLET_MIN_WIDTH; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return MAX_TRUNCATED_FILTERS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return MIN_FILTERS_SHOW_BG; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "v", function() { return TRUNCATE_TEXT_QTY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "p", function() { return PAGINATION_COUNT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return FILTER_TYPES; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return FILTER_PANEL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "s", function() { return SORT_TYPES; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return EVENT_TIMING_IDS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "r", function() { return SORT_POPUP_LOCATION; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return INFOBIT_TYPE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "u", function() { return THEME_TYPE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return DEFAULT_CONFIG; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return DEFAULT_SHOW_ITEMS_PER_PAGE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CARD_STYLES; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return GRID_TYPE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return GUTTER_SIZE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return LAYOUT_CONTAINER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return LOADER_SIZE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return ROOT_MARGIN_DEFAULT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return ONE_SECOND_DELAY; });
 /**
  * Minimal viewport width to fit desktops/laptops
  * @type {Number}
  */
-var DESKTOP_MIN_WIDTH = exports.DESKTOP_MIN_WIDTH = 1200;
+var DESKTOP_MIN_WIDTH = 1200;
 
 /**
  * Minimal viewport width to fit tablets
  * @type {Number}
  */
-var TABLET_MIN_WIDTH = exports.TABLET_MIN_WIDTH = 768;
+var TABLET_MIN_WIDTH = 768;
 
 /**
  * Maximum allowed top filters displayed
  * before "More Filters" button shows up
  * @type {Number}
  */
-var MAX_TRUNCATED_FILTERS = exports.MAX_TRUNCATED_FILTERS = 3;
+var MAX_TRUNCATED_FILTERS = 3;
 
 /**
  * Minimum top filters needed to display blurred effect
  * on filters wrapper
  * @type {Number}
  */
-var MIN_FILTERS_SHOW_BG = exports.MIN_FILTERS_SHOW_BG = 3;
+var MIN_FILTERS_SHOW_BG = 3;
 
 /**
  * Maximum allowed card description length
  * after which a truncation will take place
  * @type {Number}
  */
-var TRUNCATE_TEXT_QTY = exports.TRUNCATE_TEXT_QTY = 200;
+var TRUNCATE_TEXT_QTY = 200;
 
 /**
  * Quantity of the pagination items to display
  * for mobile and desktop breakpoints
  * @type {Object}
  */
-var PAGINATION_COUNT = exports.PAGINATION_COUNT = {
-    DESKTOP: 10,
-    MOBILE: 4
+var PAGINATION_COUNT = {
+  DESKTOP: 10,
+  MOBILE: 4
 };
 
 /**
  * Available filtering types
  * @type {Object}
  */
-var FILTER_TYPES = exports.FILTER_TYPES = {
-    AND: 'and',
-    OR: 'or',
-    XOR: 'xor'
+var FILTER_TYPES = {
+  AND: 'and',
+  OR: 'or',
+  XOR: 'xor'
 };
 
 /**
  * Available filter panel types
  * @type {Object}
  */
-var FILTER_PANEL = exports.FILTER_PANEL = {
-    LEFT: 'left',
-    TOP: 'top',
-    EVENTS: 'events'
+var FILTER_PANEL = {
+  LEFT: 'left',
+  TOP: 'top',
+  EVENTS: 'events'
 };
 
 /**
  * Available sorting types
  * @type {Object}
  */
-var SORT_TYPES = exports.SORT_TYPES = {
-    DATEASC: 'dateasc',
-    DATEDESC: 'datedesc',
-    MODIFIEDDESC: 'modifieddesc',
-    MODIFIEDASC: 'modifiedasc',
-    EVENTSORT: 'eventsort',
-    FEATURED: 'featured',
-    TITLEASC: 'titleasc',
-    TITLEDESC: 'titledesc',
-    RANDOM: 'random'
+var SORT_TYPES = {
+  DATEASC: 'dateasc',
+  DATEDESC: 'datedesc',
+  MODIFIEDDESC: 'modifieddesc',
+  MODIFIEDASC: 'modifiedasc',
+  EVENTSORT: 'eventsort',
+  FEATURED: 'featured',
+  TITLEASC: 'titleasc',
+  TITLEDESC: 'titledesc',
+  RANDOM: 'random'
 };
-
-var EVENT_TIMING_IDS = exports.EVENT_TIMING_IDS = {
-    LIVE: '8as8/hafk',
-    ONDEMAND: '8as8/hyb6',
-    UPCOMING: '8as8/iabx'
+var EVENT_TIMING_IDS = {
+  LIVE: '8as8/hafk',
+  ONDEMAND: '8as8/hyb6',
+  UPCOMING: '8as8/iabx'
 };
 
 /**
  * Possible Locations of the Sort Popup
  * @type {String}
  */
-var SORT_POPUP_LOCATION = exports.SORT_POPUP_LOCATION = {
-    LEFT: 'left',
-    RIGHT: 'right'
+var SORT_POPUP_LOCATION = {
+  LEFT: 'left',
+  RIGHT: 'right'
 };
 
 /**
  * Available infobit types
  * @type {Object}
  */
-var INFOBIT_TYPE = exports.INFOBIT_TYPE = {
-    PRICE: 'price',
-    BUTTON: 'button',
-    ICON_TEXT: 'icon-with-text',
-    LINK_ICON: 'link-with-icon',
-    TEXT: 'text',
-    ICON: 'icon',
-    LINK: 'link',
-    PROGRESS: 'progress-bar',
-    RATING: 'rating',
-    BOOKMARK: 'bookmark',
-    DATE: 'date-interval',
-    GATED: 'gated'
+var INFOBIT_TYPE = {
+  PRICE: 'price',
+  BUTTON: 'button',
+  ICON_TEXT: 'icon-with-text',
+  LINK_ICON: 'link-with-icon',
+  TEXT: 'text',
+  ICON: 'icon',
+  LINK: 'link',
+  PROGRESS: 'progress-bar',
+  RATING: 'rating',
+  BOOKMARK: 'bookmark',
+  DATE: 'date-interval',
+  GATED: 'gated'
 };
 
 /**
  * Available themes class names
  * @type {Object}
  */
-var THEME_TYPE = exports.THEME_TYPE = {
-    LIGHT: 'light',
-    DARK: 'dark',
-    DARKEST: 'darkest'
+var THEME_TYPE = {
+  LIGHT: 'light',
+  DARK: 'dark',
+  DARKEST: 'darkest'
 };
 
 /**
  * Default authoring constants
  * @type {Object}
  */
-var DEFAULT_CONFIG = exports.DEFAULT_CONFIG = {
-    collection: {
-        mode: '',
-        layout: {
-            type: '3up',
-            gutter: '4x',
-            container: '32Margin'
-        },
-        button: {
-            style: ''
-        },
-        resultsPerPage: 9,
-        endpoint: '',
-        title: '',
-        totalCardLimit: -1,
-        cardStyle: '',
-        displayTotalResults: true,
-        totalResultsText: '{} results',
-        i18n: {
-            prettyDateIntervalFormat: '{LLL} {dd} | {timeRange} {timeZone}',
-            totalResultsText: '{total} results',
-            title: '',
-            onErrorTitle: 'Sorry there was a system error.',
-            onErrorDescription: 'Please try reloading the page or try coming back to the page another time.',
-            sortByAria: 'Sort by {key}',
-            removeFilterAria: 'Remove {filter} filter',
-            removeAllFiltersAria: 'Remove {num} {filter} filters'
-        }
+var DEFAULT_CONFIG = {
+  collection: {
+    mode: '',
+    layout: {
+      type: '3up',
+      gutter: '4x',
+      container: '32Margin'
     },
-    featuredCards: [],
-    hideCtaIds: [],
-    hideCtaTags: [],
-    header: {
-        enabled: false
+    button: {
+      style: ''
     },
-    filterPanel: {
-        enabled: true,
-        eventFilter: '',
-        type: 'left',
-        filters: [],
-        clearAllFiltersText: 'Clear all',
-        clearFilterText: 'Clear',
-        filterLogic: 'and',
-        leftPanelHeader: 'Refine the results',
-        topPanel: {
-            mobile: {
-                blurFilters: true
-            }
-        }
+    resultsPerPage: 9,
+    endpoint: '',
+    title: '',
+    totalCardLimit: -1,
+    cardStyle: '',
+    displayTotalResults: true,
+    totalResultsText: '{} results',
+    i18n: {
+      prettyDateIntervalFormat: '{LLL} {dd} | {timeRange} {timeZone}',
+      totalResultsText: '{total} results',
+      title: '',
+      onErrorTitle: 'Sorry there was a system error.',
+      onErrorDescription: 'Please try reloading the page or try coming back to the page another time.',
+      sortByAria: 'Sort by {key}',
+      removeFilterAria: 'Remove {filter} filter',
+      removeAllFiltersAria: 'Remove {num} {filter} filters'
+    }
+  },
+  featuredCards: [],
+  hideCtaIds: [],
+  hideCtaTags: [],
+  header: {
+    enabled: false
+  },
+  filterPanel: {
+    enabled: true,
+    eventFilter: '',
+    type: 'left',
+    filters: [],
+    clearAllFiltersText: 'Clear all',
+    clearFilterText: 'Clear',
+    filterLogic: 'and',
+    leftPanelHeader: 'Refine the results',
+    topPanel: {
+      mobile: {
+        blurFilters: true
+      }
+    }
+  },
+  sort: {
+    enabled: true,
+    defaultSort: 'featured',
+    options: []
+  },
+  pagination: {
+    enabled: true,
+    type: 'loadMore',
+    loadMoreButton: {
+      style: 'primary',
+      useThemeThree: false
     },
-    sort: {
-        enabled: true,
-        defaultSort: 'featured',
-        options: []
-    },
-    pagination: {
-        enabled: true,
-        type: 'loadMore',
-        loadMoreButton: {
-            style: 'primary',
-            useThemeThree: false
-        },
-        paginatorQuantityText: 'Showing {}-{} of {} Results',
-        paginatorPrevLabel: 'Previous',
-        paginatorNextLabel: 'Next',
-        loadMoreButtonText: 'Load more',
-        loadMoreQuantityText: '{} of {} displayed'
-    },
-    bookmarks: {
-        enabled: true,
-        bookmarkOnlyCollection: false,
-        cardSavedIcon: '',
-        cardUnsavedIcon: '',
-        selectBookmarksIcon: '',
-        unselectBookmarksIcon: '',
-        saveCardText: 'Save card',
-        unsaveCardText: 'Unsave card',
-        bookmarksFilterTitle: 'My favorites'
-    },
-    search: {
-        enabled: true,
-        inputPlaceholderText: 'Search here...',
-        leftPanelTitle: 'Search',
-        searchFields: ['title', 'description'],
-        i18n: {
-            noResultsTitle: 'No results found',
-            noResultsDescription: 'We couldn\u2019t find any results for your {query}.{break}\n            Check your spelling or try broadening your search.'
-        }
-    },
-    language: 'en',
-    headers: []
+    paginatorQuantityText: 'Showing {}-{} of {} Results',
+    paginatorPrevLabel: 'Previous',
+    paginatorNextLabel: 'Next',
+    loadMoreButtonText: 'Load more',
+    loadMoreQuantityText: '{} of {} displayed'
+  },
+  bookmarks: {
+    enabled: true,
+    bookmarkOnlyCollection: false,
+    cardSavedIcon: '',
+    cardUnsavedIcon: '',
+    selectBookmarksIcon: '',
+    unselectBookmarksIcon: '',
+    saveCardText: 'Save card',
+    unsaveCardText: 'Unsave card',
+    bookmarksFilterTitle: 'My favorites'
+  },
+  search: {
+    enabled: true,
+    inputPlaceholderText: 'Search here...',
+    leftPanelTitle: 'Search',
+    searchFields: ['title', 'description'],
+    i18n: {
+      noResultsTitle: 'No results found',
+      noResultsDescription: "We couldn\u2019t find any results for your {query}.{break}\n            Check your spelling or try broadening your search."
+    }
+  },
+  language: 'en',
+  headers: []
 };
 
 /**
  * Default number of cards to display per page
  * @type {Number}
  */
-var DEFAULT_SHOW_ITEMS_PER_PAGE = exports.DEFAULT_SHOW_ITEMS_PER_PAGE = 8;
+var DEFAULT_SHOW_ITEMS_PER_PAGE = 8;
 
 /**
  * Available card types
  * @type {Object}
  */
-var CARD_STYLES = exports.CARD_STYLES = {
-    CARD: 'card',
-    CUSTOM: 'custom-card'
+var CARD_STYLES = {
+  CARD: 'card',
+  CUSTOM: 'custom-card'
 };
 
 /**
  * Available grid types
  * @type {Object}
  */
-var GRID_TYPE = exports.GRID_TYPE = {
-    TWO_UP: '2up',
-    THREE_UP: '3up',
-    FOUR_UP: '4up',
-    FIVE_UP: '5up'
+var GRID_TYPE = {
+  TWO_UP: '2up',
+  THREE_UP: '3up',
+  FOUR_UP: '4up',
+  FIVE_UP: '5up'
 };
 
 /**
  * Available gutter sizes
  * @type {Object}
  */
-var GUTTER_SIZE = exports.GUTTER_SIZE = {
-    GUTTER_1_X: '1x',
-    GUTTER_2_X: '2x',
-    GUTTER_3_X: '3x',
-    GUTTER_4_X: '4x'
+var GUTTER_SIZE = {
+  GUTTER_1_X: '1x',
+  GUTTER_2_X: '2x',
+  GUTTER_3_X: '3x',
+  GUTTER_4_X: '4x'
 };
 
 /**
  * Available layout container types
  * @type {Object}
  */
-var LAYOUT_CONTAINER = exports.LAYOUT_CONTAINER = {
-    SIZE_83_VW: '83Percent',
-    SIZE_1200_PX: '1200MaxWidth',
-    SIZE_1600_PX: '1600MaxWidth',
-    SIZE_100_VW_32_MARGIN: '32Margin',
-    CAROUSEL: 'carousel',
-    CATEGORIES: 'categories'
+var LAYOUT_CONTAINER = {
+  SIZE_83_VW: '83Percent',
+  SIZE_1200_PX: '1200MaxWidth',
+  SIZE_1600_PX: '1600MaxWidth',
+  SIZE_100_VW_32_MARGIN: '32Margin',
+  CAROUSEL: 'carousel',
+  CATEGORIES: 'categories'
 };
 
 /**
  * Available loader sizes
  * @type {Object}
  */
-var LOADER_SIZE = exports.LOADER_SIZE = {
-    MEDIUM: 'medium',
-    BIG: 'big'
+var LOADER_SIZE = {
+  MEDIUM: 'medium',
+  BIG: 'big'
 };
 
 /**
@@ -1773,8 +1728,8 @@ var LOADER_SIZE = exports.LOADER_SIZE = {
  * start before it is scrolled into the viewport.
  * @type {String}
  */
-var ROOT_MARGIN_DEFAULT = exports.ROOT_MARGIN_DEFAULT = '500px';
-var ONE_SECOND_DELAY = exports.ONE_SECOND_DELAY = 1000;
+var ROOT_MARGIN_DEFAULT = '500px';
+var ONE_SECOND_DELAY = 1000;
 
 /***/ }),
 /* 16 */
@@ -1831,116 +1786,97 @@ module.exports = function (it) {
 
 /***/ }),
 /* 20 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return filterItemType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return filterType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return sortOptionType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return configType; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__card__ = __webpack_require__(39);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.configType = exports.sortOptionType = exports.filterType = exports.filterItemType = undefined;
-
-var _propTypes = __webpack_require__(1);
-
-var _card = __webpack_require__(39);
-
-var CollectionResultPerPageType = [_propTypes.string, _propTypes.number];
-
-var CollectionTotalCardLimitType = [_propTypes.string, _propTypes.number];
-
-var CollectionDisplayTotalResultsType = [_propTypes.bool, _propTypes.string];
-
+var CollectionResultPerPageType = [__WEBPACK_IMPORTED_MODULE_0_prop_types__["string"], __WEBPACK_IMPORTED_MODULE_0_prop_types__["number"]];
+var CollectionTotalCardLimitType = [__WEBPACK_IMPORTED_MODULE_0_prop_types__["string"], __WEBPACK_IMPORTED_MODULE_0_prop_types__["number"]];
+var CollectionDisplayTotalResultsType = [__WEBPACK_IMPORTED_MODULE_0_prop_types__["bool"], __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"]];
 var CollectionType = {
-    title: _propTypes.string,
-    endpoint: _propTypes.string,
-    cardStyle: _propTypes.string,
-    totalResultsText: _propTypes.string,
-    resultsPerPage: (0, _propTypes.oneOfType)(CollectionResultPerPageType),
-    totalCardLimit: (0, _propTypes.oneOfType)(CollectionTotalCardLimitType),
-    displayTotalResults: (0, _propTypes.oneOfType)(CollectionDisplayTotalResultsType)
+  title: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  endpoint: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  cardStyle: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  totalResultsText: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  resultsPerPage: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"])(CollectionResultPerPageType),
+  totalCardLimit: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"])(CollectionTotalCardLimitType),
+  displayTotalResults: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"])(CollectionDisplayTotalResultsType)
 };
-
-var FeaturedCardsType = [_propTypes.string, (0, _propTypes.arrayOf)((0, _propTypes.shape)(_card.cardType)), (0, _propTypes.arrayOf)(_propTypes.string)];
-
-var EnabledType = [_propTypes.bool, _propTypes.string];
-
+var FeaturedCardsType = [__WEBPACK_IMPORTED_MODULE_0_prop_types__["string"], Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["arrayOf"])(Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(__WEBPACK_IMPORTED_MODULE_1__card__["a" /* cardType */])), Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["arrayOf"])(__WEBPACK_IMPORTED_MODULE_0_prop_types__["string"])];
+var EnabledType = [__WEBPACK_IMPORTED_MODULE_0_prop_types__["bool"], __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"]];
 var HeaderType = {
-    enabled: (0, _propTypes.oneOfType)(EnabledType)
+  enabled: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"])(EnabledType)
 };
-
-var filterItemType = exports.filterItemType = {
-    id: _propTypes.string,
-    label: (0, _propTypes.oneOfType)([_propTypes.string, _propTypes.number])
+var filterItemType = {
+  id: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  label: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"])([__WEBPACK_IMPORTED_MODULE_0_prop_types__["string"], __WEBPACK_IMPORTED_MODULE_0_prop_types__["number"]])
 };
-
-var filterType = exports.filterType = {
-    id: _propTypes.string,
-    group: _propTypes.string,
-    items: (0, _propTypes.arrayOf)((0, _propTypes.shape)(filterItemType))
+var filterType = {
+  id: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  group: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  items: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["arrayOf"])(Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(filterItemType))
 };
-
-var FiltersType = [_propTypes.string, (0, _propTypes.arrayOf)((0, _propTypes.shape)(filterType))];
-
+var FiltersType = [__WEBPACK_IMPORTED_MODULE_0_prop_types__["string"], Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["arrayOf"])(Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(filterType))];
 var FilterPanelType = {
-    type: _propTypes.string,
-    filterLogic: _propTypes.string,
-    clearFilterText: _propTypes.string,
-    leftPanelHeader: _propTypes.string,
-    clearAllFiltersText: _propTypes.string,
-    enabled: (0, _propTypes.oneOfType)(EnabledType),
-    filters: (0, _propTypes.oneOfType)(FiltersType)
+  type: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  filterLogic: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  clearFilterText: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  leftPanelHeader: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  clearAllFiltersText: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  enabled: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"])(EnabledType),
+  filters: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"])(FiltersType)
 };
-
 var PaginationType = {
-    type: _propTypes.string,
-    paginatorPrevLabel: _propTypes.string,
-    paginatorNextLabel: _propTypes.string,
-    loadMoreButtonText: _propTypes.string,
-    enabled: (0, _propTypes.oneOfType)(EnabledType),
-    loadMoreQuantityText: _propTypes.string,
-    paginatorQuantityText: _propTypes.string
+  type: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  paginatorPrevLabel: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  paginatorNextLabel: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  loadMoreButtonText: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  enabled: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"])(EnabledType),
+  loadMoreQuantityText: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  paginatorQuantityText: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"]
 };
-
 var BookmarksType = {
-    saveCardText: _propTypes.string,
-    cardSavedIcon: _propTypes.string,
-    unsaveCardText: _propTypes.string,
-    cardUnsavedIcon: _propTypes.string,
-    selectBookmarksIcon: _propTypes.string,
-    enabled: (0, _propTypes.oneOfType)(EnabledType),
-    bookmarksFilterTitle: _propTypes.string,
-    unselectBookmarksIcon: _propTypes.string
+  saveCardText: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  cardSavedIcon: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  unsaveCardText: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  cardUnsavedIcon: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  selectBookmarksIcon: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  enabled: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"])(EnabledType),
+  bookmarksFilterTitle: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  unselectBookmarksIcon: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"]
 };
-
-var SearchFieldType = [_propTypes.string, (0, _propTypes.arrayOf)(_propTypes.string)];
-
+var SearchFieldType = [__WEBPACK_IMPORTED_MODULE_0_prop_types__["string"], Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["arrayOf"])(__WEBPACK_IMPORTED_MODULE_0_prop_types__["string"])];
 var SearchType = {
-    leftPanelTitle: _propTypes.string,
-    inputPlaceholderText: _propTypes.string,
-    enabled: (0, _propTypes.oneOfType)(EnabledType),
-    searchFields: (0, _propTypes.oneOfType)(SearchFieldType)
+  leftPanelTitle: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  inputPlaceholderText: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  enabled: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"])(EnabledType),
+  searchFields: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"])(SearchFieldType)
 };
-
-var sortOptionType = exports.sortOptionType = {
-    sort: _propTypes.string,
-    label: _propTypes.string
+var sortOptionType = {
+  sort: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  label: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"]
 };
-
 var SortType = {
-    enabled: (0, _propTypes.oneOfType)(EnabledType),
-    options: (0, _propTypes.oneOfType)([_propTypes.string, (0, _propTypes.arrayOf)((0, _propTypes.shape)(sortOptionType))])
+  enabled: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"])(EnabledType),
+  options: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"])([__WEBPACK_IMPORTED_MODULE_0_prop_types__["string"], Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["arrayOf"])(Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(sortOptionType))])
 };
-
-var configType = exports.configType = {
-    sort: (0, _propTypes.shape)(SortType),
-    search: (0, _propTypes.shape)(SearchType),
-    header: (0, _propTypes.shape)(HeaderType),
-    bookmarks: (0, _propTypes.shape)(BookmarksType),
-    collection: (0, _propTypes.shape)(CollectionType),
-    pagination: (0, _propTypes.shape)(PaginationType),
-    filterPanel: (0, _propTypes.shape)(FilterPanelType),
-    featuredCards: (0, _propTypes.oneOfType)(FeaturedCardsType)
+var configType = {
+  sort: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(SortType),
+  search: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(SearchType),
+  header: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(HeaderType),
+  bookmarks: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(BookmarksType),
+  collection: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(CollectionType),
+  pagination: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(PaginationType),
+  filterPanel: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(FilterPanelType),
+  featuredCards: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"])(FeaturedCardsType)
 };
 
 /***/ }),
@@ -1956,43 +1892,68 @@ module.exports = function (it) {
 
 /***/ }),
 /* 22 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "u", function() { return shouldDisplayPaginator; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return getNumCardsToShow; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "p", function() { return getTotalPages; });
+/* unused harmony export getCollectionCards */
+/* unused harmony export getBookmarkedCards */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getActiveFilterIds; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return getActivePanels; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return getFilteredCards; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "s", function() { return highlightCard; });
+/* unused harmony export getCardsMatchingQuery */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "r", function() { return hasTag; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return getTitleAscSort; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return getTitleDescSort; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return getModifiedDescSort; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return getModifiedAscSort; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return getFeaturedSort; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getDateAscSort; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getDateDescSort; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return getEventSort; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getCardsMatchingSearch; });
+/* unused harmony export joinCardSets */
+/* unused harmony export processCards */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return getUpdatedCardBookmarkData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return getRandomSort; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return getFeaturedCards; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "t", function() { return sanitizeStr; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_immer__ = __webpack_require__(270);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__rendering__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__general__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__eventSort__ = __webpack_require__(271);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.sanitizeStr = exports.getFeaturedCards = exports.getRandomSort = exports.getUpdatedCardBookmarkData = exports.processCards = exports.joinCardSets = exports.getCardsMatchingSearch = exports.getEventSort = exports.getDateDescSort = exports.getDateAscSort = exports.getFeaturedSort = exports.getModifiedAscSort = exports.getModifiedDescSort = exports.getTitleDescSort = exports.getTitleAscSort = exports.hasTag = exports.getCardsMatchingQuery = exports.highlightCard = exports.getFilteredCards = exports.getActivePanels = exports.getActiveFilterIds = exports.getBookmarkedCards = exports.getCollectionCards = exports.getTotalPages = exports.getNumCardsToShow = exports.shouldDisplayPaginator = undefined;
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _immer = __webpack_require__(270);
-
-var _immer2 = _interopRequireDefault(_immer);
-
-var _rendering = __webpack_require__(40);
-
-var _general = __webpack_require__(6);
-
-var _constants = __webpack_require__(15);
-
-var _eventSort = __webpack_require__(271);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /**
  * Needs to be explicitly called by immer - Needed for IE 11 support
  * @type {Function}
  */
-(0, _immer.enableES5)();
+Object(__WEBPACK_IMPORTED_MODULE_0_immer__["b" /* enableES5 */])();
 
 /**
  * Determines whether paginator component should display
@@ -2001,11 +1962,10 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
  * @param {Number} totalResults - Total cards in collection
  * @returns {Boolean} - Whether Paginator should display or not
  */
-var shouldDisplayPaginator = exports.shouldDisplayPaginator = function shouldDisplayPaginator(enabled, totalCardLimit, totalResults) {
-    var totalCardLimitNotZero = totalCardLimit > 0;
-    var cardLengthExceedsDisplayLimit = totalResults > totalCardLimit;
-
-    return enabled && totalCardLimitNotZero && !cardLengthExceedsDisplayLimit;
+var shouldDisplayPaginator = function shouldDisplayPaginator(enabled, totalCardLimit, totalResults) {
+  var totalCardLimitNotZero = totalCardLimit > 0;
+  var cardLengthExceedsDisplayLimit = totalResults > totalCardLimit;
+  return enabled && totalCardLimitNotZero && !cardLengthExceedsDisplayLimit;
 };
 
 /**
@@ -2015,8 +1975,8 @@ var shouldDisplayPaginator = exports.shouldDisplayPaginator = function shouldDis
  * @param {Number} totalResults - Total cards in collection
  * @returns {Number} - Number of cards to show
  */
-var getNumCardsToShow = exports.getNumCardsToShow = function getNumCardsToShow(resultsPerPage, currentPage, totalResults) {
-    return Math.min(resultsPerPage * currentPage, totalResults);
+var getNumCardsToShow = function getNumCardsToShow(resultsPerPage, currentPage, totalResults) {
+  return Math.min(resultsPerPage * currentPage, totalResults);
 };
 
 /**
@@ -2025,9 +1985,9 @@ var getNumCardsToShow = exports.getNumCardsToShow = function getNumCardsToShow(r
  * @param {Number} totalResults - Total cards in collection
  * @returns {Number} - Total number of pages
  */
-var getTotalPages = exports.getTotalPages = function getTotalPages(resultsPerPage, totalResults) {
-    if (resultsPerPage === 0) return 0;
-    return Math.ceil(totalResults / resultsPerPage);
+var getTotalPages = function getTotalPages(resultsPerPage, totalResults) {
+  if (resultsPerPage === 0) return 0;
+  return Math.ceil(totalResults / resultsPerPage);
 };
 
 /**
@@ -2040,8 +2000,8 @@ var getTotalPages = exports.getTotalPages = function getTotalPages(resultsPerPag
  * @param {Array} collectionCards - All cards
  * @returns {Array} - Which collection of cards to show
  */
-var getCollectionCards = exports.getCollectionCards = function getCollectionCards(showBookmarksOnly, bookmarkedCards, collectionCards) {
-    return showBookmarksOnly ? bookmarkedCards : collectionCards;
+var getCollectionCards = function getCollectionCards(showBookmarksOnly, bookmarkedCards, collectionCards) {
+  return showBookmarksOnly ? bookmarkedCards : collectionCards;
 };
 
 /**
@@ -2049,10 +2009,10 @@ var getCollectionCards = exports.getCollectionCards = function getCollectionCard
  * @param {Array} collectionCards - All cards
  * @returns {Array} - All bookmarked cards
  */
-var getBookmarkedCards = exports.getBookmarkedCards = function getBookmarkedCards(collectionCards) {
-    return collectionCards.filter(function (card) {
-        return card.isBookmarked;
-    });
+var getBookmarkedCards = function getBookmarkedCards(collectionCards) {
+  return collectionCards.filter(function (card) {
+    return card.isBookmarked;
+  });
 };
 
 /**
@@ -2060,14 +2020,14 @@ var getBookmarkedCards = exports.getBookmarkedCards = function getBookmarkedCard
  * @param {Array} filters - All filters on page
  * @returns {Array} - All checked filters by user
  */
-var getActiveFilterIds = exports.getActiveFilterIds = function getActiveFilterIds(filters) {
-    return (0, _general.chainFromIterable)(filters.map(function (f) {
-        return f.items;
-    })).filter(function (item) {
-        return item.selected;
-    }).map(function (item) {
-        return item.id;
-    });
+var getActiveFilterIds = function getActiveFilterIds(filters) {
+  return Object(__WEBPACK_IMPORTED_MODULE_2__general__["a" /* chainFromIterable */])(filters.map(function (f) {
+    return f.items;
+  })).filter(function (item) {
+    return item.selected;
+  }).map(function (item) {
+    return item.id;
+  });
 };
 
 /**
@@ -2075,10 +2035,10 @@ var getActiveFilterIds = exports.getActiveFilterIds = function getActiveFilterId
  * @param {Array} activeFilters - All filters checked
  * @returns {Set} - Set of filter panels with filters checked on the page
  */
-var getActivePanels = exports.getActivePanels = function getActivePanels(activeFilters) {
-    return new Set(activeFilters.map(function (filter) {
-        return filter.replace(/\/.*$/, '');
-    }));
+var getActivePanels = function getActivePanels(activeFilters) {
+  return new Set(activeFilters.map(function (filter) {
+    return filter.replace(/\/.*$/, '');
+  }));
 };
 
 /**
@@ -2088,7 +2048,7 @@ var getActivePanels = exports.getActivePanels = function getActivePanels(activeF
  * @returns {Boolean} - Whether collection is using a XOR or AND type filtering
  */
 var getUsingXorAndFilter = function getUsingXorAndFilter(filterType, filterTypes) {
-    return filterType === filterTypes.XOR || filterType === filterTypes.AND;
+  return filterType === filterTypes.XOR || filterType === filterTypes.AND;
 };
 
 /**
@@ -2098,7 +2058,7 @@ var getUsingXorAndFilter = function getUsingXorAndFilter(filterType, filterTypes
  * @returns {Boolean} - Whether collection is using OR type filtering
  */
 var getUsingOrFilter = function getUsingOrFilter(filterType, filterTypes) {
-    return filterType === filterTypes.OR;
+  return filterType === filterTypes.OR;
 };
 
 /**
@@ -2107,7 +2067,7 @@ var getUsingOrFilter = function getUsingOrFilter(filterType, filterTypes) {
  * @returns {Boolean} - Whether collection has an event filter
  */
 var getUsingTimingFilter = function getUsingTimingFilter(activeFiltersSet) {
-    return activeFiltersSet.has(_constants.EVENT_TIMING_IDS.LIVE) || activeFiltersSet.has(_constants.EVENT_TIMING_IDS.ONDEMAND) || activeFiltersSet.has(_constants.EVENT_TIMING_IDS.UPCOMING);
+  return activeFiltersSet.has(__WEBPACK_IMPORTED_MODULE_3__constants__["e" /* EVENT_TIMING_IDS */].LIVE) || activeFiltersSet.has(__WEBPACK_IMPORTED_MODULE_3__constants__["e" /* EVENT_TIMING_IDS */].ONDEMAND) || activeFiltersSet.has(__WEBPACK_IMPORTED_MODULE_3__constants__["e" /* EVENT_TIMING_IDS */].UPCOMING);
 };
 
 /**
@@ -2117,20 +2077,20 @@ var getUsingTimingFilter = function getUsingTimingFilter(activeFiltersSet) {
  * @returns {Boolean} - whether the card falls within selected timing options
  */
 var checkEventTiming = function checkEventTiming(card, timing) {
-    var curMs = Date.now();
-    // Times in milliseconds
-    var startMs = (0, _eventSort.convertDateStrToMs)(card.startDate);
-    var endMs = (0, _eventSort.convertDateStrToMs)(card.endDate);
-    // Timed categories
-    var isTimed = !!(startMs && endMs);
-    var isUpComing = isTimed ? (0, _eventSort.defineIsUpcoming)(curMs, startMs) : false;
-    var isOnDemand = isTimed && !isUpComing ? (0, _eventSort.defineIsOnDemand)(curMs, endMs) : false;
-    var isLive = !!(isTimed && !isUpComing && !isOnDemand && startMs);
+  var curMs = Date.now();
+  // Times in milliseconds
+  var startMs = Object(__WEBPACK_IMPORTED_MODULE_4__eventSort__["a" /* convertDateStrToMs */])(card.startDate);
+  var endMs = Object(__WEBPACK_IMPORTED_MODULE_4__eventSort__["a" /* convertDateStrToMs */])(card.endDate);
+  // Timed categories
+  var isTimed = !!(startMs && endMs);
+  var isUpComing = isTimed ? Object(__WEBPACK_IMPORTED_MODULE_4__eventSort__["c" /* defineIsUpcoming */])(curMs, startMs) : false;
+  var isOnDemand = isTimed && !isUpComing ? Object(__WEBPACK_IMPORTED_MODULE_4__eventSort__["b" /* defineIsOnDemand */])(curMs, endMs) : false;
+  var isLive = !!(isTimed && !isUpComing && !isOnDemand && startMs);
 
-    // if you have timing filters active and there is no timing on the card it should be rejected
-    if (!isTimed) return false;
-    if (timing.has(_constants.EVENT_TIMING_IDS.UPCOMING) && isUpComing) return true;else if (timing.has(_constants.EVENT_TIMING_IDS.ONDEMAND) && isOnDemand) return true;else if (timing.has(_constants.EVENT_TIMING_IDS.LIVE) && isLive) return true;
-    return false;
+  // if you have timing filters active and there is no timing on the card it should be rejected
+  if (!isTimed) return false;
+  if (timing.has(__WEBPACK_IMPORTED_MODULE_3__constants__["e" /* EVENT_TIMING_IDS */].UPCOMING) && isUpComing) return true;else if (timing.has(__WEBPACK_IMPORTED_MODULE_3__constants__["e" /* EVENT_TIMING_IDS */].ONDEMAND) && isOnDemand) return true;else if (timing.has(__WEBPACK_IMPORTED_MODULE_3__constants__["e" /* EVENT_TIMING_IDS */].LIVE) && isLive) return true;
+  return false;
 };
 
 /**
@@ -2143,106 +2103,87 @@ var checkEventTiming = function checkEventTiming(card, timing) {
  * @returns {Array} - All cards that match filter options
  */
 // eslint-disable-next-line max-len
-var getFilteredCards = exports.getFilteredCards = function getFilteredCards(cards, activeFilters, activePanels, filterType, filterTypes, categories) {
-    var activeFiltersSet = new Set(activeFilters);
-    var timingSet = (0, _general.intersection)(activeFiltersSet, new Set([_constants.EVENT_TIMING_IDS.LIVE, _constants.EVENT_TIMING_IDS.ONDEMAND, _constants.EVENT_TIMING_IDS.UPCOMING]));
-    var usingXorAndFilter = getUsingXorAndFilter(filterType, filterTypes);
-    var usingOrFilter = getUsingOrFilter(filterType, filterTypes);
-    var usingTimingFilter = getUsingTimingFilter(activeFiltersSet);
-    // remove the time elements from the active filter set before you actually filter
-    timingSet.forEach(function (filter) {
-        return activeFiltersSet.delete(filter);
-    });
-
-    var temp = [];
-    var set = new Set();
-    if (categories && categories.length) {
-        for (var i = 0; i < cards.length; i++) {
-            var card = cards[i];
-            for (var j = 0; j < categories.length; j++) {
-                var category = categories[j];
-                for (var k = 0; k < card.tags.length; k++) {
-                    var currTag = card.tags[k];
-                    if (currTag.id.includes(category) && !set.has(card.id)) {
-                        set.add(card.id);
-                        temp.push(card);
-                    }
-                }
-            }
+var getFilteredCards = function getFilteredCards(cards, activeFilters, activePanels, filterType, filterTypes, categories) {
+  var activeFiltersSet = new Set(activeFilters);
+  var timingSet = Object(__WEBPACK_IMPORTED_MODULE_2__general__["n" /* intersection */])(activeFiltersSet, new Set([__WEBPACK_IMPORTED_MODULE_3__constants__["e" /* EVENT_TIMING_IDS */].LIVE, __WEBPACK_IMPORTED_MODULE_3__constants__["e" /* EVENT_TIMING_IDS */].ONDEMAND, __WEBPACK_IMPORTED_MODULE_3__constants__["e" /* EVENT_TIMING_IDS */].UPCOMING]));
+  var usingXorAndFilter = getUsingXorAndFilter(filterType, filterTypes);
+  var usingOrFilter = getUsingOrFilter(filterType, filterTypes);
+  var usingTimingFilter = getUsingTimingFilter(activeFiltersSet);
+  // remove the time elements from the active filter set before you actually filter
+  timingSet.forEach(function (filter) {
+    return activeFiltersSet.delete(filter);
+  });
+  var temp = [];
+  var set = new Set();
+  if (categories && categories.length) {
+    for (var i = 0; i < cards.length; i++) {
+      var card = cards[i];
+      for (var j = 0; j < categories.length; j++) {
+        var category = categories[j];
+        for (var k = 0; k < card.tags.length; k++) {
+          var currTag = card.tags[k];
+          if (currTag.id.includes(category) && !set.has(card.id)) {
+            set.add(card.id);
+            temp.push(card);
+          }
         }
-        /* eslint-disable-next-line no-param-reassign */
-        cards = temp;
+      }
     }
+    /* eslint-disable-next-line no-param-reassign */
+    cards = temp;
+  }
+  if (activeFiltersSet.size === 0 && !usingTimingFilter) return cards;
+  return cards.filter(function (card) {
+    if (!card.tags && !usingTimingFilter) {
+      return false;
+    } else if (usingTimingFilter && !checkEventTiming(card, timingSet)) {
+      return false;
+    } else if (usingTimingFilter && checkEventTiming(card, timingSet) && activeFiltersSet.size === 0) {
+      // if the only filters being performed are about event timing
+      return true;
+    }
+    // you proceed to check the other tags in the cards after the time filter checks
+    var tagIds = new Set(card.tags.map(function (tag) {
+      return tag.id;
+    }));
+    if (usingXorAndFilter) {
+      return Object(__WEBPACK_IMPORTED_MODULE_2__general__["t" /* isSuperset */])(tagIds, activeFiltersSet);
+    } else if (usingOrFilter && activePanels.size < 2) {
+      return Object(__WEBPACK_IMPORTED_MODULE_2__general__["n" /* intersection */])(tagIds, activeFiltersSet).size;
+    } else if (usingOrFilter) {
+      // check if card' tags panels include all panels with selected filters
+      var tagPanels = new Set(card.tags.map(function (tag) {
+        return tag.id.replace(/\/.*$/, '');
+      }));
+      if (!Object(__WEBPACK_IMPORTED_MODULE_2__general__["t" /* isSuperset */])(tagPanels, activePanels)) return false;
 
-    if (activeFiltersSet.size === 0 && !usingTimingFilter) return cards;
-
-    return cards.filter(function (card) {
-        if (!card.tags && !usingTimingFilter) {
-            return false;
-        } else if (usingTimingFilter && !checkEventTiming(card, timingSet)) {
-            return false;
-        } else if (usingTimingFilter && checkEventTiming(card, timingSet) && activeFiltersSet.size === 0) {
-            // if the only filters being performed are about event timing
-            return true;
+      // check if card' tags include all panels with selected filters
+      var allPanelsMatch = true;
+      // eslint-disable-next-line no-restricted-syntax
+      var _iterator = _createForOfIteratorHelper(activePanels),
+        _step;
+      try {
+        var _loop = function _loop() {
+          var panel = _step.value;
+          var filtersCheckedInPanel = new Set(_toConsumableArray(activeFiltersSet).filter(function (id) {
+            return id.includes(panel, 0);
+          }));
+          if (!Object(__WEBPACK_IMPORTED_MODULE_2__general__["n" /* intersection */])(tagIds, filtersCheckedInPanel).size) {
+            allPanelsMatch = false;
+          }
+        };
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          _loop();
         }
-        // you proceed to check the other tags in the cards after the time filter checks
-        var tagIds = new Set(card.tags.map(function (tag) {
-            return tag.id;
-        }));
-
-        if (usingXorAndFilter) {
-            return (0, _general.isSuperset)(tagIds, activeFiltersSet);
-        } else if (usingOrFilter && activePanels.size < 2) {
-            return (0, _general.intersection)(tagIds, activeFiltersSet).size;
-        } else if (usingOrFilter) {
-            // check if card' tags panels include all panels with selected filters
-            var tagPanels = new Set(card.tags.map(function (tag) {
-                return tag.id.replace(/\/.*$/, '');
-            }));
-            if (!(0, _general.isSuperset)(tagPanels, activePanels)) return false;
-
-            // check if card' tags include all panels with selected filters
-            var allPanelsMatch = true;
-            // eslint-disable-next-line no-restricted-syntax
-
-            var _loop = function _loop(panel) {
-                var filtersCheckedInPanel = new Set([].concat(_toConsumableArray(activeFiltersSet)).filter(function (id) {
-                    return id.includes(panel, 0);
-                }));
-                if (!(0, _general.intersection)(tagIds, filtersCheckedInPanel).size) {
-                    allPanelsMatch = false;
-                }
-            };
-
-            var _iteratorNormalCompletion = true;
-            var _didIteratorError = false;
-            var _iteratorError = undefined;
-
-            try {
-                for (var _iterator = activePanels[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                    var panel = _step.value;
-
-                    _loop(panel);
-                }
-            } catch (err) {
-                _didIteratorError = true;
-                _iteratorError = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion && _iterator.return) {
-                        _iterator.return();
-                    }
-                } finally {
-                    if (_didIteratorError) {
-                        throw _iteratorError;
-                    }
-                }
-            }
-
-            return allPanelsMatch;
-        }
-        throw new Error('Unrecognized filter type: ' + filterType);
-    });
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+      return allPanelsMatch;
+    }
+    throw new Error("Unrecognized filter type: ".concat(filterType));
+  });
 };
 
 /**
@@ -2252,13 +2193,13 @@ var getFilteredCards = exports.getFilteredCards = function getFilteredCards(card
  * @param {String} query - The users search query
  * @returns {Card} The highlighted caard
  */
-var highlightCard = exports.highlightCard = function highlightCard(baseCard, searchField, query) {
-    return (0, _immer2.default)(baseCard, function (draftCard) {
-        var searchFieldValue = (0, _general.getByPath)(draftCard, searchField, null);
-        if (searchFieldValue === null || searchFieldValue === '') return;
-        var highlightedSearchFieldValue = (0, _rendering.HighlightSearchField)(searchFieldValue, query);
-        (0, _general.setByPath)(draftCard, searchField, highlightedSearchFieldValue);
-    });
+var highlightCard = function highlightCard(baseCard, searchField, query) {
+  return Object(__WEBPACK_IMPORTED_MODULE_0_immer__["a" /* default */])(baseCard, function (draftCard) {
+    var searchFieldValue = Object(__WEBPACK_IMPORTED_MODULE_2__general__["c" /* getByPath */])(draftCard, searchField, null);
+    if (searchFieldValue === null || searchFieldValue === '') return;
+    var highlightedSearchFieldValue = Object(__WEBPACK_IMPORTED_MODULE_1__rendering__["a" /* HighlightSearchField */])(searchFieldValue, query);
+    Object(__WEBPACK_IMPORTED_MODULE_2__general__["C" /* setByPath */])(draftCard, searchField, highlightedSearchFieldValue);
+  });
 };
 
 /**
@@ -2269,9 +2210,9 @@ var highlightCard = exports.highlightCard = function highlightCard(baseCard, sea
  * @returns {Boolean} If the card matches the user's search query
  */
 var cardMatchesQuery = function cardMatchesQuery(searchField, card, searchQuery) {
-    var searchFieldValue = (0, _general.getByPath)(card, searchField, '');
-    var cleanSearchFieldValue = (0, _general.sanitizeText)(searchFieldValue);
-    return cleanSearchFieldValue.includes(searchQuery);
+  var searchFieldValue = Object(__WEBPACK_IMPORTED_MODULE_2__general__["c" /* getByPath */])(card, searchField, '');
+  var cleanSearchFieldValue = Object(__WEBPACK_IMPORTED_MODULE_2__general__["A" /* sanitizeText */])(searchFieldValue);
+  return cleanSearchFieldValue.includes(searchQuery);
 };
 
 /**
@@ -2282,16 +2223,16 @@ var cardMatchesQuery = function cardMatchesQuery(searchField, card, searchQuery)
  * @return {Array} - Unique Card Set from Cards (filtering based off unique card ids)
  */
 var getUniqueCardSet = function getUniqueCardSet(cards) {
-    var uniqueCardSet = [];
-    cards.forEach(function (card) {
-        var cardNotInSet = uniqueCardSet.findIndex(function (element) {
-            return element.id === card.id;
-        }) <= -1;
-        if (cardNotInSet) {
-            uniqueCardSet.push(card);
-        }
-    });
-    return uniqueCardSet;
+  var uniqueCardSet = [];
+  cards.forEach(function (card) {
+    var cardNotInSet = uniqueCardSet.findIndex(function (element) {
+      return element.id === card.id;
+    }) <= -1;
+    if (cardNotInSet) {
+      uniqueCardSet.push(card);
+    }
+  });
+  return uniqueCardSet;
 };
 
 /**
@@ -2301,16 +2242,16 @@ var getUniqueCardSet = function getUniqueCardSet(cards) {
  * @param {String} query - The users search query
  * @returns {Array} - All cards that match the user's query for a given set of search fields
  */
-var getCardsMatchingQuery = exports.getCardsMatchingQuery = function getCardsMatchingQuery(cards, searchFields, query) {
-    var cardsMatchingQuery = [];
-    cards.forEach(function (card) {
-        searchFields.forEach(function (searchField) {
-            if (cardMatchesQuery(searchField, card, query)) {
-                cardsMatchingQuery.push(card);
-            }
-        });
+var getCardsMatchingQuery = function getCardsMatchingQuery(cards, searchFields, query) {
+  var cardsMatchingQuery = [];
+  cards.forEach(function (card) {
+    searchFields.forEach(function (searchField) {
+      if (cardMatchesQuery(searchField, card, query)) {
+        cardsMatchingQuery.push(card);
+      }
     });
-    return getUniqueCardSet(cardsMatchingQuery);
+  });
+  return getUniqueCardSet(cardsMatchingQuery);
 };
 /**
  * @func hasTag
@@ -2318,18 +2259,15 @@ var getCardsMatchingQuery = exports.getCardsMatchingQuery = function getCardsMat
  * @param {RegExp} compare a regEx pattern to test for
  * @param {Array} tags an array of tags
  */
-var hasTag = exports.hasTag = function hasTag(compare) {
-    var tags = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-
-    if (!tags.length || compare.constructor.name !== 'RegExp') return false;
-
-    return tags.some(function () {
-        var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-            _ref$id = _ref.id,
-            id = _ref$id === undefined ? '' : _ref$id;
-
-        return id && compare.test(id);
-    });
+var hasTag = function hasTag(compare) {
+  var tags = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+  if (!tags.length || compare.constructor.name !== 'RegExp') return false;
+  return tags.some(function () {
+    var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      _ref$id = _ref.id,
+      id = _ref$id === void 0 ? '' : _ref$id;
+    return id && compare.test(id);
+  });
 };
 
 /**
@@ -2337,12 +2275,12 @@ var hasTag = exports.hasTag = function hasTag(compare) {
  * @param {Array} cards - All cards in the card collection
  * @returns {Array} - All cards sorted by title
  */
-var getTitleAscSort = exports.getTitleAscSort = function getTitleAscSort(cards) {
-    return cards.sort(function (cardOne, cardTwo) {
-        var cardOneTitle = (0, _general.getByPath)(cardOne, 'contentArea.title');
-        var cardTwoTitle = (0, _general.getByPath)(cardTwo, 'contentArea.title');
-        return cardOneTitle.localeCompare(cardTwoTitle);
-    });
+var getTitleAscSort = function getTitleAscSort(cards) {
+  return cards.sort(function (cardOne, cardTwo) {
+    var cardOneTitle = Object(__WEBPACK_IMPORTED_MODULE_2__general__["c" /* getByPath */])(cardOne, 'contentArea.title');
+    var cardTwoTitle = Object(__WEBPACK_IMPORTED_MODULE_2__general__["c" /* getByPath */])(cardTwo, 'contentArea.title');
+    return cardOneTitle.localeCompare(cardTwoTitle);
+  });
 };
 
 /**
@@ -2350,8 +2288,8 @@ var getTitleAscSort = exports.getTitleAscSort = function getTitleAscSort(cards) 
  * @param {Array} cards - All cards in the card collection
  * @returns {Array} - All cards sorted by title
  */
-var getTitleDescSort = exports.getTitleDescSort = function getTitleDescSort(cards) {
-    return getTitleAscSort(cards).reverse();
+var getTitleDescSort = function getTitleDescSort(cards) {
+  return getTitleAscSort(cards).reverse();
 };
 
 /**
@@ -2359,15 +2297,15 @@ var getTitleDescSort = exports.getTitleDescSort = function getTitleDescSort(card
  * @param {Array} cards - All cards in the card collection
  * @returns {Array} - All cards sorted by title
  */
-var getModifiedDescSort = exports.getModifiedDescSort = function getModifiedDescSort(cards) {
-    return cards.sort(function (cardOne, cardTwo) {
-        var cardOneModDate = (0, _general.getByPath)(cardOne, 'modifiedDate');
-        var cardTwoModDate = (0, _general.getByPath)(cardTwo, 'modifiedDate');
-        if (cardOneModDate && cardTwoModDate) {
-            return cardTwoModDate.localeCompare(cardOneModDate);
-        }
-        return 0;
-    });
+var getModifiedDescSort = function getModifiedDescSort(cards) {
+  return cards.sort(function (cardOne, cardTwo) {
+    var cardOneModDate = Object(__WEBPACK_IMPORTED_MODULE_2__general__["c" /* getByPath */])(cardOne, 'modifiedDate');
+    var cardTwoModDate = Object(__WEBPACK_IMPORTED_MODULE_2__general__["c" /* getByPath */])(cardTwo, 'modifiedDate');
+    if (cardOneModDate && cardTwoModDate) {
+      return cardTwoModDate.localeCompare(cardOneModDate);
+    }
+    return 0;
+  });
 };
 
 /**
@@ -2375,8 +2313,8 @@ var getModifiedDescSort = exports.getModifiedDescSort = function getModifiedDesc
  * @param {Array} cards - All cards in the card collection
  * @returns {Array} - All cards sorted by title
  */
-var getModifiedAscSort = exports.getModifiedAscSort = function getModifiedAscSort(cards) {
-    return getModifiedDescSort(cards).reverse();
+var getModifiedAscSort = function getModifiedAscSort(cards) {
+  return getModifiedDescSort(cards).reverse();
 };
 
 /**
@@ -2386,8 +2324,8 @@ var getModifiedAscSort = exports.getModifiedAscSort = function getModifiedAscSor
  * @param {Array} cards - All cards in the card collection
  * @returns {Array} - Cards in the original order given by Chimera IO
  */
-var getFeaturedSort = exports.getFeaturedSort = function getFeaturedSort(cards) {
-    return cards;
+var getFeaturedSort = function getFeaturedSort(cards) {
+  return cards;
 };
 
 /**
@@ -2395,18 +2333,18 @@ var getFeaturedSort = exports.getFeaturedSort = function getFeaturedSort(cards) 
  * @param {Array} cards - All cards in the card collection
  * @returns {Array} - All cards sorted by Date
  */
-var getDateAscSort = exports.getDateAscSort = function getDateAscSort(cards) {
-    return cards.sort(function (cardOne, cardTwo) {
-        var cardOneDate = (0, _general.getByPath)(cardOne, 'cardDate');
-        var cardTwoDate = (0, _general.getByPath)(cardTwo, 'cardDate');
-        if (cardOneDate && cardTwoDate) {
-            if (cardOneDate !== cardTwoDate) {
-                return cardOneDate.localeCompare(cardTwoDate);
-            }
-            return (cardOne.id || '').localeCompare(cardTwo.id || '');
-        }
-        return 0;
-    });
+var getDateAscSort = function getDateAscSort(cards) {
+  return cards.sort(function (cardOne, cardTwo) {
+    var cardOneDate = Object(__WEBPACK_IMPORTED_MODULE_2__general__["c" /* getByPath */])(cardOne, 'cardDate');
+    var cardTwoDate = Object(__WEBPACK_IMPORTED_MODULE_2__general__["c" /* getByPath */])(cardTwo, 'cardDate');
+    if (cardOneDate && cardTwoDate) {
+      if (cardOneDate !== cardTwoDate) {
+        return cardOneDate.localeCompare(cardTwoDate);
+      }
+      return (cardOne.id || '').localeCompare(cardTwo.id || '');
+    }
+    return 0;
+  });
 };
 
 /**
@@ -2414,8 +2352,8 @@ var getDateAscSort = exports.getDateAscSort = function getDateAscSort(cards) {
  * @param {Array} cards - All cards in the card collection
  * @returns {Array} - All cards sorted by Date
  */
-var getDateDescSort = exports.getDateDescSort = function getDateDescSort(cards) {
-    return getDateAscSort(cards).reverse();
+var getDateDescSort = function getDateDescSort(cards) {
+  return getDateAscSort(cards).reverse();
 };
 
 /**
@@ -2423,10 +2361,10 @@ var getDateDescSort = exports.getDateDescSort = function getDateDescSort(cards) 
  * into an array of keys: ['footer','0','left','1','startTime'].
  */
 function parsePathString(pathString) {
-    if (pathString) {
-        return pathString.replace(/\[(\d+)\]/g, '.$1').split('.');
-    }
-    return '';
+  if (pathString) {
+    return pathString.replace(/\[(\d+)\]/g, '.$1').split('.');
+  }
+  return '';
 }
 
 /**
@@ -2435,21 +2373,19 @@ function parsePathString(pathString) {
  * e.g. safeGet(card, 'footer[0].left[1].startTime', '')
  */
 function safeGet(obj, pathString, defaultVal) {
-    var parts = parsePathString(pathString);
-    var current = obj;
-
-    for (var i = 0; i < parts.length; i++) {
-        if (current == null || (typeof current === 'undefined' ? 'undefined' : _typeof(current)) !== 'object') {
-            return defaultVal;
-        }
-        var key = parts[i];
-        if (!(key in current)) {
-            return defaultVal;
-        }
-        current = current[key];
+  var parts = parsePathString(pathString);
+  var current = obj;
+  for (var i = 0; i < parts.length; i++) {
+    if (current == null || _typeof(current) !== 'object') {
+      return defaultVal;
     }
-
-    return current == null ? defaultVal : current;
+    var key = parts[i];
+    if (!(key in current)) {
+      return defaultVal;
+    }
+    current = current[key];
+  }
+  return current == null ? defaultVal : current;
 }
 
 /**
@@ -2470,39 +2406,36 @@ function safeGet(obj, pathString, defaultVal) {
  * @param {Object} urlState - URL search/query Params.
  * @returns {Array} visibleCards
  */
-var getEventSort = exports.getEventSort = function getEventSort() {
-    var cards = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-    var eventFilter = arguments[1];
-
-    var transformedCards = cards.map(function (card) {
-        return {
-            id: card.id,
-            startDate: safeGet(card, 'footer[0].left[1].startTime', safeGet(card, 'contentArea.dateDetailText.startTime', '')),
-            endDate: safeGet(card, 'footer[0].left[1].endTime', safeGet(card, 'contentArea.dateDetailText.endTime', '')),
-            tags: card.tags || [],
-            cardDate: card.cardDate || '',
-            contentArea: card.contentArea || {},
-            createdDate: card.createdDate || '',
-            ctaLink: card.ctaLink || '',
-            description: card.description || '',
-            footer: card.footer || [],
-            initial: card.initial || {},
-            isBookmarked: card.isBookmarked || false,
-            modifiedDate: card.modifiedDate || '',
-            overlayLink: card.overlayLink || '',
-            overlays: card.overlays || {},
-            showCard: card.showCard || {},
-            search: card.search || {},
-            styles: card.styles || {}
-        };
-    });
-
-    var result = (0, _eventSort.eventTiming)(transformedCards, eventFilter);
-
+var getEventSort = function getEventSort() {
+  var cards = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  var eventFilter = arguments.length > 1 ? arguments[1] : undefined;
+  var transformedCards = cards.map(function (card) {
     return {
-        visibleSessions: result.visibleSessions,
-        nextTransitionMs: result.nextTransitionMs
+      id: card.id,
+      startDate: safeGet(card, 'footer[0].left[1].startTime', safeGet(card, 'contentArea.dateDetailText.startTime', '')),
+      endDate: safeGet(card, 'footer[0].left[1].endTime', safeGet(card, 'contentArea.dateDetailText.endTime', '')),
+      tags: card.tags || [],
+      cardDate: card.cardDate || '',
+      contentArea: card.contentArea || {},
+      createdDate: card.createdDate || '',
+      ctaLink: card.ctaLink || '',
+      description: card.description || '',
+      footer: card.footer || [],
+      initial: card.initial || {},
+      isBookmarked: card.isBookmarked || false,
+      modifiedDate: card.modifiedDate || '',
+      overlayLink: card.overlayLink || '',
+      overlays: card.overlays || {},
+      showCard: card.showCard || {},
+      search: card.search || {},
+      styles: card.styles || {}
     };
+  });
+  var result = Object(__WEBPACK_IMPORTED_MODULE_4__eventSort__["d" /* eventTiming */])(transformedCards, eventFilter);
+  return {
+    visibleSessions: result.visibleSessions,
+    nextTransitionMs: result.nextTransitionMs
+  };
 };
 /**
  * Gets all cards that matches a users search query
@@ -2511,13 +2444,13 @@ var getEventSort = exports.getEventSort = function getEventSort() {
  * @param {Array} searchFields - All authored search fields to check
  * @returns {Array} - All cards that match the user's query for a given set of search fields
  */
-var getCardsMatchingSearch = exports.getCardsMatchingSearch = function getCardsMatchingSearch(query, cards, searchFields) {
-    if (!query) {
-        return cards;
-    }
-    var searchQuery = (0, _general.sanitizeText)(query);
-    var cardsMatchingQuery = getCardsMatchingQuery(cards, searchFields, searchQuery);
-    return cardsMatchingQuery;
+var getCardsMatchingSearch = function getCardsMatchingSearch(query, cards, searchFields) {
+  if (!query) {
+    return cards;
+  }
+  var searchQuery = Object(__WEBPACK_IMPORTED_MODULE_2__general__["A" /* sanitizeText */])(query);
+  var cardsMatchingQuery = getCardsMatchingQuery(cards, searchFields, searchQuery);
+  return cardsMatchingQuery;
 };
 
 /**
@@ -2526,8 +2459,8 @@ var getCardsMatchingSearch = exports.getCardsMatchingSearch = function getCardsM
  * @param {Array} cardSetTwo - Set two of cards to join
  * @returns {Array} - Cards sets one and two joined
  */
-var joinCardSets = exports.joinCardSets = function joinCardSets(cardSetOne, cardSetTwo) {
-    return cardSetOne.concat(cardSetTwo);
+var joinCardSets = function joinCardSets(cardSetOne, cardSetTwo) {
+  return cardSetOne.concat(cardSetTwo);
 };
 
 /**
@@ -2536,8 +2469,8 @@ var joinCardSets = exports.joinCardSets = function joinCardSets(cardSetOne, card
  * @param {Array} rawCards - Cards from API response
  * @returns {Array} - Set of cards processed
  */
-var processCards = exports.processCards = function processCards(featuredCards, rawCards) {
-    return (0, _general.removeDuplicatesByKey)(joinCardSets(featuredCards, rawCards), 'id');
+var processCards = function processCards(featuredCards, rawCards) {
+  return Object(__WEBPACK_IMPORTED_MODULE_2__general__["y" /* removeDuplicatesByKey */])(joinCardSets(featuredCards, rawCards), 'id');
 };
 
 /**
@@ -2546,16 +2479,15 @@ var processCards = exports.processCards = function processCards(featuredCards, r
  * @param {Array} bookmarkedCardIds - All bookmarked card ids
  * @returns {Array} - Cards with bookmark meta data
  */
-var getUpdatedCardBookmarkData = exports.getUpdatedCardBookmarkData = function getUpdatedCardBookmarkData(cards, bookmarkedCardIds) {
-    return cards.map(function (card) {
-        return _extends({}, card, {
-            isBookmarked: bookmarkedCardIds.some(function (i) {
-                return i === card.id;
-            })
-        });
+var getUpdatedCardBookmarkData = function getUpdatedCardBookmarkData(cards, bookmarkedCardIds) {
+  return cards.map(function (card) {
+    return _objectSpread(_objectSpread({}, card), {}, {
+      isBookmarked: bookmarkedCardIds.some(function (i) {
+        return i === card.id;
+      })
     });
+  });
 };
-
 var cache = new Map();
 
 /**
@@ -2565,7 +2497,7 @@ var cache = new Map();
  * @returns {int} - A random integer between [start, bound)
  */
 function getRandom(start, end) {
-    return Math.floor(Math.random() * (end - start)) + start;
+  return Math.floor(Math.random() * (end - start)) + start;
 }
 
 /**
@@ -2575,46 +2507,22 @@ function getRandom(start, end) {
  * @returns {Array} - A random sample from the array stream
  */
 function reservoirSample(stream, sampleSize) {
-    var reservoir = [];
-    /* eslint-disable-next-line no-restricted-syntax */
-    var _iteratorNormalCompletion2 = true;
-    var _didIteratorError2 = false;
-    var _iteratorError2 = undefined;
-
-    try {
-        for (var _iterator2 = Object.entries(stream)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-            var _ref2 = _step2.value;
-
-            var _ref3 = _slicedToArray(_ref2, 2);
-
-            var i = _ref3[0];
-            var val = _ref3[1];
-
-            if (reservoir.length < sampleSize) {
-                reservoir.push(val);
-            } else {
-                var random = getRandom(0, i + 1);
-                if (random < sampleSize) {
-                    reservoir[random] = val;
-                }
-            }
-        }
-    } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-    } finally {
-        try {
-            if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                _iterator2.return();
-            }
-        } finally {
-            if (_didIteratorError2) {
-                throw _iteratorError2;
-            }
-        }
+  var reservoir = [];
+  /* eslint-disable-next-line no-restricted-syntax */
+  for (var _i = 0, _Object$entries = Object.entries(stream); _i < _Object$entries.length; _i++) {
+    var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+      i = _Object$entries$_i[0],
+      val = _Object$entries$_i[1];
+    if (reservoir.length < sampleSize) {
+      reservoir.push(val);
+    } else {
+      var random = getRandom(0, i + 1);
+      if (random < sampleSize) {
+        reservoir[random] = val;
+      }
     }
-
-    return reservoir;
+  }
+  return reservoir;
 }
 
 /**
@@ -2624,17 +2532,17 @@ function reservoirSample(stream, sampleSize) {
  * @returns {Array} - The shuffled array
  */
 function fischerYatesShuffle(arr) {
-    var currentIndex = arr.length;
-    var randomIndex = void 0;
-    while (currentIndex !== 0) {
-        randomIndex = getRandom(0, currentIndex);
-        /* eslint-disable-next-line no-plusplus */
-        currentIndex--;
-        var _ref4 = [arr[randomIndex], arr[currentIndex]];
-        arr[currentIndex] = _ref4[0];
-        arr[randomIndex] = _ref4[1];
-    }
-    return arr;
+  var currentIndex = arr.length;
+  var randomIndex;
+  while (currentIndex !== 0) {
+    randomIndex = getRandom(0, currentIndex);
+    /* eslint-disable-next-line no-plusplus */
+    currentIndex--;
+    var _ref2 = [arr[randomIndex], arr[currentIndex]];
+    arr[currentIndex] = _ref2[0];
+    arr[randomIndex] = _ref2[1];
+  }
+  return arr;
 }
 
 /**
@@ -2648,70 +2556,45 @@ function fischerYatesShuffle(arr) {
  * @param {int} sampleSize - sample size used for the random sample
  * @returns {Array} - An array of randomly sorted cards
  */
-var getRandomSort = exports.getRandomSort = function getRandomSort(cards, id, sampleSize, reservoirSize) {
-    if (!cache.get(id)) {
-        var stream = fischerYatesShuffle(cards.slice(0, reservoirSize));
-        var randomSample = reservoirSample(stream, sampleSize);
-        cache.set(id, randomSample);
-    }
-    return cache.get(id);
+var getRandomSort = function getRandomSort(cards, id, sampleSize, reservoirSize) {
+  if (!cache.get(id)) {
+    var stream = fischerYatesShuffle(cards.slice(0, reservoirSize));
+    var randomSample = reservoirSample(stream, sampleSize);
+    cache.set(id, randomSample);
+  }
+  return cache.get(id);
 };
-
-var getFeaturedCards = exports.getFeaturedCards = function getFeaturedCards(ids, cards) {
-    var ans = [];
-    /* eslint-disable no-restricted-syntax */
-    var _iteratorNormalCompletion3 = true;
-    var _didIteratorError3 = false;
-    var _iteratorError3 = undefined;
-
-    try {
-        for (var _iterator3 = ids[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-            var id = _step3.value;
-            var _iteratorNormalCompletion4 = true;
-            var _didIteratorError4 = false;
-            var _iteratorError4 = undefined;
-
-            try {
-                for (var _iterator4 = cards[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-                    var card = _step4.value;
-
-                    if (card.id === id) {
-                        var c = JSON.parse(JSON.stringify(card)); // Deep clone using JSON methods
-                        c.isFeatured = true;
-                        ans.push(c);
-                    }
-                }
-            } catch (err) {
-                _didIteratorError4 = true;
-                _iteratorError4 = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion4 && _iterator4.return) {
-                        _iterator4.return();
-                    }
-                } finally {
-                    if (_didIteratorError4) {
-                        throw _iteratorError4;
-                    }
-                }
-            }
+var getFeaturedCards = function getFeaturedCards(ids, cards) {
+  var ans = [];
+  /* eslint-disable no-restricted-syntax */
+  var _iterator2 = _createForOfIteratorHelper(ids),
+    _step2;
+  try {
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+      var id = _step2.value;
+      var _iterator3 = _createForOfIteratorHelper(cards),
+        _step3;
+      try {
+        for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+          var card = _step3.value;
+          if (card.id === id) {
+            var c = JSON.parse(JSON.stringify(card)); // Deep clone using JSON methods
+            c.isFeatured = true;
+            ans.push(c);
+          }
         }
-    } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
-    } finally {
-        try {
-            if (!_iteratorNormalCompletion3 && _iterator3.return) {
-                _iterator3.return();
-            }
-        } finally {
-            if (_didIteratorError3) {
-                throw _iteratorError3;
-            }
-        }
+      } catch (err) {
+        _iterator3.e(err);
+      } finally {
+        _iterator3.f();
+      }
     }
-
-    return ans;
+  } catch (err) {
+    _iterator2.e(err);
+  } finally {
+    _iterator2.f();
+  }
+  return ans;
 };
 
 /**
@@ -2724,8 +2607,8 @@ var getFeaturedCards = exports.getFeaturedCards = function getFeaturedCards(ids,
  * @param {str} str - string to be sanitized
  * @returns {str} - satinized string
  */
-var sanitizeStr = exports.sanitizeStr = function sanitizeStr(str) {
-    return str.replaceAll('&amp;', '&').replaceAll('&lt;', '<').replaceAll('&gt;', '>');
+var sanitizeStr = function sanitizeStr(str) {
+  return str.replaceAll('&amp;', '&').replaceAll('&lt;', '<').replaceAll('&gt;', '>');
 };
 
 /***/ }),
@@ -3068,156 +2951,138 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 /***/ }),
 /* 39 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.cardType = exports.footerType = exports.overlaysType = exports.contentAreaType = exports.stylesType = exports.footerRightType = exports.footerCenterType = exports.footerLeftType = exports.tagsType = undefined;
-
-var _propTypes = __webpack_require__(1);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return tagsType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return footerLeftType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return footerCenterType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return footerRightType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return stylesType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return contentAreaType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return overlaysType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return footerType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return cardType; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_prop_types__);
 
 var appliesToType = {
-    id: _propTypes.string
+  id: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"]
 };
-
 var showCardType = {
-    from: _propTypes.string,
-    until: _propTypes.string
+  from: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  until: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"]
 };
-
-var tagsType = exports.tagsType = {
-    id: (0, _propTypes.oneOfType)([_propTypes.string, _propTypes.number])
+var tagsType = {
+  id: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"])([__WEBPACK_IMPORTED_MODULE_0_prop_types__["string"], __WEBPACK_IMPORTED_MODULE_0_prop_types__["number"]])
 };
 var searchType = {};
-
-var footerLeftType = exports.footerLeftType = {
-    src: _propTypes.string,
-    type: _propTypes.string,
-    term: _propTypes.string,
-    text: _propTypes.string,
-    label: _propTypes.string,
-    price: _propTypes.string,
-    color: _propTypes.string,
-    linkHint: _propTypes.string,
-    percentage: _propTypes.string,
-    openInNewTab: _propTypes.bool,
-    srcAltText: _propTypes.string,
-    totalStars: _propTypes.number,
-    starsFilled: _propTypes.number,
-    saveCardIcon: _propTypes.string,
-    cardSaveText: _propTypes.string,
-    unsaveCardIcon: _propTypes.string,
-    cardUnsaveText: _propTypes.string,
-    completionText: _propTypes.string
+var footerLeftType = {
+  src: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  type: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  term: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  text: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  label: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  price: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  color: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  linkHint: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  percentage: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  openInNewTab: __WEBPACK_IMPORTED_MODULE_0_prop_types__["bool"],
+  srcAltText: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  totalStars: __WEBPACK_IMPORTED_MODULE_0_prop_types__["number"],
+  starsFilled: __WEBPACK_IMPORTED_MODULE_0_prop_types__["number"],
+  saveCardIcon: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  cardSaveText: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  unsaveCardIcon: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  cardUnsaveText: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  completionText: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"]
 };
-
-var footerCenterType = exports.footerCenterType = {
-    src: _propTypes.string,
-    type: _propTypes.string,
-    href: _propTypes.string,
-    text: (0, _propTypes.oneOfType)([_propTypes.string, _propTypes.number])
+var footerCenterType = {
+  src: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  type: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  href: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  text: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"])([__WEBPACK_IMPORTED_MODULE_0_prop_types__["string"], __WEBPACK_IMPORTED_MODULE_0_prop_types__["number"]])
 };
-
-var footerRightType = exports.footerRightType = {
-    src: _propTypes.string,
-    type: _propTypes.string,
-    style: _propTypes.string,
-    endTime: _propTypes.string,
-    startTime: _propTypes.string,
-    text: (0, _propTypes.oneOfType)([_propTypes.string, _propTypes.number])
+var footerRightType = {
+  src: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  type: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  style: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  endTime: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  startTime: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  text: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"])([__WEBPACK_IMPORTED_MODULE_0_prop_types__["string"], __WEBPACK_IMPORTED_MODULE_0_prop_types__["number"]])
 };
-
 var overlaysBannerType = {
-    icon: _propTypes.string,
-    fontColor: _propTypes.string,
-    description: (0, _propTypes.oneOfType)([_propTypes.string, _propTypes.array]),
-    backgroundColor: _propTypes.string
+  icon: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  fontColor: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  description: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"])([__WEBPACK_IMPORTED_MODULE_0_prop_types__["string"], __WEBPACK_IMPORTED_MODULE_0_prop_types__["array"]]),
+  backgroundColor: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"]
 };
-
 var overlaysLogoType = {
-    src: _propTypes.string,
-    alt: _propTypes.string,
-    borderColor: _propTypes.string,
-    backgroundColor: _propTypes.string
+  src: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  alt: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  borderColor: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  backgroundColor: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"]
 };
-
 var overlaysLabelType = {
-    description: (0, _propTypes.oneOfType)([_propTypes.string, _propTypes.array])
+  description: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"])([__WEBPACK_IMPORTED_MODULE_0_prop_types__["string"], __WEBPACK_IMPORTED_MODULE_0_prop_types__["array"]])
 };
-
 var overlaysVideoButtonType = {
-    url: _propTypes.string
+  url: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"]
 };
-
-var stylesType = exports.stylesType = {
-    typeOverride: _propTypes.string,
-    backgroundImage: _propTypes.string
+var stylesType = {
+  typeOverride: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  backgroundImage: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"]
 };
-
-var contentAreaType = exports.contentAreaType = {
-    detailText: _propTypes.string,
-    title: (0, _propTypes.oneOfType)([_propTypes.string, _propTypes.array]),
-    description: (0, _propTypes.oneOfType)([_propTypes.string, _propTypes.array]),
-    dateDetailText: (0, _propTypes.shape)({
-        endTime: _propTypes.string,
-        startTime: _propTypes.string
-    })
+var contentAreaType = {
+  detailText: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  title: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"])([__WEBPACK_IMPORTED_MODULE_0_prop_types__["string"], __WEBPACK_IMPORTED_MODULE_0_prop_types__["array"]]),
+  description: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["oneOfType"])([__WEBPACK_IMPORTED_MODULE_0_prop_types__["string"], __WEBPACK_IMPORTED_MODULE_0_prop_types__["array"]]),
+  dateDetailText: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])({
+    endTime: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+    startTime: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"]
+  })
 };
-
-var overlaysType = exports.overlaysType = {
-    logo: (0, _propTypes.shape)(overlaysLogoType),
-    label: (0, _propTypes.shape)(overlaysLabelType),
-    banner: (0, _propTypes.shape)(overlaysBannerType),
-    videoButton: (0, _propTypes.shape)(overlaysVideoButtonType)
+var overlaysType = {
+  logo: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(overlaysLogoType),
+  label: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(overlaysLabelType),
+  banner: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(overlaysBannerType),
+  videoButton: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(overlaysVideoButtonType)
 };
-
-var footerType = exports.footerType = {
-    divider: _propTypes.bool,
-    isFluid: _propTypes.bool,
-    left: (0, _propTypes.arrayOf)((0, _propTypes.shape)(footerLeftType)),
-    right: (0, _propTypes.arrayOf)((0, _propTypes.shape)(footerRightType)),
-    center: (0, _propTypes.arrayOf)((0, _propTypes.shape)(footerCenterType))
+var footerType = {
+  divider: __WEBPACK_IMPORTED_MODULE_0_prop_types__["bool"],
+  isFluid: __WEBPACK_IMPORTED_MODULE_0_prop_types__["bool"],
+  left: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["arrayOf"])(Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(footerLeftType)),
+  right: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["arrayOf"])(Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(footerRightType)),
+  center: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["arrayOf"])(Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(footerCenterType))
 };
-
-var cardType = exports.cardType = {
-    id: _propTypes.string,
-    title: _propTypes.string,
-    cardDate: _propTypes.string,
-    styles: (0, _propTypes.shape)(stylesType),
-    search: (0, _propTypes.shape)(searchType),
-    showCard: (0, _propTypes.shape)(showCardType),
-    overlays: (0, _propTypes.shape)(overlaysType),
-    tags: (0, _propTypes.arrayOf)((0, _propTypes.shape)(tagsType)),
-    footer: (0, _propTypes.arrayOf)((0, _propTypes.shape)(footerType)),
-    contentArea: (0, _propTypes.shape)(contentAreaType),
-    appliesTo: (0, _propTypes.arrayOf)((0, _propTypes.shape)(appliesToType))
+var cardType = {
+  id: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  title: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  cardDate: __WEBPACK_IMPORTED_MODULE_0_prop_types__["string"],
+  styles: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(stylesType),
+  search: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(searchType),
+  showCard: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(showCardType),
+  overlays: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(overlaysType),
+  tags: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["arrayOf"])(Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(tagsType)),
+  footer: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["arrayOf"])(Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(footerType)),
+  contentArea: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(contentAreaType),
+  appliesTo: Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["arrayOf"])(Object(__WEBPACK_IMPORTED_MODULE_0_prop_types__["shape"])(appliesToType))
 };
 
 /***/ }),
 /* 40 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HighlightSearchField; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return RenderDisplayMsg; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return RenderTotalResults; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_cuid__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_cuid___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_cuid__);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.RenderTotalResults = exports.RenderDisplayMsg = exports.HighlightSearchField = undefined;
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _cuid = __webpack_require__(70);
-
-var _cuid2 = _interopRequireDefault(_cuid);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * Handles highlighting search results on search
@@ -3225,18 +3090,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @param {String} value - Values to highlight
  * @returns {String []} - HTML with text highlighting
  */
-var HighlightSearchField = exports.HighlightSearchField = function HighlightSearchField(text, value) {
-    var parts = text.split(new RegExp('(' + value + ')', 'gi'));
-    return parts.map(function (part) {
-        return part.toLowerCase() === value ? _react2.default.createElement(
-            'span',
-            {
-                'data-testid': 'consonant-SearchResult',
-                className: 'consonant-SearchResult',
-                key: (0, _cuid2.default)() },
-            part
-        ) : part;
-    });
+var HighlightSearchField = function HighlightSearchField(text, value) {
+  var parts = text.split(new RegExp("(".concat(value, ")"), 'gi'));
+  return parts.map(function (part) {
+    return part.toLowerCase() === value ? /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+      "data-testid": "consonant-SearchResult",
+      className: "consonant-SearchResult",
+      key: __WEBPACK_IMPORTED_MODULE_1_cuid___default()()
+    }, part) : part;
+  });
 };
 
 /**
@@ -3245,31 +3107,26 @@ var HighlightSearchField = exports.HighlightSearchField = function HighlightSear
  * @param {String} value - Values to modify
  * @returns {String []} - HTML to render users on page error
  */
-var RenderDisplayMsg = exports.RenderDisplayMsg = function RenderDisplayMsg(text, value) {
-    var arr = text.split(new RegExp('({query}|{break})', 'gi')).filter(function (item) {
-        return item;
-    });
-    return arr.map(function (item) {
-        switch (item.toLowerCase()) {
-            case '{query}':
-                return _react2.default.createElement(
-                    'strong',
-                    {
-                        key: (0, _cuid2.default)() },
-                    value
-                );
-            case '{break}':
-                return _react2.default.createElement('br', {
-                    key: (0, _cuid2.default)() });
-            default:
-                return _react2.default.createElement(
-                    'span',
-                    {
-                        key: (0, _cuid2.default)() },
-                    item
-                );
-        }
-    });
+var RenderDisplayMsg = function RenderDisplayMsg(text, value) {
+  var arr = text.split(new RegExp('({query}|{break})', 'gi')).filter(function (item) {
+    return item;
+  });
+  return arr.map(function (item) {
+    switch (item.toLowerCase()) {
+      case '{query}':
+        return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("strong", {
+          key: __WEBPACK_IMPORTED_MODULE_1_cuid___default()()
+        }, value);
+      case '{break}':
+        return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", {
+          key: __WEBPACK_IMPORTED_MODULE_1_cuid___default()()
+        });
+      default:
+        return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+          key: __WEBPACK_IMPORTED_MODULE_1_cuid___default()()
+        }, item);
+    }
+  });
 };
 
 /**
@@ -3278,21 +3135,17 @@ var RenderDisplayMsg = exports.RenderDisplayMsg = function RenderDisplayMsg(text
  * @param {String} value - Values to modify
  * @returns {String []} - HTML to render total results text
  */
-var RenderTotalResults = exports.RenderTotalResults = function RenderTotalResults(text, value) {
-    var arr = text.split(new RegExp('({total})', 'gi')).filter(function (item) {
-        return item;
-    });
-    return arr.map(function (item) {
-        return item.toLowerCase() === '{total}' ? _react2.default.createElement(
-            'strong',
-            { key: (0, _cuid2.default)() },
-            value
-        ) : _react2.default.createElement(
-            'span',
-            { key: (0, _cuid2.default)() },
-            item
-        );
-    });
+var RenderTotalResults = function RenderTotalResults(text, value) {
+  var arr = text.split(new RegExp('({total})', 'gi')).filter(function (item) {
+    return item;
+  });
+  return arr.map(function (item) {
+    return item.toLowerCase() === '{total}' ? /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("strong", {
+      key: __WEBPACK_IMPORTED_MODULE_1_cuid___default()()
+    }, value) : /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+      key: __WEBPACK_IMPORTED_MODULE_1_cuid___default()()
+    }, item);
+  });
 };
 
 /***/ }),
@@ -3607,112 +3460,67 @@ module.exports = function (KEY, length, exec) {
 
 /***/ }),
 /* 50 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-var loadLana = exports.loadLana = function loadLana() {
-    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    if (window.lana) return;
-
-    var lanaError = function lanaError(e) {
-        if (window.lana && window.lana.logImpl) {
-            window.lana.logImpl(e.reason || e.error || e.message, { errorType: 'i' });
-        }
-    };
-
-    var lanaLoaded = false;
-
-    window.lana = {
-        logImpl: function logImpl() {
-            var _console;
-
-            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-                args[_key] = arguments[_key];
-            }
-
-            (_console = console).log.apply(_console, ['Lana not yet loaded, logging to console:'].concat(args));
-        },
-        log: function () {
-            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-                var _window$lana;
-
-                var _args = arguments;
-                return regeneratorRuntime.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                if (lanaLoaded) {
-                                    _context.next = 12;
-                                    break;
-                                }
-
-                                window.removeEventListener('error', lanaError);
-                                window.removeEventListener('unhandledrejection', lanaError);
-                                _context.prev = 3;
-                                _context.next = 6;
-                                return fetch('www.caas.com/libs/utils/lana.js');
-
-                            case 6:
-                                lanaLoaded = true;
-                                _context.next = 12;
-                                break;
-
-                            case 9:
-                                _context.prev = 9;
-                                _context.t0 = _context['catch'](3);
-
-                                console.error('Failed to load Lana:', _context.t0);
-
-                            case 12:
-                                return _context.abrupt('return', (_window$lana = window.lana).logImpl.apply(_window$lana, _args));
-
-                            case 13:
-                            case 'end':
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, undefined, [[3, 9]]);
-            }));
-
-            function log() {
-                return _ref.apply(this, arguments);
-            }
-
-            return log;
-        }(),
-        debug: false,
-        options: options
-    };
-    window.addEventListener('error', lanaError);
-    window.addEventListener('unhandledrejection', lanaError);
-};
-
-var logLana = exports.logLana = function logLana() {
-    var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-        message = _ref2.message,
-        tags = _ref2.tags,
-        _ref2$e = _ref2.e,
-        e = _ref2$e === undefined ? '' : _ref2$e,
-        _ref2$sampleRate = _ref2.sampleRate,
-        sampleRate = _ref2$sampleRate === undefined ? 1 : _ref2$sampleRate;
-
-    var msg = message + ' | referer: ' + window.location.href + ' | ' + (e.reason || e.error || e.message || e);
-    if (window.lana && typeof window.lana.log === 'function') {
-        window.lana.log(msg, {
-            clientId: 'chimera',
-            sampleRate: sampleRate,
-            tags: tags
-        });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return loadLana; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return logLana; });
+var loadLana = function loadLana() {
+  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  if (window.lana) return;
+  var lanaError = function lanaError(e) {
+    if (window.lana && window.lana.logImpl) {
+      window.lana.logImpl(e.reason || e.error || e.message, {
+        errorType: 'i'
+      });
     }
+  };
+  var lanaLoaded = false;
+  window.lana = {
+    logImpl: function logImpl() {
+      var _console;
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+      (_console = console).log.apply(_console, ['Lana not yet loaded, logging to console:'].concat(args));
+    },
+    log: async function log() {
+      var _window$lana;
+      if (!lanaLoaded) {
+        window.removeEventListener('error', lanaError);
+        window.removeEventListener('unhandledrejection', lanaError);
+        try {
+          // eslint-disable-next-line import/no-unresolved, import/extensions
+          await fetch('www.caas.com/libs/utils/lana.js');
+          lanaLoaded = true;
+        } catch (error) {
+          console.error('Failed to load Lana:', error);
+        }
+      }
+      return (_window$lana = window.lana).logImpl.apply(_window$lana, arguments);
+    },
+    debug: false,
+    options: options
+  };
+  window.addEventListener('error', lanaError);
+  window.addEventListener('unhandledrejection', lanaError);
+};
+var logLana = function logLana() {
+  var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+    message = _ref.message,
+    tags = _ref.tags,
+    _ref$e = _ref.e,
+    e = _ref$e === void 0 ? '' : _ref$e,
+    _ref$sampleRate = _ref.sampleRate,
+    sampleRate = _ref$sampleRate === void 0 ? 1 : _ref$sampleRate;
+  var msg = "".concat(message, " | referer: ").concat(window.location.href, " | ").concat(e.reason || e.error || e.message || e);
+  if (window.lana && typeof window.lana.log === 'function') {
+    window.lana.log(msg, {
+      clientId: 'chimera',
+      sampleRate: sampleRate,
+      tags: tags
+    });
+  }
 };
 
 /***/ }),
@@ -4813,28 +4621,22 @@ module.exports = cuid;
 
 /***/ }),
 /* 71 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.isAuthor = isAuthor;
-exports.isEditor = isEditor;
+/* harmony export (immutable) */ __webpack_exports__["a"] = isAuthor;
+/* harmony export (immutable) */ __webpack_exports__["b"] = isEditor;
 function isAuthor() {
-    return typeof window.Granite !== 'undefined';
+  return typeof window.Granite !== 'undefined';
 }
-
 function isEditor() {
-    // This is wrapped in a try block to catch a DOMException that can be thrown
-    // if the page is loaded in a cross domain iframe.
-    try {
-        return window.parent.location.href.indexOf('/editor.html/') >= 0;
-    } catch (e) {
-        return false;
-    }
+  // This is wrapped in a try block to catch a DOMException that can be thrown
+  // if the page is loaded in a cross domain iframe.
+  try {
+    return window.parent.location.href.indexOf('/editor.html/') >= 0;
+  } catch (e) {
+    return false;
+  }
 }
 
 /***/ }),
@@ -6187,104 +5989,123 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /***/ }),
 /* 108 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* unused harmony export getParentChild */
+/* unused harmony export removeEmptyFilters */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_whatwg_fetch__ = __webpack_require__(232);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_whatwg_fetch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_whatwg_fetch__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Helpers_lana__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Sort_Popup__ = __webpack_require__(233);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Search_Search__ = __webpack_require__(234);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Loader_Loader__ = __webpack_require__(235);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Helpers_general__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__types_config__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__CardsCarousel_CardsCarousel__ = __webpack_require__(236);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__NoResults_View__ = __webpack_require__(289);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__Pagination_LoadMore__ = __webpack_require__(290);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__Bookmarks_Bookmarks__ = __webpack_require__(291);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__Pagination_Paginator__ = __webpack_require__(292);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__Grid_Grid__ = __webpack_require__(112);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__Helpers_CardFilterer__ = __webpack_require__(293);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__Filters_Top_Panel__ = __webpack_require__(295);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__Filters_Left_Panel__ = __webpack_require__(300);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__Helpers_JsonProcessor__ = __webpack_require__(310);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__Helpers_hooks__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__Filters_Left_Info__ = __webpack_require__(311);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__Helpers_contexts__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__Helpers_consonant__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__Helpers_Helpers__ = __webpack_require__(22);
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+/* eslint-disable no-console, no-unreachable */
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var _react = __webpack_require__(0);
 
-var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(7);
 
-var _classnames2 = _interopRequireDefault(_classnames);
 
-var _propTypes = __webpack_require__(1);
 
-__webpack_require__(232);
 
-var _lana = __webpack_require__(50);
 
-var _Popup = __webpack_require__(233);
 
-var _Popup2 = _interopRequireDefault(_Popup);
 
-var _Search = __webpack_require__(234);
 
-var _Search2 = _interopRequireDefault(_Search);
 
-var _Loader = __webpack_require__(235);
 
-var _Loader2 = _interopRequireDefault(_Loader);
 
-var _general = __webpack_require__(6);
 
-var _config = __webpack_require__(20);
 
-var _CardsCarousel = __webpack_require__(236);
 
-var _CardsCarousel2 = _interopRequireDefault(_CardsCarousel);
 
-var _View = __webpack_require__(289);
 
-var _View2 = _interopRequireDefault(_View);
 
-var _LoadMore = __webpack_require__(290);
 
-var _LoadMore2 = _interopRequireDefault(_LoadMore);
 
-var _Bookmarks = __webpack_require__(291);
-
-var _Bookmarks2 = _interopRequireDefault(_Bookmarks);
-
-var _Paginator = __webpack_require__(292);
-
-var _Paginator2 = _interopRequireDefault(_Paginator);
-
-var _Grid = __webpack_require__(112);
-
-var _Grid2 = _interopRequireDefault(_Grid);
-
-var _CardFilterer = __webpack_require__(293);
-
-var _CardFilterer2 = _interopRequireDefault(_CardFilterer);
-
-var _Panel = __webpack_require__(295);
-
-var _Panel2 = _interopRequireDefault(_Panel);
-
-var _Panel3 = __webpack_require__(300);
-
-var _Panel4 = _interopRequireDefault(_Panel3);
-
-var _JsonProcessor = __webpack_require__(310);
-
-var _JsonProcessor2 = _interopRequireDefault(_JsonProcessor);
-
-var _hooks = __webpack_require__(5);
-
-var _Info = __webpack_require__(311);
-
-var _constants = __webpack_require__(15);
-
-var _contexts = __webpack_require__(111);
-
-var _consonant = __webpack_require__(110);
-
-var _Helpers = __webpack_require__(22);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+/**
+ * Splits an ID string into parent and child segments at the last '/'.
+ * @param {string} id - The composite ID string.
+ * @returns {[string, string]} An array where [0] is the parent part and [1] is the child part.
+ */
+function getParentChild(id) {
+  var i = id.length;
+  while (i >= 0 && id[i] !== '/') {
+    i--;
+  }
+  return [id.substring(0, i), id.substring(i + 1)];
+}
+/**
+ * Removes filters with no matching cards.
+ * @param {Array} allFilters - Array of filter objects.
+ * @param {Array} cardsFromJson - Array of card objects with tags [{id, label}].
+ * @returns {Array} Filter groups containing only matching items.
+ */
+function removeEmptyFilters(allFilters, cardsFromJson) {
+  var _ref;
+  var DESKTOP_SCREEN_SIZE = window.innerWidth >= __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["d" /* DESKTOP_MIN_WIDTH */];
+  var tags = (_ref = []).concat.apply(_ref, _toConsumableArray(cardsFromJson.map(function (card) {
+    return card.tags.map(function (tag) {
+      return tag.id;
+    });
+  })));
+  var timingTags = [__WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["e" /* EVENT_TIMING_IDS */].LIVE, __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["e" /* EVENT_TIMING_IDS */].ONDEMAND, __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["e" /* EVENT_TIMING_IDS */].UPCOMING];
+  return allFilters.map(function (filter) {
+    return _objectSpread(_objectSpread({}, filter), {}, {
+      opened: DESKTOP_SCREEN_SIZE ? filter.openedOnLoad : true,
+      items: filter.items.filter(function (item) {
+        return tags.includes(item.id) || tags.includes(item.label) || tags.toString().includes("/".concat(item.id)) || timingTags.includes(item.id);
+      })
+    });
+  }).filter(function (filter) {
+    return filter.items.length > 0;
+  });
+}
 
 /**
  * Consonant Card Collection
@@ -6309,1793 +6130,1577 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
  * )
  */
 var Container = function Container(props) {
-    var config = props.config;
+  var config = props.config;
+  var getConfig = Object(__WEBPACK_IMPORTED_MODULE_24__Helpers_consonant__["c" /* makeConfigGetter */])(config);
+  var filterGroupPrefix = 'ch_';
+  var searchPrefix = 'sh_';
+  var CARD_HASH_LENGTH = 10;
 
-    var getConfig = (0, _consonant.makeConfigGetter)(config);
-    var filterGroupPrefix = 'ch_';
-    var searchPrefix = 'sh_';
-    var CARD_HASH_LENGTH = 10;
+  /**
+   **** Authored Configs ****
+   */
+  var filterPanelEnabled = getConfig('filterPanel', 'enabled');
+  var filterPanelType = getConfig('filterPanel', 'type');
+  var paginationType = getConfig('pagination', 'type');
+  var paginationIsEnabled = getConfig('pagination', 'enabled');
+  var resultsPerPage = getConfig('collection', 'resultsPerPage');
+  var onlyShowBookmarks = getConfig('bookmarks', 'leftFilterPanel.bookmarkOnlyCollection');
+  var authoredFilters = getConfig('filterPanel', 'filters');
+  var filterLogic = getConfig('filterPanel', 'filterLogic').toLowerCase().trim();
+  var totalCardLimit = getConfig('collection', 'totalCardsToShow');
+  var sampleSize = getConfig('collection', 'reservoir.sample');
+  var reservoirSize = getConfig('collection', 'reservoir.pool');
+  var searchFields = getConfig('search', 'searchFields');
+  var sortOptions = getConfig('sort', 'options');
+  var defaultSort = getConfig('sort', 'defaultSort');
+  var defaultSortOption = Object(__WEBPACK_IMPORTED_MODULE_24__Helpers_consonant__["a" /* getDefaultSortOption */])(config, defaultSort);
+  var featuredCards = getConfig('featuredCards', '').toString().replace(/\[|\]/g, '').replace(/`/g, '').split(',');
+  // eslint-disable-next-line no-use-before-define,max-len
+  featuredCards = featuredCards.concat(featuredCards.map(function (id) {
+    return rollingHash(id, CARD_HASH_LENGTH);
+  }));
+  var hideCtaIds = getConfig('hideCtaIds', '').toString().replace(/\[|\]/g, '').replace(/`/g, '').split(',');
+  // eslint-disable-next-line no-use-before-define
+  hideCtaIds = hideCtaIds.concat(hideCtaIds.map(function (id) {
+    return rollingHash(id, CARD_HASH_LENGTH);
+  }));
+  var hideCtaTags = getConfig('hideCtaTags', '').toString().replace(/\[|\]/g, '').replace(/`/g, '').split(',');
+  var leftPanelSearchPlaceholder = getConfig('search', 'i18n.leftFilterPanel.searchPlaceholderText');
+  var topPanelSearchPlaceholder = getConfig('search', 'i18n.topFilterPanel.searchPlaceholderText');
+  var searchPlaceholderText = getConfig('search', 'i18n.filterInfo.searchPlaceholderText');
+  var noResultsTitle = getConfig('search', 'i18n.noResultsTitle');
+  var noResultsDescription = getConfig('search', 'i18n.noResultsDescription');
+  var apiFailureTitle = getConfig('collection', 'i18n.onErrorTitle');
+  var apiFailureDescription = getConfig('collection', 'i18n.onErrorDescription');
+  var isLazy = getConfig('collection', 'lazyload');
+  var trackImpressions = getConfig('analytics', 'trackImpressions');
+  var collectionIdentifier = getConfig('analytics', 'collectionIdentifier');
+  var targetEnabled = getConfig('target', 'enabled');
+  var useLastViewedSession = getConfig('target', 'lastViewedSession');
+  var authoredMode = getConfig('collection', 'mode');
+  var authoredLayoutContainer = getConfig('collection', 'layout.container');
+  var showEmptyFilters = getConfig('filterPanel', 'showEmptyFilters');
+  var eventFilter = getConfig('filterPanel', 'eventFilter');
+  var searchEnabled = getConfig('search', 'enabled');
+  var sortEnabled = getConfig('sort', 'enabled');
+  var cardStyle = getConfig('collection', 'cardStyle');
+  var title = getConfig('collection', 'i18n.title');
+  var headers = getConfig('headers', '');
+  var partialLoadWithBackgroundFetch = getConfig('collection', 'partialLoadWithBackgroundFetch.enabled');
+  var partialLoadCount = getConfig('collection', 'partialLoadWithBackgroundFetch.partialLoadCount');
+  /**
+   **** Constants ****
+   */
+  var DESKTOP_SCREEN_SIZE = window.innerWidth >= __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["d" /* DESKTOP_MIN_WIDTH */];
+  var isXorFilter = filterLogic.toLowerCase().trim() === __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["g" /* FILTER_TYPES */].XOR;
+  var isCarouselContainer = authoredLayoutContainer === __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["k" /* LAYOUT_CONTAINER */].CAROUSEL;
+  var isStandardContainer = authoredLayoutContainer !== __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["k" /* LAYOUT_CONTAINER */].CAROUSEL;
+  var isCategoriesContainer = authoredLayoutContainer === __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["k" /* LAYOUT_CONTAINER */].CATEGORIES;
 
-    /**
-     **** Authored Configs ****
-     */
-    var filterPanelEnabled = getConfig('filterPanel', 'enabled');
-    var filterPanelType = getConfig('filterPanel', 'type');
-    var paginationType = getConfig('pagination', 'type');
-    var paginationIsEnabled = getConfig('pagination', 'enabled');
-    var resultsPerPage = getConfig('collection', 'resultsPerPage');
-    var onlyShowBookmarks = getConfig('bookmarks', 'leftFilterPanel.bookmarkOnlyCollection');
-    var authoredFilters = getConfig('filterPanel', 'filters');
-    var filterLogic = getConfig('filterPanel', 'filterLogic').toLowerCase().trim();
-    var totalCardLimit = getConfig('collection', 'totalCardsToShow');
-    var sampleSize = getConfig('collection', 'reservoir.sample');
-    var reservoirSize = getConfig('collection', 'reservoir.pool');
-    var searchFields = getConfig('search', 'searchFields');
-    var sortOptions = getConfig('sort', 'options');
-    var defaultSort = getConfig('sort', 'defaultSort');
-    var defaultSortOption = (0, _consonant.getDefaultSortOption)(config, defaultSort);
-    var featuredCards = getConfig('featuredCards', '').toString().replace(/\[|\]/g, '').replace(/`/g, '').split(',');
-    // eslint-disable-next-line no-use-before-define,max-len
-    featuredCards = featuredCards.concat(featuredCards.map(function (id) {
-        return rollingHash(id, CARD_HASH_LENGTH);
+  // eslint-disable-next-line no-use-before-define
+  var categories = getConfig('filterPanel', 'categories');
+  // eslint-disable-next-line no-use-before-define, max-len
+  var authoredCategories = isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : [];
+  var sanitizedEventFilter = eventFilter ? Object(__WEBPACK_IMPORTED_MODULE_8__Helpers_general__["z" /* sanitizeEventFilter */])(eventFilter) : [];
+
+  /**
+   **** Hooks ****
+   */
+  /**
+   * @typedef {Array} timedCollection - result of Timed Event Sort
+   * @description — As an alternative/iteration on filtered cards for timed
+   * collections
+   * @typedef {Function} setTimedCollection
+   * @description - Sets timedCollection after setTimeout triggers
+   *
+   * @type {[Array, Function]} timedCollection
+   */
+  /* eslint-disable no-unused-vars */
+  var _useState = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])([]),
+    _useState2 = _slicedToArray(_useState, 2),
+    timedCollection = _useState2[0],
+    setTimedCollection = _useState2[1];
+  /**
+   * @typedef {Number} transition - MS to next transition
+   * @description —  set by eventSort, from cardFilteret.nextTransitionMs
+   * @typedef {Function} setTransition
+   * @description - next Transition trigger
+   *
+   * @type {[Number, Function]} transition
+   */
+  /* eslint-disable no-unused-vars */
+  var _useState3 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(0),
+    _useState4 = _slicedToArray(_useState3, 2),
+    transition = _useState4[0],
+    setTransition = _useState4[1];
+  var _useState5 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(0),
+    _useState6 = _slicedToArray(_useState5, 2),
+    cardCount = _useState6[0],
+    setCardCount = _useState6[1];
+  var _useState7 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(false),
+    _useState8 = _slicedToArray(_useState7, 2),
+    isPartialLoad = _useState8[0],
+    setIsPartialLoad = _useState8[1];
+  var hashedRef = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useRef"])(false);
+  var _React$useState = __WEBPACK_IMPORTED_MODULE_0_react___default.a.useState(),
+    _React$useState2 = _slicedToArray(_React$useState, 2),
+    updateState = _React$useState2[1];
+  var scrollElementRef = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useRef"])(null);
+  var nextTransition = __WEBPACK_IMPORTED_MODULE_0_react___default.a.useCallback(function () {
+    return updateState({});
+  }, []);
+  /**
+   * @typedef {Object} urlState
+   * @description — object with url query values
+   *
+   * @typedef {Function} setUrlState
+   * @description - set url query value by key
+   *
+   * @typedef {Function} clearUrlState
+   * @description - clear whole url query state
+   *
+   * @type {[Object, Function, Function]} OpenDropdown
+   */
+  var _useURLState = Object(__WEBPACK_IMPORTED_MODULE_20__Helpers_hooks__["d" /* useURLState */])(),
+    _useURLState2 = _slicedToArray(_useURLState, 3),
+    urlState = _useURLState2[0],
+    setUrlState = _useURLState2[1],
+    clearUrlState = _useURLState2[2];
+
+  /**
+   * @typedef {Number} OpenDropdownState - Id of a selected dropdown
+   * @description — Passed in Context Provider So All Nested Components can be in sync
+   *
+   * @typedef {Function} OpenDropdownStateSetter
+   * @description
+   *
+   * @type {[Number, Function]} OpenDropdown
+   */
+  var _useState9 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(null),
+    _useState0 = _slicedToArray(_useState9, 2),
+    openDropdown = _useState0[0],
+    setOpenDropdown = _useState0[1];
+
+  /**
+   * @typedef {Array} BookmarkedCardIdsState — Initiailzed From Local Storage
+   *
+   * @typedef {Function} BookmarkedCardIdsSetter — Sets internal state of saved bookmarks
+   *
+   * @type {[Array, Function]} BookmarkedCardIds
+   */
+  var _useState1 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(Object(__WEBPACK_IMPORTED_MODULE_8__Helpers_general__["w" /* readBookmarksFromLocalStorage */])()),
+    _useState10 = _slicedToArray(_useState1, 2),
+    bookmarkedCardIds = _useState10[0],
+    setBookmarkedCardIds = _useState10[1];
+  var _useState11 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(Object(__WEBPACK_IMPORTED_MODULE_8__Helpers_general__["x" /* readInclusionsFromLocalStorage */])()),
+    _useState12 = _slicedToArray(_useState11, 1),
+    inclusionIds = _useState12[0];
+
+  /**
+   * @typedef {Number} CurrentPageState — Initialized to the first page
+   * @description Same page state for 'Load More' or 'Paginator'
+   *
+   * @typedef {Function} CurrentPageStateSetter — Sets page as user navigates through pages
+   *
+   * @type {[Number, Function]} CurrentPage
+   */
+  var _useState13 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(+urlState.page || 1),
+    _useState14 = _slicedToArray(_useState13, 2),
+    currentPage = _useState14[0],
+    setCurrentPage = _useState14[1];
+
+  /**
+   * @typedef {Array} FiltersState — Contains Filters For Filter Panel
+   * @description Same Filter state for Left or Top
+   *
+   * @typedef {Function} FiltersStateSetter — Sets Authored Filters as State
+   *
+   * @type {[Array, Function]} Filters
+   */
+  var _useState15 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])([]),
+    _useState16 = _slicedToArray(_useState15, 2),
+    filters = _useState16[0],
+    setFilters = _useState16[1];
+  // window.filters = filters;
+  var _useState17 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])([]),
+    _useState18 = _slicedToArray(_useState17, 2),
+    currCategories = _useState18[0],
+    setCategories = _useState18[1];
+
+  /**
+   * @typedef {String} SearchQueryState — Will be used to search through cards
+   * @typedef {Function} SearchQueryStateSetter — Sets user search query
+   *
+   * @type {[String, Function]} SearchQuery
+   */
+  var _useState19 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(''),
+    _useState20 = _slicedToArray(_useState19, 2),
+    searchQuery = _useState20[0],
+    setSearchQuery = _useState20[1];
+  var _useState21 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(''),
+    _useState22 = _slicedToArray(_useState21, 2),
+    selectedCategory = _useState22[0],
+    setSelectedCategory = _useState22[1];
+
+  /**
+   * @typedef {String} SortOpenedState — Toggles Sort Popup Opened Or Closed
+   * @typedef {Function} SortOpenedStateSetter — Sets Sort Option
+   *
+   * @type {[Boolean, Function]} SortOpened
+   */
+  var _useState23 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(false),
+    _useState24 = _slicedToArray(_useState23, 2),
+    sortOpened = _useState24[0],
+    setSortOpened = _useState24[1];
+
+  /**
+   * @typedef {String} SortOptionState — Can be one of a range of types
+   * @description 'Title (A-Z)', 'Title (Z-A), Date (New to Old), Date (Old to New), Featured
+   *
+   * @typedef {Function} SortOptionStateSetter — Sets Sort Option
+   *
+   * @type {[String, Function]} SortOption
+   */
+  var _useState25 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(defaultSortOption),
+    _useState26 = _slicedToArray(_useState25, 2),
+    sortOption = _useState26[0],
+    setSortOption = _useState26[1];
+  if (sortOption.sort === __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["s" /* SORT_TYPES */].RANDOM) {
+    totalCardLimit = sampleSize;
+  }
+
+  /**
+   * @typedef {Boolean} WindowWidthState — Can either be true or false
+   * @description Used to toggle between mobile and desktop layouts
+   *
+   * @typedef {Function} WindowWidthStateSetter — Updates window width
+   *
+   * @type {[Number]} WindowWidth
+   */
+  var _useWindowDimensions = Object(__WEBPACK_IMPORTED_MODULE_20__Helpers_hooks__["e" /* useWindowDimensions */])(),
+    windowWidth = _useWindowDimensions.width;
+
+  /**
+   * @typedef {Boolean} ShowMobileFiltersState — Can either be true or false
+   * @description When true mobile filters will appear on the page
+   *
+   * @typedef {Function} ShowMobileFiltersStateSetter
+   * @description Toggles mobile filter header/footer to show or hide
+   *
+   * @type {[Boolean, Function]} ShowMobileFilters
+   */
+  var _useState27 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(false),
+    _useState28 = _slicedToArray(_useState27, 2),
+    showMobileFilters = _useState28[0],
+    setShowMobileFilters = _useState28[1];
+
+  /**
+   * @typedef {Boolean} ShowBookmarkState — Can either be true or false
+   * @description For Top Filter Panel, there is a limit to how many filter groups can show
+   *
+   * @typedef {Function} ShowBookmarkStateSetter — Sets limit on filter quantity
+   * @description When over allowed Filter Group Quantity - A "More +" button appears
+   *
+   * @type {[Boolean, Function]} ShowBookmarks
+   */
+  var _useState29 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(false),
+    _useState30 = _slicedToArray(_useState29, 2),
+    showBookmarks = _useState30[0],
+    setShowBookmarks = _useState30[1];
+
+  /**
+   * @typedef {Boolean} LimitFilterQuantityState — Can either be true or false
+   * @description For Top Filter Panel, there is a limit to how many filter groups can show
+   *
+   * @typedef {Function} LimitFilterQuantityStateSetter — Sets limit on filter quantity
+   * @description When over allowed Filter Group Quantity - A "More +" button appears
+   *
+   * @type {[Boolean, Function]} LimitFilterQuantity
+   */
+  var _useState31 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(filterPanelType === 'top'),
+    _useState32 = _slicedToArray(_useState31, 2),
+    showLimitedFiltersQty = _useState32[0],
+    setShowLimitedFiltersQty = _useState32[1];
+
+  /**
+   * @typedef {Array} CardState
+   * @description sets cards retrieved either server side render or API call
+   *
+   * @typedef {Function} CardStateSetter
+   * @description E.g. Render Featured Cards Server side, While collection cards from API call
+   *
+   * @type {[Array, Function]} Cards
+   */
+  var _useState33 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])([]),
+    _useState34 = _slicedToArray(_useState33, 2),
+    cards = _useState34[0],
+    setCards = _useState34[1];
+
+  /**
+   * @typedef {Boolean} LoadingState — Can either be true or false
+   * @description When true a loading spinner will appear on the page
+   *
+   * @typedef {Function} LoadingStateSetter — Sets loader true or false
+   * @description True while waiting for API response. False on cards retrieved or api failure
+   *
+   * @type {[Boolean, Function]} Loading
+   */
+  var _useState35 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(false),
+    _useState36 = _slicedToArray(_useState35, 2),
+    isLoading = _useState36[0],
+    setLoading = _useState36[1];
+
+  /**
+   * @typedef {Boolean} ApiFailureState — Can either be true or false
+   * @description When true an API error has occured
+   *
+   * @typedef {Function} ApiFailureStateSetter — Sets API failure flag true or false
+   * @description True when retrieved or api failure. False otherwise
+   *
+   * @type {[Boolean, Function]} ApiFailure
+   */
+  var _useState37 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(false),
+    _useState38 = _slicedToArray(_useState37, 2),
+    isApiFailure = _useState38[0],
+    setApiFailure = _useState38[1];
+  var _useState39 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(null),
+    _useState40 = _slicedToArray(_useState39, 2),
+    randomSortId = _useState40[0],
+    setRandomSortId = _useState40[1];
+  var _useState41 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(true),
+    _useState42 = _slicedToArray(_useState41, 2),
+    isFirstLoad = _useState42[0],
+    setIsFirstLoad = _useState42[1];
+  var _useState43 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(),
+    _useState44 = _slicedToArray(_useState43, 2),
+    visibleStamp = _useState44[0],
+    setVisibleStamp = _useState44[1];
+  var _useState45 = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(false),
+    _useState46 = _slicedToArray(_useState45, 2),
+    hasFetched = _useState46[0],
+    setHasFetched = _useState46[1];
+
+  /**
+   * Creates a DOM reference to first filter item
+   * @returns {Object} - filter item DOM reference
+   */
+  var filterItemRef = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0_react__["createRef"])();
+
+  /**
+   * Creates a DOM reference to filter info button
+   * @returns {Object} - filter info DOM reference
+   */
+  var filterInfoRef = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0_react__["createRef"])();
+  function rollingHash(s, l) {
+    if (!s) {
+      return '';
+    }
+    var BASE = 53;
+    var MOD = Math.pow(10, l) + 7;
+    var hash = 0;
+    var basePower = 1;
+    for (var i = 0; i < s.length; i++) {
+      hash = (hash + (s.charCodeAt(i) - 97 + 1) * basePower) % MOD;
+      basePower = basePower * BASE % MOD;
+    }
+    return ((hash + MOD) % MOD).toString(36);
+  }
+
+  /**
+   * For a given group of filters, it will unselect all of them
+   * @param {Array} filterGroups - a group of filters
+   * @returns {Array} fitlerGroups - the updated group of filters
+   */
+  var getAllFiltersClearedState = function getAllFiltersClearedState(filterGroups) {
+    return filterGroups.map(function (filterGroup) {
+      return _objectSpread(_objectSpread({}, filterGroup), {}, {
+        items: filterGroup.items.map(function (filterItem) {
+          return _objectSpread(_objectSpread({}, filterItem), {}, {
+            selected: false
+          });
+        })
+      });
+    });
+  };
+
+  /**
+   * For a given group of filters, it will unselect the one with a given id
+   * @param {Number} id - the id of an individual filter item
+   * @param {Array} filterGroups - a group of filters
+   * @returns {Array} fitlerGroups - the updated group of filters
+   */
+  var getFilterItemClearedState = function getFilterItemClearedState(id, filterGroups) {
+    return filterGroups.map(function (filterGroup) {
+      if (filterGroup.id !== id) {
+        return filterGroup;
+      }
+      return _objectSpread(_objectSpread({}, filterGroup), {}, {
+        items: filterGroup.items.map(function (filterItem) {
+          return _objectSpread(_objectSpread({}, filterItem), {}, {
+            selected: false
+          });
+        })
+      });
+    });
+  };
+
+  /**
+   * Will uncheck a filter with a given id
+   * @param {Number} id - the id of an individual filter item
+   * @returns {Void} - an updated state
+   */
+  var clearFilterItem = function clearFilterItem(id) {
+    var group = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+    setFilters(function (prevFilters) {
+      var filterClearedState = getFilterItemClearedState(id, prevFilters);
+      return filterClearedState;
+    });
+    var urlParams = new URLSearchParams(window.location.search);
+    clearUrlState();
+    // actually clear the url state
+    urlParams.forEach(function (value, key) {
+      var chFilter = key.toLowerCase().replace('ch_', '').replace(/ /g, '-');
+      if (key.indexOf(filterGroupPrefix) !== 0 && !id.toLowerCase().includes(chFilter) || !group.toLowerCase().replace(/ /g, '-').includes(chFilter)) {
+        setUrlState(key, value.replace(/%20/g, ' '));
+      }
+    });
+  };
+
+  /**
+   * Will uncheck all filter items
+   * @returns {Void} - an updated state
+   */
+  var clearAllFilters = function clearAllFilters() {
+    setFilters(function (prevFilters) {
+      var allFiltersClearedState = getAllFiltersClearedState(prevFilters);
+      return allFiltersClearedState;
+    });
+    var urlParams = new URLSearchParams(window.location.search);
+    clearUrlState();
+    urlParams.forEach(function (value, key) {
+      if (key.indexOf(filterGroupPrefix) !== 0) setUrlState(key, value);
+    });
+  };
+
+  /**
+   * Resets filters, and search to empty. Hides bookmark filter
+   * @returns {Void} - an updated state
+   */
+  var resetFiltersSearchAndBookmarks = function resetFiltersSearchAndBookmarks() {
+    clearAllFilters();
+    setSearchQuery('');
+    var urlParams = new URLSearchParams(window.location.search);
+    clearUrlState();
+    urlParams.forEach(function (value, key) {
+      if (key.indexOf(filterGroupPrefix) === -1 && key.indexOf(searchPrefix) === -1) setUrlState(key, value);
+    });
+    setShowBookmarks(false);
+  };
+
+  /**
+   **** EVENT HANDLERS ****
+   */
+
+  /**
+   * On Load More Button Click, Increment Page Cuonter By 1
+   *
+   * @param {ClickEvent} e
+   * @listens ClickEvent
+   */
+  var onLoadMoreClick = function onLoadMoreClick() {
+    setCurrentPage(function (prevState) {
+      return prevState + 1;
+    });
+    window.scrollTo(0, window.pageYOffset);
+  };
+
+  /**
+   * Takes sort user selects and sets it so cards are sorted
+   *
+   * @param {ClickEvent} e - The observable event.
+   * @listens ClickEvent
+   */
+  var handleSortChange = function handleSortChange(option) {
+    setSortOption(option);
+    setSortOpened(false);
+    setIsFirstLoad(false);
+  };
+
+  /**
+   * Handles whenever the search box is clicked or input field
+   * changes
+   *
+   * @param {ClickEvent, ChangeEvent} e
+   * @listens ClickEvent, ChangeEvent
+   */
+  var handleSearchInputChange = function handleSearchInputChange(val) {
+    setSearchQuery(val);
+    setCurrentPage(1);
+    setUrlState(searchPrefix, val);
+  };
+
+  /**
+   * Handles when a group of filters is clicked. Behavior should be
+   * to toggle group open or closed
+   *
+   * @param {ClickEvent} e - The observable event.
+   * @listens ClickEvent
+   */
+  var handleFilterGroupClick = function handleFilterGroupClick(filterId) {
+    setFilters(function (prevFilters) {
+      var opened;
+      return prevFilters.map(function (el) {
+        if (el.id === filterId) {
+          opened = !el.opened;
+        } else {
+          // eslint-disable-next-line prefer-destructuring
+          opened = el.opened;
+        }
+        return _objectSpread(_objectSpread({}, el), {}, {
+          opened: opened
+        });
+      });
+    });
+  };
+
+  /**
+   * Will find and set needed filter to url
+   *
+   * @param {string} filterId - selected filter group id
+   * @param {string} itemId - selected filter item id
+   * @param {boolean} isChecked
+   * @returns {Void} - an updated url
+   */
+  var changeUrlState = function changeUrlState(filterId, itemId, isChecked) {
+    var _filters$find = filters.find(function (_ref2) {
+        var id = _ref2.id;
+        return id === filterId;
+      }),
+      group = _filters$find.group,
+      items = _filters$find.items;
+    var _items$find = items.find(function (_ref3) {
+        var id = _ref3.id;
+        return id === itemId;
+      }),
+      label = _items$find.label;
+    var urlStateValue = urlState[filterGroupPrefix + group] || [];
+    /* istanbul ignore if  */
+    if (typeof urlStateValue === 'string') {
+      urlStateValue = urlStateValue.split(',');
+    }
+    var value = isChecked ? [].concat(_toConsumableArray(urlStateValue), [label]) : urlStateValue.filter(function (item) {
+      return item !== label;
+    });
+    setUrlState(filterGroupPrefix + group, value);
+  };
+
+  /**
+   * Handles what happens when a specific filter item (checkbox)
+   * is clicked
+   *
+   * @param {CheckboxClickEvent} e
+   * @listens CheckboxClickEvent
+   */
+  var handleCheckBoxChange = function handleCheckBoxChange(filterId, itemId, isChecked) {
+    if (isXorFilter && isChecked) {
+      clearAllFilters();
+    }
+    setFilters(function (prevFilters) {
+      return prevFilters.map(function (filter) {
+        if (filter.id !== filterId) return filter;
+        return _objectSpread(_objectSpread({}, filter), {}, {
+          items: filter.items.map(function (item) {
+            return _objectSpread(_objectSpread({}, item), {}, {
+              selected: item.id === itemId ? !item.selected : item.selected
+            });
+          })
+        });
+      });
+    });
+    setCurrentPage(1);
+    changeUrlState(filterId, itemId, isChecked);
+  };
+
+  /**
+   * Shows/Hides Mobile Filter Panel
+   *
+   * @param {ClickEvent} e
+   * @listens ClickEvent
+   */
+  var handleMobileFiltersToggle = function handleMobileFiltersToggle() {
+    return setShowMobileFilters(function (prev) {
+      return !prev;
+    });
+  };
+
+  /**
+   * When a card's bookmark icon is clicked, save the card
+   *
+   * @param {ClickEvent} e
+   * @listens ClickEvent
+   */
+  var handleCardBookmarking = function handleCardBookmarking(id) {
+    // Update bookmarked IDs
+    var cardIsBookmarked = bookmarkedCardIds.find(function (card) {
+      return card === id;
+    });
+    if (cardIsBookmarked) {
+      setBookmarkedCardIds(function (prev) {
+        return prev.filter(function (el) {
+          return el !== id;
+        });
+      });
+    } else {
+      setBookmarkedCardIds(function (prev) {
+        return [].concat(_toConsumableArray(prev), [id]);
+      });
+    }
+  };
+
+  /**
+   * Will show  or hide all saved bookmarks when clicked
+   *
+   * @param {ClickEvent} e
+   * @listens ClickEvent
+   */
+  var handleShowBookmarksFilterClick = function handleShowBookmarksFilterClick(e) {
+    e.stopPropagation();
+    setShowBookmarks(function (prev) {
+      return !prev;
+    });
+    setCurrentPage(1);
+  };
+
+  /**
+   * If top filter panel, toggle or hide more button
+   *
+   * @param {ClickEvent} e
+   * @listens ClickEvent
+   */
+  var handleShowAllTopFilters = function handleShowAllTopFilters() {
+    setShowLimitedFiltersQty(function (prev) {
+      return !prev;
+    });
+  };
+
+  /**
+   * On window click, all dropdowns should hide
+   *
+   * @param {ClickEvent} e
+   * @listens ClickEvent
+   */
+  var handleWindowClick = function handleWindowClick() {
+    setOpenDropdown(null);
+  };
+
+  /**
+   * Handles escape for mobile filter dialog
+   *
+   * @param event
+   */
+  var handleMobileFilterEscape = function handleMobileFilterEscape(event) {
+    if (event.key !== 'Escape' && event.key !== 'Esc') return;
+    setShowMobileFilters(false);
+  };
+
+  /**
+   **** Effects ****
+   */
+
+  /**
+   * Sets authored filters as state
+   * @returns {Void} - an updated state
+   */
+
+  Object(__WEBPACK_IMPORTED_MODULE_0_react__["useEffect"])(function () {
+    setFilters(authoredFilters.map(function (filterGroup) {
+      return _objectSpread(_objectSpread({}, filterGroup), {}, {
+        opened: DESKTOP_SCREEN_SIZE ? filterGroup.openedOnLoad : true,
+        items: filterGroup.items.map(function (filterItem) {
+          return _objectSpread(_objectSpread({}, filterItem), {}, {
+            selected: false
+          });
+        })
+      });
     }));
-    var hideCtaIds = getConfig('hideCtaIds', '').toString().replace(/\[|\]/g, '').replace(/`/g, '').split(',');
-    // eslint-disable-next-line no-use-before-define
-    hideCtaIds = hideCtaIds.concat(hideCtaIds.map(function (id) {
-        return rollingHash(id, CARD_HASH_LENGTH);
-    }));
-    var hideCtaTags = getConfig('hideCtaTags', '').toString().replace(/\[|\]/g, '').replace(/`/g, '').split(',');
-    var leftPanelSearchPlaceholder = getConfig('search', 'i18n.leftFilterPanel.searchPlaceholderText');
-    var topPanelSearchPlaceholder = getConfig('search', 'i18n.topFilterPanel.searchPlaceholderText');
-    var searchPlaceholderText = getConfig('search', 'i18n.filterInfo.searchPlaceholderText');
-    var noResultsTitle = getConfig('search', 'i18n.noResultsTitle');
-    var noResultsDescription = getConfig('search', 'i18n.noResultsDescription');
-    var apiFailureTitle = getConfig('collection', 'i18n.onErrorTitle');
-    var apiFailureDescription = getConfig('collection', 'i18n.onErrorDescription');
-    var isLazy = getConfig('collection', 'lazyload');
-    var trackImpressions = getConfig('analytics', 'trackImpressions');
-    var collectionIdentifier = getConfig('analytics', 'collectionIdentifier');
-    var targetEnabled = getConfig('target', 'enabled');
-    var useLastViewedSession = getConfig('target', 'lastViewedSession');
-    var authoredMode = getConfig('collection', 'mode');
-    var authoredLayoutContainer = getConfig('collection', 'layout.container');
-    var showEmptyFilters = getConfig('filterPanel', 'showEmptyFilters');
-    var eventFilter = getConfig('filterPanel', 'eventFilter');
-    var searchEnabled = getConfig('search', 'enabled');
-    var sortEnabled = getConfig('sort', 'enabled');
-    var cardStyle = getConfig('collection', 'cardStyle');
-    var title = getConfig('collection', 'i18n.title');
-    var headers = getConfig('headers', '');
-    var partialLoadWithBackgroundFetch = getConfig('collection', 'partialLoadWithBackgroundFetch.enabled');
-    var partialLoadCount = getConfig('collection', 'partialLoadWithBackgroundFetch.partialLoadCount');
-    /**
-     **** Constants ****
-     */
-    var DESKTOP_SCREEN_SIZE = window.innerWidth >= _constants.DESKTOP_MIN_WIDTH;
-    var isXorFilter = filterLogic.toLowerCase().trim() === _constants.FILTER_TYPES.XOR;
-    var isCarouselContainer = authoredLayoutContainer === _constants.LAYOUT_CONTAINER.CAROUSEL;
-    var isStandardContainer = authoredLayoutContainer !== _constants.LAYOUT_CONTAINER.CAROUSEL;
-    var isCategoriesContainer = authoredLayoutContainer === _constants.LAYOUT_CONTAINER.CATEGORIES;
+  }, []);
 
-    // eslint-disable-next-line no-use-before-define
-    var categories = getConfig('filterPanel', 'categories');
-    // eslint-disable-next-line no-use-before-define, max-len
-    var authoredCategories = isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : [];
-    var sanitizedEventFilter = eventFilter ? (0, _general.sanitizeEventFilter)(eventFilter) : [];
-
-    /**
-     **** Hooks ****
-     */
-    /**
-     * @typedef {Array} timedCollection - result of Timed Event Sort
-     * @description — As an alternative/iteration on filtered cards for timed
-     * collections
-     * @typedef {Function} setTimedCollection
-     * @description - Sets timedCollection after setTimeout triggers
-     *
-     * @type {[Array, Function]} timedCollection
-     */
-    /* eslint-disable no-unused-vars */
-
-    var _useState = (0, _react.useState)([]),
-        _useState2 = _slicedToArray(_useState, 2),
-        timedCollection = _useState2[0],
-        setTimedCollection = _useState2[1];
-    /**
-     * @typedef {Number} transition - MS to next transition
-     * @description —  set by eventSort, from cardFilteret.nextTransitionMs
-     * @typedef {Function} setTransition
-     * @description - next Transition trigger
-     *
-     * @type {[Number, Function]} transition
-     */
-    /* eslint-disable no-unused-vars */
-
-
-    var _useState3 = (0, _react.useState)(0),
-        _useState4 = _slicedToArray(_useState3, 2),
-        transition = _useState4[0],
-        setTransition = _useState4[1];
-
-    var _useState5 = (0, _react.useState)(0),
-        _useState6 = _slicedToArray(_useState5, 2),
-        cardCount = _useState6[0],
-        setCardCount = _useState6[1];
-
-    var _useState7 = (0, _react.useState)(false),
-        _useState8 = _slicedToArray(_useState7, 2),
-        isPartialLoad = _useState8[0],
-        setIsPartialLoad = _useState8[1];
-
-    var hashedRef = (0, _react.useRef)(false);
-
-    var _React$useState = _react2.default.useState(),
-        _React$useState2 = _slicedToArray(_React$useState, 2),
-        updateState = _React$useState2[1];
-
-    var scrollElementRef = (0, _react.useRef)(null);
-    var nextTransition = _react2.default.useCallback(function () {
-        return updateState({});
-    }, []);
-    /**
-     * @typedef {Object} urlState
-     * @description — object with url query values
-     *
-     * @typedef {Function} setUrlState
-     * @description - set url query value by key
-     *
-     * @typedef {Function} clearUrlState
-     * @description - clear whole url query state
-     *
-     * @type {[Object, Function, Function]} OpenDropdown
-     */
-
-    var _useURLState = (0, _hooks.useURLState)(),
-        _useURLState2 = _slicedToArray(_useURLState, 3),
-        urlState = _useURLState2[0],
-        setUrlState = _useURLState2[1],
-        clearUrlState = _useURLState2[2];
-
-    /**
-     * @typedef {Number} OpenDropdownState - Id of a selected dropdown
-     * @description — Passed in Context Provider So All Nested Components can be in sync
-     *
-     * @typedef {Function} OpenDropdownStateSetter
-     * @description
-     *
-     * @type {[Number, Function]} OpenDropdown
-     */
-
-
-    var _useState9 = (0, _react.useState)(null),
-        _useState10 = _slicedToArray(_useState9, 2),
-        openDropdown = _useState10[0],
-        setOpenDropdown = _useState10[1];
-
-    /**
-     * @typedef {Array} BookmarkedCardIdsState — Initiailzed From Local Storage
-     *
-     * @typedef {Function} BookmarkedCardIdsSetter — Sets internal state of saved bookmarks
-     *
-     * @type {[Array, Function]} BookmarkedCardIds
-     */
-
-
-    var _useState11 = (0, _react.useState)((0, _general.readBookmarksFromLocalStorage)()),
-        _useState12 = _slicedToArray(_useState11, 2),
-        bookmarkedCardIds = _useState12[0],
-        setBookmarkedCardIds = _useState12[1];
-
-    var _useState13 = (0, _react.useState)((0, _general.readInclusionsFromLocalStorage)()),
-        _useState14 = _slicedToArray(_useState13, 1),
-        inclusionIds = _useState14[0];
-
-    /**
-     * @typedef {Number} CurrentPageState — Initialized to the first page
-     * @description Same page state for 'Load More' or 'Paginator'
-     *
-     * @typedef {Function} CurrentPageStateSetter — Sets page as user navigates through pages
-     *
-     * @type {[Number, Function]} CurrentPage
-     */
-
-
-    var _useState15 = (0, _react.useState)(+urlState.page || 1),
-        _useState16 = _slicedToArray(_useState15, 2),
-        currentPage = _useState16[0],
-        setCurrentPage = _useState16[1];
-
-    /**
-     * @typedef {Array} FiltersState — Contains Filters For Filter Panel
-     * @description Same Filter state for Left or Top
-     *
-     * @typedef {Function} FiltersStateSetter — Sets Authored Filters as State
-     *
-     * @type {[Array, Function]} Filters
-     */
-
-
-    var _useState17 = (0, _react.useState)([]),
-        _useState18 = _slicedToArray(_useState17, 2),
-        filters = _useState18[0],
-        setFilters = _useState18[1];
-    // window.filters = filters;
-
-
-    var _useState19 = (0, _react.useState)([]),
-        _useState20 = _slicedToArray(_useState19, 2),
-        currCategories = _useState20[0],
-        setCategories = _useState20[1];
-
-    /**
-     * @typedef {String} SearchQueryState — Will be used to search through cards
-     * @typedef {Function} SearchQueryStateSetter — Sets user search query
-     *
-     * @type {[String, Function]} SearchQuery
-     */
-
-
-    var _useState21 = (0, _react.useState)(''),
-        _useState22 = _slicedToArray(_useState21, 2),
-        searchQuery = _useState22[0],
-        setSearchQuery = _useState22[1];
-
-    var _useState23 = (0, _react.useState)(''),
-        _useState24 = _slicedToArray(_useState23, 2),
-        selectedCategory = _useState24[0],
-        setSelectedCategory = _useState24[1];
-
-    /**
-     * @typedef {String} SortOpenedState — Toggles Sort Popup Opened Or Closed
-     * @typedef {Function} SortOpenedStateSetter — Sets Sort Option
-     *
-     * @type {[Boolean, Function]} SortOpened
-     */
-
-
-    var _useState25 = (0, _react.useState)(false),
-        _useState26 = _slicedToArray(_useState25, 2),
-        sortOpened = _useState26[0],
-        setSortOpened = _useState26[1];
-
-    /**
-     * @typedef {String} SortOptionState — Can be one of a range of types
-     * @description 'Title (A-Z)', 'Title (Z-A), Date (New to Old), Date (Old to New), Featured
-     *
-     * @typedef {Function} SortOptionStateSetter — Sets Sort Option
-     *
-     * @type {[String, Function]} SortOption
-     */
-
-
-    var _useState27 = (0, _react.useState)(defaultSortOption),
-        _useState28 = _slicedToArray(_useState27, 2),
-        sortOption = _useState28[0],
-        setSortOption = _useState28[1];
-
-    if (sortOption.sort === _constants.SORT_TYPES.RANDOM) {
-        totalCardLimit = sampleSize;
+  /**
+   * Sets filters from url as state
+   * @returns {Void} - an updated state
+   */
+  Object(__WEBPACK_IMPORTED_MODULE_0_react__["useEffect"])(function () {
+    setFilters(function (origin) {
+      return origin.map(function (filter) {
+        var group = filter.group,
+          items = filter.items;
+        var urlStateValue = urlState[filterGroupPrefix + group];
+        if (!urlStateValue) return filter;
+        /* istanbul ignore next  */
+        var urlStateArray = urlStateValue.split(',');
+        return _objectSpread(_objectSpread({}, filter), {}, {
+          opened: true,
+          /* istanbul ignore next */
+          items: items.map(function (item) {
+            return _objectSpread(_objectSpread({}, item), {}, {
+              selected: urlStateArray.includes(String(item.label))
+            });
+          })
+        });
+      });
+    });
+    var urlSearchValue = urlState[searchPrefix];
+    if (urlSearchValue) {
+      setSearchQuery(urlSearchValue[0]);
     }
+  }, []);
+  Object(__WEBPACK_IMPORTED_MODULE_0_react__["useEffect"])(function () {
+    setRandomSortId(Math.floor(Math.random() * 10e12));
+  }, []);
 
-    /**
-     * @typedef {Boolean} WindowWidthState — Can either be true or false
-     * @description Used to toggle between mobile and desktop layouts
-     *
-     * @typedef {Function} WindowWidthStateSetter — Updates window width
-     *
-     * @type {[Number]} WindowWidth
-     */
+  /**
+   * Trigger after button load more click
+   * @returns {Void} - an updated url page
+   */
+  Object(__WEBPACK_IMPORTED_MODULE_0_react__["useEffect"])(function () {
+    setUrlState('page', currentPage === 1 ? '' : currentPage);
+  }, [currentPage]);
 
-    var _useWindowDimensions = (0, _hooks.useWindowDimensions)(),
-        windowWidth = _useWindowDimensions.width;
-
-    /**
-     * @typedef {Boolean} ShowMobileFiltersState — Can either be true or false
-     * @description When true mobile filters will appear on the page
-     *
-     * @typedef {Function} ShowMobileFiltersStateSetter
-     * @description Toggles mobile filter header/footer to show or hide
-     *
-     * @type {[Boolean, Function]} ShowMobileFilters
-     */
-
-
-    var _useState29 = (0, _react.useState)(false),
-        _useState30 = _slicedToArray(_useState29, 2),
-        showMobileFilters = _useState30[0],
-        setShowMobileFilters = _useState30[1];
-
-    /**
-     * @typedef {Boolean} ShowBookmarkState — Can either be true or false
-     * @description For Top Filter Panel, there is a limit to how many filter groups can show
-     *
-     * @typedef {Function} ShowBookmarkStateSetter — Sets limit on filter quantity
-     * @description When over allowed Filter Group Quantity - A "More +" button appears
-     *
-     * @type {[Boolean, Function]} ShowBookmarks
-     */
-
-
-    var _useState31 = (0, _react.useState)(false),
-        _useState32 = _slicedToArray(_useState31, 2),
-        showBookmarks = _useState32[0],
-        setShowBookmarks = _useState32[1];
-
-    /**
-     * @typedef {Boolean} LimitFilterQuantityState — Can either be true or false
-     * @description For Top Filter Panel, there is a limit to how many filter groups can show
-     *
-     * @typedef {Function} LimitFilterQuantityStateSetter — Sets limit on filter quantity
-     * @description When over allowed Filter Group Quantity - A "More +" button appears
-     *
-     * @type {[Boolean, Function]} LimitFilterQuantity
-     */
-
-
-    var _useState33 = (0, _react.useState)(filterPanelType === 'top'),
-        _useState34 = _slicedToArray(_useState33, 2),
-        showLimitedFiltersQty = _useState34[0],
-        setShowLimitedFiltersQty = _useState34[1];
-
-    /**
-     * @typedef {Array} CardState
-     * @description sets cards retrieved either server side render or API call
-     *
-     * @typedef {Function} CardStateSetter
-     * @description E.g. Render Featured Cards Server side, While collection cards from API call
-     *
-     * @type {[Array, Function]} Cards
-     */
-
-
-    var _useState35 = (0, _react.useState)([]),
-        _useState36 = _slicedToArray(_useState35, 2),
-        cards = _useState36[0],
-        setCards = _useState36[1];
-
-    /**
-     * @typedef {Boolean} LoadingState — Can either be true or false
-     * @description When true a loading spinner will appear on the page
-     *
-     * @typedef {Function} LoadingStateSetter — Sets loader true or false
-     * @description True while waiting for API response. False on cards retrieved or api failure
-     *
-     * @type {[Boolean, Function]} Loading
-     */
-
-
-    var _useState37 = (0, _react.useState)(false),
-        _useState38 = _slicedToArray(_useState37, 2),
-        isLoading = _useState38[0],
-        setLoading = _useState38[1];
-
-    /**
-     * @typedef {Boolean} ApiFailureState — Can either be true or false
-     * @description When true an API error has occured
-     *
-     * @typedef {Function} ApiFailureStateSetter — Sets API failure flag true or false
-     * @description True when retrieved or api failure. False otherwise
-     *
-     * @type {[Boolean, Function]} ApiFailure
-     */
-
-
-    var _useState39 = (0, _react.useState)(false),
-        _useState40 = _slicedToArray(_useState39, 2),
-        isApiFailure = _useState40[0],
-        setApiFailure = _useState40[1];
-
-    var _useState41 = (0, _react.useState)(null),
-        _useState42 = _slicedToArray(_useState41, 2),
-        randomSortId = _useState42[0],
-        setRandomSortId = _useState42[1];
-
-    var _useState43 = (0, _react.useState)(true),
-        _useState44 = _slicedToArray(_useState43, 2),
-        isFirstLoad = _useState44[0],
-        setIsFirstLoad = _useState44[1];
-
-    var _useState45 = (0, _react.useState)(),
-        _useState46 = _slicedToArray(_useState45, 2),
-        visibleStamp = _useState46[0],
-        setVisibleStamp = _useState46[1];
-
-    var _useState47 = (0, _react.useState)(false),
-        _useState48 = _slicedToArray(_useState47, 2),
-        hasFetched = _useState48[0],
-        setHasFetched = _useState48[1];
-
-    /**
-     * Creates a DOM reference to first filter item
-     * @returns {Object} - filter item DOM reference
-     */
-
-
-    var filterItemRef = (0, _react.createRef)();
-
-    /**
-     * Creates a DOM reference to filter info button
-     * @returns {Object} - filter info DOM reference
-     */
-    var filterInfoRef = (0, _react.createRef)();
-
-    /**
-     **** Helper Methods ****
-     */
-
-    function getParentChild(id) {
-        var i = id.length;
-        while (id[i] !== '/' && i >= 0) {
-            i--;
-        }
-        return [id.substring(0, i), id.substring(i + 1)];
+  /**
+   * This handles getting Cards, there are some conditions:
+   * - If target is not enabled a simple request is made without mods or delay.
+   * - If target is enabled & tVisitor API is present add values from Visitor
+   * - If target is enabled & the Visitor API is not present setTimeout with
+   * counter to recheck for the Visitor API. If 20 attempts are made w/o
+   * success fail the request.
+   * @returns {Void} - an updated state
+   */
+  Object(__WEBPACK_IMPORTED_MODULE_0_react__["useEffect"])(function () {
+    if (isLazy && visibleStamp || isLazy && !hasFetched) {
+      return;
     }
-
-    function rollingHash(s, l) {
-        if (!s) {
-            return '';
-        }
-        var BASE = 53;
-        var MOD = Math.pow(10, l) + 7;
-        var hash = 0;
-        var basePower = 1;
-        for (var i = 0; i < s.length; i++) {
-            hash = (hash + (s.charCodeAt(i) - 97 + 1) * basePower) % MOD;
-            basePower = basePower * BASE % MOD;
-        }
-        return ((hash + MOD) % MOD).toString(36);
+    var _window = window,
+      visitorPromise = _window.__satelliteLoadedPromise;
+    var collectionEndpoint = getConfig('collection', 'endpoint');
+    var fallbackEndpoint = getConfig('collection', 'fallbackEndpoint');
+    var r = new RegExp('^(?:[a-z]+:)?//', 'i');
+    var collectionEndpointURI;
+    if (r.test(collectionEndpoint)) {
+      collectionEndpointURI = new URL(collectionEndpoint);
+    } else {
+      collectionEndpointURI = new URL(collectionEndpoint, window.location.origin);
     }
+    if (!fallbackEndpoint) {
+      collectionEndpointURI.searchParams.set('flatFile', false);
+      collectionEndpoint = collectionEndpointURI.toString();
+    }
+    setLoading(true);
 
     /**
-     * For a given group of filters, it will unselect all of them
-     * @param {Array} filterGroups - a group of filters
-     * @returns {Array} fitlerGroups - the updated group of filters
-     */
-    var getAllFiltersClearedState = function getAllFiltersClearedState(filterGroups) {
-        return filterGroups.map(function (filterGroup) {
-            return _extends({}, filterGroup, {
-                items: filterGroup.items.map(function (filterItem) {
-                    return _extends({}, filterItem, {
-                        selected: false
-                    });
-                })
-            });
-        });
-    };
-
-    /**
-     * For a given group of filters, it will unselect the one with a given id
-     * @param {Number} id - the id of an individual filter item
-     * @param {Array} filterGroups - a group of filters
-     * @returns {Array} fitlerGroups - the updated group of filters
-     */
-    var getFilterItemClearedState = function getFilterItemClearedState(id, filterGroups) {
-        return filterGroups.map(function (filterGroup) {
-            if (filterGroup.id !== id) {
-                return filterGroup;
-            }
-            return _extends({}, filterGroup, {
-                items: filterGroup.items.map(function (filterItem) {
-                    return _extends({}, filterItem, {
-                        selected: false
-                    });
-                })
-            });
-        });
-    };
-
-    /**
-     * Will uncheck a filter with a given id
-     * @param {Number} id - the id of an individual filter item
+     * @func getCards
+     * @desc wraps fetch with function to make it reusable
+     *
+     * @param {String} endPoint, URL with params for card request
      * @returns {Void} - an updated state
      */
-    var clearFilterItem = function clearFilterItem(id) {
-        var group = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+    /* istanbul ignore next */
+    function getCards() {
+      var endPoint = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : collectionEndpoint;
+      var start = Date.now();
+      return window.fetch(endPoint, {
+        credentials: 'include',
+        headers: headers
+      }).then(function (resp) {
+        var ok = resp.ok,
+          status = resp.status,
+          statusText = resp.statusText,
+          url = resp.url;
+        if (ok) {
+          return resp.json().then(function (json) {
+            var validData = !!Object.keys(json).length;
+            if (validData) return json;
 
-        setFilters(function (prevFilters) {
-            var filterClearedState = getFilterItemClearedState(id, prevFilters);
-            return filterClearedState;
-        });
-
-        var urlParams = new URLSearchParams(window.location.search);
-        clearUrlState();
-        // actually clear the url state
-        urlParams.forEach(function (value, key) {
-            var chFilter = key.toLowerCase().replace('ch_', '').replace(/ /g, '-');
-            if (key.indexOf(filterGroupPrefix) !== 0 && !id.toLowerCase().includes(chFilter) || !group.toLowerCase().replace(/ /g, '-').includes(chFilter)) {
-                setUrlState(key, value.replace(/%20/g, ' '));
-            }
-        });
-    };
-
-    /**
-     * Will uncheck all filter items
-     * @returns {Void} - an updated state
-     */
-    var clearAllFilters = function clearAllFilters() {
-        setFilters(function (prevFilters) {
-            var allFiltersClearedState = getAllFiltersClearedState(prevFilters);
-            return allFiltersClearedState;
-        });
-
-        var urlParams = new URLSearchParams(window.location.search);
-
-        clearUrlState();
-        urlParams.forEach(function (value, key) {
-            if (key.indexOf(filterGroupPrefix) !== 0) setUrlState(key, value);
-        });
-    };
-
-    /**
-     * Resets filters, and search to empty. Hides bookmark filter
-     * @returns {Void} - an updated state
-     */
-    var resetFiltersSearchAndBookmarks = function resetFiltersSearchAndBookmarks() {
-        clearAllFilters();
-        setSearchQuery('');
-        var urlParams = new URLSearchParams(window.location.search);
-        clearUrlState();
-        urlParams.forEach(function (value, key) {
-            if (key.indexOf(filterGroupPrefix) === -1 && key.indexOf(searchPrefix) === -1) setUrlState(key, value);
-        });
-        setShowBookmarks(false);
-    };
-
-    /**
-     **** EVENT HANDLERS ****
-     */
-
-    /**
-     * On Load More Button Click, Increment Page Cuonter By 1
-     *
-     * @param {ClickEvent} e
-     * @listens ClickEvent
-     */
-    var onLoadMoreClick = function onLoadMoreClick() {
-        setCurrentPage(function (prevState) {
-            return prevState + 1;
-        });
-        window.scrollTo(0, window.pageYOffset);
-    };
-
-    /**
-     * Takes sort user selects and sets it so cards are sorted
-     *
-     * @param {ClickEvent} e - The observable event.
-     * @listens ClickEvent
-     */
-    var handleSortChange = function handleSortChange(option) {
-        setSortOption(option);
-        setSortOpened(false);
-        setIsFirstLoad(false);
-    };
-
-    /**
-     * Handles whenever the search box is clicked or input field
-     * changes
-     *
-     * @param {ClickEvent, ChangeEvent} e
-     * @listens ClickEvent, ChangeEvent
-     */
-    var handleSearchInputChange = function handleSearchInputChange(val) {
-        setSearchQuery(val);
-        setCurrentPage(1);
-        setUrlState(searchPrefix, val);
-    };
-
-    /**
-     * Handles when a group of filters is clicked. Behavior should be
-     * to toggle group open or closed
-     *
-     * @param {ClickEvent} e - The observable event.
-     * @listens ClickEvent
-     */
-    var handleFilterGroupClick = function handleFilterGroupClick(filterId) {
-        setFilters(function (prevFilters) {
-            var opened = void 0;
-            return prevFilters.map(function (el) {
-                if (el.id === filterId) {
-                    opened = !el.opened;
-                } else {
-                    // eslint-disable-next-line prefer-destructuring
-                    opened = el.opened;
-                }
-                return _extends({}, el, { opened: opened });
+            /* istanbul ignore next */
+            Object(__WEBPACK_IMPORTED_MODULE_4__Helpers_lana__["b" /* logLana */])({
+              message: "no valid response data from ".concat(endPoint),
+              tags: 'collection'
             });
-        });
-    };
-
-    /**
-     * Will find and set needed filter to url
-     *
-     * @param {string} filterId - selected filter group id
-     * @param {string} itemId - selected filter item id
-     * @param {boolean} isChecked
-     * @returns {Void} - an updated url
-     */
-    var changeUrlState = function changeUrlState(filterId, itemId, isChecked) {
-        var _filters$find = filters.find(function (_ref) {
-            var id = _ref.id;
-            return id === filterId;
-        }),
-            group = _filters$find.group,
-            items = _filters$find.items;
-
-        var _items$find = items.find(function (_ref2) {
-            var id = _ref2.id;
-            return id === itemId;
-        }),
-            label = _items$find.label;
-
-        var urlStateValue = urlState[filterGroupPrefix + group] || [];
-        /* istanbul ignore if  */
-        if (typeof urlStateValue === 'string') {
-            urlStateValue = urlStateValue.split(',');
+            /* istanbul ignore next */
+            return Promise.reject(new Error('no valid reponse data'));
+          });
         }
-
-        var value = isChecked ? [].concat(_toConsumableArray(urlStateValue), [label]) : urlStateValue.filter(function (item) {
-            return item !== label;
-        });
-
-        setUrlState(filterGroupPrefix + group, value);
-    };
-
-    /**
-     * Handles what happens when a specific filter item (checkbox)
-     * is clicked
-     *
-     * @param {CheckboxClickEvent} e
-     * @listens CheckboxClickEvent
-     */
-    var handleCheckBoxChange = function handleCheckBoxChange(filterId, itemId, isChecked) {
-        if (isXorFilter && isChecked) {
-            clearAllFilters();
-        }
-
-        setFilters(function (prevFilters) {
-            return prevFilters.map(function (filter) {
-                if (filter.id !== filterId) return filter;
-
-                return _extends({}, filter, {
-                    items: filter.items.map(function (item) {
-                        return _extends({}, item, {
-                            selected: item.id === itemId ? !item.selected : item.selected
-                        });
-                    })
-                });
-            });
-        });
-        setCurrentPage(1);
-        changeUrlState(filterId, itemId, isChecked);
-    };
-
-    /**
-     * Shows/Hides Mobile Filter Panel
-     *
-     * @param {ClickEvent} e
-     * @listens ClickEvent
-     */
-    var handleMobileFiltersToggle = function handleMobileFiltersToggle() {
-        return setShowMobileFilters(function (prev) {
-            return !prev;
-        });
-    };
-
-    /**
-     * When a card's bookmark icon is clicked, save the card
-     *
-     * @param {ClickEvent} e
-     * @listens ClickEvent
-     */
-    var handleCardBookmarking = function handleCardBookmarking(id) {
-        // Update bookmarked IDs
-        var cardIsBookmarked = bookmarkedCardIds.find(function (card) {
-            return card === id;
-        });
-
-        if (cardIsBookmarked) {
-            setBookmarkedCardIds(function (prev) {
-                return prev.filter(function (el) {
-                    return el !== id;
-                });
-            });
-        } else {
-            setBookmarkedCardIds(function (prev) {
-                return [].concat(_toConsumableArray(prev), [id]);
-            });
-        }
-    };
-
-    /**
-     * Will show  or hide all saved bookmarks when clicked
-     *
-     * @param {ClickEvent} e
-     * @listens ClickEvent
-     */
-    var handleShowBookmarksFilterClick = function handleShowBookmarksFilterClick(e) {
-        e.stopPropagation();
-        setShowBookmarks(function (prev) {
-            return !prev;
-        });
-        setCurrentPage(1);
-    };
-
-    /**
-     * If top filter panel, toggle or hide more button
-     *
-     * @param {ClickEvent} e
-     * @listens ClickEvent
-     */
-    var handleShowAllTopFilters = function handleShowAllTopFilters() {
-        setShowLimitedFiltersQty(function (prev) {
-            return !prev;
-        });
-    };
-
-    /**
-     * On window click, all dropdowns should hide
-     *
-     * @param {ClickEvent} e
-     * @listens ClickEvent
-     */
-    var handleWindowClick = function handleWindowClick() {
-        setOpenDropdown(null);
-    };
-
-    /**
-     * Handles escape for mobile filter dialog
-     *
-     * @param event
-     */
-    var handleMobileFilterEscape = function handleMobileFilterEscape(event) {
-        if (event.key !== 'Escape' && event.key !== 'Esc') return;
-
-        setShowMobileFilters(false);
-    };
-
-    /**
-     **** Effects ****
-     */
-
-    /**
-     * Sets authored filters as state
-     * @returns {Void} - an updated state
-     */
-
-    (0, _react.useEffect)(function () {
-        setFilters(authoredFilters.map(function (filterGroup) {
-            return _extends({}, filterGroup, {
-                opened: DESKTOP_SCREEN_SIZE ? filterGroup.openedOnLoad : true,
-                items: filterGroup.items.map(function (filterItem) {
-                    return _extends({}, filterItem, {
-                        selected: false
-                    });
-                })
-            });
-        }));
-    }, []);
-
-    /**
-     * Sets filters from url as state
-     * @returns {Void} - an updated state
-     */
-    (0, _react.useEffect)(function () {
-        setFilters(function (origin) {
-            return origin.map(function (filter) {
-                var group = filter.group,
-                    items = filter.items;
-
-                var urlStateValue = urlState[filterGroupPrefix + group];
-
-                if (!urlStateValue) return filter;
-                /* istanbul ignore next  */
-                var urlStateArray = urlStateValue.split(',');
-                return _extends({}, filter, {
-                    opened: true,
-                    /* istanbul ignore next */
-                    items: items.map(function (item) {
-                        return _extends({}, item, {
-                            selected: urlStateArray.includes(String(item.label))
-                        });
-                    })
-                });
-            });
-        });
-        var urlSearchValue = urlState[searchPrefix];
-        if (urlSearchValue) {
-            setSearchQuery(urlSearchValue[0]);
-        }
-    }, []);
-
-    (0, _react.useEffect)(function () {
-        setRandomSortId(Math.floor(Math.random() * 10e12));
-    }, []);
-
-    /**
-     * Trigger after button load more click
-     * @returns {Void} - an updated url page
-     */
-    (0, _react.useEffect)(function () {
-        setUrlState('page', currentPage === 1 ? '' : currentPage);
-    }, [currentPage]);
-
-    var removeEmptyFilters = function removeEmptyFilters(allFilters, cardsFromJson) {
-        var _ref3;
-
-        var tags = (_ref3 = []).concat.apply(_ref3, _toConsumableArray(cardsFromJson.map(function (card) {
-            return card.tags.map(function (tag) {
-                return tag.id;
-            });
-        })));
-
-        var timingTags = [_constants.EVENT_TIMING_IDS.LIVE, _constants.EVENT_TIMING_IDS.ONDEMAND, _constants.EVENT_TIMING_IDS.UPCOMING];
-
-        return allFilters.map(function (filter) {
-            return _extends({}, filter, {
-                opened: DESKTOP_SCREEN_SIZE ? filter.openedOnLoad : true,
-                /* istanbul ignore next */
-                items: filter.items.filter(function (item) {
-                    return tags.includes(item.id) || tags.includes(item.label) || tags.toString().includes('/' + item.id) // ***** FIX  HERE *****
-                    || timingTags.includes(item.id);
-                })
-            });
-        }).filter(function (filter) {
-            return filter.items.length > 0;
-        });
-    };
-
-    /**
-     * This handles getting Cards, there are some conditions:
-     * - If target is not enabled a simple request is made without mods or delay.
-     * - If target is enabled & tVisitor API is present add values from Visitor
-     * - If target is enabled & the Visitor API is not present setTimeout with
-     * counter to recheck for the Visitor API. If 20 attempts are made w/o
-     * success fail the request.
-     * @returns {Void} - an updated state
-     */
-    (0, _react.useEffect)(function () {
-        if (isLazy && visibleStamp || isLazy && !hasFetched) {
-            return;
-        }
-        var _window = window,
-            visitorPromise = _window.__satelliteLoadedPromise;
-
-
-        var collectionEndpoint = getConfig('collection', 'endpoint');
-        var fallbackEndpoint = getConfig('collection', 'fallbackEndpoint');
-
-        var r = new RegExp('^(?:[a-z]+:)?//', 'i');
-        var collectionEndpointURI = void 0;
-        if (r.test(collectionEndpoint)) {
-            collectionEndpointURI = new URL(collectionEndpoint);
-        } else {
-            collectionEndpointURI = new URL(collectionEndpoint, window.location.origin);
-        }
-
-        if (!fallbackEndpoint) {
-            collectionEndpointURI.searchParams.set('flatFile', false);
-            collectionEndpoint = collectionEndpointURI.toString();
-        }
-
-        setLoading(true);
-
-        /**
-         * @func getCards
-         * @desc wraps fetch with function to make it reusable
-         *
-         * @param {String} endPoint, URL with params for card request
-         * @returns {Void} - an updated state
-         */
-        function getCards() {
-            var endPoint = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : collectionEndpoint;
-
-            var start = Date.now();
-            return window.fetch(endPoint, {
-                credentials: 'include',
-                headers: headers
-            }).then(function (resp) {
-                var ok = resp.ok,
-                    status = resp.status,
-                    statusText = resp.statusText,
-                    url = resp.url;
-
-
-                if (ok) {
-                    return resp.json().then(function (json) {
-                        var validData = !!Object.keys(json).length;
-
-                        if (validData) return json;
-
-                        (0, _lana.logLana)({ message: 'no valid response data from ' + endPoint, tags: 'collection' });
-                        /* istanbul ignore next */
-                        return Promise.reject(new Error('no valid reponse data'));
-                    });
-                }
-                (0, _lana.logLana)({ message: 'failure for call to ' + url, tags: 'collection', errorMessage: status + ': ' + statusText });
-                return Promise.reject(new Error(status + ': ' + statusText + ', failure for call to ' + url));
-            }).then(function (payload) {
-                (0, _lana.logLana)({ message: 'response took ' + (Date.now() - start) / 1000 + 's', tags: 'collection' });
-                setLoading(false);
-                setIsFirstLoad(true);
-                if (!(0, _general.getByPath)(payload, 'cards.length')) {
-                    (0, _lana.logLana)({ message: 'no cards return by query to this endpoint: ' + endPoint, tags: 'collection' });
-                    return;
-                }
-                if (payload.isHashed && !hashedRef.current) {
-                    hashedRef.current = true;
-                    var TAG_HASH_LENGTH = 6;
-                    var _iteratorNormalCompletion = true;
-                    var _didIteratorError = false;
-                    var _iteratorError = undefined;
-
-                    try {
-                        for (var _iterator = authoredFilters[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                            var group = _step.value;
-
-                            group.id = rollingHash(group.id, TAG_HASH_LENGTH);
-                            var _iteratorNormalCompletion3 = true;
-                            var _didIteratorError3 = false;
-                            var _iteratorError3 = undefined;
-
-                            try {
-                                for (var _iterator3 = group.items[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-                                    var filterItem = _step3.value;
-
-                                    var _getParentChild = getParentChild(filterItem.id),
-                                        _getParentChild2 = _slicedToArray(_getParentChild, 2),
-                                        parent = _getParentChild2[0],
-                                        child = _getParentChild2[1];
-
-                                    filterItem.id = rollingHash(parent, TAG_HASH_LENGTH) + '/' + rollingHash(child, TAG_HASH_LENGTH);
-                                }
-                            } catch (err) {
-                                _didIteratorError3 = true;
-                                _iteratorError3 = err;
-                            } finally {
-                                try {
-                                    if (!_iteratorNormalCompletion3 && _iterator3.return) {
-                                        _iterator3.return();
-                                    }
-                                } finally {
-                                    if (_didIteratorError3) {
-                                        throw _iteratorError3;
-                                    }
-                                }
-                            }
-                        }
-                    } catch (err) {
-                        _didIteratorError = true;
-                        _iteratorError = err;
-                    } finally {
-                        try {
-                            if (!_iteratorNormalCompletion && _iterator.return) {
-                                _iterator.return();
-                            }
-                        } finally {
-                            if (_didIteratorError) {
-                                throw _iteratorError;
-                            }
-                        }
-                    }
-
-                    var temp = [];
-                    var _iteratorNormalCompletion2 = true;
-                    var _didIteratorError2 = false;
-                    var _iteratorError2 = undefined;
-
-                    try {
-                        for (var _iterator2 = hideCtaTags[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                            var tag = _step2.value;
-
-                            var _getParentChild3 = getParentChild(tag),
-                                _getParentChild4 = _slicedToArray(_getParentChild3, 2),
-                                parent = _getParentChild4[0],
-                                child = _getParentChild4[1];
-
-                            if (parent !== '' && child !== '') {
-                                temp.push(rollingHash(parent, TAG_HASH_LENGTH) + '/' + rollingHash(child, TAG_HASH_LENGTH));
-                            }
-                        }
-                    } catch (err) {
-                        _didIteratorError2 = true;
-                        _iteratorError2 = err;
-                    } finally {
-                        try {
-                            if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                                _iterator2.return();
-                            }
-                        } finally {
-                            if (_didIteratorError2) {
-                                throw _iteratorError2;
-                            }
-                        }
-                    }
-
-                    hideCtaTags = temp;
-                }
-                setCardCount(payload.totalCount ? payload.totalCount : payload.cards.length);
-
-                var _removeDuplicateCards = new _JsonProcessor2.default(payload.cards).removeDuplicateCards().addCardMetaData(_constants.TRUNCATE_TEXT_QTY, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags),
-                    _removeDuplicateCards2 = _removeDuplicateCards.processedCards,
-                    processedCards = _removeDuplicateCards2 === undefined ? [] : _removeDuplicateCards2;
-
-                if (isCategoriesContainer) {
-                    setFilters(function (prevFilters) {
-                        return prevFilters.map(function (filter) {
-                            var group = filter.group,
-                                items = filter.items;
-
-                            var urlStateValue = urlState[filterGroupPrefix + group];
-                            if (!urlStateValue) return filter;
-                            var urlStateArray = urlStateValue.split(',');
-                            return _extends({}, filter, {
-                                opened: true,
-                                items: items.map(function (item) {
-                                    return _extends({}, item, {
-                                        selected: urlStateArray.includes(String(item.label))
-                                    });
-                                })
-                            });
-                        });
-                    });
-                } else {
-                    setFilters(function () {
-                        return authoredFilters.map(function (filter) {
-                            var group = filter.group,
-                                items = filter.items;
-
-                            var urlStateValue = urlState[filterGroupPrefix + group];
-                            if (!urlStateValue) return filter;
-                            var urlStateArray = urlStateValue.split(',');
-                            return _extends({}, filter, {
-                                opened: true,
-                                items: items.map(function (item) {
-                                    return _extends({}, item, {
-                                        selected: urlStateArray.includes(String(item.label))
-                                    });
-                                })
-                            });
-                        });
-                    });
-                }
-
-                var transitions = (0, _general.getTransitions)(processedCards);
-                if (sortOption.sort.toLowerCase() === 'eventsort') {
-                    while (transitions.size() > 0) {
-                        setTimeout(function () {
-                            nextTransition();
-                        }, transitions.dequeue().priority + _constants.ONE_SECOND_DELAY);
-                    }
-                }
-
-                setCards(processedCards);
-
-                // check if the current page is greater than the last page
-                var lastPage = Math.ceil(processedCards.length / resultsPerPage);
-                if (currentPage > lastPage) {
-                    setCurrentPage(1);
-                }
-
-                if (!showEmptyFilters) {
-                    setFilters(function (prevFilters) {
-                        return removeEmptyFilters(prevFilters, processedCards);
-                    });
-                }
-                setTimeout(function () {
-                    if (!scrollElementRef.current) return;
-                    if (processedCards.length === 0) return;
-                    if (currentPage === 1) return;
-                    var cardsToshow = processedCards.slice(0, resultsPerPage * currentPage);
-                    var getLastPageID = resultsPerPage * currentPage - resultsPerPage;
-                    /* istanbul ignore if */
-                    if (cardsToshow.length < getLastPageID) return;
-                    var lastID = scrollElementRef.current.children[getLastPageID];
-                    lastID.scrollIntoView();
-                }, 100);
-            }).catch(function () {
-                if (endPoint === collectionEndpoint && fallbackEndpoint) {
-                    getCards(fallbackEndpoint);
-                    return;
-                }
-                (0, _lana.logLana)({ message: 'failed to return processed cards', tags: 'collection' });
-                setLoading(false);
-                setApiFailure(true);
-            });
-        }
-        /**
-         * @func getVisitorData
-         * @desc wraps fetching Visitor API data in a function for reuse, also if
-         * last used session is checked, update currentEntityId with targetValueRevealID
-         *
-         * @param {Promise} visitorApi, window.__satelliteLoadedPromise when accessed
-         * @returns {Void} - an updated state, thru calling getCards
-         */
         /* istanbul ignore next */
-        function getVisitorData(visitorApi) {
-            var collectionURI = new URL(collectionEndpoint);
-
-            if (useLastViewedSession) {
-                var targetRevealId = localStorage.getItem('targetValueRevealID');
-                if (targetRevealId) {
-                    collectionURI.searchParams.set('currentEntityId', targetRevealId);
-                }
-            }
-
-            visitorApi.then(function (result) {
-                if (window.alloy && window.edgeConfigId) {
-                    window.alloy('getIdentity').then(function (res) {
-                        collectionURI.searchParams.set('mcgvid', res.identity.ECID);
-                        collectionURI.searchParams.set('mboxMCGLH', res.edge.regionId);
-                        getCards(collectionURI.toString());
-                    });
-                } else {
-                    var visitor = result.getVisitorId();
-                    collectionURI.searchParams.set('mcgvid', visitor.getMarketingCloudVisitorID());
-                    collectionURI.searchParams.set('sdid', visitor.getSupplementalDataID());
-                    collectionURI.searchParams.set('mboxAAMB', visitor.getAudienceManagerBlob());
-                    collectionURI.searchParams.set('mboxMCGLH', visitor.getAudienceManagerLocationHint());
-                    getCards(collectionURI.toString());
-                }
-            });
-        }
-
-        /**
-         * @func visitorRetry
-         * @desc Visitor API is late loading often, this sets a recursive call
-         * in a setTimeout to run 20 times, and then fail the request.
-         *
-         * @returns {Void} - an updated state, thru calling getVisitorData which
-         * calls getCards
-         */
+        Object(__WEBPACK_IMPORTED_MODULE_4__Helpers_lana__["b" /* logLana */])({
+          message: "failure for call to ".concat(url),
+          tags: 'collection',
+          errorMessage: "".concat(status, ": ").concat(statusText)
+        });
         /* istanbul ignore next */
-        function visitorRetry() {
-            var retryCount = 0;
-
-            var timedRetry = function timedRetry() {
-                setTimeout(function () {
-                    if (retryCount >= 20) {
-                        setLoading(false);
-
-                        setApiFailure(true);
-
-                        return;
-                    }
-
-                    var _window2 = window,
-                        visitorPromiseRetry = _window2.__satelliteLoadedPromise;
-
-
-                    if (visitorPromiseRetry) {
-                        getVisitorData(visitorPromiseRetry);
-                    }
-
-                    if (!visitorPromiseRetry && retryCount < 20) {
-                        timedRetry();
-                    }
-
-                    retryCount += 1;
-                }, 100);
-            };
-
-            timedRetry();
-        }
-        /* istanbul ignore if */
-        if (targetEnabled && visitorPromise) {
-            getVisitorData(visitorPromise);
-        }
-        /* istanbul ignore if */
-        if (targetEnabled && !visitorPromise) {
-            visitorRetry();
-        }
-
-        if (!targetEnabled && !partialLoadWithBackgroundFetch) {
-            getCards();
-        }
-        if (!targetEnabled && partialLoadWithBackgroundFetch) {
-            var collectionEndpointUrl = new URL(collectionEndpoint);
-            collectionEndpointUrl.searchParams.set('partialLoadCount', String(partialLoadCount));
-            setIsPartialLoad(true);
-            getCards(collectionEndpointUrl.toString()).then(function () {
-                getCards().then(function () {
-                    setIsPartialLoad(false);
-                });
-            });
-        }
-    }, [visibleStamp, hasFetched]);
-
-    /**
-     * Saves cards to local storage and updates card w/ bookmarked data
-     * @returns {Void} - an updated state
-     */
-    (0, _react.useEffect)(function () {
-        (0, _general.saveBookmarksToLocalStorage)(bookmarkedCardIds);
-        setCards((0, _Helpers.getUpdatedCardBookmarkData)(cards, bookmarkedCardIds));
-    }, [bookmarkedCardIds]);
-
-    /**
-     * Handles clearing state on showBookmarks
-     * @returns {Void} - an updated state
-     */
-    (0, _react.useEffect)(function () {
-        if (showBookmarks) {
-            clearAllFilters();
-            setSearchQuery('');
-        }
-    }, [showBookmarks]);
-
-    /**
-     * Handles focus and escape on mobile filter toggle
-     * @returns {Void}
-     */
-    (0, _react.useEffect)(function () {
-        if (showMobileFilters) {
-            if (filterItemRef && filterItemRef.current) {
-                filterItemRef.current.focusMobTitle();
-            }
-            document.addEventListener('keydown', handleMobileFilterEscape);
-        } else {
-            if (filterInfoRef && filterInfoRef.current) {
-                filterInfoRef.current.focus();
-            }
-            document.removeEventListener('keydown', handleMobileFilterEscape);
-        }
-
-        return function () {
-            document.removeEventListener('keydown', handleMobileFilterEscape);
-        };
-    }, [showMobileFilters]);
-
-    var box = (0, _react.useRef)();
-
-    (0, _react.useEffect)(function () {
-        /* istanbul ignore if */
-        if (box && !visibleStamp && isLazy) {
-            var io = new IntersectionObserver(function (entries) {
-                if (entries[0].intersectionRatio <= 0) return;
-                setHasFetched(true);
-                setVisibleStamp(new Date().getTime());
-            });
-            io.observe(box.current);
-        }
-    }, [box]);
-
-    /**
-     **** Derived State ****
-     */
-
-    /**
-     * Array of filters chosen by the user
-     * @type {Array}
-     */
-    var activeFilterIds = (0, _Helpers.getActiveFilterIds)(filters);
-
-    /**
-     * Array of filters panels (groupings) created by the author
-     * @type {Array}
-     */
-    var activePanels = (0, _Helpers.getActivePanels)(activeFilterIds) || new Set();
-
-    /**
-     * Instance of CardFilterer class that handles returning subset of cards
-     * based off user interactions
-     *
-     * @type {Object}
-     */
-    var cardFilterer = new _CardFilterer2.default(cards, randomSortId, sampleSize, reservoirSize, featuredCards);
-
-    /**
-     * @type {Function} getFilteredCollection
-     * @desc Closure around CardFilterer for reuse within context
-     * @returns {Object}
-     * */
-    var getFilteredCollection = function getFilteredCollection() {
-        return cardFilterer.sortCards(sortOption, sanitizedEventFilter, featuredCards, hideCtaIds, isFirstLoad).keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks).keepCardsWithinDateRange().filterCards(activeFilterIds, activePanels, filterLogic, _constants.FILTER_TYPES, currCategories).truncateList(totalCardLimit).searchCards(searchQuery, searchFields, cardStyle).removeCards(inclusionIds);
-    };
-
-    /**
-     * @type {Array} filteredCards: Filtered cards based off current state of page
-     * @type {Number} nextTransitionMs: Number for timed event sort transition
-     */
-    /* eslint-disable no-unused-vars */
-
-    var _getFilteredCollectio = getFilteredCollection(),
-        _getFilteredCollectio2 = _getFilteredCollectio.filteredCards,
-        filteredCards = _getFilteredCollectio2 === undefined ? [] : _getFilteredCollectio2,
-        _getFilteredCollectio3 = _getFilteredCollectio.nextTransitionMs,
-        nextTransitionMs = _getFilteredCollectio3 === undefined ? 0 : _getFilteredCollectio3;
-
-    /**
-     * Subset of cards to show the user
-     * @type {Array}
-     */
-
-
-    var gridCards = timedCollection.length ? timedCollection : filteredCards;
-    var gridCardLen = gridCards.length;
-    if (isPartialLoad) {
-        gridCardLen = cardCount;
-    }
-
-    /**
-     * Total pages (used by Paginator Component)
-     * @type {Number}
-     */
-    var totalPages = (0, _Helpers.getTotalPages)(resultsPerPage, gridCardLen);
-
-    /**
-     * Number of cards to show (used by Load More component)
-     * @type {Number}
-     */
-    var numCardsToShow = (0, _Helpers.getNumCardsToShow)(resultsPerPage, currentPage, gridCardLen);
-
-    /**
-     * How many filters were selected - (used by Left Filter Panel)
-     * @type {Number}
-     */
-    var selectedFiltersItemsQty = (0, _consonant.getNumSelectedFilterItems)(filters);
-
-    /**
-     * Conditions to Display A Form Of Pagination
-     * @type {Boolean}
-     */
-    var displayPagination = (0, _Helpers.shouldDisplayPaginator)(paginationIsEnabled, totalCardLimit, gridCardLen);
-    /**
-     * Conditions to display the Load More Button
-     * @type {Boolean}
-     */
-    var displayLoadMore = displayPagination && paginationType === 'loadMore';
-
-    /**
-     * Conditions to display the Paginator Component
-     * @type {Boolean}
-     */
-    var displayPaginator = displayPagination && paginationType === 'paginator';
-
-    /**
-     * Conditions to display the Left Filter Panel Component
-     * @type {Boolean}
-     */
-    var displayLeftFilterPanel = filterPanelEnabled && filterPanelType === _constants.FILTER_PANEL.LEFT;
-
-    /**
-     * Whether at lease one card was returned by Card Filterer
-     * @type {Boolean}
-     */
-    var atLeastOneCard = gridCardLen > 0;
-
-    /**
-     * Where to place the Sort Popup (either left or right)
-     * @type {String} - Location of Sort Popup in Top Filter Panel View
-     */
-    var topPanelSortPopupLocation = filters.length > 0 && windowWidth < _constants.TABLET_MIN_WIDTH ? _constants.SORT_POPUP_LOCATION.LEFT : _constants.SORT_POPUP_LOCATION.RIGHT;
-
-    /**
-     * How Long Paginator Component Should Be
-     * @type {Number} - Location of Sort Popup in Top Filter Panel View
-     */
-    var paginatorCount = DESKTOP_SCREEN_SIZE ? _constants.PAGINATION_COUNT.DESKTOP : _constants.PAGINATION_COUNT.MOBILE;
-
-    /**
-     * Whether we are using the top filter panel or not
-     * @type {Boolean}
-     */
-    var isTopFilterPanel = filterPanelType === _constants.FILTER_PANEL.TOP;
-
-    /**
-     * Whether we are using the top filter panel or not
-     * @type {Boolean}
-     */
-    var isLeftFilterPanel = filterPanelType === _constants.FILTER_PANEL.LEFT;
-
-    /**
-     * Ui options that cause grid to rerender necessitate the aria attribute being set
-     * @type {Boolean}
-     */
-    var isGridAreaLive = filterPanelEnabled || searchEnabled || sortEnabled || paginationIsEnabled;
-
-    var filterNames = '';
-    filters.forEach(function (el) {
-        el.items.filter(function (item) {
-            return item.selected;
-        }).forEach(function (item) {
-            filterNames += item.label + ', ';
+        return Promise.reject(new Error("".concat(status, ": ").concat(statusText, ", failure for call to ").concat(url)));
+      }).then(function (payload) {
+        Object(__WEBPACK_IMPORTED_MODULE_4__Helpers_lana__["b" /* logLana */])({
+          message: "response took ".concat((Date.now() - start) / 1000, "s"),
+          tags: 'collection'
         });
-    });
-
-    /**
-     **** Class names ****
-     */
-
-    /**
-     * Class name for the authored theme:
-     * light, dark, darkest;
-     * @type {String}
-     */
-    var themeClass = (0, _classnames2.default)({
-        'consonant-u-themeLight': authoredMode === _constants.THEME_TYPE.LIGHT,
-        'consonant-u-themeDark': authoredMode === _constants.THEME_TYPE.DARK,
-        'consonant-u-themeDarkest': authoredMode === _constants.THEME_TYPE.DARKEST
-    });
-
-    /**
-     * @param {*} filterList
-     * @param {*} categoryList
-     * @returns List of categories for the top pills
-     *          Prepends the "All Topics" pill to the list of categories
-     */
-    function getAuthoredCategories(filterList, categoryList) {
-        var categoryIds = filterList.filter(function (filter) {
-            return filter.id.includes('caas:product-categories');
-        }).map(function (item) {
-            return item.id;
-        });
-
-        // Sorts category list based on authored order
-        var selectedCategories = categoryIds.map(function (id) {
-            return categoryList && categoryList.filter(function (category) {
-                return category.id === id;
-            })[0];
-        });
-
-        return [{
-            group: 'All Topics',
-            title: 'All Topics',
-            id: '',
-            items: []
-        }].concat(_toConsumableArray(selectedCategories));
-    }
-
-    /**
-     * @returns List of all products from all categories for the 'All products' menu
-     *          Prepends the "All products" label to the list of categories
-     */
-    function getAllCategoryProducts() {
-        if (!authoredCategories) return [];
-        var allCategories = [];
-        var _iteratorNormalCompletion4 = true;
-        var _didIteratorError4 = false;
-        var _iteratorError4 = undefined;
-
-        try {
-            for (var _iterator4 = authoredCategories[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-                var category = _step4.value;
-
-                if (category && category.items) {
-                    var _iteratorNormalCompletion5 = true;
-                    var _didIteratorError5 = false;
-                    var _iteratorError5 = undefined;
-
-                    try {
-                        for (var _iterator5 = category.items[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-                            var item = _step5.value;
-
-                            item.fromCategory = true;
-                        }
-                    } catch (err) {
-                        _didIteratorError5 = true;
-                        _iteratorError5 = err;
-                    } finally {
-                        try {
-                            if (!_iteratorNormalCompletion5 && _iterator5.return) {
-                                _iterator5.return();
-                            }
-                        } finally {
-                            if (_didIteratorError5) {
-                                throw _iteratorError5;
-                            }
-                        }
-                    }
-
-                    allCategories = allCategories.concat(category.items);
-                }
-            }
-        } catch (err) {
-            _didIteratorError4 = true;
-            _iteratorError4 = err;
-        } finally {
-            try {
-                if (!_iteratorNormalCompletion4 && _iterator4.return) {
-                    _iterator4.return();
-                }
-            } finally {
-                if (_didIteratorError4) {
-                    throw _iteratorError4;
-                }
-            }
+        setLoading(false);
+        setIsFirstLoad(true);
+        if (!Object(__WEBPACK_IMPORTED_MODULE_8__Helpers_general__["c" /* getByPath */])(payload, 'cards.length')) {
+          Object(__WEBPACK_IMPORTED_MODULE_4__Helpers_lana__["b" /* logLana */])({
+            message: "no cards return by query to this endpoint: ".concat(endPoint),
+            tags: 'collection'
+          });
+          return;
         }
-
-        return {
-            group: 'All products',
-            id: 'caas:all-products',
-            items: allCategories
-        };
-    }
-
-    /**
-     * @param {*} selectedCategories
-     * @param {*} groupId
-     * Sets the categories and filters based on the selected category
-     */
-    function categoryHandler(selectedCategories, groupId) {
-        var temp = [];
-        var _iteratorNormalCompletion6 = true;
-        var _didIteratorError6 = false;
-        var _iteratorError6 = undefined;
-
-        try {
-            for (var _iterator6 = selectedCategories[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-                var category = _step6.value;
-
-                temp.push(category.id);
-            }
-        } catch (err) {
-            _didIteratorError6 = true;
-            _iteratorError6 = err;
-        } finally {
-            try {
-                if (!_iteratorNormalCompletion6 && _iterator6.return) {
-                    _iterator6.return();
+        if (payload.isHashed && !hashedRef.current) {
+          hashedRef.current = true;
+          var TAG_HASH_LENGTH = 6;
+          var _iterator = _createForOfIteratorHelper(authoredFilters),
+            _step;
+          try {
+            for (_iterator.s(); !(_step = _iterator.n()).done;) {
+              var group = _step.value;
+              group.id = rollingHash(group.id, TAG_HASH_LENGTH);
+              var _iterator3 = _createForOfIteratorHelper(group.items),
+                _step3;
+              try {
+                for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+                  var filterItem = _step3.value;
+                  var _getParentChild = getParentChild(filterItem.id),
+                    _getParentChild2 = _slicedToArray(_getParentChild, 2),
+                    parent = _getParentChild2[0],
+                    child = _getParentChild2[1];
+                  filterItem.id = "".concat(rollingHash(parent, TAG_HASH_LENGTH), "/").concat(rollingHash(child, TAG_HASH_LENGTH));
                 }
-            } finally {
-                if (_didIteratorError6) {
-                    throw _iteratorError6;
-                }
+              } catch (err) {
+                _iterator3.e(err);
+              } finally {
+                _iterator3.f();
+              }
             }
+          } catch (err) {
+            _iterator.e(err);
+          } finally {
+            _iterator.f();
+          }
+          var temp = [];
+          var _iterator2 = _createForOfIteratorHelper(hideCtaTags),
+            _step2;
+          try {
+            for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+              var tag = _step2.value;
+              var _getParentChild3 = getParentChild(tag),
+                _getParentChild4 = _slicedToArray(_getParentChild3, 2),
+                _parent = _getParentChild4[0],
+                _child = _getParentChild4[1];
+              if (_parent !== '' && _child !== '') {
+                temp.push("".concat(rollingHash(_parent, TAG_HASH_LENGTH), "/").concat(rollingHash(_child, TAG_HASH_LENGTH)));
+              }
+            }
+          } catch (err) {
+            _iterator2.e(err);
+          } finally {
+            _iterator2.f();
+          }
+          hideCtaTags = temp;
         }
-
-        setCategories(temp);
-        setFilters(function (prevFilters) {
-            prevFilters.pop();
-            var newGroup = authoredCategories.filter(function (category) {
-                return category.id === groupId;
-            })[0];
-            if (!newGroup.items.length) {
-                var nextFilters = prevFilters.concat(getAllCategoryProducts());
-                return nextFilters;
-            }
-            prevFilters.push(newGroup);
-            return prevFilters;
-        });
-        setSelectedCategory(groupId);
-        setCurrentPage(1);
-    }
-
-    /**
-     * @param {*} category
-     * @returns The Authored icon for the category if exists,
-     *          otherwise returns the default icon from the tags or an empty string
-     */
-    function getCategoryIcon(category) {
-        var authoredIcon = authoredFilters.filter(function (filter) {
-            return filter.id === category.id;
-        }).map(function (filter) {
-            return filter.icon;
-        }).toString();
-        return authoredIcon || category.icon || '';
-    }
-
-    var collectionStr = collectionIdentifier ? collectionIdentifier + ' | ' : '';
-    var filterStr = selectedFiltersItemsQty ? filterNames : 'No Filters';
-    var searchQueryStr = searchQuery || 'None';
-    var collectionAnalytics = collectionStr + 'Card Collection | Filters: ' + filterStr + '| Search Query: ' + searchQueryStr;
-    /**
-     * Class name for the consonant wrapper:
-     * whether consonant wrapper contains left filter;
-     * @type {String}
-     */
-    var wrapperClass = (0, _classnames2.default)({
-        'consonant-Wrapper': true,
-        'consonant-Wrapper--32MarginContainer': authoredLayoutContainer === _constants.LAYOUT_CONTAINER.SIZE_100_VW_32_MARGIN,
-        'consonant-Wrapper--83PercentContainier': authoredLayoutContainer === _constants.LAYOUT_CONTAINER.SIZE_83_VW,
-        'consonant-Wrapper--1200MaxWidth': authoredLayoutContainer === _constants.LAYOUT_CONTAINER.SIZE_1200_PX,
-        'consonant-Wrapper--1600MaxWidth': authoredLayoutContainer === _constants.LAYOUT_CONTAINER.SIZE_1600_PX,
-        'consonant-Wrapper--1200MaxWidth Categories': isCategoriesContainer,
-        'consonant-Wrapper--carousel': isCarouselContainer,
-        'consonant-Wrapper--withLeftFilter': filterPanelEnabled && isLeftFilterPanel
-    });
-
-    (0, _react.useEffect)(function () {
+        setCardCount(payload.totalCount ? payload.totalCount : payload.cards.length);
+        var _JsonProcessor$remove = new __WEBPACK_IMPORTED_MODULE_19__Helpers_JsonProcessor__["a" /* default */](payload.cards).removeDuplicateCards().addCardMetaData(__WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["v" /* TRUNCATE_TEXT_QTY */], onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags),
+          _JsonProcessor$remove2 = _JsonProcessor$remove.processedCards,
+          processedCards = _JsonProcessor$remove2 === void 0 ? [] : _JsonProcessor$remove2;
         if (isCategoriesContainer) {
-            setFilters(function (prevFilters) {
-                var nextFilters = prevFilters.concat(getAllCategoryProducts());
-                return nextFilters;
+          setFilters(function (prevFilters) {
+            return prevFilters.map(function (filter) {
+              var group = filter.group,
+                items = filter.items;
+              var urlStateValue = urlState[filterGroupPrefix + group];
+              if (!urlStateValue) return filter;
+              var urlStateArray = urlStateValue.split(',');
+              return _objectSpread(_objectSpread({}, filter), {}, {
+                opened: true,
+                items: items.map(function (item) {
+                  return _objectSpread(_objectSpread({}, item), {}, {
+                    selected: urlStateArray.includes(String(item.label))
+                  });
+                })
+              });
             });
+          });
+        } else {
+          setFilters(function () {
+            return authoredFilters.map(function (filter) {
+              var group = filter.group,
+                items = filter.items;
+              var urlStateValue = urlState[filterGroupPrefix + group];
+              if (!urlStateValue) return filter;
+              var urlStateArray = urlStateValue.split(',');
+              return _objectSpread(_objectSpread({}, filter), {}, {
+                opened: true,
+                items: items.map(function (item) {
+                  return _objectSpread(_objectSpread({}, item), {}, {
+                    selected: urlStateArray.includes(String(item.label))
+                  });
+                })
+              });
+            });
+          });
         }
-    }, []);
+        var transitions = Object(__WEBPACK_IMPORTED_MODULE_8__Helpers_general__["m" /* getTransitions */])(processedCards);
+        if (sortOption.sort.toLowerCase() === 'eventsort') {
+          while (transitions.size() > 0) {
+            setTimeout(function () {
+              nextTransition();
+            }, transitions.dequeue().priority + __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["o" /* ONE_SECOND_DELAY */]);
+          }
+        }
+        setCards(processedCards);
 
-    return _react2.default.createElement(
-        _contexts.ConfigContext.Provider,
-        { value: config },
-        _react2.default.createElement(
-            _contexts.ExpandableContext.Provider,
-            { value: { value: openDropdown, setValue: setOpenDropdown } },
-            _react2.default.createElement(
-                'section',
-                {
-                    ref: box,
-                    role: 'group',
-                    'aria-label': title || 'Card Collection',
-                    'daa-lh': collectionAnalytics,
-                    'daa-im': String(trackImpressions),
-                    onClick: handleWindowClick,
-                    className: wrapperClass + ' ' + themeClass },
-                _react2.default.createElement(
-                    'div',
-                    { className: 'consonant-Wrapper-inner' },
-                    isCategoriesContainer && _react2.default.createElement(
-                        _react.Fragment,
-                        null,
-                        _react2.default.createElement(
-                            'h2',
-                            { 'data-testid': 'consonant-TopFilters-categoriesTitle', className: 'consonant-TopFilters-categoriesTitle' },
-                            title
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'filters-category' },
-                            authoredCategories.map(function (category) {
-                                if (!category) return null;
-                                var selected = '';
-                                if (category.id === selectedCategory) {
-                                    selected = 'selected';
-                                }
-                                return _react2.default.createElement(
-                                    'button',
-                                    {
-                                        key: category.id,
-                                        onClick: function onClick() {
-                                            categoryHandler(category.items, category.id);
-                                        },
-                                        'data-selected': selected,
-                                        'data-testid': 'category-button-' + category.id,
-                                        'data-group': category.group.replaceAll(' ', '').toLowerCase() },
-                                    _react2.default.createElement('img', { className: 'filters-category--icon', src: getCategoryIcon(category), alt: category.icon && 'Category icon' }),
-                                    category.title
-                                );
-                            })
-                        )
-                    ),
-                    displayLeftFilterPanel && isStandardContainer && _react2.default.createElement(
-                        'div',
-                        { className: 'consonant-Wrapper-leftFilterWrapper' },
-                        _react2.default.createElement(_Panel4.default, {
-                            filters: filters,
-                            selectedFiltersQty: selectedFiltersItemsQty,
-                            windowWidth: windowWidth,
-                            onFilterClick: handleFilterGroupClick,
-                            onClearAllFilters: resetFiltersSearchAndBookmarks,
-                            onClearFilterItems: clearFilterItem,
-                            onCheckboxClick: handleCheckBoxChange,
-                            onMobileFiltersToggleClick: handleMobileFiltersToggle,
-                            onSelectedFilterClick: handleCheckBoxChange,
-                            showMobileFilters: showMobileFilters,
-                            resQty: gridCardLen,
-                            bookmarkComponent: _react2.default.createElement(_Bookmarks2.default, {
-                                showBookmarks: showBookmarks,
-                                onClick: handleShowBookmarksFilterClick,
-                                savedCardsCount: bookmarkedCardIds.length }),
-                            searchComponent: _react2.default.createElement(_Search2.default, {
-                                placeholderText: leftPanelSearchPlaceholder,
-                                name: 'filtersSideSearch',
-                                value: searchQuery,
-                                autofocus: false,
-                                onSearch: handleSearchInputChange }),
-                            ref: filterItemRef })
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'consonant-Wrapper-collection' + (isLoading ? ' is-loading' : '') },
-                        isTopFilterPanel && isStandardContainer && _react2.default.createElement(_Panel2.default, {
-                            filterPanelEnabled: filterPanelEnabled,
-                            filters: filters,
-                            searchQuery: searchQuery,
-                            windowWidth: windowWidth,
-                            resQty: gridCardLen,
-                            onCheckboxClick: handleCheckBoxChange,
-                            onFilterClick: handleFilterGroupClick,
-                            onClearFilterItems: clearFilterItem,
-                            categories: currCategories,
-                            onClearAllFilters: resetFiltersSearchAndBookmarks,
-                            showLimitedFiltersQty: showLimitedFiltersQty,
-                            searchComponent: _react2.default.createElement(_Search2.default, {
-                                placeholderText: topPanelSearchPlaceholder,
-                                name: 'filtersTopSearch',
-                                value: searchQuery,
-                                autofocus: DESKTOP_SCREEN_SIZE,
-                                onSearch: handleSearchInputChange }),
-                            sortComponent: _react2.default.createElement(_Popup2.default, {
-                                opened: sortOpened,
-                                id: 'sort',
-                                val: sortOption,
-                                values: sortOptions,
-                                onSelect: handleSortChange,
-                                name: 'filtersTopSelect',
-                                autoWidth: true,
-                                optionsAlignment: topPanelSortPopupLocation }),
-                            onShowAllClick: handleShowAllTopFilters }),
-                        isLeftFilterPanel && isStandardContainer && _react2.default.createElement(_Info.Info, {
-                            enabled: filterPanelEnabled,
-                            filtersQty: filters.length,
-                            filters: filters,
-                            cardsQty: gridCardLen,
-                            selectedFiltersQty: selectedFiltersItemsQty,
-                            windowWidth: windowWidth,
-                            onMobileFiltersToggleClick: handleMobileFiltersToggle,
-                            searchComponent: _react2.default.createElement(_Search2.default, {
-                                placeholderText: searchPlaceholderText,
-                                name: 'searchFiltersInfo',
-                                value: searchQuery,
-                                autofocus: false,
-                                onSearch: handleSearchInputChange }),
-                            sortComponent: _react2.default.createElement(_Popup2.default, {
-                                opened: sortOpened,
-                                id: 'sort',
-                                val: sortOption,
-                                values: sortOptions,
-                                onSelect: handleSortChange,
-                                autoWidth: false,
-                                optionsAlignment: 'right' }),
-                            sortOptions: sortOptions,
-                            ref: filterInfoRef }),
-                        atLeastOneCard && isStandardContainer && _react2.default.createElement(
-                            _react.Fragment,
-                            null,
-                            _react2.default.createElement(_Grid2.default, {
-                                resultsPerPage: resultsPerPage,
-                                pages: currentPage,
-                                cards: gridCards,
-                                forwardedRef: scrollElementRef,
-                                onCardBookmark: handleCardBookmarking,
-                                isAriaLiveActive: isGridAreaLive }),
-                            displayLoadMore && _react2.default.createElement(_LoadMore2.default, {
-                                onClick: onLoadMoreClick,
-                                show: numCardsToShow,
-                                total: gridCardLen }),
-                            displayPaginator && _react2.default.createElement(_Paginator2.default, {
-                                pageCount: paginatorCount,
-                                currentPageNumber: currentPage,
-                                totalPages: totalPages,
-                                showItemsPerPage: resultsPerPage,
-                                totalResults: gridCardLen,
-                                onClick: setCurrentPage })
-                        ),
-                        atLeastOneCard && isCarouselContainer && !(cardStyle === 'custom-card') && _react2.default.createElement(_CardsCarousel2.default, {
-                            resQty: gridCardLen,
-                            cards: gridCards,
-                            role: 'tablist',
-                            onCardBookmark: handleCardBookmarking }),
-                        atLeastOneCard && isCarouselContainer && cardStyle === 'custom-card' && _react2.default.createElement(_View2.default, {
-                            title: 'Not Supported',
-                            description: 'Using custom cards within a carousel layout is currently not supported. Please re-author the component',
-                            replaceValue: '' }),
-                        isLoading && !atLeastOneCard && _react2.default.createElement(_Loader2.default, {
-                            size: _constants.LOADER_SIZE.BIG,
-                            hidden: !totalCardLimit,
-                            absolute: true }),
-                        !isApiFailure && !atLeastOneCard && !isLoading && _react2.default.createElement(_View2.default, {
-                            title: noResultsTitle,
-                            description: noResultsDescription,
-                            replaceValue: searchQuery }),
-                        isApiFailure && _react2.default.createElement(_View2.default, {
-                            title: apiFailureTitle,
-                            description: apiFailureDescription,
-                            replaceValue: '' })
-                    )
-                )
-            )
-        )
-    );
+        // check if the current page is greater than the last page
+        var lastPage = Math.ceil(processedCards.length / resultsPerPage);
+        if (currentPage > lastPage) {
+          setCurrentPage(1);
+        }
+        if (!showEmptyFilters) {
+          setFilters(function (prevFilters) {
+            return removeEmptyFilters(prevFilters, processedCards);
+          });
+        }
+        setTimeout(function () {
+          if (!scrollElementRef.current) return;
+          if (processedCards.length === 0) return;
+          if (currentPage === 1) return;
+          var cardsToshow = processedCards.slice(0, resultsPerPage * currentPage);
+          var getLastPageID = resultsPerPage * currentPage - resultsPerPage;
+          /* istanbul ignore if */
+          if (cardsToshow.length < getLastPageID) return;
+          var lastID = scrollElementRef.current.children[getLastPageID];
+          lastID.scrollIntoView();
+        }, 100);
+      }).catch(function () {
+        if (endPoint === collectionEndpoint && fallbackEndpoint) {
+          getCards(fallbackEndpoint);
+          return;
+        }
+        Object(__WEBPACK_IMPORTED_MODULE_4__Helpers_lana__["b" /* logLana */])({
+          message: 'failed to return processed cards',
+          tags: 'collection'
+        });
+        setLoading(false);
+        setApiFailure(true);
+      });
+    }
+    /**
+     * @func getVisitorData
+     * @desc wraps fetching Visitor API data in a function for reuse, also if
+     * last used session is checked, update currentEntityId with targetValueRevealID
+     *
+     * @param {Promise} visitorApi, window.__satelliteLoadedPromise when accessed
+     * @returns {Void} - an updated state, thru calling getCards
+     */
+    /* istanbul ignore next */
+    function getVisitorData(visitorApi) {
+      var collectionURI = new URL(collectionEndpoint);
+      if (useLastViewedSession) {
+        var targetRevealId = localStorage.getItem('targetValueRevealID');
+        if (targetRevealId) {
+          collectionURI.searchParams.set('currentEntityId', targetRevealId);
+        }
+      }
+      visitorApi.then(function (result) {
+        if (window.alloy && window.edgeConfigId) {
+          window.alloy('getIdentity').then(function (res) {
+            collectionURI.searchParams.set('mcgvid', res.identity.ECID);
+            collectionURI.searchParams.set('mboxMCGLH', res.edge.regionId);
+            getCards(collectionURI.toString());
+          });
+        } else {
+          var visitor = result.getVisitorId();
+          collectionURI.searchParams.set('mcgvid', visitor.getMarketingCloudVisitorID());
+          collectionURI.searchParams.set('sdid', visitor.getSupplementalDataID());
+          collectionURI.searchParams.set('mboxAAMB', visitor.getAudienceManagerBlob());
+          collectionURI.searchParams.set('mboxMCGLH', visitor.getAudienceManagerLocationHint());
+          getCards(collectionURI.toString());
+        }
+      });
+    }
+
+    /**
+     * @func visitorRetry
+     * @desc Visitor API is late loading often, this sets a recursive call
+     * in a setTimeout to run 20 times, and then fail the request.
+     *
+     * @returns {Void} - an updated state, thru calling getVisitorData which
+     * calls getCards
+     */
+    /* istanbul ignore next */
+    function visitorRetry() {
+      var retryCount = 0;
+      var _timedRetry = function timedRetry() {
+        setTimeout(function () {
+          if (retryCount >= 20) {
+            setLoading(false);
+            setApiFailure(true);
+            return;
+          }
+          var _window2 = window,
+            visitorPromiseRetry = _window2.__satelliteLoadedPromise;
+          if (visitorPromiseRetry) {
+            getVisitorData(visitorPromiseRetry);
+          }
+          if (!visitorPromiseRetry && retryCount < 20) {
+            _timedRetry();
+          }
+          retryCount += 1;
+        }, 100);
+      };
+      _timedRetry();
+    }
+    /* istanbul ignore if */
+    if (targetEnabled && visitorPromise) {
+      getVisitorData(visitorPromise);
+    }
+    /* istanbul ignore if */
+    if (targetEnabled && !visitorPromise) {
+      visitorRetry();
+    }
+    if (!targetEnabled && !partialLoadWithBackgroundFetch) {
+      getCards();
+    }
+    if (!targetEnabled && partialLoadWithBackgroundFetch) {
+      var collectionEndpointUrl = new URL(collectionEndpoint);
+      collectionEndpointUrl.searchParams.set('partialLoadCount', String(partialLoadCount));
+      setIsPartialLoad(true);
+      getCards(collectionEndpointUrl.toString()).then(function () {
+        getCards().then(function () {
+          setIsPartialLoad(false);
+        });
+      });
+    }
+  }, [visibleStamp, hasFetched]);
+
+  /**
+   * Saves cards to local storage and updates card w/ bookmarked data
+   * @returns {Void} - an updated state
+   */
+  Object(__WEBPACK_IMPORTED_MODULE_0_react__["useEffect"])(function () {
+    Object(__WEBPACK_IMPORTED_MODULE_8__Helpers_general__["B" /* saveBookmarksToLocalStorage */])(bookmarkedCardIds);
+    setCards(Object(__WEBPACK_IMPORTED_MODULE_25__Helpers_Helpers__["q" /* getUpdatedCardBookmarkData */])(cards, bookmarkedCardIds));
+  }, [bookmarkedCardIds]);
+
+  /**
+   * Handles clearing state on showBookmarks
+   * @returns {Void} - an updated state
+   */
+  Object(__WEBPACK_IMPORTED_MODULE_0_react__["useEffect"])(function () {
+    if (showBookmarks) {
+      clearAllFilters();
+      setSearchQuery('');
+    }
+  }, [showBookmarks]);
+
+  /**
+   * Handles focus and escape on mobile filter toggle
+   * @returns {Void}
+   */
+  Object(__WEBPACK_IMPORTED_MODULE_0_react__["useEffect"])(function () {
+    if (showMobileFilters) {
+      if (filterItemRef && filterItemRef.current) {
+        filterItemRef.current.focusMobTitle();
+      }
+      document.addEventListener('keydown', handleMobileFilterEscape);
+    } else {
+      if (filterInfoRef && filterInfoRef.current) {
+        filterInfoRef.current.focus();
+      }
+      document.removeEventListener('keydown', handleMobileFilterEscape);
+    }
+    return function () {
+      document.removeEventListener('keydown', handleMobileFilterEscape);
+    };
+  }, [showMobileFilters]);
+  var box = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useRef"])();
+  Object(__WEBPACK_IMPORTED_MODULE_0_react__["useEffect"])(function () {
+    /* istanbul ignore if */
+    if (box && !visibleStamp && isLazy) {
+      var io = new IntersectionObserver(function (entries) {
+        if (entries[0].intersectionRatio <= 0) return;
+        setHasFetched(true);
+        setVisibleStamp(new Date().getTime());
+      });
+      io.observe(box.current);
+    }
+  }, [box]);
+
+  /**
+   **** Derived State ****
+   */
+
+  /**
+   * Array of filters chosen by the user
+   * @type {Array}
+   */
+  var activeFilterIds = Object(__WEBPACK_IMPORTED_MODULE_25__Helpers_Helpers__["a" /* getActiveFilterIds */])(filters);
+
+  /**
+   * Array of filters panels (groupings) created by the author
+   * @type {Array}
+   */
+  var activePanels = Object(__WEBPACK_IMPORTED_MODULE_25__Helpers_Helpers__["b" /* getActivePanels */])(activeFilterIds) || new Set();
+
+  /**
+   * Instance of CardFilterer class that handles returning subset of cards
+   * based off user interactions
+   *
+   * @type {Object}
+   */
+  var cardFilterer = new __WEBPACK_IMPORTED_MODULE_16__Helpers_CardFilterer__["a" /* default */](cards, randomSortId, sampleSize, reservoirSize, featuredCards);
+
+  /**
+   * @type {Function} getFilteredCollection
+   * @desc Closure around CardFilterer for reuse within context
+   * @returns {Object}
+   * */
+  var getFilteredCollection = function getFilteredCollection() {
+    return cardFilterer.sortCards(sortOption, sanitizedEventFilter, featuredCards, hideCtaIds, isFirstLoad).keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks).keepCardsWithinDateRange().filterCards(activeFilterIds, activePanels, filterLogic, __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["g" /* FILTER_TYPES */], currCategories).truncateList(totalCardLimit).searchCards(searchQuery, searchFields, cardStyle).removeCards(inclusionIds);
+  };
+
+  /**
+   * @type {Array} filteredCards: Filtered cards based off current state of page
+   * @type {Number} nextTransitionMs: Number for timed event sort transition
+   */
+  /* eslint-disable no-unused-vars */
+  var _getFilteredCollectio = getFilteredCollection(),
+    _getFilteredCollectio2 = _getFilteredCollectio.filteredCards,
+    filteredCards = _getFilteredCollectio2 === void 0 ? [] : _getFilteredCollectio2,
+    _getFilteredCollectio3 = _getFilteredCollectio.nextTransitionMs,
+    nextTransitionMs = _getFilteredCollectio3 === void 0 ? 0 : _getFilteredCollectio3;
+
+  /**
+   * Subset of cards to show the user
+   * @type {Array}
+   */
+  var gridCards = timedCollection.length ? timedCollection : filteredCards;
+  var gridCardLen = gridCards.length;
+  if (isPartialLoad) {
+    gridCardLen = cardCount;
+  }
+
+  /**
+   * Total pages (used by Paginator Component)
+   * @type {Number}
+   */
+  var totalPages = Object(__WEBPACK_IMPORTED_MODULE_25__Helpers_Helpers__["p" /* getTotalPages */])(resultsPerPage, gridCardLen);
+
+  /**
+   * Number of cards to show (used by Load More component)
+   * @type {Number}
+   */
+  var numCardsToShow = Object(__WEBPACK_IMPORTED_MODULE_25__Helpers_Helpers__["l" /* getNumCardsToShow */])(resultsPerPage, currentPage, gridCardLen);
+
+  /**
+   * How many filters were selected - (used by Left Filter Panel)
+   * @type {Number}
+   */
+  var selectedFiltersItemsQty = Object(__WEBPACK_IMPORTED_MODULE_24__Helpers_consonant__["b" /* getNumSelectedFilterItems */])(filters);
+
+  /**
+   * Conditions to Display A Form Of Pagination
+   * @type {Boolean}
+   */
+  var displayPagination = Object(__WEBPACK_IMPORTED_MODULE_25__Helpers_Helpers__["u" /* shouldDisplayPaginator */])(paginationIsEnabled, totalCardLimit, gridCardLen);
+  /**
+   * Conditions to display the Load More Button
+   * @type {Boolean}
+   */
+  var displayLoadMore = displayPagination && paginationType === 'loadMore';
+
+  /**
+   * Conditions to display the Paginator Component
+   * @type {Boolean}
+   */
+  var displayPaginator = displayPagination && paginationType === 'paginator';
+
+  /**
+   * Conditions to display the Left Filter Panel Component
+   * @type {Boolean}
+   */
+  var displayLeftFilterPanel = filterPanelEnabled && filterPanelType === __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["f" /* FILTER_PANEL */].LEFT;
+
+  /**
+   * Whether at lease one card was returned by Card Filterer
+   * @type {Boolean}
+   */
+  var atLeastOneCard = gridCardLen > 0;
+
+  /**
+   * Where to place the Sort Popup (either left or right)
+   * @type {String} - Location of Sort Popup in Top Filter Panel View
+   */
+  var topPanelSortPopupLocation = filters.length > 0 && windowWidth < __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["t" /* TABLET_MIN_WIDTH */] ? __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["r" /* SORT_POPUP_LOCATION */].LEFT : __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["r" /* SORT_POPUP_LOCATION */].RIGHT;
+
+  /**
+   * How Long Paginator Component Should Be
+   * @type {Number} - Location of Sort Popup in Top Filter Panel View
+   */
+  var paginatorCount = DESKTOP_SCREEN_SIZE ? __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["p" /* PAGINATION_COUNT */].DESKTOP : __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["p" /* PAGINATION_COUNT */].MOBILE;
+
+  /**
+   * Whether we are using the top filter panel or not
+   * @type {Boolean}
+   */
+  var isTopFilterPanel = filterPanelType === __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["f" /* FILTER_PANEL */].TOP;
+
+  /**
+   * Whether we are using the top filter panel or not
+   * @type {Boolean}
+   */
+  var isLeftFilterPanel = filterPanelType === __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["f" /* FILTER_PANEL */].LEFT;
+
+  /**
+   * Ui options that cause grid to rerender necessitate the aria attribute being set
+   * @type {Boolean}
+   */
+  var isGridAreaLive = filterPanelEnabled || searchEnabled || sortEnabled || paginationIsEnabled;
+  var filterNames = '';
+  filters.forEach(function (el) {
+    el.items.filter(function (item) {
+      return item.selected;
+    }).forEach(function (item) {
+      filterNames += "".concat(item.label, ", ");
+    });
+  });
+
+  /**
+   **** Class names ****
+   */
+
+  /**
+   * Class name for the authored theme:
+   * light, dark, darkest;
+   * @type {String}
+   */
+  var themeClass = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-u-themeLight': authoredMode === __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["u" /* THEME_TYPE */].LIGHT,
+    'consonant-u-themeDark': authoredMode === __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["u" /* THEME_TYPE */].DARK,
+    'consonant-u-themeDarkest': authoredMode === __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["u" /* THEME_TYPE */].DARKEST
+  });
+
+  /**
+   * @param {*} filterList
+   * @param {*} categoryList
+   * @returns List of categories for the top pills
+   *          Prepends the "All Topics" pill to the list of categories
+   */
+  function getAuthoredCategories(filterList, categoryList) {
+    var categoryIds = filterList.filter(function (filter) {
+      return filter.id.includes('caas:product-categories');
+    }).map(function (item) {
+      return item.id;
+    });
+
+    // Sorts category list based on authored order
+    var selectedCategories = categoryIds.map(function (id) {
+      return categoryList && categoryList.filter(function (category) {
+        return category.id === id;
+      })[0];
+    });
+    return [{
+      group: 'All Topics',
+      title: 'All Topics',
+      id: '',
+      items: []
+    }].concat(_toConsumableArray(selectedCategories));
+  }
+
+  /**
+   * @returns List of all products from all categories for the 'All products' menu
+   *          Prepends the "All products" label to the list of categories
+   */
+  function getAllCategoryProducts() {
+    if (!authoredCategories) return [];
+    var allCategories = [];
+    var _iterator4 = _createForOfIteratorHelper(authoredCategories),
+      _step4;
+    try {
+      for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+        var category = _step4.value;
+        if (category && category.items) {
+          var _iterator5 = _createForOfIteratorHelper(category.items),
+            _step5;
+          try {
+            for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
+              var item = _step5.value;
+              item.fromCategory = true;
+            }
+          } catch (err) {
+            _iterator5.e(err);
+          } finally {
+            _iterator5.f();
+          }
+          allCategories = allCategories.concat(category.items);
+        }
+      }
+    } catch (err) {
+      _iterator4.e(err);
+    } finally {
+      _iterator4.f();
+    }
+    return {
+      group: 'All products',
+      id: 'caas:all-products',
+      items: allCategories
+    };
+  }
+
+  /**
+   * @param {*} selectedCategories
+   * @param {*} groupId
+   * Sets the categories and filters based on the selected category
+   */
+  function categoryHandler(selectedCategories, groupId) {
+    var temp = [];
+    var _iterator6 = _createForOfIteratorHelper(selectedCategories),
+      _step6;
+    try {
+      for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
+        var category = _step6.value;
+        temp.push(category.id);
+      }
+    } catch (err) {
+      _iterator6.e(err);
+    } finally {
+      _iterator6.f();
+    }
+    setCategories(temp);
+    setFilters(function (prevFilters) {
+      prevFilters.pop();
+      var newGroup = authoredCategories.filter(function (category) {
+        return category.id === groupId;
+      })[0];
+      if (!newGroup.items.length) {
+        var nextFilters = prevFilters.concat(getAllCategoryProducts());
+        return nextFilters;
+      }
+      prevFilters.push(newGroup);
+      return prevFilters;
+    });
+    setSelectedCategory(groupId);
+    setCurrentPage(1);
+  }
+
+  /**
+   * @param {*} category
+   * @returns The Authored icon for the category if exists,
+   *          otherwise returns the default icon from the tags or an empty string
+   */
+  function getCategoryIcon(category) {
+    var authoredIcon = authoredFilters.filter(function (filter) {
+      return filter.id === category.id;
+    }).map(function (filter) {
+      return filter.icon;
+    }).toString();
+    return authoredIcon || category.icon || '';
+  }
+  var collectionStr = collectionIdentifier ? "".concat(collectionIdentifier, " | ") : '';
+  var filterStr = selectedFiltersItemsQty ? filterNames : 'No Filters';
+  var searchQueryStr = searchQuery || 'None';
+  var collectionAnalytics = "".concat(collectionStr, "Card Collection | Filters: ").concat(filterStr, "| Search Query: ").concat(searchQueryStr);
+  /**
+   * Class name for the consonant wrapper:
+   * whether consonant wrapper contains left filter;
+   * @type {String}
+   */
+  var wrapperClass = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-Wrapper': true,
+    'consonant-Wrapper--32MarginContainer': authoredLayoutContainer === __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["k" /* LAYOUT_CONTAINER */].SIZE_100_VW_32_MARGIN,
+    'consonant-Wrapper--83PercentContainier': authoredLayoutContainer === __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["k" /* LAYOUT_CONTAINER */].SIZE_83_VW,
+    'consonant-Wrapper--1200MaxWidth': authoredLayoutContainer === __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["k" /* LAYOUT_CONTAINER */].SIZE_1200_PX,
+    'consonant-Wrapper--1600MaxWidth': authoredLayoutContainer === __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["k" /* LAYOUT_CONTAINER */].SIZE_1600_PX,
+    'consonant-Wrapper--1200MaxWidth Categories': isCategoriesContainer,
+    'consonant-Wrapper--carousel': isCarouselContainer,
+    'consonant-Wrapper--withLeftFilter': filterPanelEnabled && isLeftFilterPanel
+  });
+  Object(__WEBPACK_IMPORTED_MODULE_0_react__["useEffect"])(function () {
+    if (isCategoriesContainer) {
+      setFilters(function (prevFilters) {
+        var nextFilters = prevFilters.concat(getAllCategoryProducts());
+        return nextFilters;
+      });
+    }
+  }, []);
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_23__Helpers_contexts__["a" /* ConfigContext */].Provider, {
+    value: config
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_23__Helpers_contexts__["b" /* ExpandableContext */].Provider, {
+    value: {
+      value: openDropdown,
+      setValue: setOpenDropdown
+    }
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("section", {
+    ref: box,
+    role: "group",
+    "aria-label": title || 'Card Collection',
+    "daa-lh": collectionAnalytics,
+    "daa-im": String(trackImpressions),
+    onClick: handleWindowClick,
+    className: "".concat(wrapperClass, " ").concat(themeClass)
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-Wrapper-inner"
+  }, isCategoriesContainer && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_react__["Fragment"], null, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h2", {
+    "data-testid": "consonant-TopFilters-categoriesTitle",
+    className: "consonant-TopFilters-categoriesTitle"
+  }, title), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "filters-category"
+  }, authoredCategories.map(function (category) {
+    if (!category) return null;
+    var selected = '';
+    if (category.id === selectedCategory) {
+      selected = 'selected';
+    }
+    return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+      key: category.id,
+      onClick: function onClick() {
+        categoryHandler(category.items, category.id);
+      },
+      "data-selected": selected,
+      "data-testid": "category-button-".concat(category.id),
+      "data-group": category.group.replaceAll(' ', '').toLowerCase()
+    }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", {
+      className: "filters-category--icon",
+      src: getCategoryIcon(category),
+      alt: category.icon && 'Category icon'
+    }), category.title);
+  }))), displayLeftFilterPanel && isStandardContainer && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-Wrapper-leftFilterWrapper"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_18__Filters_Left_Panel__["a" /* default */], {
+    filters: filters,
+    selectedFiltersQty: selectedFiltersItemsQty,
+    windowWidth: windowWidth,
+    onFilterClick: handleFilterGroupClick,
+    onClearAllFilters: resetFiltersSearchAndBookmarks,
+    onClearFilterItems: clearFilterItem,
+    onCheckboxClick: handleCheckBoxChange,
+    onMobileFiltersToggleClick: handleMobileFiltersToggle,
+    onSelectedFilterClick: handleCheckBoxChange,
+    showMobileFilters: showMobileFilters,
+    resQty: gridCardLen,
+    bookmarkComponent: /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_13__Bookmarks_Bookmarks__["a" /* default */], {
+      showBookmarks: showBookmarks,
+      onClick: handleShowBookmarksFilterClick,
+      savedCardsCount: bookmarkedCardIds.length
+    }),
+    searchComponent: /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__Search_Search__["a" /* default */], {
+      placeholderText: leftPanelSearchPlaceholder,
+      name: "filtersSideSearch",
+      value: searchQuery,
+      autofocus: false,
+      onSearch: handleSearchInputChange
+    }),
+    ref: filterItemRef
+  })), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-Wrapper-collection".concat(isLoading ? ' is-loading' : '')
+  }, isTopFilterPanel && isStandardContainer && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_17__Filters_Top_Panel__["a" /* default */], {
+    filterPanelEnabled: filterPanelEnabled,
+    filters: filters,
+    searchQuery: searchQuery,
+    windowWidth: windowWidth,
+    resQty: gridCardLen,
+    onCheckboxClick: handleCheckBoxChange,
+    onFilterClick: handleFilterGroupClick,
+    onClearFilterItems: clearFilterItem,
+    categories: currCategories,
+    onClearAllFilters: resetFiltersSearchAndBookmarks,
+    showLimitedFiltersQty: showLimitedFiltersQty,
+    searchComponent: /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__Search_Search__["a" /* default */], {
+      placeholderText: topPanelSearchPlaceholder,
+      name: "filtersTopSearch",
+      value: searchQuery,
+      autofocus: DESKTOP_SCREEN_SIZE,
+      onSearch: handleSearchInputChange
+    }),
+    sortComponent: /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Sort_Popup__["a" /* default */], {
+      opened: sortOpened,
+      id: "sort",
+      val: sortOption,
+      values: sortOptions,
+      onSelect: handleSortChange,
+      name: "filtersTopSelect",
+      autoWidth: true,
+      optionsAlignment: topPanelSortPopupLocation
+    }),
+    onShowAllClick: handleShowAllTopFilters
+  }), isLeftFilterPanel && isStandardContainer && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_21__Filters_Left_Info__["a" /* Info */], {
+    enabled: filterPanelEnabled,
+    filtersQty: filters.length,
+    filters: filters,
+    cardsQty: gridCardLen,
+    selectedFiltersQty: selectedFiltersItemsQty,
+    windowWidth: windowWidth,
+    onMobileFiltersToggleClick: handleMobileFiltersToggle,
+    searchComponent: /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__Search_Search__["a" /* default */], {
+      placeholderText: searchPlaceholderText,
+      name: "searchFiltersInfo",
+      value: searchQuery,
+      autofocus: false,
+      onSearch: handleSearchInputChange
+    }),
+    sortComponent: /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Sort_Popup__["a" /* default */], {
+      opened: sortOpened,
+      id: "sort",
+      val: sortOption,
+      values: sortOptions,
+      onSelect: handleSortChange,
+      autoWidth: false,
+      optionsAlignment: "right"
+    }),
+    sortOptions: sortOptions,
+    ref: filterInfoRef
+  }), atLeastOneCard && isStandardContainer && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_react__["Fragment"], null, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_15__Grid_Grid__["a" /* default */], {
+    resultsPerPage: resultsPerPage,
+    pages: currentPage,
+    cards: gridCards,
+    forwardedRef: scrollElementRef,
+    onCardBookmark: handleCardBookmarking,
+    isAriaLiveActive: isGridAreaLive
+  }), displayLoadMore && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_12__Pagination_LoadMore__["a" /* default */], {
+    onClick: onLoadMoreClick,
+    show: numCardsToShow,
+    total: gridCardLen
+  }), displayPaginator && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_14__Pagination_Paginator__["a" /* default */], {
+    pageCount: paginatorCount,
+    currentPageNumber: currentPage,
+    totalPages: totalPages,
+    showItemsPerPage: resultsPerPage,
+    totalResults: gridCardLen,
+    onClick: setCurrentPage
+  })), atLeastOneCard && isCarouselContainer && !(cardStyle === 'custom-card') && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10__CardsCarousel_CardsCarousel__["a" /* default */], {
+    resQty: gridCardLen,
+    cards: gridCards,
+    role: "tablist",
+    onCardBookmark: handleCardBookmarking
+  }), atLeastOneCard && isCarouselContainer && cardStyle === 'custom-card' && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_11__NoResults_View__["a" /* default */], {
+    title: "Not Supported",
+    description: "Using custom cards within a carousel layout is currently not supported. Please re-author the component",
+    replaceValue: ""
+  }), isLoading && !atLeastOneCard && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__Loader_Loader__["a" /* default */], {
+    size: __WEBPACK_IMPORTED_MODULE_22__Helpers_constants__["l" /* LOADER_SIZE */].BIG,
+    hidden: !totalCardLimit,
+    absolute: true
+  }), !isApiFailure && !atLeastOneCard && !isLoading && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_11__NoResults_View__["a" /* default */], {
+    title: noResultsTitle,
+    description: noResultsDescription,
+    replaceValue: searchQuery
+  }), isApiFailure && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_11__NoResults_View__["a" /* default */], {
+    title: apiFailureTitle,
+    description: apiFailureDescription,
+    replaceValue: ""
+  }))))));
 };
-
 Container.propTypes = {
-    config: (0, _propTypes.shape)(_config.configType)
+  config: Object(__WEBPACK_IMPORTED_MODULE_2_prop_types__["shape"])(__WEBPACK_IMPORTED_MODULE_9__types_config__["a" /* configType */])
 };
-
 Container.defaultProps = {
-    config: {}
+  config: {}
 };
-
-exports.default = Container;
+/* harmony default export */ __webpack_exports__["a"] = (Container);
 
 /***/ }),
 /* 109 */
@@ -8114,31 +7719,27 @@ if (process.env.NODE_ENV === 'production') {
 
 /***/ }),
 /* 110 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return getNumSelectedFilterItems; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return makeConfigGetter; });
+/* harmony export (immutable) */ __webpack_exports__["a"] = getDefaultSortOption;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__general__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__(15);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.makeConfigGetter = exports.getNumSelectedFilterItems = undefined;
-exports.getDefaultSortOption = getDefaultSortOption;
-
-var _general = __webpack_require__(6);
-
-var _constants = __webpack_require__(15);
 
 /**
  * Gets the number of selected filter items
  * @param {Array} filters - filters array
  * @returns {Number} - the number of selected filter items
  */
-var getNumSelectedFilterItems = exports.getNumSelectedFilterItems = function getNumSelectedFilterItems(filters) {
-    var filterItems = (0, _general.chainFromIterable)(filters.map(function (filter) {
-        return filter.items;
-    }));
-    return (0, _general.getSelectedItemsCount)(filterItems);
+var getNumSelectedFilterItems = function getNumSelectedFilterItems(filters) {
+  var filterItems = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* chainFromIterable */])(filters.map(function (filter) {
+    return filter.items;
+  }));
+  return Object(__WEBPACK_IMPORTED_MODULE_0__general__["k" /* getSelectedItemsCount */])(filterItems);
 };
 
 /**
@@ -8146,18 +7747,16 @@ var getNumSelectedFilterItems = exports.getNumSelectedFilterItems = function get
  * @param {Object} config - main configuration object
  * @returns {Object} - authored or default configuration value
  */
-var makeConfigGetter = exports.makeConfigGetter = function makeConfigGetter(config) {
-    return function (object, key) {
-        var objectPath = key ? object + '.' + key : object;
-        var defaultValue = (0, _general.getByPath)(_constants.DEFAULT_CONFIG, objectPath);
-
-        var value = (0, _general.getByPath)(config, objectPath);
-
-        if ((0, _general.isNullish)(value)) {
-            return defaultValue;
-        }
-        return value;
-    };
+var makeConfigGetter = function makeConfigGetter(config) {
+  return function (object, key) {
+    var objectPath = key ? "".concat(object, ".").concat(key) : object;
+    var defaultValue = Object(__WEBPACK_IMPORTED_MODULE_0__general__["c" /* getByPath */])(__WEBPACK_IMPORTED_MODULE_1__constants__["b" /* DEFAULT_CONFIG */], objectPath);
+    var value = Object(__WEBPACK_IMPORTED_MODULE_0__general__["c" /* getByPath */])(config, objectPath);
+    if (Object(__WEBPACK_IMPORTED_MODULE_0__general__["s" /* isNullish */])(value)) {
+      return defaultValue;
+    }
+    return value;
+  };
 };
 
 /**
@@ -8167,120 +7766,98 @@ var makeConfigGetter = exports.makeConfigGetter = function makeConfigGetter(conf
  * @returns {Object} - Sort Option or default if none is found
  */
 function getDefaultSortOption(config, query) {
-    var getConfig = makeConfigGetter(config);
-    var sortOptions = getConfig('sort', 'options');
-    var sortConstant = _constants.SORT_TYPES[query.toUpperCase()];
-
-    return sortOptions.find(function (option) {
-        return option.sort === query;
-    }) || {
-        label: sortConstant || 'Featured',
-        sort: sortConstant || 'featured'
-    };
+  var getConfig = makeConfigGetter(config);
+  var sortOptions = getConfig('sort', 'options');
+  var sortConstant = __WEBPACK_IMPORTED_MODULE_1__constants__["s" /* SORT_TYPES */][query.toUpperCase()];
+  return sortOptions.find(function (option) {
+    return option.sort === query;
+  }) || {
+    label: sortConstant || 'Featured',
+    sort: sortConstant || 'featured'
+  };
 }
 
 /***/ }),
 /* 111 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* unused harmony export noOp */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return ExpandableContext; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ConfigContext; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.ConfigContext = exports.ExpandableContext = exports.noOp = undefined;
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * A funtion-placeholder, used to handle cleanups
  * Defined explicitly so react doesn't re-create during re-renders
  * @returns {undefined} - returns undefined
  */
-var noOp = exports.noOp = function noOp() {};
+var noOp = function noOp() {};
 
 /**
  * Creates context for expandable components
  * @returns {Object} - ExpandableContext context object
  */
-var ExpandableContext = exports.ExpandableContext = _react2.default.createContext({ value: null, setValue: noOp });
+var ExpandableContext = /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createContext({
+  value: null,
+  setValue: noOp
+});
 
 /**
  * Creates configuration context
  * @returns {Object} - ConfigContext context object
  */
-var ConfigContext = exports.ConfigContext = _react2.default.createContext({});
+var ConfigContext = /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createContext({});
 
 /***/ }),
 /* 112 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_html_react_parser__ = __webpack_require__(237);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__types_card__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Helpers_general__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Helpers_hooks__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Cards_Card__ = __webpack_require__(252);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Helpers_withLinkTransformer__ = __webpack_require__(288);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__Helpers_constants__ = __webpack_require__(15);
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _react = __webpack_require__(0);
 
-var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(7);
 
-var _classnames2 = _interopRequireDefault(_classnames);
 
-var _propTypes = __webpack_require__(1);
 
-var _htmlReactParser = __webpack_require__(237);
 
-var _htmlReactParser2 = _interopRequireDefault(_htmlReactParser);
-
-var _card = __webpack_require__(39);
-
-var _general = __webpack_require__(6);
-
-var _hooks = __webpack_require__(5);
-
-var _Card = __webpack_require__(252);
-
-var _Card2 = _interopRequireDefault(_Card);
-
-var _withLinkTransformer = __webpack_require__(288);
-
-var _withLinkTransformer2 = _interopRequireDefault(_withLinkTransformer);
-
-var _constants = __webpack_require__(15);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var TransformedCard = (0, _withLinkTransformer2.default)(_Card2.default);
-
+var TransformedCard = Object(__WEBPACK_IMPORTED_MODULE_8__Helpers_withLinkTransformer__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_7__Cards_Card__["a" /* default */]);
 var cardsGridType = {
-    pages: _propTypes.number,
-    resultsPerPage: _propTypes.number,
-    cards: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_card.cardType)),
-    onCardBookmark: _propTypes.func.isRequired,
-    containerType: _propTypes.string,
-    isAriaLiveActive: _propTypes.bool,
-    // eslint-disable-next-line react/forbid-prop-types
-    forwardedRef: _propTypes.object
+  pages: __WEBPACK_IMPORTED_MODULE_2_prop_types__["number"],
+  resultsPerPage: __WEBPACK_IMPORTED_MODULE_2_prop_types__["number"],
+  cards: Object(__WEBPACK_IMPORTED_MODULE_2_prop_types__["arrayOf"])(Object(__WEBPACK_IMPORTED_MODULE_2_prop_types__["shape"])(__WEBPACK_IMPORTED_MODULE_4__types_card__["a" /* cardType */])),
+  onCardBookmark: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"].isRequired,
+  containerType: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"],
+  isAriaLiveActive: __WEBPACK_IMPORTED_MODULE_2_prop_types__["bool"],
+  // eslint-disable-next-line react/forbid-prop-types
+  forwardedRef: __WEBPACK_IMPORTED_MODULE_2_prop_types__["object"]
 };
-
 var defaultProps = {
-    pages: 1,
-    cards: [],
-    resultsPerPage: _constants.DEFAULT_SHOW_ITEMS_PER_PAGE,
-    containerType: 'default',
-    isAriaLiveActive: false,
-    forwardedRef: null
+  pages: 1,
+  cards: [],
+  resultsPerPage: __WEBPACK_IMPORTED_MODULE_9__Helpers_constants__["c" /* DEFAULT_SHOW_ITEMS_PER_PAGE */],
+  containerType: 'default',
+  isAriaLiveActive: false,
+  forwardedRef: null
 };
 
 /**
@@ -8299,201 +7876,191 @@ var defaultProps = {
  * )
  */
 var Grid = function Grid(props) {
-    var resultsPerPage = props.resultsPerPage,
-        pages = props.pages,
-        onCardBookmark = props.onCardBookmark,
-        cards = props.cards,
-        containerType = props.containerType,
-        isAriaLiveActive = props.isAriaLiveActive,
-        forwardedRef = props.forwardedRef;
+  var resultsPerPage = props.resultsPerPage,
+    pages = props.pages,
+    onCardBookmark = props.onCardBookmark,
+    cards = props.cards,
+    containerType = props.containerType,
+    isAriaLiveActive = props.isAriaLiveActive,
+    forwardedRef = props.forwardedRef;
 
-    /**
-     **** Authored Configs ****
-     */
+  /**
+   **** Authored Configs ****
+   */
+  var getConfig = Object(__WEBPACK_IMPORTED_MODULE_6__Helpers_hooks__["a" /* useConfig */])();
+  var collectionStyleOverride = getConfig('collection', 'cardStyle').replace('1:2', 'one-half').replace('3:4', 'three-fourths');
+  var cardsGridLayout = getConfig('collection', 'layout.type');
+  var cardsGridGutter = getConfig('collection', 'layout.gutter');
+  var renderCardsBorders = getConfig('collection', 'setCardBorders');
+  var renderFooterDivider = getConfig('collection', 'showFooterDivider');
+  var renderCardsOverlay = getConfig('collection', 'useOverlayLinks');
+  var dateFormat = getConfig('collection', 'i18n.prettyDateIntervalFormat');
+  var locale = getConfig('language', '');
+  var paginationType = getConfig('pagination', 'type');
+  var collectionButtonStyle = getConfig('collection', 'collectionButtonStyle');
+  var cardHoverEffect = getConfig('collection', 'cardHoverEffect');
+  var customCard;
+  try {
+    /* eslint-disable-next-line no-new-func */
+    customCard = new Function('card', getConfig('customCard', '')[1]);
+  } catch (e) {
+    customCard = function customCard() {};
+  }
 
-    var getConfig = (0, _hooks.useConfig)();
-    var collectionStyleOverride = getConfig('collection', 'cardStyle').replace('1:2', 'one-half').replace('3:4', 'three-fourths');
-    var cardsGridLayout = getConfig('collection', 'layout.type');
-    var cardsGridGutter = getConfig('collection', 'layout.gutter');
-    var renderCardsBorders = getConfig('collection', 'setCardBorders');
-    var renderFooterDivider = getConfig('collection', 'showFooterDivider');
-    var renderCardsOverlay = getConfig('collection', 'useOverlayLinks');
-    var dateFormat = getConfig('collection', 'i18n.prettyDateIntervalFormat');
-    var locale = getConfig('language', '');
-    var paginationType = getConfig('pagination', 'type');
-    var collectionButtonStyle = getConfig('collection', 'collectionButtonStyle');
-    var cardHoverEffect = getConfig('collection', 'cardHoverEffect');
-
-    var customCard = void 0;
-    try {
-        /* eslint-disable-next-line no-new-func */
-        customCard = new Function('card', getConfig('customCard', '')[1]);
-    } catch (e) {
-        customCard = function customCard() {};
+  /**
+   * Class name for the cards grid:
+   * whether the grid should show 2, 3, 4 or 5 cards in a row;
+   * whether the grid should have a gutter of 8px, 16px, 24px or 32px;
+   * @type {String}
+   */
+  var gridClass = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-CardsGrid': true,
+    'consonant-CardsGrid--2up': cardsGridLayout === __WEBPACK_IMPORTED_MODULE_9__Helpers_constants__["h" /* GRID_TYPE */].TWO_UP,
+    'consonant-CardsGrid--3up': cardsGridLayout === __WEBPACK_IMPORTED_MODULE_9__Helpers_constants__["h" /* GRID_TYPE */].THREE_UP,
+    'consonant-CardsGrid--4up': cardsGridLayout === __WEBPACK_IMPORTED_MODULE_9__Helpers_constants__["h" /* GRID_TYPE */].FOUR_UP,
+    'consonant-CardsGrid--5up': cardsGridLayout === __WEBPACK_IMPORTED_MODULE_9__Helpers_constants__["h" /* GRID_TYPE */].FIVE_UP,
+    'consonant-CardsGrid--with1xGutter': cardsGridGutter === __WEBPACK_IMPORTED_MODULE_9__Helpers_constants__["i" /* GUTTER_SIZE */].GUTTER_1_X,
+    'consonant-CardsGrid--with2xGutter': cardsGridGutter === __WEBPACK_IMPORTED_MODULE_9__Helpers_constants__["i" /* GUTTER_SIZE */].GUTTER_2_X,
+    'consonant-CardsGrid--with3xGutter': cardsGridGutter === __WEBPACK_IMPORTED_MODULE_9__Helpers_constants__["i" /* GUTTER_SIZE */].GUTTER_3_X,
+    'consonant-CardsGrid--with4xGutter': cardsGridGutter === __WEBPACK_IMPORTED_MODULE_9__Helpers_constants__["i" /* GUTTER_SIZE */].GUTTER_4_X,
+    'consonant-CardsGrid--doubleWideCards': collectionStyleOverride === __WEBPACK_IMPORTED_MODULE_9__Helpers_constants__["a" /* CARD_STYLES */].DOUBLE_WIDE,
+    'card-hover-grow': cardHoverEffect === 'grow'
+  });
+  var bannerMap = {
+    live: {
+      description: getConfig('collection', 'banner.live.description'),
+      backgroundColor: '#ffffff',
+      fontColor: '#d7373f',
+      icon: 'https://www.adobe.com/content/dam/cc/icons/live_banner_icon.svg'
+    },
+    upcoming: {
+      description: getConfig('collection', 'banner.upcoming.description'),
+      backgroundColor: '#FC6B35',
+      fontColor: '#000000',
+      icon: ''
+    },
+    onDemand: {
+      description: getConfig('collection', 'banner.onDemand.description'),
+      backgroundColor: '#2D9D78',
+      fontColor: '#000000',
+      icon: ''
+    },
+    register: {
+      description: getConfig('collection', 'banner.register.description'),
+      backgroundColor: '#EBC526',
+      fontColor: '#323232',
+      icon: ''
     }
+  };
 
-    /**
-     * Class name for the cards grid:
-     * whether the grid should show 2, 3, 4 or 5 cards in a row;
-     * whether the grid should have a gutter of 8px, 16px, 24px or 32px;
-     * @type {String}
-     */
-    var gridClass = (0, _classnames2.default)({
-        'consonant-CardsGrid': true,
-        'consonant-CardsGrid--2up': cardsGridLayout === _constants.GRID_TYPE.TWO_UP,
-        'consonant-CardsGrid--3up': cardsGridLayout === _constants.GRID_TYPE.THREE_UP,
-        'consonant-CardsGrid--4up': cardsGridLayout === _constants.GRID_TYPE.FOUR_UP,
-        'consonant-CardsGrid--5up': cardsGridLayout === _constants.GRID_TYPE.FIVE_UP,
-        'consonant-CardsGrid--with1xGutter': cardsGridGutter === _constants.GUTTER_SIZE.GUTTER_1_X,
-        'consonant-CardsGrid--with2xGutter': cardsGridGutter === _constants.GUTTER_SIZE.GUTTER_2_X,
-        'consonant-CardsGrid--with3xGutter': cardsGridGutter === _constants.GUTTER_SIZE.GUTTER_3_X,
-        'consonant-CardsGrid--with4xGutter': cardsGridGutter === _constants.GUTTER_SIZE.GUTTER_4_X,
-        'consonant-CardsGrid--doubleWideCards': collectionStyleOverride === _constants.CARD_STYLES.DOUBLE_WIDE,
-        'card-hover-grow': cardHoverEffect === 'grow'
+  /**
+   * Whether the paginator component is being used
+   * @type {Boolean}
+   */
+  var isPaginator = paginationType === 'paginator';
+  var isLoadMore = paginationType === 'loadMore' || containerType === 'carousel';
+
+  /**
+   * Total pages to show (used if paginator component is set)
+   * @type {Number}
+   */
+  var totalPages = resultsPerPage * pages;
+
+  /**
+   * The final cards to show in the collection
+   * @type {Array}
+   */
+  var cardsToshow = cards;
+
+  /**
+   * Current page (used if paginator component is authored)
+   * @type {Number}
+   */
+  var currentPage = resultsPerPage * (pages - 1);
+  if (isPaginator) {
+    cardsToshow = cards.slice(currentPage, totalPages);
+  }
+
+  /**
+   * Current page (used if load more button is authored)
+   * @type {Number}
+   */
+  if (isLoadMore) {
+    cardsToshow = cards.slice(0, resultsPerPage * pages);
+  }
+  var cleanTitle = function cleanTitle(title) {
+    return title.toString().replace(/\|/g, '-');
+  };
+
+  /**
+   * Scrolls a card into view if any of its children is on focus.
+   * @param {string} card - ID of the card to display
+   */
+  /* istanbul ignore next */
+  var scrollCardIntoView = function scrollCardIntoView(card) {
+    /* istanbul ignore if */
+    if (!card) return;
+    var element = document.getElementById(card);
+    element.scrollIntoView({
+      block: 'nearest'
     });
+  };
 
-    var bannerMap = {
-        live: {
-            description: getConfig('collection', 'banner.live.description'),
-            backgroundColor: '#ffffff',
-            fontColor: '#d7373f',
-            icon: 'https://www.adobe.com/content/dam/cc/icons/live_banner_icon.svg'
-        },
-        upcoming: {
-            description: getConfig('collection', 'banner.upcoming.description'),
-            backgroundColor: '#FC6B35',
-            fontColor: '#000000',
-            icon: ''
-        },
-        onDemand: {
-            description: getConfig('collection', 'banner.onDemand.description'),
-            backgroundColor: '#2D9D78',
-            fontColor: '#000000',
-            icon: ''
-        },
-        register: {
-            description: getConfig('collection', 'banner.register.description'),
-            backgroundColor: '#EBC526',
-            fontColor: '#323232',
-            icon: ''
-        }
-    };
-
-    /**
-     * Whether the paginator component is being used
-     * @type {Boolean}
-     */
-    var isPaginator = paginationType === 'paginator';
-    var isLoadMore = paginationType === 'loadMore' || containerType === 'carousel';
-
-    /**
-     * Total pages to show (used if paginator component is set)
-     * @type {Number}
-     */
-    var totalPages = resultsPerPage * pages;
-
-    /**
-     * The final cards to show in the collection
-     * @type {Array}
-     */
-    var cardsToshow = cards;
-
-    /**
-     * Current page (used if paginator component is authored)
-     * @type {Number}
-     */
-    var currentPage = resultsPerPage * (pages - 1);
-
-    if (isPaginator) {
-        cardsToshow = cards.slice(currentPage, totalPages);
+  /**
+   * Determines whether ctas should be hidden on a given card
+   * @param {Object} card - object to get value
+   * @param {String} style - the collection button style
+   * @returns {bool} - whether a cta should be hidden
+   */
+  var getHideCta = function getHideCta(card, style) {
+    if (card.hideCtaId || card.hideCtaTags || style === 'hidden') return true;
+    return false;
+  };
+  return cardsToshow.length > 0 && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    ref: forwardedRef,
+    "data-card-style": collectionStyleOverride,
+    "data-testid": "consonant-CardsGrid",
+    className: gridClass,
+    "aria-live": isAriaLiveActive ? 'polite' : 'off'
+  }, cardsToshow.map(function (card, index) {
+    var cardStyleOverride = Object(__WEBPACK_IMPORTED_MODULE_5__Helpers_general__["c" /* getByPath */])(card, 'styles.typeOverride');
+    var cardStyle = collectionStyleOverride || cardStyleOverride;
+    var _card$contentArea = card.contentArea,
+      _card$contentArea2 = _card$contentArea === void 0 ? {} : _card$contentArea,
+      _card$contentArea2$ti = _card$contentArea2.title,
+      title = _card$contentArea2$ti === void 0 ? '' : _card$contentArea2$ti,
+      id = card.id;
+    var cardNumber = index + 1;
+    var hideCTA = getHideCta(card, collectionButtonStyle);
+    switch (cardStyle) {
+      /* istanbul ignore next */
+      case __WEBPACK_IMPORTED_MODULE_9__Helpers_constants__["a" /* CARD_STYLES */].CUSTOM:
+        return Object(__WEBPACK_IMPORTED_MODULE_3_html_react_parser__["a" /* default */])(customCard(card));
+      default:
+        return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(TransformedCard, _extends({
+          cardStyle: cardStyle,
+          lh: "Card ".concat(cardNumber, " | ").concat(cleanTitle(title), " | ").concat(id),
+          key: card.id
+        }, card, {
+          bannerMap: bannerMap,
+          onClick: onCardBookmark,
+          dateFormat: dateFormat,
+          locale: locale,
+          renderBorder: renderCardsBorders,
+          renderDivider: renderFooterDivider,
+          renderOverlay: renderCardsOverlay,
+          hideCTA: hideCTA
+          /* istanbul ignore next */,
+          onFocus: function onFocus() {
+            return scrollCardIntoView(card.id);
+          }
+        }));
     }
-
-    /**
-     * Current page (used if load more button is authored)
-     * @type {Number}
-     */
-    if (isLoadMore) {
-        cardsToshow = cards.slice(0, resultsPerPage * pages);
-    }
-
-    var cleanTitle = function cleanTitle(title) {
-        return title.toString().replace(/\|/g, '-');
-    };
-
-    /**
-     * Scrolls a card into view if any of its children is on focus.
-     * @param {string} card - ID of the card to display
-     */
-    /* istanbul ignore next */
-    var scrollCardIntoView = function scrollCardIntoView(card) {
-        /* istanbul ignore if */
-        if (!card) return;
-        var element = document.getElementById(card);
-        element.scrollIntoView({ block: 'nearest' });
-    };
-
-    /**
-     * Determines whether ctas should be hidden on a given card
-     * @param {Object} card - object to get value
-     * @param {String} style - the collection button style
-     * @returns {bool} - whether a cta should be hidden
-     */
-    var getHideCta = function getHideCta(card, style) {
-        if (card.hideCtaId || card.hideCtaTags || style === 'hidden') return true;
-        return false;
-    };
-
-    return cardsToshow.length > 0 && _react2.default.createElement(
-        'div',
-        {
-            ref: forwardedRef,
-            'data-card-style': collectionStyleOverride,
-            'data-testid': 'consonant-CardsGrid',
-            className: gridClass,
-            'aria-live': isAriaLiveActive ? 'polite' : 'off' },
-        cardsToshow.map(function (card, index) {
-            var cardStyleOverride = (0, _general.getByPath)(card, 'styles.typeOverride');
-            var cardStyle = collectionStyleOverride || cardStyleOverride;
-            var _card$contentArea = card.contentArea;
-            _card$contentArea = _card$contentArea === undefined ? {} : _card$contentArea;
-            var _card$contentArea$tit = _card$contentArea.title,
-                title = _card$contentArea$tit === undefined ? '' : _card$contentArea$tit,
-                id = card.id;
-
-            var cardNumber = index + 1;
-            var hideCTA = getHideCta(card, collectionButtonStyle);
-
-            switch (cardStyle) {
-                /* istanbul ignore next */
-                case _constants.CARD_STYLES.CUSTOM:
-                    return (0, _htmlReactParser2.default)(customCard(card));
-                default:
-                    return _react2.default.createElement(TransformedCard, _extends({
-                        cardStyle: cardStyle,
-                        lh: 'Card ' + cardNumber + ' | ' + cleanTitle(title) + ' | ' + id,
-                        key: card.id
-                    }, card, {
-                        bannerMap: bannerMap,
-                        onClick: onCardBookmark,
-                        dateFormat: dateFormat,
-                        locale: locale,
-                        renderBorder: renderCardsBorders,
-                        renderDivider: renderFooterDivider,
-                        renderOverlay: renderCardsOverlay,
-                        hideCTA: hideCTA
-                        /* istanbul ignore next */
-                        , onFocus: function onFocus() {
-                            return scrollCardIntoView(card.id);
-                        } }));
-            }
-        })
-    );
+  }));
 };
-
 Grid.propTypes = cardsGridType;
 Grid.defaultProps = defaultProps;
-
-exports.default = Grid;
+/* harmony default export */ __webpack_exports__["a"] = (Grid);
 
 /***/ }),
 /* 113 */
@@ -9337,14 +8904,9 @@ module.exports = function pad (num, size) {
 
 /***/ }),
 /* 118 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 /**
  * Gets the Localized Local Time Zone
  * @param {Date} someTimeUTC - An authored time in UTC
@@ -9352,7 +8914,9 @@ Object.defineProperty(exports, "__esModule", {
  * @example - EST
  */
 var getLocalTimeZone = function getLocalTimeZone(someTimeUTC, someLocale) {
-  return new Date(someTimeUTC).toLocaleTimeString(someLocale, { timeZoneName: 'short' }).split(' ').slice(-1)[0];
+  return new Date(someTimeUTC).toLocaleTimeString(someLocale, {
+    timeZoneName: 'short'
+  }).split(' ').slice(-1)[0];
 };
 
 /**
@@ -9364,12 +8928,13 @@ var getLocalTimeZone = function getLocalTimeZone(someTimeUTC, someLocale) {
  * @example - 13:00 - 14:45
  */
 var getTimeInterval = function getTimeInterval(startTimeUTC, endTimeUTC, someLocale) {
-  var options = { hour: '2-digit', minute: '2-digit' };
-
+  var options = {
+    hour: '2-digit',
+    minute: '2-digit'
+  };
   var startTime = new Date(startTimeUTC).toLocaleTimeString(someLocale, options);
   var endTime = new Date(endTimeUTC).toLocaleTimeString(someLocale, options);
-
-  return startTime + ' - ' + endTime;
+  return "".concat(startTime, " - ").concat(endTime);
 };
 
 /**
@@ -9379,7 +8944,9 @@ var getTimeInterval = function getTimeInterval(startTimeUTC, endTimeUTC, someLoc
  * @example - 06
  */
 var getDay = function getDay(someTimeUTC, someLocale) {
-  return new Date(someTimeUTC).toLocaleDateString(someLocale, { day: '2-digit' });
+  return new Date(someTimeUTC).toLocaleDateString(someLocale, {
+    day: '2-digit'
+  });
 };
 
 /**
@@ -9389,7 +8956,9 @@ var getDay = function getDay(someTimeUTC, someLocale) {
  * @example - Aug
  */
 var getMonth = function getMonth(someTimeUTC, someLocale) {
-  return new Date(someTimeUTC).toLocaleDateString(someLocale, { month: 'short' });
+  return new Date(someTimeUTC).toLocaleDateString(someLocale, {
+    month: 'short'
+  });
 };
 
 /**
@@ -9399,7 +8968,9 @@ var getMonth = function getMonth(someTimeUTC, someLocale) {
  * @example - Tue
  */
 var getDayOfTheWeek = function getDayOfTheWeek(someTimeUTC, someLocale) {
-  return new Date(someTimeUTC).toLocaleDateString(someLocale, { weekday: 'short' });
+  return new Date(someTimeUTC).toLocaleDateString(someLocale, {
+    weekday: 'short'
+  });
 };
 
 /**
@@ -9414,8 +8985,7 @@ var getDayOfTheWeek = function getDayOfTheWeek(someTimeUTC, someLocale) {
 var getPrettyDateInterval = function getPrettyDateInterval(startDateUTC, endDateUTC, locale, i18nFormat) {
   return i18nFormat.replace('{LLL}', getMonth(startDateUTC, locale)).replace('{dd}', getDay(startDateUTC, locale)).replace('{ddd}', getDayOfTheWeek(startDateUTC, locale)).replace('{timeRange}', getTimeInterval(startDateUTC, endDateUTC, locale)).replace('{timeZone}', getLocalTimeZone(startDateUTC, locale));
 };
-
-exports.default = getPrettyDateInterval;
+/* harmony default export */ __webpack_exports__["a"] = (getPrettyDateInterval);
 
 /***/ }),
 /* 119 */
@@ -9427,170 +8997,251 @@ module.exports = __webpack_require__(315);
 
 /***/ }),
 /* 120 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ConsonantCardCollecton", function() { return ConsonantCardCollecton; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initReact", function() { return initReact; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "collectionLoadedThroughXf", function() { return collectionLoadedThroughXf; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "authorWatch", function() { return authorWatch; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__polyfills__ = __webpack_require__(121);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_dom_components__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_dom_components___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_dom_components__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Consonant_Helpers_general__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_Consonant_Helpers_lana__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_Consonant_Container_Container__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_Consonant_Page_ConsonantPageDOM__ = __webpack_require__(313);
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+/* eslint-disable */
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.authorWatch = exports.collectionLoadedThroughXf = exports.initReact = exports.ConsonantCardCollecton = undefined;
-
-__webpack_require__(121);
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = __webpack_require__(105);
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _reactDomComponents = __webpack_require__(107);
-
-var _general = __webpack_require__(6);
-
-var _lana = __webpack_require__(50);
-
-var _Container = __webpack_require__(108);
-
-var _Container2 = _interopRequireDefault(_Container);
-
-var _ConsonantPageDOM = __webpack_require__(313);
-
-var _ConsonantPageDOM2 = _interopRequireDefault(_ConsonantPageDOM);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /* eslint-disable */
 
 
-var domRegistry = new _reactDomComponents.DOMRegistry(_react2.default, _reactDom.render);
+
+
+
+
+var domRegistry = new __WEBPACK_IMPORTED_MODULE_3_react_dom_components__["DOMRegistry"](__WEBPACK_IMPORTED_MODULE_1_react___default.a, __WEBPACK_IMPORTED_MODULE_2_react_dom__["render"]);
 domRegistry.register({
-    consonantPageRDC: _ConsonantPageDOM2.default
+  consonantPageRDC: __WEBPACK_IMPORTED_MODULE_7__components_Consonant_Page_ConsonantPageDOM__["a" /* default */]
 });
-
 try {
-    (0, _lana.loadLana)();
+  Object(__WEBPACK_IMPORTED_MODULE_5__components_Consonant_Helpers_lana__["a" /* loadLana */])();
 } catch (e) {
-    window.lana = {
-        log: function log() {}
-    };
+  window.lana = {
+    log: function log() {}
+  };
 }
-
 var initReact = function initReact(element) {
-    var registry = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : domRegistry;
-
-    registry.init(element);
+  var registry = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : domRegistry;
+  registry.init(element);
 };
-
 initReact(document);
-
 function collectionLoadedThroughXf(el) {
-    if (!el) return false; // Ensure el is not null or undefined
-    var container = el.firstElementChild;
-    var consonantCardCollection = null;
-    if (container !== null) {
-        consonantCardCollection = container.querySelectorAll('.consonantcardcollection');
-    }
-    return el.className.indexOf('experiencefragment') !== -1 && consonantCardCollection !== null && consonantCardCollection.length > 0;
+  if (!el) return false; // Ensure el is not null or undefined
+  var container = el.firstElementChild;
+  var consonantCardCollection = null;
+  if (container !== null) {
+    consonantCardCollection = container.querySelectorAll('.consonantcardcollection');
+  }
+  return el.className.indexOf('experiencefragment') !== -1 && consonantCardCollection !== null && consonantCardCollection.length > 0;
 }
-
 var prev = null;
 function authorWatch(el) {
-    var registry = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : domRegistry;
-
-    if (prev !== el && collectionLoadedThroughXf(el)) {
-        prev = el;
-        registry.render(_ConsonantPageDOM2.default);
-    }
+  var registry = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : domRegistry;
+  if (prev !== el && collectionLoadedThroughXf(el)) {
+    prev = el;
+    registry.render(__WEBPACK_IMPORTED_MODULE_7__components_Consonant_Page_ConsonantPageDOM__["a" /* default */]);
+  }
 }
 
 // Add to DXF Registry
 try {
-    window.dexter.dxf.registerApp(initReact);
+  window.dexter.dxf.registerApp(initReact);
 } catch (e) {
-    /* eslint-disable no-empty */
+  /* eslint-disable no-empty */
 }
-
-var ConsonantCardCollecton = exports.ConsonantCardCollecton = function ConsonantCardCollecton(config, element) {
-    _classCallCheck(this, ConsonantCardCollecton);
-
-    _reactDom2.default.render(_react2.default.createElement(
-        _react2.default.Fragment,
-        null,
-        _react2.default.createElement(_Container2.default, { config: (0, _general.parseToPrimitive)(config) })
-    ), element);
-};
-
+var ConsonantCardCollecton = /*#__PURE__*/_createClass(function ConsonantCardCollecton(config, element) {
+  _classCallCheck(this, ConsonantCardCollecton);
+  __WEBPACK_IMPORTED_MODULE_2_react_dom___default.a.render(/*#__PURE__*/__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react___default.a.Fragment, null, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__components_Consonant_Container_Container__["a" /* default */], {
+    config: Object(__WEBPACK_IMPORTED_MODULE_4__components_Consonant_Helpers_general__["u" /* parseToPrimitive */])(config)
+  })), element);
+});
 window.ConsonantCardCollection = ConsonantCardCollecton;
-
 if (window.Granite && window.dx) {
-    window.dx.author.watch.registerFunction(authorWatch);
+  window.dx.author.watch.registerFunction(authorWatch);
 }
-exports.initReact = initReact;
-exports.collectionLoadedThroughXf = collectionLoadedThroughXf;
-exports.authorWatch = authorWatch; // Export the functions
-
-exports.default = initReact;
+ // Export the functions
+/* harmony default export */ __webpack_exports__["default"] = (initReact);
 
 /***/ }),
 /* 121 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_core_js_fn_array_includes__ = __webpack_require__(122);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_core_js_fn_array_includes___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_core_js_fn_array_includes__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_core_js_fn_object_assign__ = __webpack_require__(126);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_core_js_fn_object_assign___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_core_js_fn_object_assign__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_core_js_fn_array_find_index__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_core_js_fn_array_find_index___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_core_js_fn_array_find_index__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_core_js_fn_array_find__ = __webpack_require__(132);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_core_js_fn_array_find___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_core_js_fn_array_find__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_core_js_fn_array_from__ = __webpack_require__(134);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_core_js_fn_array_from___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_core_js_fn_array_from__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_core_js_fn_object_entries__ = __webpack_require__(139);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_core_js_fn_object_entries___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_core_js_fn_object_entries__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_core_js_fn_object_values__ = __webpack_require__(140);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_core_js_fn_object_values___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_core_js_fn_object_values__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_core_js_fn_object_is__ = __webpack_require__(141);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_core_js_fn_object_is___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_core_js_fn_object_is__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_core_js_fn_object__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_core_js_fn_object___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_core_js_fn_object__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_core_js_fn_string_starts_with__ = __webpack_require__(171);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_core_js_fn_string_starts_with___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_core_js_fn_string_starts_with__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_core_js_fn_promise_finally__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_core_js_fn_promise_finally___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_core_js_fn_promise_finally__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_core_js_fn_promise_try__ = __webpack_require__(183);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_core_js_fn_promise_try___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_core_js_fn_promise_try__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_core_js_fn_regexp_flags__ = __webpack_require__(185);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_core_js_fn_regexp_flags___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_core_js_fn_regexp_flags__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_core_js_fn_regexp_match__ = __webpack_require__(187);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_core_js_fn_regexp_match___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13_core_js_fn_regexp_match__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_core_js_fn_regexp_replace__ = __webpack_require__(190);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_core_js_fn_regexp_replace___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14_core_js_fn_regexp_replace__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_core_js_fn_regexp_search__ = __webpack_require__(192);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_core_js_fn_regexp_search___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15_core_js_fn_regexp_search__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_core_js_fn_regexp_split__ = __webpack_require__(194);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_core_js_fn_regexp_split___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16_core_js_fn_regexp_split__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_core_js_fn_string_pad_end__ = __webpack_require__(196);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_core_js_fn_string_pad_end___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17_core_js_fn_string_pad_end__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_core_js_fn_string_pad_start__ = __webpack_require__(199);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_core_js_fn_string_pad_start___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_18_core_js_fn_string_pad_start__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_core_js_fn_string_trim_end__ = __webpack_require__(201);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_core_js_fn_string_trim_end___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_19_core_js_fn_string_trim_end__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20_core_js_fn_string_trim_start__ = __webpack_require__(204);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20_core_js_fn_string_trim_start___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_20_core_js_fn_string_trim_start__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21_core_js_fn_number_is_nan__ = __webpack_require__(206);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21_core_js_fn_number_is_nan___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_21_core_js_fn_number_is_nan__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22_url_search_params_polyfill__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22_url_search_params_polyfill___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_22_url_search_params_polyfill__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23_url_polyfill__ = __webpack_require__(208);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23_url_polyfill___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_23_url_polyfill__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24_intersection_observer__ = __webpack_require__(209);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24_intersection_observer___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_24_intersection_observer__);
+/*
+Polyfills needed for all browsers.
+Unused features are commented out.
+*/
+// import 'core-js';
+// import 'core-js/fn/global';
+// import 'core-js/fn/array/flat-map';
+// import 'core-js/fn/array/flatten';
 
 
-__webpack_require__(122);
 
-__webpack_require__(126);
 
-__webpack_require__(128);
 
-__webpack_require__(132);
+// import 'core-js/fn/error/is-error';
+// import 'core-js/fn/map/from';
+// import 'core-js/fn/map/of';
+// import 'core-js/fn/math/clamp';
+// import 'core-js/fn/math/deg-per-rad';
+// import 'core-js/fn/math/degrees';
+// import 'core-js/fn/math/fscale';
+// import 'core-js/fn/math/iaddh';
+// import 'core-js/fn/math/imulh';
+// import 'core-js/fn/math/isubh';
+// import 'core-js/fn/math/rad-per-deg';
+// import 'core-js/fn/math/radians';
+// import 'core-js/fn/math/scale';
+// import 'core-js/fn/math/signbit';
+// import 'core-js/fn/math/umulh';
+// import 'core-js/fn/object/define-getter';
+// import 'core-js/fn/object/define-setter';
+// import 'core-js/fn/object/get-own-property-descriptors';
+// import 'core-js/fn/object/lookup-getter';
+// import 'core-js/fn/object/lookup-setter';
 
-__webpack_require__(134);
 
-__webpack_require__(139);
 
-__webpack_require__(140);
 
-__webpack_require__(141);
 
-__webpack_require__(142);
+// import 'core-js/fn/observable';
 
-__webpack_require__(171);
 
-__webpack_require__(175);
 
-__webpack_require__(183);
 
-__webpack_require__(185);
 
-__webpack_require__(187);
 
-__webpack_require__(190);
 
-__webpack_require__(192);
+// import 'core-js/fn/set/from';
+// import 'core-js/fn/set/of';
+// import 'core-js/fn/string/at';
 
-__webpack_require__(194);
 
-__webpack_require__(196);
 
-__webpack_require__(199);
 
-__webpack_require__(201);
+// import 'core-js/fn/string/match-all';
 
-__webpack_require__(204);
+// import 'core-js/fn/asap';
+// import 'core-js/fn/delay';
+// import 'core-js/fn/is-iterable';
+// import 'core-js/fn/number/iterator';
 
-__webpack_require__(206);
+// import 'core-js/fn/object/classof';
+// import 'core-js/fn/object/define';
+// import 'core-js/fn/object/is-object';
+// import 'core-js/fn/object/make';
+// import 'core-js/fn/regexp/escape';
+// import 'core-js/fn/string/escape-html';
+// import 'core-js/fn/string/unescape-html';
+// import 'core-js/web/immediate';
 
-__webpack_require__(102);
 
-__webpack_require__(208);
 
-__webpack_require__(209);
+
+
+/* eslint-disable */
+// if (typeof window.Object.assign !== 'function') {
+//     // Must be writable: true, enumerable: false, configurable: true
+//     Object.defineProperty(Object, "assign", {
+//       value: function assign(target, varArgs) { // .length of function is 2
+//         'use strict';
+//         if (target === null || target === undefined) {
+//           throw new TypeError('Cannot convert undefined or null to object');
+//         }
+
+//         var to = Object(target);
+
+//         for (var index = 1; index < arguments.length; index++) {
+//           var nextSource = arguments[index];
+
+//           if (nextSource !== null && nextSource !== undefined) {
+//             for (var nextKey in nextSource) {
+//               // Avoid bugs when hasOwnProperty is shadowed
+//               if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
+//                 to[nextKey] = nextSource[nextKey];
+//               }
+//             }
+//           }
+//         }
+//         return to;
+//       },
+//       writable: true,
+//       configurable: true
+//     });
+//   }
 
 /***/ }),
 /* 122 */
@@ -43798,48 +43449,42 @@ module.exports = function() {
 
 /***/ }),
 /* 233 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Helpers_hooks__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__types_config__ = __webpack_require__(20);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _classnames = __webpack_require__(7);
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _propTypes = __webpack_require__(1);
-
-var _hooks = __webpack_require__(5);
-
-var _config = __webpack_require__(20);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var popupType = {
-    autoWidth: _propTypes.bool,
-    id: _propTypes.string.isRequired,
-    optionsAlignment: _propTypes.string,
-    onSelect: _propTypes.func.isRequired,
-    val: (0, _propTypes.shape)({
-        label: _propTypes.string,
-        sort: _propTypes.string
-    }).isRequired,
-    values: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_config.sortOptionType)).isRequired
+  autoWidth: __WEBPACK_IMPORTED_MODULE_2_prop_types__["bool"],
+  id: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"].isRequired,
+  optionsAlignment: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"],
+  onSelect: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"].isRequired,
+  val: Object(__WEBPACK_IMPORTED_MODULE_2_prop_types__["shape"])({
+    label: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"],
+    sort: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"]
+  }).isRequired,
+  values: Object(__WEBPACK_IMPORTED_MODULE_2_prop_types__["arrayOf"])(Object(__WEBPACK_IMPORTED_MODULE_2_prop_types__["shape"])(__WEBPACK_IMPORTED_MODULE_4__types_config__["d" /* sortOptionType */])).isRequired
 };
-
 var defaultProps = {
-    autoWidth: false,
-    optionsAlignment: 'right'
+  autoWidth: false,
+  optionsAlignment: 'right'
 };
 
 /**
@@ -43860,145 +43505,114 @@ var defaultProps = {
  * )
  */
 var Popup = function Popup(_ref) {
-    var val = _ref.val,
-        values = _ref.values,
-        onSelect = _ref.onSelect,
-        autoWidth = _ref.autoWidth,
-        optionsAlignment = _ref.optionsAlignment,
-        id = _ref.id;
+  var val = _ref.val,
+    values = _ref.values,
+    onSelect = _ref.onSelect,
+    autoWidth = _ref.autoWidth,
+    optionsAlignment = _ref.optionsAlignment,
+    id = _ref.id;
+  /**
+   **** Authored Configs ****
+   */
+  var getConfig = Object(__WEBPACK_IMPORTED_MODULE_3__Helpers_hooks__["a" /* useConfig */])();
+  var sortByAria = getConfig('collection', 'i18n.sortByAria');
 
-    /**
-     **** Authored Configs ****
-     */
-    var getConfig = (0, _hooks.useConfig)();
-    var sortByAria = getConfig('collection', 'i18n.sortByAria');
+  /**
+   * @typedef {String} OpenDropdownState - Id of a selected dropdown
+   * @description — Passed in Context Provider So All Nested Components can be in sync
+   *
+   * @typedef {Function} Handles toggling popup
+   * @description
+   *
+   * @type {[String, Function]} OpenDropdown
+   */
+  var _useExpandable = Object(__WEBPACK_IMPORTED_MODULE_3__Helpers_hooks__["b" /* useExpandable */])(id),
+    _useExpandable2 = _slicedToArray(_useExpandable, 2),
+    openDropdown = _useExpandable2[0],
+    handleToggle = _useExpandable2[1];
 
-    /**
-     * @typedef {String} OpenDropdownState - Id of a selected dropdown
-     * @description — Passed in Context Provider So All Nested Components can be in sync
-     *
-     * @typedef {Function} Handles toggling popup
-     * @description
-     *
-     * @type {[String, Function]} OpenDropdown
-     */
+  /**
+   * Handles whether the sort dropdown is visible or not
+   * @type {Boolean}
+   */
+  var opened = openDropdown === id;
 
-    var _useExpandable = (0, _hooks.useExpandable)(id),
-        _useExpandable2 = _slicedToArray(_useExpandable, 2),
-        openDropdown = _useExpandable2[0],
-        handleToggle = _useExpandable2[1];
-
-    /**
-     * Handles whether the sort dropdown is visible or not
-     * @type {Boolean}
-     */
-
-
-    var opened = openDropdown === id;
-
-    /**
-     * Handles choosing of a sort option
-     *
-     * @param {ClickEvent} e
-     * @listens ClickEvent
-     */
-    var handleOptionClick = function handleOptionClick(e, item) {
-        onSelect(item);
-        handleToggle(e);
-    };
-
-    var shouldAutoWidthSortClass = (0, _classnames2.default)({
-        'consonant-Select': true,
-        'consonant-Select--autoWidth': autoWidth
-    });
-
-    var openButtonClass = (0, _classnames2.default)({
-        'consonant-Select-btn': true,
-        'is-active': opened
-    });
-
-    return _react2.default.createElement(
-        'div',
-        {
-            className: shouldAutoWidthSortClass },
-        _react2.default.createElement(
-            'button',
-            {
-                'data-testid': 'consonant-Select-btn',
-                type: 'button',
-                onClick: handleToggle,
-                className: openButtonClass,
-                tabIndex: '0',
-                'aria-haspopup': 'menu',
-                'aria-expanded': opened },
-            val.label
-        ),
-        opened && _react2.default.createElement(
-            'div',
-            {
-                'data-testid': 'consonant-Select-options',
-                className: 'consonant-Select-options consonant-Select-options--' + optionsAlignment,
-                role: 'menu' },
-            values.map(function (item) {
-                return _react2.default.createElement(
-                    'button',
-                    {
-                        'data-testid': 'consonant-Select-option',
-                        key: item.label,
-                        type: 'button',
-                        role: 'menuitem',
-                        'aria-label': sortByAria && sortByAria.replace('{key}', item.label),
-                        className: item.label === val.label ? 'consonant-Select-option is-selected' : 'consonant-Select-option',
-                        onClick: function onClick(e) {
-                            return handleOptionClick(e, item);
-                        },
-                        tabIndex: 0 },
-                    item.label
-                );
-            })
-        )
-    );
+  /**
+   * Handles choosing of a sort option
+   *
+   * @param {ClickEvent} e
+   * @listens ClickEvent
+   */
+  var handleOptionClick = function handleOptionClick(e, item) {
+    onSelect(item);
+    handleToggle(e);
+  };
+  var shouldAutoWidthSortClass = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-Select': true,
+    'consonant-Select--autoWidth': autoWidth
+  });
+  var openButtonClass = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-Select-btn': true,
+    'is-active': opened
+  });
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: shouldAutoWidthSortClass
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    "data-testid": "consonant-Select-btn",
+    type: "button",
+    onClick: handleToggle,
+    className: openButtonClass,
+    tabIndex: "0",
+    "aria-haspopup": "menu",
+    "aria-expanded": opened
+  }, val.label), opened && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    "data-testid": "consonant-Select-options",
+    className: "consonant-Select-options consonant-Select-options--".concat(optionsAlignment),
+    role: "menu"
+  }, values.map(function (item) {
+    return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+      "data-testid": "consonant-Select-option",
+      key: item.label,
+      type: "button",
+      role: "menuitem",
+      "aria-label": sortByAria && sortByAria.replace('{key}', item.label),
+      className: item.label === val.label ? 'consonant-Select-option is-selected' : 'consonant-Select-option',
+      onClick: function onClick(e) {
+        return handleOptionClick(e, item);
+      },
+      tabIndex: 0
+    }, item.label);
+  })));
 };
-
 Popup.propTypes = popupType;
 Popup.defaultProps = defaultProps;
-
-exports.default = Popup;
+/* harmony default export */ __webpack_exports__["a"] = (Popup);
 
 /***/ }),
 /* 234 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Helpers_hooks__ = __webpack_require__(5);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _hooks = __webpack_require__(5);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var searchType = {
-    name: _propTypes.string,
-    value: _propTypes.string,
-    autofocus: _propTypes.bool,
-    placeholderText: _propTypes.string,
-    onSearch: _propTypes.func.isRequired
+  name: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  value: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  autofocus: __WEBPACK_IMPORTED_MODULE_1_prop_types__["bool"],
+  placeholderText: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  onSearch: __WEBPACK_IMPORTED_MODULE_1_prop_types__["func"].isRequired
 };
-
 var defaultProps = {
-    name: '',
-    value: '',
-    autofocus: true,
-    placeholderText: ''
+  name: '',
+  value: '',
+  autofocus: true,
+  placeholderText: ''
 };
 
 /**
@@ -44024,152 +43638,126 @@ var searchId = 'consonant-search';
  * )
  */
 var Search = function Search(_ref) {
-    var value = _ref.value,
-        onSearch = _ref.onSearch,
-        name = _ref.name,
-        autofocus = _ref.autofocus,
-        placeholderText = _ref.placeholderText;
+  var value = _ref.value,
+    onSearch = _ref.onSearch,
+    name = _ref.name,
+    autofocus = _ref.autofocus,
+    placeholderText = _ref.placeholderText;
+  var getConfig = Object(__WEBPACK_IMPORTED_MODULE_2__Helpers_hooks__["a" /* useConfig */])();
 
-    var getConfig = (0, _hooks.useConfig)();
+  /**
+   * Authored Search Title
+   * @type {String}
+   */
+  var leftPanelTitle = getConfig('search', 'i18n.leftFilterPanel.searchTitle');
 
-    /**
-     * Authored Search Title
-     * @type {String}
-     */
-    var leftPanelTitle = getConfig('search', 'i18n.leftFilterPanel.searchTitle');
+  /**
+   * Refernce to input element
+   * @type {HTMLElement}
+   */
+  var textInput = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useRef"])(null);
 
-    /**
-     * Refernce to input element
-     * @type {HTMLElement}
-     */
-    var textInput = (0, _react.useRef)(null);
+  /**
+   * Handles search box input changes
+   * is clicked
+   *
+   * @param {InputChangeEvent} e
+   * @listens InputChangeEvent
+   */
+  var handleSearch = function handleSearch(e) {
+    onSearch(e.target.value);
+  };
 
-    /**
-     * Handles search box input changes
-     * is clicked
-     *
-     * @param {InputChangeEvent} e
-     * @listens InputChangeEvent
-     */
-    var handleSearch = function handleSearch(e) {
-        onSearch(e.target.value);
-    };
+  /**
+   * Handles focus events for text input
+   *
+   * @param {ClickEvent} e
+   * @listens ClickEvent
+   */
+  var focusTextInput = function focusTextInput() {
+    textInput.current.focus();
+  };
 
-    /**
-     * Handles focus events for text input
-     *
-     * @param {ClickEvent} e
-     * @listens ClickEvent
-     */
-    var focusTextInput = function focusTextInput() {
-        textInput.current.focus();
-    };
+  /**
+   * Handles clearing user's search query
+   *
+   * @param {ClickEvent} e
+   * @listens ClickEvent
+   */
+  var clearSearch = function clearSearch() {
+    onSearch('');
+    focusTextInput();
+  };
 
-    /**
-     * Handles clearing user's search query
-     *
-     * @param {ClickEvent} e
-     * @listens ClickEvent
-     */
-    var clearSearch = function clearSearch() {
-        onSearch('');
-        focusTextInput();
-    };
-
-    /**
-    * Handles focus for search box
-    * @returns {Void} - an updated state
-    */
-    (0, _react.useEffect)(function () {
-        if (autofocus && textInput.current) {
-            textInput.current.focus();
-        }
-    }, [autofocus, textInput]);
-
-    return _react2.default.createElement(
-        'div',
-        {
-            'data-testid': name,
-            className: 'consonant-Search' },
-        _react2.default.createElement(
-            'label',
-            {
-                htmlFor: searchId },
-            _react2.default.createElement(
-                'span',
-                {
-                    className: 'consonant-Search-inputTitle' },
-                leftPanelTitle
-            ),
-            _react2.default.createElement(
-                'span',
-                {
-                    className: 'consonant-Search-inputWrapper' },
-                _react2.default.createElement('input', {
-                    id: searchId,
-                    'data-testid': 'consonant-Search-input',
-                    type: 'search',
-                    placeholder: placeholderText,
-                    onClick: function onClick(e) {
-                        return e.stopPropagation();
-                    },
-                    value: value,
-                    onChange: handleSearch,
-                    ref: textInput,
-                    className: 'consonant-Search-input' }),
-                _react2.default.createElement('button', {
-                    'data-testid': 'consonant-Search-inputClear',
-                    type: 'button',
-                    title: '',
-                    'aria-label': 'Clear Search filter',
-                    className: 'consonant-Search-inputClear',
-                    onClick: clearSearch,
-                    tabIndex: '0' })
-            )
-        )
-    );
+  /**
+  * Handles focus for search box
+  * @returns {Void} - an updated state
+  */
+  Object(__WEBPACK_IMPORTED_MODULE_0_react__["useEffect"])(function () {
+    if (autofocus && textInput.current) {
+      textInput.current.focus();
+    }
+  }, [autofocus, textInput]);
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    "data-testid": name,
+    className: "consonant-Search"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", {
+    htmlFor: searchId
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    className: "consonant-Search-inputTitle"
+  }, leftPanelTitle), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    className: "consonant-Search-inputWrapper"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+    id: searchId,
+    "data-testid": "consonant-Search-input",
+    type: "search",
+    placeholder: placeholderText,
+    onClick: function onClick(e) {
+      return e.stopPropagation();
+    },
+    value: value,
+    onChange: handleSearch,
+    ref: textInput,
+    className: "consonant-Search-input"
+  }), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    "data-testid": "consonant-Search-inputClear",
+    type: "button",
+    title: "",
+    "aria-label": "Clear Search filter",
+    className: "consonant-Search-inputClear",
+    onClick: clearSearch,
+    tabIndex: "0"
+  }))));
 };
-
 Search.propTypes = searchType;
 Search.defaultProps = defaultProps;
-
-exports.default = Search;
+/* harmony default export */ __webpack_exports__["a"] = (Search);
 
 /***/ }),
 /* 235 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Helpers_constants__ = __webpack_require__(15);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _classnames = __webpack_require__(7);
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _propTypes = __webpack_require__(1);
-
-var _constants = __webpack_require__(15);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var loaderType = {
-    size: _propTypes.string,
-    hidden: _propTypes.bool,
-    absolute: _propTypes.bool
+  size: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"],
+  hidden: __WEBPACK_IMPORTED_MODULE_2_prop_types__["bool"],
+  absolute: __WEBPACK_IMPORTED_MODULE_2_prop_types__["bool"]
 };
-
 var defaultProps = {
-    hidden: false,
-    absolute: false,
-    size: _constants.LOADER_SIZE.BIG
+  hidden: false,
+  absolute: false,
+  size: __WEBPACK_IMPORTED_MODULE_3__Helpers_constants__["l" /* LOADER_SIZE */].BIG
 };
 
 /**
@@ -44187,331 +43775,262 @@ var defaultProps = {
  * )
  */
 var Loader = function Loader(_ref) {
-    var size = _ref.size,
-        hidden = _ref.hidden,
-        absolute = _ref.absolute;
-
-    var className = (0, _classnames2.default)({
-        'consonant-Loader--medium': size === _constants.LOADER_SIZE.MEDIUM,
-        'consonant-Loader--big': size === _constants.LOADER_SIZE.BIG,
-        'consonant-Loader': true,
-        'consonant-Loader--absolute': absolute
-    });
-
-    return !hidden && _react2.default.createElement(
-        'div',
-        {
-            'data-testid': 'consonant-Loader',
-            className: className },
-        _react2.default.createElement('div', null),
-        _react2.default.createElement('div', null),
-        _react2.default.createElement('div', null),
-        _react2.default.createElement('div', null)
-    );
+  var size = _ref.size,
+    hidden = _ref.hidden,
+    absolute = _ref.absolute;
+  var className = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-Loader--medium': size === __WEBPACK_IMPORTED_MODULE_3__Helpers_constants__["l" /* LOADER_SIZE */].MEDIUM,
+    'consonant-Loader--big': size === __WEBPACK_IMPORTED_MODULE_3__Helpers_constants__["l" /* LOADER_SIZE */].BIG,
+    'consonant-Loader': true,
+    'consonant-Loader--absolute': absolute
+  });
+  return !hidden && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    "data-testid": "consonant-Loader",
+    className: className
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null));
 };
-
 Loader.propTypes = loaderType;
 Loader.defaultProps = defaultProps;
-
-exports.default = Loader;
+/* harmony default export */ __webpack_exports__["a"] = (Loader);
 
 /***/ }),
 /* 236 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Helpers_hooks__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Grid_Grid__ = __webpack_require__(112);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Helpers_rendering__ = __webpack_require__(40);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+/* eslint-disable react/jsx-no-bind,react/forbid-prop-types,react/jsx-no-bind */
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); /* eslint-disable react/jsx-no-bind,react/forbid-prop-types,react/jsx-no-bind */
 
 
-var _react = __webpack_require__(0);
 
-var _react2 = _interopRequireDefault(_react);
-
-var _classnames = __webpack_require__(7);
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _propTypes = __webpack_require__(1);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _hooks = __webpack_require__(5);
-
-var _Grid = __webpack_require__(112);
-
-var _Grid2 = _interopRequireDefault(_Grid);
-
-var _rendering = __webpack_require__(40);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var NEXT_BUTTON_NAME = 'next';
 var PREV_BUTTON_NAME = 'previous';
 var TABLET_BREAKPOINT = 1199;
 var cardsShiftedPerClick = null;
 var cardWidth = null;
-
 function CardsCarousel() {
-    var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-        cards = _ref.cards,
-        onCardBookmark = _ref.onCardBookmark,
-        resQty = _ref.resQty;
-
-    var getConfig = (0, _hooks.useConfig)();
-    var cardsUp = getConfig('collection', 'layout.type');
-    var gridGap = parseInt(getConfig('collection', 'layout.gutter'), 10) * 8;
-    var title = getConfig('collection', 'i18n.title');
-    var showTotalResults = getConfig('collection', 'showTotalResults');
-    var showTotalResultsText = getConfig('collection', 'i18n.totalResultsText');
-    var useLightText = getConfig('collection', 'useLightText');
-    var isIncremental = getConfig('pagination', 'animationStyle') === 'incremental';
-
-    if (cardsUp.includes('2up')) {
-        cardWidth = 500;
-        cardsShiftedPerClick = isIncremental ? 1 : 2;
-    } else if (cardsUp.includes('3up')) {
-        cardWidth = 378;
-        cardsShiftedPerClick = isIncremental ? 1 : 3;
-    } else if (cardsUp.includes('4up')) {
-        cardWidth = 276;
-        cardsShiftedPerClick = isIncremental ? 1 : 4;
-    } else if (cardsUp.includes('5up')) {
-        cardWidth = 228;
-        cardsShiftedPerClick = isIncremental ? 1 : 5;
+  var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+    cards = _ref.cards,
+    onCardBookmark = _ref.onCardBookmark,
+    resQty = _ref.resQty;
+  var getConfig = Object(__WEBPACK_IMPORTED_MODULE_3__Helpers_hooks__["a" /* useConfig */])();
+  var cardsUp = getConfig('collection', 'layout.type');
+  var gridGap = parseInt(getConfig('collection', 'layout.gutter'), 10) * 8;
+  var title = getConfig('collection', 'i18n.title');
+  var showTotalResults = getConfig('collection', 'showTotalResults');
+  var showTotalResultsText = getConfig('collection', 'i18n.totalResultsText');
+  var useLightText = getConfig('collection', 'useLightText');
+  var isIncremental = getConfig('pagination', 'animationStyle') === 'incremental';
+  if (cardsUp.includes('2up')) {
+    cardWidth = 500;
+    cardsShiftedPerClick = isIncremental ? 1 : 2;
+  } else if (cardsUp.includes('3up')) {
+    cardWidth = 378;
+    cardsShiftedPerClick = isIncremental ? 1 : 3;
+  } else if (cardsUp.includes('4up')) {
+    cardWidth = 276;
+    cardsShiftedPerClick = isIncremental ? 1 : 4;
+  } else if (cardsUp.includes('5up')) {
+    cardWidth = 228;
+    cardsShiftedPerClick = isIncremental ? 1 : 5;
+  }
+  var HeadingLevel = getConfig('collection', 'i18n.titleHeadingLevel');
+  var cardsPerPage = parseInt(cardsUp, 10);
+  var _useState = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(Number.POSITIVE_INFINITY),
+    _useState2 = _slicedToArray(_useState, 1),
+    pages = _useState2[0];
+  var carouselRef = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useRef"])(null);
+  var prev = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useRef"])(null);
+  var next = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useRef"])(null);
+  var isDown = null;
+  var startX = null;
+  /* eslint-disable-next-line no-unused-vars */
+  var isMouseMove = false;
+  var interactedWith = false;
+  function isResponsive() {
+    return window.innerWidth < TABLET_BREAKPOINT;
+  }
+  function hideNextButton() {
+    var nextBtn = next.current;
+    if (nextBtn) {
+      nextBtn.classList.add('hide');
     }
-    var HeadingLevel = getConfig('collection', 'i18n.titleHeadingLevel');
-    var cardsPerPage = parseInt(cardsUp, 10);
-
-    var _useState = (0, _react.useState)(Number.POSITIVE_INFINITY),
-        _useState2 = _slicedToArray(_useState, 1),
-        pages = _useState2[0];
-
-    var carouselRef = (0, _react.useRef)(null);
-    var prev = (0, _react.useRef)(null);
-    var next = (0, _react.useRef)(null);
-
-    var isDown = null;
-    var startX = null;
-    /* eslint-disable-next-line no-unused-vars */
-    var isMouseMove = false;
-    var interactedWith = false;
-
-    function isResponsive() {
-        return window.innerWidth < TABLET_BREAKPOINT;
+  }
+  function hidePrevButton() {
+    var prevBtn = prev.current;
+    if (prevBtn) prevBtn.classList.add('hide');
+  }
+  function showNextButton() {
+    var nextBtn = next.current;
+    if (nextBtn) nextBtn.classList.remove('hide');
+  }
+  function showPrevButton() {
+    var prevBtn = prev.current;
+    if (prevBtn) prevBtn.classList.remove('hide');
+  }
+  function hideNav() {
+    hidePrevButton();
+    hideNextButton();
+  }
+  function showNav() {
+    showPrevButton();
+    showNextButton();
+  }
+  function shouldHidePrevButton() {
+    var carousel = carouselRef.current;
+    var atStartOfCarousel = carousel.scrollLeft < cardWidth;
+    if (atStartOfCarousel) {
+      hidePrevButton();
     }
-
-    function hideNextButton() {
-        var nextBtn = next.current;
-        if (nextBtn) {
-            nextBtn.classList.add('hide');
-        }
+  }
+  function shouldHideNextButton() {
+    var carousel = carouselRef.current;
+    var atEndOfCarousel = carousel.scrollWidth - carousel.clientWidth < carousel.scrollLeft + cardWidth;
+    if (atEndOfCarousel) {
+      hideNextButton();
     }
-
-    function hidePrevButton() {
-        var prevBtn = prev.current;
-        if (prevBtn) prevBtn.classList.add('hide');
+  }
+  function responsiveLogic() {
+    if (isResponsive() && interactedWith) {
+      hideNav();
+    } else {
+      showNav();
+      shouldHidePrevButton();
+      shouldHideNextButton();
     }
+  }
+  function mouseDownHandler(e) {
+    e.preventDefault();
+    interactedWith = true;
+    responsiveLogic();
+    isDown = true;
+    startX = e.pageX;
+  }
+  function mouseUpHandler() {
+    isDown = false;
+    isMouseMove = false;
+  }
+  function mouseLeaveHandler() {
+    isDown = false;
+    isMouseMove = false;
+  }
+  function mouseMoveHandler(e) {
+    if (!isDown) return;
+    isMouseMove = true;
+    var carousel = carouselRef.current;
+    var x = e.pageX - carousel.offsetLeft;
+    carousel.scrollLeft -= x - startX;
+  }
+  function scrollHandler() {
+    interactedWith = true;
+    responsiveLogic();
+  }
 
-    function showNextButton() {
-        var nextBtn = next.current;
-        if (nextBtn) nextBtn.classList.remove('hide');
+  /**
+   * 620 = (tablet range) + average grid gap
+   * 620 = 1200px - 600px + (8 + 32)/2
+   */
+  function centerClick() {
+    var carousel = carouselRef.current;
+    /* eslint-disable-next-line no-mixed-operators */
+    carousel.scrollLeft += -window.innerWidth / 2 + 620;
+  }
+  function nextButtonClick() {
+    if (isResponsive()) {
+      centerClick();
+    } else {
+      var carousel = carouselRef.current;
+      carousel.scrollLeft += (cardWidth + gridGap) * cardsShiftedPerClick;
+      shouldHideNextButton();
     }
-
-    function showPrevButton() {
-        var prevBtn = prev.current;
-        if (prevBtn) prevBtn.classList.remove('hide');
+  }
+  function prevButtonClick() {
+    if (isResponsive()) {
+      centerClick();
+    } else {
+      var carousel = carouselRef.current;
+      carousel.scrollLeft -= (cardWidth + gridGap) * cardsShiftedPerClick;
+      shouldHidePrevButton();
     }
-
-    function hideNav() {
-        hidePrevButton();
-        hideNextButton();
-    }
-
-    function showNav() {
-        showPrevButton();
-        showNextButton();
-    }
-
-    function shouldHidePrevButton() {
-        var carousel = carouselRef.current;
-        var atStartOfCarousel = carousel.scrollLeft < cardWidth;
-        if (atStartOfCarousel) {
-            hidePrevButton();
-        }
-    }
-
-    function shouldHideNextButton() {
-        var carousel = carouselRef.current;
-        var atEndOfCarousel = carousel.scrollWidth - carousel.clientWidth < carousel.scrollLeft + cardWidth;
-        if (atEndOfCarousel) {
-            hideNextButton();
-        }
-    }
-
-    function responsiveLogic() {
-        if (isResponsive() && interactedWith) {
-            hideNav();
-        } else {
-            showNav();
-            shouldHidePrevButton();
-            shouldHideNextButton();
-        }
-    }
-
-    function mouseDownHandler(e) {
-        e.preventDefault();
-        interactedWith = true;
-        responsiveLogic();
-        isDown = true;
-        startX = e.pageX;
-    }
-
-    function mouseUpHandler() {
-        isDown = false;
-        isMouseMove = false;
-    }
-
-    function mouseLeaveHandler() {
-        isDown = false;
-        isMouseMove = false;
-    }
-
-    function mouseMoveHandler(e) {
-        if (!isDown) return;
-        isMouseMove = true;
-        var carousel = carouselRef.current;
-        var x = e.pageX - carousel.offsetLeft;
-        carousel.scrollLeft -= x - startX;
-    }
-
-    function scrollHandler() {
-        interactedWith = true;
-        responsiveLogic();
-    }
-
-    /**
-     * 620 = (tablet range) + average grid gap
-     * 620 = 1200px - 600px + (8 + 32)/2
-     */
-    function centerClick() {
-        var carousel = carouselRef.current;
-        /* eslint-disable-next-line no-mixed-operators */
-        carousel.scrollLeft += -window.innerWidth / 2 + 620;
-    }
-
-    function nextButtonClick() {
-        if (isResponsive()) {
-            centerClick();
-        } else {
-            var carousel = carouselRef.current;
-            carousel.scrollLeft += (cardWidth + gridGap) * cardsShiftedPerClick;
-            shouldHideNextButton();
-        }
-    }
-
-    function prevButtonClick() {
-        if (isResponsive()) {
-            centerClick();
-        } else {
-            var carousel = carouselRef.current;
-            carousel.scrollLeft -= (cardWidth + gridGap) * cardsShiftedPerClick;
-            shouldHidePrevButton();
-        }
-    }
-
-    var carouselTitleClass = (0, _classnames2.default)({
-        'consonant-CarouselInfo-collectionTitle': true,
-        'consonant-CarouselInfo-collectionTitle--withLightText': useLightText
-    });
-
-    var carouselTotalResultsClass = (0, _classnames2.default)({
-        'consonant-CarouselInfo-results': true,
-        'consonant-CarouselInfo-results--withLightText': useLightText
-    });
-
-    var totalResultsHtml = (0, _rendering.RenderTotalResults)(showTotalResultsText, resQty);
-
-    (0, _react.useEffect)(function () {
-        responsiveLogic();
-    }, []);
-
-    return _react2.default.createElement(
-        _react.Fragment,
-        null,
-        _react2.default.createElement(
-            'div',
-            { className: 'consonant-Navigation--carousel' },
-            _react2.default.createElement('button', {
-                'aria-label': 'Previous button',
-                className: 'consonant-Button--previous',
-                onClick: prevButtonClick,
-                'daa-ll': 'Previous',
-                'daa-state': 'true',
-                name: PREV_BUTTON_NAME,
-                ref: prev,
-                type: 'button' }),
-            _react2.default.createElement('button', {
-                'aria-label': 'Next button',
-                className: 'consonant-Button--next',
-                'daa-ll': 'Next',
-                'daa-state': 'true',
-                onClick: nextButtonClick,
-                name: NEXT_BUTTON_NAME,
-                ref: next,
-                type: 'button' })
-        ),
-        _react2.default.createElement(
-            'div',
-            {
-                className: 'consonant-CarouselInfo' },
-            title && _react2.default.createElement(
-                HeadingLevel,
-                {
-                    'data-testid': 'consonant-CarouselInfo-collectionTitle',
-                    className: carouselTitleClass },
-                title
-            ),
-            showTotalResults && _react2.default.createElement(
-                'div',
-                {
-                    'data-testid': 'consonant-CarouselInfo-results',
-                    className: carouselTotalResultsClass },
-                totalResultsHtml
-            )
-        ),
-        _react2.default.createElement(
-            'div',
-            {
-                className: 'consonant-Container--carousel',
-                onMouseDown: mouseDownHandler,
-                onMouseUp: mouseUpHandler,
-                onMouseMove: mouseMoveHandler,
-                onMouseLeave: mouseLeaveHandler,
-                onScroll: scrollHandler,
-                ref: carouselRef },
-            _react2.default.createElement(_Grid2.default, {
-                cards: cards,
-                containerType: 'carousel',
-                resultsPerPage: cardsPerPage,
-                onCardBookmark: onCardBookmark,
-                pages: pages })
-        )
-    );
+  }
+  var carouselTitleClass = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-CarouselInfo-collectionTitle': true,
+    'consonant-CarouselInfo-collectionTitle--withLightText': useLightText
+  });
+  var carouselTotalResultsClass = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-CarouselInfo-results': true,
+    'consonant-CarouselInfo-results--withLightText': useLightText
+  });
+  var totalResultsHtml = Object(__WEBPACK_IMPORTED_MODULE_5__Helpers_rendering__["c" /* RenderTotalResults */])(showTotalResultsText, resQty);
+  Object(__WEBPACK_IMPORTED_MODULE_0_react__["useEffect"])(function () {
+    responsiveLogic();
+  }, []);
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_react__["Fragment"], null, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-Navigation--carousel"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    "aria-label": "Previous button",
+    className: "consonant-Button--previous",
+    onClick: prevButtonClick,
+    "daa-ll": "Previous",
+    "daa-state": "true",
+    name: PREV_BUTTON_NAME,
+    ref: prev,
+    type: "button"
+  }), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    "aria-label": "Next button",
+    className: "consonant-Button--next",
+    "daa-ll": "Next",
+    "daa-state": "true",
+    onClick: nextButtonClick,
+    name: NEXT_BUTTON_NAME,
+    ref: next,
+    type: "button"
+  })), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-CarouselInfo"
+  }, title && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(HeadingLevel, {
+    "data-testid": "consonant-CarouselInfo-collectionTitle",
+    className: carouselTitleClass
+  }, title), showTotalResults && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    "data-testid": "consonant-CarouselInfo-results",
+    className: carouselTotalResultsClass
+  }, totalResultsHtml)), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-Container--carousel",
+    onMouseDown: mouseDownHandler,
+    onMouseUp: mouseUpHandler,
+    onMouseMove: mouseMoveHandler,
+    onMouseLeave: mouseLeaveHandler,
+    onScroll: scrollHandler,
+    ref: carouselRef
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Grid_Grid__["a" /* default */], {
+    cards: cards,
+    containerType: "carousel",
+    resultsPerPage: cardsPerPage,
+    onCardBookmark: onCardBookmark,
+    pages: pages
+  })));
 }
-
-exports.default = CardsCarousel;
-
-
+/* harmony default export */ __webpack_exports__["a"] = (CardsCarousel);
 CardsCarousel.propTypes = {
-    cards: _propTypes2.default.arrayOf(_propTypes2.default.object).isRequired,
-    onCardBookmark: _propTypes2.default.func.isRequired,
-    resQty: _propTypes2.default.number.isRequired
+  cards: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.arrayOf(__WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.object).isRequired,
+  onCardBookmark: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.func.isRequired,
+  resQty: __WEBPACK_IMPORTED_MODULE_2_prop_types___default.a.number.isRequired
 };
 
 /***/ }),
@@ -44519,11 +44038,10 @@ CardsCarousel.propTypes = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "domToReact", function() { return domToReact; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "htmlToDOM", function() { return htmlToDOM; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "attributesToProps", function() { return attributesToProps; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Element", function() { return Element; });
+/* unused harmony export domToReact */
+/* unused harmony export htmlToDOM */
+/* unused harmony export attributesToProps */
+/* unused harmony export Element */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_js__ = __webpack_require__(238);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__index_js__);
 
@@ -44533,7 +44051,7 @@ var htmlToDOM = __WEBPACK_IMPORTED_MODULE_0__index_js___default.a.htmlToDOM;
 var attributesToProps = __WEBPACK_IMPORTED_MODULE_0__index_js___default.a.attributesToProps;
 var Element = __WEBPACK_IMPORTED_MODULE_0__index_js___default.a.Element;
 
-/* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__index_js___default.a);
+/* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0__index_js___default.a);
 
 
 /***/ }),
@@ -46838,109 +46356,94 @@ exports.default = DomHandler;
 
 /***/ }),
 /* 252 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_cuid__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_cuid___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_cuid__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__CardFooter_CardFooter__ = __webpack_require__(255);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Helpers_prettyFormat__ = __webpack_require__(118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Helpers_constants__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Helpers_Helpers__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Helpers_general__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__Helpers_hooks__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__types_card__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__LinkBlocker_LinkBlocker__ = __webpack_require__(272);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__Modal_videoButton__ = __webpack_require__(273);
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _react = __webpack_require__(0);
 
-var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(7);
 
-var _classnames2 = _interopRequireDefault(_classnames);
 
-var _cuid = __webpack_require__(70);
 
-var _cuid2 = _interopRequireDefault(_cuid);
 
-var _propTypes = __webpack_require__(1);
 
-var _CardFooter = __webpack_require__(255);
 
-var _CardFooter2 = _interopRequireDefault(_CardFooter);
-
-var _prettyFormat = __webpack_require__(118);
-
-var _prettyFormat2 = _interopRequireDefault(_prettyFormat);
-
-var _constants = __webpack_require__(15);
-
-var _Helpers = __webpack_require__(22);
-
-var _general = __webpack_require__(6);
-
-var _hooks = __webpack_require__(5);
-
-var _card = __webpack_require__(39);
-
-var _LinkBlocker = __webpack_require__(272);
-
-var _LinkBlocker2 = _interopRequireDefault(_LinkBlocker);
-
-var _videoButton = __webpack_require__(273);
-
-var _videoButton2 = _interopRequireDefault(_videoButton);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var CardType = {
-    cardStyle: _propTypes.string,
-    isBookmarked: _propTypes.bool,
-    dateFormat: _propTypes.string,
-    id: _propTypes.string.isRequired,
-    lh: _propTypes.string,
-    styles: (0, _propTypes.shape)(_card.stylesType),
-    disableBookmarkIco: _propTypes.bool,
-    onClick: _propTypes.func.isRequired,
-    overlays: (0, _propTypes.shape)(_card.overlaysType),
-    footer: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_card.footerType)),
-    contentArea: (0, _propTypes.shape)(_card.contentAreaType),
-    renderBorder: _propTypes.bool,
-    renderDivider: _propTypes.bool,
-    renderOverlay: _propTypes.bool,
-    overlayLink: _propTypes.string,
-    hideCTA: _propTypes.bool,
-    startDate: _propTypes.string,
-    endDate: _propTypes.string,
-    cardDate: _propTypes.string,
-    modifiedDate: _propTypes.string,
-    bannerMap: (0, _propTypes.shape)(Object).isRequired,
-    tags: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_card.tagsType)),
-    onFocus: _propTypes.func.isRequired,
-    origin: _propTypes.string,
-    ariaHidden: _propTypes.bool
+  cardStyle: __WEBPACK_IMPORTED_MODULE_3_prop_types__["string"],
+  isBookmarked: __WEBPACK_IMPORTED_MODULE_3_prop_types__["bool"],
+  dateFormat: __WEBPACK_IMPORTED_MODULE_3_prop_types__["string"],
+  id: __WEBPACK_IMPORTED_MODULE_3_prop_types__["string"].isRequired,
+  lh: __WEBPACK_IMPORTED_MODULE_3_prop_types__["string"],
+  styles: Object(__WEBPACK_IMPORTED_MODULE_3_prop_types__["shape"])(__WEBPACK_IMPORTED_MODULE_10__types_card__["h" /* stylesType */]),
+  disableBookmarkIco: __WEBPACK_IMPORTED_MODULE_3_prop_types__["bool"],
+  onClick: __WEBPACK_IMPORTED_MODULE_3_prop_types__["func"].isRequired,
+  overlays: Object(__WEBPACK_IMPORTED_MODULE_3_prop_types__["shape"])(__WEBPACK_IMPORTED_MODULE_10__types_card__["g" /* overlaysType */]),
+  footer: Object(__WEBPACK_IMPORTED_MODULE_3_prop_types__["arrayOf"])(Object(__WEBPACK_IMPORTED_MODULE_3_prop_types__["shape"])(__WEBPACK_IMPORTED_MODULE_10__types_card__["f" /* footerType */])),
+  contentArea: Object(__WEBPACK_IMPORTED_MODULE_3_prop_types__["shape"])(__WEBPACK_IMPORTED_MODULE_10__types_card__["b" /* contentAreaType */]),
+  renderBorder: __WEBPACK_IMPORTED_MODULE_3_prop_types__["bool"],
+  renderDivider: __WEBPACK_IMPORTED_MODULE_3_prop_types__["bool"],
+  renderOverlay: __WEBPACK_IMPORTED_MODULE_3_prop_types__["bool"],
+  overlayLink: __WEBPACK_IMPORTED_MODULE_3_prop_types__["string"],
+  hideCTA: __WEBPACK_IMPORTED_MODULE_3_prop_types__["bool"],
+  startDate: __WEBPACK_IMPORTED_MODULE_3_prop_types__["string"],
+  endDate: __WEBPACK_IMPORTED_MODULE_3_prop_types__["string"],
+  cardDate: __WEBPACK_IMPORTED_MODULE_3_prop_types__["string"],
+  modifiedDate: __WEBPACK_IMPORTED_MODULE_3_prop_types__["string"],
+  bannerMap: Object(__WEBPACK_IMPORTED_MODULE_3_prop_types__["shape"])(Object).isRequired,
+  tags: Object(__WEBPACK_IMPORTED_MODULE_3_prop_types__["arrayOf"])(Object(__WEBPACK_IMPORTED_MODULE_3_prop_types__["shape"])(__WEBPACK_IMPORTED_MODULE_10__types_card__["i" /* tagsType */])),
+  onFocus: __WEBPACK_IMPORTED_MODULE_3_prop_types__["func"].isRequired,
+  origin: __WEBPACK_IMPORTED_MODULE_3_prop_types__["string"],
+  ariaHidden: __WEBPACK_IMPORTED_MODULE_3_prop_types__["bool"]
 };
-
 var defaultProps = {
-    cardStyle: '',
-    footer: [],
-    styles: {},
-    overlays: {},
-    dateFormat: '',
-    contentArea: {},
-    lh: '',
-    isBookmarked: false,
-    disableBookmarkIco: false,
-    renderBorder: true,
-    renderDivider: false,
-    renderOverlay: false,
-    overlayLink: '',
-    hideCTA: false,
-    startDate: '',
-    endDate: '',
-    cardDate: '',
-    modifiedDate: '',
-    tags: [],
-    origin: '',
-    ariaHidden: false
+  cardStyle: '',
+  footer: [],
+  styles: {},
+  overlays: {},
+  dateFormat: '',
+  contentArea: {},
+  lh: '',
+  isBookmarked: false,
+  disableBookmarkIco: false,
+  renderBorder: true,
+  renderDivider: false,
+  renderOverlay: false,
+  overlayLink: '',
+  hideCTA: false,
+  startDate: '',
+  endDate: '',
+  cardDate: '',
+  modifiedDate: '',
+  tags: [],
+  origin: '',
+  ariaHidden: false
 };
 
 /**
@@ -46962,458 +46465,405 @@ var defaultProps = {
  * )
  */
 var Card = function Card(props) {
-    var id = props.id,
-        footer = props.footer,
-        lh = props.lh,
-        tags = props.tags,
-        cardStyle = props.cardStyle,
-        disableBookmarkIco = props.disableBookmarkIco,
-        isBookmarked = props.isBookmarked,
-        onClick = props.onClick,
-        dateFormat = props.dateFormat,
-        cardDate = props.cardDate,
-        modifiedDate = props.modifiedDate,
-        _props$styles = props.styles,
-        image = _props$styles.backgroundImage,
-        altText = _props$styles.backgroundAltText,
-        mnemonic = _props$styles.mnemonic,
-        cardIcon = _props$styles.icon,
-        iconAlt = _props$styles.iconAlt,
-        _props$contentArea = props.contentArea;
-    _props$contentArea = _props$contentArea === undefined ? {} : _props$contentArea;
-    var title = _props$contentArea.title,
-        label = _props$contentArea.detailText,
-        description = _props$contentArea.description,
-        _props$contentArea$da = _props$contentArea.dateDetailText;
-    _props$contentArea$da = _props$contentArea$da === undefined ? {} : _props$contentArea$da;
-    var _props$contentArea$da2 = _props$contentArea$da.startTime,
-        startTime = _props$contentArea$da2 === undefined ? '' : _props$contentArea$da2,
-        _props$contentArea$da3 = _props$contentArea$da.endTime,
-        endTime = _props$contentArea$da3 === undefined ? '' : _props$contentArea$da3,
-        _props$overlays = props.overlays;
-    _props$overlays = _props$overlays === undefined ? {} : _props$overlays;
-    var _props$overlays$banne = _props$overlays.banner;
-    _props$overlays$banne = _props$overlays$banne === undefined ? {} : _props$overlays$banne;
-    var bannerDescription = _props$overlays$banne.description,
-        bannerFontColor = _props$overlays$banne.fontColor,
-        bannerBackgroundColor = _props$overlays$banne.backgroundColor,
-        bannerIcon = _props$overlays$banne.icon,
-        _props$overlays$video = _props$overlays.videoButton;
-    _props$overlays$video = _props$overlays$video === undefined ? {} : _props$overlays$video;
-    var videoURL = _props$overlays$video.url,
-        _props$overlays$logo = _props$overlays.logo;
-    _props$overlays$logo = _props$overlays$logo === undefined ? {} : _props$overlays$logo;
-    var logoSrc = _props$overlays$logo.src,
-        logoAlt = _props$overlays$logo.alt,
-        logoBg = _props$overlays$logo.backgroundColor,
-        logoBorderBg = _props$overlays$logo.borderColor,
-        _props$overlays$label = _props$overlays.label;
-    _props$overlays$label = _props$overlays$label === undefined ? {} : _props$overlays$label;
-    var badgeText = _props$overlays$label.description,
-        renderBorder = props.renderBorder,
-        renderDivider = props.renderDivider,
-        renderOverlay = props.renderOverlay,
-        overlayLink = props.overlayLink,
-        hideCTA = props.hideCTA,
-        startDate = props.startDate,
-        endDate = props.endDate,
-        bannerMap = props.bannerMap,
-        onFocus = props.onFocus,
-        origin = props.origin,
-        ariaHidden = props.ariaHidden;
+  var id = props.id,
+    footer = props.footer,
+    lh = props.lh,
+    tags = props.tags,
+    cardStyle = props.cardStyle,
+    disableBookmarkIco = props.disableBookmarkIco,
+    isBookmarked = props.isBookmarked,
+    onClick = props.onClick,
+    dateFormat = props.dateFormat,
+    cardDate = props.cardDate,
+    modifiedDate = props.modifiedDate,
+    _props$styles = props.styles,
+    image = _props$styles.backgroundImage,
+    altText = _props$styles.backgroundAltText,
+    mnemonic = _props$styles.mnemonic,
+    cardIcon = _props$styles.icon,
+    iconAlt = _props$styles.iconAlt,
+    _props$contentArea = props.contentArea,
+    _props$contentArea2 = _props$contentArea === void 0 ? {} : _props$contentArea,
+    title = _props$contentArea2.title,
+    label = _props$contentArea2.detailText,
+    description = _props$contentArea2.description,
+    _props$contentArea2$d = _props$contentArea2.dateDetailText,
+    _props$contentArea2$d2 = _props$contentArea2$d === void 0 ? {} : _props$contentArea2$d,
+    _props$contentArea2$d3 = _props$contentArea2$d2.startTime,
+    startTime = _props$contentArea2$d3 === void 0 ? '' : _props$contentArea2$d3,
+    _props$contentArea2$d4 = _props$contentArea2$d2.endTime,
+    endTime = _props$contentArea2$d4 === void 0 ? '' : _props$contentArea2$d4,
+    _props$overlays = props.overlays,
+    _props$overlays2 = _props$overlays === void 0 ? {} : _props$overlays,
+    _props$overlays2$bann = _props$overlays2.banner,
+    _props$overlays2$bann2 = _props$overlays2$bann === void 0 ? {} : _props$overlays2$bann,
+    bannerDescription = _props$overlays2$bann2.description,
+    bannerFontColor = _props$overlays2$bann2.fontColor,
+    bannerBackgroundColor = _props$overlays2$bann2.backgroundColor,
+    bannerIcon = _props$overlays2$bann2.icon,
+    _props$overlays2$vide = _props$overlays2.videoButton,
+    _props$overlays2$vide2 = _props$overlays2$vide === void 0 ? {} : _props$overlays2$vide,
+    videoURL = _props$overlays2$vide2.url,
+    _props$overlays2$logo = _props$overlays2.logo,
+    _props$overlays2$logo2 = _props$overlays2$logo === void 0 ? {} : _props$overlays2$logo,
+    logoSrc = _props$overlays2$logo2.src,
+    logoAlt = _props$overlays2$logo2.alt,
+    logoBg = _props$overlays2$logo2.backgroundColor,
+    logoBorderBg = _props$overlays2$logo2.borderColor,
+    _props$overlays2$labe = _props$overlays2.label,
+    _props$overlays2$labe2 = _props$overlays2$labe === void 0 ? {} : _props$overlays2$labe,
+    badgeText = _props$overlays2$labe2.description,
+    renderBorder = props.renderBorder,
+    renderDivider = props.renderDivider,
+    renderOverlay = props.renderOverlay,
+    overlayLink = props.overlayLink,
+    hideCTA = props.hideCTA,
+    startDate = props.startDate,
+    endDate = props.endDate,
+    bannerMap = props.bannerMap,
+    onFocus = props.onFocus,
+    origin = props.origin,
+    ariaHidden = props.ariaHidden;
+  var bannerBackgroundColorToUse = bannerBackgroundColor;
+  var bannerIconToUse = bannerIcon;
+  var bannerFontColorToUse = bannerFontColor;
+  var bannerDescriptionToUse = bannerDescription;
+  var videoURLToUse = videoURL;
+  var gateVideo = false;
+  var getConfig = Object(__WEBPACK_IMPORTED_MODULE_9__Helpers_hooks__["a" /* useConfig */])();
 
+  /**
+   **** Authored Configs ****
+   */
+  var i18nFormat = getConfig('collection', 'i18n.prettyDateIntervalFormat');
+  var locale = getConfig('language', '');
+  var disableBanners = getConfig('collection', 'disableBanners');
+  var cardButtonStyle = getConfig('collection', 'button.style');
+  var headingLevel = getConfig('collection.i18n', 'cardTitleAccessibilityLevel');
+  var additionalParams = getConfig('collection', 'additionalRequestParams');
+  var detailsTextOption = getConfig('collection', 'detailsTextOption');
+  var lastModified = getConfig('collection', 'i18n.lastModified');
+  var registrationUrl = getConfig('collection', 'banner.register.url');
+  var hideDateInterval = getConfig('collection', 'hideDateInterval');
+  var showCardBadges = getConfig('collection', 'showCardBadges');
+  var altCtaUsed = getConfig('collection', 'dynamicCTAForLiveEvents');
+  var ctaAction = getConfig('collection', 'ctaAction');
 
-    var bannerBackgroundColorToUse = bannerBackgroundColor;
-    var bannerIconToUse = bannerIcon;
-    var bannerFontColorToUse = bannerFontColor;
-    var bannerDescriptionToUse = bannerDescription;
-    var videoURLToUse = videoURL;
-    var gateVideo = false;
+  /**
+   * Class name for the card:
+   * whether card border should be rendered or no;
+   * @type {String}
+   */
+  var cardClassName = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-Card': true,
+    'consonant-u-noBorders': !renderBorder,
+    'consonant-hide-cta': hideCTA
+  });
 
-    var getConfig = (0, _hooks.useConfig)();
+  /**
+   * Formatted date string
+   * @type {String}
+   */
+  var prettyDate = startTime ? Object(__WEBPACK_IMPORTED_MODULE_5__Helpers_prettyFormat__["a" /* default */])(startTime, endTime, locale, i18nFormat) : '';
 
-    /**
-     **** Authored Configs ****
-     */
-    var i18nFormat = getConfig('collection', 'i18n.prettyDateIntervalFormat');
-    var locale = getConfig('language', '');
-    var disableBanners = getConfig('collection', 'disableBanners');
-    var cardButtonStyle = getConfig('collection', 'button.style');
-    var headingLevel = getConfig('collection.i18n', 'cardTitleAccessibilityLevel');
-    var additionalParams = getConfig('collection', 'additionalRequestParams');
-    var detailsTextOption = getConfig('collection', 'detailsTextOption');
-    var lastModified = getConfig('collection', 'i18n.lastModified');
-    var registrationUrl = getConfig('collection', 'banner.register.url');
-    var hideDateInterval = getConfig('collection', 'hideDateInterval');
-    var showCardBadges = getConfig('collection', 'showCardBadges');
-    var altCtaUsed = getConfig('collection', 'dynamicCTAForLiveEvents');
-    var ctaAction = getConfig('collection', 'ctaAction');
+  /**
+   * Detail text
+   * @type {String}
+   */
+  var detailText = prettyDate || label;
+  if (detailsTextOption === 'modifiedDate' && modifiedDate) {
+    var localModifiedDate = new Date(modifiedDate);
+    detailText = lastModified && lastModified.replace('{date}', localModifiedDate.toLocaleDateString()) || localModifiedDate.toLocaleDateString();
+  } else if (detailsTextOption === 'createdDate' && cardDate) {
+    var localCreatedDate = new Date(cardDate);
+    detailText = localCreatedDate.toLocaleDateString();
+  } else if (detailsTextOption === 'staticDate' && cardDate) {
+    var staticDate = new Date(cardDate.replace(/Z$/, ''));
+    detailText = staticDate.toLocaleDateString();
+  }
 
-    /**
-     * Class name for the card:
-     * whether card border should be rendered or no;
-     * @type {String}
-     */
-    var cardClassName = (0, _classnames2.default)({
-        'consonant-Card': true,
-        'consonant-u-noBorders': !renderBorder,
-        'consonant-hide-cta': hideCTA
-    });
+  /**
+   * isGated
+   * @type {Boolean}
+   */
+  var isGated = Object(__WEBPACK_IMPORTED_MODULE_7__Helpers_Helpers__["r" /* hasTag */])(/caas:gated/, tags) || Object(__WEBPACK_IMPORTED_MODULE_7__Helpers_Helpers__["r" /* hasTag */])(/caas:card-style\/half-height-featured/, tags) || Object(__WEBPACK_IMPORTED_MODULE_7__Helpers_Helpers__["r" /* hasTag */])(/7ed3/, tags) || Object(__WEBPACK_IMPORTED_MODULE_7__Helpers_Helpers__["r" /* hasTag */])(/1j6zgcx\/3bhv/, tags);
 
-    /**
-     * Formatted date string
-     * @type {String}
-     */
-    var prettyDate = startTime ? (0, _prettyFormat2.default)(startTime, endTime, locale, i18nFormat) : '';
+  /**
+   * isRegistered
+   * @type {Boolean}
+   */
+  var isRegistered = Object(__WEBPACK_IMPORTED_MODULE_9__Helpers_hooks__["c" /* useRegistered */])(false);
 
-    /**
-     * Detail text
-     * @type {String}
-     */
-    var detailText = prettyDate || label;
-    if (detailsTextOption === 'modifiedDate' && modifiedDate) {
-        var localModifiedDate = new Date(modifiedDate);
-        detailText = lastModified && lastModified.replace('{date}', localModifiedDate.toLocaleDateString()) || localModifiedDate.toLocaleDateString();
-    } else if (detailsTextOption === 'createdDate' && cardDate) {
-        var localCreatedDate = new Date(cardDate);
-        detailText = localCreatedDate.toLocaleDateString();
-    } else if (detailsTextOption === 'staticDate' && cardDate) {
-        var staticDate = new Date(cardDate.replace(/Z$/, ''));
-        detailText = staticDate.toLocaleDateString();
-    }
+  /**
+   * isInPerson
+   * @type {Boolean}
+   */
+  var isInPerson = Object(__WEBPACK_IMPORTED_MODULE_7__Helpers_Helpers__["r" /* hasTag */])(/events\/session-format\/in-person/, tags) || Object(__WEBPACK_IMPORTED_MODULE_7__Helpers_Helpers__["r" /* hasTag */])(/e505\/3ssk/, tags);
 
-    /**
-     * isGated
-     * @type {Boolean}
-     */
-    var isGated = (0, _Helpers.hasTag)(/caas:gated/, tags) || (0, _Helpers.hasTag)(/caas:card-style\/half-height-featured/, tags) || (0, _Helpers.hasTag)(/7ed3/, tags) || (0, _Helpers.hasTag)(/1j6zgcx\/3bhv/, tags);
-
-    /**
-     * isRegistered
-     * @type {Boolean}
-     */
-    var isRegistered = (0, _hooks.useRegistered)(false);
-
-    /**
-     * isInPerson
-     * @type {Boolean}
-     */
-    var isInPerson = (0, _Helpers.hasTag)(/events\/session-format\/in-person/, tags) || (0, _Helpers.hasTag)(/e505\/3ssk/, tags);
-
-    /**
-     * Extends infobits with the configuration data
-     * @param {Array} data - Array of the infobits
-     * @return {Array} - Array of the infobits with the configuration data added
-     */
-    function extendFooterData(data) {
-        if (!data) return [];
-
-        return data.map(function (infobit) {
-            // MWPW-129085: Compiler wrongly compiles this object to private, read-only,
-            // Created copy so object instance has public methods and properties.
-            var copy = _extends({}, infobit);
-            if (copy.type === _constants.INFOBIT_TYPE.BOOKMARK) {
-                if (isGated) {
-                    copy.type = _constants.INFOBIT_TYPE.GATED;
-                }
-                return _extends({}, copy, {
-                    cardId: id,
-                    disableBookmarkIco: disableBookmarkIco,
-                    isBookmarked: isBookmarked,
-                    onClick: onClick
-                });
-            } else if (copy.type === _constants.INFOBIT_TYPE.DATE) {
-                return _extends({}, copy, {
-                    dateFormat: dateFormat,
-                    locale: locale
-                });
-            } else if (cardButtonStyle === 'link') {
-                copy.type = _constants.INFOBIT_TYPE.LINK;
-            }
-            return _extends({}, copy, {
-                isCta: true
-            });
+  /**
+   * Extends infobits with the configuration data
+   * @param {Array} data - Array of the infobits
+   * @return {Array} - Array of the infobits with the configuration data added
+   */
+  function extendFooterData(data) {
+    if (!data) return [];
+    return data.map(function (infobit) {
+      // MWPW-129085: Compiler wrongly compiles this object to private, read-only,
+      // Created copy so object instance has public methods and properties.
+      var copy = _objectSpread({}, infobit);
+      if (copy.type === __WEBPACK_IMPORTED_MODULE_6__Helpers_constants__["j" /* INFOBIT_TYPE */].BOOKMARK) {
+        if (isGated) {
+          copy.type = __WEBPACK_IMPORTED_MODULE_6__Helpers_constants__["j" /* INFOBIT_TYPE */].GATED;
+        }
+        return _objectSpread(_objectSpread({}, copy), {}, {
+          cardId: id,
+          disableBookmarkIco: disableBookmarkIco,
+          isBookmarked: isBookmarked,
+          onClick: onClick
         });
+      } else if (copy.type === __WEBPACK_IMPORTED_MODULE_6__Helpers_constants__["j" /* INFOBIT_TYPE */].DATE) {
+        return _objectSpread(_objectSpread({}, copy), {}, {
+          dateFormat: dateFormat,
+          locale: locale
+        });
+      } else if (cardButtonStyle === 'link') {
+        copy.type = __WEBPACK_IMPORTED_MODULE_6__Helpers_constants__["j" /* INFOBIT_TYPE */].LINK;
+      }
+      return _objectSpread(_objectSpread({}, copy), {}, {
+        isCta: true
+      });
+    });
+  }
+
+  /**
+   * Extends footer data and extracts an alt CTA if it exists
+   * this is important for when overlay links are being used for live events
+   * @param {Array} footerData
+   * @return {String}
+   */
+  /* istanbul ignore next */
+  function getAltCtaLink(footerData) {
+    if (!footerData) return '';
+    if (footerData.length === 1) {
+      var _footerData$0$altCta = footerData[0].altCta,
+        altCta = _footerData$0$altCta === void 0 ? [] : _footerData$0$altCta;
+      if (altCta.length === 1) {
+        return altCta[0].href;
+      }
     }
+    // default value is an unauthored alt cta
+    return '';
+  }
 
-    /**
-     * Extends footer data and extracts an alt CTA if it exists
-     * this is important for when overlay links are being used for live events
-     * @param {Array} footerData
-     * @return {String}
-     */
-    function getAltCtaLink(footerData) {
-        if (!footerData) return '';
-        if (footerData.length === 1) {
-            var _footerData$0$altCta = footerData[0].altCta,
-                altCta = _footerData$0$altCta === undefined ? [] : _footerData$0$altCta;
-
-            if (altCta.length === 1) {
-                return altCta[0].href;
-            }
-        }
-        // default value is an unauthored alt cta
-        return '';
+  /**
+   * Get CTA text from footer data for analytics on overlay cards
+   * @param {Array} footerData
+   * @return {String}
+   */
+  /* istanbul ignore next */
+  function getCtaText(footerData, ctaUsed) {
+    if (!footerData) return '';
+    if (footerData.length === 1) {
+      var _footerData$ = footerData[0],
+        _footerData$$altCta = _footerData$.altCta,
+        altCta = _footerData$$altCta === void 0 ? [] : _footerData$$altCta,
+        _footerData$$right = _footerData$.right,
+        right = _footerData$$right === void 0 ? [] : _footerData$$right;
+      if (ctaUsed === 'right' && right.length === 1) {
+        return right[0].text;
+      } else if (ctaUsed === 'alt' && altCta.length === 1) {
+        return altCta[0].text;
+      }
+      return '';
     }
+    return '';
+  }
 
-    /**
-     * Get CTA text from footer data for analytics on overlay cards
-     * @param {Array} footerData
-     * @return {String}
-     */
-    function getCtaText(footerData, ctaUsed) {
-        if (!footerData) return '';
-        if (footerData.length === 1) {
-            var _footerData$ = footerData[0],
-                _footerData$$altCta = _footerData$.altCta,
-                altCta = _footerData$$altCta === undefined ? [] : _footerData$$altCta,
-                _footerData$$right = _footerData$.right,
-                right = _footerData$$right === undefined ? [] : _footerData$$right;
+  // Card styles
+  var isOneHalf = cardStyle === 'one-half';
+  var isThreeFourths = cardStyle === 'three-fourths';
+  var isDoubleWide = cardStyle === 'double-wide';
+  var isHalfHeight = cardStyle === 'half-height';
+  var isProduct = cardStyle === 'product';
+  var isText = cardStyle === 'text-card';
+  var isFull = cardStyle === 'full-card';
+  var isIcon = cardStyle === 'icon-card';
+  var isNews = cardStyle === 'news-card';
 
-            if (ctaUsed === 'right' && right.length === 1) {
-                return right[0].text;
-            } else if (ctaUsed === 'alt' && altCta.length === 1) {
-                return altCta[0].text;
-            }
-            return '';
-        }
-        return '';
+  // Card elements to show
+  var showHeader = !isProduct;
+  var fromDexter = origin === 'Dexter';
+  var showBadge = (isOneHalf || isThreeFourths || isFull) && (fromDexter || showCardBadges);
+  var showLogo = isOneHalf || isThreeFourths || isFull || isText;
+  var showLabel = !isProduct && !isText;
+  var showVideoButton = !isProduct && !isText && !isIcon;
+  var showText = !isHalfHeight && !isFull && !isNews;
+  var showFooter = isOneHalf || isProduct || isText || isNews;
+  var showFooterLeft = !isProduct;
+  var showFooterCenter = !isProduct && !altCtaUsed;
+  var hideBanner = false;
+  var eventBanner = '';
+  var hideOnDemandDates = hideDateInterval && Object(__WEBPACK_IMPORTED_MODULE_8__Helpers_general__["p" /* isDateAfterInterval */])(Object(__WEBPACK_IMPORTED_MODULE_8__Helpers_general__["d" /* getCurrentDate */])(), endDate);
+  var isEventsCard = Object(__WEBPACK_IMPORTED_MODULE_8__Helpers_general__["j" /* getSearchParam */])(getConfig('collection', 'endpoint'), 'originSelection') === 'events';
+  if (isHalfHeight && isGated && !isRegistered) {
+    bannerDescriptionToUse = bannerMap.register.description;
+    bannerIconToUse = '';
+    bannerBackgroundColorToUse = bannerMap.register.backgroundColor;
+    bannerFontColorToUse = bannerMap.register.fontColor;
+    videoURLToUse = registrationUrl;
+    gateVideo = true;
+  } else if (startDate && endDate) {
+    eventBanner = Object(__WEBPACK_IMPORTED_MODULE_8__Helpers_general__["f" /* getEventBanner */])(startDate, endDate, bannerMap);
+    bannerBackgroundColorToUse = eventBanner.backgroundColor;
+    bannerDescriptionToUse = eventBanner.description;
+    bannerFontColorToUse = eventBanner.fontColor;
+    bannerIconToUse = eventBanner.icon;
+    if (isHalfHeight) {
+      var now = Object(__WEBPACK_IMPORTED_MODULE_8__Helpers_general__["d" /* getCurrentDate */])();
+      if (Object(__WEBPACK_IMPORTED_MODULE_8__Helpers_general__["q" /* isDateBeforeInterval */])(now, startDate)) {
+        detailText = Object(__WEBPACK_IMPORTED_MODULE_5__Helpers_prettyFormat__["a" /* default */])(startDate, endDate, locale, i18nFormat);
+      }
     }
+  }
 
-    // Card styles
-    var isOneHalf = cardStyle === 'one-half';
-    var isThreeFourths = cardStyle === 'three-fourths';
-    var isDoubleWide = cardStyle === 'double-wide';
-    var isHalfHeight = cardStyle === 'half-height';
-    var isProduct = cardStyle === 'product';
-    var isText = cardStyle === 'text-card';
-    var isFull = cardStyle === 'full-card';
-    var isIcon = cardStyle === 'icon-card';
-    var isNews = cardStyle === 'news-card';
-
-    // Card elements to show
-    var showHeader = !isProduct;
-    var fromDexter = origin === 'Dexter';
-    var showBadge = (isOneHalf || isThreeFourths || isFull) && (fromDexter || showCardBadges);
-    var showLogo = isOneHalf || isThreeFourths || isFull || isText;
-    var showLabel = !isProduct && !isText;
-    var showVideoButton = !isProduct && !isText && !isIcon;
-    var showText = !isHalfHeight && !isFull && !isNews;
-    var showFooter = isOneHalf || isProduct || isText || isNews;
-    var showFooterLeft = !isProduct;
-    var showFooterCenter = !isProduct && !altCtaUsed;
-    var hideBanner = false;
-    var eventBanner = '';
-    var hideOnDemandDates = hideDateInterval && (0, _general.isDateAfterInterval)((0, _general.getCurrentDate)(), endDate);
-    var isEventsCard = (0, _general.getSearchParam)(getConfig('collection', 'endpoint'), 'originSelection') === 'events';
-
-    if (isHalfHeight && isGated && !isRegistered) {
-        bannerDescriptionToUse = bannerMap.register.description;
-        bannerIconToUse = '';
-        bannerBackgroundColorToUse = bannerMap.register.backgroundColor;
-        bannerFontColorToUse = bannerMap.register.fontColor;
-        videoURLToUse = registrationUrl;
-        gateVideo = true;
-    } else if (startDate && endDate) {
-        eventBanner = (0, _general.getEventBanner)(startDate, endDate, bannerMap);
-        bannerBackgroundColorToUse = eventBanner.backgroundColor;
-        bannerDescriptionToUse = eventBanner.description;
-        bannerFontColorToUse = eventBanner.fontColor;
-        bannerIconToUse = eventBanner.icon;
-        if (isHalfHeight) {
-            var now = (0, _general.getCurrentDate)();
-            if ((0, _general.isDateBeforeInterval)(now, startDate)) {
-                detailText = (0, _prettyFormat2.default)(startDate, endDate, locale, i18nFormat);
-            }
-        }
+  // Events card custom banners
+  /* istanbul ignore if */
+  if (isEventsCard) {
+    hideBanner = isInPerson && eventBanner === bannerMap.onDemand;
+    bannerDescriptionToUse = isInPerson && eventBanner === bannerMap.live ? 'Live Today' : bannerDescriptionToUse;
+  }
+  var hasBanner = bannerDescriptionToUse && bannerFontColorToUse && bannerBackgroundColorToUse && !hideBanner;
+  var headingAria = videoURL || label || detailText || description || logoSrc || badgeText || hasBanner && !disableBanners || !isIcon ? '' : title;
+  var ariaText = title;
+  if (hasBanner && !disableBanners) {
+    ariaText = "".concat(bannerDescriptionToUse, " | ").concat(ariaText);
+  }
+  var linkBlockerTarget = Object(__WEBPACK_IMPORTED_MODULE_8__Helpers_general__["h" /* getLinkTarget */])(overlayLink, ctaAction);
+  var addParams = new URLSearchParams(additionalParams);
+  var overlayParams = additionalParams && addParams.keys().next().value ? "".concat(overlayLink, "?").concat(addParams.toString()) : overlayLink;
+  var isLive = Object(__WEBPACK_IMPORTED_MODULE_8__Helpers_general__["r" /* isDateWithinInterval */])(Object(__WEBPACK_IMPORTED_MODULE_8__Helpers_general__["d" /* getCurrentDate */])(), startDate, endDate);
+  var isUpcoming = Object(__WEBPACK_IMPORTED_MODULE_8__Helpers_general__["q" /* isDateBeforeInterval */])(Object(__WEBPACK_IMPORTED_MODULE_8__Helpers_general__["d" /* getCurrentDate */])(), startDate);
+  var altCtaLink = getAltCtaLink(footer);
+  var ctaText = altCtaUsed && isUpcoming && altCtaLink !== '' ? getCtaText(footer, 'alt') : getCtaText(footer, 'right');
+  var overlay = altCtaUsed && isLive && altCtaLink !== '' ? altCtaLink : overlayParams;
+  var getsFocus = isHalfHeight && !videoURLToUse || isThreeFourths || isFull || isDoubleWide || isIcon || hideCTA;
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    "daa-lh": lh,
+    className: "".concat(cardStyle, " ").concat(cardClassName),
+    "aria-label": ariaText,
+    "data-testid": "consonant-Card",
+    id: id
+  }, showHeader && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    "data-testid": "consonant-Card-header",
+    className: "consonant-Card-header",
+    style: {
+      backgroundImage: "url(\"".concat(image, "\")")
+    },
+    role: altText && 'img',
+    "aria-label": altText
+  }, hasBanner && !disableBanners && !isIcon && !isNews && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    "data-testid": "consonant-Card-banner",
+    className: "consonant-Card-banner",
+    style: {
+      backgroundColor: bannerBackgroundColorToUse,
+      color: bannerFontColorToUse
     }
-
-    // Events card custom banners
-    /* istanbul ignore if */
-    if (isEventsCard) {
-        hideBanner = isInPerson && eventBanner === bannerMap.onDemand;
-        bannerDescriptionToUse = isInPerson && eventBanner === bannerMap.live ? 'Live Today' : bannerDescriptionToUse;
-    }
-
-    var hasBanner = bannerDescriptionToUse && bannerFontColorToUse && bannerBackgroundColorToUse && !hideBanner;
-
-    var headingAria = videoURL || label || detailText || description || logoSrc || badgeText || hasBanner && !disableBanners || !isIcon ? '' : title;
-
-    var ariaText = title;
-    if (hasBanner && !disableBanners) {
-        ariaText = bannerDescriptionToUse + ' | ' + ariaText;
-    }
-
-    var linkBlockerTarget = (0, _general.getLinkTarget)(overlayLink, ctaAction);
-    var addParams = new URLSearchParams(additionalParams);
-    var overlayParams = additionalParams && addParams.keys().next().value ? overlayLink + '?' + addParams.toString() : overlayLink;
-    var isLive = (0, _general.isDateWithinInterval)((0, _general.getCurrentDate)(), startDate, endDate);
-    var isUpcoming = (0, _general.isDateBeforeInterval)((0, _general.getCurrentDate)(), startDate);
-    var altCtaLink = getAltCtaLink(footer);
-    var ctaText = altCtaUsed && isUpcoming && altCtaLink !== '' ? getCtaText(footer, 'alt') : getCtaText(footer, 'right');
-    var overlay = altCtaUsed && isLive && altCtaLink !== '' ? altCtaLink : overlayParams;
-    // const getsFocus = isHalfHeight
-    var getsFocus = isHalfHeight && !videoURLToUse || isThreeFourths || isFull || isDoubleWide || isIcon || hideCTA;
-
-    return _react2.default.createElement(
-        'div',
-        {
-            'daa-lh': lh,
-            className: cardStyle + ' ' + cardClassName,
-            'aria-label': ariaText,
-            'data-testid': 'consonant-Card',
-            id: id },
-        showHeader && _react2.default.createElement(
-            'div',
-            {
-                'data-testid': 'consonant-Card-header',
-                className: 'consonant-Card-header',
-                style: { backgroundImage: 'url("' + image + '")' },
-                role: altText && 'img',
-                'aria-label': altText },
-            hasBanner && !disableBanners && !isIcon && !isNews && _react2.default.createElement(
-                'span',
-                {
-                    'data-testid': 'consonant-Card-banner',
-                    className: 'consonant-Card-banner',
-                    style: {
-                        backgroundColor: bannerBackgroundColorToUse,
-                        color: bannerFontColorToUse
-                    } },
-                bannerIconToUse && _react2.default.createElement(
-                    'div',
-                    {
-                        className: 'consonant-Card-bannerIconWrapper' },
-                    _react2.default.createElement('img', {
-                        alt: '',
-                        loading: 'lazy',
-                        src: bannerIconToUse,
-                        'data-testid': 'consonant-Card-bannerImg' })
-                ),
-                _react2.default.createElement(
-                    'span',
-                    null,
-                    bannerDescriptionToUse
-                )
-            ),
-            showBadge && badgeText && _react2.default.createElement(
-                'span',
-                {
-                    className: 'consonant-Card-badge' },
-                badgeText
-            ),
-            showVideoButton && videoURL && !isHalfHeight && _react2.default.createElement(_videoButton2.default, {
-                videoURL: videoURLToUse,
-                gateVideo: gateVideo,
-                onFocus: onFocus,
-                className: 'consonant-Card-videoIco' }),
-            showLogo && (logoSrc || isText && image) && _react2.default.createElement(
-                'div',
-                {
-                    style: {
-                        backgroundColor: logoBg,
-                        borderColor: logoBorderBg
-                    },
-                    'data-testid': 'consonant-Card-logo',
-                    className: 'consonant-Card-logo' },
-                _react2.default.createElement('img', {
-                    // the text card uses the image as logo
-                    src: isText ? image : logoSrc,
-                    alt: isText ? altText : logoAlt || '',
-                    loading: 'lazy',
-                    width: '32' })
-            ),
-            isIcon && _react2.default.createElement(
-                'div',
-                {
-                    'data-testid': 'consonant-Card-logo',
-                    className: 'consonant-Card-logo' },
-                _react2.default.createElement('img', {
-                    src: cardIcon,
-                    alt: '',
-                    loading: 'lazy',
-                    width: '32',
-                    'data-testid': 'consonant-Card-logoImg' })
-            )
-        ),
-        _react2.default.createElement(
-            'div',
-            {
-                className: 'consonant-Card-content' },
-            showVideoButton && videoURL && isHalfHeight && _react2.default.createElement(_videoButton2.default, {
-                videoURL: videoURLToUse,
-                gateVideo: gateVideo,
-                onFocus: onFocus,
-                className: 'consonant-Card-videoIco' }),
-            showLabel && detailText && _react2.default.createElement(
-                'span',
-                {
-                    'data-testid': 'consonant-Card-label',
-                    className: 'consonant-Card-label' },
-                detailText
-            ),
-            isIcon && detailText === '' && _react2.default.createElement(
-                'span',
-                {
-                    'data-testid': 'consonant-Card-label',
-                    className: 'consonant-Card-label' },
-                iconAlt
-            ),
-            _react2.default.createElement(
-                'p',
-                {
-                    role: 'heading',
-                    'aria-label': headingAria,
-                    'aria-level': headingLevel,
-                    'data-testid': 'consonant-Card-title',
-                    className: 'consonant-Card-title',
-                    title: title },
-                isProduct && mnemonic && _react2.default.createElement('img', { src: mnemonic, alt: 'mnemonic', loading: 'lazy' }),
-                title
-            ),
-            showText && description && !isIcon && _react2.default.createElement(
-                'p',
-                {
-                    'data-testid': 'consonant-Card-text',
-                    className: 'consonant-Card-text' },
-                description
-            ),
-            showFooter && !hideCTA && footer.map(function (footerItem) {
-                return _react2.default.createElement(_CardFooter2.default, {
-                    divider: renderDivider || footerItem.divider,
-                    isFluid: footerItem.isFluid,
-                    key: (0, _cuid2.default)(),
-                    left: showFooterLeft && !hideOnDemandDates ? extendFooterData(footerItem.left) : [],
-                    center: showFooterCenter ? extendFooterData(footerItem.center) : [],
-                    right: extendFooterData(footerItem.right),
-                    altRight: altCtaUsed ? extendFooterData(footerItem.altCta) : [],
-                    startDate: startDate,
-                    endDate: endDate,
-                    cardStyle: cardStyle,
-                    onFocus: onFocus,
-                    title: title });
-            }),
-            (isThreeFourths || isDoubleWide || isFull) && !renderOverlay && _react2.default.createElement(_LinkBlocker2.default, {
-                target: linkBlockerTarget,
-                link: overlay,
-                title: title,
-                getsFocus: getsFocus,
-                daa: ctaText })
-        ),
-        (renderOverlay || hideCTA || isHalfHeight || isIcon) && _react2.default.createElement(_LinkBlocker2.default, {
-            target: linkBlockerTarget,
-            link: overlay,
-            title: title,
-            getsFocus: getsFocus,
-            tabIndex: ariaHidden ? -1 : 0,
-            daa: ctaText })
-    );
+  }, bannerIconToUse && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-Card-bannerIconWrapper"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", {
+    alt: "",
+    loading: "lazy",
+    src: bannerIconToUse,
+    "data-testid": "consonant-Card-bannerImg"
+  })), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, bannerDescriptionToUse)), showBadge && badgeText && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    className: "consonant-Card-badge"
+  }, badgeText), showVideoButton && videoURL && !isHalfHeight && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_12__Modal_videoButton__["a" /* default */], {
+    videoURL: videoURLToUse,
+    gateVideo: gateVideo,
+    onFocus: onFocus,
+    className: "consonant-Card-videoIco"
+  }), showLogo && (logoSrc || isText && image) && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    style: {
+      backgroundColor: logoBg,
+      borderColor: logoBorderBg
+    },
+    "data-testid": "consonant-Card-logo",
+    className: "consonant-Card-logo"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", {
+    // the text card uses the image as logo
+    src: isText ? image : logoSrc,
+    alt: isText ? altText : logoAlt || '',
+    loading: "lazy",
+    width: "32"
+  })), isIcon && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    "data-testid": "consonant-Card-logo",
+    className: "consonant-Card-logo"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", {
+    src: cardIcon,
+    alt: "",
+    loading: "lazy",
+    width: "32",
+    "data-testid": "consonant-Card-logoImg"
+  }))), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-Card-content"
+  }, showVideoButton && videoURL && isHalfHeight && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_12__Modal_videoButton__["a" /* default */], {
+    videoURL: videoURLToUse,
+    gateVideo: gateVideo,
+    onFocus: onFocus,
+    className: "consonant-Card-videoIco"
+  }), showLabel && detailText && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    "data-testid": "consonant-Card-label",
+    className: "consonant-Card-label"
+  }, detailText), isIcon && detailText === '' && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    "data-testid": "consonant-Card-label",
+    className: "consonant-Card-label"
+  }, iconAlt), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", {
+    role: "heading",
+    "aria-label": headingAria,
+    "aria-level": headingLevel,
+    "data-testid": "consonant-Card-title",
+    className: "consonant-Card-title",
+    title: title
+  }, isProduct && mnemonic && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", {
+    src: mnemonic,
+    alt: "mnemonic",
+    loading: "lazy"
+  }), title), showText && description && !isIcon && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", {
+    "data-testid": "consonant-Card-text",
+    className: "consonant-Card-text"
+  }, description), showFooter && !hideCTA && footer.map(function (footerItem) {
+    return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__CardFooter_CardFooter__["a" /* default */], {
+      divider: renderDivider || footerItem.divider,
+      isFluid: footerItem.isFluid,
+      key: __WEBPACK_IMPORTED_MODULE_2_cuid___default()(),
+      left: showFooterLeft && !hideOnDemandDates ? extendFooterData(footerItem.left) : [],
+      center: showFooterCenter ? extendFooterData(footerItem.center) : [],
+      right: extendFooterData(footerItem.right),
+      altRight: altCtaUsed ? extendFooterData(footerItem.altCta) : [],
+      startDate: startDate,
+      endDate: endDate,
+      cardStyle: cardStyle,
+      onFocus: onFocus,
+      title: title
+    });
+  }), (isThreeFourths || isDoubleWide || isFull) && !renderOverlay && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_11__LinkBlocker_LinkBlocker__["a" /* default */], {
+    target: linkBlockerTarget,
+    link: overlay,
+    title: title,
+    getsFocus: getsFocus,
+    daa: ctaText
+  })), (renderOverlay || hideCTA || isHalfHeight || isIcon) && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_11__LinkBlocker_LinkBlocker__["a" /* default */], {
+    target: linkBlockerTarget,
+    link: overlay,
+    title: title,
+    getsFocus: getsFocus,
+    tabIndex: ariaHidden ? -1 : 0,
+    daa: ctaText
+  }));
 };
-
 Card.propTypes = CardType;
 Card.defaultProps = defaultProps;
-
-exports.default = Card;
+/* harmony default export */ __webpack_exports__["a"] = (Card);
 
 /***/ }),
 /* 253 */
@@ -47459,42 +46909,30 @@ module.exports = getRandomValue;
 
 /***/ }),
 /* 255 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Infobit_Group__ = __webpack_require__(256);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__types_card__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Helpers_constants__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Helpers_general__ = __webpack_require__(6);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
-var _react = __webpack_require__(0);
 
-var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(7);
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _Group = __webpack_require__(256);
-
-var _Group2 = _interopRequireDefault(_Group);
-
-var _card = __webpack_require__(39);
-
-var _constants = __webpack_require__(15);
-
-var _general = __webpack_require__(6);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var defaultProps = {
-    left: [],
-    center: [],
-    right: [],
-    altRight: [],
-    divider: false,
-    isFluid: false
+  left: [],
+  center: [],
+  right: [],
+  altRight: [],
+  divider: false,
+  isFluid: false
 };
 
 /**
@@ -47514,242 +46952,196 @@ var defaultProps = {
  * )
  */
 var CardFooter = function CardFooter(props) {
-    var divider = props.divider,
-        left = props.left,
-        center = props.center,
-        right = props.right,
-        altRight = props.altRight,
-        startDate = props.startDate,
-        endDate = props.endDate,
-        isFluid = props.isFluid,
-        onFocus = props.onFocus,
-        title = props.title;
+  var divider = props.divider,
+    left = props.left,
+    center = props.center,
+    right = props.right,
+    altRight = props.altRight,
+    startDate = props.startDate,
+    endDate = props.endDate,
+    isFluid = props.isFluid,
+    onFocus = props.onFocus,
+    title = props.title;
 
-    /**
-     * Is the card currently live?
-     * @type {Boolean}
-     */
+  /**
+   * Is the card currently live?
+   * @type {Boolean}
+   */
+  var isLive = Object(__WEBPACK_IMPORTED_MODULE_5__Helpers_general__["r" /* isDateWithinInterval */])(Object(__WEBPACK_IMPORTED_MODULE_5__Helpers_general__["d" /* getCurrentDate */])(), startDate, endDate);
+  var isUpcoming = Object(__WEBPACK_IMPORTED_MODULE_5__Helpers_general__["q" /* isDateBeforeInterval */])(Object(__WEBPACK_IMPORTED_MODULE_5__Helpers_general__["d" /* getCurrentDate */])(), startDate);
 
-    var isLive = (0, _general.isDateWithinInterval)((0, _general.getCurrentDate)(), startDate, endDate);
-    var isUpcoming = (0, _general.isDateBeforeInterval)((0, _general.getCurrentDate)(), startDate);
+  /**
+   * Class name for the card footer:
+   * whether the card footer should have a horizontal divider
+   * @type {Number}
+   */
+  var footerClassName = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-CardFooter': true,
+    'consonant-CardFooter--divider': divider
+  });
 
-    /**
-     * Class name for the card footer:
-     * whether the card footer should have a horizontal divider
-     * @type {Number}
-     */
-    var footerClassName = (0, _classnames2.default)({
-        'consonant-CardFooter': true,
-        'consonant-CardFooter--divider': divider
-    });
+  /**
+   * Class name for the card footer row:
+   * whether the the card footer row should be fluid or of fixed width
+   * @type {Number}
+   */
+  var rowClassName = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-CardFooter-row': true,
+    'consonant-CardFooter-row--fluid': isFluid
+  });
 
-    /**
-     * Class name for the card footer row:
-     * whether the the card footer row should be fluid or of fixed width
-     * @type {Number}
-     */
-    var rowClassName = (0, _classnames2.default)({
-        'consonant-CardFooter-row': true,
-        'consonant-CardFooter-row--fluid': isFluid
-    });
+  /**
+   * How many groups are displayed in the footer
+   * @type {Number}
+   */
+  var dataCells = left.some(function (_ref) {
+    var type = _ref.type;
+    return type === __WEBPACK_IMPORTED_MODULE_4__Helpers_constants__["j" /* INFOBIT_TYPE */].DATE;
+  }) ? 2 : 1;
 
-    /**
-     * How many groups are displayed in the footer
-     * @type {Number}
-     */
-    var dataCells = left.some(function (_ref) {
-        var type = _ref.type;
-        return type === _constants.INFOBIT_TYPE.DATE;
-    }) ? 2 : 1;
+  /**
+   * Whether the left footer infobits should render
+   * @type {Boolean}
+   */
+  var shouldRenderLeft = left && left.length > 0;
 
-    /**
-     * Whether the left footer infobits should render
-     * @type {Boolean}
-     */
-    var shouldRenderLeft = left && left.length > 0;
+  /**
+   * Whether the center footer infobits should render
+   * @type {Boolean}
+   */
+  var shouldRenderCenter = center && center.length > 0;
 
-    /**
-     * Whether the center footer infobits should render
-     * @type {Boolean}
-     */
-    var shouldRenderCenter = center && center.length > 0;
+  /**
+   * Whether the right footer infobits should render
+   * @type {Boolean}
+   */
+  var shouldRenderRight = right && right.length > 0 && (!isLive || altRight.length === 0) && (!isUpcoming || altRight.length === 0);
 
-    /**
-     * Whether the right footer infobits should render
-     * @type {Boolean}
-     */
-    var shouldRenderRight = right && right.length > 0 && (!isLive || altRight.length === 0) && (!isUpcoming || altRight.length === 0);
+  /**
+   * Whether an alternate right footer infobits should render for upcoming
+   * @type {Boolean}
+   */
+  var shouldRenderAltRightUpcoming = altRight && altRight.length > 0 && isUpcoming;
 
-    /**
-     * Whether an alternate right footer infobits should render for upcoming
-     * @type {Boolean}
-     */
-    var shouldRenderAltRightUpcoming = altRight && altRight.length > 0 && isUpcoming;
+  /**
+   * Whether an alternate right footer infobets should render for live events
+   */
+  var shouldRenderAltRightLive = altRight && altRight.length > 0 && isLive;
 
-    /**
-     * Whether an alternate right footer infobets should render for live events
-     */
-    var shouldRenderAltRightLive = altRight && altRight.length > 0 && isLive;
-
-    /**
-     * This is some franken logic to make one alt cta space work for two different card states
-     */
-    var altRightUpcoming = []; // isUpcoming
-    var altRightLive = []; // isLive
-    /* istanbul ignore if */
-    if (altRight && altRight.length > 0 && right && right.length > 0) {
-        var upcoming = {
-            href: right[0].href,
-            text: altRight[0].text,
-            type: right[0].type
-        };
-        var live = {
-            href: altRight[0].href,
-            text: right[0].text,
-            type: altRight[0].type
-        };
-        altRightUpcoming.push(upcoming);
-        altRightLive.push(live);
-    }
-
-    return _react2.default.createElement(
-        'div',
-        {
-            className: footerClassName,
-            'data-testid': 'consonant-Card-footer' },
-        _react2.default.createElement(
-            'div',
-            {
-                className: rowClassName,
-                'data-cells': dataCells },
-            shouldRenderLeft && _react2.default.createElement(
-                'div',
-                {
-                    className: 'consonant-CardFooter-cell consonant-CardFooter-cell--left' },
-                _react2.default.createElement(_Group2.default, { renderList: left, onFocus: onFocus })
-            ),
-            shouldRenderCenter && _react2.default.createElement(
-                'div',
-                {
-                    className: 'consonant-CardFooter-cell consonant-CardFooter-cell--center' },
-                _react2.default.createElement(_Group2.default, { renderList: center, onFocus: onFocus })
-            ),
-            shouldRenderRight && _react2.default.createElement(
-                'div',
-                {
-                    className: 'consonant-CardFooter-cell consonant-CardFooter-cell--right' },
-                _react2.default.createElement(_Group2.default, { renderList: right, onFocus: onFocus, title: title })
-            ),
-            shouldRenderAltRightUpcoming && _react2.default.createElement(
-                'div',
-                {
-                    className: 'consonant-CardFooter-cell consonant-CardFooter-cell--right' },
-                _react2.default.createElement(_Group2.default, { renderList: altRightUpcoming, onFocus: onFocus, title: title })
-            ),
-            shouldRenderAltRightLive && _react2.default.createElement(
-                'div',
-                {
-                    className: 'consonant-CardFooter-cell consonant-CardFooter-cell--right' },
-                _react2.default.createElement(_Group2.default, { renderList: altRightLive, onFocus: onFocus, title: title })
-            )
-        )
-    );
+  /**
+   * This is some franken logic to make one alt cta space work for two different card states
+   */
+  var altRightUpcoming = []; // isUpcoming
+  var altRightLive = []; // isLive
+  /* istanbul ignore if */
+  if (altRight && altRight.length > 0 && right && right.length > 0) {
+    var upcoming = {
+      href: right[0].href,
+      text: altRight[0].text,
+      type: right[0].type
+    };
+    var live = {
+      href: altRight[0].href,
+      text: right[0].text,
+      type: altRight[0].type
+    };
+    altRightUpcoming.push(upcoming);
+    altRightLive.push(live);
+  }
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: footerClassName,
+    "data-testid": "consonant-Card-footer"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: rowClassName,
+    "data-cells": dataCells
+  }, shouldRenderLeft && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-CardFooter-cell consonant-CardFooter-cell--left"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Infobit_Group__["a" /* default */], {
+    renderList: left,
+    onFocus: onFocus
+  })), shouldRenderCenter && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-CardFooter-cell consonant-CardFooter-cell--center"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Infobit_Group__["a" /* default */], {
+    renderList: center,
+    onFocus: onFocus
+  })), shouldRenderRight && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-CardFooter-cell consonant-CardFooter-cell--right"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Infobit_Group__["a" /* default */], {
+    renderList: right,
+    onFocus: onFocus,
+    title: title
+  })), shouldRenderAltRightUpcoming && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-CardFooter-cell consonant-CardFooter-cell--right"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Infobit_Group__["a" /* default */], {
+    renderList: altRightUpcoming,
+    onFocus: onFocus,
+    title: title
+  })), shouldRenderAltRightLive && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-CardFooter-cell consonant-CardFooter-cell--right"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Infobit_Group__["a" /* default */], {
+    renderList: altRightLive,
+    onFocus: onFocus,
+    title: title
+  }))));
 };
-
-CardFooter.propTypes = _card.footerType;
+CardFooter.propTypes = __WEBPACK_IMPORTED_MODULE_3__types_card__["f" /* footerType */];
 CardFooter.defaultProps = defaultProps;
-
-exports.default = CardFooter;
+/* harmony default export */ __webpack_exports__["a"] = (CardFooter);
 
 /***/ }),
 /* 256 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_cuid__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_cuid___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_cuid__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Type_Icon__ = __webpack_require__(257);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Type_Text__ = __webpack_require__(258);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Type_Price__ = __webpack_require__(259);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Type_Button__ = __webpack_require__(260);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Type_Link__ = __webpack_require__(261);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Type_Rating__ = __webpack_require__(262);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__Type_Progress__ = __webpack_require__(263);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__Type_IconWithText__ = __webpack_require__(264);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__Type_LinkWithIcon__ = __webpack_require__(265);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__Type_DateInterval__ = __webpack_require__(266);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__Type_Bookmark_Bookmark__ = __webpack_require__(267);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__Type_Gated__ = __webpack_require__(269);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__Helpers_constants__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__Helpers_general__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__types_card__ = __webpack_require__(39);
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _cuid = __webpack_require__(70);
 
-var _cuid2 = _interopRequireDefault(_cuid);
 
-var _react = __webpack_require__(0);
 
-var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(1);
 
-var _Icon = __webpack_require__(257);
 
-var _Icon2 = _interopRequireDefault(_Icon);
 
-var _Text = __webpack_require__(258);
 
-var _Text2 = _interopRequireDefault(_Text);
 
-var _Price = __webpack_require__(259);
 
-var _Price2 = _interopRequireDefault(_Price);
 
-var _Button = __webpack_require__(260);
 
-var _Button2 = _interopRequireDefault(_Button);
 
-var _Link = __webpack_require__(261);
-
-var _Link2 = _interopRequireDefault(_Link);
-
-var _Rating = __webpack_require__(262);
-
-var _Rating2 = _interopRequireDefault(_Rating);
-
-var _Progress = __webpack_require__(263);
-
-var _Progress2 = _interopRequireDefault(_Progress);
-
-var _IconWithText = __webpack_require__(264);
-
-var _IconWithText2 = _interopRequireDefault(_IconWithText);
-
-var _LinkWithIcon = __webpack_require__(265);
-
-var _LinkWithIcon2 = _interopRequireDefault(_LinkWithIcon);
-
-var _DateInterval = __webpack_require__(266);
-
-var _DateInterval2 = _interopRequireDefault(_DateInterval);
-
-var _Bookmark = __webpack_require__(267);
-
-var _Bookmark2 = _interopRequireDefault(_Bookmark);
-
-var _Gated = __webpack_require__(269);
-
-var _Gated2 = _interopRequireDefault(_Gated);
-
-var _constants = __webpack_require__(15);
-
-var _general = __webpack_require__(6);
-
-var _card = __webpack_require__(39);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var groupType = {
-    renderList: (0, _propTypes.arrayOf)((0, _propTypes.oneOfType)([(0, _propTypes.shape)(_card.footerLeftType), (0, _propTypes.shape)(_card.footerRightType), (0, _propTypes.shape)(_card.footerCenterType)])),
-    onFocus: _propTypes.func,
-    title: _propTypes.string
+  renderList: Object(__WEBPACK_IMPORTED_MODULE_2_prop_types__["arrayOf"])(Object(__WEBPACK_IMPORTED_MODULE_2_prop_types__["oneOfType"])([Object(__WEBPACK_IMPORTED_MODULE_2_prop_types__["shape"])(__WEBPACK_IMPORTED_MODULE_17__types_card__["d" /* footerLeftType */]), Object(__WEBPACK_IMPORTED_MODULE_2_prop_types__["shape"])(__WEBPACK_IMPORTED_MODULE_17__types_card__["e" /* footerRightType */]), Object(__WEBPACK_IMPORTED_MODULE_2_prop_types__["shape"])(__WEBPACK_IMPORTED_MODULE_17__types_card__["c" /* footerCenterType */])])),
+  onFocus: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"],
+  title: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"]
 };
-
 var defaultProps = {
-    renderList: [],
-    onFocus: function onFocus() {},
-    title: ''
+  renderList: [],
+  onFocus: function onFocus() {},
+  title: ''
 };
 
 /**
@@ -47765,108 +47157,91 @@ var defaultProps = {
  * )
  */
 var Group = function Group(props) {
-    var renderList = props.renderList,
-        onFocus = props.onFocus,
-        title = props.title;
-
-
-    return _react2.default.createElement(
-        _react.Fragment,
-        null,
-        renderList.map(function (infobit) {
-            switch (infobit.type) {
-                case _constants.INFOBIT_TYPE.PRICE:
-                    return _react2.default.createElement(_Price2.default, _extends({}, infobit, {
-                        key: (0, _cuid2.default)() }));
-
-                case _constants.INFOBIT_TYPE.BUTTON:
-                    return _react2.default.createElement(_Button2.default, _extends({}, infobit, {
-                        key: (0, _cuid2.default)(),
-                        onFocus: onFocus,
-                        title: title }));
-
-                case _constants.INFOBIT_TYPE.ICON_TEXT:
-                    return _react2.default.createElement(_IconWithText2.default, _extends({}, infobit, {
-                        key: (0, _cuid2.default)() }));
-
-                case _constants.INFOBIT_TYPE.LINK_ICON:
-                    return _react2.default.createElement(_LinkWithIcon2.default, _extends({}, infobit, {
-                        key: (0, _cuid2.default)() }));
-
-                case _constants.INFOBIT_TYPE.TEXT:
-                    return _react2.default.createElement(_Text2.default, _extends({}, infobit, {
-                        key: (0, _cuid2.default)() }));
-
-                case _constants.INFOBIT_TYPE.ICON:
-                    return _react2.default.createElement(_Icon2.default, _extends({}, infobit, {
-                        key: (0, _cuid2.default)() }));
-
-                case _constants.INFOBIT_TYPE.LINK:
-                    return _react2.default.createElement(_Link2.default, _extends({}, infobit, {
-                        key: (0, _cuid2.default)(),
-                        title: title }));
-
-                case _constants.INFOBIT_TYPE.PROGRESS:
-                    return _react2.default.createElement(_Progress2.default, _extends({}, infobit, {
-                        key: (0, _cuid2.default)() }));
-
-                case _constants.INFOBIT_TYPE.RATING:
-                    return _react2.default.createElement(_Rating2.default, {
-                        key: (0, _cuid2.default)(),
-                        label: infobit.label,
-                        totalStars: (0, _general.parseToPrimitive)(infobit.totalStars),
-                        starsFilled: (0, _general.parseToPrimitive)(infobit.starsFilled) });
-
-                case _constants.INFOBIT_TYPE.BOOKMARK:
-                    return _react2.default.createElement(_Bookmark2.default, _extends({}, infobit, {
-                        key: (0, _cuid2.default)() }));
-
-                case _constants.INFOBIT_TYPE.DATE:
-                    return _react2.default.createElement(_DateInterval2.default, _extends({}, infobit, {
-                        key: (0, _cuid2.default)() }));
-
-                case _constants.INFOBIT_TYPE.GATED:
-                    return _react2.default.createElement(_Gated2.default, _extends({}, infobit, {
-                        key: (0, _cuid2.default)() }));
-
-                default:
-                    return null;
-            }
-        })
-    );
+  var renderList = props.renderList,
+    onFocus = props.onFocus,
+    title = props.title;
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react__["Fragment"], null, renderList.map(function (infobit) {
+    switch (infobit.type) {
+      case __WEBPACK_IMPORTED_MODULE_15__Helpers_constants__["j" /* INFOBIT_TYPE */].PRICE:
+        return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Type_Price__["a" /* default */], _extends({}, infobit, {
+          key: __WEBPACK_IMPORTED_MODULE_0_cuid___default()()
+        }));
+      case __WEBPACK_IMPORTED_MODULE_15__Helpers_constants__["j" /* INFOBIT_TYPE */].BUTTON:
+        return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__Type_Button__["a" /* default */], _extends({}, infobit, {
+          key: __WEBPACK_IMPORTED_MODULE_0_cuid___default()(),
+          onFocus: onFocus,
+          title: title
+        }));
+      case __WEBPACK_IMPORTED_MODULE_15__Helpers_constants__["j" /* INFOBIT_TYPE */].ICON_TEXT:
+        return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10__Type_IconWithText__["a" /* default */], _extends({}, infobit, {
+          key: __WEBPACK_IMPORTED_MODULE_0_cuid___default()()
+        }));
+      case __WEBPACK_IMPORTED_MODULE_15__Helpers_constants__["j" /* INFOBIT_TYPE */].LINK_ICON:
+        return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_11__Type_LinkWithIcon__["a" /* default */], _extends({}, infobit, {
+          key: __WEBPACK_IMPORTED_MODULE_0_cuid___default()()
+        }));
+      case __WEBPACK_IMPORTED_MODULE_15__Helpers_constants__["j" /* INFOBIT_TYPE */].TEXT:
+        return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Type_Text__["a" /* default */], _extends({}, infobit, {
+          key: __WEBPACK_IMPORTED_MODULE_0_cuid___default()()
+        }));
+      case __WEBPACK_IMPORTED_MODULE_15__Helpers_constants__["j" /* INFOBIT_TYPE */].ICON:
+        return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Type_Icon__["a" /* default */], _extends({}, infobit, {
+          key: __WEBPACK_IMPORTED_MODULE_0_cuid___default()()
+        }));
+      case __WEBPACK_IMPORTED_MODULE_15__Helpers_constants__["j" /* INFOBIT_TYPE */].LINK:
+        return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__Type_Link__["a" /* default */], _extends({}, infobit, {
+          key: __WEBPACK_IMPORTED_MODULE_0_cuid___default()(),
+          title: title
+        }));
+      case __WEBPACK_IMPORTED_MODULE_15__Helpers_constants__["j" /* INFOBIT_TYPE */].PROGRESS:
+        return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9__Type_Progress__["a" /* default */], _extends({}, infobit, {
+          key: __WEBPACK_IMPORTED_MODULE_0_cuid___default()()
+        }));
+      case __WEBPACK_IMPORTED_MODULE_15__Helpers_constants__["j" /* INFOBIT_TYPE */].RATING:
+        return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__Type_Rating__["a" /* default */], {
+          key: __WEBPACK_IMPORTED_MODULE_0_cuid___default()(),
+          label: infobit.label,
+          totalStars: Object(__WEBPACK_IMPORTED_MODULE_16__Helpers_general__["u" /* parseToPrimitive */])(infobit.totalStars),
+          starsFilled: Object(__WEBPACK_IMPORTED_MODULE_16__Helpers_general__["u" /* parseToPrimitive */])(infobit.starsFilled)
+        });
+      case __WEBPACK_IMPORTED_MODULE_15__Helpers_constants__["j" /* INFOBIT_TYPE */].BOOKMARK:
+        return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_13__Type_Bookmark_Bookmark__["a" /* default */], _extends({}, infobit, {
+          key: __WEBPACK_IMPORTED_MODULE_0_cuid___default()()
+        }));
+      case __WEBPACK_IMPORTED_MODULE_15__Helpers_constants__["j" /* INFOBIT_TYPE */].DATE:
+        return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_12__Type_DateInterval__["a" /* default */], _extends({}, infobit, {
+          key: __WEBPACK_IMPORTED_MODULE_0_cuid___default()()
+        }));
+      case __WEBPACK_IMPORTED_MODULE_15__Helpers_constants__["j" /* INFOBIT_TYPE */].GATED:
+        return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_14__Type_Gated__["a" /* default */], _extends({}, infobit, {
+          key: __WEBPACK_IMPORTED_MODULE_0_cuid___default()()
+        }));
+      default:
+        return null;
+    }
+  }));
 };
-
 Group.propTypes = groupType;
 Group.defaultProps = defaultProps;
-
-exports.default = Group;
+/* harmony default export */ __webpack_exports__["a"] = (Group);
 
 /***/ }),
 /* 257 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var iconType = {
-    alt: _propTypes.string,
-    src: _propTypes.string.isRequired
+  alt: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  src: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"].isRequired
 };
-
 var defaultProps = {
-    alt: ''
+  alt: ''
 };
 
 /**
@@ -47884,42 +47259,33 @@ var defaultProps = {
  * )
  */
 var Icon = function Icon(_ref) {
-    var src = _ref.src,
-        alt = _ref.alt;
-    return _react2.default.createElement('img', {
-        className: 'consonant-IconInfobit',
-        width: '28',
-        src: src,
-        alt: alt,
-        loading: 'lazy' });
+  var src = _ref.src,
+    alt = _ref.alt;
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", {
+    className: "consonant-IconInfobit",
+    width: "28",
+    src: src,
+    alt: alt,
+    loading: "lazy"
+  });
 };
-
 Icon.propTypes = iconType;
 Icon.defaultProps = defaultProps;
-
-exports.default = Icon;
+/* harmony default export */ __webpack_exports__["a"] = (Icon);
 
 /***/ }),
 /* 258 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var textType = {
-  text: _propTypes.string.isRequired
+  text: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"].isRequired
 };
 
 /**
@@ -47936,43 +47302,30 @@ var textType = {
  */
 var Text = function Text(_ref) {
   var text = _ref.text;
-  return _react2.default.createElement(
-    'p',
-    { className: 'consonant-TextInfobit' },
-    text
-  );
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", {
+    className: "consonant-TextInfobit"
+  }, text);
 };
-
 Text.propTypes = textType;
-
-exports.default = Text;
+/* harmony default export */ __webpack_exports__["a"] = (Text);
 
 /***/ }),
 /* 259 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var priceType = {
-    term: _propTypes.string,
-    price: _propTypes.string.isRequired
+  term: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  price: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"].isRequired
 };
-
 var defaultProps = {
-    term: ''
+  term: ''
 };
 
 /**
@@ -47989,88 +47342,65 @@ var defaultProps = {
  * )
  */
 var Price = function Price(_ref) {
-    var price = _ref.price,
-        term = _ref.term;
-    return _react2.default.createElement(
-        'span',
-        {
-            className: 'consonant-PriceInfobit' },
-        _react2.default.createElement(
-            'strong',
-            {
-                className: 'consonant-PriceInfobit-price' },
-            price
-        ),
-        _react2.default.createElement(
-            'span',
-            {
-                className: 'consonant-PriceInfobit-term' },
-            term
-        )
-    );
+  var price = _ref.price,
+    term = _ref.term;
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    className: "consonant-PriceInfobit"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("strong", {
+    className: "consonant-PriceInfobit-price"
+  }, price), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    className: "consonant-PriceInfobit-term"
+  }, term));
 };
-
 Price.propTypes = priceType;
 Price.defaultProps = defaultProps;
-
-exports.default = Price;
+/* harmony default export */ __webpack_exports__["a"] = (Price);
 
 /***/ }),
 /* 260 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Helpers_hooks__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Helpers_general__ = __webpack_require__(6);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
-var _react = __webpack_require__(0);
 
-var _react2 = _interopRequireDefault(_react);
-
-var _classnames = __webpack_require__(7);
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _propTypes = __webpack_require__(1);
-
-var _hooks = __webpack_require__(5);
-
-var _general = __webpack_require__(6);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var BUTTON_STYLE = {
-    PRIMARY: 'primary',
-    SECONDARY: 'secondary',
-    CTA: 'call-to-action',
-    DARK: 'dark'
+  PRIMARY: 'primary',
+  SECONDARY: 'secondary',
+  CTA: 'call-to-action',
+  DARK: 'dark'
 };
-
 var buttonType = {
-    text: _propTypes.string,
-    href: _propTypes.string,
-    style: _propTypes.string,
-    iconSrc: _propTypes.string,
-    iconAlt: _propTypes.string,
-    iconPos: _propTypes.string,
-    isCta: _propTypes.bool,
-    onFocus: _propTypes.func,
-    title: _propTypes.string
+  text: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"],
+  href: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"],
+  style: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"],
+  iconSrc: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"],
+  iconAlt: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"],
+  iconPos: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"],
+  isCta: __WEBPACK_IMPORTED_MODULE_2_prop_types__["bool"],
+  onFocus: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"],
+  title: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"]
 };
-
 var defaultProps = {
-    href: '',
-    text: '',
-    iconSrc: '',
-    iconAlt: '',
-    iconPos: '',
-    isCta: false,
-    style: BUTTON_STYLE.CTA,
-    onFocus: function onFocus() {},
-    title: ''
+  href: '',
+  text: '',
+  iconSrc: '',
+  iconAlt: '',
+  iconPos: '',
+  isCta: false,
+  style: BUTTON_STYLE.CTA,
+  onFocus: function onFocus() {},
+  title: ''
 };
 
 /**
@@ -48088,133 +47418,110 @@ var defaultProps = {
  * )
  */
 var Button = function Button(_ref) {
-    var style = _ref.style,
-        text = _ref.text,
-        href = _ref.href,
-        iconSrc = _ref.iconSrc,
-        iconAlt = _ref.iconAlt,
-        iconPos = _ref.iconPos,
-        isCta = _ref.isCta,
-        onFocus = _ref.onFocus,
-        title = _ref.title;
+  var style = _ref.style,
+    text = _ref.text,
+    href = _ref.href,
+    iconSrc = _ref.iconSrc,
+    iconAlt = _ref.iconAlt,
+    iconPos = _ref.iconPos,
+    isCta = _ref.isCta,
+    onFocus = _ref.onFocus,
+    title = _ref.title;
+  /**
+   **** Authored Configs ****
+   */
+  var getConfig = Object(__WEBPACK_IMPORTED_MODULE_3__Helpers_hooks__["a" /* useConfig */])();
+  var cardButtonStyle = getConfig('collection', 'button.style');
+  var additionalParams = getConfig('collection', 'additionalRequestParams');
+  var ctaAction = '';
 
-    /**
-     **** Authored Configs ****
-     */
-    var getConfig = (0, _hooks.useConfig)();
-    var cardButtonStyle = getConfig('collection', 'button.style');
-    var additionalParams = getConfig('collection', 'additionalRequestParams');
+  /**
+   * Whether we should render a dark button
+   */
+  var isDarkButton = cardButtonStyle === BUTTON_STYLE.DARK;
 
-    var ctaAction = '';
+  /**
+   * Whether we should render cta button or not
+   * cardButtonStyle has higher priority than style
+   * @type {Boolean}
+   */
+  var isCtaButton = !isDarkButton && style !== BUTTON_STYLE.PRIMARY && cardButtonStyle !== BUTTON_STYLE.PRIMARY && cardButtonStyle !== BUTTON_STYLE.SECONDARY;
+  if (isCta) {
+    ctaAction = getConfig('collection', 'ctaAction');
+  }
 
-    /**
-     * Whether we should render a dark button
-     */
-    var isDarkButton = cardButtonStyle === BUTTON_STYLE.DARK;
+  /**
+   * Class name for button:
+   * Whether we should render cta button or not
+   * @type {String}
+   */
+  var buttonClass = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-BtnInfobit': true,
+    'consonant-BtnInfobit--cta': isCtaButton,
+    'consonant-BtnInfobit--dark': isDarkButton
+  });
 
-    /**
-     * Whether we should render cta button or not
-     * cardButtonStyle has higher priority than style
-     * @type {Boolean}
-     */
-    var isCtaButton = !isDarkButton && style !== BUTTON_STYLE.PRIMARY && cardButtonStyle !== BUTTON_STYLE.PRIMARY && cardButtonStyle !== BUTTON_STYLE.SECONDARY;
-
-    if (isCta) {
-        ctaAction = getConfig('collection', 'ctaAction');
-    }
-
-    /**
-     * Class name for button:
-     * Whether we should render cta button or not
-     * @type {String}
-     */
-    var buttonClass = (0, _classnames2.default)({
-        'consonant-BtnInfobit': true,
-        'consonant-BtnInfobit--cta': isCtaButton,
-        'consonant-BtnInfobit--dark': isDarkButton
-    });
-
-    /**
-     * Class name for button icon:
-     * Whether icon should be placed before or after the text
-     * @type {String}
-     */
-    var iconClass = (0, _classnames2.default)({
-        'consonant-BtnInfobit-ico': true,
-        'consonant-BtnInfobit-ico--last': iconPos.toLowerCase() === 'aftertext'
-    });
-
-    var target = (0, _general.getLinkTarget)(href, ctaAction);
-    var addParams = new URLSearchParams(additionalParams);
-    var buttonLink = additionalParams && addParams.keys().next().value ? href + '?' + addParams.toString() : href;
-    var ariaLabel = text + ' ' + title;
-
-    return _react2.default.createElement(
-        'a',
-        {
-            className: buttonClass,
-            'daa-ll': text,
-            'data-testid': 'consonant-BtnInfobit',
-            tabIndex: '0',
-            rel: 'noopener noreferrer',
-            target: target,
-            href: buttonLink,
-            onFocus: onFocus,
-            'aria-label': ariaLabel },
-        iconSrc && _react2.default.createElement('img', {
-            'data-testid': 'consonant-BtnInfobit-ico',
-            src: iconSrc,
-            width: '20',
-            height: '20',
-            className: iconClass,
-            alt: iconAlt,
-            loading: 'lazy' }),
-        _react2.default.createElement(
-            'span',
-            null,
-            text
-        )
-    );
+  /**
+   * Class name for button icon:
+   * Whether icon should be placed before or after the text
+   * @type {String}
+   */
+  var iconClass = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-BtnInfobit-ico': true,
+    'consonant-BtnInfobit-ico--last': iconPos.toLowerCase() === 'aftertext'
+  });
+  var target = Object(__WEBPACK_IMPORTED_MODULE_4__Helpers_general__["h" /* getLinkTarget */])(href, ctaAction);
+  var addParams = new URLSearchParams(additionalParams);
+  var buttonLink = additionalParams && addParams.keys().next().value ? "".concat(href, "?").concat(addParams.toString()) : href;
+  var ariaLabel = "".concat(text, " ").concat(title);
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
+    className: buttonClass,
+    "daa-ll": text,
+    "data-testid": "consonant-BtnInfobit",
+    tabIndex: "0",
+    rel: "noopener noreferrer",
+    target: target,
+    href: buttonLink,
+    onFocus: onFocus,
+    "aria-label": ariaLabel
+  }, iconSrc && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", {
+    "data-testid": "consonant-BtnInfobit-ico",
+    src: iconSrc,
+    width: "20",
+    height: "20",
+    className: iconClass,
+    alt: iconAlt,
+    loading: "lazy"
+  }), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, text));
 };
-
 Button.propTypes = buttonType;
 Button.defaultProps = defaultProps;
-
-exports.default = Button;
+/* harmony default export */ __webpack_exports__["a"] = (Button);
 
 /***/ }),
 /* 261 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Helpers_hooks__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Helpers_general__ = __webpack_require__(6);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _hooks = __webpack_require__(5);
-
-var _general = __webpack_require__(6);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var linkType = {
-    linkHint: _propTypes.string,
-    href: _propTypes.string.isRequired,
-    text: _propTypes.string.isRequired,
-    title: _propTypes.string
+  linkHint: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  href: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"].isRequired,
+  text: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"].isRequired,
+  title: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"]
 };
-
 var defaultProps = {
-    linkHint: '',
-    title: ''
+  linkHint: '',
+  title: ''
 };
 
 /**
@@ -48232,76 +47539,58 @@ var defaultProps = {
  * )
  */
 var Link = function Link(_ref) {
-    var href = _ref.href,
-        linkHint = _ref.linkHint,
-        text = _ref.text,
-        title = _ref.title;
-
-    /**
-     **** Authored Configs ****
-     */
-    var getConfig = (0, _hooks.useConfig)();
-    var ctaAction = getConfig('collection', 'ctaAction');
-    var ariaLabel = text + ' ' + title;
-
-    var target = (0, _general.getLinkTarget)(href, ctaAction);
-    return _react2.default.createElement(
-        'a',
-        {
-            className: 'consonant-LinkInfobit',
-            'data-testid': 'consonant-LinkInfobit',
-            'daa-ll': text,
-            href: href,
-            target: target,
-            title: linkHint,
-            rel: 'noopener noreferrer',
-            tabIndex: '0',
-            'aria-label': ariaLabel },
-        text
-    );
+  var href = _ref.href,
+    linkHint = _ref.linkHint,
+    text = _ref.text,
+    title = _ref.title;
+  /**
+   **** Authored Configs ****
+   */
+  var getConfig = Object(__WEBPACK_IMPORTED_MODULE_2__Helpers_hooks__["a" /* useConfig */])();
+  var ctaAction = getConfig('collection', 'ctaAction');
+  var ariaLabel = "".concat(text, " ").concat(title);
+  var target = Object(__WEBPACK_IMPORTED_MODULE_3__Helpers_general__["h" /* getLinkTarget */])(href, ctaAction);
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
+    className: "consonant-LinkInfobit",
+    "data-testid": "consonant-LinkInfobit",
+    "daa-ll": text,
+    href: href,
+    target: target,
+    title: linkHint,
+    rel: "noopener noreferrer",
+    tabIndex: "0",
+    "aria-label": ariaLabel
+  }, text);
 };
-
 Link.propTypes = linkType;
 Link.defaultProps = defaultProps;
-
-exports.default = Link;
+/* harmony default export */ __webpack_exports__["a"] = (Link);
 
 /***/ }),
 /* 262 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _classnames = __webpack_require__(7);
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var maxAllowedStars = 5;
 var defaultFilledStars = 0;
-
 var ratingType = {
-    label: _propTypes.string,
-    totalStars: _propTypes.number,
-    starsFilled: _propTypes.number
+  label: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"],
+  totalStars: __WEBPACK_IMPORTED_MODULE_2_prop_types__["number"],
+  starsFilled: __WEBPACK_IMPORTED_MODULE_2_prop_types__["number"]
 };
-
 var defaultProps = {
-    label: '',
-    totalStars: maxAllowedStars,
-    starsFilled: defaultFilledStars
+  label: '',
+  totalStars: maxAllowedStars,
+  starsFilled: defaultFilledStars
 };
 
 /**
@@ -48311,23 +47600,20 @@ var defaultProps = {
  * @returns {Number} - Rating Percentage
  */
 var getRating = function getRating(starsFilled, totalStars) {
-    var starsFilledNotValid = starsFilled < 0 || starsFilled > totalStars;
-    var totalStarsNotValid = totalStars <= 0 || totalStars > maxAllowedStars;
-
-    if (starsFilledNotValid) {
-        /* eslint-disable-next-line no-param-reassign */
-        starsFilled = defaultFilledStars;
-    }
-
-    if (totalStarsNotValid) {
-        /* eslint-disable-next-line no-param-reassign */
-        totalStars = Number.MAX_SAFE_INTEGER;
-    }
-
-    var scalingFactor = 100;
-    var ratingPercentage = starsFilled / totalStars;
-    var rating = Math.round(ratingPercentage * scalingFactor);
-    return rating;
+  var starsFilledNotValid = starsFilled < 0 || starsFilled > totalStars;
+  var totalStarsNotValid = totalStars <= 0 || totalStars > maxAllowedStars;
+  if (starsFilledNotValid) {
+    /* eslint-disable-next-line no-param-reassign */
+    starsFilled = defaultFilledStars;
+  }
+  if (totalStarsNotValid) {
+    /* eslint-disable-next-line no-param-reassign */
+    totalStars = Number.MAX_SAFE_INTEGER;
+  }
+  var scalingFactor = 100;
+  var ratingPercentage = starsFilled / totalStars;
+  var rating = Math.round(ratingPercentage * scalingFactor);
+  return rating;
 };
 
 /**
@@ -48347,71 +47633,51 @@ var getRating = function getRating(starsFilled, totalStars) {
  * )
  */
 var Rating = function Rating(_ref) {
-    var label = _ref.label,
-        totalStars = _ref.totalStars,
-        starsFilled = _ref.starsFilled;
-
-    var className = (0, _classnames2.default)({
-        'consonant-RatingInfobit': true,
-        'consonant-RatingInfobit--negMargin': !label
-    });
-
-    var ratingToDisplay = getRating(starsFilled, totalStars);
-
-    return _react2.default.createElement(
-        'div',
-        {
-            className: className,
-            'data-stars': totalStars },
-        _react2.default.createElement('span', {
-            'data-testid': 'consonant-RatingInfobit-stars',
-            className: 'consonant-RatingInfobit-stars',
-            'data-rating': ratingToDisplay }),
-        label && _react2.default.createElement(
-            'span',
-            {
-                className: 'consonant-RatingInfobit-text' },
-            label
-        )
-    );
+  var label = _ref.label,
+    totalStars = _ref.totalStars,
+    starsFilled = _ref.starsFilled;
+  var className = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-RatingInfobit': true,
+    'consonant-RatingInfobit--negMargin': !label
+  });
+  var ratingToDisplay = getRating(starsFilled, totalStars);
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: className,
+    "data-stars": totalStars
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    "data-testid": "consonant-RatingInfobit-stars",
+    className: "consonant-RatingInfobit-stars",
+    "data-rating": ratingToDisplay
+  }), label && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    className: "consonant-RatingInfobit-text"
+  }, label));
 };
-
 Rating.propTypes = ratingType;
 Rating.defaultProps = defaultProps;
-
-exports.default = Rating;
+/* harmony default export */ __webpack_exports__["a"] = (Rating);
 
 /***/ }),
 /* 263 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var progressType = {
-    label: _propTypes.string,
-    color: _propTypes.string,
-    percentage: _propTypes.string,
-    completionText: _propTypes.string
+  label: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  color: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  percentage: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  completionText: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"]
 };
-
 var defaultProps = {
-    label: '',
-    percentage: '0',
-    color: '#1473E6',
-    completionText: ''
+  label: '',
+  percentage: '0',
+  color: '#1473E6',
+  completionText: ''
 };
 
 /**
@@ -48430,102 +47696,68 @@ var defaultProps = {
  * )
  */
 var Progress = function Progress(_ref) {
-    var label = _ref.label,
-        completionText = _ref.completionText,
-        percentage = _ref.percentage,
-        color = _ref.color;
-
-    var valueStyles = {
-        width: 'calc(' + percentage + ' + 2px)',
-        backgroundColor: color
-    };
-
-    var BASE_10 = 10;
-    /**
-     * Percentage as int to be used in Aria Label
-     *
-     * This is different than Percentage prop @type {String} which is diplayed
-     * to user
-     * @type {Number}
-     */
-    var percentageInt = parseInt(percentage, BASE_10);
-
-    return _react2.default.createElement(
-        'div',
-        {
-            className: 'consonant-ProgressInfobit' },
-        _react2.default.createElement(
-            'div',
-            {
-                className: 'consonant-ProgressInfobit-wrapper' },
-            _react2.default.createElement(
-                'span',
-                {
-                    className: 'consonant-ProgressInfobit-text',
-                    title: label },
-                label
-            ),
-            _react2.default.createElement(
-                'span',
-                {
-                    className: 'consonant-ProgressInfobit-text consonant-ProgressInfobit-text--italic',
-                    title: completionText },
-                completionText
-            )
-        ),
-        _react2.default.createElement(
-            'div',
-            {
-                className: 'consonant-ProgressInfobit-el' },
-            _react2.default.createElement(
-                'span',
-                {
-                    className: 'consonant-ProgressInfobit-val',
-                    style: valueStyles,
-                    role: 'progressbar',
-                    'aria-valuenow': percentageInt,
-                    'aria-valuemin': '0',
-                    'aria-valuemax': '100' },
-                percentage
-            )
-        )
-    );
+  var label = _ref.label,
+    completionText = _ref.completionText,
+    percentage = _ref.percentage,
+    color = _ref.color;
+  var valueStyles = {
+    width: "calc(".concat(percentage, " + 2px)"),
+    backgroundColor: color
+  };
+  var BASE_10 = 10;
+  /**
+   * Percentage as int to be used in Aria Label
+   *
+   * This is different than Percentage prop @type {String} which is diplayed
+   * to user
+   * @type {Number}
+   */
+  var percentageInt = parseInt(percentage, BASE_10);
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-ProgressInfobit"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-ProgressInfobit-wrapper"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    className: "consonant-ProgressInfobit-text",
+    title: label
+  }, label), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    className: "consonant-ProgressInfobit-text consonant-ProgressInfobit-text--italic",
+    title: completionText
+  }, completionText)), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-ProgressInfobit-el"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    className: "consonant-ProgressInfobit-val",
+    style: valueStyles,
+    role: "progressbar",
+    "aria-valuenow": percentageInt,
+    "aria-valuemin": "0",
+    "aria-valuemax": "100"
+  }, percentage)));
 };
-
 Progress.propTypes = progressType;
 Progress.defaultProps = defaultProps;
-
-exports.default = Progress;
+/* harmony default export */ __webpack_exports__["a"] = (Progress);
 
 /***/ }),
 /* 264 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var iconWithTextType = {
-    src: _propTypes.string,
-    srcAltText: _propTypes.string,
-    text: (0, _propTypes.oneOfType)([_propTypes.string, _propTypes.number])
+  src: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  srcAltText: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  text: Object(__WEBPACK_IMPORTED_MODULE_1_prop_types__["oneOfType"])([__WEBPACK_IMPORTED_MODULE_1_prop_types__["string"], __WEBPACK_IMPORTED_MODULE_1_prop_types__["number"]])
 };
-
 var defaultProps = {
-    src: '',
-    text: '',
-    srcAltText: ''
+  src: '',
+  text: '',
+  srcAltText: ''
 };
 
 /**
@@ -48543,67 +47775,50 @@ var defaultProps = {
  * )
  */
 var IconWithText = function IconWithText(_ref) {
-    var src = _ref.src,
-        srcAltText = _ref.srcAltText,
-        text = _ref.text;
-    return _react2.default.createElement(
-        'div',
-        {
-            className: 'consonant-IconWithTextInfobit' },
-        src && _react2.default.createElement('img', {
-            src: src,
-            height: '22',
-            alt: srcAltText,
-            loading: 'lazy' }),
-        _react2.default.createElement(
-            'span',
-            {
-                className: 'consonant-IconWithTextInfobit-text' },
-            text
-        )
-    );
+  var src = _ref.src,
+    srcAltText = _ref.srcAltText,
+    text = _ref.text;
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-IconWithTextInfobit"
+  }, src && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", {
+    src: src,
+    height: "22",
+    alt: srcAltText,
+    loading: "lazy"
+  }), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    className: "consonant-IconWithTextInfobit-text"
+  }, text));
 };
-
 IconWithText.propTypes = iconWithTextType;
 IconWithText.defaultProps = defaultProps;
-
-exports.default = IconWithText;
+/* harmony default export */ __webpack_exports__["a"] = (IconWithText);
 
 /***/ }),
 /* 265 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var linkWithIconType = {
-    src: _propTypes.string,
-    href: _propTypes.string,
-    text: _propTypes.string,
-    linkHint: _propTypes.string,
-    srcAltText: _propTypes.string,
-    openInNewTab: (0, _propTypes.oneOfType)([_propTypes.string, _propTypes.bool])
+  src: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  href: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  text: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  linkHint: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  srcAltText: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  openInNewTab: Object(__WEBPACK_IMPORTED_MODULE_1_prop_types__["oneOfType"])([__WEBPACK_IMPORTED_MODULE_1_prop_types__["string"], __WEBPACK_IMPORTED_MODULE_1_prop_types__["bool"]])
 };
-
 var defaultProps = {
-    src: '',
-    href: '',
-    text: '',
-    linkHint: '',
-    srcAltText: '',
-    openInNewTab: true
+  src: '',
+  href: '',
+  text: '',
+  linkHint: '',
+  srcAltText: '',
+  openInNewTab: true
 };
 
 /**
@@ -48624,65 +47839,50 @@ var defaultProps = {
  * )
  */
 var LinkWithIcon = function LinkWithIcon(_ref) {
-    var href = _ref.href,
-        openInNewTab = _ref.openInNewTab,
-        linkHint = _ref.linkHint,
-        text = _ref.text,
-        src = _ref.src,
-        srcAltText = _ref.srcAltText;
-    return _react2.default.createElement(
-        'a',
-        {
-            'daa-ll': text,
-            href: href,
-            'data-testid': 'consonant-LinkWithIcoInfobit',
-            target: openInNewTab ? '_blank' : '_self',
-            className: 'consonant-LinkWithIcoInfobit',
-            title: linkHint,
-            rel: 'noopener noreferrer',
-            tabIndex: '0' },
-        src && _react2.default.createElement('img', { src: src, alt: srcAltText, loading: 'lazy', height: '18' }),
-        _react2.default.createElement(
-            'span',
-            null,
-            text
-        )
-    );
+  var href = _ref.href,
+    openInNewTab = _ref.openInNewTab,
+    linkHint = _ref.linkHint,
+    text = _ref.text,
+    src = _ref.src,
+    srcAltText = _ref.srcAltText;
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
+    "daa-ll": text,
+    href: href,
+    "data-testid": "consonant-LinkWithIcoInfobit",
+    target: openInNewTab ? '_blank' : '_self',
+    className: "consonant-LinkWithIcoInfobit",
+    title: linkHint,
+    rel: "noopener noreferrer",
+    tabIndex: "0"
+  }, src && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", {
+    src: src,
+    alt: srcAltText,
+    loading: "lazy",
+    height: "18"
+  }), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, text));
 };
-
 LinkWithIcon.propTypes = linkWithIconType;
 LinkWithIcon.defaultProps = defaultProps;
-
-exports.default = LinkWithIcon;
+/* harmony default export */ __webpack_exports__["a"] = (LinkWithIcon);
 
 /***/ }),
 /* 266 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Helpers_prettyFormat__ = __webpack_require__(118);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _prettyFormat = __webpack_require__(118);
-
-var _prettyFormat2 = _interopRequireDefault(_prettyFormat);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var dateIntervalType = {
-    locale: _propTypes.string.isRequired,
-    endTime: _propTypes.string.isRequired,
-    startTime: _propTypes.string.isRequired,
-    dateFormat: _propTypes.string.isRequired
+  locale: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"].isRequired,
+  endTime: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"].isRequired,
+  startTime: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"].isRequired,
+  dateFormat: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"].isRequired
 };
 
 /**
@@ -48701,70 +47901,52 @@ var dateIntervalType = {
  * )
  */
 var DateInterval = function DateInterval(_ref) {
-    var startTime = _ref.startTime,
-        endTime = _ref.endTime,
-        locale = _ref.locale,
-        dateFormat = _ref.dateFormat;
-
-    var prettyDateInterval = (0, _prettyFormat2.default)(startTime, endTime, locale, dateFormat);
-    return _react2.default.createElement(
-        'span',
-        {
-            title: prettyDateInterval,
-            'data-testid': 'consonant-DateIntervalInfobit',
-            className: 'consonant-DateIntervalInfobit' },
-        prettyDateInterval
-    );
+  var startTime = _ref.startTime,
+    endTime = _ref.endTime,
+    locale = _ref.locale,
+    dateFormat = _ref.dateFormat;
+  var prettyDateInterval = Object(__WEBPACK_IMPORTED_MODULE_2__Helpers_prettyFormat__["a" /* default */])(startTime, endTime, locale, dateFormat);
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    title: prettyDateInterval,
+    "data-testid": "consonant-DateIntervalInfobit",
+    className: "consonant-DateIntervalInfobit"
+  }, prettyDateInterval);
 };
-
 DateInterval.propTypes = dateIntervalType;
-
-exports.default = DateInterval;
+/* harmony default export */ __webpack_exports__["a"] = (DateInterval);
 
 /***/ }),
 /* 267 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Tooltip__ = __webpack_require__(268);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Helpers_hooks__ = __webpack_require__(5);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
-var _react = __webpack_require__(0);
 
-var _react2 = _interopRequireDefault(_react);
-
-var _classnames = __webpack_require__(7);
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _propTypes = __webpack_require__(1);
-
-var _Tooltip = __webpack_require__(268);
-
-var _Tooltip2 = _interopRequireDefault(_Tooltip);
-
-var _hooks = __webpack_require__(5);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var bookmarkType = {
-    isBookmarked: _propTypes.bool,
-    saveCardIcon: _propTypes.string,
-    unsaveCardIcon: _propTypes.string,
-    onClick: _propTypes.func.isRequired,
-    cardId: _propTypes.string.isRequired,
-    disableBookmarkIco: _propTypes.bool.isRequired,
-    isProductCard: _propTypes.bool
+  isBookmarked: __WEBPACK_IMPORTED_MODULE_2_prop_types__["bool"],
+  saveCardIcon: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"],
+  unsaveCardIcon: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"],
+  onClick: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"].isRequired,
+  cardId: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"].isRequired,
+  disableBookmarkIco: __WEBPACK_IMPORTED_MODULE_2_prop_types__["bool"].isRequired,
+  isProductCard: __WEBPACK_IMPORTED_MODULE_2_prop_types__["bool"]
 };
-
 var defaultProps = {
-    saveCardIcon: '',
-    unsaveCardIcon: '',
-    isBookmarked: false,
-    isProductCard: false
+  saveCardIcon: '',
+  unsaveCardIcon: '',
+  isBookmarked: false,
+  isProductCard: false
 };
 
 /**
@@ -48788,87 +47970,75 @@ var defaultProps = {
  * )
  */
 var Bookmark = function Bookmark(_ref) {
-    var cardId = _ref.cardId,
-        isBookmarked = _ref.isBookmarked,
-        saveCardIcon = _ref.saveCardIcon,
-        unsaveCardIcon = _ref.unsaveCardIcon,
-        onClick = _ref.onClick,
-        disableBookmarkIco = _ref.disableBookmarkIco,
-        isProductCard = _ref.isProductCard;
+  var cardId = _ref.cardId,
+    isBookmarked = _ref.isBookmarked,
+    saveCardIcon = _ref.saveCardIcon,
+    unsaveCardIcon = _ref.unsaveCardIcon,
+    onClick = _ref.onClick,
+    disableBookmarkIco = _ref.disableBookmarkIco,
+    isProductCard = _ref.isProductCard;
+  var getConfig = Object(__WEBPACK_IMPORTED_MODULE_4__Helpers_hooks__["a" /* useConfig */])();
+  var showOnCards = getConfig('bookmarks', 'showOnCards');
 
-    var getConfig = (0, _hooks.useConfig)();
-    var showOnCards = getConfig('bookmarks', 'showOnCards');
-
-    /**
-     **** Authored Configs ****
-     */
-    var saveCardText = getConfig('bookmarks', 'i18n.card.saveText');
-    var unsaveCardText = getConfig('bookmarks', 'i18n.card.unsaveText');
-
-    var bookmarkInfobitClass = (0, _classnames2.default)({
-        'consonant-BookmarkInfobit': true,
-        'is-active': isBookmarked,
-        'is-disabled': disableBookmarkIco
+  /**
+   **** Authored Configs ****
+   */
+  var saveCardText = getConfig('bookmarks', 'i18n.card.saveText');
+  var unsaveCardText = getConfig('bookmarks', 'i18n.card.unsaveText');
+  var bookmarkInfobitClass = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-BookmarkInfobit': true,
+    'is-active': isBookmarked,
+    'is-disabled': disableBookmarkIco
+  });
+  var bookmarkIcon = function bookmarkIcon() {
+    var cardIcon = isBookmarked ? saveCardIcon : unsaveCardIcon;
+    return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+      "data-testid": "consonant-BookmarkInfobit-ico",
+      className: "consonant-BookmarkInfobit-ico",
+      "daa-ll": "bookmark",
+      style: {
+        backgroundImage: cardIcon ? "url(".concat(cardIcon, ")") : ''
+      }
     });
-
-    var bookmarkIcon = function bookmarkIcon() {
-        var cardIcon = isBookmarked ? saveCardIcon : unsaveCardIcon;
-        return _react2.default.createElement('span', {
-            'data-testid': 'consonant-BookmarkInfobit-ico',
-            className: 'consonant-BookmarkInfobit-ico',
-            'daa-ll': 'bookmark',
-            style: { backgroundImage: cardIcon ? 'url(' + cardIcon + ')' : '' } });
-    };
-
-    var handleClick = function handleClick(clickEvt) {
-        clickEvt.stopPropagation();
-        onClick(cardId);
-    };
-
-    var tooltipText = isBookmarked ? unsaveCardText : saveCardText;
-
-    return !isProductCard && showOnCards && _react2.default.createElement(
-        'button',
-        {
-            'data-testid': 'consonant-BookmarkInfobit',
-            'data-tooltip-wrapper': true,
-            type: 'button',
-            className: bookmarkInfobitClass,
-            onClick: handleClick,
-            tabIndex: '0' },
-        showOnCards && bookmarkIcon(),
-        showOnCards && _react2.default.createElement(_Tooltip2.default, {
-            'data-testid': 'consonant-Tooltip',
-            text: tooltipText })
-    );
+  };
+  var handleClick = function handleClick(clickEvt) {
+    clickEvt.stopPropagation();
+    onClick(cardId);
+  };
+  var tooltipText = isBookmarked ? unsaveCardText : saveCardText;
+  return !isProductCard && showOnCards && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    "data-testid": "consonant-BookmarkInfobit",
+    "data-tooltip-wrapper": true,
+    type: "button",
+    className: bookmarkInfobitClass,
+    onClick: handleClick,
+    tabIndex: "0"
+  }, showOnCards && bookmarkIcon(), showOnCards && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Tooltip__["a" /* default */], {
+    "data-testid": "consonant-Tooltip",
+    text: tooltipText
+  }));
 };
-
 Bookmark.propTypes = bookmarkType;
 Bookmark.defaultProps = defaultProps;
-
-exports.default = Bookmark;
+/* harmony default export */ __webpack_exports__["a"] = (Bookmark);
 
 /***/ }),
 /* 268 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var tooltipType = { text: _propTypes.string };
-var defaultProps = { text: '' };
+var tooltipType = {
+  text: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"]
+};
+var defaultProps = {
+  text: ''
+};
 
 /**
  * Tooltip (shown in 3:2 Card Footer -- primarily used with bookmark infobit)
@@ -48884,120 +48054,109 @@ var defaultProps = { text: '' };
  * )
  */
 var Tooltip = function Tooltip(_ref) {
-    var text = _ref.text;
-    return _react2.default.createElement(
-        'span',
-        {
-            className: 'consonant-Tooltip' },
-        text
-    );
+  var text = _ref.text;
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    className: "consonant-Tooltip"
+  }, text);
 };
-
 Tooltip.propTypes = tooltipType;
 Tooltip.defaultProps = defaultProps;
-
-exports.default = Tooltip;
+/* harmony default export */ __webpack_exports__["a"] = (Tooltip);
 
 /***/ }),
 /* 269 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * Gated Icon svg
  */
 var Gated = function Gated() {
-    return _react2.default.createElement(
-        "span",
-        { className: "consonant-GatedInfobit", "data-testid": "consonant-GatedInfobit" },
-        _react2.default.createElement(
-            "svg",
-            { xmlns: "http://www.w3.org/2000/svg", height: "20", viewBox: "0 0 15 20", width: "15" },
-            _react2.default.createElement("path", {
-                fill: "#747474",
-                d: "M14.38,8.66h-0.62v-2.3c0.06-3.45-2.69-6.3-6.14-6.36c-3.45-0.06-6.3,2.69-6.36,6.14 c0,0.07,0,0.15,0,0.22v2.3H0.63C0.28,8.66,0,8.95,0,9.29c0,0,0,0,0,0v10.07C0,19.71,0.28,20,0.62,20c0,0,0,0,0,0h13.75 c0.35,0,0.63-0.29,0.62-0.63c0,0,0,0,0,0V9.29C15,8.95,14.72,8.66,14.38,8.66C14.38,8.66,14.38,8.66,14.38,8.66z M3.75,6.36 c0-2.07,1.68-3.75,3.75-3.75s3.75,1.68,3.75,3.75v2.3h-7.5V6.36z M8.75,15.09v1.76c0,0.35-0.28,0.63-0.62,0.63c0,0,0,0,0,0H6.88 c-0.35,0-0.63-0.29-0.62-0.63c0,0,0,0,0,0v-1.76c-0.58-0.53-0.78-1.36-0.5-2.09c0.36-0.97,1.43-1.46,2.4-1.1 c0.51,0.19,0.91,0.59,1.1,1.1C9.53,13.73,9.33,14.56,8.75,15.09z" })
-        )
-    );
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    className: "consonant-GatedInfobit",
+    "data-testid": "consonant-GatedInfobit"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    height: "20",
+    viewBox: "0 0 15 20",
+    width: "15"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("path", {
+    fill: "#747474",
+    d: "M14.38,8.66h-0.62v-2.3c0.06-3.45-2.69-6.3-6.14-6.36c-3.45-0.06-6.3,2.69-6.36,6.14 c0,0.07,0,0.15,0,0.22v2.3H0.63C0.28,8.66,0,8.95,0,9.29c0,0,0,0,0,0v10.07C0,19.71,0.28,20,0.62,20c0,0,0,0,0,0h13.75 c0.35,0,0.63-0.29,0.62-0.63c0,0,0,0,0,0V9.29C15,8.95,14.72,8.66,14.38,8.66C14.38,8.66,14.38,8.66,14.38,8.66z M3.75,6.36 c0-2.07,1.68-3.75,3.75-3.75s3.75,1.68,3.75,3.75v2.3h-7.5V6.36z M8.75,15.09v1.76c0,0.35-0.28,0.63-0.62,0.63c0,0,0,0,0,0H6.88 c-0.35,0-0.63-0.29-0.62-0.63c0,0,0,0,0,0v-1.76c-0.58-0.53-0.78-1.36-0.5-2.09c0.36-0.97,1.43-1.46,2.4-1.1 c0.51,0.19,0.91,0.59,1.1,1.1C9.53,13.73,9.33,14.56,8.75,15.09z"
+  })));
 };
-
-exports.default = Gated;
+/* harmony default export */ __webpack_exports__["a"] = (Gated);
 
 /***/ }),
 /* 270 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* WEBPACK VAR INJECTION */(function(process) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Immer", function() { return un; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "applyPatches", function() { return pn; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "castDraft", function() { return K; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "castImmutable", function() { return $; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createDraft", function() { return ln; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "current", function() { return D; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enableAllPlugins", function() { return J; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enableES5", function() { return N; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enableMapSet", function() { return C; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enablePatches", function() { return T; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "finishDraft", function() { return dn; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "freeze", function() { return d; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "immerable", function() { return L; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isDraft", function() { return r; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isDraftable", function() { return t; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "nothing", function() { return H; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "original", function() { return e; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "produce", function() { return fn; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "produceWithPatches", function() { return cn; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setAutoFreeze", function() { return sn; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setUseProxies", function() { return vn; });
-function n(n){for(var r=arguments.length,t=Array(r>1?r-1:0),e=1;e<r;e++)t[e-1]=arguments[e];if("production"!==process.env.NODE_ENV){var i=Y[n],o=i?"function"==typeof i?i.apply(null,t):i:"unknown error nr: "+n;throw Error("[Immer] "+o)}throw Error("[Immer] minified error nr: "+n+(t.length?" "+t.map((function(n){return"'"+n+"'"})).join(","):"")+". Find the full error at: https://bit.ly/3cXEKWf")}function r(n){return!!n&&!!n[Q]}function t(n){return!!n&&(function(n){if(!n||"object"!=typeof n)return!1;var r=Object.getPrototypeOf(n);if(null===r)return!0;var t=Object.hasOwnProperty.call(r,"constructor")&&r.constructor;return"function"==typeof t&&Function.toString.call(t)===Z}(n)||Array.isArray(n)||!!n[L]||!!n.constructor[L]||s(n)||v(n))}function e(t){return r(t)||n(23,t),t[Q].t}function i(n,r,t){void 0===t&&(t=!1),0===o(n)?(t?Object.keys:nn)(n).forEach((function(e){t&&"symbol"==typeof e||r(e,n[e],n)})):n.forEach((function(t,e){return r(e,t,n)}))}function o(n){var r=n[Q];return r?r.i>3?r.i-4:r.i:Array.isArray(n)?1:s(n)?2:v(n)?3:0}function u(n,r){return 2===o(n)?n.has(r):Object.prototype.hasOwnProperty.call(n,r)}function a(n,r){return 2===o(n)?n.get(r):n[r]}function f(n,r,t){var e=o(n);2===e?n.set(r,t):3===e?(n.delete(r),n.add(t)):n[r]=t}function c(n,r){return n===r?0!==n||1/n==1/r:n!=n&&r!=r}function s(n){return X&&n instanceof Map}function v(n){return q&&n instanceof Set}function p(n){return n.o||n.t}function l(n){if(Array.isArray(n))return Array.prototype.slice.call(n);var r=rn(n);delete r[Q];for(var t=nn(r),e=0;e<t.length;e++){var i=t[e],o=r[i];!1===o.writable&&(o.writable=!0,o.configurable=!0),(o.get||o.set)&&(r[i]={configurable:!0,writable:!0,enumerable:o.enumerable,value:n[i]})}return Object.create(Object.getPrototypeOf(n),r)}function d(n,e){return void 0===e&&(e=!1),y(n)||r(n)||!t(n)?n:(o(n)>1&&(n.set=n.add=n.clear=n.delete=h),Object.freeze(n),e&&i(n,(function(n,r){return d(r,!0)}),!0),n)}function h(){n(2)}function y(n){return null==n||"object"!=typeof n||Object.isFrozen(n)}function b(r){var t=tn[r];return t||n(18,r),t}function m(n,r){tn[n]||(tn[n]=r)}function _(){return"production"===process.env.NODE_ENV||U||n(0),U}function j(n,r){r&&(b("Patches"),n.u=[],n.s=[],n.v=r)}function g(n){O(n),n.p.forEach(S),n.p=null}function O(n){n===U&&(U=n.l)}function w(n){return U={p:[],l:U,h:n,m:!0,_:0}}function S(n){var r=n[Q];0===r.i||1===r.i?r.j():r.g=!0}function P(r,e){e._=e.p.length;var i=e.p[0],o=void 0!==r&&r!==i;return e.h.O||b("ES5").S(e,r,o),o?(i[Q].P&&(g(e),n(4)),t(r)&&(r=M(e,r),e.l||x(e,r)),e.u&&b("Patches").M(i[Q],r,e.u,e.s)):r=M(e,i,[]),g(e),e.u&&e.v(e.u,e.s),r!==H?r:void 0}function M(n,r,t){if(y(r))return r;var e=r[Q];if(!e)return i(r,(function(i,o){return A(n,e,r,i,o,t)}),!0),r;if(e.A!==n)return r;if(!e.P)return x(n,e.t,!0),e.t;if(!e.I){e.I=!0,e.A._--;var o=4===e.i||5===e.i?e.o=l(e.k):e.o;i(3===e.i?new Set(o):o,(function(r,i){return A(n,e,o,r,i,t)})),x(n,o,!1),t&&n.u&&b("Patches").R(e,t,n.u,n.s)}return e.o}function A(e,i,o,a,c,s){if("production"!==process.env.NODE_ENV&&c===o&&n(5),r(c)){var v=M(e,c,s&&i&&3!==i.i&&!u(i.D,a)?s.concat(a):void 0);if(f(o,a,v),!r(v))return;e.m=!1}if(t(c)&&!y(c)){if(!e.h.F&&e._<1)return;M(e,c),i&&i.A.l||x(e,c)}}function x(n,r,t){void 0===t&&(t=!1),n.h.F&&n.m&&d(r,t)}function z(n,r){var t=n[Q];return(t?p(t):n)[r]}function I(n,r){if(r in n)for(var t=Object.getPrototypeOf(n);t;){var e=Object.getOwnPropertyDescriptor(t,r);if(e)return e;t=Object.getPrototypeOf(t)}}function k(n){n.P||(n.P=!0,n.l&&k(n.l))}function E(n){n.o||(n.o=l(n.t))}function R(n,r,t){var e=s(r)?b("MapSet").N(r,t):v(r)?b("MapSet").T(r,t):n.O?function(n,r){var t=Array.isArray(n),e={i:t?1:0,A:r?r.A:_(),P:!1,I:!1,D:{},l:r,t:n,k:null,o:null,j:null,C:!1},i=e,o=en;t&&(i=[e],o=on);var u=Proxy.revocable(i,o),a=u.revoke,f=u.proxy;return e.k=f,e.j=a,f}(r,t):b("ES5").J(r,t);return(t?t.A:_()).p.push(e),e}function D(e){return r(e)||n(22,e),function n(r){if(!t(r))return r;var e,u=r[Q],c=o(r);if(u){if(!u.P&&(u.i<4||!b("ES5").K(u)))return u.t;u.I=!0,e=F(r,c),u.I=!1}else e=F(r,c);return i(e,(function(r,t){u&&a(u.t,r)===t||f(e,r,n(t))})),3===c?new Set(e):e}(e)}function F(n,r){switch(r){case 2:return new Map(n);case 3:return Array.from(n)}return l(n)}function N(){function t(n,r){var t=s[n];return t?t.enumerable=r:s[n]=t={configurable:!0,enumerable:r,get:function(){var r=this[Q];return"production"!==process.env.NODE_ENV&&f(r),en.get(r,n)},set:function(r){var t=this[Q];"production"!==process.env.NODE_ENV&&f(t),en.set(t,n,r)}},t}function e(n){for(var r=n.length-1;r>=0;r--){var t=n[r][Q];if(!t.P)switch(t.i){case 5:a(t)&&k(t);break;case 4:o(t)&&k(t)}}}function o(n){for(var r=n.t,t=n.k,e=nn(t),i=e.length-1;i>=0;i--){var o=e[i];if(o!==Q){var a=r[o];if(void 0===a&&!u(r,o))return!0;var f=t[o],s=f&&f[Q];if(s?s.t!==a:!c(f,a))return!0}}var v=!!r[Q];return e.length!==nn(r).length+(v?0:1)}function a(n){var r=n.k;if(r.length!==n.t.length)return!0;var t=Object.getOwnPropertyDescriptor(r,r.length-1);return!(!t||t.get)}function f(r){r.g&&n(3,JSON.stringify(p(r)))}var s={};m("ES5",{J:function(n,r){var e=Array.isArray(n),i=function(n,r){if(n){for(var e=Array(r.length),i=0;i<r.length;i++)Object.defineProperty(e,""+i,t(i,!0));return e}var o=rn(r);delete o[Q];for(var u=nn(o),a=0;a<u.length;a++){var f=u[a];o[f]=t(f,n||!!o[f].enumerable)}return Object.create(Object.getPrototypeOf(r),o)}(e,n),o={i:e?5:4,A:r?r.A:_(),P:!1,I:!1,D:{},l:r,t:n,k:i,o:null,g:!1,C:!1};return Object.defineProperty(i,Q,{value:o,writable:!0}),i},S:function(n,t,o){o?r(t)&&t[Q].A===n&&e(n.p):(n.u&&function n(r){if(r&&"object"==typeof r){var t=r[Q];if(t){var e=t.t,o=t.k,f=t.D,c=t.i;if(4===c)i(o,(function(r){r!==Q&&(void 0!==e[r]||u(e,r)?f[r]||n(o[r]):(f[r]=!0,k(t)))})),i(e,(function(n){void 0!==o[n]||u(o,n)||(f[n]=!1,k(t))}));else if(5===c){if(a(t)&&(k(t),f.length=!0),o.length<e.length)for(var s=o.length;s<e.length;s++)f[s]=!1;else for(var v=e.length;v<o.length;v++)f[v]=!0;for(var p=Math.min(o.length,e.length),l=0;l<p;l++)void 0===f[l]&&n(o[l])}}}}(n.p[0]),e(n.p))},K:function(n){return 4===n.i?o(n):a(n)}})}function T(){function e(n){if(!t(n))return n;if(Array.isArray(n))return n.map(e);if(s(n))return new Map(Array.from(n.entries()).map((function(n){return[n[0],e(n[1])]})));if(v(n))return new Set(Array.from(n).map(e));var r=Object.create(Object.getPrototypeOf(n));for(var i in n)r[i]=e(n[i]);return r}function f(n){return r(n)?e(n):n}var c="add";m("Patches",{$:function(r,t){return t.forEach((function(t){for(var i=t.path,u=t.op,f=r,s=0;s<i.length-1;s++){var v=o(f),p=i[s];0!==v&&1!==v||"__proto__"!==p&&"constructor"!==p||n(24),"function"==typeof f&&"prototype"===p&&n(24),"object"!=typeof(f=a(f,p))&&n(15,i.join("/"))}var l=o(f),d=e(t.value),h=i[i.length-1];switch(u){case"replace":switch(l){case 2:return f.set(h,d);case 3:n(16);default:return f[h]=d}case c:switch(l){case 1:return f.splice(h,0,d);case 2:return f.set(h,d);case 3:return f.add(d);default:return f[h]=d}case"remove":switch(l){case 1:return f.splice(h,1);case 2:return f.delete(h);case 3:return f.delete(t.value);default:return delete f[h]}default:n(17,u)}})),r},R:function(n,r,t,e){switch(n.i){case 0:case 4:case 2:return function(n,r,t,e){var o=n.t,s=n.o;i(n.D,(function(n,i){var v=a(o,n),p=a(s,n),l=i?u(o,n)?"replace":c:"remove";if(v!==p||"replace"!==l){var d=r.concat(n);t.push("remove"===l?{op:l,path:d}:{op:l,path:d,value:p}),e.push(l===c?{op:"remove",path:d}:"remove"===l?{op:c,path:d,value:f(v)}:{op:"replace",path:d,value:f(v)})}}))}(n,r,t,e);case 5:case 1:return function(n,r,t,e){var i=n.t,o=n.D,u=n.o;if(u.length<i.length){var a=[u,i];i=a[0],u=a[1];var s=[e,t];t=s[0],e=s[1]}for(var v=0;v<i.length;v++)if(o[v]&&u[v]!==i[v]){var p=r.concat([v]);t.push({op:"replace",path:p,value:f(u[v])}),e.push({op:"replace",path:p,value:f(i[v])})}for(var l=i.length;l<u.length;l++){var d=r.concat([l]);t.push({op:c,path:d,value:f(u[l])})}i.length<u.length&&e.push({op:"replace",path:r.concat(["length"]),value:i.length})}(n,r,t,e);case 3:return function(n,r,t,e){var i=n.t,o=n.o,u=0;i.forEach((function(n){if(!o.has(n)){var i=r.concat([u]);t.push({op:"remove",path:i,value:n}),e.unshift({op:c,path:i,value:n})}u++})),u=0,o.forEach((function(n){if(!i.has(n)){var o=r.concat([u]);t.push({op:c,path:o,value:n}),e.unshift({op:"remove",path:o,value:n})}u++}))}(n,r,t,e)}},M:function(n,r,t,e){t.push({op:"replace",path:[],value:r}),e.push({op:"replace",path:[],value:n.t})}})}function C(){function r(n,r){function t(){this.constructor=n}a(n,r),n.prototype=(t.prototype=r.prototype,new t)}function e(n){n.o||(n.D=new Map,n.o=new Map(n.t))}function o(n){n.o||(n.o=new Set,n.t.forEach((function(r){if(t(r)){var e=R(n.A.h,r,n);n.p.set(r,e),n.o.add(e)}else n.o.add(r)})))}function u(r){r.g&&n(3,JSON.stringify(p(r)))}var a=function(n,r){return(a=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(n,r){n.__proto__=r}||function(n,r){for(var t in r)r.hasOwnProperty(t)&&(n[t]=r[t])})(n,r)},f=function(){function n(n,r){return this[Q]={i:2,l:r,A:r?r.A:_(),P:!1,I:!1,o:void 0,D:void 0,t:n,k:this,C:!1,g:!1},this}r(n,Map);var o=n.prototype;return Object.defineProperty(o,"size",{get:function(){return p(this[Q]).size}}),o.has=function(n){return p(this[Q]).has(n)},o.set=function(n,r){var t=this[Q];return u(t),p(t).has(n)&&p(t).get(n)===r||(e(t),k(t),t.D.set(n,!0),t.o.set(n,r),t.D.set(n,!0)),this},o.delete=function(n){if(!this.has(n))return!1;var r=this[Q];return u(r),e(r),k(r),r.D.set(n,!1),r.o.delete(n),!0},o.clear=function(){var n=this[Q];u(n),p(n).size&&(e(n),k(n),n.D=new Map,i(n.t,(function(r){n.D.set(r,!1)})),n.o.clear())},o.forEach=function(n,r){var t=this;p(this[Q]).forEach((function(e,i){n.call(r,t.get(i),i,t)}))},o.get=function(n){var r=this[Q];u(r);var i=p(r).get(n);if(r.I||!t(i))return i;if(i!==r.t.get(n))return i;var o=R(r.A.h,i,r);return e(r),r.o.set(n,o),o},o.keys=function(){return p(this[Q]).keys()},o.values=function(){var n,r=this,t=this.keys();return(n={})[V]=function(){return r.values()},n.next=function(){var n=t.next();return n.done?n:{done:!1,value:r.get(n.value)}},n},o.entries=function(){var n,r=this,t=this.keys();return(n={})[V]=function(){return r.entries()},n.next=function(){var n=t.next();if(n.done)return n;var e=r.get(n.value);return{done:!1,value:[n.value,e]}},n},o[V]=function(){return this.entries()},n}(),c=function(){function n(n,r){return this[Q]={i:3,l:r,A:r?r.A:_(),P:!1,I:!1,o:void 0,t:n,k:this,p:new Map,g:!1,C:!1},this}r(n,Set);var t=n.prototype;return Object.defineProperty(t,"size",{get:function(){return p(this[Q]).size}}),t.has=function(n){var r=this[Q];return u(r),r.o?!!r.o.has(n)||!(!r.p.has(n)||!r.o.has(r.p.get(n))):r.t.has(n)},t.add=function(n){var r=this[Q];return u(r),this.has(n)||(o(r),k(r),r.o.add(n)),this},t.delete=function(n){if(!this.has(n))return!1;var r=this[Q];return u(r),o(r),k(r),r.o.delete(n)||!!r.p.has(n)&&r.o.delete(r.p.get(n))},t.clear=function(){var n=this[Q];u(n),p(n).size&&(o(n),k(n),n.o.clear())},t.values=function(){var n=this[Q];return u(n),o(n),n.o.values()},t.entries=function(){var n=this[Q];return u(n),o(n),n.o.entries()},t.keys=function(){return this.values()},t[V]=function(){return this.values()},t.forEach=function(n,r){for(var t=this.values(),e=t.next();!e.done;)n.call(r,e.value,e.value,this),e=t.next()},n}();m("MapSet",{N:function(n,r){return new f(n,r)},T:function(n,r){return new c(n,r)}})}function J(){N(),C(),T()}function K(n){return n}function $(n){return n}var G,U,W="undefined"!=typeof Symbol&&"symbol"==typeof Symbol("x"),X="undefined"!=typeof Map,q="undefined"!=typeof Set,B="undefined"!=typeof Proxy&&void 0!==Proxy.revocable&&"undefined"!=typeof Reflect,H=W?Symbol.for("immer-nothing"):((G={})["immer-nothing"]=!0,G),L=W?Symbol.for("immer-draftable"):"__$immer_draftable",Q=W?Symbol.for("immer-state"):"__$immer_state",V="undefined"!=typeof Symbol&&Symbol.iterator||"@@iterator",Y={0:"Illegal state",1:"Immer drafts cannot have computed properties",2:"This object has been frozen and should not be mutated",3:function(n){return"Cannot use a proxy that has been revoked. Did you pass an object from inside an immer function to an async process? "+n},4:"An immer producer returned a new value *and* modified its draft. Either return a new value *or* modify the draft.",5:"Immer forbids circular references",6:"The first or second argument to `produce` must be a function",7:"The third argument to `produce` must be a function or undefined",8:"First argument to `createDraft` must be a plain object, an array, or an immerable object",9:"First argument to `finishDraft` must be a draft returned by `createDraft`",10:"The given draft is already finalized",11:"Object.defineProperty() cannot be used on an Immer draft",12:"Object.setPrototypeOf() cannot be used on an Immer draft",13:"Immer only supports deleting array indices",14:"Immer only supports setting array indices and the 'length' property",15:function(n){return"Cannot apply patch, path doesn't resolve: "+n},16:'Sets cannot have "replace" patches.',17:function(n){return"Unsupported patch operation: "+n},18:function(n){return"The plugin for '"+n+"' has not been loaded into Immer. To enable the plugin, import and call `enable"+n+"()` when initializing your application."},20:"Cannot use proxies if Proxy, Proxy.revocable or Reflect are not available",21:function(n){return"produce can only be called on things that are draftable: plain objects, arrays, Map, Set or classes that are marked with '[immerable]: true'. Got '"+n+"'"},22:function(n){return"'current' expects a draft, got: "+n},23:function(n){return"'original' expects a draft, got: "+n},24:"Patching reserved attributes like __proto__, prototype and constructor is not allowed"},Z=""+Object.prototype.constructor,nn="undefined"!=typeof Reflect&&Reflect.ownKeys?Reflect.ownKeys:void 0!==Object.getOwnPropertySymbols?function(n){return Object.getOwnPropertyNames(n).concat(Object.getOwnPropertySymbols(n))}:Object.getOwnPropertyNames,rn=Object.getOwnPropertyDescriptors||function(n){var r={};return nn(n).forEach((function(t){r[t]=Object.getOwnPropertyDescriptor(n,t)})),r},tn={},en={get:function(n,r){if(r===Q)return n;var e=p(n);if(!u(e,r))return function(n,r,t){var e,i=I(r,t);return i?"value"in i?i.value:null===(e=i.get)||void 0===e?void 0:e.call(n.k):void 0}(n,e,r);var i=e[r];return n.I||!t(i)?i:i===z(n.t,r)?(E(n),n.o[r]=R(n.A.h,i,n)):i},has:function(n,r){return r in p(n)},ownKeys:function(n){return Reflect.ownKeys(p(n))},set:function(n,r,t){var e=I(p(n),r);if(null==e?void 0:e.set)return e.set.call(n.k,t),!0;if(!n.P){var i=z(p(n),r),o=null==i?void 0:i[Q];if(o&&o.t===t)return n.o[r]=t,n.D[r]=!1,!0;if(c(t,i)&&(void 0!==t||u(n.t,r)))return!0;E(n),k(n)}return n.o[r]===t&&"number"!=typeof t||(n.o[r]=t,n.D[r]=!0,!0)},deleteProperty:function(n,r){return void 0!==z(n.t,r)||r in n.t?(n.D[r]=!1,E(n),k(n)):delete n.D[r],n.o&&delete n.o[r],!0},getOwnPropertyDescriptor:function(n,r){var t=p(n),e=Reflect.getOwnPropertyDescriptor(t,r);return e?{writable:!0,configurable:1!==n.i||"length"!==r,enumerable:e.enumerable,value:t[r]}:e},defineProperty:function(){n(11)},getPrototypeOf:function(n){return Object.getPrototypeOf(n.t)},setPrototypeOf:function(){n(12)}},on={};i(en,(function(n,r){on[n]=function(){return arguments[0]=arguments[0][0],r.apply(this,arguments)}})),on.deleteProperty=function(r,t){return"production"!==process.env.NODE_ENV&&isNaN(parseInt(t))&&n(13),en.deleteProperty.call(this,r[0],t)},on.set=function(r,t,e){return"production"!==process.env.NODE_ENV&&"length"!==t&&isNaN(parseInt(t))&&n(14),en.set.call(this,r[0],t,e,r[0])};var un=function(){function e(r){var e=this;this.O=B,this.F=!0,this.produce=function(r,i,o){if("function"==typeof r&&"function"!=typeof i){var u=i;i=r;var a=e;return function(n){var r=this;void 0===n&&(n=u);for(var t=arguments.length,e=Array(t>1?t-1:0),o=1;o<t;o++)e[o-1]=arguments[o];return a.produce(n,(function(n){var t;return(t=i).call.apply(t,[r,n].concat(e))}))}}var f;if("function"!=typeof i&&n(6),void 0!==o&&"function"!=typeof o&&n(7),t(r)){var c=w(e),s=R(e,r,void 0),v=!0;try{f=i(s),v=!1}finally{v?g(c):O(c)}return"undefined"!=typeof Promise&&f instanceof Promise?f.then((function(n){return j(c,o),P(n,c)}),(function(n){throw g(c),n})):(j(c,o),P(f,c))}if(!r||"object"!=typeof r){if((f=i(r))===H)return;return void 0===f&&(f=r),e.F&&d(f,!0),f}n(21,r)},this.produceWithPatches=function(n,r){return"function"==typeof n?function(r){for(var t=arguments.length,i=Array(t>1?t-1:0),o=1;o<t;o++)i[o-1]=arguments[o];return e.produceWithPatches(r,(function(r){return n.apply(void 0,[r].concat(i))}))}:[e.produce(n,r,(function(n,r){t=n,i=r})),t,i];var t,i},"boolean"==typeof(null==r?void 0:r.useProxies)&&this.setUseProxies(r.useProxies),"boolean"==typeof(null==r?void 0:r.autoFreeze)&&this.setAutoFreeze(r.autoFreeze)}var i=e.prototype;return i.createDraft=function(e){t(e)||n(8),r(e)&&(e=D(e));var i=w(this),o=R(this,e,void 0);return o[Q].C=!0,O(i),o},i.finishDraft=function(r,t){var e=r&&r[Q];"production"!==process.env.NODE_ENV&&(e&&e.C||n(9),e.I&&n(10));var i=e.A;return j(i,t),P(void 0,i)},i.setAutoFreeze=function(n){this.F=n},i.setUseProxies=function(r){r&&!B&&n(20),this.O=r},i.applyPatches=function(n,t){var e;for(e=t.length-1;e>=0;e--){var i=t[e];if(0===i.path.length&&"replace"===i.op){n=i.value;break}}var o=b("Patches").$;return r(n)?o(n,t):this.produce(n,(function(n){return o(n,t.slice(e+1))}))},e}(),an=new un,fn=an.produce,cn=an.produceWithPatches.bind(an),sn=an.setAutoFreeze.bind(an),vn=an.setUseProxies.bind(an),pn=an.applyPatches.bind(an),ln=an.createDraft.bind(an),dn=an.finishDraft.bind(an);/* harmony default export */ __webpack_exports__["default"] = (fn);
+/* WEBPACK VAR INJECTION */(function(process) {/* unused harmony export Immer */
+/* unused harmony export applyPatches */
+/* unused harmony export castDraft */
+/* unused harmony export castImmutable */
+/* unused harmony export createDraft */
+/* unused harmony export current */
+/* unused harmony export enableAllPlugins */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return F; });
+/* unused harmony export enableMapSet */
+/* unused harmony export enablePatches */
+/* unused harmony export finishDraft */
+/* unused harmony export freeze */
+/* unused harmony export immerable */
+/* unused harmony export isDraft */
+/* unused harmony export isDraftable */
+/* unused harmony export nothing */
+/* unused harmony export original */
+/* unused harmony export produce */
+/* unused harmony export produceWithPatches */
+/* unused harmony export setAutoFreeze */
+/* unused harmony export setUseProxies */
+function n(n){for(var r=arguments.length,t=Array(r>1?r-1:0),e=1;e<r;e++)t[e-1]=arguments[e];if("production"!==process.env.NODE_ENV){var i=Y[n],o=i?"function"==typeof i?i.apply(null,t):i:"unknown error nr: "+n;throw Error("[Immer] "+o)}throw Error("[Immer] minified error nr: "+n+(t.length?" "+t.map((function(n){return"'"+n+"'"})).join(","):"")+". Find the full error at: https://bit.ly/3cXEKWf")}function r(n){return!!n&&!!n[Q]}function t(n){var r;return!!n&&(function(n){if(!n||"object"!=typeof n)return!1;var r=Object.getPrototypeOf(n);if(null===r)return!0;var t=Object.hasOwnProperty.call(r,"constructor")&&r.constructor;return t===Object||"function"==typeof t&&Function.toString.call(t)===Z}(n)||Array.isArray(n)||!!n[L]||!!(null===(r=n.constructor)||void 0===r?void 0:r[L])||s(n)||v(n))}function e(t){return r(t)||n(23,t),t[Q].t}function i(n,r,t){void 0===t&&(t=!1),0===o(n)?(t?Object.keys:nn)(n).forEach((function(e){t&&"symbol"==typeof e||r(e,n[e],n)})):n.forEach((function(t,e){return r(e,t,n)}))}function o(n){var r=n[Q];return r?r.i>3?r.i-4:r.i:Array.isArray(n)?1:s(n)?2:v(n)?3:0}function u(n,r){return 2===o(n)?n.has(r):Object.prototype.hasOwnProperty.call(n,r)}function a(n,r){return 2===o(n)?n.get(r):n[r]}function f(n,r,t){var e=o(n);2===e?n.set(r,t):3===e?n.add(t):n[r]=t}function c(n,r){return n===r?0!==n||1/n==1/r:n!=n&&r!=r}function s(n){return X&&n instanceof Map}function v(n){return q&&n instanceof Set}function p(n){return n.o||n.t}function l(n){if(Array.isArray(n))return Array.prototype.slice.call(n);var r=rn(n);delete r[Q];for(var t=nn(r),e=0;e<t.length;e++){var i=t[e],o=r[i];!1===o.writable&&(o.writable=!0,o.configurable=!0),(o.get||o.set)&&(r[i]={configurable:!0,writable:!0,enumerable:o.enumerable,value:n[i]})}return Object.create(Object.getPrototypeOf(n),r)}function d(n,e){return void 0===e&&(e=!1),y(n)||r(n)||!t(n)||(o(n)>1&&(n.set=n.add=n.clear=n.delete=h),Object.freeze(n),e&&i(n,(function(n,r){return d(r,!0)}),!0)),n}function h(){n(2)}function y(n){return null==n||"object"!=typeof n||Object.isFrozen(n)}function b(r){var t=tn[r];return t||n(18,r),t}function m(n,r){tn[n]||(tn[n]=r)}function _(){return"production"===process.env.NODE_ENV||U||n(0),U}function j(n,r){r&&(b("Patches"),n.u=[],n.s=[],n.v=r)}function g(n){O(n),n.p.forEach(S),n.p=null}function O(n){n===U&&(U=n.l)}function w(n){return U={p:[],l:U,h:n,m:!0,_:0}}function S(n){var r=n[Q];0===r.i||1===r.i?r.j():r.g=!0}function P(r,e){e._=e.p.length;var i=e.p[0],o=void 0!==r&&r!==i;return e.h.O||b("ES5").S(e,r,o),o?(i[Q].P&&(g(e),n(4)),t(r)&&(r=M(e,r),e.l||x(e,r)),e.u&&b("Patches").M(i[Q].t,r,e.u,e.s)):r=M(e,i,[]),g(e),e.u&&e.v(e.u,e.s),r!==H?r:void 0}function M(n,r,t){if(y(r))return r;var e=r[Q];if(!e)return i(r,(function(i,o){return A(n,e,r,i,o,t)}),!0),r;if(e.A!==n)return r;if(!e.P)return x(n,e.t,!0),e.t;if(!e.I){e.I=!0,e.A._--;var o=4===e.i||5===e.i?e.o=l(e.k):e.o,u=o,a=!1;3===e.i&&(u=new Set(o),o.clear(),a=!0),i(u,(function(r,i){return A(n,e,o,r,i,t,a)})),x(n,o,!1),t&&n.u&&b("Patches").N(e,t,n.u,n.s)}return e.o}function A(e,i,o,a,c,s,v){if("production"!==process.env.NODE_ENV&&c===o&&n(5),r(c)){var p=M(e,c,s&&i&&3!==i.i&&!u(i.R,a)?s.concat(a):void 0);if(f(o,a,p),!r(p))return;e.m=!1}else v&&o.add(c);if(t(c)&&!y(c)){if(!e.h.D&&e._<1)return;M(e,c),i&&i.A.l||x(e,c)}}function x(n,r,t){void 0===t&&(t=!1),!n.l&&n.h.D&&n.m&&d(r,t)}function z(n,r){var t=n[Q];return(t?p(t):n)[r]}function I(n,r){if(r in n)for(var t=Object.getPrototypeOf(n);t;){var e=Object.getOwnPropertyDescriptor(t,r);if(e)return e;t=Object.getPrototypeOf(t)}}function k(n){n.P||(n.P=!0,n.l&&k(n.l))}function E(n){n.o||(n.o=l(n.t))}function N(n,r,t){var e=s(r)?b("MapSet").F(r,t):v(r)?b("MapSet").T(r,t):n.O?function(n,r){var t=Array.isArray(n),e={i:t?1:0,A:r?r.A:_(),P:!1,I:!1,R:{},l:r,t:n,k:null,o:null,j:null,C:!1},i=e,o=en;t&&(i=[e],o=on);var u=Proxy.revocable(i,o),a=u.revoke,f=u.proxy;return e.k=f,e.j=a,f}(r,t):b("ES5").J(r,t);return(t?t.A:_()).p.push(e),e}function R(e){return r(e)||n(22,e),function n(r){if(!t(r))return r;var e,u=r[Q],c=o(r);if(u){if(!u.P&&(u.i<4||!b("ES5").K(u)))return u.t;u.I=!0,e=D(r,c),u.I=!1}else e=D(r,c);return i(e,(function(r,t){u&&a(u.t,r)===t||f(e,r,n(t))})),3===c?new Set(e):e}(e)}function D(n,r){switch(r){case 2:return new Map(n);case 3:return Array.from(n)}return l(n)}function F(){function t(n,r){var t=s[n];return t?t.enumerable=r:s[n]=t={configurable:!0,enumerable:r,get:function(){var r=this[Q];return"production"!==process.env.NODE_ENV&&f(r),en.get(r,n)},set:function(r){var t=this[Q];"production"!==process.env.NODE_ENV&&f(t),en.set(t,n,r)}},t}function e(n){for(var r=n.length-1;r>=0;r--){var t=n[r][Q];if(!t.P)switch(t.i){case 5:a(t)&&k(t);break;case 4:o(t)&&k(t)}}}function o(n){for(var r=n.t,t=n.k,e=nn(t),i=e.length-1;i>=0;i--){var o=e[i];if(o!==Q){var a=r[o];if(void 0===a&&!u(r,o))return!0;var f=t[o],s=f&&f[Q];if(s?s.t!==a:!c(f,a))return!0}}var v=!!r[Q];return e.length!==nn(r).length+(v?0:1)}function a(n){var r=n.k;if(r.length!==n.t.length)return!0;var t=Object.getOwnPropertyDescriptor(r,r.length-1);if(t&&!t.get)return!0;for(var e=0;e<r.length;e++)if(!r.hasOwnProperty(e))return!0;return!1}function f(r){r.g&&n(3,JSON.stringify(p(r)))}var s={};m("ES5",{J:function(n,r){var e=Array.isArray(n),i=function(n,r){if(n){for(var e=Array(r.length),i=0;i<r.length;i++)Object.defineProperty(e,""+i,t(i,!0));return e}var o=rn(r);delete o[Q];for(var u=nn(o),a=0;a<u.length;a++){var f=u[a];o[f]=t(f,n||!!o[f].enumerable)}return Object.create(Object.getPrototypeOf(r),o)}(e,n),o={i:e?5:4,A:r?r.A:_(),P:!1,I:!1,R:{},l:r,t:n,k:i,o:null,g:!1,C:!1};return Object.defineProperty(i,Q,{value:o,writable:!0}),i},S:function(n,t,o){o?r(t)&&t[Q].A===n&&e(n.p):(n.u&&function n(r){if(r&&"object"==typeof r){var t=r[Q];if(t){var e=t.t,o=t.k,f=t.R,c=t.i;if(4===c)i(o,(function(r){r!==Q&&(void 0!==e[r]||u(e,r)?f[r]||n(o[r]):(f[r]=!0,k(t)))})),i(e,(function(n){void 0!==o[n]||u(o,n)||(f[n]=!1,k(t))}));else if(5===c){if(a(t)&&(k(t),f.length=!0),o.length<e.length)for(var s=o.length;s<e.length;s++)f[s]=!1;else for(var v=e.length;v<o.length;v++)f[v]=!0;for(var p=Math.min(o.length,e.length),l=0;l<p;l++)o.hasOwnProperty(l)||(f[l]=!0),void 0===f[l]&&n(o[l])}}}}(n.p[0]),e(n.p))},K:function(n){return 4===n.i?o(n):a(n)}})}function T(){function e(n){if(!t(n))return n;if(Array.isArray(n))return n.map(e);if(s(n))return new Map(Array.from(n.entries()).map((function(n){return[n[0],e(n[1])]})));if(v(n))return new Set(Array.from(n).map(e));var r=Object.create(Object.getPrototypeOf(n));for(var i in n)r[i]=e(n[i]);return u(n,L)&&(r[L]=n[L]),r}function f(n){return r(n)?e(n):n}var c="add";m("Patches",{$:function(r,t){return t.forEach((function(t){for(var i=t.path,u=t.op,f=r,s=0;s<i.length-1;s++){var v=o(f),p=i[s];"string"!=typeof p&&"number"!=typeof p&&(p=""+p),0!==v&&1!==v||"__proto__"!==p&&"constructor"!==p||n(24),"function"==typeof f&&"prototype"===p&&n(24),"object"!=typeof(f=a(f,p))&&n(15,i.join("/"))}var l=o(f),d=e(t.value),h=i[i.length-1];switch(u){case"replace":switch(l){case 2:return f.set(h,d);case 3:n(16);default:return f[h]=d}case c:switch(l){case 1:return"-"===h?f.push(d):f.splice(h,0,d);case 2:return f.set(h,d);case 3:return f.add(d);default:return f[h]=d}case"remove":switch(l){case 1:return f.splice(h,1);case 2:return f.delete(h);case 3:return f.delete(t.value);default:return delete f[h]}default:n(17,u)}})),r},N:function(n,r,t,e){switch(n.i){case 0:case 4:case 2:return function(n,r,t,e){var o=n.t,s=n.o;i(n.R,(function(n,i){var v=a(o,n),p=a(s,n),l=i?u(o,n)?"replace":c:"remove";if(v!==p||"replace"!==l){var d=r.concat(n);t.push("remove"===l?{op:l,path:d}:{op:l,path:d,value:p}),e.push(l===c?{op:"remove",path:d}:"remove"===l?{op:c,path:d,value:f(v)}:{op:"replace",path:d,value:f(v)})}}))}(n,r,t,e);case 5:case 1:return function(n,r,t,e){var i=n.t,o=n.R,u=n.o;if(u.length<i.length){var a=[u,i];i=a[0],u=a[1];var s=[e,t];t=s[0],e=s[1]}for(var v=0;v<i.length;v++)if(o[v]&&u[v]!==i[v]){var p=r.concat([v]);t.push({op:"replace",path:p,value:f(u[v])}),e.push({op:"replace",path:p,value:f(i[v])})}for(var l=i.length;l<u.length;l++){var d=r.concat([l]);t.push({op:c,path:d,value:f(u[l])})}i.length<u.length&&e.push({op:"replace",path:r.concat(["length"]),value:i.length})}(n,r,t,e);case 3:return function(n,r,t,e){var i=n.t,o=n.o,u=0;i.forEach((function(n){if(!o.has(n)){var i=r.concat([u]);t.push({op:"remove",path:i,value:n}),e.unshift({op:c,path:i,value:n})}u++})),u=0,o.forEach((function(n){if(!i.has(n)){var o=r.concat([u]);t.push({op:c,path:o,value:n}),e.unshift({op:"remove",path:o,value:n})}u++}))}(n,r,t,e)}},M:function(n,r,t,e){t.push({op:"replace",path:[],value:r===H?void 0:r}),e.push({op:"replace",path:[],value:n})}})}function C(){function r(n,r){function t(){this.constructor=n}a(n,r),n.prototype=(t.prototype=r.prototype,new t)}function e(n){n.o||(n.R=new Map,n.o=new Map(n.t))}function o(n){n.o||(n.o=new Set,n.t.forEach((function(r){if(t(r)){var e=N(n.A.h,r,n);n.p.set(r,e),n.o.add(e)}else n.o.add(r)})))}function u(r){r.g&&n(3,JSON.stringify(p(r)))}var a=function(n,r){return(a=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(n,r){n.__proto__=r}||function(n,r){for(var t in r)r.hasOwnProperty(t)&&(n[t]=r[t])})(n,r)},f=function(){function n(n,r){return this[Q]={i:2,l:r,A:r?r.A:_(),P:!1,I:!1,o:void 0,R:void 0,t:n,k:this,C:!1,g:!1},this}r(n,Map);var o=n.prototype;return Object.defineProperty(o,"size",{get:function(){return p(this[Q]).size}}),o.has=function(n){return p(this[Q]).has(n)},o.set=function(n,r){var t=this[Q];return u(t),p(t).has(n)&&p(t).get(n)===r||(e(t),k(t),t.R.set(n,!0),t.o.set(n,r),t.R.set(n,!0)),this},o.delete=function(n){if(!this.has(n))return!1;var r=this[Q];return u(r),e(r),k(r),r.t.has(n)?r.R.set(n,!1):r.R.delete(n),r.o.delete(n),!0},o.clear=function(){var n=this[Q];u(n),p(n).size&&(e(n),k(n),n.R=new Map,i(n.t,(function(r){n.R.set(r,!1)})),n.o.clear())},o.forEach=function(n,r){var t=this;p(this[Q]).forEach((function(e,i){n.call(r,t.get(i),i,t)}))},o.get=function(n){var r=this[Q];u(r);var i=p(r).get(n);if(r.I||!t(i))return i;if(i!==r.t.get(n))return i;var o=N(r.A.h,i,r);return e(r),r.o.set(n,o),o},o.keys=function(){return p(this[Q]).keys()},o.values=function(){var n,r=this,t=this.keys();return(n={})[V]=function(){return r.values()},n.next=function(){var n=t.next();return n.done?n:{done:!1,value:r.get(n.value)}},n},o.entries=function(){var n,r=this,t=this.keys();return(n={})[V]=function(){return r.entries()},n.next=function(){var n=t.next();if(n.done)return n;var e=r.get(n.value);return{done:!1,value:[n.value,e]}},n},o[V]=function(){return this.entries()},n}(),c=function(){function n(n,r){return this[Q]={i:3,l:r,A:r?r.A:_(),P:!1,I:!1,o:void 0,t:n,k:this,p:new Map,g:!1,C:!1},this}r(n,Set);var t=n.prototype;return Object.defineProperty(t,"size",{get:function(){return p(this[Q]).size}}),t.has=function(n){var r=this[Q];return u(r),r.o?!!r.o.has(n)||!(!r.p.has(n)||!r.o.has(r.p.get(n))):r.t.has(n)},t.add=function(n){var r=this[Q];return u(r),this.has(n)||(o(r),k(r),r.o.add(n)),this},t.delete=function(n){if(!this.has(n))return!1;var r=this[Q];return u(r),o(r),k(r),r.o.delete(n)||!!r.p.has(n)&&r.o.delete(r.p.get(n))},t.clear=function(){var n=this[Q];u(n),p(n).size&&(o(n),k(n),n.o.clear())},t.values=function(){var n=this[Q];return u(n),o(n),n.o.values()},t.entries=function(){var n=this[Q];return u(n),o(n),n.o.entries()},t.keys=function(){return this.values()},t[V]=function(){return this.values()},t.forEach=function(n,r){for(var t=this.values(),e=t.next();!e.done;)n.call(r,e.value,e.value,this),e=t.next()},n}();m("MapSet",{F:function(n,r){return new f(n,r)},T:function(n,r){return new c(n,r)}})}function J(){F(),C(),T()}function K(n){return n}function $(n){return n}var G,U,W="undefined"!=typeof Symbol&&"symbol"==typeof Symbol("x"),X="undefined"!=typeof Map,q="undefined"!=typeof Set,B="undefined"!=typeof Proxy&&void 0!==Proxy.revocable&&"undefined"!=typeof Reflect,H=W?Symbol.for("immer-nothing"):((G={})["immer-nothing"]=!0,G),L=W?Symbol.for("immer-draftable"):"__$immer_draftable",Q=W?Symbol.for("immer-state"):"__$immer_state",V="undefined"!=typeof Symbol&&Symbol.iterator||"@@iterator",Y={0:"Illegal state",1:"Immer drafts cannot have computed properties",2:"This object has been frozen and should not be mutated",3:function(n){return"Cannot use a proxy that has been revoked. Did you pass an object from inside an immer function to an async process? "+n},4:"An immer producer returned a new value *and* modified its draft. Either return a new value *or* modify the draft.",5:"Immer forbids circular references",6:"The first or second argument to `produce` must be a function",7:"The third argument to `produce` must be a function or undefined",8:"First argument to `createDraft` must be a plain object, an array, or an immerable object",9:"First argument to `finishDraft` must be a draft returned by `createDraft`",10:"The given draft is already finalized",11:"Object.defineProperty() cannot be used on an Immer draft",12:"Object.setPrototypeOf() cannot be used on an Immer draft",13:"Immer only supports deleting array indices",14:"Immer only supports setting array indices and the 'length' property",15:function(n){return"Cannot apply patch, path doesn't resolve: "+n},16:'Sets cannot have "replace" patches.',17:function(n){return"Unsupported patch operation: "+n},18:function(n){return"The plugin for '"+n+"' has not been loaded into Immer. To enable the plugin, import and call `enable"+n+"()` when initializing your application."},20:"Cannot use proxies if Proxy, Proxy.revocable or Reflect are not available",21:function(n){return"produce can only be called on things that are draftable: plain objects, arrays, Map, Set or classes that are marked with '[immerable]: true'. Got '"+n+"'"},22:function(n){return"'current' expects a draft, got: "+n},23:function(n){return"'original' expects a draft, got: "+n},24:"Patching reserved attributes like __proto__, prototype and constructor is not allowed"},Z=""+Object.prototype.constructor,nn="undefined"!=typeof Reflect&&Reflect.ownKeys?Reflect.ownKeys:void 0!==Object.getOwnPropertySymbols?function(n){return Object.getOwnPropertyNames(n).concat(Object.getOwnPropertySymbols(n))}:Object.getOwnPropertyNames,rn=Object.getOwnPropertyDescriptors||function(n){var r={};return nn(n).forEach((function(t){r[t]=Object.getOwnPropertyDescriptor(n,t)})),r},tn={},en={get:function(n,r){if(r===Q)return n;var e=p(n);if(!u(e,r))return function(n,r,t){var e,i=I(r,t);return i?"value"in i?i.value:null===(e=i.get)||void 0===e?void 0:e.call(n.k):void 0}(n,e,r);var i=e[r];return n.I||!t(i)?i:i===z(n.t,r)?(E(n),n.o[r]=N(n.A.h,i,n)):i},has:function(n,r){return r in p(n)},ownKeys:function(n){return Reflect.ownKeys(p(n))},set:function(n,r,t){var e=I(p(n),r);if(null==e?void 0:e.set)return e.set.call(n.k,t),!0;if(!n.P){var i=z(p(n),r),o=null==i?void 0:i[Q];if(o&&o.t===t)return n.o[r]=t,n.R[r]=!1,!0;if(c(t,i)&&(void 0!==t||u(n.t,r)))return!0;E(n),k(n)}return n.o[r]===t&&(void 0!==t||r in n.o)||Number.isNaN(t)&&Number.isNaN(n.o[r])||(n.o[r]=t,n.R[r]=!0),!0},deleteProperty:function(n,r){return void 0!==z(n.t,r)||r in n.t?(n.R[r]=!1,E(n),k(n)):delete n.R[r],n.o&&delete n.o[r],!0},getOwnPropertyDescriptor:function(n,r){var t=p(n),e=Reflect.getOwnPropertyDescriptor(t,r);return e?{writable:!0,configurable:1!==n.i||"length"!==r,enumerable:e.enumerable,value:t[r]}:e},defineProperty:function(){n(11)},getPrototypeOf:function(n){return Object.getPrototypeOf(n.t)},setPrototypeOf:function(){n(12)}},on={};i(en,(function(n,r){on[n]=function(){return arguments[0]=arguments[0][0],r.apply(this,arguments)}})),on.deleteProperty=function(r,t){return"production"!==process.env.NODE_ENV&&isNaN(parseInt(t))&&n(13),on.set.call(this,r,t,void 0)},on.set=function(r,t,e){return"production"!==process.env.NODE_ENV&&"length"!==t&&isNaN(parseInt(t))&&n(14),en.set.call(this,r[0],t,e,r[0])};var un=function(){function e(r){var e=this;this.O=B,this.D=!0,this.produce=function(r,i,o){if("function"==typeof r&&"function"!=typeof i){var u=i;i=r;var a=e;return function(n){var r=this;void 0===n&&(n=u);for(var t=arguments.length,e=Array(t>1?t-1:0),o=1;o<t;o++)e[o-1]=arguments[o];return a.produce(n,(function(n){var t;return(t=i).call.apply(t,[r,n].concat(e))}))}}var f;if("function"!=typeof i&&n(6),void 0!==o&&"function"!=typeof o&&n(7),t(r)){var c=w(e),s=N(e,r,void 0),v=!0;try{f=i(s),v=!1}finally{v?g(c):O(c)}return"undefined"!=typeof Promise&&f instanceof Promise?f.then((function(n){return j(c,o),P(n,c)}),(function(n){throw g(c),n})):(j(c,o),P(f,c))}if(!r||"object"!=typeof r){if(void 0===(f=i(r))&&(f=r),f===H&&(f=void 0),e.D&&d(f,!0),o){var p=[],l=[];b("Patches").M(r,f,p,l),o(p,l)}return f}n(21,r)},this.produceWithPatches=function(n,r){if("function"==typeof n)return function(r){for(var t=arguments.length,i=Array(t>1?t-1:0),o=1;o<t;o++)i[o-1]=arguments[o];return e.produceWithPatches(r,(function(r){return n.apply(void 0,[r].concat(i))}))};var t,i,o=e.produce(n,r,(function(n,r){t=n,i=r}));return"undefined"!=typeof Promise&&o instanceof Promise?o.then((function(n){return[n,t,i]})):[o,t,i]},"boolean"==typeof(null==r?void 0:r.useProxies)&&this.setUseProxies(r.useProxies),"boolean"==typeof(null==r?void 0:r.autoFreeze)&&this.setAutoFreeze(r.autoFreeze)}var i=e.prototype;return i.createDraft=function(e){t(e)||n(8),r(e)&&(e=R(e));var i=w(this),o=N(this,e,void 0);return o[Q].C=!0,O(i),o},i.finishDraft=function(r,t){var e=r&&r[Q];"production"!==process.env.NODE_ENV&&(e&&e.C||n(9),e.I&&n(10));var i=e.A;return j(i,t),P(void 0,i)},i.setAutoFreeze=function(n){this.D=n},i.setUseProxies=function(r){r&&!B&&n(20),this.O=r},i.applyPatches=function(n,t){var e;for(e=t.length-1;e>=0;e--){var i=t[e];if(0===i.path.length&&"replace"===i.op){n=i.value;break}}e>-1&&(t=t.slice(e+1));var o=b("Patches").$;return r(n)?o(n,t):this.produce(n,(function(n){return o(n,t)}))},e}(),an=new un,fn=an.produce,cn=an.produceWithPatches.bind(an),sn=an.setAutoFreeze.bind(an),vn=an.setUseProxies.bind(an),pn=an.applyPatches.bind(an),ln=an.createDraft.bind(an),dn=an.finishDraft.bind(an);/* harmony default export */ __webpack_exports__["a"] = (fn);
 //# sourceMappingURL=immer.esm.js.map
 
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(12)))
 
 /***/ }),
 /* 271 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return eventTiming; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return convertDateStrToMs; });
+/* unused harmony export defineIsLiveExpired */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return defineIsOnDemand; });
+/* unused harmony export defineIsOnDemandScheduled */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return defineIsUpcoming; });
+/* unused harmony export updateTimeOverride */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Helpers__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__general__ = __webpack_require__(6);
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.updateTimeOverride = exports.defineIsUpcoming = exports.defineIsOnDemandScheduled = exports.defineIsOnDemand = exports.defineIsLiveExpired = exports.convertDateStrToMs = exports.eventTiming = undefined;
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _Helpers = __webpack_require__(22);
-
-var _general = __webpack_require__(6);
 
 /* eslint-disable */
 function fixSpaceInDate(date) {
-    var time = 'T';
-    var splitDate = date.split(' ');
-
-    if (splitDate.length > 1) return '' + splitDate[0] + time + splitDate[1];
-    return date;
+  var time = 'T';
+  var splitDate = date.split(' ');
+  if (splitDate.length > 1) return '' + splitDate[0] + time + splitDate[1];
+  return date;
 }
-
 function lcdDateFormat(date) {
-    var tTimeDateFix = fixSpaceInDate(date);
-    /* eslint-disable no-useless-escape */
-    return tTimeDateFix.replace(/([+\-]\d\d)(\d\d)$/, '$1:$2');
-    /* eslint-enable no-useless-escape */
+  var tTimeDateFix = fixSpaceInDate(date);
+  /* eslint-disable no-useless-escape */
+  return tTimeDateFix.replace(/([+\-]\d\d)(\d\d)$/, '$1:$2');
+  /* eslint-enable no-useless-escape */
 }
 /* eslint-enable */
 
@@ -49010,11 +48169,9 @@ function lcdDateFormat(date) {
  * @returns {Number} convertDateStrToMs
  */
 var convertDateStrToMs = function convertDateStrToMs() {
-    var dateStr = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-
-    if (!dateStr) return 0;
-
-    return new Date(lcdDateFormat(dateStr)).getTime();
+  var dateStr = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+  if (!dateStr) return 0;
+  return new Date(lcdDateFormat(dateStr)).getTime();
 };
 // TIMING OVERRIDES, mainly for QA, can also support Akamai time in future
 /**
@@ -49024,17 +48181,15 @@ var convertDateStrToMs = function convertDateStrToMs() {
  * @returns {Number} either MS from URL param or 0
  */
 var timeOverride = function timeOverride() {
-    var _window = window,
-        _window$location = _window.location;
-    _window$location = _window$location === undefined ? {} : _window$location;
-    var _window$location$sear = _window$location.search,
-        search = _window$location$sear === undefined ? '' : _window$location$sear;
-
-    var _qs$parse = _general.qs.parse(search),
-        _qs$parse$servertime = _qs$parse.servertime,
-        servertime = _qs$parse$servertime === undefined ? '' : _qs$parse$servertime;
-
-    return servertime ? parseInt(servertime, 10) : undefined;
+  var _window = window,
+    _window$location = _window.location,
+    _window$location2 = _window$location === void 0 ? {} : _window$location,
+    _window$location2$sea = _window$location2.search,
+    search = _window$location2$sea === void 0 ? '' : _window$location2$sea;
+  var _qs$parse = __WEBPACK_IMPORTED_MODULE_1__general__["v" /* qs */].parse(search),
+    _qs$parse$servertime = _qs$parse.servertime,
+    servertime = _qs$parse$servertime === void 0 ? '' : _qs$parse$servertime;
+  return servertime ? parseInt(servertime, 10) : undefined;
 };
 /**
  * @func updateTimeOverride
@@ -49044,25 +48199,23 @@ var timeOverride = function timeOverride() {
  */
 /* eslint-disable no-unused-vars */
 var updateTimeOverride = function updateTimeOverride(base, increment) {
-    var _window2 = window,
-        _window2$location = _window2.location;
-    _window2$location = _window2$location === undefined ? {} : _window2$location;
-    var _window2$location$ori = _window2$location.origin,
-        origin = _window2$location$ori === undefined ? '' : _window2$location$ori,
-        _window2$location$pat = _window2$location.pathname,
-        pathname = _window2$location$pat === undefined ? '' : _window2$location$pat;
-
-    var currentSearchParams = new URL(window.location).searchParams;
-
-    currentSearchParams.delete('servertime');
-
-    var editedSearch = currentSearchParams.toString();
-    var basePath = '' + origin + pathname;
-    var newSeverTime = '' + _general.qs.stringify({ servertime: base + increment });
-    var newSearch = '' + editedSearch + (editedSearch && '&') + newSeverTime;
-    var urlString = basePath + '?' + newSearch;
-
-    window.history.replaceState(null, '', urlString);
+  var _window2 = window,
+    _window2$location = _window2.location,
+    _window2$location2 = _window2$location === void 0 ? {} : _window2$location,
+    _window2$location2$or = _window2$location2.origin,
+    origin = _window2$location2$or === void 0 ? '' : _window2$location2$or,
+    _window2$location2$pa = _window2$location2.pathname,
+    pathname = _window2$location2$pa === void 0 ? '' : _window2$location2$pa;
+  var currentSearchParams = new URL(window.location).searchParams;
+  currentSearchParams.delete('servertime');
+  var editedSearch = currentSearchParams.toString();
+  var basePath = "".concat(origin).concat(pathname);
+  var newSeverTime = "".concat(__WEBPACK_IMPORTED_MODULE_1__general__["v" /* qs */].stringify({
+    servertime: base + increment
+  }));
+  var newSearch = "".concat(editedSearch).concat(editedSearch && '&').concat(newSeverTime);
+  var urlString = "".concat(basePath, "?").concat(newSearch);
+  window.history.replaceState(null, '', urlString);
 };
 // Definitions
 /* eslint-disable no-useless-escape */
@@ -49077,7 +48230,7 @@ var isOnDemandScheduledRegEx = /[a-zA-Z0-9-]+:[a-zA-Z0-9-\/]+on-demand-scheduled
  * @returns {Boolean} isLiveExpired
  */
 var defineIsLiveExpired = function defineIsLiveExpired(tags) {
-    return (0, _Helpers.hasTag)(liveExpiredRegEx, tags);
+  return Object(__WEBPACK_IMPORTED_MODULE_0__Helpers__["r" /* hasTag */])(liveExpiredRegEx, tags);
 };
 /**
  * @func defineIsOnDemand
@@ -49088,11 +48241,10 @@ var defineIsLiveExpired = function defineIsLiveExpired(tags) {
  * @returns {Boolean} isOnDemand
  */
 var defineIsOnDemand = function defineIsOnDemand(currentTime, endTimeMls) {
-    if (endTimeMls && currentTime) {
-        return currentTime >= endTimeMls;
-    }
-
-    return false;
+  if (endTimeMls && currentTime) {
+    return currentTime >= endTimeMls;
+  }
+  return false;
 };
 /**
  * @func defineIsOnDemandScheduled
@@ -49102,7 +48254,7 @@ var defineIsOnDemand = function defineIsOnDemand(currentTime, endTimeMls) {
  * @returns {Boolean} isLiveExpired
  */
 var defineIsOnDemandScheduled = function defineIsOnDemandScheduled(tags) {
-    return (0, _Helpers.hasTag)(isOnDemandScheduledRegEx, tags);
+  return Object(__WEBPACK_IMPORTED_MODULE_0__Helpers__["r" /* hasTag */])(isOnDemandScheduledRegEx, tags);
 };
 /**
  * @func defineIsUpcoming
@@ -49113,11 +48265,10 @@ var defineIsOnDemandScheduled = function defineIsOnDemandScheduled(tags) {
  * @returns {Boolean} isOnDemand
  */
 var defineIsUpcoming = function defineIsUpcoming(currentTime, startTimeMls) {
-    if (startTimeMls) {
-        return startTimeMls >= currentTime;
-    }
-
-    return false;
+  if (startTimeMls) {
+    return startTimeMls >= currentTime;
+  }
+  return false;
 };
 
 /**
@@ -49129,198 +48280,172 @@ var defineIsUpcoming = function defineIsUpcoming(currentTime, startTimeMls) {
  * visibleSessions, sorted cards/sessions to be rendered.
  */
 function eventTiming() {
-    var sessions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-    var eventFilter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+  var sessions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  var eventFilter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+  if (!sessions.length) return [];
+  var overrideTime = timeOverride();
+  var nextTransitionMs;
+  function setNextTransitionMs(compareTime, curMs) {
+    if (compareTime < curMs) return nextTransitionMs;
+    // Therefore current time should be less than transTimeMs
+    var countDownMs = compareTime - curMs;
+    /* if the countdown > 1 day (86400000ms) do not set a timer
+     * The max number of MS a timer can have is 2147483647ms
+     * https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout
+     */
+    if (countDownMs > 86400000) return nextTransitionMs;
+    return !nextTransitionMs && countDownMs > 0 || countDownMs < nextTransitionMs ? countDownMs : nextTransitionMs;
+  }
+  /*
+      If msAsNumber from urlState.servertime use this value, otherwise epoch
+      from Date.now(). This is mainly an override for QA purposes.
+  */
+  var timeSinceArrival = performance.now();
+  var curMs = overrideTime + timeSinceArrival || Date.now();
+  // Stack per category
+  var live = [];
+  var notTimed = [];
+  var onDemand = [];
+  var upComing = [];
+  /*
+      The data has no default order, therefore have to sort according to
+      session data before partitioning by category
+  */
+  sessions.sort(function () {
+    var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      aStart = _ref.startDate;
+    var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+      bStart = _ref2.startDate;
+    // "a" is what sort uses for the first item
+    // converting the value to MS, therefore aMs
+    var aMs = convertDateStrToMs(aStart);
+    // "b" is what sort uses for the second item
+    // converting the value to MS, therefore aMs
+    var bMs = convertDateStrToMs(bStart);
+    if (aMs === 0) return 1;
+    if (bMs === 0) return -1;
+    if (aMs < bMs) return -1;
+    if (aMs > bMs) return 1;
+    return 0;
+  }).forEach(function () {
+    var session = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var endDate = session.endDate,
+      startDate = session.startDate,
+      _session$tags = session.tags,
+      tags = _session$tags === void 0 ? [] : _session$tags;
+    // Session Times in milliseconds
+    var endMs = convertDateStrToMs(endDate);
+    var startMs = convertDateStrToMs(startDate);
+    // Timed categories
+    var isTimed = !!(endMs && startMs);
+    var isUpComing = isTimed ? defineIsUpcoming(curMs, startMs) : false;
+    var isOnDemand = isTimed && !isUpComing ? defineIsOnDemand(curMs, endMs) : false;
+    var isLive = !!(isTimed && !isUpComing && !isOnDemand && startMs);
+    // Tagged Exceptions
+    var isOnDemandScheduled = defineIsOnDemandScheduled(tags);
+    var isLiveExpired = defineIsLiveExpired(tags);
 
-    if (!sessions.length) return [];
-
-    var overrideTime = timeOverride();
-
-    var nextTransitionMs = void 0;
-
-    function setNextTransitionMs(compareTime, curMs) {
-        if (compareTime < curMs) return nextTransitionMs;
-        // Therefore current time should be less than transTimeMs
-        var countDownMs = compareTime - curMs;
-        /* if the countdown > 1 day (86400000ms) do not set a timer
-         * The max number of MS a timer can have is 2147483647ms
-         * https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout
-         */
-        if (countDownMs > 86400000) return nextTransitionMs;
-
-        return !nextTransitionMs && countDownMs > 0 || countDownMs < nextTransitionMs ? countDownMs : nextTransitionMs;
+    // Cards with no Date information, pushed to back of stack
+    if (!isTimed) {
+      notTimed.push(session);
     }
-    /*
-        If msAsNumber from urlState.servertime use this value, otherwise epoch
-        from Date.now(). This is mainly an override for QA purposes.
-    */
-    var timeSinceArrival = performance.now();
-    var curMs = overrideTime + timeSinceArrival || Date.now();
-    // Stack per category
-    var live = [];
-    var notTimed = [];
-    var onDemand = [];
-    var upComing = [];
-    /*
-        The data has no default order, therefore have to sort according to
-        session data before partitioning by category
-    */
-    sessions.sort(function () {
-        var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-            aStart = _ref.startDate;
 
-        var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
-            bStart = _ref2.startDate;
+    // Upcoming and not tagged with On Demand Scheduled tag
+    if (isUpComing && isTimed && !isOnDemandScheduled) {
+      var upComingTransition = setNextTransitionMs(startMs, curMs);
+      upComing.push(session);
+      // GET Upcoming Badge here
+      nextTransitionMs = upComingTransition && upComingTransition > 0 ? upComingTransition : nextTransitionMs;
+    }
+    // On demand and not tagged with Live Expired tag
+    if (isOnDemand && isTimed && !isLiveExpired) {
+      // Get OnDemand Badge here
+      onDemand.push(session);
+    }
+    // Currently Live
+    if (isLive && isTimed) {
+      var liveTransition = setNextTransitionMs(startMs, curMs);
+      live.push(session);
+      // GET Live Badge here
+      nextTransitionMs = liveTransition && liveTransition > 0 ? liveTransition : nextTransitionMs;
+    }
 
-        // "a" is what sort uses for the first item
-        // converting the value to MS, therefore aMs
-        var aMs = convertDateStrToMs(aStart);
-        // "b" is what sort uses for the second item
-        // converting the value to MS, therefore aMs
-        var bMs = convertDateStrToMs(bStart);
-
-        if (aMs === 0) return 1;
-
-        if (bMs === 0) return -1;
-
-        if (aMs < bMs) return -1;
-
-        if (aMs > bMs) return 1;
-
-        return 0;
-    }).forEach(function () {
-        var session = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-        var endDate = session.endDate,
-            startDate = session.startDate,
-            _session$tags = session.tags,
-            tags = _session$tags === undefined ? [] : _session$tags;
-        // Session Times in milliseconds
-
-        var endMs = convertDateStrToMs(endDate);
-        var startMs = convertDateStrToMs(startDate);
-        // Timed categories
-        var isTimed = !!(endMs && startMs);
-        var isUpComing = isTimed ? defineIsUpcoming(curMs, startMs) : false;
-        var isOnDemand = isTimed && !isUpComing ? defineIsOnDemand(curMs, endMs) : false;
-        var isLive = !!(isTimed && !isUpComing && !isOnDemand && startMs);
-        // Tagged Exceptions
-        var isOnDemandScheduled = defineIsOnDemandScheduled(tags);
-        var isLiveExpired = defineIsLiveExpired(tags);
-
-        // Cards with no Date information, pushed to back of stack
-        if (!isTimed) {
-            notTimed.push(session);
-        }
-
-        // Upcoming and not tagged with On Demand Scheduled tag
-        if (isUpComing && isTimed && !isOnDemandScheduled) {
-            var upComingTransition = setNextTransitionMs(startMs, curMs);
-
-            upComing.push(session);
-            // GET Upcoming Badge here
-            nextTransitionMs = upComingTransition && upComingTransition > 0 ? upComingTransition : nextTransitionMs;
-        }
-        // On demand and not tagged with Live Expired tag
-        if (isOnDemand && isTimed && !isLiveExpired) {
-            // Get OnDemand Badge here
-            onDemand.push(session);
-        }
-        // Currently Live
-        if (isLive && isTimed) {
-            var liveTransition = setNextTransitionMs(startMs, curMs);
-
-            live.push(session);
-            // GET Live Badge here
-            nextTransitionMs = liveTransition && liveTransition > 0 ? liveTransition : nextTransitionMs;
-        }
-
-        /* istanbul ignore if */
-        if (isUpComing && isOnDemandScheduled && isTimed) {
-            var odTransition = setNextTransitionMs(startMs, curMs);
-
-            nextTransitionMs = odTransition && odTransition > 0 ? odTransition : nextTransitionMs;
-        }
+    /* istanbul ignore if */
+    if (isUpComing && isOnDemandScheduled && isTimed) {
+      var odTransition = setNextTransitionMs(startMs, curMs);
+      nextTransitionMs = odTransition && odTransition > 0 ? odTransition : nextTransitionMs;
+    }
+  });
+  // If no transitions are needed zero out transition time
+  if (!live.length && !upComing.length || !nextTransitionMs) {
+    nextTransitionMs = 0;
+  }
+  if (overrideTime && nextTransitionMs) {
+    // TO BE REFACTORED AFTER MAX -- commented out for now:
+    // This line of code causes the following bugs:
+    // 1. It always updates the query param (time) to be ahead of what should be shown
+    // 2. It triggers additional time transitions on  load more clicks, pagination, etc.
+    // updateTimeOverride(curMs, nextTransitionMs);
+  }
+  var cards = [];
+  if (eventFilter.length === 0) {
+    cards = [].concat(live, upComing, onDemand, notTimed);
+    return _objectSpread({
+      visibleSessions: cards
+    }, nextTransitionMs && {
+      nextTransitionMs: nextTransitionMs
     });
-    // If no transitions are needed zero out transition time
-    if (!live.length && !upComing.length || !nextTransitionMs) {
-        nextTransitionMs = 0;
-    }
+  }
+  if (eventFilter.indexOf('live') > -1) {
+    cards = cards.concat(live);
+  }
+  if (eventFilter.indexOf('upcoming') > -1) {
+    cards = cards.concat(upComing);
+  }
+  if (eventFilter.indexOf('on-demand') > -1) {
+    cards = cards.concat(onDemand);
+  }
+  if (eventFilter.indexOf('not-timed') > -1) {
+    cards = cards.concat(notTimed);
+  }
 
-    if (overrideTime && nextTransitionMs) {
-        // TO BE REFACTORED AFTER MAX -- commented out for now:
-        // This line of code causes the following bugs:
-        // 1. It always updates the query param (time) to be ahead of what should be shown
-        // 2. It triggers additional time transitions on  load more clicks, pagination, etc.
-        // updateTimeOverride(curMs, nextTransitionMs);
-    }
-
-    var cards = [];
-    if (eventFilter.length === 0) {
-        cards = [].concat(live, upComing, onDemand, notTimed);
-        return _extends({
-            visibleSessions: cards
-        }, nextTransitionMs && { nextTransitionMs: nextTransitionMs });
-    }if (eventFilter.indexOf('live') > -1) {
-        cards = cards.concat(live);
-    }if (eventFilter.indexOf('upcoming') > -1) {
-        cards = cards.concat(upComing);
-    }if (eventFilter.indexOf('on-demand') > -1) {
-        cards = cards.concat(onDemand);
-    }if (eventFilter.indexOf('not-timed') > -1) {
-        cards = cards.concat(notTimed);
-    }
-
-    /*
-        returns object
-        - conditionally adds next sort transition time to returns
-        - returns an Array of cards sorted by Category and then Date ASC
-    */
-    return _extends({
-        visibleSessions: cards
-    }, nextTransitionMs && { nextTransitionMs: nextTransitionMs });
+  /*
+      returns object
+      - conditionally adds next sort transition time to returns
+      - returns an Array of cards sorted by Category and then Date ASC
+  */
+  return _objectSpread({
+    visibleSessions: cards
+  }, nextTransitionMs && {
+    nextTransitionMs: nextTransitionMs
+  });
 }
 
-exports.eventTiming = eventTiming;
-exports.convertDateStrToMs = convertDateStrToMs;
-exports.defineIsLiveExpired = defineIsLiveExpired;
-exports.defineIsOnDemand = defineIsOnDemand;
-exports.defineIsOnDemandScheduled = defineIsOnDemandScheduled;
-exports.defineIsUpcoming = defineIsUpcoming;
-exports.updateTimeOverride = updateTimeOverride;
 
 /***/ }),
 /* 272 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var LinkBlockerType = {
-    link: _propTypes.string,
-    target: _propTypes.string,
-    title: _propTypes.string,
-    getsFocus: _propTypes.bool,
-    daa: _propTypes.string
+  link: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  target: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  title: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  getsFocus: __WEBPACK_IMPORTED_MODULE_1_prop_types__["bool"],
+  daa: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"]
 };
-
 var defaultProps = {
-    link: '',
-    target: '',
-    title: '',
-    getsFocus: false,
-    daa: ''
+  link: '',
+  target: '',
+  title: '',
+  getsFocus: false,
+  daa: ''
 };
 
 /**
@@ -49339,273 +48464,225 @@ var defaultProps = {
  * )
  */
 var LinkBlocker = function LinkBlocker(props) {
-    var link = props.link,
-        target = props.target,
-        title = props.title,
-        getsFocus = props.getsFocus,
-        daa = props.daa;
-
-    return (
-        // eslint-disable-next-line jsx-a11y/anchor-has-content
-        _react2.default.createElement('a', {
-            href: link,
-            target: target,
-            rel: 'noopener noreferrer',
-            'aria-label': title,
-            tabIndex: getsFocus ? 0 : -1,
-            'daa-ll': daa,
-            className: 'consonant-LinkBlocker' })
-    );
+  var link = props.link,
+    target = props.target,
+    title = props.title,
+    getsFocus = props.getsFocus,
+    daa = props.daa;
+  return (
+    /*#__PURE__*/
+    // eslint-disable-next-line jsx-a11y/anchor-has-content
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
+      href: link,
+      target: target,
+      rel: "noopener noreferrer",
+      "aria-label": title,
+      tabIndex: getsFocus ? 0 : -1,
+      "daa-ll": daa,
+      className: "consonant-LinkBlocker"
+    })
+  );
 };
-
 LinkBlocker.propTypes = LinkBlockerType;
 LinkBlocker.defaultProps = defaultProps;
-
-exports.default = LinkBlocker;
+/* harmony default export */ __webpack_exports__["a"] = (LinkBlocker);
 
 /***/ }),
 /* 273 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__videoModal__ = __webpack_require__(274);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modal__ = __webpack_require__(275);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _reactDom = __webpack_require__(105);
-
-var _videoModal = __webpack_require__(274);
-
-var _videoModal2 = _interopRequireDefault(_videoModal);
-
-var _modal = __webpack_require__(275);
-
-var _modal2 = _interopRequireDefault(_modal);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var VideoButton = function VideoButton(_ref) {
-    var name = _ref.name,
-        videoURL = _ref.videoURL,
-        gateVideo = _ref.gateVideo,
-        className = _ref.className,
-        videoPolicy = _ref.videoPolicy;
-
-    var modalContainer = document.querySelector('.modalContainer');
-
-    var modalElement = (0, _react.useRef)(null);
-
-    var _useState = (0, _react.useState)(false),
-        _useState2 = _slicedToArray(_useState, 2),
-        isOpen = _useState2[0],
-        setIsOpen = _useState2[1];
-
-    var isAuthoredModal = /^#[a-zA-Z0-9_-]+/.test(videoURL);
-    var isFullUrl = /https?:\/\/[a-zA-Z0-9_-]+/.test(videoURL);
-
-    var handleShowModal = function handleShowModal() {
-        if (isAuthoredModal) {
-            window.location.hash = new URL(videoURL, document.baseURI).hash;
-        } else if (isFullUrl && gateVideo) {
-            window.open(videoURL, '_blank');
-        } else {
-            setIsOpen(true);
-        }
-    };
-
-    var handleCloseModal = function handleCloseModal() {
-        setIsOpen(false);
-    };
-
-    var handleOverlayClose = function handleOverlayClose() {
-        setIsOpen(false);
-    };
-
-    (0, _react.useEffect)(function () {
-        if (isOpen && modalElement && modalElement.current) {
-            var videoModal = new _modal2.default(modalElement.current, {
-                buttonClose: handleCloseModal,
-                overlayClose: handleOverlayClose
-            });
-
-            videoModal.open();
-        }
-    }, [isOpen, modalElement]);
-
-    return _react2.default.createElement(
-        _react.Fragment,
-        null,
-        _react2.default.createElement(
-            'button',
-            {
-                className: 'consonant-Card-videoButton-wrapper',
-                'data-testid': 'consonant-Card-videoButton-wrapper',
-                'daa-ll': 'play',
-                'aria-label': 'Play',
-                onClick: handleShowModal },
-            _react2.default.createElement('div', { className: className })
-        ),
-        isOpen && (0, _reactDom.createPortal)(_react2.default.createElement(_videoModal2.default, {
-            name: name,
-            videoURL: videoURL,
-            innerRef: modalElement,
-            videoPolicy: videoPolicy }), modalContainer)
-    );
+  var name = _ref.name,
+    videoURL = _ref.videoURL,
+    gateVideo = _ref.gateVideo,
+    className = _ref.className,
+    videoPolicy = _ref.videoPolicy;
+  var modalContainer = document.querySelector('.modalContainer');
+  var modalElement = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useRef"])(null);
+  var _useState = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useState"])(false),
+    _useState2 = _slicedToArray(_useState, 2),
+    isOpen = _useState2[0],
+    setIsOpen = _useState2[1];
+  var isAuthoredModal = /^#[a-zA-Z0-9_-]+/.test(videoURL);
+  var isFullUrl = /https?:\/\/[a-zA-Z0-9_-]+/.test(videoURL);
+  var handleShowModal = function handleShowModal() {
+    if (isAuthoredModal) {
+      window.location.hash = new URL(videoURL, document.baseURI).hash;
+    } else if (isFullUrl && gateVideo) {
+      window.open(videoURL, '_blank');
+    } else {
+      setIsOpen(true);
+    }
+  };
+  var handleCloseModal = function handleCloseModal() {
+    setIsOpen(false);
+  };
+  var handleOverlayClose = function handleOverlayClose() {
+    setIsOpen(false);
+  };
+  Object(__WEBPACK_IMPORTED_MODULE_0_react__["useEffect"])(function () {
+    if (isOpen && modalElement && modalElement.current) {
+      var videoModal = new __WEBPACK_IMPORTED_MODULE_4__modal__["a" /* default */](modalElement.current, {
+        buttonClose: handleCloseModal,
+        overlayClose: handleOverlayClose
+      });
+      videoModal.open();
+    }
+  }, [isOpen, modalElement]);
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_react__["Fragment"], null, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    className: "consonant-Card-videoButton-wrapper",
+    "data-testid": "consonant-Card-videoButton-wrapper",
+    "daa-ll": "play",
+    "aria-label": "Play",
+    onClick: handleShowModal
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: className
+  })), isOpen && /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_2_react_dom__["createPortal"])(/*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__videoModal__["a" /* default */], {
+    name: name,
+    videoURL: videoURL,
+    innerRef: modalElement,
+    videoPolicy: videoPolicy
+  }), modalContainer));
 };
-
 VideoButton.propTypes = {
-    name: _propTypes.string,
-    videoPolicy: _propTypes.string,
-    videoURL: _propTypes.string.isRequired,
-    gateVideo: _propTypes.bool,
-    className: _propTypes.string.isRequired
+  name: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  videoPolicy: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  videoURL: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"].isRequired,
+  gateVideo: __WEBPACK_IMPORTED_MODULE_1_prop_types__["bool"],
+  className: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"].isRequired
 };
-
 VideoButton.defaultProps = {
-    name: 'video-modal',
-    videoPolicy: 'autoplay; fullscreen',
-    gateVideo: false
+  name: 'video-modal',
+  videoPolicy: 'autoplay; fullscreen',
+  gateVideo: false
 };
-
-exports.default = (0, _react.memo)(VideoButton);
+/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_0_react__["memo"])(VideoButton));
 
 /***/ }),
 /* 274 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 /* eslint-disable jsx-a11y/anchor-is-valid  */
+
+
 var VideoModal = function VideoModal(_ref) {
-    var name = _ref.name,
-        videoURL = _ref.videoURL,
-        innerRef = _ref.innerRef,
-        videoPolicy = _ref.videoPolicy;
-    return _react2.default.createElement(
-        'div',
-        { className: 'modal', id: 'dexter-Modal_' + Math.floor(Math.random() * 10e12) },
-        _react2.default.createElement(
-            'div',
-            {
-                className: 'dexter-Modal_overlay mobile-place-center mobile-place-middle closePlacement-outsideTopRight is-Open tablet-inherit desktop-place-center desktop-inherit',
-                'data-conf-display': 'onPageLoad',
-                'data-page-name': 'dexter-modal-video',
-                'aria-modal': 'true',
-                'aria-label': 'Modal Video',
-                role: 'dialog',
-                style: { backgroundColor: 'rgba(0, 0, 0, 0.9)' } },
-            _react2.default.createElement(
-                'div',
-                { ref: innerRef, className: 'dexter-Modal mobile-width-100 mobile-height-auto tablet-width-640 desktop-width-1024 is-Open', id: 'video-' + name },
-                _react2.default.createElement(
-                    'h6',
-                    { id: 'video-' + name + '-modalTitle', className: 'hide-all' },
-                    'Video Modal'
-                ),
-                _react2.default.createElement(
-                    'p',
-                    { id: 'video-' + name + '-modalDescription', className: 'hide-all' },
-                    'Video Modal'
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'video aem-Grid aem-Grid--12 aem-Grid--default--12' },
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'videoContainer', 'data-in-modal': 'true' },
-                        _react2.default.createElement('iframe', {
-                            title: 'Featured Video',
-                            'data-video-src': videoURL,
-                            allow: videoPolicy,
-                            frameBorder: '0',
-                            webkitallowfullscreen: 'true',
-                            mozallowfullscreen: 'true',
-                            allowFullScreen: '',
-                            src: videoURL,
-                            tabIndex: '0' })
-                    )
-                ),
-                _react2.default.createElement(
-                    'a',
-                    { href: '#', className: 'dexter-CloseButton', 'aria-label': 'Close', role: 'button', tabIndex: '0' },
-                    _react2.default.createElement('i', { className: 'dexter-CloseButton_icon spectrum-close-circle-dark' })
-                )
-            )
-        )
-    );
+  var name = _ref.name,
+    videoURL = _ref.videoURL,
+    innerRef = _ref.innerRef,
+    videoPolicy = _ref.videoPolicy;
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "modal",
+    id: "dexter-Modal_".concat(Math.floor(Math.random() * 10e12))
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "dexter-Modal_overlay mobile-place-center mobile-place-middle closePlacement-outsideTopRight is-Open tablet-inherit desktop-place-center desktop-inherit",
+    "data-conf-display": "onPageLoad",
+    "data-page-name": "dexter-modal-video",
+    "aria-modal": "true",
+    "aria-label": "Modal Video",
+    role: "dialog",
+    style: {
+      backgroundColor: 'rgba(0, 0, 0, 0.9)'
+    }
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    ref: innerRef,
+    className: "dexter-Modal mobile-width-100 mobile-height-auto tablet-width-640 desktop-width-1024 is-Open",
+    id: "video-".concat(name)
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h6", {
+    id: "video-".concat(name, "-modalTitle"),
+    className: "hide-all"
+  }, "Video Modal"), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", {
+    id: "video-".concat(name, "-modalDescription"),
+    className: "hide-all"
+  }, "Video Modal"), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "video aem-Grid aem-Grid--12 aem-Grid--default--12"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "videoContainer",
+    "data-in-modal": "true"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("iframe", {
+    title: "Featured Video",
+    "data-video-src": videoURL,
+    allow: videoPolicy,
+    frameBorder: "0",
+    webkitallowfullscreen: "true",
+    mozallowfullscreen: "true",
+    allowFullScreen: "",
+    src: videoURL,
+    tabIndex: "0"
+  }))), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
+    href: "#",
+    className: "dexter-CloseButton",
+    "aria-label": "Close",
+    role: "button",
+    tabIndex: "0"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
+    className: "dexter-CloseButton_icon spectrum-close-circle-dark"
+  })))));
 };
-
 VideoModal.propTypes = {
-    name: _propTypes.string.isRequired,
-    videoURL: _propTypes.string.isRequired,
-    videoPolicy: _propTypes.string.isRequired,
-    innerRef: (0, _propTypes.oneOfType)([(0, _propTypes.shape)({ current: (0, _propTypes.instanceOf)(Element) })]).isRequired
+  name: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"].isRequired,
+  videoURL: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"].isRequired,
+  videoPolicy: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"].isRequired,
+  innerRef: Object(__WEBPACK_IMPORTED_MODULE_1_prop_types__["oneOfType"])([Object(__WEBPACK_IMPORTED_MODULE_1_prop_types__["shape"])({
+    current: Object(__WEBPACK_IMPORTED_MODULE_1_prop_types__["instanceOf"])(Element)
+  })]).isRequired
 };
-
-exports.default = VideoModal;
+/* harmony default export */ __webpack_exports__["a"] = (VideoModal);
 
 /***/ }),
 /* 275 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* eslint-disable */
-
-
-var _environment = __webpack_require__(71);
-
-var _video = __webpack_require__(276);
-
-var _video2 = _interopRequireDefault(_video);
-
-var _iframe = __webpack_require__(277);
-
-var _iframe2 = _interopRequireDefault(_iframe);
-
-var _backgroundVideo = __webpack_require__(278);
-
-var _backgroundVideo2 = _interopRequireDefault(_backgroundVideo);
-
-var _SendLink = __webpack_require__(283);
-
-var _SendLink2 = _interopRequireDefault(_SendLink);
-
-var _modalFocus = __webpack_require__(284);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Modal; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__dexter_environment__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__video__ = __webpack_require__(276);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iframe__ = __webpack_require__(277);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__backgroundVideo__ = __webpack_require__(278);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__SendLink__ = __webpack_require__(283);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modalFocus__ = __webpack_require__(284);
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+/* eslint-disable */
+
+
+
+
+
 
 var BG_COLOR_STYLE = 'background-color';
 var DATA_REMEMBER_CLOSE_ACTION = 'data-remember-close-action';
@@ -49614,12 +48691,11 @@ var DISPLAY_TYPE_PAGE_LOAD = 'onPageLoad';
 var IS_OPEN = 'is-Open';
 var LOCALE_MODAL_ID = 'localeModal';
 var STICKY_BOTTOM_PRESET = 'stickybottom';
-
 var hasInlineBgColorStyle = function hasInlineBgColorStyle(el) {
-    return !!el.style.getPropertyValue(BG_COLOR_STYLE);
+  return !!el.style.getPropertyValue(BG_COLOR_STYLE);
 };
 var urlNoHash = function urlNoHash() {
-    return window.location.href.replace(window.location.hash, '');
+  return window.location.href.replace(window.location.hash, '');
 };
 
 /**
@@ -49638,565 +48714,511 @@ var urlNoHash = function urlNoHash() {
  * @param {boolean} resetHashOnClose Reset URL hash, false to skip.
  * (e.g: when closing locale modal).
  */
-
-var Modal = function () {
-    function Modal(element) {
-        var callbacks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-        _classCallCheck(this, Modal);
-
-        this.callbacks = callbacks;
-        this.element = element;
-        if (this.isHashChangeModal() || hasInlineBgColorStyle(element.parentElement)) {
-            element.parentElement.enableFocusTrap = true;
-            this.getOverlay();
-            this.setupOverlayClick();
+var Modal = /*#__PURE__*/function () {
+  function Modal(element) {
+    var callbacks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    _classCallCheck(this, Modal);
+    this.callbacks = callbacks;
+    this.element = element;
+    if (this.isHashChangeModal() || hasInlineBgColorStyle(element.parentElement)) {
+      element.parentElement.enableFocusTrap = true;
+      this.getOverlay();
+      this.setupOverlayClick();
+    }
+    this.isLocaleModal = this.element.id === LOCALE_MODAL_ID;
+    // Always get a close button
+    this.setupCloseClick();
+    if (this.isPageLoadModal()) {
+      this.pageLoadDisplayed = false;
+    }
+    if (!Object(__WEBPACK_IMPORTED_MODULE_0__dexter_environment__["a" /* isAuthor */])() && this.isStickyBottom()) {
+      this.setupFooterObserver();
+    }
+  }
+  return _createClass(Modal, [{
+    key: "isCloseEnabledRepeatUser",
+    value: function isCloseEnabledRepeatUser() {
+      var repeatUser = window.localStorage.getItem(this.getUserStorageValue());
+      return this.closeButton.hasAttribute(DATA_REMEMBER_CLOSE_ACTION) && JSON.parse(repeatUser);
+    }
+  }, {
+    key: "isPageLoadModal",
+    value: function isPageLoadModal() {
+      return this.getDisplayType() === DISPLAY_TYPE_PAGE_LOAD;
+    }
+  }, {
+    key: "isHashChangeModal",
+    value: function isHashChangeModal() {
+      return this.getDisplayType() === DISPLAY_TYPE_HASH_CHANGE;
+    }
+  }, {
+    key: "isStickyBottom",
+    value: function isStickyBottom() {
+      if (this.getPresetValue()) {
+        return this.getPresetValue().toLowerCase().includes(STICKY_BOTTOM_PRESET);
+      }
+      return false;
+    }
+  }, {
+    key: "getDisplayType",
+    value: function getDisplayType() {
+      if (this.element.parentElement) {
+        return this.element.parentElement.dataset.confDisplay;
+      }
+      return {};
+    }
+  }, {
+    key: "getId",
+    value: function getId() {
+      return this.element.id;
+    }
+  }, {
+    key: "getDelay",
+    value: function getDelay() {
+      var delay = this.element.parentElement.dataset.confDelay;
+      return parseInt(delay, 10);
+    }
+  }, {
+    key: "getPageName",
+    value: function getPageName() {
+      return this.element.parentElement.dataset.pageName;
+    }
+  }, {
+    key: "getPresetValue",
+    value: function getPresetValue() {
+      return this.element.parentElement.dataset.confPreset;
+    }
+  }, {
+    key: "getUserStorageValue",
+    value: function getUserStorageValue() {
+      // creating the localstorage key in the format : modalId_pageName,
+      // unless a custom name is set by authors
+      var pageName = this.getPageName();
+      var customStorageName = this.closeButton.dataset.rememberCloseName;
+      return customStorageName || this.getId().concat('_', pageName);
+    }
+  }, {
+    key: "setupCloseClick",
+    value: function setupCloseClick() {
+      var _this = this;
+      this.closeButton = this.element.querySelector('.dexter-CloseButton');
+      var closeButtonHandler = function closeButtonHandler(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        if (_this.closeButton.hasAttribute(DATA_REMEMBER_CLOSE_ACTION)) {
+          // setting the userVisited to true
+          window.localStorage.setItem(_this.getUserStorageValue(), true);
         }
-        this.isLocaleModal = this.element.id === LOCALE_MODAL_ID;
-        // Always get a close button
-        this.setupCloseClick();
-        if (this.isPageLoadModal()) {
-            this.pageLoadDisplayed = false;
+        if (typeof _this.callbacks.buttonClose === 'function') _this.callbacks.buttonClose();
+        _this.close();
+      };
+      this.closeButton.addEventListener('click', closeButtonHandler);
+
+      // set up to allow the space key to activate the modal close button
+      var onKeyDown = function onKeyDown(event) {
+        var isSpace = false;
+        if ('key' in event) {
+          isSpace = event.code === 'Space';
+        } else {
+          isSpace = event.keyCode === 32;
         }
-        if (!(0, _environment.isAuthor)() && this.isStickyBottom()) {
-            this.setupFooterObserver();
+        if (isSpace) {
+          closeButtonHandler(event);
         }
+      };
+      this.closeButton.addEventListener('keydown', onKeyDown);
+    }
+  }, {
+    key: "sendCloseAnalytics",
+    value: function sendCloseAnalytics() {
+      /* eslint-disable no-underscore-dangle */
+      if (window.digitalData && window._satellite) {
+        window.digitalData._set('primaryEvent.eventInfo.eventName', window.digitalData._get('digitalData.page.pageInfo.pageName').concat(':tryFreeCloseClick', this.getId()));
+        window._satellite.track('event', {
+          digitalData: window.digitalData._snapshot()
+        });
+      }
+      /* eslint-enable no-underscore-dangle */
+    }
+  }, {
+    key: "getOverlay",
+    value: function getOverlay() {
+      this.modalOverlay = this.element.parentElement;
+    }
+  }, {
+    key: "getIframes",
+    value: function getIframes() {
+      if (!this.iframes || this.iframes.length === 0) {
+        var iframeElements = this.element.querySelectorAll('.frame-container iframe');
+        this.iframes = Array.from(iframeElements, function (element) {
+          return new __WEBPACK_IMPORTED_MODULE_2__iframe__["a" /* default */](element);
+        });
+      }
+    }
+  }, {
+    key: "getSendLink",
+    value: function getSendLink() {
+      if (!this.sendLink || this.sendLink.length === 0) {
+        var sendLinkElement = this.element.querySelector('.sendLink');
+        if (sendLinkElement) {
+          this.sendLink = new __WEBPACK_IMPORTED_MODULE_4__SendLink__["a" /* default */](sendLinkElement);
+        }
+      }
+    }
+  }, {
+    key: "setupFooterObserver",
+    value: function setupFooterObserver() {
+      var _this2 = this;
+      var footer = document.querySelector('.globalNavFooter');
+      if (!footer) {
+        return;
+      }
+      this.isIntersecting = false;
+      var rootParent = this.element.closest('.modal');
+      var onIntersect = function onIntersect() {
+        var anchor = document.body.clientHeight - window.innerHeight - footer.clientHeight;
+        rootParent.classList.add('stuck-above-footer');
+        _this2.element.parentElement.style.top = "".concat(anchor, "px");
+        if (anchor < 0) {
+          _this2.element.parentElement.style.bottom = "".concat(Math.abs(anchor), "px");
+        }
+      };
+      var intersectHandler = function intersectHandler(_ref) {
+        var _ref2 = _slicedToArray(_ref, 1),
+          entry = _ref2[0];
+        if (entry.isIntersecting) {
+          onIntersect();
+          _this2.isIntersecting = true;
+        } else {
+          rootParent.classList.remove('stuck-above-footer');
+          _this2.element.parentElement.style.top = '';
+          _this2.element.parentElement.style.bottom = '';
+          _this2.isIntersecting = false;
+        }
+      };
+      var observer = new IntersectionObserver(intersectHandler);
+      this.callbacks.onOpen = function () {
+        footer.style.marginTop = "".concat(_this2.element.clientHeight, "px");
+        if (_this2.isIntersecting) onIntersect();
+      };
+      window.addEventListener('resize', function () {
+        if (_this2.isIntersecting) onIntersect();
+      });
+      document.querySelector('#languageNavigation').addEventListener('modalClose', function () {
+        if (_this2.isIntersecting) requestAnimationFrame(onIntersect);
+      });
+      observer.observe(footer);
+    }
+  }, {
+    key: "setupOverlayClick",
+    value: function setupOverlayClick() {
+      var _this3 = this;
+      if (this.isPageLoadModal()) {
+        this.modalOverlay.style.pointerEvents = 'auto';
+      }
+      var overlayHandler = function overlayHandler(event) {
+        if (event.target.classList.contains('dexter-Modal_overlay')) {
+          event.stopPropagation();
+          event.preventDefault();
+          if (typeof _this3.callbacks.overlayClose === 'function') _this3.callbacks.overlayClose();
+          _this3.close();
+        }
+      };
+      this.modalOverlay.addEventListener('click', overlayHandler);
+    }
+  }, {
+    key: "open",
+    value: function open(previousHashValue, focusState, isDeepLinked) {
+      var _this4 = this;
+      var openEvent = new Event('modalOpen');
+      this.element.dispatchEvent(openEvent);
+      this.openHistoryLength = window.history.length;
+      this.isOpen = true;
+      this.isDeepLinked = !!isDeepLinked;
+      if (focusState) {
+        this.focusState = focusState;
+        this.focusState.modalOpen = true;
+      }
+      // saving the focused element before open
+      this.lastScrollPosition = window.scrollY;
+      this.previousHashValue = previousHashValue && previousHashValue.replace('#', '');
+      if (this.modalOverlay) {
+        this.modalOverlay.classList.add(IS_OPEN);
+      }
+      this.element.parentElement.classList.add(IS_OPEN);
+      this.element.classList.add(IS_OPEN);
+      this.getVideos();
+      this.videos.forEach(function (video) {
+        video.setSrc();
+      });
+      this.getIframes();
+      var focusIntoIframe = function focusIntoIframe() {
+        var iframe = _this4.element.querySelector('iframe');
+        if (iframe) {
+          iframe.focus();
+        }
+      };
+      this.iframes.forEach(function (iframe) {
+        iframe.element.onload = focusIntoIframe;
+        iframe.setSrc();
+      });
+      this.getSendLink();
+      if (this.sendLink) {
+        this.sendLink.openView();
+      }
+      Object(__WEBPACK_IMPORTED_MODULE_3__backgroundVideo__["a" /* default */])(this.element, false);
+      this.closeEscapeListener = this.setupCloseEscape();
+      if (Object(__WEBPACK_IMPORTED_MODULE_5__modalFocus__["b" /* getActiveModalEl */])() === this.element.parentElement) {
+        // if model is open behind another modal, skip focus change.
+        Object(__WEBPACK_IMPORTED_MODULE_5__modalFocus__["a" /* focusActiveModal */])();
+      }
+      if (typeof this.callbacks.onOpen === 'function') this.callbacks.onOpen();
+    }
+  }, {
+    key: "getVideos",
+    value: function getVideos() {
+      if (!this.videos || this.videos.length === 0) {
+        var videoElements = this.element.querySelectorAll('.videoContainer iframe');
+        this.videos = Array.from(videoElements, function (element) {
+          return new __WEBPACK_IMPORTED_MODULE_1__video__["a" /* default */](element);
+        });
+      }
     }
 
-    _createClass(Modal, [{
-        key: 'isCloseEnabledRepeatUser',
-        value: function isCloseEnabledRepeatUser() {
-            var repeatUser = window.localStorage.getItem(this.getUserStorageValue());
-            return this.closeButton.hasAttribute(DATA_REMEMBER_CLOSE_ACTION) && JSON.parse(repeatUser);
+    /**
+     * Close the modal
+     * @param {Object} options - Optional options
+     * @param {string} options.modifyHistory - Defaults to `true`
+     *     Note that this will only apply if this is not a page load modal
+     */
+  }, {
+    key: "close",
+    value: function close() {
+      var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+        _ref3$modifyHistory = _ref3.modifyHistory,
+        modifyHistory = _ref3$modifyHistory === void 0 ? true : _ref3$modifyHistory;
+      var closeEvent = new Event('modalClose');
+      this.element.dispatchEvent(closeEvent);
+      if (this.focusState) {
+        this.focusState.modalOpen = false;
+      }
+      if (this.closeEscapeListener) {
+        this.closeEscapeListener();
+        delete this.closeEscapeListener;
+      }
+      if (this.videos && this.videos.length) {
+        this.videos.forEach(function (video) {
+          video.removeSrc();
+        });
+      }
+      if (this.modalOverlay) {
+        this.modalOverlay.classList.remove(IS_OPEN);
+      }
+      if (this.iframes && this.iframes.length) {
+        this.iframes.forEach(function (iframe) {
+          iframe.removeSrc();
+        });
+      }
+      this.element.classList.remove(IS_OPEN);
+      this.resetFocus();
+      if (typeof this.callbacks.close === 'function') this.callbacks.close();
+      this.isOpen = false;
+      if (this.isPageLoadModal()) {
+        // Page load modals do not have any href/history modifications done
+        Object(__WEBPACK_IMPORTED_MODULE_5__modalFocus__["a" /* focusActiveModal */])();
+        return;
+      }
+      if (!this.isLocaleModal) {
+        if (this.isDeepLinked) {
+          // Deeplink modals are kept in history
+          window.location.hash = '';
+          Object(__WEBPACK_IMPORTED_MODULE_5__modalFocus__["a" /* focusActiveModal */])(); // if there is any other open modal.
+          return;
         }
-    }, {
-        key: 'isPageLoadModal',
-        value: function isPageLoadModal() {
-            return this.getDisplayType() === DISPLAY_TYPE_PAGE_LOAD;
+        var currentHash = window.location.hash;
+        if (this.previousHashValue && this.previousHashValue !== this.getId()) {
+          window.history.replaceState(null, null, "".concat(urlNoHash(), "#").concat(this.previousHashValue));
+        } else {
+          window.history.replaceState(null, null, urlNoHash());
         }
-    }, {
-        key: 'isHashChangeModal',
-        value: function isHashChangeModal() {
-            return this.getDisplayType() === DISPLAY_TYPE_HASH_CHANGE;
+        if (modifyHistory && currentHash !== this.deepLinkedModalId) {
+          // This accounts for Safari where opening iFrames adds history entries
+          // for every iFrame opened.
+          var goBackCount = window.history.length - this.openHistoryLength + 1;
+          window.history.go(-goBackCount);
         }
-    }, {
-        key: 'isStickyBottom',
-        value: function isStickyBottom() {
-            if (this.getPresetValue()) {
-                return this.getPresetValue().toLowerCase().includes(STICKY_BOTTOM_PRESET);
-            }
-            return false;
+      }
+      Object(__WEBPACK_IMPORTED_MODULE_5__modalFocus__["a" /* focusActiveModal */])(); // if there is any other open modal.
+      // analytics for modal close button
+      this.sendCloseAnalytics();
+    }
+  }, {
+    key: "resetFocus",
+    value: function resetFocus() {
+      try {
+        window.scrollTo(0, this.lastScrollPosition);
+        this.focusState.lastFocusedElement.focus();
+      } catch (e) {
+        // prevent console error
+      }
+    }
+  }, {
+    key: "setupCloseEscape",
+    value: function setupCloseEscape() {
+      var _this5 = this;
+      var _onKeyDown = function onKeyDown(event) {
+        var isEscape = false;
+        if ('key' in event) {
+          isEscape = event.key === 'Escape' || event.key === 'Esc';
+        } else {
+          isEscape = event.keyCode === 27;
         }
-    }, {
-        key: 'getDisplayType',
-        value: function getDisplayType() {
-            if (this.element.parentElement) {
-                return this.element.parentElement.dataset.confDisplay;
-            }
-            return {};
+        if (isEscape) {
+          if (typeof _this5.callbacks.escClose === 'function') _this5.callbacks.escClose();
+          document.removeEventListener('keydown', _onKeyDown);
+          _this5.close();
         }
-    }, {
-        key: 'getId',
-        value: function getId() {
-            return this.element.id;
-        }
-    }, {
-        key: 'getDelay',
-        value: function getDelay() {
-            var delay = this.element.parentElement.dataset.confDelay;
-            return parseInt(delay, 10);
-        }
-    }, {
-        key: 'getPageName',
-        value: function getPageName() {
-            return this.element.parentElement.dataset.pageName;
-        }
-    }, {
-        key: 'getPresetValue',
-        value: function getPresetValue() {
-            return this.element.parentElement.dataset.confPreset;
-        }
-    }, {
-        key: 'getUserStorageValue',
-        value: function getUserStorageValue() {
-            // creating the localstorage key in the format : modalId_pageName,
-            // unless a custom name is set by authors
-            var pageName = this.getPageName();
-            var customStorageName = this.closeButton.dataset.rememberCloseName;
-            return customStorageName || this.getId().concat('_', pageName);
-        }
-    }, {
-        key: 'setupCloseClick',
-        value: function setupCloseClick() {
-            var _this = this;
-
-            this.closeButton = this.element.querySelector('.dexter-CloseButton');
-            var closeButtonHandler = function closeButtonHandler(event) {
-                event.stopPropagation();
-                event.preventDefault();
-                if (_this.closeButton.hasAttribute(DATA_REMEMBER_CLOSE_ACTION)) {
-                    // setting the userVisited to true
-                    window.localStorage.setItem(_this.getUserStorageValue(), true);
-                }
-                if (typeof _this.callbacks.buttonClose === 'function') _this.callbacks.buttonClose();
-                _this.close();
-            };
-            this.closeButton.addEventListener('click', closeButtonHandler);
-
-            // set up to allow the space key to activate the modal close button
-            var onKeyDown = function onKeyDown(event) {
-                var isSpace = false;
-                if ('key' in event) {
-                    isSpace = event.code === 'Space';
-                } else {
-                    isSpace = event.keyCode === 32;
-                }
-                if (isSpace) {
-                    closeButtonHandler(event);
-                }
-            };
-            this.closeButton.addEventListener('keydown', onKeyDown);
-        }
-    }, {
-        key: 'sendCloseAnalytics',
-        value: function sendCloseAnalytics() {
-            /* eslint-disable no-underscore-dangle */
-            if (window.digitalData && window._satellite) {
-                window.digitalData._set('primaryEvent.eventInfo.eventName', window.digitalData._get('digitalData.page.pageInfo.pageName').concat(':tryFreeCloseClick', this.getId()));
-                window._satellite.track('event', {
-                    digitalData: window.digitalData._snapshot()
-                });
-            }
-            /* eslint-enable no-underscore-dangle */
-        }
-    }, {
-        key: 'getOverlay',
-        value: function getOverlay() {
-            this.modalOverlay = this.element.parentElement;
-        }
-    }, {
-        key: 'getIframes',
-        value: function getIframes() {
-            if (!this.iframes || this.iframes.length === 0) {
-                var iframeElements = this.element.querySelectorAll('.frame-container iframe');
-                this.iframes = Array.from(iframeElements, function (element) {
-                    return new _iframe2.default(element);
-                });
-            }
-        }
-    }, {
-        key: 'getSendLink',
-        value: function getSendLink() {
-            if (!this.sendLink || this.sendLink.length === 0) {
-                var sendLinkElement = this.element.querySelector('.sendLink');
-                if (sendLinkElement) {
-                    this.sendLink = new _SendLink2.default(sendLinkElement);
-                }
-            }
-        }
-    }, {
-        key: 'setupFooterObserver',
-        value: function setupFooterObserver() {
-            var _this2 = this;
-
-            var footer = document.querySelector('.globalNavFooter');
-            if (!footer) {
-                return;
-            }
-            this.isIntersecting = false;
-            var rootParent = this.element.closest('.modal');
-            var onIntersect = function onIntersect() {
-                var anchor = document.body.clientHeight - window.innerHeight - footer.clientHeight;
-                rootParent.classList.add('stuck-above-footer');
-                _this2.element.parentElement.style.top = anchor + 'px';
-                if (anchor < 0) {
-                    _this2.element.parentElement.style.bottom = Math.abs(anchor) + 'px';
-                }
-            };
-            var intersectHandler = function intersectHandler(_ref) {
-                var _ref2 = _slicedToArray(_ref, 1),
-                    entry = _ref2[0];
-
-                if (entry.isIntersecting) {
-                    onIntersect();
-                    _this2.isIntersecting = true;
-                } else {
-                    rootParent.classList.remove('stuck-above-footer');
-                    _this2.element.parentElement.style.top = '';
-                    _this2.element.parentElement.style.bottom = '';
-                    _this2.isIntersecting = false;
-                }
-            };
-            var observer = new IntersectionObserver(intersectHandler);
-            this.callbacks.onOpen = function () {
-                footer.style.marginTop = _this2.element.clientHeight + 'px';
-                if (_this2.isIntersecting) onIntersect();
-            };
-            window.addEventListener('resize', function () {
-                if (_this2.isIntersecting) onIntersect();
-            });
-            document.querySelector('#languageNavigation').addEventListener('modalClose', function () {
-                if (_this2.isIntersecting) requestAnimationFrame(onIntersect);
-            });
-            observer.observe(footer);
-        }
-    }, {
-        key: 'setupOverlayClick',
-        value: function setupOverlayClick() {
-            var _this3 = this;
-
-            if (this.isPageLoadModal()) {
-                this.modalOverlay.style.pointerEvents = 'auto';
-            }
-            var overlayHandler = function overlayHandler(event) {
-                if (event.target.classList.contains('dexter-Modal_overlay')) {
-                    event.stopPropagation();
-                    event.preventDefault();
-                    if (typeof _this3.callbacks.overlayClose === 'function') _this3.callbacks.overlayClose();
-                    _this3.close();
-                }
-            };
-            this.modalOverlay.addEventListener('click', overlayHandler);
-        }
-    }, {
-        key: 'open',
-        value: function open(previousHashValue, focusState, isDeepLinked) {
-            var _this4 = this;
-
-            var openEvent = new Event('modalOpen');
-            this.element.dispatchEvent(openEvent);
-
-            this.openHistoryLength = window.history.length;
-
-            this.isOpen = true;
-            this.isDeepLinked = !!isDeepLinked;
-            if (focusState) {
-                this.focusState = focusState;
-                this.focusState.modalOpen = true;
-            }
-            // saving the focused element before open
-            this.lastScrollPosition = window.scrollY;
-            this.previousHashValue = previousHashValue && previousHashValue.replace('#', '');
-            if (this.modalOverlay) {
-                this.modalOverlay.classList.add(IS_OPEN);
-            }
-            this.element.parentElement.classList.add(IS_OPEN);
-            this.element.classList.add(IS_OPEN);
-            this.getVideos();
-            this.videos.forEach(function (video) {
-                video.setSrc();
-            });
-            this.getIframes();
-            var focusIntoIframe = function focusIntoIframe() {
-                var iframe = _this4.element.querySelector('iframe');
-                if (iframe) {
-                    iframe.focus();
-                }
-            };
-            this.iframes.forEach(function (iframe) {
-                iframe.element.onload = focusIntoIframe;
-                iframe.setSrc();
-            });
-            this.getSendLink();
-            if (this.sendLink) {
-                this.sendLink.openView();
-            }
-            (0, _backgroundVideo2.default)(this.element, false);
-            this.closeEscapeListener = this.setupCloseEscape();
-
-            if ((0, _modalFocus.getActiveModalEl)() === this.element.parentElement) {
-                // if model is open behind another modal, skip focus change.
-                (0, _modalFocus.focusActiveModal)();
-            }
-
-            if (typeof this.callbacks.onOpen === 'function') this.callbacks.onOpen();
-        }
-    }, {
-        key: 'getVideos',
-        value: function getVideos() {
-            if (!this.videos || this.videos.length === 0) {
-                var videoElements = this.element.querySelectorAll('.videoContainer iframe');
-                this.videos = Array.from(videoElements, function (element) {
-                    return new _video2.default(element);
-                });
-            }
-        }
-
-        /**
-         * Close the modal
-         * @param {Object} options - Optional options
-         * @param {string} options.modifyHistory - Defaults to `true`
-         *     Note that this will only apply if this is not a page load modal
-         */
-
-    }, {
-        key: 'close',
-        value: function close() {
-            var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-                _ref3$modifyHistory = _ref3.modifyHistory,
-                modifyHistory = _ref3$modifyHistory === undefined ? true : _ref3$modifyHistory;
-
-            var closeEvent = new Event('modalClose');
-            this.element.dispatchEvent(closeEvent);
-
-            if (this.focusState) {
-                this.focusState.modalOpen = false;
-            }
-            if (this.closeEscapeListener) {
-                this.closeEscapeListener();
-                delete this.closeEscapeListener;
-            }
-
-            if (this.videos && this.videos.length) {
-                this.videos.forEach(function (video) {
-                    video.removeSrc();
-                });
-            }
-            if (this.modalOverlay) {
-                this.modalOverlay.classList.remove(IS_OPEN);
-            }
-            if (this.iframes && this.iframes.length) {
-                this.iframes.forEach(function (iframe) {
-                    iframe.removeSrc();
-                });
-            }
-            this.element.classList.remove(IS_OPEN);
-
-            this.resetFocus();
-            if (typeof this.callbacks.close === 'function') this.callbacks.close();
-            this.isOpen = false;
-
-            if (this.isPageLoadModal()) {
-                // Page load modals do not have any href/history modifications done
-                (0, _modalFocus.focusActiveModal)();
-                return;
-            }
-            if (!this.isLocaleModal) {
-                if (this.isDeepLinked) {
-                    // Deeplink modals are kept in history
-                    window.location.hash = '';
-                    (0, _modalFocus.focusActiveModal)(); // if there is any other open modal.
-                    return;
-                }
-
-                var currentHash = window.location.hash;
-
-                if (this.previousHashValue && this.previousHashValue !== this.getId()) {
-                    window.history.replaceState(null, null, urlNoHash() + '#' + this.previousHashValue);
-                } else {
-                    window.history.replaceState(null, null, urlNoHash());
-                }
-                if (modifyHistory && currentHash !== this.deepLinkedModalId) {
-                    // This accounts for Safari where opening iFrames adds history entries
-                    // for every iFrame opened.
-                    var goBackCount = window.history.length - this.openHistoryLength + 1;
-                    window.history.go(-goBackCount);
-                }
-            }
-            (0, _modalFocus.focusActiveModal)(); // if there is any other open modal.
-            // analytics for modal close button
-            this.sendCloseAnalytics();
-        }
-    }, {
-        key: 'resetFocus',
-        value: function resetFocus() {
-            try {
-                window.scrollTo(0, this.lastScrollPosition);
-                this.focusState.lastFocusedElement.focus();
-            } catch (e) {
-                // prevent console error
-            }
-        }
-    }, {
-        key: 'setupCloseEscape',
-        value: function setupCloseEscape() {
-            var _this5 = this;
-
-            var onKeyDown = function onKeyDown(event) {
-                var isEscape = false;
-                if ('key' in event) {
-                    isEscape = event.key === 'Escape' || event.key === 'Esc';
-                } else {
-                    isEscape = event.keyCode === 27;
-                }
-                if (isEscape) {
-                    if (typeof _this5.callbacks.escClose === 'function') _this5.callbacks.escClose();
-                    document.removeEventListener('keydown', onKeyDown);
-                    _this5.close();
-                }
-            };
-            document.addEventListener('keydown', onKeyDown);
-            return function () {
-                return document.removeEventListener('keydown', onKeyDown);
-            };
-        }
-    }]);
-
-    return Modal;
+      };
+      document.addEventListener('keydown', _onKeyDown);
+      return function () {
+        return document.removeEventListener('keydown', _onKeyDown);
+      };
+    }
+  }]);
 }();
 
-exports.default = Modal;
 
 /***/ }),
 /* 276 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Video; });
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Video = function () {
-    function Video(element) {
-        _classCallCheck(this, Video);
-
-        this.element = element;
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+var Video = /*#__PURE__*/function () {
+  function Video(element) {
+    _classCallCheck(this, Video);
+    this.element = element;
+  }
+  return _createClass(Video, [{
+    key: "setSrc",
+    value: function setSrc() {
+      this.element.src = this.element.dataset.videoSrc;
     }
-
-    _createClass(Video, [{
-        key: 'setSrc',
-        value: function setSrc() {
-            this.element.src = this.element.dataset.videoSrc;
-        }
-    }, {
-        key: 'removeSrc',
-        value: function removeSrc() {
-            // Get parent element
-            var parent = this.element.parentElement;
-            // Temporarily store current element
-            var tempElement = this.element;
-            // Remove current element to prevent history change
-            parent.removeChild(this.element);
-            // Reset the source of the temp element
-            tempElement.src = '';
-            // Reset this.element
-            this.element = tempElement;
-            // Add it back to the DOM
-            parent.appendChild(this.element);
-        }
-    }]);
-
-    return Video;
+  }, {
+    key: "removeSrc",
+    value: function removeSrc() {
+      // Get parent element
+      var parent = this.element.parentElement;
+      // Temporarily store current element
+      var tempElement = this.element;
+      // Remove current element to prevent history change
+      parent.removeChild(this.element);
+      // Reset the source of the temp element
+      tempElement.src = '';
+      // Reset this.element
+      this.element = tempElement;
+      // Add it back to the DOM
+      parent.appendChild(this.element);
+    }
+  }]);
 }();
 
-exports.default = Video;
 
 /***/ }),
 /* 277 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Iframe; });
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Iframe = function () {
-    function Iframe(element) {
-        _classCallCheck(this, Iframe);
-
-        this.element = element;
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+var Iframe = /*#__PURE__*/function () {
+  function Iframe(element) {
+    _classCallCheck(this, Iframe);
+    this.element = element;
+  }
+  return _createClass(Iframe, [{
+    key: "setSrc",
+    value: function setSrc() {
+      this.element.src = this.element.dataset.src;
     }
-
-    _createClass(Iframe, [{
-        key: 'setSrc',
-        value: function setSrc() {
-            this.element.src = this.element.dataset.src;
-        }
-    }, {
-        key: 'removeSrc',
-        value: function removeSrc() {
-            this.element.onload = undefined;
-            // Get parent element
-            var parent = this.element.parentElement;
-            // Temporarily store current element
-            var tempElement = this.element;
-            // Remove current element to prevent history change
-            parent.removeChild(this.element);
-            // Reset the source of the temp element
-            tempElement.src = '';
-            // Reset this.element
-            this.element = tempElement;
-            // Add it back to the DOM
-            parent.appendChild(this.element);
-        }
-    }]);
-
-    return Iframe;
+  }, {
+    key: "removeSrc",
+    value: function removeSrc() {
+      this.element.onload = undefined;
+      // Get parent element
+      var parent = this.element.parentElement;
+      // Temporarily store current element
+      var tempElement = this.element;
+      // Remove current element to prevent history change
+      parent.removeChild(this.element);
+      // Reset the source of the temp element
+      tempElement.src = '';
+      // Reset this.element
+      this.element = tempElement;
+      // Add it back to the DOM
+      parent.appendChild(this.element);
+    }
+  }]);
 }();
 
-exports.default = Iframe;
 
 /***/ }),
 /* 278 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__dexter_environment__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dexter_debug__ = __webpack_require__(279);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dexter_isVisible__ = __webpack_require__(280);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dexter_breakpoints__ = __webpack_require__(281);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__throttle__ = __webpack_require__(282);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Helpers_lana__ = __webpack_require__(50);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
-var _environment = __webpack_require__(71);
 
-var _debug = __webpack_require__(279);
 
-var _debug2 = _interopRequireDefault(_debug);
-
-var _isVisible = __webpack_require__(280);
-
-var _isVisible2 = _interopRequireDefault(_isVisible);
-
-var _breakpoints = __webpack_require__(281);
-
-var _breakpoints2 = _interopRequireDefault(_breakpoints);
-
-var _throttle = __webpack_require__(282);
-
-var _throttle2 = _interopRequireDefault(_throttle);
-
-var _lana = __webpack_require__(50);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var THROTTLE_TIME = 300;
 var VIDEO_VIEW_SELECTOR = '.video-Wrapper.has-playOnView video';
 var VIDEO_HOVER_SELECTOR = '.video-Wrapper.has-playOnHover video';
-
-var debug = new _debug2.default({ debug: false, control: 'BackgroundVideo' });
+var debug = new __WEBPACK_IMPORTED_MODULE_1__dexter_debug__["a" /* default */]({
+  debug: false,
+  control: 'BackgroundVideo'
+});
 
 /**
  * Determine if HTMLMediaElement is playing.
  * @param {HTMLMediaElement} video
  */
 var isPlaying = function isPlaying(video) {
-    return !!(video.currentTime > 0 && !video.paused && !video.ended && video.readyState > 2);
+  return !!(video.currentTime > 0 && !video.paused && !video.ended && video.readyState > 2);
 };
-
 var getParentContainer = function getParentContainer(video) {
-    return video.closest('.dexter-FlexContainer') || video.closest('.dexter-Position');
+  return video.closest('.dexter-FlexContainer') || video.closest('.dexter-Position');
 };
-
 var playVideo = function playVideo(video) {
-    var promise = video.play();
-    return promise && promise.then(function () {
-        debug.log('Video starts playing successfully');
-    }).catch(function () {
-        (0, _lana.logLana)({ message: 'error while playing a video', tags: 'backgroundVideo' });
-        debug.log('Error while playing video');
+  var promise = video.play();
+  return promise && promise.then(function () {
+    debug.log('Video starts playing successfully');
+  }).catch(function () {
+    Object(__WEBPACK_IMPORTED_MODULE_5__Helpers_lana__["b" /* logLana */])({
+      message: 'error while playing a video',
+      tags: 'backgroundVideo'
     });
+    debug.log('Error while playing video');
+  });
 };
 
 /**
@@ -50204,31 +49226,29 @@ var playVideo = function playVideo(video) {
  * @param {HTMLMediaElement} video
  */
 var setViewVideoState = function setViewVideoState(video) {
-    if ((0, _isVisible2.default)(video) && !isPlaying(video) && !video.ended) {
-        if (video.getAttribute('preload') === 'none') {
-            video.setAttribute('preload', 'metadata');
-        }
-        if (!video.classList.contains('play-Onclick')) {
-            playVideo(video);
-        }
-    } else if (!(0, _isVisible2.default)(video) && isPlaying(video)) {
-        video.pause();
+  if (Object(__WEBPACK_IMPORTED_MODULE_2__dexter_isVisible__["a" /* default */])(video) && !isPlaying(video) && !video.ended) {
+    if (video.getAttribute('preload') === 'none') {
+      video.setAttribute('preload', 'metadata');
     }
+    if (!video.classList.contains('play-Onclick')) {
+      playVideo(video);
+    }
+  } else if (!Object(__WEBPACK_IMPORTED_MODULE_2__dexter_isVisible__["a" /* default */])(video) && isPlaying(video)) {
+    video.pause();
+  }
 };
-
 var setHoverVideoState = function setHoverVideoState(video) {
-    var parent = getParentContainer(video);
-
-    parent.addEventListener('mouseover', function () {
-        if ((0, _isVisible2.default)(video) && !isPlaying(video) && !video.ended) {
-            playVideo(video);
-        }
-    });
-    parent.addEventListener('mouseout', function () {
-        if (isPlaying(video)) {
-            video.pause();
-        }
-    });
+  var parent = getParentContainer(video);
+  parent.addEventListener('mouseover', function () {
+    if (Object(__WEBPACK_IMPORTED_MODULE_2__dexter_isVisible__["a" /* default */])(video) && !isPlaying(video) && !video.ended) {
+      playVideo(video);
+    }
+  });
+  parent.addEventListener('mouseout', function () {
+    if (isPlaying(video)) {
+      video.pause();
+    }
+  });
 };
 
 /**
@@ -50236,14 +49256,13 @@ var setHoverVideoState = function setHoverVideoState(video) {
  * @param {NodeList} videos
  */
 var setVideoStates = function setVideoStates(opts) {
-    var videos = opts.videos,
-        callback = opts.callback;
-
-    if (videos) {
-        videos.forEach(function (video) {
-            callback(video);
-        });
-    }
+  var videos = opts.videos,
+    callback = opts.callback;
+  if (videos) {
+    videos.forEach(function (video) {
+      callback(video);
+    });
+  }
 };
 
 /**
@@ -50254,9 +49273,9 @@ var setVideoStates = function setVideoStates(opts) {
  * @param opts {Object}
  */
 var mediaWatcher = function mediaWatcher(e, opts) {
-    if (e.matches) {
-        setVideoStates(opts);
-    }
+  if (e.matches) {
+    setVideoStates(opts);
+  }
 };
 
 /**
@@ -50266,31 +49285,41 @@ var mediaWatcher = function mediaWatcher(e, opts) {
  * @param opts {Object}
  */
 var enableResponsiveEvent = function enableResponsiveEvent(opts) {
-    Object.keys(_breakpoints2.default.mediaExpression).forEach(function (surface) {
-        var surfacePoint = window.matchMedia(_breakpoints2.default.mediaExpression[surface]);
-        surfacePoint.addListener(function (e) {
-            return mediaWatcher(e, opts);
-        });
+  Object.keys(__WEBPACK_IMPORTED_MODULE_3__dexter_breakpoints__["a" /* default */].mediaExpression).forEach(function (surface) {
+    var surfacePoint = window.matchMedia(__WEBPACK_IMPORTED_MODULE_3__dexter_breakpoints__["a" /* default */].mediaExpression[surface]);
+    surfacePoint.addListener(function (e) {
+      return mediaWatcher(e, opts);
     });
+  });
 };
-
 var initViewVideos = function initViewVideos(parentElement, setScroll) {
-    var selector = parentElement instanceof HTMLDocument ? '.root ' + VIDEO_VIEW_SELECTOR : VIDEO_VIEW_SELECTOR;
-    var videos = parentElement.querySelectorAll(selector);
-    if (videos.length > 0) {
-        setVideoStates({ videos: videos, callback: setViewVideoState });
-        enableResponsiveEvent({ videos: videos, callback: setViewVideoState });
-        if (setScroll) {
-            window.addEventListener('scroll', (0, _throttle2.default)(THROTTLE_TIME, setVideoStates, { videos: videos, callback: setViewVideoState }));
-        }
+  var selector = parentElement instanceof HTMLDocument ? ".root ".concat(VIDEO_VIEW_SELECTOR) : VIDEO_VIEW_SELECTOR;
+  var videos = parentElement.querySelectorAll(selector);
+  if (videos.length > 0) {
+    setVideoStates({
+      videos: videos,
+      callback: setViewVideoState
+    });
+    enableResponsiveEvent({
+      videos: videos,
+      callback: setViewVideoState
+    });
+    if (setScroll) {
+      window.addEventListener('scroll', Object(__WEBPACK_IMPORTED_MODULE_4__throttle__["a" /* default */])(THROTTLE_TIME, setVideoStates, {
+        videos: videos,
+        callback: setViewVideoState
+      }));
     }
+  }
 };
-
 var initHoverVideos = function initHoverVideos(parentElement) {
-    var videos = parentElement.querySelectorAll(VIDEO_HOVER_SELECTOR);
-    if (videos.length > 0) {
-        setVideoStates({ videos: videos, callback: setHoverVideoState });
-    }
+  var videos = parentElement.querySelectorAll(VIDEO_HOVER_SELECTOR);
+  if (videos.length > 0) {
+    setVideoStates({
+      videos: videos,
+      callback: setHoverVideoState
+    });
+  }
 };
 
 /**
@@ -50299,41 +49328,25 @@ var initHoverVideos = function initHoverVideos(parentElement) {
  * @param {Boolean} setScroll
  */
 var initBackgroundVideos = function initBackgroundVideos() {
-    var parentElement = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : document;
-    var setScroll = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-    // Don't play videos in author.
-    if (!(0, _environment.isAuthor)()) {
-        // If the element is document, search root to prevent modal videos from being iterated on.
-        initViewVideos(parentElement, setScroll);
-        initHoverVideos(parentElement);
-    }
+  var parentElement = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : document;
+  var setScroll = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+  // Don't play videos in author.
+  if (!Object(__WEBPACK_IMPORTED_MODULE_0__dexter_environment__["a" /* isAuthor */])()) {
+    // If the element is document, search root to prevent modal videos from being iterated on.
+    initViewVideos(parentElement, setScroll);
+    initHoverVideos(parentElement);
+  }
 };
-
-exports.default = initBackgroundVideos;
+/* harmony default export */ __webpack_exports__["a"] = (initBackgroundVideos);
 
 /***/ }),
 /* 279 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-__webpack_require__(102);
-
-var _createClass = function () {
-    function defineProperties(target, props) {
-        for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ('value' in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-        }
-    }return function (Constructor, protoProps, staticProps) {
-        if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-    };
-}(); /* eslint-disable */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_url_search_params_polyfill__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_url_search_params_polyfill___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_url_search_params_polyfill__);
+/* eslint-disable */
 /**
  * @file debug.js
  * @desc Console debugger for optionally logging step by step progress.
@@ -50346,280 +49359,270 @@ var _createClass = function () {
  * @exports class Debug
  */
 
-function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-        throw new TypeError('Cannot call a class as a function');
+
+var _createClass = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ('value' in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
     }
-}
-
-var Debug = function () {
-    /**
-     * @func constructor
-     * @desc initializing Debug constructor
-     * @memberof Debug
-     */
-    function Debug() {
-        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-        _classCallCheck(this, Debug);
-
-        this.log = this.logFactory('log');
-        this.warn = this.logFactory('warn');
-        this.error = this.logFactory('error');
-        this.info = this.logFactory('info');
-        this.debug = this.logFactory('debug');
-        this.table = this.logFactory('table');
-        this.trace = this.logFactory('trace');
-
-        var hasControl = options.control !== undefined;
-        var decodeSearch = new URLSearchParams(window.location.search);
-        this.options = {
-            debug: false,
-            param: 'dexter:debug',
-            urlMode: 'Enabling URL Debug mode for',
-            fileMode: 'Enabling File Debug mode for',
-            debugAll: 'All',
-            concatenator: ':',
-            control: hasControl ? options.control : ''
-        };
-        var findDebugs = decodeSearch.getAll(this.options.param);
-        var isDebug = decodeSearch.has(this.options.param);
-        var allInUrl = hasControl && isDebug && this.find(findDebugs, this.options.debugAll);
-        var inUrl = hasControl && isDebug && this.find(findDebugs, options.control);
-
-        if (this.options.debug) {
-            this.info(this.options.fileMode, this.options.debugAll);
-        } else if (!options.debug && allInUrl && !inUrl) {
-            this.options.debug = true;
-            this.info(this.options.urlMode, this.options.debugAll);
-        } else if (!options.debug && inUrl && !allInUrl) {
-            this.options.debug = true;
-            this.info(this.options.urlMode, options.control);
-        } else if (options.debug && hasControl) {
-            this.options.debug = true;
-            this.info(this.options.fileMode, options.control);
-        }
-    }
-
-    /**
-     * @func find
-     * @desc Search all cases of dexter:debug in the search params and match them
-     * with the control name.
-     *
-     * @param findDebugs {Array} List of debug params
-     * @param param {String} Control name to search for
-     * @memberof Debug
-     *
-     * @returns {Boolean} True or False if it's matched the param
-     */
-
-    _createClass(Debug, [{
-        key: 'find',
-        value: function find(findDebugs, param) {
-            return findDebugs.some(function (v) {
-                return v === param;
-            });
-        }
-
-        /**
-         * @func logFactory
-         * @desc Take a type and console out that type to this.printIt()
-         * @param logType {String} log, warn, error, info, table, debug
-         * @memberof Debug
-         * @returns {Function | Boolean} Returns
-         */
-
-    }, {
-        key: 'logFactory',
-        value: function logFactory(logType) {
-            var _this = this;
-
-            return function () {
-                for (var _len = arguments.length, log = Array(_len), _key = 0; _key < _len; _key++) {
-                    log[_key] = arguments[_key];
-                }
-
-                return log.length ? _this.printIt(logType, log) : false;
-            };
-        }
-
-        /**
-         * @func log
-         * @desc console.log output
-         * @param log {String | Array | Object} Accepts any number of arguments of any type.
-         * @memberof Debug
-         * @returns {Function} Returns this.logFactory with the type
-         */
-
-        /**
-         * @func warn
-         * @desc console.warn output
-         * @param log {String | Array | Object} Accepts any number of arguments of any type.
-         * @memberof Debug
-         * @returns {Function} Returns this.logFactory with the type
-         */
-
-        /**
-         * @func error
-         * @desc console.error output
-         * @param log {String | Array | Object} Accepts any number of arguments of any type.
-         * @memberof Debug
-         * @returns {Function} Returns this.logFactory with the type
-         */
-
-        /**
-         * @func info
-         * @desc console.info output
-         * @param log {String | Array | Object} Accepts any number of arguments of any type.
-         * @memberof Debug
-         * @returns {Function} Returns this.logFactory with the type
-         */
-
-        /**
-         * @func debug
-         * @desc console.debug output
-         * @param log {String | Array | Object} Accepts any number of arguments of any type.
-         * @memberof Debug
-         * @returns {Function} Returns this.logFactory with the type
-         */
-
-        /**
-         * @func table
-         * @desc console.table output
-         * @param log {Array | Object} Accepts any number of arguments of any type.
-         * @memberof Debug
-         * @returns {Function} Returns this.logFactory with the type
-         */
-
-        /**
-         * @func trace
-         * @desc console.trace output
-         * @param log {Array | Object} Accepts any number of arguments of any type.
-         * @memberof Debug
-         * @returns {Function} Returns this.logFactory with the type
-         */
-
-    }, {
-        key: 'printIt',
-
-        /**
-         * @func debug
-         * @desc console.debug output
-         * @param type {String} Type of logger to use
-         * @param log {String | Array | Object} Accepts any number of arguments of any type.
-         * @memberof Debug
-         * @returns {Function} Returns this.logFactory with the type
-         */
-        value: function printIt(type, log) {
-            var logger = void 0;
-            var output = void 0;
-
-            /* eslint-disable no-console */
-            switch (type) {
-                case 'error':
-                    {
-                        logger = console.error;
-                        break;
-                    }
-                case 'warn':
-                    {
-                        logger = console.warn;
-                        break;
-                    }
-                case 'log':
-                    {
-                        logger = console.log;
-                        break;
-                    }
-                case 'info':
-                    {
-                        logger = console.info;
-                        break;
-                    }
-                case 'debug':
-                    {
-                        logger = console.debug;
-                        break;
-                    }
-                case 'table':
-                    {
-                        logger = console.table;
-                        break;
-                    }
-                case 'trace':
-                    {
-                        logger = console.trace;
-                        break;
-                    }
-                default:
-                    {
-                        logger = console.log;
-                        break;
-                    }
-            }
-            /* eslint-enable */
-
-            if (type !== undefined && log !== undefined && this.options.debug) {
-                // Place control tag as first array item
-                output = [this.options.control + this.options.concatenator];
-
-                log.forEach(function (val) {
-                    output.push(val);
-                });
-
-                // Flatten the array once for output
-                output = [].concat.apply(output);
-                // pass the log array as arguments to console.*
-                logger.apply(console, output);
-
-                return true;
-            }
-
-            return false;
-        }
-    }]);
-
-    return Debug;
+  }
+  return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) defineProperties(Constructor, staticProps);
+    return Constructor;
+  };
 }();
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError('Cannot call a class as a function');
+  }
+}
+var Debug = function () {
+  /**
+   * @func constructor
+   * @desc initializing Debug constructor
+   * @memberof Debug
+   */
+  function Debug() {
+    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    _classCallCheck(this, Debug);
+    this.log = this.logFactory('log');
+    this.warn = this.logFactory('warn');
+    this.error = this.logFactory('error');
+    this.info = this.logFactory('info');
+    this.debug = this.logFactory('debug');
+    this.table = this.logFactory('table');
+    this.trace = this.logFactory('trace');
+    var hasControl = options.control !== undefined;
+    var decodeSearch = new URLSearchParams(window.location.search);
+    this.options = {
+      debug: false,
+      param: 'dexter:debug',
+      urlMode: 'Enabling URL Debug mode for',
+      fileMode: 'Enabling File Debug mode for',
+      debugAll: 'All',
+      concatenator: ':',
+      control: hasControl ? options.control : ''
+    };
+    var findDebugs = decodeSearch.getAll(this.options.param);
+    var isDebug = decodeSearch.has(this.options.param);
+    var allInUrl = hasControl && isDebug && this.find(findDebugs, this.options.debugAll);
+    var inUrl = hasControl && isDebug && this.find(findDebugs, options.control);
+    if (this.options.debug) {
+      this.info(this.options.fileMode, this.options.debugAll);
+    } else if (!options.debug && allInUrl && !inUrl) {
+      this.options.debug = true;
+      this.info(this.options.urlMode, this.options.debugAll);
+    } else if (!options.debug && inUrl && !allInUrl) {
+      this.options.debug = true;
+      this.info(this.options.urlMode, options.control);
+    } else if (options.debug && hasControl) {
+      this.options.debug = true;
+      this.info(this.options.fileMode, options.control);
+    }
+  }
 
-exports.default = Debug;
+  /**
+   * @func find
+   * @desc Search all cases of dexter:debug in the search params and match them
+   * with the control name.
+   *
+   * @param findDebugs {Array} List of debug params
+   * @param param {String} Control name to search for
+   * @memberof Debug
+   *
+   * @returns {Boolean} True or False if it's matched the param
+   */
+
+  _createClass(Debug, [{
+    key: 'find',
+    value: function find(findDebugs, param) {
+      return findDebugs.some(function (v) {
+        return v === param;
+      });
+    }
+
+    /**
+     * @func logFactory
+     * @desc Take a type and console out that type to this.printIt()
+     * @param logType {String} log, warn, error, info, table, debug
+     * @memberof Debug
+     * @returns {Function | Boolean} Returns
+     */
+  }, {
+    key: 'logFactory',
+    value: function logFactory(logType) {
+      var _this = this;
+      return function () {
+        for (var _len = arguments.length, log = Array(_len), _key = 0; _key < _len; _key++) {
+          log[_key] = arguments[_key];
+        }
+        return log.length ? _this.printIt(logType, log) : false;
+      };
+    }
+
+    /**
+     * @func log
+     * @desc console.log output
+     * @param log {String | Array | Object} Accepts any number of arguments of any type.
+     * @memberof Debug
+     * @returns {Function} Returns this.logFactory with the type
+     */
+
+    /**
+     * @func warn
+     * @desc console.warn output
+     * @param log {String | Array | Object} Accepts any number of arguments of any type.
+     * @memberof Debug
+     * @returns {Function} Returns this.logFactory with the type
+     */
+
+    /**
+     * @func error
+     * @desc console.error output
+     * @param log {String | Array | Object} Accepts any number of arguments of any type.
+     * @memberof Debug
+     * @returns {Function} Returns this.logFactory with the type
+     */
+
+    /**
+     * @func info
+     * @desc console.info output
+     * @param log {String | Array | Object} Accepts any number of arguments of any type.
+     * @memberof Debug
+     * @returns {Function} Returns this.logFactory with the type
+     */
+
+    /**
+     * @func debug
+     * @desc console.debug output
+     * @param log {String | Array | Object} Accepts any number of arguments of any type.
+     * @memberof Debug
+     * @returns {Function} Returns this.logFactory with the type
+     */
+
+    /**
+     * @func table
+     * @desc console.table output
+     * @param log {Array | Object} Accepts any number of arguments of any type.
+     * @memberof Debug
+     * @returns {Function} Returns this.logFactory with the type
+     */
+
+    /**
+     * @func trace
+     * @desc console.trace output
+     * @param log {Array | Object} Accepts any number of arguments of any type.
+     * @memberof Debug
+     * @returns {Function} Returns this.logFactory with the type
+     */
+  }, {
+    key: 'printIt',
+    /**
+     * @func debug
+     * @desc console.debug output
+     * @param type {String} Type of logger to use
+     * @param log {String | Array | Object} Accepts any number of arguments of any type.
+     * @memberof Debug
+     * @returns {Function} Returns this.logFactory with the type
+     */
+    value: function printIt(type, log) {
+      var logger = void 0;
+      var output = void 0;
+
+      /* eslint-disable no-console */
+      switch (type) {
+        case 'error':
+          {
+            logger = console.error;
+            break;
+          }
+        case 'warn':
+          {
+            logger = console.warn;
+            break;
+          }
+        case 'log':
+          {
+            logger = console.log;
+            break;
+          }
+        case 'info':
+          {
+            logger = console.info;
+            break;
+          }
+        case 'debug':
+          {
+            logger = console.debug;
+            break;
+          }
+        case 'table':
+          {
+            logger = console.table;
+            break;
+          }
+        case 'trace':
+          {
+            logger = console.trace;
+            break;
+          }
+        default:
+          {
+            logger = console.log;
+            break;
+          }
+      }
+      /* eslint-enable */
+
+      if (type !== undefined && log !== undefined && this.options.debug) {
+        // Place control tag as first array item
+        output = [this.options.control + this.options.concatenator];
+        log.forEach(function (val) {
+          output.push(val);
+        });
+
+        // Flatten the array once for output
+        output = [].concat.apply(output);
+        // pass the log array as arguments to console.*
+        logger.apply(console, output);
+        return true;
+      }
+      return false;
+    }
+  }]);
+  return Debug;
+}();
+/* harmony default export */ __webpack_exports__["a"] = (Debug);
 
 /***/ }),
 /* 280 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 /* eslint-disable */
 /**
  * Determine if the element is in the viewport.
  * @param {HTMLElement} element
  */
 var isVisible = function isVisible(element) {
-    var _element$getBoundingC = element.getBoundingClientRect(),
-        top = _element$getBoundingC.top,
-        bottom = _element$getBoundingC.bottom;
-
-    var vHeight = window.innerHeight || document.documentElement.clientHeight;
-    return (top > 0 || bottom > 0) && top < vHeight;
+  var _element$getBoundingC = element.getBoundingClientRect(),
+    top = _element$getBoundingC.top,
+    bottom = _element$getBoundingC.bottom;
+  var vHeight = window.innerHeight || document.documentElement.clientHeight;
+  return (top > 0 || bottom > 0) && top < vHeight;
 };
-
-exports.default = isVisible;
+/* harmony default export */ __webpack_exports__["a"] = (isVisible);
 
 /***/ }),
 /* 281 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 /**
  * @desc This is an object contains the breakpoints and MatchMedia expressions
  * for all the supported breakpoints.
@@ -50633,32 +49636,26 @@ var tabletLandscapeMax = 74.9375; // 1199px
 var desktop = tabletLandscapeMax + 0.0625; // 1200px
 
 var mediaExpression = {
-    mobile: '(max-width: ' + phoneOnly + unit + ')',
-    tabletPortrait: '(min-width: ' + tabletPortraitUp + unit + ') and (max-width: ' + tabletPortraitMax + unit + ')',
-    tabletLandscape: '(min-width: ' + tabletLandscapeUp + unit + ') and (max-width: ' + tabletLandscapeMax + unit + ')',
-    desktop: '(min-width: ' + desktop + unit + ')'
+  mobile: "(max-width: ".concat(phoneOnly).concat(unit, ")"),
+  tabletPortrait: "(min-width: ".concat(tabletPortraitUp).concat(unit, ") and (max-width: ").concat(tabletPortraitMax).concat(unit, ")"),
+  tabletLandscape: "(min-width: ".concat(tabletLandscapeUp).concat(unit, ") and (max-width: ").concat(tabletLandscapeMax).concat(unit, ")"),
+  desktop: "(min-width: ".concat(desktop).concat(unit, ")")
 };
-
-exports.default = {
-    phoneOnly: phoneOnly,
-    tabletPortraitUp: tabletPortraitUp,
-    tabletPortraitMax: tabletPortraitMax,
-    tabletLandscapeUp: tabletLandscapeUp,
-    tabletLandscapeMax: tabletLandscapeMax,
-    desktop: desktop,
-    mediaExpression: mediaExpression
-};
+/* harmony default export */ __webpack_exports__["a"] = ({
+  phoneOnly: phoneOnly,
+  tabletPortraitUp: tabletPortraitUp,
+  tabletPortraitMax: tabletPortraitMax,
+  tabletLandscapeUp: tabletLandscapeUp,
+  tabletLandscapeMax: tabletLandscapeMax,
+  desktop: desktop,
+  mediaExpression: mediaExpression
+});
 
 /***/ }),
 /* 282 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 /**
  * @file thorttle.js
  * @desc Throttle / Debounce hybrid utilitly method
@@ -50684,50 +49681,44 @@ Object.defineProperty(exports, "__esModule", {
  */
 
 var throttle = function throttle() {
-    for (var _len = arguments.length, args = Array(_len > 3 ? _len - 3 : 0), _key = 3; _key < _len; _key++) {
-        args[_key - 3] = arguments[_key];
+  var delay = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 250;
+  var throttled = arguments.length > 1 ? arguments[1] : undefined;
+  var opts = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+  for (var _len = arguments.length, args = new Array(_len > 3 ? _len - 3 : 0), _key = 3; _key < _len; _key++) {
+    args[_key - 3] = arguments[_key];
+  }
+  var previousCall = null;
+  return function () {
+    var time = new Date().getTime();
+    var timeout = null;
+    if (timeout) {
+      clearTimeout(timeout);
     }
-
-    var delay = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 250;
-    var throttled = arguments[1];
-    var opts = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-    var previousCall = null;
-    return function () {
-        var time = new Date().getTime();
-        var timeout = null;
-        if (timeout) {
-            clearTimeout(timeout);
-        }
-        if (!previousCall || time - previousCall >= delay) {
-            previousCall = time;
-            throttled.apply(null, [opts, args]);
-            timeout = setTimeout(function () {
-                throttled.apply(null, [opts, args]);
-                timeout = null;
-            }, delay * 2);
-        }
-    };
+    if (!previousCall || time - previousCall >= delay) {
+      previousCall = time;
+      throttled.apply(null, [opts, args]);
+      timeout = setTimeout(function () {
+        throttled.apply(null, [opts, args]);
+        timeout = null;
+      }, delay * 2);
+    }
+  };
 };
-
-exports.default = throttle;
+/* harmony default export */ __webpack_exports__["a"] = (throttle);
 
 /***/ }),
 /* 283 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _environment = __webpack_require__(71);
-
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SendLink; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__dexter_environment__ = __webpack_require__(71);
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 
 var BUTTON_CLASS = '.sl-cta';
 var TEXT_FIELD = '.phone_number';
@@ -50749,259 +49740,248 @@ var EVENT_SUCCESS = 'success';
 var EVENT_ERROR = 'error';
 var CHANNEL = 'Adobe.com';
 var BRANCH_FEATURE = 'Text-Me-The-App';
-
-var SendLink = function () {
-    function SendLink(element) {
-        _classCallCheck(this, SendLink);
-
-        if (element) {
-            this.element = element;
-            this.button = this.element.querySelector(BUTTON_CLASS);
-            this.phone = this.element.querySelector(TEXT_FIELD);
-            this.wrapper = this.element.querySelector(SENDLINK_WRAPPER);
-            this.branchKey = this.wrapper.getAttribute(PRODUCT_BRANCH_KEY);
-            this.sendLinkForm = this.element.querySelector(SENDLINK_FORM);
-            this.sendLinkSuccess = this.element.querySelector(SENDLINK_SUCCESS);
-            this.tooltip = this.element.querySelector(ERROR_TOOLTIP);
-            this.closeCta = this.element.querySelector(CLOSE_CTA);
-            this.linkData = {
-                $android_url: this.wrapper.getAttribute(DATA_ANDROID_REDIRECT),
-                $custom_sms_text: this.wrapper.getAttribute(DATA_CUSTOM_TEXT) !== null ? this.wrapper.getAttribute(DATA_CUSTOM_TEXT).concat('{{link}}') : '',
-                $ios_url: this.wrapper.getAttribute(DATA_IOS_REDIRECT)
-            };
-            this.analyticsLink = this.wrapper.getAttribute(ANALYTICS_ATTB);
-            this.setUpBranchAndBind();
-            if ((0, _environment.isEditor)()) {
-                this.element.parentElement.classList.add('sendlink-desktop-auto');
-            }
-        }
+var SendLink = /*#__PURE__*/function () {
+  function SendLink(element) {
+    _classCallCheck(this, SendLink);
+    if (element) {
+      this.element = element;
+      this.button = this.element.querySelector(BUTTON_CLASS);
+      this.phone = this.element.querySelector(TEXT_FIELD);
+      this.wrapper = this.element.querySelector(SENDLINK_WRAPPER);
+      this.branchKey = this.wrapper.getAttribute(PRODUCT_BRANCH_KEY);
+      this.sendLinkForm = this.element.querySelector(SENDLINK_FORM);
+      this.sendLinkSuccess = this.element.querySelector(SENDLINK_SUCCESS);
+      this.tooltip = this.element.querySelector(ERROR_TOOLTIP);
+      this.closeCta = this.element.querySelector(CLOSE_CTA);
+      this.linkData = {
+        $android_url: this.wrapper.getAttribute(DATA_ANDROID_REDIRECT),
+        $custom_sms_text: this.wrapper.getAttribute(DATA_CUSTOM_TEXT) !== null ? this.wrapper.getAttribute(DATA_CUSTOM_TEXT).concat('{{link}}') : '',
+        $ios_url: this.wrapper.getAttribute(DATA_IOS_REDIRECT)
+      };
+      this.analyticsLink = this.wrapper.getAttribute(ANALYTICS_ATTB);
+      this.setUpBranchAndBind();
+      if (Object(__WEBPACK_IMPORTED_MODULE_0__dexter_environment__["b" /* isEditor */])()) {
+        this.element.parentElement.classList.add('sendlink-desktop-auto');
+      }
     }
-
-    _createClass(SendLink, [{
-        key: 'openView',
-        value: function openView() {
-            // Always show send-a-link form when modal is opened.
-            this.sendLinkForm.classList.remove(HIDDEN_CLASS);
-            this.sendLinkSuccess.classList.add(HIDDEN_CLASS);
-            // Clear form whenever modal is opened.
-            this.phone.value = '';
-            this.phone.classList.remove(INVALID_CLASS);
-            this.tooltip.classList.remove(TOOLTIP_CLASS);
+  }
+  return _createClass(SendLink, [{
+    key: "openView",
+    value: function openView() {
+      // Always show send-a-link form when modal is opened.
+      this.sendLinkForm.classList.remove(HIDDEN_CLASS);
+      this.sendLinkSuccess.classList.add(HIDDEN_CLASS);
+      // Clear form whenever modal is opened.
+      this.phone.value = '';
+      this.phone.classList.remove(INVALID_CLASS);
+      this.tooltip.classList.remove(TOOLTIP_CLASS);
+    }
+  }, {
+    key: "bindEvents",
+    value: function bindEvents() {
+      var _this = this;
+      this.button.addEventListener('click', function () {
+        _this.sendCustomAnalytics(EVENT_SEND);
+        _this.sendSMS();
+      });
+      this.phone.addEventListener('click', function () {
+        _this.phone.classList.remove(INVALID_CLASS);
+        _this.tooltip.classList.remove(TOOLTIP_CLASS);
+      });
+      this.closeCta.addEventListener('click', function () {
+        var parentModal = _this.wrapper.closest('.dexter-Modal');
+        if (parentModal && parentModal.querySelector('.dexter-CloseButton')) {
+          parentModal.querySelector('.dexter-CloseButton').click();
         }
-    }, {
-        key: 'bindEvents',
-        value: function bindEvents() {
-            var _this = this;
-
-            this.button.addEventListener('click', function () {
-                _this.sendCustomAnalytics(EVENT_SEND);
-                _this.sendSMS();
-            });
-            this.phone.addEventListener('click', function () {
-                _this.phone.classList.remove(INVALID_CLASS);
-                _this.tooltip.classList.remove(TOOLTIP_CLASS);
-            });
-            this.closeCta.addEventListener('click', function () {
-                var parentModal = _this.wrapper.closest('.dexter-Modal');
-                if (parentModal && parentModal.querySelector('.dexter-CloseButton')) {
-                    parentModal.querySelector('.dexter-CloseButton').click();
-                }
-            });
+      });
+    }
+  }, {
+    key: "defBranch",
+    value: function defBranch() {
+      /*
+      snippet picked from: https://help.branch.io/developers-hub/docs/web-basic-integration
+      */
+      // eslint-disable-next-line
+      (function (b, r, a, n, c, h, _, s, d, k) {
+        if (!b[n] || !b[n]._q) {
+          for (; s < _.length;) c(h, _[s++]);
+          d = r.createElement(a);
+          d.async = 1;
+          d.src = "https://cdn.branch.io/branch-latest.min.js";
+          k = r.getElementsByTagName(a)[0];
+          k.parentNode.insertBefore(d, k);
+          b[n] = h;
         }
-    }, {
-        key: 'defBranch',
-        value: function defBranch() {
-            /*
-            snippet picked from: https://help.branch.io/developers-hub/docs/web-basic-integration
-            */
-            // eslint-disable-next-line
-            (function (b, r, a, n, c, h, _, s, d, k) {
-                if (!b[n] || !b[n]._q) {
-                    for (; s < _.length;) {
-                        c(h, _[s++]);
-                    }d = r.createElement(a);d.async = 1;d.src = "https://cdn.branch.io/branch-latest.min.js";k = r.getElementsByTagName(a)[0];k.parentNode.insertBefore(d, k);b[n] = h;
-                }
-            })(window, document, "script", "branch", function (b, r) {
-                b[r] = function () {
-                    b._q.push([r, arguments]);
-                };
-            }, { _q: [], _v: 1 }, "addListener applyCode autoAppIndex banner closeBanner closeJourney creditHistory credits data deepview deepviewCta first getCode init link logout redeem referrals removeListener sendSMS setBranchViewData setIdentity track validateCode trackCommerceEvent logEvent disableTracking".split(" "), 0);
+      })(window, document, "script", "branch", function (b, r) {
+        b[r] = function () {
+          b._q.push([r, arguments]);
+        };
+      }, {
+        _q: [],
+        _v: 1
+      }, "addListener applyCode autoAppIndex banner closeBanner closeJourney creditHistory credits data deepview deepviewCta first getCode init link logout redeem referrals removeListener sendSMS setBranchViewData setIdentity track validateCode trackCommerceEvent logEvent disableTracking".split(" "), 0);
+    }
+  }, {
+    key: "setUpBranchAndBind",
+    value: function setUpBranchAndBind() {
+      var _this2 = this;
+      if (this.branchKey && !window.branchPromise) {
+        this.defBranch();
+        this.initBranch();
+      }
+      if (window.branchPromise) {
+        window.branchPromise.catch(function () {
+          _this2.initBranch({
+            doBind: false
+          });
+        }).finally(function () {
+          _this2.bindEvents();
+        });
+      }
+    }
+  }, {
+    key: "initBranch",
+    value: function initBranch() {
+      var _this3 = this;
+      var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+        _ref$doBind = _ref.doBind,
+        doBind = _ref$doBind === void 0 ? true : _ref$doBind;
+      var privacyConsent = !!window.adobePrivacy && window.adobePrivacy.hasUserProvidedConsent();
+      window.branch.init(this.branchKey, {
+        tracking_disabled: !privacyConsent
+      }, function () {
+        if (doBind) {
+          _this3.bindEvents();
         }
-    }, {
-        key: 'setUpBranchAndBind',
-        value: function setUpBranchAndBind() {
-            var _this2 = this;
-
-            if (this.branchKey && !window.branchPromise) {
-                this.defBranch();
-                this.initBranch();
-            }
-            if (window.branchPromise) {
-                window.branchPromise.catch(function () {
-                    _this2.initBranch({ doBind: false });
-                }).finally(function () {
-                    _this2.bindEvents();
-                });
-            }
-        }
-    }, {
-        key: 'initBranch',
-        value: function initBranch() {
-            var _this3 = this;
-
-            var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-                _ref$doBind = _ref.doBind,
-                doBind = _ref$doBind === undefined ? true : _ref$doBind;
-
-            var privacyConsent = !!window.adobePrivacy && window.adobePrivacy.hasUserProvidedConsent();
-            window.branch.init(this.branchKey, { tracking_disabled: !privacyConsent }, function () {
-                if (doBind) {
-                    _this3.bindEvents();
-                }
-            });
-        }
-    }, {
-        key: 'populateMessage',
-        value: function populateMessage(err) {
-            if (err) {
-                this.phone.classList.add(INVALID_CLASS);
-                this.tooltip.classList.add(TOOLTIP_CLASS);
-                this.sendCustomAnalytics(EVENT_ERROR);
-            } else {
-                this.sendLinkForm.classList.add(HIDDEN_CLASS);
-                this.sendLinkSuccess.classList.remove(HIDDEN_CLASS);
-                this.sendCustomAnalytics(EVENT_SUCCESS);
-            }
-        }
-    }, {
-        key: 'sendSMS',
-        value: function sendSMS() {
-            if (typeof window.branch !== 'undefined') {
-                window.branch.sendSMS(this.phone.value, { channel: CHANNEL, feature: BRANCH_FEATURE, data: this.linkData }, { make_new_link: false }, this.populateMessage.bind(this));
-            } else {
-                this.phone.classList.add(INVALID_CLASS);
-                this.tooltip.classList.add(TOOLTIP_CLASS);
-                this.sendCustomAnalytics(EVENT_ERROR);
-            }
-        }
-    }, {
-        key: 'sendCustomAnalytics',
-        value: function sendCustomAnalytics(event) {
-            /* eslint-disable no-underscore-dangle */
-            if (window.digitalData && window._satellite && this.analyticsLink !== null) {
-                window.digitalData._set('primaryEvent.eventInfo.eventName', 'branch:' + this.analyticsLink + ':text_app_link:' + event);
-                window.digitalData._set('primaryEvent.eventInfo.interaction.click', 'branch:' + this.analyticsLink + ':text_app_link:' + event);
-                window._satellite.track('event', {
-                    digitalData: window.digitalData._snapshot()
-                });
-            }
-            /* eslint-enable no-underscore-dangle */
-        }
-    }]);
-
-    return SendLink;
+      });
+    }
+  }, {
+    key: "populateMessage",
+    value: function populateMessage(err) {
+      if (err) {
+        this.phone.classList.add(INVALID_CLASS);
+        this.tooltip.classList.add(TOOLTIP_CLASS);
+        this.sendCustomAnalytics(EVENT_ERROR);
+      } else {
+        this.sendLinkForm.classList.add(HIDDEN_CLASS);
+        this.sendLinkSuccess.classList.remove(HIDDEN_CLASS);
+        this.sendCustomAnalytics(EVENT_SUCCESS);
+      }
+    }
+  }, {
+    key: "sendSMS",
+    value: function sendSMS() {
+      if (typeof window.branch !== 'undefined') {
+        window.branch.sendSMS(this.phone.value, {
+          channel: CHANNEL,
+          feature: BRANCH_FEATURE,
+          data: this.linkData
+        }, {
+          make_new_link: false
+        }, this.populateMessage.bind(this));
+      } else {
+        this.phone.classList.add(INVALID_CLASS);
+        this.tooltip.classList.add(TOOLTIP_CLASS);
+        this.sendCustomAnalytics(EVENT_ERROR);
+      }
+    }
+  }, {
+    key: "sendCustomAnalytics",
+    value: function sendCustomAnalytics(event) {
+      /* eslint-disable no-underscore-dangle */
+      if (window.digitalData && window._satellite && this.analyticsLink !== null) {
+        window.digitalData._set('primaryEvent.eventInfo.eventName', "branch:".concat(this.analyticsLink, ":text_app_link:").concat(event));
+        window.digitalData._set('primaryEvent.eventInfo.interaction.click', "branch:".concat(this.analyticsLink, ":text_app_link:").concat(event));
+        window._satellite.track('event', {
+          digitalData: window.digitalData._snapshot()
+        });
+      }
+      /* eslint-enable no-underscore-dangle */
+    }
+  }]);
 }();
 
-exports.default = SendLink;
 
 /***/ }),
 /* 284 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return focusActiveModal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return getActiveModalEl; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_focus_trap__ = __webpack_require__(285);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dexter_getPropertySafely__ = __webpack_require__(287);
 
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.getActiveModalEl = exports.focusActiveModal = undefined;
-
-var _focusTrap = __webpack_require__(285);
-
-var focusTrap = _interopRequireWildcard(_focusTrap);
-
-var _getPropertySafely = __webpack_require__(287);
-
-var _getPropertySafely2 = _interopRequireDefault(_getPropertySafely);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 var NO_SCROLL = 'u-noScroll';
 var OPEN_MODAL_SELECTOR = '.dexter-Modal_overlay.is-Open';
 var CLOSE_BUTTON_CLASS = 'dexter-CloseButton';
-var isDesktop = (0, _getPropertySafely2.default)(window, 'dexter.personalization.technology.platform.type') === 'desktop';
-
+var isDesktop = Object(__WEBPACK_IMPORTED_MODULE_1__dexter_getPropertySafely__["a" /* default */])(window, 'dexter.personalization.technology.platform.type') === 'desktop';
 var getActiveModalEl = function getActiveModalEl() {
-    var topEl = document.elementFromPoint(0, 0);
-    if (!topEl) return null;
-    return topEl.closest(OPEN_MODAL_SELECTOR);
+  var topEl = document.elementFromPoint(0, 0);
+  if (!topEl) return null;
+  return topEl.closest(OPEN_MODAL_SELECTOR);
 };
 
 /* focus-trap works best as a singleton. This is to prevent scope collision
  * when the modal is imported from a consumer project.
  */
 var getModalFocusTrap = function getModalFocusTrap() {
-    window.dexter = window.dexter || {};
-    window.dexter.utils = window.dexter.utils || {};
-    if (window.dexter.utils.modalFocusTrap) {
-        return window.dexter.utils.modalFocusTrap;
-    }
-    window.dexter.utils.modalFocusTrap = focusTrap.createFocusTrap(OPEN_MODAL_SELECTOR, {
-        escapeDeactivates: false,
-        clickOutsideDeactivates: false,
-        preventScroll: false,
-        allowOutsideClick: true,
-        onActivate: function onActivate() {
-            if (isDesktop) {
-                document.body.classList.add(NO_SCROLL);
-            }
-            var activeModalEl = getActiveModalEl();
-            var listener = function listener() {
-                activeModalEl.removeEventListener('focusin', listener);
-                if (!document.activeElement || !document.activeElement.classList.contains(CLOSE_BUTTON_CLASS)) {
-                    return;
-                }
-                // if the close button has the focus, that means the modal doesn't have any
-                // focusable element. Make the container focusable
-                // so that it can be scrolled with arrow keys.
-                var grid = activeModalEl.querySelector('.dexter-Modal > .aem-Grid');
-                if (grid) {
-                    grid.tabIndex = '0';
-                }
-            };
-            activeModalEl.addEventListener('focusin', listener);
-        },
-        onDeactivate: function onDeactivate() {
-            if (isDesktop) {
-                document.body.classList.remove(NO_SCROLL);
-            }
-        },
-        fallbackFocus: document.body
-    });
+  window.dexter = window.dexter || {};
+  window.dexter.utils = window.dexter.utils || {};
+  if (window.dexter.utils.modalFocusTrap) {
     return window.dexter.utils.modalFocusTrap;
+  }
+  window.dexter.utils.modalFocusTrap = __WEBPACK_IMPORTED_MODULE_0_focus_trap__["a" /* createFocusTrap */](OPEN_MODAL_SELECTOR, {
+    escapeDeactivates: false,
+    clickOutsideDeactivates: false,
+    preventScroll: false,
+    allowOutsideClick: true,
+    onActivate: function onActivate() {
+      if (isDesktop) {
+        document.body.classList.add(NO_SCROLL);
+      }
+      var activeModalEl = getActiveModalEl();
+      var _listener = function listener() {
+        activeModalEl.removeEventListener('focusin', _listener);
+        if (!document.activeElement || !document.activeElement.classList.contains(CLOSE_BUTTON_CLASS)) {
+          return;
+        }
+        // if the close button has the focus, that means the modal doesn't have any
+        // focusable element. Make the container focusable
+        // so that it can be scrolled with arrow keys.
+        var grid = activeModalEl.querySelector('.dexter-Modal > .aem-Grid');
+        if (grid) {
+          grid.tabIndex = '0';
+        }
+      };
+      activeModalEl.addEventListener('focusin', _listener);
+    },
+    onDeactivate: function onDeactivate() {
+      if (isDesktop) {
+        document.body.classList.remove(NO_SCROLL);
+      }
+    },
+    fallbackFocus: document.body
+  });
+  return window.dexter.utils.modalFocusTrap;
 };
-
 var focusActiveModal = function focusActiveModal() {
-    var activeModalEl = getActiveModalEl();
-    var modalFocusTrap = getModalFocusTrap();
-    modalFocusTrap.deactivate();
-    if (!activeModalEl || !activeModalEl.enableFocusTrap) return;
-    modalFocusTrap.updateContainerElements(activeModalEl);
-    modalFocusTrap.activate();
+  var activeModalEl = getActiveModalEl();
+  var modalFocusTrap = getModalFocusTrap();
+  modalFocusTrap.deactivate();
+  if (!activeModalEl || !activeModalEl.enableFocusTrap) return;
+  modalFocusTrap.updateContainerElements(activeModalEl);
+  modalFocusTrap.activate();
 };
 
-exports.focusActiveModal = focusActiveModal;
-exports.getActiveModalEl = getActiveModalEl;
 
 /***/ }),
 /* 285 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFocusTrap", function() { return createFocusTrap; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return createFocusTrap; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tabbable__ = __webpack_require__(286);
 /*!
 * focus-trap 7.5.4
@@ -52528,23 +51508,16 @@ var isFocusable = function isFocusable(node, options) {
 
 /***/ }),
 /* 287 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-exports.default = getPropertySafely;
+/* harmony export (immutable) */ __webpack_exports__["a"] = getPropertySafely;
+function _typeof2(o) { "@babel/helpers - typeof"; return _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof2(o); }
 /* eslint-disable */
 var _typeof = typeof Symbol === 'function' && _typeof2(Symbol.iterator) === 'symbol' ? function (obj) {
-    return typeof obj === 'undefined' ? 'undefined' : _typeof2(obj);
+  return _typeof2(obj);
 } : function (obj) {
-    return obj && typeof Symbol === 'function' && obj.constructor === Symbol && obj !== Symbol.prototype ? 'symbol' : typeof obj === 'undefined' ? 'undefined' : _typeof2(obj);
+  return obj && typeof Symbol === 'function' && obj.constructor === Symbol && obj !== Symbol.prototype ? 'symbol' : _typeof2(obj);
 };
 
 /**
@@ -52567,218 +51540,157 @@ var _typeof = typeof Symbol === 'function' && _typeof2(Symbol.iterator) === 'sym
  * getPropertySafely({a: {b: 'c'}}, 'd.b') -> undefined
  */
 function getPropertySafely(obj, propPath) {
-    if ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && typeof propPath === 'string' && obj !== null && Object.keys(obj).length && propPath.length) {
-        var path = propPath.split('.');
-        var len = path.length;
-        var current = obj;
-
-        for (var i = 0; i < len; i += 1) {
-            if (current === null || current === undefined || Number.isNaN(current)) {
-                return i === len ? current : undefined;
-            }
-
-            if (Object.prototype.hasOwnProperty.call(current, path[i])) {
-                current = current[path[i]];
-            } else {
-                return undefined;
-            }
-        }
-
-        return current;
+  if ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && typeof propPath === 'string' && obj !== null && Object.keys(obj).length && propPath.length) {
+    var path = propPath.split('.');
+    var len = path.length;
+    var current = obj;
+    for (var i = 0; i < len; i += 1) {
+      if (current === null || current === undefined || Number.isNaN(current)) {
+        return i === len ? current : undefined;
+      }
+      if (Object.prototype.hasOwnProperty.call(current, path[i])) {
+        current = current[path[i]];
+      } else {
+        return undefined;
+      }
     }
-    return undefined;
+    return current;
+  }
+  return undefined;
 }
 
 /***/ }),
 /* 288 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Helpers_hooks__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Helpers_lana__ = __webpack_require__(50);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _hooks = __webpack_require__(5);
-
-var _lana = __webpack_require__(50);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function isValidURL(string) {
-    try {
-        // eslint-disable-next-line no-new
-        new URL(string);
-        return true;
-    } catch (_) {
-        return false;
-    }
+  try {
+    // eslint-disable-next-line no-new
+    new URL(string);
+    return true;
+  } catch (_) {
+    return false;
+  }
 }
-
 function transformLink(url, patterns) {
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
-
-    try {
-        for (var _iterator = patterns[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var pattern = _step.value;
-
-            var regex = new RegExp(pattern.from);
-            if (regex.test(url)) {
-                return url.replace(regex, pattern.to);
-            }
-        }
-    } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-    } finally {
-        try {
-            if (!_iteratorNormalCompletion && _iterator.return) {
-                _iterator.return();
-            }
-        } finally {
-            if (_didIteratorError) {
-                throw _iteratorError;
-            }
-        }
+  var _iterator = _createForOfIteratorHelper(patterns),
+    _step;
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var pattern = _step.value;
+      var regex = new RegExp(pattern.from);
+      if (regex.test(url)) {
+        return url.replace(regex, pattern.to);
+      }
     }
-
-    return url;
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+  return url;
 }
-
 function transformNestedProps(obj, hostnameTransforms) {
-    if ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) !== 'object' || obj === null) {
-        return typeof obj === 'string' && isValidURL(obj) ? transformLink(obj, hostnameTransforms) : obj;
+  if (_typeof(obj) !== 'object' || obj === null) {
+    return typeof obj === 'string' && isValidURL(obj) ? transformLink(obj, hostnameTransforms) : obj;
+  }
+  if (Array.isArray(obj)) {
+    return obj.map(function (item) {
+      return transformNestedProps(item, hostnameTransforms);
+    });
+  }
+  var newObj = {};
+  for (var _i = 0, _Object$entries = Object.entries(obj); _i < _Object$entries.length; _i++) {
+    var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+      key = _Object$entries$_i[0],
+      value = _Object$entries$_i[1];
+    if (typeof value === 'string' && isValidURL(value)) {
+      newObj[key] = transformLink(value, hostnameTransforms);
+    } else if (_typeof(value) === 'object' && value !== null) {
+      newObj[key] = transformNestedProps(value, hostnameTransforms);
+    } else {
+      newObj[key] = value;
     }
-    if (Array.isArray(obj)) {
-        return obj.map(function (item) {
-            return transformNestedProps(item, hostnameTransforms);
-        });
-    }
-
-    var newObj = {};
-    var _iteratorNormalCompletion2 = true;
-    var _didIteratorError2 = false;
-    var _iteratorError2 = undefined;
-
-    try {
-        for (var _iterator2 = Object.entries(obj)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-            var _ref = _step2.value;
-
-            var _ref2 = _slicedToArray(_ref, 2);
-
-            var key = _ref2[0];
-            var value = _ref2[1];
-
-            if (typeof value === 'string' && isValidURL(value)) {
-                newObj[key] = transformLink(value, hostnameTransforms);
-            } else if ((typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' && value !== null) {
-                newObj[key] = transformNestedProps(value, hostnameTransforms);
-            } else {
-                newObj[key] = value;
-            }
-        }
-    } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-    } finally {
-        try {
-            if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                _iterator2.return();
-            }
-        } finally {
-            if (_didIteratorError2) {
-                throw _iteratorError2;
-            }
-        }
-    }
-
-    return newObj;
+  }
+  return newObj;
 }
-
 function getLocalStorageSettings() {
-    try {
-        var settings = localStorage.getItem('linkTransformerSettings');
-        return settings ? JSON.parse(settings) : {};
-    } catch (error) {
-        (0, _lana.logLana)({ message: 'Error reading from localStorage:', tags: 'linkTransformer', e: error }); // here
-        return {}; // here
-    }
+  try {
+    var settings = localStorage.getItem('linkTransformerSettings');
+    return settings ? JSON.parse(settings) : {};
+  } catch (error) {
+    Object(__WEBPACK_IMPORTED_MODULE_2__Helpers_lana__["b" /* logLana */])({
+      message: 'Error reading from localStorage:',
+      tags: 'linkTransformer',
+      e: error
+    }); // here
+    return {}; // here
+  }
 }
-
 function withLinkTransformer(Component) {
-    return function WrappedComponent(props) {
-        var getConfig = (0, _hooks.useConfig)();
-        var configEnabled = getConfig('linkTransformer', 'enabled') || false;
-        var configHostnameTransforms = getConfig('linkTransformer', 'hostnameTransforms') || [];
-
-        var localStorageSettings = getLocalStorageSettings();
-        // eslint-disable-next-line max-len
-        var localStorageEnabled = localStorageSettings && localStorageSettings.enabled !== undefined ? localStorageSettings.enabled : false;
-
-        var enabled = configEnabled || localStorageEnabled;
-        // eslint-disable-next-line max-len
-        var haveLocalStorageHostnameTransforms = localStorageEnabled && localStorageSettings.hostnameTransforms;
-        // eslint-disable-next-line max-len
-        var hostnameTransforms = haveLocalStorageHostnameTransforms ? localStorageSettings.hostnameTransforms : configHostnameTransforms;
-
-        var transformedProps = _react2.default.useMemo(function () {
-            if (!enabled) return props;
-            return transformNestedProps(props, hostnameTransforms);
-        }, [enabled, hostnameTransforms, props]);
-
-        return _react2.default.createElement(Component, transformedProps);
-    };
+  return function WrappedComponent(props) {
+    var getConfig = Object(__WEBPACK_IMPORTED_MODULE_1__Helpers_hooks__["a" /* useConfig */])();
+    var configEnabled = getConfig('linkTransformer', 'enabled') || false;
+    var configHostnameTransforms = getConfig('linkTransformer', 'hostnameTransforms') || [];
+    var localStorageSettings = getLocalStorageSettings();
+    // eslint-disable-next-line max-len
+    var localStorageEnabled = localStorageSettings && localStorageSettings.enabled !== undefined ? localStorageSettings.enabled : false;
+    var enabled = configEnabled || localStorageEnabled;
+    // eslint-disable-next-line max-len
+    var haveLocalStorageHostnameTransforms = localStorageEnabled && localStorageSettings.hostnameTransforms;
+    // eslint-disable-next-line max-len
+    var hostnameTransforms = haveLocalStorageHostnameTransforms ? localStorageSettings.hostnameTransforms : configHostnameTransforms;
+    var transformedProps = __WEBPACK_IMPORTED_MODULE_0_react___default.a.useMemo(function () {
+      if (!enabled) return props;
+      return transformNestedProps(props, hostnameTransforms);
+    }, [enabled, hostnameTransforms, props]);
+    return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Component, transformedProps);
+  };
 }
-
-exports.default = withLinkTransformer;
+/* harmony default export */ __webpack_exports__["a"] = (withLinkTransformer);
 
 /***/ }),
 /* 289 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_classnames__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Helpers_rendering__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Helpers_hooks__ = __webpack_require__(5);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
-var _react = __webpack_require__(0);
 
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _classnames = __webpack_require__(7);
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _rendering = __webpack_require__(40);
-
-var _hooks = __webpack_require__(5);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var viewType = {
-    description: _propTypes.string,
-    replaceValue: _propTypes.string,
-    title: _propTypes.string.isRequired
+  description: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  replaceValue: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  title: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"].isRequired
 };
-
 var defaultProps = {
-    description: '',
-    replaceValue: ''
+  description: '',
+  replaceValue: ''
 };
 
 /**
@@ -52796,80 +51708,55 @@ var defaultProps = {
  * )
  */
 var View = function View(props) {
-    var title = props.title,
-        description = props.description,
-        replaceValue = props.replaceValue;
+  var title = props.title,
+    description = props.description,
+    replaceValue = props.replaceValue;
+  var getConfig = Object(__WEBPACK_IMPORTED_MODULE_4__Helpers_hooks__["a" /* useConfig */])();
+  var displayMsg = Object(__WEBPACK_IMPORTED_MODULE_3__Helpers_rendering__["b" /* RenderDisplayMsg */])(description, replaceValue);
+  var useLightText = getConfig('collection', 'useLightText');
 
-
-    var getConfig = (0, _hooks.useConfig)();
-
-    var displayMsg = (0, _rendering.RenderDisplayMsg)(description, replaceValue);
-    var useLightText = getConfig('collection', 'useLightText');
-
-    /**
-     * Class name for the NoResultsView:
-     * whether we should apply dark or light theme
-     * @type {String}
-     */
-    var noResultsViewClass = (0, _classnames2.default)({
-        'consonant-NoResultsView': true,
-        'consonant-NoResultsView--withLightText': useLightText
-    });
-
-    return _react2.default.createElement(
-        'div',
-        {
-            'data-testid': 'consonant-NoResultsView',
-            className: noResultsViewClass },
-        _react2.default.createElement(
-            'strong',
-            {
-                className: 'consonant-NoResultsView-title' },
-            title
-        ),
-        description && _react2.default.createElement(
-            'div',
-            {
-                className: 'consonant-NoResultsView-description' },
-            displayMsg
-        )
-    );
+  /**
+   * Class name for the NoResultsView:
+   * whether we should apply dark or light theme
+   * @type {String}
+   */
+  var noResultsViewClass = __WEBPACK_IMPORTED_MODULE_2_classnames___default()({
+    'consonant-NoResultsView': true,
+    'consonant-NoResultsView--withLightText': useLightText
+  });
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    "data-testid": "consonant-NoResultsView",
+    className: noResultsViewClass
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("strong", {
+    className: "consonant-NoResultsView-title"
+  }, title), description && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-NoResultsView-description"
+  }, displayMsg));
 };
-
 View.propTypes = viewType;
 View.defaultProps = defaultProps;
-
-exports.default = View;
+/* harmony default export */ __webpack_exports__["a"] = (View);
 
 /***/ }),
 /* 290 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Helpers_hooks__ = __webpack_require__(5);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _classnames = __webpack_require__(7);
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _propTypes = __webpack_require__(1);
-
-var _hooks = __webpack_require__(5);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var loadMoreType = {
-    show: _propTypes.number.isRequired,
-    total: _propTypes.number.isRequired,
-    onClick: _propTypes.func.isRequired
+  show: __WEBPACK_IMPORTED_MODULE_2_prop_types__["number"].isRequired,
+  total: __WEBPACK_IMPORTED_MODULE_2_prop_types__["number"].isRequired,
+  onClick: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"].isRequired
 };
 
 /**
@@ -52887,130 +51774,103 @@ var loadMoreType = {
  * )
  */
 var LoadMore = function LoadMore(_ref) {
-    var show = _ref.show,
-        total = _ref.total,
-        onClick = _ref.onClick;
+  var show = _ref.show,
+    total = _ref.total,
+    onClick = _ref.onClick;
+  var getConfig = Object(__WEBPACK_IMPORTED_MODULE_3__Helpers_hooks__["a" /* useConfig */])();
 
-    var getConfig = (0, _hooks.useConfig)();
+  /**
+   * Authored Button Style
+   * @type {String}
+   */
+  var loadMoreButtonStyle = getConfig('pagination', 'loadMoreButton.style');
 
-    /**
-     * Authored Button Style
-     * @type {String}
-     */
-    var loadMoreButtonStyle = getConfig('pagination', 'loadMoreButton.style');
+  /**
+   * Whether we should show the quantity of results shown
+   * @type {string}
+   */
+  var showQuantity = getConfig('pagination', 'resultsQuantityShown');
 
-    /**
-     * Whether we should show the quantity of results shown
-     * @type {string}
-     */
-    var showQuantity = getConfig('pagination', 'resultsQuantityShown');
+  /**
+   * Whether we should apply theme "Three" for the load more button;
+   * @type {String}
+   */
+  var useThemeThree = getConfig('pagination', 'loadMoreButton.useThemeThree');
 
-    /**
-     * Whether we should apply theme "Three" for the load more button;
-     * @type {String}
-     */
-    var useThemeThree = getConfig('pagination', 'loadMoreButton.useThemeThree');
+  /**
+   * Authored Button Text
+   * @type {String}
+   */
+  var loadMoreButtonText = getConfig('pagination', 'i18n.loadMore.btnText');
 
-    /**
-     * Authored Button Text
-     * @type {String}
-     */
-    var loadMoreButtonText = getConfig('pagination', 'i18n.loadMore.btnText');
+  /**
+   * Authored Summary Text
+   * @type {String}
+   */
+  var loadMoreQuantityText = getConfig('pagination', 'i18n.loadMore.resultsQuantityText');
 
-    /**
-     * Authored Summary Text
-     * @type {String}
-     */
-    var loadMoreQuantityText = getConfig('pagination', 'i18n.loadMore.resultsQuantityText');
+  /**
+   * Class name for the load more component:
+   * whether it should be primary or over background;
+   * @type {String}
+   */
+  var loadMoreClass = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-LoadMore': true,
+    'consonant-LoadMore--overBg': loadMoreButtonStyle === 'over-background' && !useThemeThree,
+    'consonant-LoadMore--themeThree': useThemeThree
+  });
 
-    /**
-     * Class name for the load more component:
-     * whether it should be primary or over background;
-     * @type {String}
-     */
-    var loadMoreClass = (0, _classnames2.default)({
-        'consonant-LoadMore': true,
-        'consonant-LoadMore--overBg': loadMoreButtonStyle === 'over-background' && !useThemeThree,
-        'consonant-LoadMore--themeThree': useThemeThree
-    });
-
-    /**
-     * Summary Of Load More Results To Show To Users
-     * @type {String}
-     */
-    var summaryText = loadMoreQuantityText.replace('{start}', show).replace('{end}', total);
-
-    var shouldDisplayLoadMore = show > 0 && total > 0;
-    var shouldDisplayLoadMoreBtn = show < total;
-
-    return shouldDisplayLoadMore ? _react2.default.createElement(
-        'div',
-        {
-            'data-testid': 'consonant-LoadMore',
-            className: loadMoreClass },
-        _react2.default.createElement(
-            'div',
-            { className: 'consonant-LoadMore-inner' },
-            showQuantity && _react2.default.createElement(
-                'p',
-                {
-                    'data-testid': 'consonant-LoadMore-text',
-                    className: 'consonant-LoadMore-text' },
-                summaryText
-            ),
-            shouldDisplayLoadMoreBtn && _react2.default.createElement(
-                'button',
-                {
-                    type: 'button',
-                    'data-testid': 'consonant-LoadMore-btn',
-                    'daa-ll': loadMoreButtonText,
-                    className: 'consonant-LoadMore-btn',
-                    onClick: onClick,
-                    tabIndex: '0' },
-                loadMoreButtonText
-            )
-        )
-    ) : null;
+  /**
+   * Summary Of Load More Results To Show To Users
+   * @type {String}
+   */
+  var summaryText = loadMoreQuantityText.replace('{start}', show).replace('{end}', total);
+  var shouldDisplayLoadMore = show > 0 && total > 0;
+  var shouldDisplayLoadMoreBtn = show < total;
+  return shouldDisplayLoadMore ? /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    "data-testid": "consonant-LoadMore",
+    className: loadMoreClass
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-LoadMore-inner"
+  }, showQuantity && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", {
+    "data-testid": "consonant-LoadMore-text",
+    className: "consonant-LoadMore-text"
+  }, summaryText), shouldDisplayLoadMoreBtn && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    type: "button",
+    "data-testid": "consonant-LoadMore-btn",
+    "daa-ll": loadMoreButtonText,
+    className: "consonant-LoadMore-btn",
+    onClick: onClick,
+    tabIndex: "0"
+  }, loadMoreButtonText))) : null;
 };
-
 LoadMore.propTypes = loadMoreType;
-
-exports.default = LoadMore;
+/* harmony default export */ __webpack_exports__["a"] = (LoadMore);
 
 /***/ }),
 /* 291 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Helpers_hooks__ = __webpack_require__(5);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _classnames = __webpack_require__(7);
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _propTypes = __webpack_require__(1);
-
-var _hooks = __webpack_require__(5);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var bookmarksType = {
-    showBookmarks: _propTypes.bool,
-    savedCardsCount: _propTypes.number,
-    onClick: _propTypes.func.isRequired
+  showBookmarks: __WEBPACK_IMPORTED_MODULE_2_prop_types__["bool"],
+  savedCardsCount: __WEBPACK_IMPORTED_MODULE_2_prop_types__["number"],
+  onClick: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"].isRequired
 };
-
 var defaultProps = {
-    showBookmarks: false,
-    savedCardsCount: 0
+  showBookmarks: false,
+  savedCardsCount: 0
 };
 
 /**
@@ -53028,114 +51888,92 @@ var defaultProps = {
  * )
  */
 var Bookmarks = function Bookmarks(props) {
-    var onClick = props.onClick,
-        showBookmarks = props.showBookmarks,
-        savedCardsCount = props.savedCardsCount;
+  var onClick = props.onClick,
+    showBookmarks = props.showBookmarks,
+    savedCardsCount = props.savedCardsCount;
+  var getConfig = Object(__WEBPACK_IMPORTED_MODULE_3__Helpers_hooks__["a" /* useConfig */])();
 
+  /**
+   **** Authored Configs ****
+   */
+  var bookmarkTitle = getConfig('bookmarks', 'i18n.leftFilterPanel.filterTitle');
+  var bookmarkSelectedIcon = getConfig('bookmarks', 'leftFilterPanel.selectBookmarksIcon');
+  var bookmarkUnselectedIcon = getConfig('bookmarks', 'leftFilterPanel.unselectBookmarksIcon');
 
-    var getConfig = (0, _hooks.useConfig)();
+  /**
+   * Whether the bookmarks icon should be selected or not
+   * @type {String}
+   */
+  var bookmarkIcon = showBookmarks ? bookmarkSelectedIcon : bookmarkUnselectedIcon;
 
-    /**
-     **** Authored Configs ****
-     */
-    var bookmarkTitle = getConfig('bookmarks', 'i18n.leftFilterPanel.filterTitle');
-    var bookmarkSelectedIcon = getConfig('bookmarks', 'leftFilterPanel.selectBookmarksIcon');
-    var bookmarkUnselectedIcon = getConfig('bookmarks', 'leftFilterPanel.unselectBookmarksIcon');
+  /**
+   * Background image CSS styles for the bookmarks icon
+   * @type {Object}
+   */
+  var iconStyles = {
+    backgroundImage: bookmarkIcon ? "url(".concat(bookmarkIcon, ")") : ''
+  };
 
-    /**
-     * Whether the bookmarks icon should be selected or not
-     * @type {String}
-     */
-    var bookmarkIcon = showBookmarks ? bookmarkSelectedIcon : bookmarkUnselectedIcon;
-
-    /**
-     * Background image CSS styles for the bookmarks icon
-     * @type {Object}
-     */
-    var iconStyles = {
-        backgroundImage: bookmarkIcon ? 'url(' + bookmarkIcon + ')' : ''
-    };
-
-    /**
-     * Class name for the bookmarks button:
-     * CSS that handles whether the bookmarks icon is selected or not
-     * @type {String}
-     */
-    var bookmarkClass = (0, _classnames2.default)({
-        'consonant-Bookmarks': true,
-        'is-selected': showBookmarks
-    });
-
-    return _react2.default.createElement(
-        'button',
-        {
-            'data-testid': 'consonant-Bookmarks',
-            type: 'button',
-            onClick: onClick,
-            className: bookmarkClass,
-            tabIndex: '0' },
-        _react2.default.createElement(
-            'span',
-            {
-                className: 'consonant-Bookmarks-icoWrapper' },
-            _react2.default.createElement('span', {
-                style: iconStyles,
-                className: 'consonant-Bookmarks-ico',
-                'data-testid': 'consonant-Bookmarks-ico' }),
-            _react2.default.createElement(
-                'span',
-                {
-                    className: 'consonant-Bookmarks-title' },
-                bookmarkTitle
-            )
-        ),
-        _react2.default.createElement(
-            'span',
-            {
-                'data-testid': 'consonant-Bookmarks-itemBadge',
-                className: 'consonant-Bookmarks-itemBadge' },
-            savedCardsCount
-        )
-    );
+  /**
+   * Class name for the bookmarks button:
+   * CSS that handles whether the bookmarks icon is selected or not
+   * @type {String}
+   */
+  var bookmarkClass = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-Bookmarks': true,
+    'is-selected': showBookmarks
+  });
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    "data-testid": "consonant-Bookmarks",
+    type: "button",
+    onClick: onClick,
+    className: bookmarkClass,
+    tabIndex: "0"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    className: "consonant-Bookmarks-icoWrapper"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    style: iconStyles,
+    className: "consonant-Bookmarks-ico",
+    "data-testid": "consonant-Bookmarks-ico"
+  }), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    className: "consonant-Bookmarks-title"
+  }, bookmarkTitle)), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    "data-testid": "consonant-Bookmarks-itemBadge",
+    className: "consonant-Bookmarks-itemBadge"
+  }, savedCardsCount));
 };
-
 Bookmarks.propTypes = bookmarksType;
 Bookmarks.defaultProps = defaultProps;
-
-exports.default = Bookmarks;
+/* harmony default export */ __webpack_exports__["a"] = (Bookmarks);
 
 /***/ }),
 /* 292 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Helpers_hooks__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Helpers_general__ = __webpack_require__(6);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _hooks = __webpack_require__(5);
-
-var _general = __webpack_require__(6);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var paginatorType = {
-    onClick: _propTypes.func.isRequired,
-    pageCount: _propTypes.number.isRequired,
-    totalPages: _propTypes.number.isRequired,
-    totalResults: _propTypes.number.isRequired,
-    showItemsPerPage: _propTypes.number.isRequired,
-    currentPageNumber: _propTypes.number.isRequired
+  onClick: __WEBPACK_IMPORTED_MODULE_1_prop_types__["func"].isRequired,
+  pageCount: __WEBPACK_IMPORTED_MODULE_1_prop_types__["number"].isRequired,
+  totalPages: __WEBPACK_IMPORTED_MODULE_1_prop_types__["number"].isRequired,
+  totalResults: __WEBPACK_IMPORTED_MODULE_1_prop_types__["number"].isRequired,
+  showItemsPerPage: __WEBPACK_IMPORTED_MODULE_1_prop_types__["number"].isRequired,
+  currentPageNumber: __WEBPACK_IMPORTED_MODULE_1_prop_types__["number"].isRequired
 };
 
 /**
@@ -53156,209 +51994,167 @@ var paginatorType = {
  * )
  */
 var Paginator = function Paginator(props) {
-    var pageCount = props.pageCount,
-        currentPageNumber = props.currentPageNumber,
-        totalPages = props.totalPages,
-        onClick = props.onClick,
-        showItemsPerPage = props.showItemsPerPage,
-        totalResults = props.totalResults;
+  var pageCount = props.pageCount,
+    currentPageNumber = props.currentPageNumber,
+    totalPages = props.totalPages,
+    onClick = props.onClick,
+    showItemsPerPage = props.showItemsPerPage,
+    totalResults = props.totalResults;
+  var getConfig = Object(__WEBPACK_IMPORTED_MODULE_2__Helpers_hooks__["a" /* useConfig */])();
 
+  /**
+   * Authored Quantity Text
+   * @type {String}
+   */
+  var quantityText = getConfig('pagination', 'i18n.paginator.resultsQuantityText');
 
-    var getConfig = (0, _hooks.useConfig)();
+  /**
+   * Whether we should show the quantity of results shown
+   * @type {string}
+   */
+  var showQuantity = getConfig('pagination', 'resultsQuantityShown');
 
-    /**
-     * Authored Quantity Text
-     * @type {String}
-     */
-    var quantityText = getConfig('pagination', 'i18n.paginator.resultsQuantityText');
+  /**
+   * Authored Previous Label
+   * @type {String}
+   */
+  var prevLabel = getConfig('pagination', 'i18n.paginator.prevLabel');
 
-    /**
-     * Whether we should show the quantity of results shown
-     * @type {string}
-     */
-    var showQuantity = getConfig('pagination', 'resultsQuantityShown');
+  /**
+   * Authored Next Label
+   * @type {String}
+   */
+  var nextLabel = getConfig('pagination', 'i18n.paginator.nextLabel');
 
-    /**
-     * Authored Previous Label
-     * @type {String}
-     */
-    var prevLabel = getConfig('pagination', 'i18n.paginator.prevLabel');
+  /**
+   * Use Light Text
+   * @type {String}
+   */
+  var useLightText = getConfig('collection', 'useLightText');
 
-    /**
-     * Authored Next Label
-     * @type {String}
-     */
-    var nextLabel = getConfig('pagination', 'i18n.paginator.nextLabel');
+  /**
+   * pagination - used for aria group label
+   * @type {String}
+   */
+  var pagination = getConfig('pagination', 'i18n.paginator.pagination');
 
-    /**
-     * Use Light Text
-     * @type {String}
-     */
-    var useLightText = getConfig('collection', 'useLightText');
+  /**
+   * Start and end indexes of pages to build
+   * @type {Int, Int}
+   */
+  var _getPageStartEnd = Object(__WEBPACK_IMPORTED_MODULE_3__Helpers_general__["i" /* getPageStartEnd */])(currentPageNumber, pageCount, totalPages),
+    _getPageStartEnd2 = _slicedToArray(_getPageStartEnd, 2),
+    pageStart = _getPageStartEnd2[0],
+    pageEnd = _getPageStartEnd2[1];
+  /**
+   * Range of pages to build
+   * @type {Array}
+   */
+  var pageRange = Object(__WEBPACK_IMPORTED_MODULE_3__Helpers_general__["b" /* generateRange */])(pageStart, pageEnd);
+  var BASE_10 = 10;
+  var nextPageNotNegative = currentPageNumber - 1 > 0;
+  var nextPageNotOutOfBounds = currentPageNumber + 1 < totalPages;
 
-    /**
-     * pagination - used for aria group label
-     * @type {String}
-     */
-    var pagination = getConfig('pagination', 'i18n.paginator.pagination');
+  /**
+   * GlobalNab height needed for scrolling
+   */
+  var globalNavHeight = Object(__WEBPACK_IMPORTED_MODULE_3__Helpers_general__["g" /* getGlobalNavHeight */])();
 
-    /**
-     * Start and end indexes of pages to build
-     * @type {Int, Int}
-     */
+  /**
+   * Handles click of prev, next or number button
+   *
+   * @param {ClickEvent} e
+   * @listens ClickEvent
+   */
+  var handleClick = function handleClick(clickEvt) {
+    var target = clickEvt.target;
+    clickEvt.preventDefault();
+    var nextPage = null;
+    var previousButtonClicked = target.classList.contains('consonant-Pagination-btn--prev');
+    var nextButtonClicked = target.classList.contains('consonant-Pagination-btn--next');
+    if (previousButtonClicked) {
+      nextPage = nextPageNotNegative ? currentPageNumber - 1 : 1;
+    } else if (nextButtonClicked) {
+      nextPage = nextPageNotOutOfBounds ? currentPageNumber + 1 : totalPages;
+    } else {
+      nextPage = parseInt(target.firstChild.nodeValue, BASE_10);
+    }
+    var caasWrapper = target.closest('.consonant-Wrapper') || target.closest('section');
+    if (caasWrapper && caasWrapper.getBoundingClientRect().y < 0) {
+      var scrollTargetPosition = caasWrapper.getBoundingClientRect().top + window.scrollY - globalNavHeight;
+      window.scrollTo({
+        left: 0,
+        top: scrollTargetPosition,
+        behavior: 'smooth'
+      });
+    }
+    onClick(nextPage);
+  };
 
-    var _getPageStartEnd = (0, _general.getPageStartEnd)(currentPageNumber, pageCount, totalPages),
-        _getPageStartEnd2 = _slicedToArray(_getPageStartEnd, 2),
-        pageStart = _getPageStartEnd2[0],
-        pageEnd = _getPageStartEnd2[1];
-    /**
-     * Range of pages to build
-     * @type {Array}
-     */
-
-
-    var pageRange = (0, _general.generateRange)(pageStart, pageEnd);
-
-    var BASE_10 = 10;
-    var nextPageNotNegative = currentPageNumber - 1 > 0;
-    var nextPageNotOutOfBounds = currentPageNumber + 1 < totalPages;
-
-    /**
-     * GlobalNab height needed for scrolling
-     */
-    var globalNavHeight = (0, _general.getGlobalNavHeight)();
-
-    /**
-     * Handles click of prev, next or number button
-     *
-     * @param {ClickEvent} e
-     * @listens ClickEvent
-     */
-    var handleClick = function handleClick(clickEvt) {
-        var target = clickEvt.target;
-
-
-        clickEvt.preventDefault();
-
-        var nextPage = null;
-        var previousButtonClicked = target.classList.contains('consonant-Pagination-btn--prev');
-        var nextButtonClicked = target.classList.contains('consonant-Pagination-btn--next');
-
-        if (previousButtonClicked) {
-            nextPage = nextPageNotNegative ? currentPageNumber - 1 : 1;
-        } else if (nextButtonClicked) {
-            nextPage = nextPageNotOutOfBounds ? currentPageNumber + 1 : totalPages;
-        } else {
-            nextPage = parseInt(target.firstChild.nodeValue, BASE_10);
-        }
-        var caasWrapper = target.closest('.consonant-Wrapper') || target.closest('section');
-        if (caasWrapper && caasWrapper.getBoundingClientRect().y < 0) {
-            var scrollTargetPosition = caasWrapper.getBoundingClientRect().top + window.scrollY - globalNavHeight;
-            window.scrollTo({ left: 0, top: scrollTargetPosition, behavior: 'smooth' });
-        }
-        onClick(nextPage);
-    };
-
-    /**
-     * Summary Of Pagination Results
-     * @type {String}
-     */
-    var paginationSummary = quantityText.replace('{start}', (0, _general.getStartNumber)(currentPageNumber, showItemsPerPage)).replace('{end}', (0, _general.getEndNumber)(currentPageNumber, showItemsPerPage, totalResults)).replace('{total}', totalResults);
-
-    return _react2.default.createElement(
-        'div',
-        {
-            role: 'group',
-            'aria-labelledby': pagination || 'pagination',
-            className: useLightText ? 'consonant-Pagination lightText' : 'consonant-Pagination' },
-        _react2.default.createElement(
-            'div',
-            {
-                className: 'consonant-Pagination-paginator' },
-            _react2.default.createElement(
-                'button',
-                {
-                    'data-testid': 'consonant-Pagination-btn--prev',
-                    onClick: handleClick,
-                    type: 'button',
-                    className: 'consonant-Pagination-btn consonant-Pagination-btn--prev',
-                    tabIndex: '0' },
-                prevLabel
-            ),
-            _react2.default.createElement(
-                'ul',
-                {
-                    className: 'consonant-Pagination-items' },
-                pageRange.map(function (item) {
-                    return _react2.default.createElement(
-                        'li',
-                        {
-                            key: item,
-                            className: currentPageNumber === item ? 'consonant-Pagination-item is-active' : 'consonant-Pagination-item' },
-                        _react2.default.createElement(
-                            'button',
-                            {
-                                'data-testid': 'consonant-Pagination-itemBtn',
-                                onClick: handleClick,
-                                type: 'button',
-                                className: 'consonant-Pagination-itemBtn',
-                                tabIndex: '0' },
-                            item
-                        )
-                    );
-                })
-            ),
-            _react2.default.createElement(
-                'button',
-                {
-                    'data-testid': 'consonant-Pagination-btn--next',
-                    onClick: handleClick,
-                    type: 'button',
-                    className: 'consonant-Pagination-btn consonant-Pagination-btn--next',
-                    tabIndex: '0' },
-                nextLabel
-            )
-        ),
-        showQuantity && _react2.default.createElement(
-            'div',
-            {
-                'data-testid': 'consonant-Pagination-summary',
-                className: 'consonant-Pagination-summary' },
-            _react2.default.createElement(
-                'strong',
-                null,
-                paginationSummary
-            )
-        )
-    );
+  /**
+   * Summary Of Pagination Results
+   * @type {String}
+   */
+  var paginationSummary = quantityText.replace('{start}', Object(__WEBPACK_IMPORTED_MODULE_3__Helpers_general__["l" /* getStartNumber */])(currentPageNumber, showItemsPerPage)).replace('{end}', Object(__WEBPACK_IMPORTED_MODULE_3__Helpers_general__["e" /* getEndNumber */])(currentPageNumber, showItemsPerPage, totalResults)).replace('{total}', totalResults);
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    role: "group",
+    "aria-labelledby": pagination || 'pagination',
+    className: useLightText ? 'consonant-Pagination lightText' : 'consonant-Pagination'
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-Pagination-paginator"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    "data-testid": "consonant-Pagination-btn--prev",
+    onClick: handleClick,
+    type: "button",
+    className: "consonant-Pagination-btn consonant-Pagination-btn--prev",
+    tabIndex: "0"
+  }, prevLabel), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("ul", {
+    className: "consonant-Pagination-items"
+  }, pageRange.map(function (item) {
+    return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", {
+      key: item,
+      className: currentPageNumber === item ? 'consonant-Pagination-item is-active' : 'consonant-Pagination-item'
+    }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+      "data-testid": "consonant-Pagination-itemBtn",
+      onClick: handleClick,
+      type: "button",
+      className: "consonant-Pagination-itemBtn",
+      tabIndex: "0"
+    }, item));
+  })), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    "data-testid": "consonant-Pagination-btn--next",
+    onClick: handleClick,
+    type: "button",
+    className: "consonant-Pagination-btn consonant-Pagination-btn--next",
+    tabIndex: "0"
+  }, nextLabel)), showQuantity && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    "data-testid": "consonant-Pagination-summary",
+    className: "consonant-Pagination-summary"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("strong", null, paginationSummary)));
 };
-
 Paginator.propTypes = paginatorType;
-
-exports.default = Paginator;
+/* harmony default export */ __webpack_exports__["a"] = (Paginator);
 
 /***/ }),
 /* 293 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Helpers = __webpack_require__(22);
-
-var _constants = __webpack_require__(15);
-
-var _cards = __webpack_require__(294);
-
-var _general = __webpack_require__(6);
-
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CardFilterer; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Helpers__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__cards__ = __webpack_require__(294);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__general__ = __webpack_require__(6);
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+
+
+
+
 
 /**
  * Class that will constrain result set based on current state of the component
@@ -53366,237 +52162,209 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @export
  * @class CardFilterer
  */
-var CardFilterer = function () {
-    /**
-     * Creates an instance of a CardFilterer
-     *
-     * @param {*} cardsToFilter
-     * @param {*} randomSortId
-     * @param {*} reservoirSize
-     * @memberof CardFilterer
-     */
-    function CardFilterer(cardsToFilter, randomSortId, sampleSize, reservoirSize) {
-        var ids = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : [];
+var CardFilterer = /*#__PURE__*/function () {
+  /**
+   * Creates an instance of a CardFilterer
+   *
+   * @param {*} cardsToFilter
+   * @param {*} randomSortId
+   * @param {*} reservoirSize
+   * @memberof CardFilterer
+   */
+  function CardFilterer(cardsToFilter, randomSortId, sampleSize, reservoirSize) {
+    var ids = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : [];
+    _classCallCheck(this, CardFilterer);
+    this.sampleSize = sampleSize;
+    this.filteredCards = cardsToFilter;
+    this.randomSortId = randomSortId;
+    this.reservoirSize = reservoirSize;
+    this.featuredCards = Object(__WEBPACK_IMPORTED_MODULE_0__Helpers__["g" /* getFeaturedCards */])(ids, this.filteredCards);
+  }
 
-        _classCallCheck(this, CardFilterer);
-
-        this.sampleSize = sampleSize;
-        this.filteredCards = cardsToFilter;
-        this.randomSortId = randomSortId;
-        this.reservoirSize = reservoirSize;
-        this.featuredCards = (0, _Helpers.getFeaturedCards)(ids, this.filteredCards);
+  /**
+   * Given a set of filters a user selected, this method will return all cards that contain
+   * those filtlers
+   *
+   * @param {*} activeFilters
+   * @param {*} activePanels
+   * @param {*} filterType
+   * @param {*} filterTypes
+   * @return {*} Chainable
+   * @memberof CardFilterer
+   */
+  return _createClass(CardFilterer, [{
+    key: "filterCards",
+    value: function filterCards(activeFilters, activePanels, filterType, filterTypes, currCategories) {
+      this.filteredCards = Object(__WEBPACK_IMPORTED_MODULE_0__Helpers__["i" /* getFilteredCards */])(this.filteredCards, activeFilters, activePanels, filterType, filterTypes, currCategories);
+      return this;
     }
 
     /**
-     * Given a set of filters a user selected, this method will return all cards that contain
-     * those filtlers
+     * Given a user search query and the fields to search, this method will return all cards that
+     * match that query.
      *
-     * @param {*} activeFilters
-     * @param {*} activePanels
-     * @param {*} filterType
-     * @param {*} filterTypes
+     * @param {*} searchQuery
+     * @param {*} searchFields
      * @return {*} Chainable
      * @memberof CardFilterer
      */
+  }, {
+    key: "searchCards",
+    value: function searchCards(searchQuery, searchFields, cardStyle) {
+      var query = searchQuery.trim().toLowerCase();
+      var cardsMatchingSearch = Object(__WEBPACK_IMPORTED_MODULE_0__Helpers__["c" /* getCardsMatchingSearch */])(searchQuery, this.filteredCards, searchFields);
+      if (query.length >= 3 && cardStyle !== 'custom-card') {
+        this.filteredCards = cardsMatchingSearch.map(function (card) {
+          return searchFields.reduce(function (baseCard, searchField) {
+            return Object(__WEBPACK_IMPORTED_MODULE_0__Helpers__["s" /* highlightCard */])(baseCard, searchField, query);
+          }, card);
+        });
+      } else {
+        this.filteredCards = cardsMatchingSearch;
+      }
+      return this;
+    }
 
-
-    _createClass(CardFilterer, [{
-        key: 'filterCards',
-        value: function filterCards(activeFilters, activePanels, filterType, filterTypes, currCategories) {
-            this.filteredCards = (0, _Helpers.getFilteredCards)(this.filteredCards, activeFilters, activePanels, filterType, filterTypes, currCategories);
-            return this;
-        }
-
-        /**
-         * Given a user search query and the fields to search, this method will return all cards that
-         * match that query.
-         *
-         * @param {*} searchQuery
-         * @param {*} searchFields
-         * @return {*} Chainable
-         * @memberof CardFilterer
-         */
-
-    }, {
-        key: 'searchCards',
-        value: function searchCards(searchQuery, searchFields, cardStyle) {
-            var query = searchQuery.trim().toLowerCase();
-            var cardsMatchingSearch = (0, _Helpers.getCardsMatchingSearch)(searchQuery, this.filteredCards, searchFields);
-
-            if (query.length >= 3 && cardStyle !== 'custom-card') {
-                this.filteredCards = cardsMatchingSearch.map(function (card) {
-                    return searchFields.reduce(function (baseCard, searchField) {
-                        return (0, _Helpers.highlightCard)(baseCard, searchField, query);
-                    }, card);
-                });
+    /**
+     * This method will return a chainable of all cards sorted by a given sort option
+     *
+     * @param {*} sortOption
+     * @return {*} Chainable
+     * @memberof CardFilterer
+     */
+  }, {
+    key: "sortCards",
+    value: function sortCards(sortOption) {
+      var eventFilter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+      var featuredCardIds = arguments.length > 2 ? arguments[2] : undefined;
+      var hideCtaIds = arguments.length > 3 ? arguments[3] : undefined;
+      var isFirstLoad = arguments.length > 4 ? arguments[4] : undefined;
+      if (!this.filteredCards.length) return this;
+      var sortType = sortOption ? sortOption.sort.toLowerCase() : null;
+      if (eventFilter.length > 0) {
+        var _getEventSort = Object(__WEBPACK_IMPORTED_MODULE_0__Helpers__["f" /* getEventSort */])(this.filteredCards, eventFilter),
+          _getEventSort$visible = _getEventSort.visibleSessions,
+          visibleSessions = _getEventSort$visible === void 0 ? [] : _getEventSort$visible;
+        this.filteredCards = visibleSessions;
+      }
+      switch (sortType) {
+        case __WEBPACK_IMPORTED_MODULE_1__constants__["s" /* SORT_TYPES */].DATEASC:
+          this.filteredCards = Object(__WEBPACK_IMPORTED_MODULE_0__Helpers__["d" /* getDateAscSort */])(this.filteredCards);
+          break;
+        case __WEBPACK_IMPORTED_MODULE_1__constants__["s" /* SORT_TYPES */].DATEDESC:
+          this.filteredCards = Object(__WEBPACK_IMPORTED_MODULE_0__Helpers__["e" /* getDateDescSort */])(this.filteredCards);
+          break;
+        case __WEBPACK_IMPORTED_MODULE_1__constants__["s" /* SORT_TYPES */].MODIFIEDDESC:
+          this.filteredCards = Object(__WEBPACK_IMPORTED_MODULE_0__Helpers__["k" /* getModifiedDescSort */])(this.filteredCards);
+          break;
+        case __WEBPACK_IMPORTED_MODULE_1__constants__["s" /* SORT_TYPES */].MODIFIEDASC:
+          this.filteredCards = Object(__WEBPACK_IMPORTED_MODULE_0__Helpers__["j" /* getModifiedAscSort */])(this.filteredCards);
+          break;
+        case __WEBPACK_IMPORTED_MODULE_1__constants__["s" /* SORT_TYPES */].EVENTSORT:
+          {
+            var _getEventSort2 = Object(__WEBPACK_IMPORTED_MODULE_0__Helpers__["f" /* getEventSort */])(this.filteredCards, eventFilter),
+              nextTransitionMs = _getEventSort2.nextTransitionMs,
+              _getEventSort2$visibl = _getEventSort2.visibleSessions,
+              _visibleSessions = _getEventSort2$visibl === void 0 ? [] : _getEventSort2$visibl;
+            this.filteredCards = _visibleSessions;
+            if (nextTransitionMs > 0) {
+              this.nextTransitionMs = nextTransitionMs;
             } else {
-                this.filteredCards = cardsMatchingSearch;
+              this.nextTransitionMs = 0;
             }
+            break;
+          }
+        case __WEBPACK_IMPORTED_MODULE_1__constants__["s" /* SORT_TYPES */].FEATURED:
+          this.filteredCards = Object(__WEBPACK_IMPORTED_MODULE_0__Helpers__["h" /* getFeaturedSort */])(this.filteredCards);
+          break;
+        case __WEBPACK_IMPORTED_MODULE_1__constants__["s" /* SORT_TYPES */].TITLEASC:
+          this.filteredCards = Object(__WEBPACK_IMPORTED_MODULE_0__Helpers__["n" /* getTitleAscSort */])(this.filteredCards);
+          break;
+        case __WEBPACK_IMPORTED_MODULE_1__constants__["s" /* SORT_TYPES */].TITLEDESC:
+          this.filteredCards = Object(__WEBPACK_IMPORTED_MODULE_0__Helpers__["o" /* getTitleDescSort */])(this.filteredCards);
+          break;
+        case __WEBPACK_IMPORTED_MODULE_1__constants__["s" /* SORT_TYPES */].RANDOM:
+          this.filteredCards = Object(__WEBPACK_IMPORTED_MODULE_0__Helpers__["m" /* getRandomSort */])(this.filteredCards, this.randomSortId, this.sampleSize, this.reservoirSize);
+          break;
+        default:
+          break;
+      }
+      if (isFirstLoad || sortType === __WEBPACK_IMPORTED_MODULE_1__constants__["s" /* SORT_TYPES */].FEATURED) {
+        this.filteredCards = Object(__WEBPACK_IMPORTED_MODULE_3__general__["y" /* removeDuplicatesByKey */])(this.featuredCards.concat(this.filteredCards), 'id');
+      }
+      return this;
+    }
+    /**
+     * If cards were authored to be shown or hidden based off a given date range, this method
+     * constrains the result set to only cards that should be shown within that date interval.
+     *
+     * @return {*} Chainable
+     * @memberof CardFilterer
+     */
+  }, {
+    key: "keepCardsWithinDateRange",
+    value: function keepCardsWithinDateRange() {
+      if (!this.filteredCards.length) return this;
+      this.filteredCards = Object(__WEBPACK_IMPORTED_MODULE_2__cards__["a" /* filterCardsByDateRange */])(this.filteredCards);
+      return this;
+    }
+    /**
+     * If a bookmark only collection is authored, this method will constrain result set to only
+     * cards that were saved.
+     *
+     * @param {*} onlyShowBookmarks
+     * @param {*} bookmarkedCardIds
+     * @param {*} showBookmarks
+     * @return {*} Chainable
+     * @memberof CardFilterer
+     */
+  }, {
+    key: "keepBookmarkedCardsOnly",
+    value: function keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks) {
+      if (onlyShowBookmarks || showBookmarks) {
+        this.filteredCards = this.filteredCards.filter(function (card) {
+          return bookmarkedCardIds.includes(card.id);
+        });
+      }
+      return this;
+    }
+  }, {
+    key: "removeCards",
+    value: function removeCards(ids) {
+      this.filteredCards = this.filteredCards.filter(function (card) {
+        return !ids.has(card.id);
+      });
+      return this;
+    }
 
-            return this;
-        }
-
-        /**
-         * This method will return a chainable of all cards sorted by a given sort option
-         *
-         * @param {*} sortOption
-         * @return {*} Chainable
-         * @memberof CardFilterer
-         */
-
-    }, {
-        key: 'sortCards',
-        value: function sortCards(sortOption) {
-            var eventFilter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-            var featuredCardIds = arguments[2];
-            var hideCtaIds = arguments[3];
-            var isFirstLoad = arguments[4];
-
-            if (!this.filteredCards.length) return this;
-
-            var sortType = sortOption ? sortOption.sort.toLowerCase() : null;
-            if (eventFilter.length > 0) {
-                var _getEventSort = (0, _Helpers.getEventSort)(this.filteredCards, eventFilter),
-                    _getEventSort$visible = _getEventSort.visibleSessions,
-                    visibleSessions = _getEventSort$visible === undefined ? [] : _getEventSort$visible;
-
-                this.filteredCards = visibleSessions;
-            }
-            switch (sortType) {
-                case _constants.SORT_TYPES.DATEASC:
-                    this.filteredCards = (0, _Helpers.getDateAscSort)(this.filteredCards);
-                    break;
-                case _constants.SORT_TYPES.DATEDESC:
-                    this.filteredCards = (0, _Helpers.getDateDescSort)(this.filteredCards);
-                    break;
-                case _constants.SORT_TYPES.MODIFIEDDESC:
-                    this.filteredCards = (0, _Helpers.getModifiedDescSort)(this.filteredCards);
-                    break;
-                case _constants.SORT_TYPES.MODIFIEDASC:
-                    this.filteredCards = (0, _Helpers.getModifiedAscSort)(this.filteredCards);
-                    break;
-                case _constants.SORT_TYPES.EVENTSORT:
-                    {
-                        var _getEventSort2 = (0, _Helpers.getEventSort)(this.filteredCards, eventFilter),
-                            nextTransitionMs = _getEventSort2.nextTransitionMs,
-                            _getEventSort2$visibl = _getEventSort2.visibleSessions,
-                            _visibleSessions = _getEventSort2$visibl === undefined ? [] : _getEventSort2$visibl;
-
-                        this.filteredCards = _visibleSessions;
-
-                        if (nextTransitionMs > 0) {
-                            this.nextTransitionMs = nextTransitionMs;
-                        } else {
-                            this.nextTransitionMs = 0;
-                        }
-
-                        break;
-                    }
-                case _constants.SORT_TYPES.FEATURED:
-                    this.filteredCards = (0, _Helpers.getFeaturedSort)(this.filteredCards);
-                    break;
-                case _constants.SORT_TYPES.TITLEASC:
-                    this.filteredCards = (0, _Helpers.getTitleAscSort)(this.filteredCards);
-                    break;
-                case _constants.SORT_TYPES.TITLEDESC:
-                    this.filteredCards = (0, _Helpers.getTitleDescSort)(this.filteredCards);
-                    break;
-                case _constants.SORT_TYPES.RANDOM:
-                    this.filteredCards = (0, _Helpers.getRandomSort)(this.filteredCards, this.randomSortId, this.sampleSize, this.reservoirSize);
-                    break;
-                default:
-                    break;
-            }
-            if (isFirstLoad || sortType === _constants.SORT_TYPES.FEATURED) {
-                this.filteredCards = (0, _general.removeDuplicatesByKey)(this.featuredCards.concat(this.filteredCards), 'id');
-            }
-            return this;
-        }
-        /**
-         * If cards were authored to be shown or hidden based off a given date range, this method
-         * constrains the result set to only cards that should be shown within that date interval.
-         *
-         * @return {*} Chainable
-         * @memberof CardFilterer
-         */
-
-    }, {
-        key: 'keepCardsWithinDateRange',
-        value: function keepCardsWithinDateRange() {
-            if (!this.filteredCards.length) return this;
-
-            this.filteredCards = (0, _cards.filterCardsByDateRange)(this.filteredCards);
-
-            return this;
-        }
-        /**
-         * If a bookmark only collection is authored, this method will constrain result set to only
-         * cards that were saved.
-         *
-         * @param {*} onlyShowBookmarks
-         * @param {*} bookmarkedCardIds
-         * @param {*} showBookmarks
-         * @return {*} Chainable
-         * @memberof CardFilterer
-         */
-
-    }, {
-        key: 'keepBookmarkedCardsOnly',
-        value: function keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks) {
-            if (onlyShowBookmarks || showBookmarks) {
-                this.filteredCards = this.filteredCards.filter(function (card) {
-                    return bookmarkedCardIds.includes(card.id);
-                });
-            }
-            return this;
-        }
-    }, {
-        key: 'removeCards',
-        value: function removeCards(ids) {
-            this.filteredCards = this.filteredCards.filter(function (card) {
-                return !ids.has(card.id);
-            });
-            return this;
-        }
-
-        /**
-         * If a total card limit is authored, this method will truncate returned cards to adhere to
-         * that limit.
-         *
-         * @param {*} totalCardLimit
-         * @return {*} Chainable
-         * @memberof CardFilterer
-         */
-
-    }, {
-        key: 'truncateList',
-        value: function truncateList(totalCardLimit) {
-            if (!this.filteredCards.length) return this;
-
-            this.filteredCards = (0, _general.truncateList)(totalCardLimit, this.filteredCards);
-
-            return this;
-        }
-    }]);
-
-    return CardFilterer;
+    /**
+     * If a total card limit is authored, this method will truncate returned cards to adhere to
+     * that limit.
+     *
+     * @param {*} totalCardLimit
+     * @return {*} Chainable
+     * @memberof CardFilterer
+     */
+  }, {
+    key: "truncateList",
+    value: function truncateList(totalCardLimit) {
+      if (!this.filteredCards.length) return this;
+      this.filteredCards = Object(__WEBPACK_IMPORTED_MODULE_3__general__["E" /* truncateList */])(totalCardLimit, this.filteredCards);
+      return this;
+    }
+  }]);
 }();
 
-exports.default = CardFilterer;
 
 /***/ }),
 /* 294 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* unused harmony export getCardDate */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return filterCardsByDateRange; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__general__ = __webpack_require__(6);
 
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.filterCardsByDateRange = exports.getCardDate = undefined;
-
-var _general = __webpack_require__(6);
 
 /**
  * Converts date to milliseconds
@@ -53604,7 +52372,7 @@ var _general = __webpack_require__(6);
  * @returns {Number} - a number representing the milliseconds elapsed between
  * 1 January 1970 00:00:00 UTC and the given date
  */
-var getCardDate = exports.getCardDate = function getCardDate(date) {
+var getCardDate = function getCardDate(date) {
   return new Date(date).getTime();
 };
 
@@ -53613,86 +52381,73 @@ var getCardDate = exports.getCardDate = function getCardDate(date) {
  * @param {Array} cards - cards array
  * @returns {Array} - All cards that are inside the show card date window
  */
-var filterCardsByDateRange = exports.filterCardsByDateRange = function filterCardsByDateRange() {
+var filterCardsByDateRange = function filterCardsByDateRange() {
   var cards = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-
   var currentDate = new Date().getTime();
-
   return cards.filter(function (card) {
-    var showCardFromField = (0, _general.getByPath)(card, 'showCard.from', '');
-    var showCardUntilField = (0, _general.getByPath)(card, 'showCard.until', '');
-
+    var showCardFromField = Object(__WEBPACK_IMPORTED_MODULE_0__general__["c" /* getByPath */])(card, 'showCard.from', '');
+    var showCardUntilField = Object(__WEBPACK_IMPORTED_MODULE_0__general__["c" /* getByPath */])(card, 'showCard.until', '');
     if (!showCardFromField || !showCardUntilField) return true;
-
     var showCardFromDate = getCardDate(showCardFromField);
     var showCardUntilDate = getCardDate(showCardUntilField);
-
     return currentDate >= showCardFromDate && currentDate <= showCardUntilDate;
   });
 };
 
 /***/ }),
 /* 295 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__types_config__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Search_SearchIcon__ = __webpack_require__(296);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Group__ = __webpack_require__(297);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Helpers_rendering__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Helpers_general__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Helpers_hooks__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__Helpers_constants__ = __webpack_require__(15);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var _react = __webpack_require__(0);
 
-var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(7);
 
-var _classnames2 = _interopRequireDefault(_classnames);
 
-var _propTypes = __webpack_require__(1);
 
-var _config = __webpack_require__(20);
-
-var _SearchIcon = __webpack_require__(296);
-
-var _SearchIcon2 = _interopRequireDefault(_SearchIcon);
-
-var _Group = __webpack_require__(297);
-
-var _rendering = __webpack_require__(40);
-
-var _general = __webpack_require__(6);
-
-var _hooks = __webpack_require__(5);
-
-var _constants = __webpack_require__(15);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var filtersPanelTopType = {
-    resQty: _propTypes.number,
-    showLimitedFiltersQty: _propTypes.bool,
-    sortComponent: _propTypes.node.isRequired,
-    windowWidth: _propTypes.number.isRequired,
-    onFilterClick: _propTypes.func.isRequired,
-    onShowAllClick: _propTypes.func.isRequired,
-    searchComponent: _propTypes.node.isRequired,
-    searchQuery: _propTypes.string,
-    filters: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_config.filterType)),
-    onCheckboxClick: _propTypes.func.isRequired,
-    onClearAllFilters: _propTypes.func.isRequired,
-    onClearFilterItems: _propTypes.func.isRequired,
-    filterPanelEnabled: _propTypes.bool.isRequired
+  resQty: __WEBPACK_IMPORTED_MODULE_2_prop_types__["number"],
+  showLimitedFiltersQty: __WEBPACK_IMPORTED_MODULE_2_prop_types__["bool"],
+  sortComponent: __WEBPACK_IMPORTED_MODULE_2_prop_types__["node"].isRequired,
+  windowWidth: __WEBPACK_IMPORTED_MODULE_2_prop_types__["number"].isRequired,
+  onFilterClick: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"].isRequired,
+  onShowAllClick: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"].isRequired,
+  searchComponent: __WEBPACK_IMPORTED_MODULE_2_prop_types__["node"].isRequired,
+  searchQuery: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"],
+  filters: Object(__WEBPACK_IMPORTED_MODULE_2_prop_types__["arrayOf"])(Object(__WEBPACK_IMPORTED_MODULE_2_prop_types__["shape"])(__WEBPACK_IMPORTED_MODULE_3__types_config__["c" /* filterType */])),
+  onCheckboxClick: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"].isRequired,
+  onClearAllFilters: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"].isRequired,
+  onClearFilterItems: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"].isRequired,
+  filterPanelEnabled: __WEBPACK_IMPORTED_MODULE_2_prop_types__["bool"].isRequired
 };
-
 var defaultProps = {
-    resQty: 0,
-    filters: [],
-    searchQuery: '',
-    showLimitedFiltersQty: false
+  resQty: 0,
+  filters: [],
+  searchQuery: '',
+  showLimitedFiltersQty: false
 };
 
 /**
@@ -53719,320 +52474,255 @@ var defaultProps = {
  * )
  */
 var FiltersPanelTop = function FiltersPanelTop(props) {
-    var filters = props.filters,
-        resQty = props.resQty,
-        onCheckboxClick = props.onCheckboxClick,
-        onFilterClick = props.onFilterClick,
-        onClearAllFilters = props.onClearAllFilters,
-        onClearFilterItems = props.onClearFilterItems,
-        showLimitedFiltersQty = props.showLimitedFiltersQty,
-        onShowAllClick = props.onShowAllClick,
-        windowWidth = props.windowWidth,
-        searchComponent = props.searchComponent,
-        searchQuery = props.searchQuery,
-        sortComponent = props.sortComponent,
-        filterPanelEnabled = props.filterPanelEnabled;
+  var filters = props.filters,
+    resQty = props.resQty,
+    onCheckboxClick = props.onCheckboxClick,
+    onFilterClick = props.onFilterClick,
+    onClearAllFilters = props.onClearAllFilters,
+    onClearFilterItems = props.onClearFilterItems,
+    showLimitedFiltersQty = props.showLimitedFiltersQty,
+    onShowAllClick = props.onShowAllClick,
+    windowWidth = props.windowWidth,
+    searchComponent = props.searchComponent,
+    searchQuery = props.searchQuery,
+    sortComponent = props.sortComponent,
+    filterPanelEnabled = props.filterPanelEnabled;
+  var getConfig = Object(__WEBPACK_IMPORTED_MODULE_8__Helpers_hooks__["a" /* useConfig */])();
 
+  /**
+   **** Authored Configs ****
+   */
+  var searchEnabled = getConfig('search', 'enabled');
+  var searchTitle = getConfig('search', 'i18n.leftFilterPanel.searchTitle');
+  var clearFilterText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.clearFilterText');
+  var clearAllFiltersText = getConfig('filterPanel', 'i18n.topPanel.clearAllFiltersText');
+  var blurMobileFilters = getConfig('filterPanel', 'topPanel.mobile.blurFilters');
+  var showTotalResults = getConfig('collection', 'showTotalResults');
+  var showTotalResultsText = getConfig('collection', 'i18n.totalResultsText');
+  var sortEnabled = getConfig('sort', 'enabled');
+  var sortOptions = getConfig('sort', 'options');
+  var filterGroupLabel = getConfig('filterPanel', 'i18n.topPanel.groupLabel');
+  var moreFiltersBtnText = getConfig('filterPanel', 'i18n.topPanel.moreFiltersBtnText');
+  var HeadingLevel = getConfig('collection', 'i18n.titleHeadingLevel');
+  var title = getConfig('collection', 'i18n.title');
+  var useLightText = getConfig('collection', 'useLightText');
+  var layoutContainer = getConfig('collection', 'layout.container');
+  var isCategoryPage = layoutContainer === 'categories';
 
-    var getConfig = (0, _hooks.useConfig)();
+  /**
+   * Top search bar identifier
+   * @type {String}
+   */
+  var searchId = 'top-search';
 
-    /**
-     **** Authored Configs ****
-     */
-    var searchEnabled = getConfig('search', 'enabled');
-    var searchTitle = getConfig('search', 'i18n.leftFilterPanel.searchTitle');
-    var clearFilterText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.clearFilterText');
-    var clearAllFiltersText = getConfig('filterPanel', 'i18n.topPanel.clearAllFiltersText');
-    var blurMobileFilters = getConfig('filterPanel', 'topPanel.mobile.blurFilters');
-    var showTotalResults = getConfig('collection', 'showTotalResults');
-    var showTotalResultsText = getConfig('collection', 'i18n.totalResultsText');
-    var sortEnabled = getConfig('sort', 'enabled');
-    var sortOptions = getConfig('sort', 'options');
-    var filterGroupLabel = getConfig('filterPanel', 'i18n.topPanel.groupLabel');
-    var moreFiltersBtnText = getConfig('filterPanel', 'i18n.topPanel.moreFiltersBtnText');
-    var HeadingLevel = getConfig('collection', 'i18n.titleHeadingLevel');
-    var title = getConfig('collection', 'i18n.title');
-    var useLightText = getConfig('collection', 'useLightText');
-    var layoutContainer = getConfig('collection', 'layout.container');
-    var isCategoryPage = layoutContainer === 'categories';
+  /**
+   **** Hooks ****
+   */
 
-    /**
-     * Top search bar identifier
-     * @type {String}
-     */
-    var searchId = 'top-search';
+  /**
+   * @typedef {String} openExpandableState - Id of the <Search /> component
+   * @description — defined in the searchId constant
+   *
+   * @typedef {Function} ExpandableToggleSetter - Handles toggling opened/closed state of
+   * the <Search /> component
+   * @description
+   *
+   * @type {[String, Function]} openExpandable
+   */
+  var _useExpandable = Object(__WEBPACK_IMPORTED_MODULE_8__Helpers_hooks__["b" /* useExpandable */])(searchId),
+    _useExpandable2 = _slicedToArray(_useExpandable, 2),
+    openExpandable = _useExpandable2[0],
+    handleExpandableToggle = _useExpandable2[1];
 
-    /**
-     **** Hooks ****
-     */
+  /**
+   **** Constants ****
+   */
 
-    /**
-     * @typedef {String} openExpandableState - Id of the <Search /> component
-     * @description — defined in the searchId constant
-     *
-     * @typedef {Function} ExpandableToggleSetter - Handles toggling opened/closed state of
-     * the <Search /> component
-     * @description
-     *
-     * @type {[String, Function]} openExpandable
-     */
+  /**
+   * Total results HTML
+   * @type {Array}
+   */
+  var totalResultsHtml = Object(__WEBPACK_IMPORTED_MODULE_6__Helpers_rendering__["c" /* RenderTotalResults */])(showTotalResultsText, resQty);
 
-    var _useExpandable = (0, _hooks.useExpandable)(searchId),
-        _useExpandable2 = _slicedToArray(_useExpandable, 2),
-        openExpandable = _useExpandable2[0],
-        handleExpandableToggle = _useExpandable2[1];
+  /**
+   * Whether at least one filter is selected
+   * @type {Boolean}
+   */
+  var atleastOneFilterSelected = Object(__WEBPACK_IMPORTED_MODULE_7__Helpers_general__["o" /* isAtleastOneFilterSelected */])(filters);
 
-    /**
-     **** Constants ****
-     */
+  /**
+   * Whether the current viewport width fits mobile devices or tablets
+   * @type {Boolean}
+   */
+  var TABLET_OR_MOBILE_SCREEN_SIZE = windowWidth < __WEBPACK_IMPORTED_MODULE_9__Helpers_constants__["t" /* TABLET_MIN_WIDTH */];
 
-    /**
-     * Total results HTML
-     * @type {Array}
-     */
+  /**
+   * Whether the current viewport width fits tablets or desktops/laptops
+   * @type {Boolean}
+   */
+  var TABLET_OR_DESKTOP_SCREEN_SIZE = windowWidth >= __WEBPACK_IMPORTED_MODULE_9__Helpers_constants__["t" /* TABLET_MIN_WIDTH */];
 
+  /**
+   * Whether we should hide all filters after quantity defined in MAX_TRUNCATED_FILTERS constant
+   * @type {Boolean}
+   */
+  var shouldHideSomeFilters = layoutContainer !== 'categories' && filters.length > __WEBPACK_IMPORTED_MODULE_9__Helpers_constants__["m" /* MAX_TRUNCATED_FILTERS */];
 
-    var totalResultsHtml = (0, _rendering.RenderTotalResults)(showTotalResultsText, resQty);
+  /**
+   * Whether the sort dropdown should be displayed
+   * @type {Boolean}
+   */
+  var shouldDisplaySortComponent = sortEnabled && sortOptions.length > 0;
 
-    /**
-     * Whether at least one filter is selected
-     * @type {Boolean}
-     */
-    var atleastOneFilterSelected = (0, _general.isAtleastOneFilterSelected)(filters);
+  /**
+   * Whether the filters should be displayed
+   * @type {Boolean}
+   */
+  var shouldDisplayFilters = filters.length > 0 && filterPanelEnabled;
 
-    /**
-     * Whether the current viewport width fits mobile devices or tablets
-     * @type {Boolean}
-     */
-    var TABLET_OR_MOBILE_SCREEN_SIZE = windowWidth < _constants.TABLET_MIN_WIDTH;
+  /**
+   * Whether the "Show all filters" button should be displayed
+   * @type {Boolean}
+   */
+  var shouldDisplayMoreFiltersBtn = shouldHideSomeFilters && TABLET_OR_DESKTOP_SCREEN_SIZE && showLimitedFiltersQty;
 
-    /**
-     * Whether the current viewport width fits tablets or desktops/laptops
-     * @type {Boolean}
-     */
-    var TABLET_OR_DESKTOP_SCREEN_SIZE = windowWidth >= _constants.TABLET_MIN_WIDTH;
+  /**
+   * Whether the title of the collection and the quantity of the filtered cards
+   * should be displayed
+   * @type {Boolean}
+   */
+  var shouldDisplayCollectionInfo = (title || showTotalResults) && !isCategoryPage;
 
-    /**
-     * Whether we should hide all filters after quantity defined in MAX_TRUNCATED_FILTERS constant
-     * @type {Boolean}
-     */
-    var shouldHideSomeFilters = layoutContainer !== 'categories' && filters.length > _constants.MAX_TRUNCATED_FILTERS;
+  /**
+   * Whether the search bar should be displayed
+   * @type {Boolean}
+   */
+  var shouldDisplaySearchBar = searchEnabled && searchComponent && TABLET_OR_MOBILE_SCREEN_SIZE;
 
-    /**
-     * Whether the sort dropdown should be displayed
-     * @type {Boolean}
-     */
-    var shouldDisplaySortComponent = sortEnabled && sortOptions.length > 0;
+  /**
+   * Whether the "Clear all filters" button should be displayed
+   * @type {Boolean}
+   */
+  var shouldShowClearButtonWrapper = atleastOneFilterSelected || filters.length >= __WEBPACK_IMPORTED_MODULE_9__Helpers_constants__["n" /* MIN_FILTERS_SHOW_BG */];
 
-    /**
-     * Whether the filters should be displayed
-     * @type {Boolean}
-     */
-    var shouldDisplayFilters = filters.length > 0 && filterPanelEnabled;
+  /**
+   * Class name for the top filters:
+   * whether we should apply dark or light theme
+   * @type {String}
+   */
+  var topFiltersClass = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-TopFilters': true,
+    'consonant-TopFilters--withLightText': useLightText
+  });
 
-    /**
-     * Whether the "Show all filters" button should be displayed
-     * @type {Boolean}
-     */
-    var shouldDisplayMoreFiltersBtn = shouldHideSomeFilters && TABLET_OR_DESKTOP_SCREEN_SIZE && showLimitedFiltersQty;
+  /**
+   * Class name for the top filters:
+   * whether we should hide all filters after quantity defined in MAX_TRUNCATED_FILTERS constant
+   * @type {String}
+   */
+  var showLimitedFiltersQtyClass = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-TopFilters-filters': true,
+    'consonant-TopFilters-filters--truncated': showLimitedFiltersQty
+  });
 
-    /**
-     * Whether the title of the collection and the quantity of the filtered cards
-     * should be displayed
-     * @type {Boolean}
-     */
-    var shouldDisplayCollectionInfo = (title || showTotalResults) && !isCategoryPage;
+  /**
+   * Class name for the "Clear filters" button:
+   * whether the blur effect should be applied to the container
+   * @type {String}
+   */
+  var clearBtnWrapperClass = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-TopFilters-clearBtnWrapper': true,
+    'consonant-TopFilters-clearBtnWrapper--withBlur': blurMobileFilters && filters.length > 1
+  });
 
-    /**
-     * Whether the search bar should be displayed
-     * @type {Boolean}
-     */
-    var shouldDisplaySearchBar = searchEnabled && searchComponent && TABLET_OR_MOBILE_SCREEN_SIZE;
-
-    /**
-     * Whether the "Clear all filters" button should be displayed
-     * @type {Boolean}
-     */
-    var shouldShowClearButtonWrapper = atleastOneFilterSelected || filters.length >= _constants.MIN_FILTERS_SHOW_BG;
-
-    /**
-     * Class name for the top filters:
-     * whether we should apply dark or light theme
-     * @type {String}
-     */
-    var topFiltersClass = (0, _classnames2.default)({
-        'consonant-TopFilters': true,
-        'consonant-TopFilters--withLightText': useLightText
+  /**
+   * Whether the search bar should be visible
+   * @type {Boolean}
+   */
+  var shouldShowSearchBar = searchQuery.length || openExpandable === searchId;
+  var shouldRenderInnerWrapper = shouldDisplayFilters || searchEnabled || shouldDisplaySortComponent || shouldDisplayCollectionInfo;
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    "data-testid": "consonant-TopFilters",
+    "daa-lh": "Filters",
+    className: topFiltersClass
+  }, shouldDisplaySearchBar && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    "data-testid": "consonant-TopFilters-searchWrapper",
+    className: "consonant-TopFilters-searchWrapper"
+  }, searchComponent), shouldRenderInnerWrapper && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-TopFilters-inner"
+  }, shouldDisplayFilters && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-TopFilters-filtersWrapper"
+  }, TABLET_OR_DESKTOP_SCREEN_SIZE && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("strong", {
+    className: "consonant-TopFilters-title"
+  }, filterGroupLabel), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    "data-testid": "consonant-TopFilters-filters",
+    className: showLimitedFiltersQtyClass
+  }, filters.map(function (filter) {
+    return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Group__["a" /* Group */], {
+      key: filter.id,
+      name: filter.group,
+      items: filter.items,
+      numItemsSelected: Object(__WEBPACK_IMPORTED_MODULE_7__Helpers_general__["k" /* getSelectedItemsCount */])(filter.items),
+      results: resQty,
+      id: filter.id,
+      isOpened: filter.opened,
+      onCheck: onCheckboxClick,
+      onClick: onFilterClick,
+      onClearAll: onClearFilterItems,
+      clearFilterText: clearFilterText,
+      isTopFilter: true
     });
-
-    /**
-     * Class name for the top filters:
-     * whether we should hide all filters after quantity defined in MAX_TRUNCATED_FILTERS constant
-     * @type {String}
-     */
-    var showLimitedFiltersQtyClass = (0, _classnames2.default)({
-        'consonant-TopFilters-filters': true,
-        'consonant-TopFilters-filters--truncated': showLimitedFiltersQty
-    });
-
-    /**
-     * Class name for the "Clear filters" button:
-     * whether the blur effect should be applied to the container
-     * @type {String}
-     */
-    var clearBtnWrapperClass = (0, _classnames2.default)({
-        'consonant-TopFilters-clearBtnWrapper': true,
-        'consonant-TopFilters-clearBtnWrapper--withBlur': blurMobileFilters && filters.length > 1
-    });
-
-    /**
-     * Whether the search bar should be visible
-     * @type {Boolean}
-     */
-    var shouldShowSearchBar = searchQuery.length || openExpandable === searchId;
-
-    var shouldRenderInnerWrapper = shouldDisplayFilters || searchEnabled || shouldDisplaySortComponent || shouldDisplayCollectionInfo;
-
-    return _react2.default.createElement(
-        'div',
-        {
-            'data-testid': 'consonant-TopFilters',
-            'daa-lh': 'Filters',
-            className: topFiltersClass },
-        shouldDisplaySearchBar && _react2.default.createElement(
-            'div',
-            {
-                'data-testid': 'consonant-TopFilters-searchWrapper',
-                className: 'consonant-TopFilters-searchWrapper' },
-            searchComponent
-        ),
-        shouldRenderInnerWrapper && _react2.default.createElement(
-            'div',
-            {
-                className: 'consonant-TopFilters-inner' },
-            shouldDisplayFilters && _react2.default.createElement(
-                'div',
-                {
-                    className: 'consonant-TopFilters-filtersWrapper' },
-                TABLET_OR_DESKTOP_SCREEN_SIZE && _react2.default.createElement(
-                    'strong',
-                    {
-                        className: 'consonant-TopFilters-title' },
-                    filterGroupLabel
-                ),
-                _react2.default.createElement(
-                    'div',
-                    {
-                        'data-testid': 'consonant-TopFilters-filters',
-                        className: showLimitedFiltersQtyClass },
-                    filters.map(function (filter) {
-                        return _react2.default.createElement(_Group.Group, {
-                            key: filter.id,
-                            name: filter.group,
-                            items: filter.items,
-                            numItemsSelected: (0, _general.getSelectedItemsCount)(filter.items),
-                            results: resQty,
-                            id: filter.id,
-                            isOpened: filter.opened,
-                            onCheck: onCheckboxClick,
-                            onClick: onFilterClick,
-                            onClearAll: onClearFilterItems,
-                            clearFilterText: clearFilterText,
-                            isTopFilter: true });
-                    }),
-                    shouldDisplayMoreFiltersBtn && _react2.default.createElement(
-                        'button',
-                        {
-                            type: 'button',
-                            'data-testid': 'consonant-TopFilters-moreBtn',
-                            className: 'consonant-TopFilters-moreBtn',
-                            onClick: onShowAllClick },
-                        moreFiltersBtnText
-                    )
-                ),
-                shouldShowClearButtonWrapper && _react2.default.createElement(
-                    'div',
-                    {
-                        'data-testid': 'consonant-TopFilters-clearBtnWrapper',
-                        className: clearBtnWrapperClass },
-                    atleastOneFilterSelected && _react2.default.createElement(
-                        'button',
-                        {
-                            type: 'button',
-                            'data-testid': 'consonant-TopFilters-clearBtn',
-                            className: 'consonant-TopFilters-clearBtn',
-                            onClick: onClearAllFilters,
-                            tabIndex: '0' },
-                        clearAllFiltersText
-                    )
-                )
-            ),
-            searchEnabled && TABLET_OR_DESKTOP_SCREEN_SIZE && _react2.default.createElement(
-                'div',
-                {
-                    'data-testid': 'consonant-TopFilters-searchIcoWrapper',
-                    className: 'consonant-TopFilters-searchIcoWrapper' },
-                shouldShowSearchBar && searchComponent,
-                TABLET_OR_DESKTOP_SCREEN_SIZE && _react2.default.createElement(_SearchIcon2.default, {
-                    searchTitle: searchTitle,
-                    onClick: handleExpandableToggle })
-            ),
-            shouldDisplaySortComponent && _react2.default.createElement(
-                'div',
-                {
-                    'data-testid': 'consonant-TopFilters-selectWrapper',
-                    className: 'consonant-TopFilters-selectWrapper' },
-                sortComponent
-            ),
-            shouldDisplayCollectionInfo && _react2.default.createElement(
-                'div',
-                { className: 'consonant-TopFilters-infoWrapper' },
-                title && _react2.default.createElement(
-                    HeadingLevel,
-                    {
-                        'data-testid': 'consonant-TopFilters-collectionTitle',
-                        className: 'consonant-TopFilters-collectionTitle' },
-                    title
-                ),
-                showTotalResults && _react2.default.createElement(
-                    'div',
-                    {
-                        'data-testid': 'consonant-TopFilters-results',
-                        className: 'consonant-TopFilters-results' },
-                    totalResultsHtml
-                )
-            )
-        )
-    );
+  }), shouldDisplayMoreFiltersBtn && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    type: "button",
+    "data-testid": "consonant-TopFilters-moreBtn",
+    className: "consonant-TopFilters-moreBtn",
+    onClick: onShowAllClick
+  }, moreFiltersBtnText)), shouldShowClearButtonWrapper && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    "data-testid": "consonant-TopFilters-clearBtnWrapper",
+    className: clearBtnWrapperClass
+  }, atleastOneFilterSelected && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    type: "button",
+    "data-testid": "consonant-TopFilters-clearBtn",
+    className: "consonant-TopFilters-clearBtn",
+    onClick: onClearAllFilters,
+    tabIndex: "0"
+  }, clearAllFiltersText))), searchEnabled && TABLET_OR_DESKTOP_SCREEN_SIZE && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    "data-testid": "consonant-TopFilters-searchIcoWrapper",
+    className: "consonant-TopFilters-searchIcoWrapper"
+  }, shouldShowSearchBar && searchComponent, TABLET_OR_DESKTOP_SCREEN_SIZE && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Search_SearchIcon__["a" /* default */], {
+    searchTitle: searchTitle,
+    onClick: handleExpandableToggle
+  })), shouldDisplaySortComponent && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    "data-testid": "consonant-TopFilters-selectWrapper",
+    className: "consonant-TopFilters-selectWrapper"
+  }, sortComponent), shouldDisplayCollectionInfo && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-TopFilters-infoWrapper"
+  }, title && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(HeadingLevel, {
+    "data-testid": "consonant-TopFilters-collectionTitle",
+    className: "consonant-TopFilters-collectionTitle"
+  }, title), showTotalResults && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    "data-testid": "consonant-TopFilters-results",
+    className: "consonant-TopFilters-results"
+  }, totalResultsHtml))));
 };
-
 FiltersPanelTop.propTypes = filtersPanelTopType;
 FiltersPanelTop.defaultProps = defaultProps;
-
-exports.default = FiltersPanelTop;
+/* harmony default export */ __webpack_exports__["a"] = (FiltersPanelTop);
 
 /***/ }),
 /* 296 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var searchIconType = {
-    onClick: _propTypes.func.isRequired,
-    searchTitle: _propTypes.string.isRequired
+  onClick: __WEBPACK_IMPORTED_MODULE_1_prop_types__["func"].isRequired,
+  searchTitle: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"].isRequired
 };
 
 /**
@@ -54050,77 +52740,64 @@ var searchIconType = {
  * )
  */
 var SearchIcon = function SearchIcon(props) {
-    var searchTitle = props.searchTitle,
-        onClick = props.onClick;
-
-
-    return _react2.default.createElement(
-        'button',
-        {
-            'data-testid': 'search-icon',
-            'aria-label': searchTitle,
-            type: 'button',
-            className: 'consonant-SearchIco',
-            onClick: onClick,
-            tabIndex: '0' },
-        _react2.default.createElement('span', null)
-    );
+  var searchTitle = props.searchTitle,
+    onClick = props.onClick;
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    "data-testid": "search-icon",
+    "aria-label": searchTitle,
+    type: "button",
+    className: "consonant-SearchIco",
+    onClick: onClick,
+    tabIndex: "0"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null));
 };
-
 SearchIcon.propTypes = searchIconType;
-
-exports.default = SearchIcon;
+/* harmony default export */ __webpack_exports__["a"] = (SearchIcon);
 
 /***/ }),
 /* 297 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Group; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Items__ = __webpack_require__(298);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Footer__ = __webpack_require__(299);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__types_config__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Helpers_general__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Helpers_hooks__ = __webpack_require__(5);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Group = undefined;
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var _react = __webpack_require__(0);
 
-var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(7);
 
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _propTypes = __webpack_require__(1);
-
-var _Items = __webpack_require__(298);
-
-var _Footer = __webpack_require__(299);
-
-var _config = __webpack_require__(20);
-
-var _general = __webpack_require__(6);
-
-var _hooks = __webpack_require__(5);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var groupType = {
-    id: _propTypes.string.isRequired,
-    name: _propTypes.string.isRequired,
-    clearFilterText: _propTypes.string,
-    numItemsSelected: _propTypes.number,
-    onCheck: _propTypes.func.isRequired,
-    results: _propTypes.number.isRequired,
-    onClearAll: _propTypes.func.isRequired,
-    items: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_config.filterItemType)).isRequired
+  id: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"].isRequired,
+  name: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"].isRequired,
+  clearFilterText: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"],
+  numItemsSelected: __WEBPACK_IMPORTED_MODULE_2_prop_types__["number"],
+  onCheck: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"].isRequired,
+  results: __WEBPACK_IMPORTED_MODULE_2_prop_types__["number"].isRequired,
+  onClearAll: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"].isRequired,
+  items: Object(__WEBPACK_IMPORTED_MODULE_2_prop_types__["arrayOf"])(Object(__WEBPACK_IMPORTED_MODULE_2_prop_types__["shape"])(__WEBPACK_IMPORTED_MODULE_5__types_config__["b" /* filterItemType */])).isRequired
 };
-
 var defaultProps = {
-    numItemsSelected: 0,
-    clearFilterText: ''
+  numItemsSelected: 0,
+  clearFilterText: ''
 };
 
 /**
@@ -54149,260 +52826,216 @@ var clipWrapperItemsCount = 9;
  * )
  */
 var Group = function Group(props) {
-    var name = props.name,
-        id = props.id,
-        items = props.items,
-        numItemsSelected = props.numItemsSelected,
-        onCheck = props.onCheck,
-        onClearAll = props.onClearAll,
-        results = props.results,
-        clearFilterText = props.clearFilterText;
+  var name = props.name,
+    id = props.id,
+    items = props.items,
+    numItemsSelected = props.numItemsSelected,
+    onCheck = props.onCheck,
+    onClearAll = props.onClearAll,
+    results = props.results,
+    clearFilterText = props.clearFilterText;
+  var getConfig = Object(__WEBPACK_IMPORTED_MODULE_7__Helpers_hooks__["a" /* useConfig */])();
 
+  /**
+   **** Authored Configs ****
+   */
+  var mobileGroupTotalResultsText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.totalResultsText').replace('{total}', results);
+  var mobileGroupApplyBtnText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.applyBtnText');
+  var mobileGroupDoneBtnText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.doneBtnText');
+  var isCategoriesPage = getConfig('collection', 'layout.container') === 'categories';
+  var isProductsFilter = id === 'caas:all-products';
+  var showFilter = isCategoriesPage && isProductsFilter || isCategoriesPage && !id.startsWith('caas:product-categories') // don't show product filters
+  || isCategoriesPage && id.includes(name) // include custom product filter
+  || !isCategoriesPage && !isProductsFilter; // do not show custom product filter
 
-    var getConfig = (0, _hooks.useConfig)();
+  /**
+   **** Hooks ****
+   */
 
-    /**
-     **** Authored Configs ****
-     */
-    var mobileGroupTotalResultsText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.totalResultsText').replace('{total}', results);
-    var mobileGroupApplyBtnText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.applyBtnText');
-    var mobileGroupDoneBtnText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.doneBtnText');
-    var isCategoriesPage = getConfig('collection', 'layout.container') === 'categories';
-    var isProductsFilter = id === 'caas:all-products';
+  /**
+   * @typedef {String} openDropdownState -  Id of the top filter
+   * @description — defined in the component props
+   *
+   * @typedef {Function} ToggleSetter - Handles toggling opened/closed state of
+   * the top filter
+   * @description
+   *
+   * @type {[String, Function]} openDropdown
+   */
+  var _useExpandable = Object(__WEBPACK_IMPORTED_MODULE_7__Helpers_hooks__["b" /* useExpandable */])(id),
+    _useExpandable2 = _slicedToArray(_useExpandable, 2),
+    openDropdown = _useExpandable2[0],
+    handleToggle = _useExpandable2[1];
 
-    var showFilter = isCategoriesPage && isProductsFilter || isCategoriesPage && !id.startsWith('caas:product-categories') // don't show product filters
-    || isCategoriesPage && id.includes(name) // include custom product filter
-    || !isCategoriesPage && !isProductsFilter; // do not show custom product filter
+  /**
+   **** Constants ****
+   */
 
-    /**
-     **** Hooks ****
-     */
+  /**
+   * Whether the top filter is opened
+   * @type {Boolean}
+   */
+  var isOpened = openDropdown === id;
 
-    /**
-     * @typedef {String} openDropdownState -  Id of the top filter
-     * @description — defined in the component props
-     *
-     * @typedef {Function} ToggleSetter - Handles toggling opened/closed state of
-     * the top filter
-     * @description
-     *
-     * @type {[String, Function]} openDropdown
-     */
+  /**
+   * Whether at least one top filter option is selected
+   * @type {Boolean}
+   */
+  var atleastOneItemSelected = numItemsSelected > 0;
 
-    var _useExpandable = (0, _hooks.useExpandable)(id),
-        _useExpandable2 = _slicedToArray(_useExpandable, 2),
-        openDropdown = _useExpandable2[0],
-        handleToggle = _useExpandable2[1];
+  /**
+   * Text of the top filter footer button:
+   * whether the "Apply changes" text should be shown or "Done"
+   * @type {String}
+   */
+  var mobileFooterBtnText = atleastOneItemSelected ? mobileGroupApplyBtnText : mobileGroupDoneBtnText;
 
-    /**
-     **** Constants ****
-     */
+  /**
+   * Handles unselection of the top filter options
+   * when the "Clear filter options" link is clicked
+   * @param {ClickEvent} e
+   * @listens ClickEvent
+   */
+  var handleClear = function handleClear(e) {
+    e.stopPropagation();
+    onClearAll(id);
+  };
 
-    /**
-     * Whether the top filter is opened
-     * @type {Boolean}
-     */
+  /**
+   * Handles toggling the selected/unselected state of the top filter option
+   * when the filter option is checked/unchecked
+   * @param {ChangeEvent} e
+   * @listens ChangeEvent
+   */
+  var handleCheck = function handleCheck(e) {
+    e.stopPropagation();
+    onCheck(id, e.target.value, e.target.checked);
+  };
 
+  /**
+   * Array of the top filter selected options
+   * @type {Array}
+   */
+  var selectedFilters = items.filter(function (item) {
+    return item.selected;
+  });
 
-    var isOpened = openDropdown === id;
+  /**
+   * Whether at least one top filter option is selected
+   * @type {Boolean}
+   */
+  var atleastOneFilterSelected = selectedFilters.length > 0;
 
-    /**
-     * Whether at least one top filter option is selected
-     * @type {Boolean}
-     */
-    var atleastOneItemSelected = numItemsSelected > 0;
+  /**
+   * Text indicating the quantity of the selected top filter options
+   * @type {String}
+   */
+  var selectedItemQtyText = selectedFilters.length > 0 ? "".concat(selectedFilters.length) : '';
 
-    /**
-     * Text of the top filter footer button:
-     * whether the "Apply changes" text should be shown or "Done"
-     * @type {String}
-     */
-    var mobileFooterBtnText = atleastOneItemSelected ? mobileGroupApplyBtnText : mobileGroupDoneBtnText;
+  /**
+   * Whether the top filter is opened
+   * @type {Boolean}
+   */
+  var filterGroupOpened = isOpened;
 
-    /**
-     * Handles unselection of the top filter options
-     * when the "Clear filter options" link is clicked
-     * @param {ClickEvent} e
-     * @listens ClickEvent
-     */
-    var handleClear = function handleClear(e) {
-        e.stopPropagation();
-        onClearAll(id);
-    };
+  /**
+   * Whether the top filter is closed
+   * @type {Boolean}
+   */
+  var filterGroupNotOpened = !isOpened;
 
-    /**
-     * Handles toggling the selected/unselected state of the top filter option
-     * when the filter option is checked/unchecked
-     * @param {ChangeEvent} e
-     * @listens ChangeEvent
-     */
-    var handleCheck = function handleCheck(e) {
-        e.stopPropagation();
-        onCheck(id, e.target.value, e.target.checked);
-    };
+  /**
+   * Whether the top filter options should be blurred at the bottom of the parent container
+   * @type {Boolean}
+   */
+  var shouldClipFilters = items.length >= clipWrapperItemsCount;
 
-    /**
-     * Array of the top filter selected options
-     * @type {Array}
-     */
-    var selectedFilters = items.filter(function (item) {
-        return item.selected;
-    });
+  /**
+   * Class name for the top filter:
+   * whether the top filter is opened
+   * whether the top filter contains at least one selected option
+   * @type {String}
+   */
+  var containerClassname = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-TopFilter': true,
+    'is-opened': filterGroupOpened,
+    'is-selected': atleastOneFilterSelected && filterGroupNotOpened
+  });
 
-    /**
-     * Whether at least one top filter option is selected
-     * @type {Boolean}
-     */
-    var atleastOneFilterSelected = selectedFilters.length > 0;
+  // Update filter label for categories page if needed
+  var filterLabel = isCategoriesPage && id.includes(name) ? "All ".concat(name.replaceAll('-', ' ')) : name;
+  filterLabel = isCategoriesPage && id === 'caas:events/series' ? 'All event series' : filterLabel;
+  filterLabel = isCategoriesPage && id.startsWith('caas:events/region') ? 'All locations' : filterLabel;
 
-    /**
-     * Text indicating the quantity of the selected top filter options
-     * @type {String}
-     */
-    var selectedItemQtyText = selectedFilters.length > 0 ? '' + selectedFilters.length : '';
-
-    /**
-     * Whether the top filter is opened
-     * @type {Boolean}
-     */
-    var filterGroupOpened = isOpened;
-
-    /**
-     * Whether the top filter is closed
-     * @type {Boolean}
-     */
-    var filterGroupNotOpened = !isOpened;
-
-    /**
-     * Whether the top filter options should be blurred at the bottom of the parent container
-     * @type {Boolean}
-     */
-    var shouldClipFilters = items.length >= clipWrapperItemsCount;
-
-    /**
-     * Class name for the top filter:
-     * whether the top filter is opened
-     * whether the top filter contains at least one selected option
-     * @type {String}
-     */
-    var containerClassname = (0, _classnames2.default)({
-        'consonant-TopFilter': true,
-        'is-opened': filterGroupOpened,
-        'is-selected': atleastOneFilterSelected && filterGroupNotOpened
-    });
-
-    // Update filter label for categories page if needed
-    var filterLabel = isCategoriesPage && id.includes(name) ? 'All ' + name.replaceAll('-', ' ') : name;
-
-    filterLabel = isCategoriesPage && id === 'caas:events/series' ? 'All event series' : filterLabel;
-    filterLabel = isCategoriesPage && id.startsWith('caas:events/region') ? 'All locations' : filterLabel;
-
-    /**
-     * Impression Tracking
-     */
-    var filterName = name + ' ' + (isOpened ? 'Close' : 'Open');
-
-    return _react2.default.createElement(
-        _react.Fragment,
-        null,
-        showFilter && _react2.default.createElement(
-            'div',
-            {
-                'data-testid': 'consonant-TopFilter',
-                'daa-lh': name,
-                className: containerClassname + ' FILTER-ID-' + id },
-            _react2.default.createElement(
-                'div',
-                {
-                    className: 'consonant-TopFilter-inner' },
-                _react2.default.createElement(
-                    'div',
-                    {
-                        className: 'consonant-TopFilter-name',
-                        'daa-ll': filterName },
-                    _react2.default.createElement(
-                        'button',
-                        {
-                            type: 'button',
-                            className: 'consonant-TopFilter-link',
-                            'data-testid': 'consonant-TopFilter-link',
-                            onClick: handleToggle,
-                            tabIndex: '0' },
-                        filterLabel,
-                        _react2.default.createElement(
-                            'span',
-                            {
-                                className: 'consonant-TopFilter-selectedItemsQty' },
-                            selectedItemQtyText
-                        )
-                    )
-                ),
-                _react2.default.createElement(
-                    'div',
-                    {
-                        className: 'consonant-TopFilter-selectedItems' },
-                    _react2.default.createElement(
-                        'div',
-                        {
-                            className: 'consonant-TopFilter-absoluteWrapper' },
-                        _react2.default.createElement(_Items.Items, {
-                            clipWrapperItemsCount: clipWrapperItemsCount,
-                            handleCheck: handleCheck,
-                            stopPropagation: _general.stopPropagation,
-                            items: items }),
-                        shouldClipFilters && _react2.default.createElement('aside', {
-                            className: 'consonant-TopFilter-bg' }),
-                        _react2.default.createElement(_Footer.Footer, {
-                            mobileFooterBtnText: mobileFooterBtnText,
-                            handleToggle: handleToggle,
-                            clearFilterText: clearFilterText,
-                            handleClear: handleClear,
-                            numItemsSelected: numItemsSelected,
-                            mobileGroupTotalResultsText: mobileGroupTotalResultsText })
-                    )
-                )
-            )
-        )
-    );
+  /**
+   * Impression Tracking
+   */
+  var filterName = "".concat(name, " ").concat(isOpened ? 'Close' : 'Open');
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_react__["Fragment"], null, showFilter && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    "data-testid": "consonant-TopFilter",
+    "daa-lh": name,
+    className: "".concat(containerClassname, " FILTER-ID-").concat(id)
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-TopFilter-inner"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-TopFilter-name",
+    "daa-ll": filterName
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    type: "button",
+    className: "consonant-TopFilter-link",
+    "data-testid": "consonant-TopFilter-link",
+    onClick: handleToggle,
+    tabIndex: "0"
+  }, filterLabel, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    className: "consonant-TopFilter-selectedItemsQty"
+  }, selectedItemQtyText))), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-TopFilter-selectedItems"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-TopFilter-absoluteWrapper"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Items__["a" /* Items */], {
+    clipWrapperItemsCount: clipWrapperItemsCount,
+    handleCheck: handleCheck,
+    stopPropagation: __WEBPACK_IMPORTED_MODULE_6__Helpers_general__["D" /* stopPropagation */],
+    items: items
+  }), shouldClipFilters && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("aside", {
+    className: "consonant-TopFilter-bg"
+  }), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Footer__["a" /* Footer */], {
+    mobileFooterBtnText: mobileFooterBtnText,
+    handleToggle: handleToggle,
+    clearFilterText: clearFilterText,
+    handleClear: handleClear,
+    numItemsSelected: numItemsSelected,
+    mobileGroupTotalResultsText: mobileGroupTotalResultsText
+  }))))));
 };
-
 Group.propTypes = groupType;
 Group.defaultProps = defaultProps;
 
 /* eslint-disable-next-line import/prefer-default-export */
-exports.Group = Group;
+
 
 /***/ }),
 /* 298 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Items; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__types_config__ = __webpack_require__(20);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Items = undefined;
 
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _classnames = __webpack_require__(7);
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _propTypes = __webpack_require__(1);
-
-var _config = __webpack_require__(20);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var itemsType = {
-    handleCheck: _propTypes.func.isRequired,
-    stopPropagation: _propTypes.func.isRequired,
-    clipWrapperItemsCount: _propTypes.number.isRequired,
-    items: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_config.filterItemType)).isRequired
+  handleCheck: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"].isRequired,
+  stopPropagation: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"].isRequired,
+  clipWrapperItemsCount: __WEBPACK_IMPORTED_MODULE_2_prop_types__["number"].isRequired,
+  items: Object(__WEBPACK_IMPORTED_MODULE_2_prop_types__["arrayOf"])(Object(__WEBPACK_IMPORTED_MODULE_2_prop_types__["shape"])(__WEBPACK_IMPORTED_MODULE_3__types_config__["b" /* filterItemType */])).isRequired
 };
 
 /**
@@ -54421,126 +53054,100 @@ var itemsType = {
  * )
  */
 var Items = function Items(props) {
-    var items = props.items,
-        handleCheck = props.handleCheck,
-        stopPropagation = props.stopPropagation,
-        clipWrapperItemsCount = props.clipWrapperItemsCount;
+  var items = props.items,
+    handleCheck = props.handleCheck,
+    stopPropagation = props.stopPropagation,
+    clipWrapperItemsCount = props.clipWrapperItemsCount;
 
-    /**
-     **** Constants ****
-     */
+  /**
+   **** Constants ****
+   */
 
-    /**
-     * Whether the top filter options should be blurred at the bottom of the parent container
-     * @type {Boolean}
-     */
+  /**
+   * Whether the top filter options should be blurred at the bottom of the parent container
+   * @type {Boolean}
+   */
+  var shouldClipItems = items.length >= clipWrapperItemsCount;
 
-    var shouldClipItems = items.length >= clipWrapperItemsCount;
-
-    /**
-     * Class name for the top filter options wrapper:
-     * whether the top filter options should be blurred at the bottom of the parent container
-     * @type {String}
-     */
-    var clipFilterItemsClass = (0, _classnames2.default)({
-        'consonant-TopFilter-items': true,
-        'consonant-TopFilter-items--clipped': shouldClipItems
-    });
-
-    var set = new Set();
-    return _react2.default.createElement(
-        'ul',
-        {
-            'data-testid': 'consonant-TopFilter-items',
-            className: clipFilterItemsClass },
-        items.map(function (item) {
-            var category = item.id.split('/')[0];
-            var title = void 0;
-            if (!set.has(category)) {
-                title = category.replaceAll('-', ' ');
-                set.add(category);
-            }
-            return _react2.default.createElement(
-                _react.Fragment,
-                { key: item.id },
-                item.fromCategory && title && _react2.default.createElement(
-                    'span',
-                    { className: 'filter-group-title', 'data-testid': 'filter-group-title-' + category },
-                    title
-                ),
-                _react2.default.createElement(
-                    'li',
-                    {
-                        key: item.id,
-                        'data-testid': 'consonant-TopFilter-item',
-                        'daa-ll': item.label,
-                        className: 'consonant-TopFilter-item' },
-                    _react2.default.createElement(
-                        'label',
-                        {
-                            htmlFor: item.id,
-                            className: 'consonant-TopFilter-itemLabel',
-                            onClick: stopPropagation },
-                        _react2.default.createElement('input', {
-                            'data-testid': 'consonant-TopFilter-itemCheckbox',
-                            id: item.id,
-                            value: item.id,
-                            type: 'checkbox',
-                            onChange: handleCheck,
-                            checked: item.selected,
-                            tabIndex: '0' }),
-                        _react2.default.createElement('span', { className: 'consonant-TopFilter-itemCheckmark' }),
-                        _react2.default.createElement(
-                            'span',
-                            { className: 'consonant-TopFilter-itemName' },
-                            item.group || item.label
-                        )
-                    )
-                )
-            );
-        })
-    );
+  /**
+   * Class name for the top filter options wrapper:
+   * whether the top filter options should be blurred at the bottom of the parent container
+   * @type {String}
+   */
+  var clipFilterItemsClass = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-TopFilter-items': true,
+    'consonant-TopFilter-items--clipped': shouldClipItems
+  });
+  var set = new Set();
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("ul", {
+    "data-testid": "consonant-TopFilter-items",
+    className: clipFilterItemsClass
+  }, items.map(function (item) {
+    var category = item.id.split('/')[0];
+    var title;
+    if (!set.has(category)) {
+      title = category.replaceAll('-', ' ');
+      set.add(category);
+    }
+    return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_react__["Fragment"], {
+      key: item.id
+    }, item.fromCategory && title && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+      className: "filter-group-title",
+      "data-testid": "filter-group-title-".concat(category)
+    }, title), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", {
+      key: item.id,
+      "data-testid": "consonant-TopFilter-item",
+      "daa-ll": item.label,
+      className: "consonant-TopFilter-item"
+    }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", {
+      htmlFor: item.id,
+      className: "consonant-TopFilter-itemLabel",
+      onClick: stopPropagation
+    }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+      "data-testid": "consonant-TopFilter-itemCheckbox",
+      id: item.id,
+      value: item.id,
+      type: "checkbox",
+      onChange: handleCheck,
+      checked: item.selected,
+      tabIndex: "0"
+    }), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+      className: "consonant-TopFilter-itemCheckmark"
+    }), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+      className: "consonant-TopFilter-itemName"
+    }, item.group || item.label))));
+  }));
 };
-
 Items.propTypes = itemsType;
 
 /* eslint-disable-next-line import/prefer-default-export */
-exports.Items = Items;
+
 
 /***/ }),
 /* 299 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Footer; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Footer = undefined;
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var footerType = {
-    clearFilterText: _propTypes.string,
-    numItemsSelected: _propTypes.number,
-    mobileFooterBtnText: _propTypes.string,
-    handleClear: _propTypes.func.isRequired,
-    handleToggle: _propTypes.func.isRequired,
-    mobileGroupTotalResultsText: _propTypes.string
+  clearFilterText: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  numItemsSelected: __WEBPACK_IMPORTED_MODULE_1_prop_types__["number"],
+  mobileFooterBtnText: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  handleClear: __WEBPACK_IMPORTED_MODULE_1_prop_types__["func"].isRequired,
+  handleToggle: __WEBPACK_IMPORTED_MODULE_1_prop_types__["func"].isRequired,
+  mobileGroupTotalResultsText: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"]
 };
-
 var defaultProps = {
-    numItemsSelected: 0,
-    clearFilterText: '',
-    mobileFooterBtnText: '',
-    mobileGroupTotalResultsText: ''
+  numItemsSelected: 0,
+  clearFilterText: '',
+  mobileFooterBtnText: '',
+  mobileGroupTotalResultsText: ''
 };
 
 /**
@@ -54561,129 +53168,98 @@ var defaultProps = {
  * )
  */
 var Footer = function Footer(props) {
-    var mobileGroupTotalResultsText = props.mobileGroupTotalResultsText,
-        numItemsSelected = props.numItemsSelected,
-        handleClear = props.handleClear,
-        clearFilterText = props.clearFilterText,
-        handleToggle = props.handleToggle,
-        mobileFooterBtnText = props.mobileFooterBtnText;
+  var mobileGroupTotalResultsText = props.mobileGroupTotalResultsText,
+    numItemsSelected = props.numItemsSelected,
+    handleClear = props.handleClear,
+    clearFilterText = props.clearFilterText,
+    handleToggle = props.handleToggle,
+    mobileFooterBtnText = props.mobileFooterBtnText;
 
-    /**
-     **** Constants ****
-     */
+  /**
+   **** Constants ****
+   */
 
-    /**
-     * Whether the "Clear options" button should be displayed
-     * @type {Boolean}
-     */
-
-    var shouldShowClearButton = numItemsSelected > 0;
-
-    return _react2.default.createElement(
-        'div',
-        {
-            className: 'consonant-TopFilter-footer' },
-        _react2.default.createElement(
-            'span',
-            {
-                className: 'consonant-TopFilter-footerResQty' },
-            mobileGroupTotalResultsText
-        ),
-        shouldShowClearButton && _react2.default.createElement(
-            'button',
-            {
-                'data-testid': 'consonant-TopFilter-footerClearBtn',
-                type: 'button',
-                onClick: handleClear,
-                className: 'consonant-TopFilter-footerClearBtn',
-                tabIndex: '0' },
-            clearFilterText
-        ),
-        _react2.default.createElement(
-            'button',
-            {
-                type: 'button',
-                onClick: handleToggle,
-                className: 'consonant-TopFilter-footerBtn',
-                tabIndex: '0' },
-            mobileFooterBtnText
-        )
-    );
+  /**
+   * Whether the "Clear options" button should be displayed
+   * @type {Boolean}
+   */
+  var shouldShowClearButton = numItemsSelected > 0;
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-TopFilter-footer"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    className: "consonant-TopFilter-footerResQty"
+  }, mobileGroupTotalResultsText), shouldShowClearButton && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    "data-testid": "consonant-TopFilter-footerClearBtn",
+    type: "button",
+    onClick: handleClear,
+    className: "consonant-TopFilter-footerClearBtn",
+    tabIndex: "0"
+  }, clearFilterText), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    type: "button",
+    onClick: handleToggle,
+    className: "consonant-TopFilter-footerBtn",
+    tabIndex: "0"
+  }, mobileFooterBtnText));
 };
-
 Footer.propTypes = footerType;
 Footer.defaultProps = defaultProps;
 
 /* eslint-disable-next-line import/prefer-default-export */
-exports.Footer = Footer;
+
 
 /***/ }),
 /* 300 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Item__ = __webpack_require__(301);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Helpers_hooks__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__types_config__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Desktop_Only_ChosenItem__ = __webpack_require__(305);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Mobile_Only_Title__ = __webpack_require__(306);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Desktop_Only_Title__ = __webpack_require__(307);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__Mobile_Only_PanelFooter__ = __webpack_require__(308);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__Desktop_Only_ClearButton__ = __webpack_require__(309);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__Helpers_general__ = __webpack_require__(6);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
-var _react = __webpack_require__(0);
 
-var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(7);
 
-var _classnames2 = _interopRequireDefault(_classnames);
 
-var _propTypes = __webpack_require__(1);
 
-var _Item = __webpack_require__(301);
 
-var _Item2 = _interopRequireDefault(_Item);
 
-var _hooks = __webpack_require__(5);
 
-var _config = __webpack_require__(20);
-
-var _ChosenItem = __webpack_require__(305);
-
-var _ChosenItem2 = _interopRequireDefault(_ChosenItem);
-
-var _Title = __webpack_require__(306);
-
-var _Title2 = __webpack_require__(307);
-
-var _PanelFooter = __webpack_require__(308);
-
-var _ClearButton = __webpack_require__(309);
-
-var _general = __webpack_require__(6);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var leftFilterPanelType = {
-    resQty: _propTypes.number,
-    windowWidth: _propTypes.number,
-    showMobileFilters: _propTypes.bool,
-    selectedFiltersQty: _propTypes.number,
-    onFilterClick: _propTypes.func.isRequired,
-    onCheckboxClick: _propTypes.func.isRequired,
-    searchComponent: _propTypes.node.isRequired,
-    bookmarkComponent: _propTypes.node.isRequired,
-    onClearAllFilters: _propTypes.func.isRequired,
-    filters: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_config.filterType)),
-    onClearFilterItems: _propTypes.func.isRequired,
-    onSelectedFilterClick: _propTypes.func.isRequired,
-    onMobileFiltersToggleClick: _propTypes.func.isRequired
+  resQty: __WEBPACK_IMPORTED_MODULE_2_prop_types__["number"],
+  windowWidth: __WEBPACK_IMPORTED_MODULE_2_prop_types__["number"],
+  showMobileFilters: __WEBPACK_IMPORTED_MODULE_2_prop_types__["bool"],
+  selectedFiltersQty: __WEBPACK_IMPORTED_MODULE_2_prop_types__["number"],
+  onFilterClick: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"].isRequired,
+  onCheckboxClick: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"].isRequired,
+  searchComponent: __WEBPACK_IMPORTED_MODULE_2_prop_types__["node"].isRequired,
+  bookmarkComponent: __WEBPACK_IMPORTED_MODULE_2_prop_types__["node"].isRequired,
+  onClearAllFilters: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"].isRequired,
+  filters: Object(__WEBPACK_IMPORTED_MODULE_2_prop_types__["arrayOf"])(Object(__WEBPACK_IMPORTED_MODULE_2_prop_types__["shape"])(__WEBPACK_IMPORTED_MODULE_5__types_config__["c" /* filterType */])),
+  onClearFilterItems: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"].isRequired,
+  onSelectedFilterClick: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"].isRequired,
+  onMobileFiltersToggleClick: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"].isRequired
 };
-
 var defaultProps = {
-    resQty: 0,
-    filters: [],
-    selectedFiltersQty: 0,
-    showMobileFilters: false,
-    windowWidth: window.innerWidth
+  resQty: 0,
+  filters: [],
+  selectedFiltersQty: 0,
+  showMobileFilters: false,
+  windowWidth: window.innerWidth
 };
 
 /**
@@ -54710,253 +53286,227 @@ var defaultProps = {
  *   <LeftFilterPanel {...props}/>
  * )
  */
-var LeftFilterPanel = (0, _react.forwardRef)(function (_ref, ref) {
-    var filters = _ref.filters,
-        selectedFiltersQty = _ref.selectedFiltersQty,
-        showMobileFilters = _ref.showMobileFilters,
-        onFilterClick = _ref.onFilterClick,
-        onClearAllFilters = _ref.onClearAllFilters,
-        onClearFilterItems = _ref.onClearFilterItems,
-        onCheckboxClick = _ref.onCheckboxClick,
-        onMobileFiltersToggleClick = _ref.onMobileFiltersToggleClick,
-        onSelectedFilterClick = _ref.onSelectedFilterClick,
-        resQty = _ref.resQty,
-        searchComponent = _ref.searchComponent,
-        bookmarkComponent = _ref.bookmarkComponent,
-        windowWidth = _ref.windowWidth;
+var LeftFilterPanel = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0_react__["forwardRef"])(function (_ref, ref) {
+  var filters = _ref.filters,
+    selectedFiltersQty = _ref.selectedFiltersQty,
+    showMobileFilters = _ref.showMobileFilters,
+    onFilterClick = _ref.onFilterClick,
+    onClearAllFilters = _ref.onClearAllFilters,
+    onClearFilterItems = _ref.onClearFilterItems,
+    onCheckboxClick = _ref.onCheckboxClick,
+    onMobileFiltersToggleClick = _ref.onMobileFiltersToggleClick,
+    onSelectedFilterClick = _ref.onSelectedFilterClick,
+    resQty = _ref.resQty,
+    searchComponent = _ref.searchComponent,
+    bookmarkComponent = _ref.bookmarkComponent,
+    windowWidth = _ref.windowWidth;
+  var getConfig = Object(__WEBPACK_IMPORTED_MODULE_4__Helpers_hooks__["a" /* useConfig */])();
 
-    var getConfig = (0, _hooks.useConfig)();
+  /**
+   **** Authored Configs ****
+   */
+  var showTotalResults = getConfig('collection', 'showTotalResults');
+  var clearAllFiltersText = getConfig('filterPanel', 'i18n.leftPanel.clearAllFiltersText');
+  var bookmarksEnabled = getConfig('bookmarks', 'leftFilterPanel.showBookmarksFilter');
+  var searchEnabled = getConfig('search', 'enabled');
+  var panelHeader = getConfig('filterPanel', 'i18n.leftPanel.header');
+  var showTotalResultsText = getConfig('filterPanel', 'i18n.leftPanel.mobile.panel.totalResultsText');
+  var clearFilterText = getConfig('filterPanel', 'i18n.leftPanel.mobile.panel.clearFilterText');
+  var leftPanelMobileHeader = getConfig('filterPanel', 'i18n.leftPanel.mobile.panel.header');
+  var applyText = getConfig('filterPanel', 'i18n.leftPanel.mobile.panel.applyBtnText');
+  var doneText = getConfig('filterPanel', 'i18n.leftPanel.mobile.panel.doneBtnText');
 
-    /**
-     **** Authored Configs ****
-     */
-    var showTotalResults = getConfig('collection', 'showTotalResults');
-    var clearAllFiltersText = getConfig('filterPanel', 'i18n.leftPanel.clearAllFiltersText');
-    var bookmarksEnabled = getConfig('bookmarks', 'leftFilterPanel.showBookmarksFilter');
-    var searchEnabled = getConfig('search', 'enabled');
-    var panelHeader = getConfig('filterPanel', 'i18n.leftPanel.header');
-    var showTotalResultsText = getConfig('filterPanel', 'i18n.leftPanel.mobile.panel.totalResultsText');
-    var clearFilterText = getConfig('filterPanel', 'i18n.leftPanel.mobile.panel.clearFilterText');
-    var leftPanelMobileHeader = getConfig('filterPanel', 'i18n.leftPanel.mobile.panel.header');
-    var applyText = getConfig('filterPanel', 'i18n.leftPanel.mobile.panel.applyBtnText');
-    var doneText = getConfig('filterPanel', 'i18n.leftPanel.mobile.panel.doneBtnText');
+  /**
+   **** Constants ****
+   */
 
-    /**
-     **** Constants ****
-     */
+  /**
+   * Whether at least one filter is selected
+   * @type {Boolean}
+   */
+  var atleastOneFilterSelected = Object(__WEBPACK_IMPORTED_MODULE_11__Helpers_general__["o" /* isAtleastOneFilterSelected */])(filters);
 
-    /**
-     * Whether at least one filter is selected
-     * @type {Boolean}
-     */
-    var atleastOneFilterSelected = (0, _general.isAtleastOneFilterSelected)(filters);
+  /**
+   * Minimal viewport width to fit desktops/laptops
+   * @type {Number}
+   */
+  var DESKTOP_MIN_WIDTH = 1200;
 
-    /**
-     * Minimal viewport width to fit desktops/laptops
-     * @type {Number}
-     */
-    var DESKTOP_MIN_WIDTH = 1200;
+  /**
+   * Whether the current viewport width fits desktops/laptops
+   * @type {Boolean}
+   */
+  var DESKTOP_SCREEN_SIZE = windowWidth >= DESKTOP_MIN_WIDTH;
 
-    /**
-     * Whether the current viewport width fits desktops/laptops
-     * @type {Boolean}
-     */
-    var DESKTOP_SCREEN_SIZE = windowWidth >= DESKTOP_MIN_WIDTH;
+  /**
+   * Whether the current viewport width fits tablets or mobile devices
+   * @type {Boolean}
+   */
+  var NOT_DESKTOP_SCREEN_SIZE = windowWidth < DESKTOP_MIN_WIDTH;
 
-    /**
-     * Whether the current viewport width fits tablets or mobile devices
-     * @type {Boolean}
-     */
-    var NOT_DESKTOP_SCREEN_SIZE = windowWidth < DESKTOP_MIN_WIDTH;
+  /**
+   * Whether the search bar should be displayed
+   * @type {Boolean}
+   */
+  var shouldRenderSearchComponent = windowWidth >= DESKTOP_MIN_WIDTH && searchEnabled;
 
-    /**
-     * Whether the search bar should be displayed
-     * @type {Boolean}
-     */
-    var shouldRenderSearchComponent = windowWidth >= DESKTOP_MIN_WIDTH && searchEnabled;
+  /**
+   * Whether the chosen filters should be displayed
+   * @type {Boolean}
+   */
+  var shouldRenderChosenFilters = windowWidth >= DESKTOP_MIN_WIDTH && selectedFiltersQty > 0;
 
-    /**
-     * Whether the chosen filters should be displayed
-     * @type {Boolean}
-     */
-    var shouldRenderChosenFilters = windowWidth >= DESKTOP_MIN_WIDTH && selectedFiltersQty > 0;
+  /**
+   * Whether at least one filter exist
+   * @type {Boolean}
+   */
+  var atleastOneFilter = filters.length > 0;
 
-    /**
-     * Whether at least one filter exist
-     * @type {Boolean}
-     */
-    var atleastOneFilter = filters.length > 0;
+  /**
+   * Class name for the left filters:
+   * whether the left filters panel is opened or closed
+   * @type {String}
+   */
+  var filtersClass = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-LeftFilters': true,
+    'consonant-LeftFilters is-opened': showMobileFilters
+  });
 
-    /**
-     * Class name for the left filters:
-     * whether the left filters panel is opened or closed
-     * @type {String}
-     */
-    var filtersClass = (0, _classnames2.default)({
-        'consonant-LeftFilters': true,
-        'consonant-LeftFilters is-opened': showMobileFilters
+  /**
+   * Creates a DOM reference to mobile footer button
+   * @returns {Object} - footer button DOM reference
+   */
+  var mobileFooterRef = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0_react__["createRef"])();
+
+  /**
+   * Handles Tab on mobile footer button to trap focus in dialog
+   *
+   * @param event
+   */
+  var handleMobileFooterButtonTab = function handleMobileFooterButtonTab(event) {
+    if (event.key !== 'Tab' || event.shiftKey) return;
+    ref.current.focusMobBack();
+    event.preventDefault();
+  };
+
+  /**
+   * Handles Shift + Tab on mob back button to trap focus in dialog
+   *
+   * @param event
+   */
+  var handleMobileBackButtonShiftTab = function handleMobileBackButtonShiftTab(event) {
+    if (event.key !== 'Tab' || !event.shiftKey) return;
+    mobileFooterRef.current.focusFooterButton();
+    event.preventDefault();
+  };
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    "data-testid": "consonant-LeftFilters",
+    "daa-lh": "Filters",
+    className: filtersClass
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-LeftFilters-header"
+  }, NOT_DESKTOP_SCREEN_SIZE && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__Mobile_Only_Title__["a" /* Title */], {
+    onClick: onMobileFiltersToggleClick,
+    leftPanelMobileHeader: leftPanelMobileHeader,
+    ref: ref,
+    onKeyDown: handleMobileBackButtonShiftTab
+  }), DESKTOP_SCREEN_SIZE && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__Desktop_Only_Title__["a" /* Title */], {
+    panelHeader: panelHeader
+  }), DESKTOP_SCREEN_SIZE && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10__Desktop_Only_ClearButton__["a" /* ClearBtn */], {
+    clearAllFiltersText: clearAllFiltersText,
+    onClearAllFilters: onClearAllFilters,
+    panelHeader: panelHeader
+  })), shouldRenderSearchComponent && searchComponent, shouldRenderChosenFilters && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-LeftFilters-chosenFilters"
+  }, filters.map(function (el) {
+    return el.items.map(function (filter) {
+      return filter.selected && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__Desktop_Only_ChosenItem__["a" /* default */], {
+        key: filter.id,
+        name: filter.label,
+        id: filter.id,
+        parentId: el.id,
+        onClick: onSelectedFilterClick
+      });
     });
-
-    /**
-     * Creates a DOM reference to mobile footer button
-     * @returns {Object} - footer button DOM reference
-     */
-    var mobileFooterRef = (0, _react.createRef)();
-
-    /**
-     * Handles Tab on mobile footer button to trap focus in dialog
-     *
-     * @param event
-     */
-    var handleMobileFooterButtonTab = function handleMobileFooterButtonTab(event) {
-        if (event.key !== 'Tab' || event.shiftKey) return;
-        ref.current.focusMobBack();
-        event.preventDefault();
-    };
-
-    /**
-     * Handles Shift + Tab on mob back button to trap focus in dialog
-     *
-     * @param event
-     */
-    var handleMobileBackButtonShiftTab = function handleMobileBackButtonShiftTab(event) {
-        if (event.key !== 'Tab' || !event.shiftKey) return;
-        mobileFooterRef.current.focusFooterButton();
-        event.preventDefault();
-    };
-
-    return _react2.default.createElement(
-        'div',
-        {
-            'data-testid': 'consonant-LeftFilters',
-            'daa-lh': 'Filters',
-            className: filtersClass },
-        _react2.default.createElement(
-            'div',
-            {
-                className: 'consonant-LeftFilters-header' },
-            NOT_DESKTOP_SCREEN_SIZE && _react2.default.createElement(_Title.Title, {
-                onClick: onMobileFiltersToggleClick,
-                leftPanelMobileHeader: leftPanelMobileHeader,
-                ref: ref,
-                onKeyDown: handleMobileBackButtonShiftTab }),
-            DESKTOP_SCREEN_SIZE && _react2.default.createElement(_Title2.Title, {
-                panelHeader: panelHeader }),
-            DESKTOP_SCREEN_SIZE && _react2.default.createElement(_ClearButton.ClearBtn, {
-                clearAllFiltersText: clearAllFiltersText,
-                onClearAllFilters: onClearAllFilters,
-                panelHeader: panelHeader })
-        ),
-        shouldRenderSearchComponent && searchComponent,
-        shouldRenderChosenFilters && _react2.default.createElement(
-            'div',
-            {
-                className: 'consonant-LeftFilters-chosenFilters' },
-            filters.map(function (el) {
-                return el.items.map(function (filter) {
-                    return filter.selected && _react2.default.createElement(_ChosenItem2.default, {
-                        key: filter.id,
-                        name: filter.label,
-                        id: filter.id,
-                        parentId: el.id,
-                        onClick: onSelectedFilterClick });
-                });
-            })
-        ),
-        bookmarksEnabled && bookmarkComponent,
-        atleastOneFilter && _react2.default.createElement(
-            'div',
-            { className: 'consonant-LeftFilters-list' },
-            filters.map(function (filter) {
-                return _react2.default.createElement(_Item2.default, {
-                    key: filter.id,
-                    name: filter.group,
-                    icon: filter.icon,
-                    items: filter.items,
-                    numItemsSelected: (0, _general.getSelectedItemsCount)(filter.items),
-                    results: resQty,
-                    id: filter.id,
-                    isOpened: filter.opened,
-                    onCheck: onCheckboxClick,
-                    onClick: onFilterClick,
-                    onClearAll: onClearFilterItems,
-                    clearFilterText: clearFilterText });
-            })
-        ),
-        NOT_DESKTOP_SCREEN_SIZE && _react2.default.createElement(_PanelFooter.PanelFooter, {
-            doneText: doneText,
-            applyText: applyText,
-            someFiltersAreSelected: atleastOneFilterSelected,
-            showTotalResultsText: showTotalResultsText,
-            onMobileFiltersToggleClick: onMobileFiltersToggleClick,
-            clearAllFiltersText: clearAllFiltersText,
-            onClearAllFilters: onClearAllFilters,
-            resQty: resQty,
-            showTotalResults: showTotalResults,
-            ref: mobileFooterRef,
-            handleMobileFooterButtonTab: handleMobileFooterButtonTab })
-    );
+  })), bookmarksEnabled && bookmarkComponent, atleastOneFilter && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-LeftFilters-list"
+  }, filters.map(function (filter) {
+    return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Item__["a" /* default */], {
+      key: filter.id,
+      name: filter.group,
+      icon: filter.icon,
+      items: filter.items,
+      numItemsSelected: Object(__WEBPACK_IMPORTED_MODULE_11__Helpers_general__["k" /* getSelectedItemsCount */])(filter.items),
+      results: resQty,
+      id: filter.id,
+      isOpened: filter.opened,
+      onCheck: onCheckboxClick,
+      onClick: onFilterClick,
+      onClearAll: onClearFilterItems,
+      clearFilterText: clearFilterText
+    });
+  })), NOT_DESKTOP_SCREEN_SIZE && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9__Mobile_Only_PanelFooter__["a" /* PanelFooter */], {
+    doneText: doneText,
+    applyText: applyText,
+    someFiltersAreSelected: atleastOneFilterSelected,
+    showTotalResultsText: showTotalResultsText,
+    onMobileFiltersToggleClick: onMobileFiltersToggleClick,
+    clearAllFiltersText: clearAllFiltersText,
+    onClearAllFilters: onClearAllFilters,
+    resQty: resQty,
+    showTotalResults: showTotalResults,
+    ref: mobileFooterRef,
+    handleMobileFooterButtonTab: handleMobileFooterButtonTab
+  }));
 });
-
 LeftFilterPanel.propTypes = leftFilterPanelType;
 LeftFilterPanel.defaultProps = defaultProps;
-
-exports.default = LeftFilterPanel;
+/* harmony default export */ __webpack_exports__["a"] = (LeftFilterPanel);
 
 /***/ }),
 /* 301 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Items__ = __webpack_require__(302);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Helpers_hooks__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__types_config__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Mobile_Only_GroupFooter__ = __webpack_require__(303);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Desktop_Only_SelectedItem__ = __webpack_require__(304);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Helpers_Helpers__ = __webpack_require__(22);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
-var _react = __webpack_require__(0);
 
-var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(7);
 
-var _classnames2 = _interopRequireDefault(_classnames);
 
-var _propTypes = __webpack_require__(1);
 
-var _Items = __webpack_require__(302);
-
-var _hooks = __webpack_require__(5);
-
-var _config = __webpack_require__(20);
-
-var _GroupFooter = __webpack_require__(303);
-
-var _SelectedItem = __webpack_require__(304);
-
-var _Helpers = __webpack_require__(22);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var itemType = {
-    icon: _propTypes.string,
-    isOpened: _propTypes.bool,
-    id: _propTypes.string.isRequired,
-    clearFilterText: _propTypes.string,
-    name: _propTypes.string.isRequired,
-    onCheck: _propTypes.func.isRequired,
-    onClick: _propTypes.func.isRequired,
-    numItemsSelected: _propTypes.number,
-    results: _propTypes.number.isRequired,
-    onClearAll: _propTypes.func.isRequired,
-    items: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_config.filterItemType)).isRequired
+  icon: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"],
+  isOpened: __WEBPACK_IMPORTED_MODULE_2_prop_types__["bool"],
+  id: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"].isRequired,
+  clearFilterText: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"],
+  name: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"].isRequired,
+  onCheck: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"].isRequired,
+  onClick: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"].isRequired,
+  numItemsSelected: __WEBPACK_IMPORTED_MODULE_2_prop_types__["number"],
+  results: __WEBPACK_IMPORTED_MODULE_2_prop_types__["number"].isRequired,
+  onClearAll: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"].isRequired,
+  items: Object(__WEBPACK_IMPORTED_MODULE_2_prop_types__["arrayOf"])(Object(__WEBPACK_IMPORTED_MODULE_2_prop_types__["shape"])(__WEBPACK_IMPORTED_MODULE_5__types_config__["b" /* filterItemType */])).isRequired
 };
-
 var defaultProps = {
-    icon: '',
-    isOpened: false,
-    numItemsSelected: 0,
-    clearFilterText: ''
+  icon: '',
+  isOpened: false,
+  numItemsSelected: 0,
+  clearFilterText: ''
 };
 
 /**
@@ -54982,215 +53532,183 @@ var defaultProps = {
  * )
  */
 var Item = function Item(props) {
-    var name = props.name,
-        icon = props.icon,
-        id = props.id,
-        items = props.items,
-        numItemsSelected = props.numItemsSelected,
-        isOpened = props.isOpened,
-        onCheck = props.onCheck,
-        onClick = props.onClick,
-        onClearAll = props.onClearAll,
-        results = props.results,
-        clearFilterText = props.clearFilterText;
+  var name = props.name,
+    icon = props.icon,
+    id = props.id,
+    items = props.items,
+    numItemsSelected = props.numItemsSelected,
+    isOpened = props.isOpened,
+    onCheck = props.onCheck,
+    onClick = props.onClick,
+    onClearAll = props.onClearAll,
+    results = props.results,
+    clearFilterText = props.clearFilterText;
+  var getConfig = Object(__WEBPACK_IMPORTED_MODULE_4__Helpers_hooks__["a" /* useConfig */])();
 
+  /**
+   **** Authored Configs ****
+   */
+  var mobileGroupTotalResultsText = getConfig('filterPanel', 'i18n.leftPanel.mobile.group.totalResultsText').replace('{total}', results);
+  var applyBtnText = getConfig('filterPanel', 'i18n.leftPanel.mobile.group.applyBtnText');
+  var doneBtnText = getConfig('filterPanel', 'i18n.leftPanel.mobile.group.doneBtnText');
 
-    var getConfig = (0, _hooks.useConfig)();
+  /**
+   **** Constants ****
+   */
 
-    /**
-     **** Authored Configs ****
-     */
-    var mobileGroupTotalResultsText = getConfig('filterPanel', 'i18n.leftPanel.mobile.group.totalResultsText').replace('{total}', results);
-    var applyBtnText = getConfig('filterPanel', 'i18n.leftPanel.mobile.group.applyBtnText');
-    var doneBtnText = getConfig('filterPanel', 'i18n.leftPanel.mobile.group.doneBtnText');
+  /**
+   * Text of the left filter footer button on the mobile and tablet breakpoints:
+   * whether the "Apply changes" text should be shown or "Done"
+   * @type {String}
+   */
+  var buttonText = numItemsSelected > 0 ? applyBtnText : doneBtnText;
 
-    /**
-     **** Constants ****
-     */
+  /**
+   * Text indicating the quantity of the selected left filter options
+   * @type {String}
+   */
+  var dataQtyTxt = numItemsSelected > 0 ? "+".concat(numItemsSelected) : '';
 
-    /**
-     * Text of the left filter footer button on the mobile and tablet breakpoints:
-     * whether the "Apply changes" text should be shown or "Done"
-     * @type {String}
-     */
-    var buttonText = numItemsSelected > 0 ? applyBtnText : doneBtnText;
+  /**
+   * Whether the left filter selected options badge should be shown on desktop breakpoint
+   * @type {Boolean}
+   */
+  var shouldRenderSelectedBadge = numItemsSelected > 0;
 
-    /**
-     * Text indicating the quantity of the selected left filter options
-     * @type {String}
-     */
-    var dataQtyTxt = numItemsSelected > 0 ? '+' + numItemsSelected : '';
+  /**
+   * Array of the left filter selected options
+   * @type {Array}
+   */
+  var selectedFilters = items.filter(function (item) {
+    return item.selected;
+  });
 
-    /**
-     * Whether the left filter selected options badge should be shown on desktop breakpoint
-     * @type {Boolean}
-     */
-    var shouldRenderSelectedBadge = numItemsSelected > 0;
+  /**
+   * Array of the selected filters labels shown on mobile and tablet breakpoints
+   * @type {Array}
+   */
+  var mobileTagsSelectedText = selectedFilters.map(function (item, index) {
+    var lastItem = index === selectedFilters.length - 1;
+    return !lastItem ? "".concat(item.label, ", ") : item.label;
+  });
 
-    /**
-     * Array of the left filter selected options
-     * @type {Array}
-     */
-    var selectedFilters = items.filter(function (item) {
-        return item.selected;
-    });
+  /**
+   * Handles toggling the opened/closed state of the left filter
+   * when the filter is clicked
+   * @param {ClickEvent} e
+   * @listens ClickEvent
+   */
+  var handleClick = function handleClick(e) {
+    e.preventDefault();
+    onClick(id);
+  };
 
-    /**
-     * Array of the selected filters labels shown on mobile and tablet breakpoints
-     * @type {Array}
-     */
-    var mobileTagsSelectedText = selectedFilters.map(function (item, index) {
-        var lastItem = index === selectedFilters.length - 1;
-        return !lastItem ? item.label + ', ' : item.label;
-    });
+  /**
+   * Handles unselection of the left filter options
+   * when the "Clear filter options" button is clicked
+   * @param {ClickEvent} e
+   * @listens ClickEvent
+   */
+  var handleClear = function handleClear() {
+    onClearAll(id, name);
+  };
 
-    /**
-     * Handles toggling the opened/closed state of the left filter
-     * when the filter is clicked
-     * @param {ClickEvent} e
-     * @listens ClickEvent
-     */
-    var handleClick = function handleClick(e) {
-        e.preventDefault();
-        onClick(id);
-    };
+  /**
+   * Handles toggling the selected/unselected state of the left filter option
+   * when the filter option is checked/unchecked
+   * @param {ChangeEvent} e
+   * @listens ChangeEvent
+   */
+  var handleCheck = function handleCheck(evt) {
+    evt.stopPropagation();
+    onCheck(id, evt.target.value, evt.target.checked);
+  };
 
-    /**
-     * Handles unselection of the left filter options
-     * when the "Clear filter options" button is clicked
-     * @param {ClickEvent} e
-     * @listens ClickEvent
-     */
-    var handleClear = function handleClear() {
-        onClearAll(id, name);
-    };
+  /**
+   * Class name for the left filter:
+   * whether the left filter is opened
+   * @type {String}
+   */
+  var leftFilterClassName = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-LeftFilter': true,
+    'consonant-LeftFilter is-opened': isOpened
+  });
 
-    /**
-     * Handles toggling the selected/unselected state of the left filter option
-     * when the filter option is checked/unchecked
-     * @param {ChangeEvent} e
-     * @listens ChangeEvent
-     */
-    var handleCheck = function handleCheck(evt) {
-        evt.stopPropagation();
-        onCheck(id, evt.target.value, evt.target.checked);
-    };
-
-    /**
-     * Class name for the left filter:
-     * whether the left filter is opened
-     * @type {String}
-     */
-    var leftFilterClassName = (0, _classnames2.default)({
-        'consonant-LeftFilter': true,
-        'consonant-LeftFilter is-opened': isOpened
-    });
-
-    /**
-     * Impression Tracking
-     */
-    var filterName = name + ' ' + (isOpened ? 'Close' : 'Open');
-    var showFilter = id !== 'caas:all-products';
-
-    return _react2.default.createElement(
-        'div',
-        {
-            'data-testid': 'consonant-LeftFilter',
-            'daa-lh': name,
-            className: leftFilterClassName },
-        showFilter && _react2.default.createElement(
-            'div',
-            {
-                className: 'consonant-LeftFilter-inner' },
-            _react2.default.createElement(
-                'p',
-                {
-                    'data-testid': 'consonant-LeftFilter-name',
-                    className: 'consonant-LeftFilter-name',
-                    'daa-ll': filterName },
-                icon && _react2.default.createElement('img', {
-                    src: icon,
-                    width: '16',
-                    alt: '',
-                    loading: 'lazy' }),
-                _react2.default.createElement(
-                    'button',
-                    {
-                        type: 'button',
-                        'aria-expanded': isOpened,
-                        'data-testid': 'consonant-LeftFilter-link',
-                        className: 'consonant-LeftFilter-link',
-                        'aria-controls': id + '-panel',
-                        id: id + '-link',
-                        onClick: handleClick,
-                        tabIndex: '0' },
-                    name && (0, _Helpers.sanitizeStr)(name),
-                    _react2.default.createElement(
-                        'div',
-                        {
-                            className: 'consonant-LeftFilter-selectedItemsQty',
-                            'data-qty': dataQtyTxt },
-                        mobileTagsSelectedText
-                    )
-                )
-            ),
-            shouldRenderSelectedBadge && _react2.default.createElement(_SelectedItem.SelectedItem, {
-                name: (0, _Helpers.sanitizeStr)(name),
-                handleClear: handleClear,
-                numItemsSelected: numItemsSelected }),
-            _react2.default.createElement(
-                'section',
-                {
-                    id: id + '-panel',
-                    role: 'group',
-                    'aria-labelledby': id + '-link' },
-                _react2.default.createElement(_Items.Items, {
-                    items: items,
-                    handleCheck: handleCheck })
-            ),
-            _react2.default.createElement(_GroupFooter.GroupFooter, {
-                ctaText: buttonText,
-                handleClick: handleClick,
-                clearFilterText: clearFilterText,
-                handleClear: handleClear,
-                numItemsSelected: numItemsSelected,
-                mobileGroupTotalResultsText: mobileGroupTotalResultsText })
-        )
-    );
+  /**
+   * Impression Tracking
+   */
+  var filterName = "".concat(name, " ").concat(isOpened ? 'Close' : 'Open');
+  var showFilter = id !== 'caas:all-products';
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    "data-testid": "consonant-LeftFilter",
+    "daa-lh": name,
+    className: leftFilterClassName
+  }, showFilter && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-LeftFilter-inner"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", {
+    "data-testid": "consonant-LeftFilter-name",
+    className: "consonant-LeftFilter-name",
+    "daa-ll": filterName
+  }, icon && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", {
+    src: icon,
+    width: "16",
+    alt: "",
+    loading: "lazy"
+  }), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    type: "button",
+    "aria-expanded": isOpened,
+    "data-testid": "consonant-LeftFilter-link",
+    className: "consonant-LeftFilter-link",
+    "aria-controls": "".concat(id, "-panel"),
+    id: "".concat(id, "-link"),
+    onClick: handleClick,
+    tabIndex: "0"
+  }, name && Object(__WEBPACK_IMPORTED_MODULE_8__Helpers_Helpers__["t" /* sanitizeStr */])(name), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-LeftFilter-selectedItemsQty",
+    "data-qty": dataQtyTxt
+  }, mobileTagsSelectedText))), shouldRenderSelectedBadge && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__Desktop_Only_SelectedItem__["a" /* SelectedItem */], {
+    name: Object(__WEBPACK_IMPORTED_MODULE_8__Helpers_Helpers__["t" /* sanitizeStr */])(name),
+    handleClear: handleClear,
+    numItemsSelected: numItemsSelected
+  }), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("section", {
+    id: "".concat(id, "-panel"),
+    role: "group",
+    "aria-labelledby": "".concat(id, "-link")
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Items__["a" /* Items */], {
+    items: items,
+    handleCheck: handleCheck
+  })), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__Mobile_Only_GroupFooter__["a" /* GroupFooter */], {
+    ctaText: buttonText,
+    handleClick: handleClick,
+    clearFilterText: clearFilterText,
+    handleClear: handleClear,
+    numItemsSelected: numItemsSelected,
+    mobileGroupTotalResultsText: mobileGroupTotalResultsText
+  })));
 };
-
 Item.propTypes = itemType;
 Item.defaultProps = defaultProps;
-
-exports.default = Item;
+/* harmony default export */ __webpack_exports__["a"] = (Item);
 
 /***/ }),
 /* 302 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Items; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__types_config__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Helpers_Helpers__ = __webpack_require__(22);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Items = undefined;
 
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _config = __webpack_require__(20);
-
-var _Helpers = __webpack_require__(22);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var ItemsType = {
-    handleCheck: _propTypes.func.isRequired,
-    items: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_config.filterItemType)).isRequired
+  handleCheck: __WEBPACK_IMPORTED_MODULE_1_prop_types__["func"].isRequired,
+  items: Object(__WEBPACK_IMPORTED_MODULE_1_prop_types__["arrayOf"])(Object(__WEBPACK_IMPORTED_MODULE_1_prop_types__["shape"])(__WEBPACK_IMPORTED_MODULE_2__types_config__["b" /* filterItemType */])).isRequired
 };
 
 /**
@@ -55207,90 +53725,66 @@ var ItemsType = {
  * )
  */
 var Items = function Items(props) {
-    var items = props.items,
-        handleCheck = props.handleCheck;
-
-
-    return _react2.default.createElement(
-        'ul',
-        {
-            'data-testid': 'consonant-LeftFilter-items',
-            className: 'consonant-LeftFilter-items' },
-        items.map(function (item) {
-            return _react2.default.createElement(
-                'li',
-                {
-                    key: item.id,
-                    'data-testid': 'consonant-LeftFilter-itemsItem',
-                    'daa-ll': item.label,
-                    className: 'consonant-LeftFilter-itemsItem' },
-                _react2.default.createElement(
-                    'label',
-                    {
-                        htmlFor: item.id,
-                        className: 'consonant-LeftFilter-itemsItemLabel' },
-                    _react2.default.createElement('input', {
-                        'data-testid': 'consonant-LeftFilter-itemsItemCheckbox',
-                        id: item.id,
-                        value: item.id,
-                        'daa-im': item.label,
-                        type: 'checkbox',
-                        onChange: handleCheck,
-                        checked: item.selected,
-                        tabIndex: '0' }),
-                    _react2.default.createElement('span', {
-                        className: 'consonant-LeftFilter-itemsItemCheckmark' }),
-                    _react2.default.createElement(
-                        'span',
-                        {
-                            className: 'consonant-LeftFilter-itemsItemName' },
-                        item.label && (0, _Helpers.sanitizeStr)(item.label.toString())
-                    )
-                )
-            );
-        })
-    );
+  var items = props.items,
+    handleCheck = props.handleCheck;
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("ul", {
+    "data-testid": "consonant-LeftFilter-items",
+    className: "consonant-LeftFilter-items"
+  }, items.map(function (item) {
+    return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("li", {
+      key: item.id,
+      "data-testid": "consonant-LeftFilter-itemsItem",
+      "daa-ll": item.label,
+      className: "consonant-LeftFilter-itemsItem"
+    }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("label", {
+      htmlFor: item.id,
+      className: "consonant-LeftFilter-itemsItemLabel"
+    }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+      "data-testid": "consonant-LeftFilter-itemsItemCheckbox",
+      id: item.id,
+      value: item.id,
+      "daa-im": item.label,
+      type: "checkbox",
+      onChange: handleCheck,
+      checked: item.selected,
+      tabIndex: "0"
+    }), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+      className: "consonant-LeftFilter-itemsItemCheckmark"
+    }), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+      className: "consonant-LeftFilter-itemsItemName"
+    }, item.label && Object(__WEBPACK_IMPORTED_MODULE_3__Helpers_Helpers__["t" /* sanitizeStr */])(item.label.toString()))));
+  }));
 };
-
 Items.propTypes = ItemsType;
 
 /* eslint-disable-next-line import/prefer-default-export */
-exports.Items = Items;
+
 
 /***/ }),
 /* 303 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GroupFooter; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.GroupFooter = undefined;
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var groupFooterType = {
-    ctaText: _propTypes.string,
-    clearFilterText: _propTypes.string,
-    numItemsSelected: _propTypes.number,
-    handleClear: _propTypes.func.isRequired,
-    handleClick: _propTypes.func.isRequired,
-    mobileGroupTotalResultsText: _propTypes.string
+  ctaText: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  clearFilterText: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  numItemsSelected: __WEBPACK_IMPORTED_MODULE_1_prop_types__["number"],
+  handleClear: __WEBPACK_IMPORTED_MODULE_1_prop_types__["func"].isRequired,
+  handleClick: __WEBPACK_IMPORTED_MODULE_1_prop_types__["func"].isRequired,
+  mobileGroupTotalResultsText: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"]
 };
-
 var defaultProps = {
-    ctaText: '',
-    numItemsSelected: 0,
-    clearFilterText: '',
-    mobileGroupTotalResultsText: ''
+  ctaText: '',
+  numItemsSelected: 0,
+  clearFilterText: '',
+  mobileGroupTotalResultsText: ''
 };
 
 /**
@@ -55311,79 +53805,53 @@ var defaultProps = {
  * )
  */
 var GroupFooter = function GroupFooter(props) {
-    var mobileGroupTotalResultsText = props.mobileGroupTotalResultsText,
-        numItemsSelected = props.numItemsSelected,
-        handleClear = props.handleClear,
-        clearFilterText = props.clearFilterText,
-        handleClick = props.handleClick,
-        ctaText = props.ctaText;
-
-
-    return _react2.default.createElement(
-        'div',
-        {
-            className: 'consonant-LeftFilter-footer' },
-        _react2.default.createElement(
-            'span',
-            {
-                className: 'consonant-LeftFilter-footerResQty' },
-            mobileGroupTotalResultsText
-        ),
-        numItemsSelected > 0 && _react2.default.createElement(
-            'button',
-            {
-                type: 'button',
-                onClick: handleClear,
-                className: 'consonant-LeftFilter-footerClearBtn' },
-            clearFilterText
-        ),
-        _react2.default.createElement(
-            'button',
-            {
-                type: 'button',
-                onClick: handleClick,
-                className: 'consonant-LeftFilter-footerBtn' },
-            ctaText
-        )
-    );
+  var mobileGroupTotalResultsText = props.mobileGroupTotalResultsText,
+    numItemsSelected = props.numItemsSelected,
+    handleClear = props.handleClear,
+    clearFilterText = props.clearFilterText,
+    handleClick = props.handleClick,
+    ctaText = props.ctaText;
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-LeftFilter-footer"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    className: "consonant-LeftFilter-footerResQty"
+  }, mobileGroupTotalResultsText), numItemsSelected > 0 && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    type: "button",
+    onClick: handleClear,
+    className: "consonant-LeftFilter-footerClearBtn"
+  }, clearFilterText), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    type: "button",
+    onClick: handleClick,
+    className: "consonant-LeftFilter-footerBtn"
+  }, ctaText));
 };
-
 GroupFooter.propTypes = groupFooterType;
 GroupFooter.defaultProps = defaultProps;
 
 /* eslint-disable-next-line import/prefer-default-export */
-exports.GroupFooter = GroupFooter;
+
 
 /***/ }),
 /* 304 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SelectedItem; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Helpers_hooks__ = __webpack_require__(5);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.SelectedItem = undefined;
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _hooks = __webpack_require__(5);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var selectedItemType = {
-    name: _propTypes.string.isRequired,
-    numItemsSelected: _propTypes.number,
-    handleClear: _propTypes.func.isRequired
+  name: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"].isRequired,
+  numItemsSelected: __WEBPACK_IMPORTED_MODULE_1_prop_types__["number"],
+  handleClear: __WEBPACK_IMPORTED_MODULE_1_prop_types__["func"].isRequired
 };
-
 var defaultProps = {
-    numItemsSelected: 0
+  numItemsSelected: 0
 };
 
 /**
@@ -55401,72 +53869,57 @@ var defaultProps = {
  * )
  */
 var SelectedItem = function SelectedItem(props) {
-    var name = props.name,
-        numItemsSelected = props.numItemsSelected,
-        handleClear = props.handleClear;
+  var name = props.name,
+    numItemsSelected = props.numItemsSelected,
+    handleClear = props.handleClear;
 
-    /**
-     **** Authored Configs ****
-        */
+  /**
+   **** Authored Configs ****
+      */
+  var getConfig = Object(__WEBPACK_IMPORTED_MODULE_2__Helpers_hooks__["a" /* useConfig */])();
+  var removeAllFiltersAria = getConfig('collection', 'i18n.removeAllFiltersAria');
 
-    var getConfig = (0, _hooks.useConfig)();
-    var removeAllFiltersAria = getConfig('collection', 'i18n.removeAllFiltersAria');
-
-    /**
-     * Text - quantity of selected left filter options
-     * @type {String}
-     */
-    var displayNumItemsSelected = numItemsSelected > 0 ? '' + numItemsSelected : '';
-
-    var ariaLabel = removeAllFiltersAria && removeAllFiltersAria.replace('{num}', displayNumItemsSelected).replace('{filter}', name);
-
-    return _react2.default.createElement(
-        'button',
-        {
-            'data-testid': 'consonant-LeftFilter-itemBadge',
-            type: 'button',
-            className: 'consonant-LeftFilter-itemBadge',
-            onClick: handleClear,
-            tabIndex: '0',
-            'aria-label': ariaLabel },
-        displayNumItemsSelected
-    );
+  /**
+   * Text - quantity of selected left filter options
+   * @type {String}
+   */
+  var displayNumItemsSelected = numItemsSelected > 0 ? "".concat(numItemsSelected) : '';
+  var ariaLabel = removeAllFiltersAria && removeAllFiltersAria.replace('{num}', displayNumItemsSelected).replace('{filter}', name);
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    "data-testid": "consonant-LeftFilter-itemBadge",
+    type: "button",
+    className: "consonant-LeftFilter-itemBadge",
+    onClick: handleClear,
+    tabIndex: "0",
+    "aria-label": ariaLabel
+  }, displayNumItemsSelected);
 };
-
 SelectedItem.propTypes = selectedItemType;
 SelectedItem.defaultProps = defaultProps;
 
 /* eslint-disable-next-line import/prefer-default-export */
-exports.SelectedItem = SelectedItem;
+
 
 /***/ }),
 /* 305 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Helpers_Helpers__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Helpers_hooks__ = __webpack_require__(5);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _Helpers = __webpack_require__(22);
-
-var _hooks = __webpack_require__(5);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var chosenFilterItemType = {
-    id: _propTypes.string.isRequired,
-    name: _propTypes.string.isRequired,
-    onClick: _propTypes.func.isRequired,
-    parentId: _propTypes.string.isRequired
+  id: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"].isRequired,
+  name: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"].isRequired,
+  onClick: __WEBPACK_IMPORTED_MODULE_1_prop_types__["func"].isRequired,
+  parentId: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"].isRequired
 };
 
 /**
@@ -55486,72 +53939,56 @@ var chosenFilterItemType = {
  * )
  */
 var ChosenFilterItem = function ChosenFilterItem(props) {
-    var name = props.name,
-        id = props.id,
-        parentId = props.parentId,
-        onClick = props.onClick;
+  var name = props.name,
+    id = props.id,
+    parentId = props.parentId,
+    onClick = props.onClick;
 
-    /**
-     **** Authored Configs ****
-        */
+  /**
+   **** Authored Configs ****
+      */
+  var getConfig = Object(__WEBPACK_IMPORTED_MODULE_3__Helpers_hooks__["a" /* useConfig */])();
+  var removeFilterAria = getConfig('collection', 'i18n.removeFilterAria');
 
-    var getConfig = (0, _hooks.useConfig)();
-    var removeFilterAria = getConfig('collection', 'i18n.removeFilterAria');
-
-    /**
-     * Unselects the chosen filter option when the filter is clicked
-     * @param {ClickEvent} e
-     * @listens ClickEvent
-     */
-    var handleClick = function handleClick() {
-        onClick(parentId, id, false);
-    };
-
-    return _react2.default.createElement(
-        'button',
-        {
-            type: 'button',
-            onClick: handleClick,
-            'data-testid': 'consonant-ChosenFilter',
-            className: 'consonant-ChosenFilter',
-            'aria-label': removeFilterAria && removeFilterAria.replace('{filter}', (0, _Helpers.sanitizeStr)(name)),
-            tabIndex: '0' },
-        (0, _Helpers.sanitizeStr)(name)
-    );
+  /**
+   * Unselects the chosen filter option when the filter is clicked
+   * @param {ClickEvent} e
+   * @listens ClickEvent
+   */
+  var handleClick = function handleClick() {
+    onClick(parentId, id, false);
+  };
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    type: "button",
+    onClick: handleClick,
+    "data-testid": "consonant-ChosenFilter",
+    className: "consonant-ChosenFilter",
+    "aria-label": removeFilterAria && removeFilterAria.replace('{filter}', Object(__WEBPACK_IMPORTED_MODULE_2__Helpers_Helpers__["t" /* sanitizeStr */])(name)),
+    tabIndex: "0"
+  }, Object(__WEBPACK_IMPORTED_MODULE_2__Helpers_Helpers__["t" /* sanitizeStr */])(name));
 };
-
 ChosenFilterItem.propTypes = chosenFilterItemType;
-
-exports.default = ChosenFilterItem;
+/* harmony default export */ __webpack_exports__["a"] = (ChosenFilterItem);
 
 /***/ }),
 /* 306 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Title; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Title = undefined;
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var titleType = {
-    onClick: _propTypes.func.isRequired,
-    leftPanelMobileHeader: _propTypes.string,
-    onKeyDown: _propTypes.func.isRequired
+  onClick: __WEBPACK_IMPORTED_MODULE_1_prop_types__["func"].isRequired,
+  leftPanelMobileHeader: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  onKeyDown: __WEBPACK_IMPORTED_MODULE_1_prop_types__["func"].isRequired
 };
-
 var defaultProps = {
-    leftPanelMobileHeader: ''
+  leftPanelMobileHeader: ''
 };
 
 /**
@@ -55567,89 +54004,73 @@ var defaultProps = {
  *   <Title {...props}/>
  * )
  */
-var Title = (0, _react.forwardRef)(function (props, ref) {
-    var onClick = props.onClick,
-        leftPanelMobileHeader = props.leftPanelMobileHeader,
-        onKeyDown = props.onKeyDown;
+var Title = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0_react__["forwardRef"])(function (props, ref) {
+  var onClick = props.onClick,
+    leftPanelMobileHeader = props.leftPanelMobileHeader,
+    onKeyDown = props.onKeyDown;
 
-    /**
-     * Creates a DOM reference to mob title element
-     * @returns {Object} - mob title DOM reference
-     */
+  /**
+   * Creates a DOM reference to mob title element
+   * @returns {Object} - mob title DOM reference
+   */
+  var mobTitleRef = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useRef"])();
 
-    var mobTitleRef = (0, _react.useRef)();
+  /**
+   * Creates a DOM reference to mob back button
+   * @returns {Object} - mob back button DOM reference
+   */
+  var mobBackRef = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useRef"])();
 
-    /**
-     * Creates a DOM reference to mob back button
-     * @returns {Object} - mob back button DOM reference
-     */
-    var mobBackRef = (0, _react.useRef)();
-
-    /**
-     * Allows multiple refs to be used in parent component
-     */
-    (0, _react.useImperativeHandle)(ref, function () {
-        return {
-            focusMobTitle: function focusMobTitle() {
-                mobTitleRef.current.focus();
-            },
-            focusMobBack: function focusMobBack() {
-                mobBackRef.current.focus();
-            }
-        };
-    });
-
-    return _react2.default.createElement(
-        'div',
-        {
-            className: 'consonant-LeftFilters-mobTitle' },
-        _react2.default.createElement('button', {
-            'data-testid': 'consonant-LeftFilters-mobBack',
-            type: 'button',
-            onClick: onClick,
-            className: 'consonant-LeftFilters-mobBack',
-            onKeyDown: onKeyDown,
-            ref: mobBackRef }),
-        _react2.default.createElement(
-            'span',
-            { tabIndex: '-1', ref: mobTitleRef },
-            leftPanelMobileHeader
-        )
-    );
+  /**
+   * Allows multiple refs to be used in parent component
+   */
+  Object(__WEBPACK_IMPORTED_MODULE_0_react__["useImperativeHandle"])(ref, function () {
+    return {
+      focusMobTitle: function focusMobTitle() {
+        mobTitleRef.current.focus();
+      },
+      focusMobBack: function focusMobBack() {
+        mobBackRef.current.focus();
+      }
+    };
+  });
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-LeftFilters-mobTitle"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    "data-testid": "consonant-LeftFilters-mobBack",
+    type: "button",
+    onClick: onClick,
+    className: "consonant-LeftFilters-mobBack",
+    onKeyDown: onKeyDown,
+    ref: mobBackRef
+  }), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    tabIndex: "-1",
+    ref: mobTitleRef
+  }, leftPanelMobileHeader));
 });
-
 Title.propTypes = titleType;
 Title.defaultProps = defaultProps;
 
 /* eslint-disable-next-line import/prefer-default-export */
-exports.Title = Title;
+
 
 /***/ }),
 /* 307 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Title; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Title = undefined;
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var titleType = {
-    panelHeader: _propTypes.string
+  panelHeader: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"]
 };
-
 var defaultProps = {
-    panelHeader: ''
+  panelHeader: ''
 };
 
 /**
@@ -55665,63 +54086,49 @@ var defaultProps = {
  * )
  */
 var Title = function Title(props) {
-    var panelHeader = props.panelHeader;
-
-
-    return _react2.default.createElement(
-        'p',
-        { className: 'consonant-LeftFilters-deskTitle' },
-        panelHeader
-    );
+  var panelHeader = props.panelHeader;
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("p", {
+    className: "consonant-LeftFilters-deskTitle"
+  }, panelHeader);
 };
-
 Title.propTypes = titleType;
 Title.defaultProps = defaultProps;
 
 /* eslint-disable-next-line import/prefer-default-export */
-exports.Title = Title;
+
 
 /***/ }),
 /* 308 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PanelFooter; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.PanelFooter = undefined;
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var panelFooterType = {
-    resQty: _propTypes.number,
-    doneText: _propTypes.string,
-    applyText: _propTypes.string,
-    showTotalResults: _propTypes.bool,
-    clearAllFiltersText: _propTypes.string,
-    someFiltersAreSelected: _propTypes.bool,
-    showTotalResultsText: _propTypes.string,
-    onClearAllFilters: _propTypes.func.isRequired,
-    onMobileFiltersToggleClick: _propTypes.func.isRequired,
-    handleMobileFooterButtonTab: _propTypes.func.isRequired
+  resQty: __WEBPACK_IMPORTED_MODULE_1_prop_types__["number"],
+  doneText: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  applyText: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  showTotalResults: __WEBPACK_IMPORTED_MODULE_1_prop_types__["bool"],
+  clearAllFiltersText: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  someFiltersAreSelected: __WEBPACK_IMPORTED_MODULE_1_prop_types__["bool"],
+  showTotalResultsText: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  onClearAllFilters: __WEBPACK_IMPORTED_MODULE_1_prop_types__["func"].isRequired,
+  onMobileFiltersToggleClick: __WEBPACK_IMPORTED_MODULE_1_prop_types__["func"].isRequired,
+  handleMobileFooterButtonTab: __WEBPACK_IMPORTED_MODULE_1_prop_types__["func"].isRequired
 };
-
 var defaultProps = {
-    resQty: 0,
-    doneText: '',
-    applyText: '',
-    showTotalResults: false,
-    clearAllFiltersText: '',
-    showTotalResultsText: '',
-    someFiltersAreSelected: false
+  resQty: 0,
+  doneText: '',
+  applyText: '',
+  showTotalResults: false,
+  clearAllFiltersText: '',
+  showTotalResultsText: '',
+  someFiltersAreSelected: false
 };
 
 /**
@@ -55744,110 +54151,84 @@ var defaultProps = {
  *   <PanelFooter {...props}/>
  * )
  */
-var PanelFooter = (0, _react.forwardRef)(function (props, ref) {
-    var showTotalResults = props.showTotalResults,
-        resQty = props.resQty,
-        onClearAllFilters = props.onClearAllFilters,
-        clearAllFiltersText = props.clearAllFiltersText,
-        onMobileFiltersToggleClick = props.onMobileFiltersToggleClick,
-        someFiltersAreSelected = props.someFiltersAreSelected,
-        applyText = props.applyText,
-        doneText = props.doneText,
-        showTotalResultsText = props.showTotalResultsText,
-        handleMobileFooterButtonTab = props.handleMobileFooterButtonTab;
+var PanelFooter = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0_react__["forwardRef"])(function (props, ref) {
+  var showTotalResults = props.showTotalResults,
+    resQty = props.resQty,
+    onClearAllFilters = props.onClearAllFilters,
+    clearAllFiltersText = props.clearAllFiltersText,
+    onMobileFiltersToggleClick = props.onMobileFiltersToggleClick,
+    someFiltersAreSelected = props.someFiltersAreSelected,
+    applyText = props.applyText,
+    doneText = props.doneText,
+    showTotalResultsText = props.showTotalResultsText,
+    handleMobileFooterButtonTab = props.handleMobileFooterButtonTab;
 
-    /**
-     * Text of the left filters footer button for mobile and tablet breakpoints:
-     * whether the "Apply changes" text should be shown or "Done"
-     * @type {String}
-     */
+  /**
+   * Text of the left filters footer button for mobile and tablet breakpoints:
+   * whether the "Apply changes" text should be shown or "Done"
+   * @type {String}
+   */
+  var buttonText = someFiltersAreSelected ? applyText : doneText;
 
-    var buttonText = someFiltersAreSelected ? applyText : doneText;
+  /**
+   * Creates a DOM reference to footer button
+   * @returns {Object} - footer button DOM reference
+   */
+  var footerBtnRef = Object(__WEBPACK_IMPORTED_MODULE_0_react__["useRef"])();
 
-    /**
-     * Creates a DOM reference to footer button
-     * @returns {Object} - footer button DOM reference
-     */
-    var footerBtnRef = (0, _react.useRef)();
-
-    /**
-     * Allows multiple refs to be used in parent component
-     */
-    (0, _react.useImperativeHandle)(ref, function () {
-        return {
-            focusFooterButton: function focusFooterButton() {
-                footerBtnRef.current.focus();
-            }
-        };
-    });
-
-    return _react2.default.createElement(
-        'div',
-        {
-            className: 'consonant-LeftFilters-mobileFooter' },
-        showTotalResults && _react2.default.createElement(
-            'span',
-            {
-                'data-testid': 'consonant-LeftFilters-mobileFooterTotalResQty',
-                className: 'consonant-LeftFilters-mobileFooterTotalResQty' },
-            showTotalResultsText.replace('{total}', resQty)
-        ),
-        someFiltersAreSelected && _react2.default.createElement(
-            'button',
-            {
-                type: 'button',
-                'data-testid': 'consonant-LeftFilters-mobileFooterClearBtn',
-                className: 'consonant-LeftFilters-mobileFooterClearBtn',
-                onClick: onClearAllFilters },
-            clearAllFiltersText
-        ),
-        _react2.default.createElement(
-            'button',
-            {
-                type: 'button',
-                'data-testid': 'consonant-LeftFilters-mobileFooterBtn',
-                className: 'consonant-LeftFilters-mobileFooterBtn',
-                onClick: onMobileFiltersToggleClick,
-                ref: footerBtnRef,
-                onKeyDown: handleMobileFooterButtonTab },
-            buttonText
-        )
-    );
+  /**
+   * Allows multiple refs to be used in parent component
+   */
+  Object(__WEBPACK_IMPORTED_MODULE_0_react__["useImperativeHandle"])(ref, function () {
+    return {
+      focusFooterButton: function focusFooterButton() {
+        footerBtnRef.current.focus();
+      }
+    };
+  });
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-LeftFilters-mobileFooter"
+  }, showTotalResults && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    "data-testid": "consonant-LeftFilters-mobileFooterTotalResQty",
+    className: "consonant-LeftFilters-mobileFooterTotalResQty"
+  }, showTotalResultsText.replace('{total}', resQty)), someFiltersAreSelected && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    type: "button",
+    "data-testid": "consonant-LeftFilters-mobileFooterClearBtn",
+    className: "consonant-LeftFilters-mobileFooterClearBtn",
+    onClick: onClearAllFilters
+  }, clearAllFiltersText), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    type: "button",
+    "data-testid": "consonant-LeftFilters-mobileFooterBtn",
+    className: "consonant-LeftFilters-mobileFooterBtn",
+    onClick: onMobileFiltersToggleClick,
+    ref: footerBtnRef,
+    onKeyDown: handleMobileFooterButtonTab
+  }, buttonText));
 });
-
 PanelFooter.propTypes = panelFooterType;
 PanelFooter.defaultProps = defaultProps;
 
 /* eslint-disable-next-line import/prefer-default-export */
-exports.PanelFooter = PanelFooter;
+
 
 /***/ }),
 /* 309 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ClearBtn; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.ClearBtn = undefined;
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var clearButtonType = {
-    clearAllFiltersText: _propTypes.string,
-    onClearAllFilters: _propTypes.func.isRequired
+  clearAllFiltersText: __WEBPACK_IMPORTED_MODULE_1_prop_types__["string"],
+  onClearAllFilters: __WEBPACK_IMPORTED_MODULE_1_prop_types__["func"].isRequired
 };
-
 var defaultProps = {
-    clearAllFiltersText: ''
+  clearAllFiltersText: ''
 };
 
 /**
@@ -55869,48 +54250,41 @@ var defaultProps = {
  * )
  */
 var ClearBtn = function ClearBtn(props) {
-    var onClearAllFilters = props.onClearAllFilters,
-        clearAllFiltersText = props.clearAllFiltersText;
-
-
-    return _react2.default.createElement(
-        'button',
-        {
-            type: 'button',
-            'data-testid': 'consonant-LeftFilters-clearLink',
-            className: 'consonant-LeftFilters-clearLink',
-            onClick: onClearAllFilters,
-            tabIndex: '0' },
-        clearAllFiltersText
-    );
+  var onClearAllFilters = props.onClearAllFilters,
+    clearAllFiltersText = props.clearAllFiltersText;
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    type: "button",
+    "data-testid": "consonant-LeftFilters-clearLink",
+    className: "consonant-LeftFilters-clearLink",
+    onClick: onClearAllFilters,
+    tabIndex: "0"
+  }, clearAllFiltersText);
 };
-
 ClearBtn.propTypes = clearButtonType;
 ClearBtn.defaultProps = defaultProps;
 
 /* eslint-disable-next-line import/prefer-default-export */
-exports.ClearBtn = ClearBtn;
+
 
 /***/ }),
 /* 310 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _general = __webpack_require__(6);
-
-var _Helpers = __webpack_require__(22);
-
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return JsonProcessor; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__general__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Helpers__ = __webpack_require__(22);
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+
+
 
 /**
  * Class that handles parsing raw JSON data and returning a set of processed cards
@@ -55919,156 +54293,140 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @export
  * @class JsonProcessor
  */
-var JsonProcessor = function () {
-    /**
-     * Creates an instance of JsonProcessor.
-     * @param {*} cardsToProcess
-     * @memberof JsonProcessor
-     */
-    function JsonProcessor(cardsToProcess) {
-        _classCallCheck(this, JsonProcessor);
-
-        this.processedCards = cardsToProcess;
+var JsonProcessor = /*#__PURE__*/function () {
+  /**
+   * Creates an instance of JsonProcessor.
+   * @param {*} cardsToProcess
+   * @memberof JsonProcessor
+   */
+  function JsonProcessor(cardsToProcess) {
+    _classCallCheck(this, JsonProcessor);
+    this.processedCards = cardsToProcess;
+  }
+  /**
+   * This method handles removing duplicate cards for the following cases:
+   *
+   * (1) API Repsonse contains duplicate cards
+   * (2) Authored Featured Cards contains duplicate cards
+   * (3) Duplicates between API responese and authored feature cards
+   *
+   * @return {*}
+   * @memberof JsonProcessor
+   */
+  return _createClass(JsonProcessor, [{
+    key: "removeDuplicateCards",
+    value: function removeDuplicateCards() {
+      this.processedCards = Object(__WEBPACK_IMPORTED_MODULE_0__general__["y" /* removeDuplicatesByKey */])(this.processedCards, 'id');
+      return this;
     }
+
     /**
-     * This method handles removing duplicate cards for the following cases:
+     * This method joins authored featured caards with cards returned from API responsee
      *
-     * (1) API Repsonse contains duplicate cards
-     * (2) Authored Featured Cards contains duplicate cards
-     * (3) Duplicates between API responese and authored feature cards
-     *
+     * @param {*} featuredCards
      * @return {*}
      * @memberof JsonProcessor
      */
-
-
-    _createClass(JsonProcessor, [{
-        key: 'removeDuplicateCards',
-        value: function removeDuplicateCards() {
-            this.processedCards = (0, _general.removeDuplicatesByKey)(this.processedCards, 'id');
-            return this;
-        }
-
-        /**
-         * This method joins authored featured caards with cards returned from API responsee
-         *
-         * @param {*} featuredCards
-         * @return {*}
-         * @memberof JsonProcessor
-         */
-
-    }, {
-        key: 'addFeaturedCards',
-        value: function addFeaturedCards(featuredCards) {
-            var someFeaturedCards = featuredCards.map(function (card) {
-                return _extends({}, card, {
-                    isFeatured: true
-                });
-            });
-            this.processedCards = someFeaturedCards.concat(this.processedCards);
-            return this;
-        }
-        /**
-         * This method adds necessary card metadata to cards such as:
-         * (1) Whether a card should be bookmarked or not
-         * (2) Initial Fields Before Pre-Processing occurs
-         * (3) Whether cards should behave as if they are in a Bookmark Only Collection
-         *
-         * @param {*} truncateTextQty
-         * @param {*} onlyShowBookmarks
-         * @param {*} bookmarkedCardIds
-         * @param {*} hideCtaIds
-         * @param {*} hideCtaTags
-         * @return {*}
-         * @memberof JsonProcessor
-         */
-
-    }, {
-        key: 'addCardMetaData',
-        value: function addCardMetaData(truncateTextQty, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags) {
-            this.processedCards = this.processedCards.map(function (card) {
-                return _extends({}, card, {
-                    description: (0, _general.truncateString)((0, _general.getByPath)(card, 'contentArea.description', ''), truncateTextQty),
-                    isBookmarked: bookmarkedCardIds.some(function (i) {
-                        return i === card.id;
-                    }),
-                    disableBookmarkIco: onlyShowBookmarks,
-                    hideCtaId: hideCtaIds.some(function (i) {
-                        return i === card.id;
-                    })
-                }, hideCtaTags.length && hideCtaTags[0] !== '' ? {
-                    hideCtaTags: hideCtaTags.some(function (tag) {
-                        var re = new RegExp(tag);
-                        return (0, _Helpers.hasTag)(re, card.tags);
-                    })
-                } : { hideCtaTags: false }, {
-                    initial: {
-                        title: (0, _general.getByPath)(card, 'contentArea.title', ''),
-                        description: (0, _general.getByPath)(card, 'contentArea.description', ''),
-                        bannerText: (0, _general.getByPath)(card, 'overlays.banner.description', ''),
-                        dateDetailText: (0, _general.getByPath)(card, 'contentArea.dateTetailText', ''),
-                        detailText: (0, _general.getByPath)(card, 'contentArea.detailText', '')
-                    }
-                });
-            });
-            return this;
-        }
-    }]);
-
-    return JsonProcessor;
+  }, {
+    key: "addFeaturedCards",
+    value: function addFeaturedCards(featuredCards) {
+      var someFeaturedCards = featuredCards.map(function (card) {
+        return _objectSpread(_objectSpread({}, card), {}, {
+          isFeatured: true
+        });
+      });
+      this.processedCards = someFeaturedCards.concat(this.processedCards);
+      return this;
+    }
+    /**
+     * This method adds necessary card metadata to cards such as:
+     * (1) Whether a card should be bookmarked or not
+     * (2) Initial Fields Before Pre-Processing occurs
+     * (3) Whether cards should behave as if they are in a Bookmark Only Collection
+     *
+     * @param {*} truncateTextQty
+     * @param {*} onlyShowBookmarks
+     * @param {*} bookmarkedCardIds
+     * @param {*} hideCtaIds
+     * @param {*} hideCtaTags
+     * @return {*}
+     * @memberof JsonProcessor
+     */
+  }, {
+    key: "addCardMetaData",
+    value: function addCardMetaData(truncateTextQty, onlyShowBookmarks, bookmarkedCardIds, hideCtaIds, hideCtaTags) {
+      this.processedCards = this.processedCards.map(function (card) {
+        return _objectSpread(_objectSpread(_objectSpread({}, card), {}, {
+          description: Object(__WEBPACK_IMPORTED_MODULE_0__general__["F" /* truncateString */])(Object(__WEBPACK_IMPORTED_MODULE_0__general__["c" /* getByPath */])(card, 'contentArea.description', ''), truncateTextQty),
+          isBookmarked: bookmarkedCardIds.some(function (i) {
+            return i === card.id;
+          }),
+          disableBookmarkIco: onlyShowBookmarks,
+          hideCtaId: hideCtaIds.some(function (i) {
+            return i === card.id;
+          })
+        }, hideCtaTags.length && hideCtaTags[0] !== '' ? {
+          hideCtaTags: hideCtaTags.some(function (tag) {
+            var re = new RegExp(tag);
+            return Object(__WEBPACK_IMPORTED_MODULE_1__Helpers__["r" /* hasTag */])(re, card.tags);
+          })
+        } : {
+          hideCtaTags: false
+        }), {}, {
+          initial: {
+            title: Object(__WEBPACK_IMPORTED_MODULE_0__general__["c" /* getByPath */])(card, 'contentArea.title', ''),
+            description: Object(__WEBPACK_IMPORTED_MODULE_0__general__["c" /* getByPath */])(card, 'contentArea.description', ''),
+            bannerText: Object(__WEBPACK_IMPORTED_MODULE_0__general__["c" /* getByPath */])(card, 'overlays.banner.description', ''),
+            dateDetailText: Object(__WEBPACK_IMPORTED_MODULE_0__general__["c" /* getByPath */])(card, 'contentArea.dateTetailText', ''),
+            detailText: Object(__WEBPACK_IMPORTED_MODULE_0__general__["c" /* getByPath */])(card, 'contentArea.detailText', '')
+          }
+        });
+      });
+      return this;
+    }
+  }]);
 }();
 
-exports.default = JsonProcessor;
 
 /***/ }),
 /* 311 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Info; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Helpers_hooks__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__types_config__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Mobile_Only_Info__ = __webpack_require__(312);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Helpers_rendering__ = __webpack_require__(40);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Info = undefined;
 
-var _react = __webpack_require__(0);
 
-var _react2 = _interopRequireDefault(_react);
 
-var _classnames = __webpack_require__(7);
 
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _propTypes = __webpack_require__(1);
-
-var _hooks = __webpack_require__(5);
-
-var _config = __webpack_require__(20);
-
-var _Info = __webpack_require__(312);
-
-var _rendering = __webpack_require__(40);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var InfoType = {
-    cardsQty: _propTypes.number,
-    filtersQty: _propTypes.number,
-    windowWidth: _propTypes.number,
-    enabled: _propTypes.bool.isRequired,
-    selectedFiltersQty: _propTypes.number,
-    sortComponent: _propTypes.node.isRequired,
-    searchComponent: _propTypes.node.isRequired,
-    onMobileFiltersToggleClick: _propTypes.func.isRequired,
-    sortOptions: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_config.sortOptionType)).isRequired
+  cardsQty: __WEBPACK_IMPORTED_MODULE_2_prop_types__["number"],
+  filtersQty: __WEBPACK_IMPORTED_MODULE_2_prop_types__["number"],
+  windowWidth: __WEBPACK_IMPORTED_MODULE_2_prop_types__["number"],
+  enabled: __WEBPACK_IMPORTED_MODULE_2_prop_types__["bool"].isRequired,
+  selectedFiltersQty: __WEBPACK_IMPORTED_MODULE_2_prop_types__["number"],
+  sortComponent: __WEBPACK_IMPORTED_MODULE_2_prop_types__["node"].isRequired,
+  searchComponent: __WEBPACK_IMPORTED_MODULE_2_prop_types__["node"].isRequired,
+  onMobileFiltersToggleClick: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"].isRequired,
+  sortOptions: Object(__WEBPACK_IMPORTED_MODULE_2_prop_types__["arrayOf"])(Object(__WEBPACK_IMPORTED_MODULE_2_prop_types__["shape"])(__WEBPACK_IMPORTED_MODULE_4__types_config__["d" /* sortOptionType */])).isRequired
 };
-
 var defaultProps = {
-    cardsQty: 0,
-    filtersQty: 0,
-    selectedFiltersQty: 0,
-    windowWidth: window.innerWidth
+  cardsQty: 0,
+  filtersQty: 0,
+  selectedFiltersQty: 0,
+  windowWidth: window.innerWidth
 };
 
 /**
@@ -56091,174 +54449,141 @@ var defaultProps = {
  *   <Info {...props}/>
  * )
  */
-var Info = (0, _react.forwardRef)(function (props, ref) {
-    var enabled = props.enabled,
-        filtersQty = props.filtersQty,
-        cardsQty = props.cardsQty,
-        selectedFiltersQty = props.selectedFiltersQty,
-        onMobileFiltersToggleClick = props.onMobileFiltersToggleClick,
-        searchComponent = props.searchComponent,
-        sortComponent = props.sortComponent,
-        sortOptions = props.sortOptions,
-        windowWidth = props.windowWidth;
+var Info = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0_react__["forwardRef"])(function (props, ref) {
+  var enabled = props.enabled,
+    filtersQty = props.filtersQty,
+    cardsQty = props.cardsQty,
+    selectedFiltersQty = props.selectedFiltersQty,
+    onMobileFiltersToggleClick = props.onMobileFiltersToggleClick,
+    searchComponent = props.searchComponent,
+    sortComponent = props.sortComponent,
+    sortOptions = props.sortOptions,
+    windowWidth = props.windowWidth;
+  var getConfig = Object(__WEBPACK_IMPORTED_MODULE_3__Helpers_hooks__["a" /* useConfig */])();
 
+  /**
+   **** Authored Configs ****
+   */
+  var title = getConfig('collection', 'i18n.title');
+  var HeadingLevel = getConfig('collection', 'i18n.titleHeadingLevel');
+  var showTotalResults = getConfig('collection', 'showTotalResults');
+  var showTotalResultsText = getConfig('collection', 'i18n.totalResultsText');
+  var searchEnabled = getConfig('search', 'enabled');
+  var sortEnabled = getConfig('sort', 'enabled');
+  var mobileFilterBtnLabel = getConfig('filterPanel', 'i18n.leftPanel.mobile.filtersBtnLabel');
+  var useLightText = getConfig('collection', 'useLightText');
 
-    var getConfig = (0, _hooks.useConfig)();
+  /**
+   **** Constants ****
+   */
 
-    /**
-     **** Authored Configs ****
-     */
-    var title = getConfig('collection', 'i18n.title');
-    var HeadingLevel = getConfig('collection', 'i18n.titleHeadingLevel');
-    var showTotalResults = getConfig('collection', 'showTotalResults');
-    var showTotalResultsText = getConfig('collection', 'i18n.totalResultsText');
-    var searchEnabled = getConfig('search', 'enabled');
-    var sortEnabled = getConfig('sort', 'enabled');
-    var mobileFilterBtnLabel = getConfig('filterPanel', 'i18n.leftPanel.mobile.filtersBtnLabel');
-    var useLightText = getConfig('collection', 'useLightText');
+  /**
+   * Total results HTML
+   * @type {Array}
+   */
+  var totalResultsHtml = Object(__WEBPACK_IMPORTED_MODULE_6__Helpers_rendering__["c" /* RenderTotalResults */])(showTotalResultsText, cardsQty);
 
-    /**
-     **** Constants ****
-     */
+  /**
+   * Minimal viewport width to fit desktops/laptops
+   * @type {Number}
+   */
+  var DESKTOP_MIN_WIDTH = 1200;
 
-    /**
-     * Total results HTML
-     * @type {Array}
-     */
-    var totalResultsHtml = (0, _rendering.RenderTotalResults)(showTotalResultsText, cardsQty);
+  /**
+   * Whether the current viewport width fits tablets or mobile devices
+   * @type {Boolean}
+   */
+  var NOT_DESKTOP_SCREEN_SIZE = windowWidth < DESKTOP_MIN_WIDTH;
 
-    /**
-     * Minimal viewport width to fit desktops/laptops
-     * @type {Number}
-     */
-    var DESKTOP_MIN_WIDTH = 1200;
+  /**
+   * Whether the sort dropdown should be displayed
+   * @type {Boolean}
+   */
+  var shouldRenderSortPopup = sortEnabled && sortOptions.length > 0;
 
-    /**
-     * Whether the current viewport width fits tablets or mobile devices
-     * @type {Boolean}
-     */
-    var NOT_DESKTOP_SCREEN_SIZE = windowWidth < DESKTOP_MIN_WIDTH;
+  /**
+   * Whether the search bar should be displayed
+   * @type {Boolean}
+   */
+  var shouldRenderSearch = searchEnabled && NOT_DESKTOP_SCREEN_SIZE;
 
-    /**
-     * Whether the sort dropdown should be displayed
-     * @type {Boolean}
-     */
-    var shouldRenderSortPopup = sortEnabled && sortOptions.length > 0;
+  /**
+   * Whether the left filters info block should be displayed
+   * on mobile and tablet breakpoints
+   * @type {Boolean}
+   */
+  var shouldRenderMobileInfo = NOT_DESKTOP_SCREEN_SIZE && filtersQty > 0 && enabled;
+  var shouldRenderInnerWrapper = title || showTotalResults;
 
-    /**
-     * Whether the search bar should be displayed
-     * @type {Boolean}
-     */
-    var shouldRenderSearch = searchEnabled && NOT_DESKTOP_SCREEN_SIZE;
+  /**
+   * Class name for the left filters info:
+   * whether the left filters info should be light or dark
+   * @type {String}
+   */
+  var filtersInfoClassName = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-FiltersInfo': true,
+    'consonant-FiltersInfo--withLightText': useLightText
+  });
 
-    /**
-     * Whether the left filters info block should be displayed
-     * on mobile and tablet breakpoints
-     * @type {Boolean}
-     */
-    var shouldRenderMobileInfo = NOT_DESKTOP_SCREEN_SIZE && filtersQty > 0 && enabled;
-
-    var shouldRenderInnerWrapper = title || showTotalResults;
-
-    /**
-     * Class name for the left filters info:
-     * whether the left filters info should be light or dark
-     * @type {String}
-     */
-    var filtersInfoClassName = (0, _classnames2.default)({
-        'consonant-FiltersInfo': true,
-        'consonant-FiltersInfo--withLightText': useLightText
-    });
-
-    /**
-     * Class name for the left filters info inner wrapper:
-     * whether the left filters info inner wrapper should display a vertical separator
-     * after the block with the quantity of the filtered cards
-     * @type {String}
-     */
-    var wrapperClassName = (0, _classnames2.default)({
-        'consonant-FiltersInfo-wrapper': true,
-        'consonant-FiltersInfo-wrapper--noLine': !sortEnabled || !sortOptions.length
-    });
-
-    return _react2.default.createElement(
-        'aside',
-        {
-            'data-testid': 'consonant-FiltersInfo',
-            className: filtersInfoClassName },
-        shouldRenderSearch && _react2.default.createElement(
-            'div',
-            {
-                className: 'consonant-FiltersInfo-search' },
-            searchComponent
-        ),
-        shouldRenderMobileInfo && _react2.default.createElement(_Info.Info, {
-            selectedFiltersQty: selectedFiltersQty,
-            mobileFilterBtnLabel: mobileFilterBtnLabel,
-            onMobileFiltersToggleClick: onMobileFiltersToggleClick,
-            ref: ref }),
-        shouldRenderSortPopup && sortComponent,
-        shouldRenderInnerWrapper && _react2.default.createElement(
-            'div',
-            {
-                className: wrapperClassName },
-            title && _react2.default.createElement(
-                HeadingLevel,
-                {
-                    'data-testid': 'consonant-FiltersInfo-title',
-                    className: 'consonant-FiltersInfo-title' },
-                title
-            ),
-            showTotalResults && _react2.default.createElement(
-                'div',
-                {
-                    'data-testid': 'consonant-FiltersInfo-results',
-                    className: 'consonant-FiltersInfo-results' },
-                totalResultsHtml
-            )
-        )
-    );
+  /**
+   * Class name for the left filters info inner wrapper:
+   * whether the left filters info inner wrapper should display a vertical separator
+   * after the block with the quantity of the filtered cards
+   * @type {String}
+   */
+  var wrapperClassName = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-FiltersInfo-wrapper': true,
+    'consonant-FiltersInfo-wrapper--noLine': !sortEnabled || !sortOptions.length
+  });
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("aside", {
+    "data-testid": "consonant-FiltersInfo",
+    className: filtersInfoClassName
+  }, shouldRenderSearch && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: "consonant-FiltersInfo-search"
+  }, searchComponent), shouldRenderMobileInfo && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Mobile_Only_Info__["a" /* Info */], {
+    selectedFiltersQty: selectedFiltersQty,
+    mobileFilterBtnLabel: mobileFilterBtnLabel,
+    onMobileFiltersToggleClick: onMobileFiltersToggleClick,
+    ref: ref
+  }), shouldRenderSortPopup && sortComponent, shouldRenderInnerWrapper && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    className: wrapperClassName
+  }, title && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(HeadingLevel, {
+    "data-testid": "consonant-FiltersInfo-title",
+    className: "consonant-FiltersInfo-title"
+  }, title), showTotalResults && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    "data-testid": "consonant-FiltersInfo-results",
+    className: "consonant-FiltersInfo-results"
+  }, totalResultsHtml)));
 });
-
 Info.propTypes = InfoType;
 Info.defaultProps = defaultProps;
 
 /* eslint-disable-next-line import/prefer-default-export */
-exports.Info = Info;
+
 
 /***/ }),
 /* 312 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Info; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Info = undefined;
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _classnames = __webpack_require__(7);
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _propTypes = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var infoType = {
-    selectedFiltersQty: _propTypes.number,
-    mobileFilterBtnLabel: _propTypes.string,
-    onMobileFiltersToggleClick: _propTypes.func.isRequired
+  selectedFiltersQty: __WEBPACK_IMPORTED_MODULE_2_prop_types__["number"],
+  mobileFilterBtnLabel: __WEBPACK_IMPORTED_MODULE_2_prop_types__["string"],
+  onMobileFiltersToggleClick: __WEBPACK_IMPORTED_MODULE_2_prop_types__["func"].isRequired
 };
-
 var defaultProps = {
-    selectedFiltersQty: 0,
-    mobileFilterBtnLabel: ''
+  selectedFiltersQty: 0,
+  mobileFilterBtnLabel: ''
 };
 
 /**
@@ -56276,138 +54601,108 @@ var defaultProps = {
  *   <Info {...props}/>
  * )
  */
-var Info = (0, _react.forwardRef)(function (_ref, ref) {
-    var selectedFiltersQty = _ref.selectedFiltersQty,
-        mobileFilterBtnLabel = _ref.mobileFilterBtnLabel,
-        onMobileFiltersToggleClick = _ref.onMobileFiltersToggleClick;
+var Info = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0_react__["forwardRef"])(function (_ref, ref) {
+  var selectedFiltersQty = _ref.selectedFiltersQty,
+    mobileFilterBtnLabel = _ref.mobileFilterBtnLabel,
+    onMobileFiltersToggleClick = _ref.onMobileFiltersToggleClick;
+  var atleastOneSelectedFilter = selectedFiltersQty > 0;
 
-    var atleastOneSelectedFilter = selectedFiltersQty > 0;
-
-    /**
-     * Class name for the button:
-     * whether the button should display the quantity of the selected filters or not
-     * @type {String}
-     */
-    var selectedFiltersQtyClassName = (0, _classnames2.default)({
-        'consonant-FiltersInfo-btn': true,
-        'consonant-FiltersInfo-btn--withFilters': atleastOneSelectedFilter
-    });
-
-    return _react2.default.createElement(
-        'div',
-        {
-            'data-testid': 'consonant-FiltersInfo-btnWrapper',
-            className: 'consonant-FiltersInfo-btnWrapper' },
-        _react2.default.createElement(
-            'button',
-            {
-                type: 'button',
-                'data-testid': 'consonant-FiltersInfo-btn',
-                className: selectedFiltersQtyClassName,
-                onClick: onMobileFiltersToggleClick,
-                ref: ref },
-            _react2.default.createElement('span', {
-                className: 'consonant-FiltersInfo-btnIco' }),
-            _react2.default.createElement(
-                'span',
-                {
-                    className: 'consonant-FiltersInfo-btnText' },
-                mobileFilterBtnLabel
-            ),
-            atleastOneSelectedFilter && _react2.default.createElement(
-                'span',
-                {
-                    'data-testid': 'consonant-FiltersInfo-btnSelected',
-                    className: 'consonant-FiltersInfo-btnSelected' },
-                selectedFiltersQty
-            )
-        )
-    );
+  /**
+   * Class name for the button:
+   * whether the button should display the quantity of the selected filters or not
+   * @type {String}
+   */
+  var selectedFiltersQtyClassName = __WEBPACK_IMPORTED_MODULE_1_classnames___default()({
+    'consonant-FiltersInfo-btn': true,
+    'consonant-FiltersInfo-btn--withFilters': atleastOneSelectedFilter
+  });
+  return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+    "data-testid": "consonant-FiltersInfo-btnWrapper",
+    className: "consonant-FiltersInfo-btnWrapper"
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+    type: "button",
+    "data-testid": "consonant-FiltersInfo-btn",
+    className: selectedFiltersQtyClassName,
+    onClick: onMobileFiltersToggleClick,
+    ref: ref
+  }, /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    className: "consonant-FiltersInfo-btnIco"
+  }), /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    className: "consonant-FiltersInfo-btnText"
+  }, mobileFilterBtnLabel), atleastOneSelectedFilter && /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+    "data-testid": "consonant-FiltersInfo-btnSelected",
+    className: "consonant-FiltersInfo-btnSelected"
+  }, selectedFiltersQty)));
 });
-
 Info.propTypes = infoType;
 Info.defaultProps = defaultProps;
 
 /* eslint-disable-next-line import/prefer-default-export */
-exports.Info = Info;
+
 
 /***/ }),
 /* 313 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.ConsonantPageModel = undefined;
-
-var _reactDomComponents = __webpack_require__(107);
-
-var _Container = __webpack_require__(108);
-
-var _Container2 = _interopRequireDefault(_Container);
-
-var _decorators = __webpack_require__(314);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+/* unused harmony export ConsonantPageModel */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_dom_components__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_dom_components___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react_dom_components__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Container_Container__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Helpers_decorators__ = __webpack_require__(314);
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var ConsonantPageModel = exports.ConsonantPageModel = function (_DOMModel) {
-    _inherits(ConsonantPageModel, _DOMModel);
-
-    function ConsonantPageModel(element) {
-        _classCallCheck(this, ConsonantPageModel);
-
-        var _this = _possibleConstructorReturn(this, (ConsonantPageModel.__proto__ || Object.getPrototypeOf(ConsonantPageModel)).call(this, element));
-
-        _this.getAttribute('id', 'id');
-        _this.getAttribute('data-config', 'dataConfig');
-        return _this;
-    }
-
-    return ConsonantPageModel;
-}(_reactDomComponents.DOMModel);
-
-var consonantPageRDC = (0, _reactDomComponents.createRDC)('consonant-card-collection', ConsonantPageModel, (0, _decorators.parseDataConfig)(_Container2.default));
-exports.default = consonantPageRDC;
+var ConsonantPageModel = /*#__PURE__*/function (_DOMModel) {
+  function ConsonantPageModel(element) {
+    var _this;
+    _classCallCheck(this, ConsonantPageModel);
+    _this = _callSuper(this, ConsonantPageModel, [element]);
+    _this.getAttribute('id', 'id');
+    _this.getAttribute('data-config', 'dataConfig');
+    return _this;
+  }
+  _inherits(ConsonantPageModel, _DOMModel);
+  return _createClass(ConsonantPageModel);
+}(__WEBPACK_IMPORTED_MODULE_0_react_dom_components__["DOMModel"]);
+var consonantPageRDC = Object(__WEBPACK_IMPORTED_MODULE_0_react_dom_components__["createRDC"])('consonant-card-collection', ConsonantPageModel, Object(__WEBPACK_IMPORTED_MODULE_2__Helpers_decorators__["a" /* parseDataConfig */])(__WEBPACK_IMPORTED_MODULE_1__Container_Container__["a" /* default */]));
+/* harmony default export */ __webpack_exports__["a"] = (consonantPageRDC);
 
 /***/ }),
 /* 314 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return parseDataConfig; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__general__ = __webpack_require__(6);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.parseDataConfig = undefined;
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _general = __webpack_require__(6);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /* eslint-disable react/prop-types  */
 /* eslint-disable import/prefer-default-export  */
-var parseDataConfig = exports.parseDataConfig = function parseDataConfig(Component) {
-    return function (_ref) {
-        var dataConfig = _ref.dataConfig;
-
-        var config = (0, _general.parseToPrimitive)(dataConfig);
-
-        return _react2.default.createElement(Component, { config: config });
-    };
+var parseDataConfig = function parseDataConfig(Component) {
+  return function (_ref) {
+    var dataConfig = _ref.dataConfig;
+    var config = Object(__WEBPACK_IMPORTED_MODULE_1__general__["u" /* parseToPrimitive */])(dataConfig);
+    return /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Component, {
+      config: config
+    });
+  };
 };
 
 /***/ }),
