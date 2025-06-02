@@ -1,3 +1,4 @@
 ## Ignore test files from linting until syntax support stabilizes
 react/src/js/components/Consonant/**/*.{spec.js,test.js}
 react/src/js/components/Consonant/**/__tests__/*
+react/src/js/components/Consonant/**/__test__/*

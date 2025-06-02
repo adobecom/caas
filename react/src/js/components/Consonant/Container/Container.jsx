@@ -58,7 +58,14 @@ import {
     getNumSelectedFilterItems,
     makeConfigGetter,
 } from '../Helpers/consonant';
-
+import {
+    shouldDisplayPaginator,
+    getNumCardsToShow,
+    getTotalPages,
+    getActiveFilterIds,
+    getActivePanels,
+    getUpdatedCardBookmarkData,
+} from '../Helpers/Helpers';
 /**
  * Splits an ID string into parent and child segments at the last '/'.
  * @param {string} id - The composite ID string.
@@ -99,14 +106,6 @@ export function removeEmptyFilters(allFilters, cardsFromJson) {
     .filter(filter => filter.items.length > 0);
 }
 
-import {
-    shouldDisplayPaginator,
-    getNumCardsToShow,
-    getTotalPages,
-    getActiveFilterIds,
-    getActivePanels,
-    getUpdatedCardBookmarkData,
-} from '../Helpers/Helpers';
 
 
 /**
