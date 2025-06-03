@@ -56,6 +56,7 @@ const View = (props) => {
         <div
             data-testid="consonant-NoResultsView"
             className={noResultsViewClass}>
+            <img src="test.png" />
             <strong
                 className="consonant-NoResultsView-title">
                 {title}
