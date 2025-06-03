@@ -28,7 +28,12 @@ module.exports = {
         ],
     },
     output: {
+        // Main sourcemap bundle filename; dynamic imports create separate chunks
         filename: 'main.source.js',
+        // Name for non-entry chunk files (dynamic imports)
+        chunkFilename: '[name].chunk.js',
+        // Public path for loading dynamic chunks
+        publicPath: 'dist/',
         path: path.resolve(__dirname, 'dist'),
     },
     resolve: {
