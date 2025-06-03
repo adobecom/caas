@@ -32,7 +32,10 @@ module.exports = {
     // An array of file extensions your modules use
     moduleFileExtensions: ['js', 'json', 'jsx'],
 
+    // Files to run before initializing the testing framework
     setupFiles: ['<rootDir>/enzyme.config.js'],
+    // Legacy hook for extending Jest with additional matchers (e.g. jest-axe)
+    setupTestFrameworkScriptFile: '<rootDir>/jest-axe-setup.js',
 
     // The test environment that will be used for testing
     testEnvironment: 'jest-environment-jsdom-fifteen',
