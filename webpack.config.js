@@ -37,7 +37,12 @@ module.exports = {
         ],
     },
     output: {
+        // Main bundle filename; dynamic imports will create separate chunks
         filename: 'main.js',
+        // Name for non-entry chunk files (dynamic imports)
+        chunkFilename: '[name].chunk.js',
+        // Public path for loading dynamic chunks
+        publicPath: 'dist/',
         path: path.resolve(__dirname, 'dist'),
     },
     resolve: {

@@ -1,10 +1,12 @@
 /* eslint-disable no-console, no-unreachable */
 import React, {
     Fragment,
+    Suspense,
     useEffect,
     useRef,
     useState,
     createRef,
+    lazy,
 } from 'react';
 import classNames from 'classnames';
 import { shape } from 'prop-types';
@@ -22,7 +24,12 @@ import {
     getTransitions,
 } from '../Helpers/general';
 import { configType } from '../types/config';
-import CardsCarousel from '../CardsCarousel/CardsCarousel';
+const CardsCarousel = lazy(() =>
+    import(
+        /* webpackChunkName: "carousel" */
+        '../CardsCarousel/CardsCarousel'
+    )
+);
 import NoResultsView from '../NoResults/View';
 import LoadMore from '../Pagination/LoadMore';
 import Bookmarks from '../Bookmarks/Bookmarks';
@@ -1559,11 +1566,13 @@ const Container = (props) => {
                                 }
                             </Fragment>}
                             { atLeastOneCard && isCarouselContainer && !(cardStyle === 'custom-card') &&
-                            <CardsCarousel
-                                resQty={gridCardLen}
-                                cards={gridCards}
-                                role="tablist"
-                                onCardBookmark={handleCardBookmarking} />
+                            <Suspense fallback={null}>
+                                <CardsCarousel
+                                    resQty={gridCardLen}
+                                    cards={gridCards}
+                                    role="tablist"
+                                    onCardBookmark={handleCardBookmarking} />
+                            </Suspense>
                             }
                             { atLeastOneCard && isCarouselContainer && (cardStyle === 'custom-card') &&
                             <NoResultsView
