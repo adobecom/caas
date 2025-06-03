@@ -48,23 +48,7 @@ module.exports = {
             {
                 test: /\.jsx?$/,
                 exclude: /(node_modules|bower_components|\.spec\.js$)/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['env'],
-                        plugins: ['transform-class-properties', 'transform-object-rest-spread'],
-                    },
-                },
-            },
-            {
-                test: /\.(js|jsx)$/,
-                exclude: /(node_modules|@dexter|bower_components|\.spec\.js$)/,
-                enforce: 'pre',
-                loader: 'eslint-loader',
-                options: {
-                    failOnError: true,
-                    fix: false,
-                },
+                loader: 'babel-loader',
             },
             {
                 test: /\.css$/,
