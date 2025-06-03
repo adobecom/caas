@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.3 (5/28/2025, 20:53:40)
+ * Chimera UI Libraries - Build 0.35.4 (6/3/2025, 10:21:28)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -44516,8 +44516,7 @@ function CardsCarousel() {
     }
 
     function shouldHideNextButton() {
-        var carousel = carouselRef.current;
-        var atEndOfCarousel = carousel.scrollWidth - carousel.clientWidth < carousel.scrollLeft + cardWidth;
+        var atEndOfCarousel = firstVisibleCard >= cards.length - cardsPerPage;
         if (atEndOfCarousel) {
             hideNextButton();
             if (userIsTabbing()) {
@@ -44560,7 +44559,6 @@ function CardsCarousel() {
             if (!cardLinks.length) return;
             cardLinks.forEach(function (link) {
                 link.setAttribute('aria-hidden', 'true');
-                link.setAttribute('inert', '');
                 link.setAttribute('tabindex', '-1');
             });
 
@@ -44569,19 +44567,16 @@ function CardsCarousel() {
                     var linkBlockers = card.querySelectorAll('.consonant-LinkBlocker');
                     linkBlockers.forEach(function (link) {
                         link.removeAttribute('aria-hidden');
-                        link.removeAttribute('inert');
                         link.setAttribute('tabindex', '0');
                     });
                     var modalVideo = card.querySelector('.consonant-Card-videoIco');
                     if (modalVideo) {
                         modalVideo.removeAttribute('aria-hidden');
-                        modalVideo.removeAttribute('inert');
                         modalVideo.setAttribute('tabindex', '0');
                     }
                 } else {
                     cardLinks.forEach(function (link) {
                         link.removeAttribute('aria-hidden');
-                        link.removeAttribute('inert');
                         link.setAttribute('tabindex', '0');
                     });
                 }
