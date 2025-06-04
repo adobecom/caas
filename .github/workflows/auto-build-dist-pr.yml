@@ -36,5 +36,5 @@ jobs:
             echo "No changes in dist/"
             exit 0
           fi
-          git commit -m "chore: rebuild dist for PR [skip ci]"
+          git commit -m "chore: rebuild dist for PR"
           git push origin HEAD:${{ github.head_ref }}
