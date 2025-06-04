@@ -59,12 +59,10 @@ const Bookmark = ({
     const showOnCards = getConfig('bookmarks', 'showOnCards');
 
     /**
-     * Authored Configs with defaults for accessibility
+     **** Authored Configs ****
      */
-    const defaultSaveCardText = 'Add to bookmarks';
-    const defaultUnsaveCardText = 'Remove from bookmarks';
-    const saveCardText = getConfig('bookmarks', 'i18n.card.saveText') || defaultSaveCardText;
-    const unsaveCardText = getConfig('bookmarks', 'i18n.card.unsaveText') || defaultUnsaveCardText;
+    const saveCardText = getConfig('bookmarks', 'i18n.card.saveText');
+    const unsaveCardText = getConfig('bookmarks', 'i18n.card.unsaveText');
 
     const bookmarkInfobitClass = classNames({
         'consonant-BookmarkInfobit': true,
@@ -98,9 +96,7 @@ const Bookmark = ({
             type="button"
             className={bookmarkInfobitClass}
             onClick={handleClick}
-            tabIndex="0"
-            aria-label={tooltipText}
-            title={tooltipText}>
+            tabIndex="0">
             {showOnCards && bookmarkIcon()}
             {showOnCards && <Tooltip
                 data-testid="consonant-Tooltip"
