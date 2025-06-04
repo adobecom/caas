@@ -52,7 +52,7 @@ const Items = (props) => {
                             daa-im={item.label}
                             type="checkbox"
                             onChange={handleCheck}
-                            checked={item.selected}
+                            checked={!!item.selected}
                             tabIndex="0" />
                         <span
                             className="consonant-LeftFilter-itemsItemCheckmark" />

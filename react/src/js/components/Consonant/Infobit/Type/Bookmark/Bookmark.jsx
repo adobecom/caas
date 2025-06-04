@@ -94,6 +94,7 @@ const Bookmark = ({
             data-testid="consonant-BookmarkInfobit"
             data-tooltip-wrapper
             type="button"
+            aria-label={tooltipText || 'Bookmark'}
             className={bookmarkInfobitClass}
             onClick={handleClick}
             tabIndex="0">

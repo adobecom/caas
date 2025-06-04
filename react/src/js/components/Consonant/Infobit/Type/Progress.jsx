@@ -75,7 +75,8 @@ const Progress = ({
                     role="progressbar"
                     aria-valuenow={percentageInt}
                     aria-valuemin="0"
-                    aria-valuemax="100">
+                    aria-valuemax="100"
+                    aria-label={label}>
                     {percentage}
                 </span>
             </div>
