@@ -41,6 +41,14 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
     },
     resolve: {
+        // Alias React imports to Preact for smaller footprint and compatibility
+        alias: {
+            react: 'preact/compat',
+            'react-dom': 'preact/compat',
+            // alias test-utils and JSX runtime if used
+            'react-dom/test-utils': 'preact/test-utils',
+            'react/jsx-runtime': 'preact/jsx-runtime'
+        },
         extensions: ['.js', '.jsx'],
     },
     module: {
