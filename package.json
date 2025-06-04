@@ -149,6 +149,9 @@
       "commitMessage": "chore: release v${version}",
       "requireCleanWorkingDir": false
     },
+    "hooks": {
+      "after:bump": "RELEASE_TAG=${version} npm run build && git add dist"
+    },
     "github": {
       "release": true
     },

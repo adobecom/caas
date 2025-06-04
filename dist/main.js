@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.4 (6/3/2025, 20:57:56)
+ * Chimera UI Libraries - Build 0.35.4 (6/4/2025, 02:57:56)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -49034,10 +49034,12 @@ var Bookmark = function Bookmark(_ref) {
     var showOnCards = getConfig('bookmarks', 'showOnCards');
 
     /**
-     **** Authored Configs ****
+     * Authored Configs with defaults for accessibility
      */
-    var saveCardText = getConfig('bookmarks', 'i18n.card.saveText');
-    var unsaveCardText = getConfig('bookmarks', 'i18n.card.unsaveText');
+    var defaultSaveCardText = 'Add to bookmarks';
+    var defaultUnsaveCardText = 'Remove from bookmarks';
+    var saveCardText = getConfig('bookmarks', 'i18n.card.saveText') || defaultSaveCardText;
+    var unsaveCardText = getConfig('bookmarks', 'i18n.card.unsaveText') || defaultUnsaveCardText;
 
     var bookmarkInfobitClass = (0, _classnames2.default)({
         'consonant-BookmarkInfobit': true,
@@ -49070,7 +49072,8 @@ var Bookmark = function Bookmark(_ref) {
             className: bookmarkInfobitClass,
             onClick: handleClick,
             tabIndex: '0',
-            'aria-label': tooltipText },
+            'aria-label': tooltipText,
+            title: tooltipText },
         showOnCards && bookmarkIcon(),
         showOnCards && _react2.default.createElement(_Tooltip2.default, {
             'data-testid': 'consonant-Tooltip',
