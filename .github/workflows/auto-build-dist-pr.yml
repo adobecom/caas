@@ -1,0 +1,39 @@
+name: Auto-build & commit dist for PRs
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Build project
+        run: yarn build
+      - name: Commit updated dist
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git log -1 --pretty=%B | grep -q "\[skip ci\]"; then
+            echo "Skip CI commit detected, exiting"
+            exit 0
+          fi
+          git add dist
+          if git diff --cached --quiet; then
+            echo "No changes in dist/"
+            exit 0
+          fi
+          git commit -m "chore: rebuild dist for PR [skip ci]"
+          git push origin HEAD:${{ github.head_ref }}
