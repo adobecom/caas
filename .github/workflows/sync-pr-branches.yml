@@ -1,0 +1,40 @@
+name: Sync PR branches with main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync-open-prs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Sync open PR branches
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const { data: prs } = await github.rest.pulls.list({
+              owner,
+              repo,
+              state: "open",
+              per_page: 100
+            });
+            for (const pr of prs) {
+              if (pr.head.repo.full_name !== `${owner}/${repo}`) continue;
+              try {
+                await github.rest.pulls.updateBranch({
+                  owner,
+                  repo,
+                  pull_number: pr.number
+                });
+                console.log(`Synced PR #${pr.number}`);
+              } catch (err) {
+                console.warn(`Failed to sync PR #${pr.number}: ${err.message}`);
+              }
+            }
