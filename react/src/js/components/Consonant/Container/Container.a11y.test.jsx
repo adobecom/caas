@@ -79,4 +79,28 @@ describe('Container accessibility', () => {
         const results = await axe(container);
         expect(results).toHaveNoViolations();
     });
+    
+    it('top filter panel search box is accessible and interactive', async () => {
+        // Override config to use top filter panel
+        const cfg = JSON.parse(JSON.stringify(config));
+        cfg.filterPanel.type = 'top';
+        // Simulate mobile viewport to render top panel search bar
+        global.innerWidth = 500;
+        window.dispatchEvent(new Event('resize'));
+        const { container } = render(<Container config={cfg} />);
+        // Wait for top filter panel mobile search wrapper
+        await waitFor(() => screen.getByTestId('consonant-TopFilters-searchWrapper'));
+        // Locate the search input rendered by Search component
+        const input = screen.getByTestId('consonant-Search-input');
+        expect(input).toBeTruthy();
+        fireEvent.change(input, { target: { value: 'test' } });
+        expect(input.value).toBe('test');
+        const clearBtn = screen.getByLabelText('Clear Search filter');
+        expect(clearBtn).toBeTruthy();
+        fireEvent.click(clearBtn);
+        expect(input.value).toBe('');
+        // Check accessibility after interaction
+        const results2 = await axe(container);
+        expect(results2).toHaveNoViolations();
+    });
 });
