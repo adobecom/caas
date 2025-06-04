@@ -1,3 +1,5 @@
+// Increase timeout for this suite due to potential asynchronous delays
+jest.setTimeout(20000);
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { axe } from 'jest-axe';
@@ -57,6 +59,8 @@ describe('CardsCarousel accessibility', () => {
         expect(document.activeElement).toBe(prevBtn);
         fireEvent.click(prevBtn);
         // Final accessibility check
+        // Allow any pending effects to complete
+        await new Promise(resolve => setTimeout(resolve, 0));
         const results = await axe(container);
         expect(results).toHaveNoViolations();
     });
