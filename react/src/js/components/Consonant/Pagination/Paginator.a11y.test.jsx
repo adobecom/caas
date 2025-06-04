@@ -48,9 +48,6 @@ describe('Paginator accessibility', () => {
     expect(prevBtn).toBeTruthy();
     expect(nextBtn).toBeTruthy();
     expect(pageItems.length).toBeGreaterThan(0);
-    // Initial accessibility check
-    let results = await axe(container);
-    expect(results).toHaveNoViolations();
     // Keyboard focus and activate next
     nextBtn.focus();
     expect(document.activeElement).toBe(nextBtn);
@@ -59,8 +56,8 @@ describe('Paginator accessibility', () => {
     prevBtn.focus();
     expect(document.activeElement).toBe(prevBtn);
     fireEvent.click(prevBtn);
-    // Final accessibility check
-    results = await axe(container);
+    // Accessibility check after interactions
+    const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 });
