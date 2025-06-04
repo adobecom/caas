@@ -12,6 +12,7 @@
     "test:coverage": "jest --coverage",
     "test:unit": "jest",
     "test:a11y": "jest --config=jest.a11y.config.js",
+    "test:a11y:coverage": "jest --config=jest.a11y.config.js --coverage",
     "test:e2e-local": "wdio run wdio.local.conf.js env=LOCAL",
     "test:e2e-prod": "wdio run wdio.conf.js env=PROD",
     "serve": "serve",
