@@ -22,10 +22,41 @@ afterAll(() => {
 
 describe('Container accessibility', () => {
     it('renders without accessibility violations', async () => {
-        // Render with real config and mocked cards
+        // Non-empty response: render grid with cards
         const { container } = render(<Container config={config} />);
-        // Wait until the grid of cards is rendered
         await waitFor(() => screen.getByTestId('consonant-CardsGrid'));
+        const results = await axe(container);
+        expect(results).toHaveNoViolations();
+    });
+
+    it('renders accessible no-results view when API returns empty array', async () => {
+        // Mock fetch to return empty cards
+        global.fetch.mockImplementationOnce(() =>
+            Promise.resolve({
+                ok: true,
+                status: 200,
+                statusText: 'OK',
+                json: () => Promise.resolve({ cards: [] }),
+            })
+        );
+        const { container } = render(<Container config={config} />);
+        await waitFor(() => screen.getByTestId('consonant-NoResultsView'));
+        const results = await axe(container);
+        expect(results).toHaveNoViolations();
+    });
+
+    it('renders accessible error view when API fails', async () => {
+        // Mock fetch to simulate network error
+        global.fetch.mockImplementationOnce(() =>
+            Promise.resolve({
+                ok: false,
+                status: 404,
+                statusText: 'Not Found',
+                json: () => Promise.resolve({}),
+            })
+        );
+        const { container } = render(<Container config={config} />);
+        await waitFor(() => screen.getByTestId('consonant-NoResultsView'));
         const results = await axe(container);
         expect(results).toHaveNoViolations();
     });
