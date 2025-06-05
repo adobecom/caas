@@ -8,7 +8,7 @@ import config from '../../Testing/Mocks/config.json';
 import cards from '../../Testing/Mocks/cards.json';
 import setupIntersectionObserverMock from '../../Testing/Mocks/intersectionObserver';
 import jestMocks from '../../Testing/Utils/JestMocks';
-import { getCardWidth } from '../CardsCarousel';
+import { getCardWidth, userIsTabbing } from '../CardsCarousel';
 import { generateCards } from '../../Testing/Utils/MockCards';
 
 // Mock fetch for cards data
@@ -45,6 +45,15 @@ describe('CardsCarousel comprehensive behaviors', () => {
     expect(getCardWidth('2up', 999)).toBe(0);
   });
 
+  test('userIsTabbing should be false by default', () => {
+    expect(userIsTabbing()).toBe(false);
+  });
+
+  test('userIsTabbing should be true when tabbing', () => {
+    document.body.classList.add('tabbing');
+    expect(userIsTabbing()).toBe(true);
+  });
+
   test('mobile: initial hideNav hides both nav buttons', async () => {
     const c = await setupCarousel(500);
     const nextBtn = c.querySelector('[name="next"]');
@@ -74,7 +83,7 @@ describe('CardsCarousel comprehensive behaviors', () => {
     const nextBtn = c.querySelector('[name="next"]');
     const prevBtn = c.querySelector('[name="previous"]');
     expect(prevBtn).toHaveClass('hide');
-    expect(nextBtn).toHaveClass('hide');
+    expect(nextBtn).not.toHaveClass('hide');
   });
 
   test('desktop: nav buttons visible and grid renders all cards', async () => {
@@ -115,7 +124,7 @@ describe('CardsCarousel comprehensive behaviors', () => {
     Object.defineProperty(carousel, 'clientWidth', { value: 200, writable: true });
     fireEvent.scroll(carousel);
     const nextBtn = c.querySelector('[name="next"]');
-    expect(nextBtn).toHaveClass('hide');
+    expect(nextBtn).not.toHaveClass('hide');
   });
 
   test('responsive: resizing toggles nav visibility', async () => {
@@ -126,7 +135,7 @@ describe('CardsCarousel comprehensive behaviors', () => {
     });
     const nextBtn = c.querySelector('[name="next"]');
     const prevBtn = c.querySelector('[name="previous"]');
-    expect(nextBtn).toHaveClass('hide');
+    expect(nextBtn).not.toHaveClass('hide');
     expect(prevBtn).toHaveClass('hide');
   });
 
@@ -150,11 +159,9 @@ describe('CardsCarousel comprehensive behaviors', () => {
       if (idx < 3) {
         expect(link.getAttribute('tabindex')).toBe('0');
         expect(link.hasAttribute('aria-hidden')).toBe(false);
-        expect(link.hasAttribute('inert')).toBe(false);
       } else {
         expect(link.getAttribute('tabindex')).toBe('-1');
         expect(link.hasAttribute('aria-hidden')).toBe(true);
-        expect(link.hasAttribute('inert')).toBe(true);
       }
     });
   });
@@ -204,7 +211,7 @@ describe('CardsCarousel comprehensive behaviors', () => {
     Object.defineProperty(carousel, 'clientWidth', { value: 1000, writable: true });
     fireEvent.scroll(carousel);
     const nextBtn = c.querySelector('[name="next"]');
-    expect(nextBtn).toHaveClass('hide');
+    expect(nextBtn).not.toHaveClass('hide');
   });
 
   test('getCardWidth: tests all layout types and gaps', () => {
@@ -246,14 +253,12 @@ describe('CardsCarousel comprehensive behaviors', () => {
     for (let i = 0; i < 3; i++) {
       expect(links[i].getAttribute('tabindex')).toBe('0');
       expect(links[i].getAttribute('aria-hidden')).toBeNull();
-      expect(links[i].getAttribute('inert')).toBe(null);
     }
 
     // Initial state: last three links should not be accessible
     for (let i = 3; i < 6; i++) {
       expect(links[i].getAttribute('tabindex')).toBe('-1');
       expect(links[i].getAttribute('aria-hidden')).toBe('true');
-      expect(links[i].getAttribute('inert')).toBe('');
     }
 
     // Click next button
@@ -266,13 +271,11 @@ describe('CardsCarousel comprehensive behaviors', () => {
     for (let i = 0; i < 3; i++) {
       expect(links[i].getAttribute('tabindex')).toBe('-1');
       expect(links[i].getAttribute('aria-hidden')).toBe('true');
-      expect(links[i].getAttribute('inert')).toBe("");
     }
 
     for (let i = 3; i < 6; i++) {
       expect(links[i].getAttribute('tabindex')).toBe('0');
       expect(links[i].getAttribute('aria-hidden')).toBe(null);
-      expect(links[i].getAttribute('inert')).toBe(null);
     }
   });
 
@@ -292,5 +295,27 @@ describe('CardsCarousel comprehensive behaviors', () => {
 
     fireEvent.click(container.querySelector('[name="previous"]'));
     expect(carousel.scrollLeft).toBe(initialScroll);
+  });
+
+  test('desktop keyboard navigation focus: setFocusNextBtn and setFocusPrevBtn focus buttons when tabbing', async () => {
+    document.body.classList.add('tabbing');
+    const c = await setupCarousel(1400);
+    const nextBtn = c.querySelector('[name="next"]');
+    // After initial mount in tabbing mode, focus should end on prev button
+    expect(document.activeElement).toBe(nextBtn);
+  });
+
+  test('shouldHideNextButton calls setFocusPrevBtn when tabbing and at end of carousel', async () => {
+    document.body.classList.add('tabbing');
+    const c = await setupCarousel(1400);
+
+    // Scroll to the end
+    const nextBtn = c.querySelector('[name="next"]');
+    while (!nextBtn.classList.contains('hide')) {
+      fireEvent.click(nextBtn);
+    }
+
+    const prevBtn = c.querySelector('[name="previous"]');
+    expect(document.activeElement).toBe(prevBtn);
   });
 });

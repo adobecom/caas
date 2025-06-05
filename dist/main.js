@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.2 (5/22/2025, 07:20:03)
+ * Chimera UI Libraries - Build 0.35.4 (6/5/2025, 07:00:59)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -44330,6 +44330,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 
 exports.getCardWidth = getCardWidth;
+exports.userIsTabbing = userIsTabbing;
 
 var _react = __webpack_require__(0);
 
@@ -44407,6 +44408,10 @@ function getCardWidth(size, gap) {
 
     // Fallback when the gap isn't defined for this size
     return 0;
+}
+
+function userIsTabbing() {
+    return document.body.classList.contains('tabbing');
 }
 
 function CardsCarousel() {
@@ -44504,16 +44509,19 @@ function CardsCarousel() {
     function shouldHidePrevButton() {
         if (firstVisibleCard === 1) {
             hidePrevButton();
-            setFocusNextBtn();
+            if (userIsTabbing()) {
+                setFocusNextBtn();
+            }
         }
     }
 
     function shouldHideNextButton() {
-        var carousel = carouselRef.current;
-        var atEndOfCarousel = carousel.scrollWidth - carousel.clientWidth < carousel.scrollLeft + cardWidth;
+        var atEndOfCarousel = firstVisibleCard >= cards.length - cardsPerPage;
         if (atEndOfCarousel) {
             hideNextButton();
-            setFocusPrevBtn();
+            if (userIsTabbing()) {
+                setFocusPrevBtn();
+            }
         }
     }
 
@@ -44551,7 +44559,6 @@ function CardsCarousel() {
             if (!cardLinks.length) return;
             cardLinks.forEach(function (link) {
                 link.setAttribute('aria-hidden', 'true');
-                link.setAttribute('inert', '');
                 link.setAttribute('tabindex', '-1');
             });
 
@@ -44560,19 +44567,16 @@ function CardsCarousel() {
                     var linkBlockers = card.querySelectorAll('.consonant-LinkBlocker');
                     linkBlockers.forEach(function (link) {
                         link.removeAttribute('aria-hidden');
-                        link.removeAttribute('inert');
                         link.setAttribute('tabindex', '0');
                     });
                     var modalVideo = card.querySelector('.consonant-Card-videoIco');
                     if (modalVideo) {
                         modalVideo.removeAttribute('aria-hidden');
-                        modalVideo.removeAttribute('inert');
                         modalVideo.setAttribute('tabindex', '0');
                     }
                 } else {
                     cardLinks.forEach(function (link) {
                         link.removeAttribute('aria-hidden');
-                        link.removeAttribute('inert');
                         link.setAttribute('tabindex', '0');
                     });
                 }
