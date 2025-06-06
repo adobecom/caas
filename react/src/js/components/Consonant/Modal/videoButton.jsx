@@ -5,6 +5,7 @@ import ModalWindow from './videoModal';
 import Modal from './modal';
 
 const VideoButton = ({
+    title,
     name,
     videoURL,
     gateVideo,
@@ -18,6 +19,7 @@ const VideoButton = ({
     const [isOpen, setIsOpen] = useState(false);
     const isAuthoredModal = /^#[a-zA-Z0-9_-]+/.test(videoURL);
     const isFullUrl = /https?:\/\/[a-zA-Z0-9_-]+/.test(videoURL);
+    const ariaLabel = `Play, ${title}`;
 
     const handleShowModal = () => {
         if (isAuthoredModal) {
@@ -58,7 +60,7 @@ const VideoButton = ({
                 data-testid="consonant-Card-videoButton-wrapper">
                 <button
                     daa-ll="play"
-                    aria-label="Play"
+                    aria-label={ariaLabel}
                     onClick={handleShowModal}
                     tabIndex={tabIndex}
                     className={className} />
@@ -76,6 +78,7 @@ const VideoButton = ({
 };
 
 VideoButton.propTypes = {
+    title: string,
     name: string,
     videoPolicy: string,
     videoURL: string.isRequired,
@@ -85,6 +88,7 @@ VideoButton.propTypes = {
 };
 
 VideoButton.defaultProps = {
+    title: '',
     name: 'video-modal',
     videoPolicy: 'autoplay; fullscreen',
     gateVideo: false,
