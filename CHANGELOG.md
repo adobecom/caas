@@ -1,5 +1,12 @@
 
 
+## [0.35.5](https://github.com/adobecom/caas/compare/0.35.4...0.35.5) (2025-06-06)
+
+
+### Bug Fixes
+
+* **mwpw-173327:** updates aria-labels for video buttons ([#282](https://github.com/adobecom/caas/issues/282)) ([2a976ac](https://github.com/adobecom/caas/commit/2a976ac085991421f4cf152d49fa44ee015d6e17))
+
 ## [0.35.4](https://github.com/adobecom/caas/compare/0.35.3...0.35.4) (2025-06-02)
 
 
