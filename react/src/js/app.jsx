@@ -7,6 +7,12 @@ import { parseToPrimitive } from './components/Consonant/Helpers/general';
 import { loadLana } from './components/Consonant/Helpers/lana';
 import Container from './components/Consonant/Container/Container';
 import consonantPageRDC from './components/Consonant/Page/ConsonantPageDOM';
+// Runtime accessibility auditing in development with react-axe
+if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined') {
+    /* eslint-disable-next-line global-require */
+    const ReactAxe = require('react-axe');
+    ReactAxe(React, ReactDOM, 1000);
+}
 
 const domRegistry = new DOMRegistry(React, render);
 domRegistry.register({
