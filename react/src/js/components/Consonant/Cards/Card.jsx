@@ -342,7 +342,8 @@ const Card = (props) => {
     const showHeader = !isProduct;
     const fromDexter = origin === 'Dexter';
     const showBadge = (isOneHalf || isThreeFourths || isFull) && (fromDexter || showCardBadges);
-    const showLogo = isOneHalf || isThreeFourths || isFull || isText;
+    const showLogo = isOneHalf || isThreeFourths || isFull || isText
+        || (isHalfHeight && showCardBadges);
     const showLabel = !isProduct && !isText;
     const showVideoButton = !isProduct && !isText && !isIcon;
     const showText = !isHalfHeight && !isFull && !isNews;
