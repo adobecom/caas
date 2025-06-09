@@ -1,5 +1,12 @@
 
 
+## [0.35.6](https://github.com/adobecom/caas/compare/0.35.5...0.35.6) (2025-06-09)
+
+
+### Bug Fixes
+
+* **MWPW-173730:** adds ability to show badge image in HalfHeight card ([#293](https://github.com/adobecom/caas/issues/293)) ([f53f648](https://github.com/adobecom/caas/commit/f53f648c4f70d31eafdb9aed31d24fafceaf29ff))
+
 ## [0.35.5](https://github.com/adobecom/caas/compare/0.35.4...0.35.5) (2025-06-06)
 
 
