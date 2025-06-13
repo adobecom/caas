@@ -3,6 +3,7 @@ import { string, bool, number } from 'prop-types';
 import { createPortal } from 'react-dom';
 import ModalWindow from './videoModal';
 import Modal from './modal';
+import { useConfig } from '../Helpers/hooks';
 
 const VideoButton = ({
     title,
@@ -13,13 +14,15 @@ const VideoButton = ({
     videoPolicy,
     tabIndex,
 }) => {
+    const getConfig = useConfig();
     const modalContainer = document.querySelector('.modalContainer');
+    const playVideo = getConfig('collection', 'i18n.playVideo');
 
     const modalElement = useRef(null);
     const [isOpen, setIsOpen] = useState(false);
     const isAuthoredModal = /^#[a-zA-Z0-9_-]+/.test(videoURL);
     const isFullUrl = /https?:\/\/[a-zA-Z0-9_-]+/.test(videoURL);
-    const ariaLabel = `Play, ${title}`;
+    const ariaLabel = playVideo.replace('{cardTitle}', title);
 
     const handleShowModal = () => {
         if (isAuthoredModal) {

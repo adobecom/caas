@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.4 (6/6/2025, 09:27:35)
+ * Chimera UI Libraries - Build 0.35.6 (6/12/2025, 18:06:18)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -1642,7 +1642,8 @@ var DEFAULT_CONFIG = exports.DEFAULT_CONFIG = {
             onErrorDescription: 'Please try reloading the page or try coming back to the page another time.',
             sortByAria: 'Sort by {key}',
             removeFilterAria: 'Remove {filter} filter',
-            removeAllFiltersAria: 'Remove {num} {filter} filters'
+            removeAllFiltersAria: 'Remove {num} {filter} filters',
+            playVideo: 'Play, {cardTitle}'
         }
     },
     featuredCards: [],
@@ -49631,6 +49632,8 @@ var _modal = __webpack_require__(275);
 
 var _modal2 = _interopRequireDefault(_modal);
 
+var _hooks = __webpack_require__(5);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var VideoButton = function VideoButton(_ref) {
@@ -49642,7 +49645,9 @@ var VideoButton = function VideoButton(_ref) {
         videoPolicy = _ref.videoPolicy,
         tabIndex = _ref.tabIndex;
 
+    var getConfig = (0, _hooks.useConfig)();
     var modalContainer = document.querySelector('.modalContainer');
+    var playVideo = getConfig('collection', 'i18n.playVideo');
 
     var modalElement = (0, _react.useRef)(null);
 
@@ -49653,7 +49658,7 @@ var VideoButton = function VideoButton(_ref) {
 
     var isAuthoredModal = /^#[a-zA-Z0-9_-]+/.test(videoURL);
     var isFullUrl = /https?:\/\/[a-zA-Z0-9_-]+/.test(videoURL);
-    var ariaLabel = 'Play, ' + title;
+    var ariaLabel = playVideo.replace('{cardTitle}', title);
 
     var handleShowModal = function handleShowModal() {
         if (isAuthoredModal) {
