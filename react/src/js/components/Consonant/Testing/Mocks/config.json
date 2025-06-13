@@ -17,7 +17,8 @@
             "prettyDateIntervalFormat": "{LLL} {dd} | {timeRange} {timeZone}",
             "totalResultsText": "{total} Results",
             "title": "Your Top Picks",
-            "titleHeadingLevel": "h2"
+            "titleHeadingLevel": "h2",
+            "playVideo": "Play, {cardTitle}"
         }
     },
     "featuredCards": "[]",

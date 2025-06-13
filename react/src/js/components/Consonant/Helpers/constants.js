@@ -152,6 +152,7 @@ export const DEFAULT_CONFIG = {
             sortByAria: 'Sort by {key}',
             removeFilterAria: 'Remove {filter} filter',
             removeAllFiltersAria: 'Remove {num} {filter} filters',
+            playVideo: 'Play, {cardTitle}',
         },
     },
     featuredCards: [],

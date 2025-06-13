@@ -3,6 +3,11 @@ import { mount } from 'enzyme';
 import VideoButton from '../videoButton';
 import Modal from '../modal';
 
+// Mock useConfig hook
+jest.mock('../../Helpers/hooks', () => ({
+  useConfig: () => () => 'Play {cardTitle}'
+}));
+
 // Mock the Modal class
 jest.mock('../modal', () => {
   return jest.fn().mockImplementation(() => {
@@ -141,5 +146,18 @@ describe('VideoButton Component', () => {
     expect(modalWindow.prop('name')).toBe('custom-modal');
     expect(modalWindow.prop('videoURL')).toBe('https://example.com/video.mp4');
     expect(modalWindow.prop('videoPolicy')).toBe('autoplay');
+  });
+
+  it('should set correct aria-label with title', () => {
+    const wrapper = mount(
+      <VideoButton
+        videoURL="https://example.com/video.mp4"
+        className="video-button"
+        title="Test Video"
+      />
+    );
+
+    const button = wrapper.find('button');
+    expect(button.prop('aria-label')).toBe('Play Test Video');
   });
 });
