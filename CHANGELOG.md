@@ -1,5 +1,12 @@
 
 
+## [0.35.8](https://github.com/adobecom/caas/compare/0.35.7...0.35.8) (2025-06-17)
+
+
+### Bug Fixes
+
+* **MWPW-174567:** reads playVideo aria-label from i18n ([24e979c](https://github.com/adobecom/caas/commit/24e979c1ba217474ac28de85b7b6cde29014a261))
+
 ## [0.35.7](https://github.com/adobecom/caas/compare/0.35.6...0.35.7) (2025-06-13)
 
 ## [0.35.6](https://github.com/adobecom/caas/compare/0.35.5...0.35.6) (2025-06-09)
