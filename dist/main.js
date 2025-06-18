@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.7 (6/13/2025, 11:05:00)
+ * Chimera UI Libraries - Build 0.35.8 (6/17/2025, 15:21:12)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -47545,6 +47545,7 @@ var Card = function Card(props) {
             {
                 className: 'consonant-Card-content' },
             showVideoButton && videoURL && isHalfHeight && _react2.default.createElement(_videoButton2.default, {
+                title: title,
                 videoURL: videoURLToUse,
                 gateVideo: gateVideo,
                 onFocus: onFocus,
