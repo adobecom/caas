@@ -1,5 +1,12 @@
 
 
+## [0.35.9](https://github.com/adobecom/caas/compare/0.35.8...0.35.9) (2025-06-18)
+
+
+### Bug Fixes
+
+* **mwpw-175187:** fixes missing cardTitle in aria-label ([#296](https://github.com/adobecom/caas/issues/296)) ([428f1a4](https://github.com/adobecom/caas/commit/428f1a4254ecf27134e9b37adbaf52f588aeddde))
+
 ## [0.35.8](https://github.com/adobecom/caas/compare/0.35.7...0.35.8) (2025-06-17)
 
 
