@@ -393,11 +393,6 @@ const Card = (props) => {
     const headingAria = (videoURL ||
         label || detailText || description || logoSrc || badgeText || (hasBanner && !disableBanners) || !isIcon) ? '' : title;
 
-    let ariaText = title;
-    if (hasBanner && !disableBanners) {
-        ariaText = `${bannerDescriptionToUse} | ${ariaText}`;
-    }
-
     const linkBlockerTarget = getLinkTarget(overlayLink, ctaAction);
     const addParams = new URLSearchParams(additionalParams);
     const overlayParams = (additionalParams && addParams.keys().next().value) ? `${overlayLink}?${addParams.toString()}` : overlayLink;
@@ -417,7 +412,6 @@ const Card = (props) => {
         <div
             daa-lh={lh}
             className={`${cardStyle} ${cardClassName}`}
-            aria-label={ariaText}
             data-testid="consonant-Card"
             id={id}>
             {showHeader &&
