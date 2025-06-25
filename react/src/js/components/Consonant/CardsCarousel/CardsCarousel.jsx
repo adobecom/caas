@@ -78,6 +78,8 @@ function CardsCarousel({
     const title = getConfig('collection', 'i18n.title');
     const showTotalResults = getConfig('collection', 'showTotalResults');
     const showTotalResultsText = getConfig('collection', 'i18n.totalResultsText');
+    const nextCard = getConfig('collection', 'i18n.nextCards');
+    const prevCard = getConfig('collection', 'i18n.prevCards');
     const useLightText = getConfig('collection', 'useLightText');
     const isIncremental = getConfig('pagination', 'animationStyle') === 'incremental';
     const renderOverlay = getConfig('collection', 'useOverlayLinks');
@@ -111,26 +113,34 @@ function CardsCarousel({
 
     function hideNextButton() {
         const nextBtn = next.current;
-        // eslint-disable-next-line no-unused-expressions
-        nextBtn && nextBtn.classList.add('hide');
+        if (nextBtn) {
+            nextBtn.classList.add('hide');
+            nextBtn.setAttribute('aria-hidden', 'true');
+        }
     }
 
     function hidePrevButton() {
         const prevBtn = prev.current;
-        // eslint-disable-next-line no-unused-expressions
-        prevBtn && prevBtn.classList.add('hide');
+        if (prevBtn) {
+            prevBtn.classList.add('hide');
+            prevBtn.setAttribute('aria-hidden', 'true');
+        }
     }
 
     function showNextButton() {
         const nextBtn = next.current;
-        // eslint-disable-next-line no-unused-expressions
-        nextBtn && nextBtn.classList.remove('hide');
+        if (nextBtn) {
+            nextBtn.classList.remove('hide');
+            nextBtn.setAttribute('aria-hidden', 'false');
+        }
     }
 
     function showPrevButton() {
         const prevBtn = prev.current;
-        // eslint-disable-next-line no-unused-expressions
-        prevBtn && prevBtn.classList.remove('hide');
+        if (prevBtn) {
+            prevBtn.classList.remove('hide');
+            prevBtn.setAttribute('aria-hidden', 'false');
+        }
     }
 
     function hideNav() {
@@ -294,7 +304,8 @@ function CardsCarousel({
         <Fragment>
             <div className="consonant-Navigation--carousel">
                 <button
-                    aria-label="Previous button"
+                    aria-label={prevCard}
+                    aria-hidden="true"
                     className="consonant-Button--previous"
                     onClick={prevButtonClick}
                     daa-ll="Previous"
@@ -303,7 +314,7 @@ function CardsCarousel({
                     ref={prev}
                     type="button" />
                 <button
-                    aria-label="Next button"
+                    aria-label={nextCard}
                     className="consonant-Button--next"
                     daa-ll="Next"
                     daa-state="true"
