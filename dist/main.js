@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.9 (6/25/2025, 08:53:47)
+ * Chimera UI Libraries - Build 0.35.9 (7/7/2025, 11:11:14)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -44428,6 +44428,8 @@ function CardsCarousel() {
     var title = getConfig('collection', 'i18n.title');
     var showTotalResults = getConfig('collection', 'showTotalResults');
     var showTotalResultsText = getConfig('collection', 'i18n.totalResultsText');
+    var nextCard = getConfig('collection', 'i18n.nextCards');
+    var prevCard = getConfig('collection', 'i18n.prevCards');
     var useLightText = getConfig('collection', 'useLightText');
     var isIncremental = getConfig('pagination', 'animationStyle') === 'incremental';
     var renderOverlay = getConfig('collection', 'useOverlayLinks');
@@ -44465,26 +44467,34 @@ function CardsCarousel() {
 
     function hideNextButton() {
         var nextBtn = next.current;
-        // eslint-disable-next-line no-unused-expressions
-        nextBtn && nextBtn.classList.add('hide');
+        if (nextBtn) {
+            nextBtn.classList.add('hide');
+            nextBtn.setAttribute('aria-hidden', 'true');
+        }
     }
 
     function hidePrevButton() {
         var prevBtn = prev.current;
-        // eslint-disable-next-line no-unused-expressions
-        prevBtn && prevBtn.classList.add('hide');
+        if (prevBtn) {
+            prevBtn.classList.add('hide');
+            prevBtn.setAttribute('aria-hidden', 'true');
+        }
     }
 
     function showNextButton() {
         var nextBtn = next.current;
-        // eslint-disable-next-line no-unused-expressions
-        nextBtn && nextBtn.classList.remove('hide');
+        if (nextBtn) {
+            nextBtn.classList.remove('hide');
+            nextBtn.setAttribute('aria-hidden', 'false');
+        }
     }
 
     function showPrevButton() {
         var prevBtn = prev.current;
-        // eslint-disable-next-line no-unused-expressions
-        prevBtn && prevBtn.classList.remove('hide');
+        if (prevBtn) {
+            prevBtn.classList.remove('hide');
+            prevBtn.setAttribute('aria-hidden', 'false');
+        }
     }
 
     function hideNav() {
@@ -44651,7 +44661,8 @@ function CardsCarousel() {
             'div',
             { className: 'consonant-Navigation--carousel' },
             _react2.default.createElement('button', {
-                'aria-label': 'Previous button',
+                'aria-label': prevCard,
+                'aria-hidden': 'true',
                 className: 'consonant-Button--previous',
                 onClick: prevButtonClick,
                 'daa-ll': 'Previous',
@@ -44660,7 +44671,7 @@ function CardsCarousel() {
                 ref: prev,
                 type: 'button' }),
             _react2.default.createElement('button', {
-                'aria-label': 'Next button',
+                'aria-label': nextCard,
                 className: 'consonant-Button--next',
                 'daa-ll': 'Next',
                 'daa-state': 'true',
