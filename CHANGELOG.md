@@ -1,5 +1,12 @@
 
 
+## [0.35.10](https://github.com/adobecom/caas/compare/0.35.9...0.35.10) (2025-07-07)
+
+
+### Bug Fixes
+
+* **mwpw-175459:** reads next and prev buttons from i18n ([#297](https://github.com/adobecom/caas/issues/297)) ([d0c8f3f](https://github.com/adobecom/caas/commit/d0c8f3f8cd4547833472f7875b90562d1e00437c))
+
 ## [0.35.9](https://github.com/adobecom/caas/compare/0.35.8...0.35.9) (2025-06-18)
 
 
