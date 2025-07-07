@@ -119,7 +119,7 @@ const Grid = (props) => {
         'consonant-CardsGrid--with3xGutter': cardsGridGutter === GUTTER_SIZE.GUTTER_3_X,
         'consonant-CardsGrid--with4xGutter': cardsGridGutter === GUTTER_SIZE.GUTTER_4_X,
         'consonant-CardsGrid--doubleWideCards': collectionStyleOverride === CARD_STYLES.DOUBLE_WIDE,
-        'consonant-CardsGrid--slide': cardsGridLayout === GRID_TYPE.SLIDE,
+        'consonant-CardsGrid--blade': cardsGridLayout === GRID_TYPE.BLADE,
         'card-hover-grow': cardHoverEffect === 'grow',
     });
 
@@ -153,7 +153,7 @@ const Grid = (props) => {
     /* *** MWPW-164509 *** */
     const cardsPerPage = () => {
         switch (cardsGridLayout) {
-            case GRID_TYPE.SLIDE:
+            case GRID_TYPE.BLADE:
                 return 1;
             case GRID_TYPE.FIVE_UP:
                 return 5;

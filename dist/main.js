@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.0 (5/12/2025, 13:31:58)
+ * Chimera UI Libraries - Build 0.35.0 (7/7/2025, 08:56:38)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -1733,7 +1733,7 @@ var GRID_TYPE = exports.GRID_TYPE = {
     THREE_UP: '3up',
     FOUR_UP: '4up',
     FIVE_UP: '5up',
-    SLIDE: 'slide'
+    BLADE: 'blade'
 };
 
 /**
@@ -8426,7 +8426,7 @@ var Grid = function Grid(props) {
         'consonant-CardsGrid--with3xGutter': cardsGridGutter === _constants.GUTTER_SIZE.GUTTER_3_X,
         'consonant-CardsGrid--with4xGutter': cardsGridGutter === _constants.GUTTER_SIZE.GUTTER_4_X,
         'consonant-CardsGrid--doubleWideCards': collectionStyleOverride === _constants.CARD_STYLES.DOUBLE_WIDE,
-        'consonant-CardsGrid--slide': cardsGridLayout === _constants.GRID_TYPE.SLIDE,
+        'consonant-CardsGrid--blade': cardsGridLayout === _constants.GRID_TYPE.BLADE,
         'card-hover-grow': cardHoverEffect === 'grow'
     });
 
@@ -8460,7 +8460,7 @@ var Grid = function Grid(props) {
     /* *** MWPW-164509 *** */
     var cardsPerPage = function cardsPerPage() {
         switch (cardsGridLayout) {
-            case _constants.GRID_TYPE.SLIDE:
+            case _constants.GRID_TYPE.BLADE:
                 return 1;
             case _constants.GRID_TYPE.FIVE_UP:
                 return 5;
