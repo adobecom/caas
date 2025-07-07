@@ -3,8 +3,10 @@ import { string, bool, number } from 'prop-types';
 import { createPortal } from 'react-dom';
 import ModalWindow from './videoModal';
 import Modal from './modal';
+import { useConfig } from '../Helpers/hooks';
 
 const VideoButton = ({
+    title,
     name,
     videoURL,
     gateVideo,
@@ -12,12 +14,15 @@ const VideoButton = ({
     videoPolicy,
     tabIndex,
 }) => {
+    const getConfig = useConfig();
     const modalContainer = document.querySelector('.modalContainer');
+    const playVideo = getConfig('collection', 'i18n.playVideo');
 
     const modalElement = useRef(null);
     const [isOpen, setIsOpen] = useState(false);
     const isAuthoredModal = /^#[a-zA-Z0-9_-]+/.test(videoURL);
     const isFullUrl = /https?:\/\/[a-zA-Z0-9_-]+/.test(videoURL);
+    const ariaLabel = playVideo.replace('{cardTitle}', title);
 
     const handleShowModal = () => {
         if (isAuthoredModal) {
@@ -58,7 +63,7 @@ const VideoButton = ({
                 data-testid="consonant-Card-videoButton-wrapper">
                 <button
                     daa-ll="play"
-                    aria-label="Play"
+                    aria-label={ariaLabel}
                     onClick={handleShowModal}
                     tabIndex={tabIndex}
                     className={className} />
@@ -76,6 +81,7 @@ const VideoButton = ({
 };
 
 VideoButton.propTypes = {
+    title: string,
     name: string,
     videoPolicy: string,
     videoURL: string.isRequired,
@@ -85,6 +91,7 @@ VideoButton.propTypes = {
 };
 
 VideoButton.defaultProps = {
+    title: '',
     name: 'video-modal',
     videoPolicy: 'autoplay; fullscreen',
     gateVideo: false,

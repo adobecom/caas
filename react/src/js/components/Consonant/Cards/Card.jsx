@@ -22,6 +22,7 @@ import {
     overlaysType,
     footerType,
     tagsType,
+    bannerMapType,
 } from '../types/card';
 import LinkBlocker from './LinkBlocker/LinkBlocker';
 import VideoButton from '../Modal/videoButton';
@@ -47,7 +48,7 @@ const CardType = {
     endDate: string,
     cardDate: string,
     modifiedDate: string,
-    bannerMap: shape(Object).isRequired,
+    bannerMap: shape(bannerMapType),
     tags: arrayOf(shape(tagsType)),
     onFocus: func.isRequired,
     origin: string,
@@ -75,6 +76,7 @@ const defaultProps = {
     cardDate: '',
     modifiedDate: '',
     tags: [],
+    bannerMap: {},
     origin: '',
     ariaHidden: false,
     tabIndex: 0,
@@ -340,7 +342,8 @@ const Card = (props) => {
     const showHeader = !isProduct;
     const fromDexter = origin === 'Dexter';
     const showBadge = (isOneHalf || isThreeFourths || isFull) && (fromDexter || showCardBadges);
-    const showLogo = isOneHalf || isThreeFourths || isFull || isText;
+    const showLogo = isOneHalf || isThreeFourths || isFull || isText
+        || (isHalfHeight && showCardBadges);
     const showLabel = !isProduct && !isText;
     const showVideoButton = !isProduct && !isText && !isIcon;
     const showText = !isHalfHeight && !isFull && !isNews;
@@ -390,11 +393,6 @@ const Card = (props) => {
     const headingAria = (videoURL ||
         label || detailText || description || logoSrc || badgeText || (hasBanner && !disableBanners) || !isIcon) ? '' : title;
 
-    let ariaText = title;
-    if (hasBanner && !disableBanners) {
-        ariaText = `${bannerDescriptionToUse} | ${ariaText}`;
-    }
-
     const linkBlockerTarget = getLinkTarget(overlayLink, ctaAction);
     const addParams = new URLSearchParams(additionalParams);
     const overlayParams = (additionalParams && addParams.keys().next().value) ? `${overlayLink}?${addParams.toString()}` : overlayLink;
@@ -414,7 +412,6 @@ const Card = (props) => {
         <div
             daa-lh={lh}
             className={`${cardStyle} ${cardClassName}`}
-            aria-label={ariaText}
             data-testid="consonant-Card"
             id={id}>
             {showHeader &&
@@ -456,6 +453,7 @@ const Card = (props) => {
                 videoURL &&
                 !isHalfHeight &&
                 <VideoButton
+                    title={title}
                     videoURL={videoURLToUse}
                     gateVideo={gateVideo}
                     onFocus={onFocus}
@@ -499,6 +497,7 @@ const Card = (props) => {
                 videoURL &&
                 isHalfHeight &&
                 <VideoButton
+                    title={title}
                     videoURL={videoURLToUse}
                     gateVideo={gateVideo}
                     onFocus={onFocus}

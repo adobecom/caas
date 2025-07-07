@@ -62,6 +62,10 @@ export function getCardWidth(size, gap) {
     return 0;
 }
 
+export function userIsTabbing() {
+    return document.body.classList.contains('tabbing');
+}
+
 function CardsCarousel({
     cards,
     cardStyle,
@@ -74,6 +78,8 @@ function CardsCarousel({
     const title = getConfig('collection', 'i18n.title');
     const showTotalResults = getConfig('collection', 'showTotalResults');
     const showTotalResultsText = getConfig('collection', 'i18n.totalResultsText');
+    const nextCard = getConfig('collection', 'i18n.nextCards');
+    const prevCard = getConfig('collection', 'i18n.prevCards');
     const useLightText = getConfig('collection', 'useLightText');
     const isIncremental = getConfig('pagination', 'animationStyle') === 'incremental';
     const renderOverlay = getConfig('collection', 'useOverlayLinks');
@@ -107,26 +113,34 @@ function CardsCarousel({
 
     function hideNextButton() {
         const nextBtn = next.current;
-        // eslint-disable-next-line no-unused-expressions
-        nextBtn && nextBtn.classList.add('hide');
+        if (nextBtn) {
+            nextBtn.classList.add('hide');
+            nextBtn.setAttribute('aria-hidden', 'true');
+        }
     }
 
     function hidePrevButton() {
         const prevBtn = prev.current;
-        // eslint-disable-next-line no-unused-expressions
-        prevBtn && prevBtn.classList.add('hide');
+        if (prevBtn) {
+            prevBtn.classList.add('hide');
+            prevBtn.setAttribute('aria-hidden', 'true');
+        }
     }
 
     function showNextButton() {
         const nextBtn = next.current;
-        // eslint-disable-next-line no-unused-expressions
-        nextBtn && nextBtn.classList.remove('hide');
+        if (nextBtn) {
+            nextBtn.classList.remove('hide');
+            nextBtn.setAttribute('aria-hidden', 'false');
+        }
     }
 
     function showPrevButton() {
         const prevBtn = prev.current;
-        // eslint-disable-next-line no-unused-expressions
-        prevBtn && prevBtn.classList.remove('hide');
+        if (prevBtn) {
+            prevBtn.classList.remove('hide');
+            prevBtn.setAttribute('aria-hidden', 'false');
+        }
     }
 
     function hideNav() {
@@ -152,17 +166,19 @@ function CardsCarousel({
     function shouldHidePrevButton() {
         if (firstVisibleCard === 1) {
             hidePrevButton();
-            setFocusNextBtn();
+            if (userIsTabbing()) {
+                setFocusNextBtn();
+            }
         }
     }
 
     function shouldHideNextButton() {
-        const carousel = carouselRef.current;
-        const atEndOfCarousel =
-            (carousel.scrollWidth - carousel.clientWidth < carousel.scrollLeft + cardWidth);
+        const atEndOfCarousel = firstVisibleCard >= cards.length - cardsPerPage;
         if (atEndOfCarousel) {
             hideNextButton();
-            setFocusPrevBtn();
+            if (userIsTabbing()) {
+                setFocusPrevBtn();
+            }
         }
     }
 
@@ -200,7 +216,6 @@ function CardsCarousel({
             if (!cardLinks.length) return;
             cardLinks.forEach((link) => {
                 link.setAttribute('aria-hidden', 'true');
-                link.setAttribute('inert', '');
                 link.setAttribute('tabindex', '-1');
             });
 
@@ -209,19 +224,16 @@ function CardsCarousel({
                     const linkBlockers = card.querySelectorAll('.consonant-LinkBlocker');
                     linkBlockers.forEach((link) => {
                         link.removeAttribute('aria-hidden');
-                        link.removeAttribute('inert');
                         link.setAttribute('tabindex', '0');
                     });
                     const modalVideo = card.querySelector('.consonant-Card-videoIco');
                     if (modalVideo) {
                         modalVideo.removeAttribute('aria-hidden');
-                        modalVideo.removeAttribute('inert');
                         modalVideo.setAttribute('tabindex', '0');
                     }
                 } else {
                     cardLinks.forEach((link) => {
                         link.removeAttribute('aria-hidden');
-                        link.removeAttribute('inert');
                         link.setAttribute('tabindex', '0');
                     });
                 }
@@ -292,7 +304,8 @@ function CardsCarousel({
         <Fragment>
             <div className="consonant-Navigation--carousel">
                 <button
-                    aria-label="Previous button"
+                    aria-label={prevCard}
+                    aria-hidden="true"
                     className="consonant-Button--previous"
                     onClick={prevButtonClick}
                     daa-ll="Previous"
@@ -301,7 +314,7 @@ function CardsCarousel({
                     ref={prev}
                     type="button" />
                 <button
-                    aria-label="Next button"
+                    aria-label={nextCard}
                     className="consonant-Button--next"
                     daa-ll="Next"
                     daa-state="true"

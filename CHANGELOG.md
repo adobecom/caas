@@ -1,5 +1,77 @@
 
 
+## [0.35.11](https://github.com/adobecom/caas/compare/0.35.10...0.35.11) (2025-07-07)
+
+
+### Bug Fixes
+
+* **mwpw-144121:** removes redundant aria-label attr ([#298](https://github.com/adobecom/caas/issues/298)) ([53dffcc](https://github.com/adobecom/caas/commit/53dffccf33f6f3871873d0f577e5f27f51c2720a))
+
+## [0.35.10](https://github.com/adobecom/caas/compare/0.35.9...0.35.10) (2025-07-07)
+
+
+### Bug Fixes
+
+* **mwpw-175459:** reads next and prev buttons from i18n ([#297](https://github.com/adobecom/caas/issues/297)) ([d0c8f3f](https://github.com/adobecom/caas/commit/d0c8f3f8cd4547833472f7875b90562d1e00437c))
+
+## [0.35.9](https://github.com/adobecom/caas/compare/0.35.8...0.35.9) (2025-06-18)
+
+
+### Bug Fixes
+
+* **mwpw-175187:** fixes missing cardTitle in aria-label ([#296](https://github.com/adobecom/caas/issues/296)) ([428f1a4](https://github.com/adobecom/caas/commit/428f1a4254ecf27134e9b37adbaf52f588aeddde))
+
+## [0.35.8](https://github.com/adobecom/caas/compare/0.35.7...0.35.8) (2025-06-17)
+
+
+### Bug Fixes
+
+* **MWPW-174567:** reads playVideo aria-label from i18n ([24e979c](https://github.com/adobecom/caas/commit/24e979c1ba217474ac28de85b7b6cde29014a261))
+
+## [0.35.7](https://github.com/adobecom/caas/compare/0.35.6...0.35.7) (2025-06-13)
+
+## [0.35.6](https://github.com/adobecom/caas/compare/0.35.5...0.35.6) (2025-06-09)
+
+
+### Bug Fixes
+
+* **MWPW-173730:** adds ability to show badge image in HalfHeight card ([#293](https://github.com/adobecom/caas/issues/293)) ([f53f648](https://github.com/adobecom/caas/commit/f53f648c4f70d31eafdb9aed31d24fafceaf29ff))
+
+## [0.35.5](https://github.com/adobecom/caas/compare/0.35.4...0.35.5) (2025-06-06)
+
+
+### Bug Fixes
+
+* **mwpw-173327:** updates aria-labels for video buttons ([#282](https://github.com/adobecom/caas/issues/282)) ([2a976ac](https://github.com/adobecom/caas/commit/2a976ac085991421f4cf152d49fa44ee015d6e17))
+
+## [0.35.4](https://github.com/adobecom/caas/compare/0.35.3...0.35.4) (2025-06-02)
+
+
+### Bug Fixes
+
+* **mwpw-174130:** fixes card carousel cards are not clickable on last card ([#280](https://github.com/adobecom/caas/issues/280)) ([9e15a30](https://github.com/adobecom/caas/commit/9e15a3088049a51c1f6745babff1098fbcd3a06b))
+
+## [0.35.3](https://github.com/adobecom/caas/compare/0.35.2...0.35.3) (2025-05-21)
+
+
+### Bug Fixes
+
+* **mwpw-173764:** fixes focus issues on page load ([#278](https://github.com/adobecom/caas/issues/278)) ([4d46822](https://github.com/adobecom/caas/commit/4d46822301aaab51ae575e62d251904b09c3cf26)), closes [#279](https://github.com/adobecom/caas/issues/279)
+
+## [0.35.2](https://github.com/adobecom/caas/compare/0.35.1...0.35.2) (2025-05-19)
+
+
+### Bug Fixes
+
+* **mwpw-170361:** fixes bannerMap prop-type issues ([#277](https://github.com/adobecom/caas/issues/277)) ([3698b22](https://github.com/adobecom/caas/commit/3698b225e6497d2fca3131fc155fe22cafd87b12))
+
+## [0.35.1](https://github.com/adobecom/caas/compare/0.35.0...0.35.1) (2025-05-16)
+
+
+### Bug Fixes
+
+* **MWPW-166334:** adds contrast to left filter expand icon ([#276](https://github.com/adobecom/caas/issues/276)) ([8807ad2](https://github.com/adobecom/caas/commit/8807ad287c589b2f809f138346a356ea89fb13c7))
+
 # [0.35.0](https://github.com/adobecom/caas/compare/0.34.5...0.35.0) (2025-05-06)
 
 

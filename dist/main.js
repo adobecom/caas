@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.0 (7/7/2025, 08:56:38)
+ * Chimera UI Libraries - Build 0.35.11 (7/7/2025, 12:36:13)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -1642,7 +1642,8 @@ var DEFAULT_CONFIG = exports.DEFAULT_CONFIG = {
             onErrorDescription: 'Please try reloading the page or try coming back to the page another time.',
             sortByAria: 'Sort by {key}',
             removeFilterAria: 'Remove {filter} filter',
-            removeAllFiltersAria: 'Remove {num} {filter} filters'
+            removeAllFiltersAria: 'Remove {num} {filter} filters',
+            playVideo: 'Play, {cardTitle}'
         }
     },
     featuredCards: [],
@@ -44334,6 +44335,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 
 exports.getCardWidth = getCardWidth;
+exports.userIsTabbing = userIsTabbing;
 
 var _react = __webpack_require__(0);
 
@@ -44413,6 +44415,10 @@ function getCardWidth(size, gap) {
     return 0;
 }
 
+function userIsTabbing() {
+    return document.body.classList.contains('tabbing');
+}
+
 function CardsCarousel() {
     var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
         cards = _ref.cards,
@@ -44426,6 +44432,8 @@ function CardsCarousel() {
     var title = getConfig('collection', 'i18n.title');
     var showTotalResults = getConfig('collection', 'showTotalResults');
     var showTotalResultsText = getConfig('collection', 'i18n.totalResultsText');
+    var nextCard = getConfig('collection', 'i18n.nextCards');
+    var prevCard = getConfig('collection', 'i18n.prevCards');
     var useLightText = getConfig('collection', 'useLightText');
     var isIncremental = getConfig('pagination', 'animationStyle') === 'incremental';
     var renderOverlay = getConfig('collection', 'useOverlayLinks');
@@ -44463,26 +44471,34 @@ function CardsCarousel() {
 
     function hideNextButton() {
         var nextBtn = next.current;
-        // eslint-disable-next-line no-unused-expressions
-        nextBtn && nextBtn.classList.add('hide');
+        if (nextBtn) {
+            nextBtn.classList.add('hide');
+            nextBtn.setAttribute('aria-hidden', 'true');
+        }
     }
 
     function hidePrevButton() {
         var prevBtn = prev.current;
-        // eslint-disable-next-line no-unused-expressions
-        prevBtn && prevBtn.classList.add('hide');
+        if (prevBtn) {
+            prevBtn.classList.add('hide');
+            prevBtn.setAttribute('aria-hidden', 'true');
+        }
     }
 
     function showNextButton() {
         var nextBtn = next.current;
-        // eslint-disable-next-line no-unused-expressions
-        nextBtn && nextBtn.classList.remove('hide');
+        if (nextBtn) {
+            nextBtn.classList.remove('hide');
+            nextBtn.setAttribute('aria-hidden', 'false');
+        }
     }
 
     function showPrevButton() {
         var prevBtn = prev.current;
-        // eslint-disable-next-line no-unused-expressions
-        prevBtn && prevBtn.classList.remove('hide');
+        if (prevBtn) {
+            prevBtn.classList.remove('hide');
+            prevBtn.setAttribute('aria-hidden', 'false');
+        }
     }
 
     function hideNav() {
@@ -44508,16 +44524,19 @@ function CardsCarousel() {
     function shouldHidePrevButton() {
         if (firstVisibleCard === 1) {
             hidePrevButton();
-            setFocusNextBtn();
+            if (userIsTabbing()) {
+                setFocusNextBtn();
+            }
         }
     }
 
     function shouldHideNextButton() {
-        var carousel = carouselRef.current;
-        var atEndOfCarousel = carousel.scrollWidth - carousel.clientWidth < carousel.scrollLeft + cardWidth;
+        var atEndOfCarousel = firstVisibleCard >= cards.length - cardsPerPage;
         if (atEndOfCarousel) {
             hideNextButton();
-            setFocusPrevBtn();
+            if (userIsTabbing()) {
+                setFocusPrevBtn();
+            }
         }
     }
 
@@ -44555,7 +44574,6 @@ function CardsCarousel() {
             if (!cardLinks.length) return;
             cardLinks.forEach(function (link) {
                 link.setAttribute('aria-hidden', 'true');
-                link.setAttribute('inert', '');
                 link.setAttribute('tabindex', '-1');
             });
 
@@ -44564,19 +44582,16 @@ function CardsCarousel() {
                     var linkBlockers = card.querySelectorAll('.consonant-LinkBlocker');
                     linkBlockers.forEach(function (link) {
                         link.removeAttribute('aria-hidden');
-                        link.removeAttribute('inert');
                         link.setAttribute('tabindex', '0');
                     });
                     var modalVideo = card.querySelector('.consonant-Card-videoIco');
                     if (modalVideo) {
                         modalVideo.removeAttribute('aria-hidden');
-                        modalVideo.removeAttribute('inert');
                         modalVideo.setAttribute('tabindex', '0');
                     }
                 } else {
                     cardLinks.forEach(function (link) {
                         link.removeAttribute('aria-hidden');
-                        link.removeAttribute('inert');
                         link.setAttribute('tabindex', '0');
                     });
                 }
@@ -44650,7 +44665,8 @@ function CardsCarousel() {
             'div',
             { className: 'consonant-Navigation--carousel' },
             _react2.default.createElement('button', {
-                'aria-label': 'Previous button',
+                'aria-label': prevCard,
+                'aria-hidden': 'true',
                 className: 'consonant-Button--previous',
                 onClick: prevButtonClick,
                 'daa-ll': 'Previous',
@@ -44659,7 +44675,7 @@ function CardsCarousel() {
                 ref: prev,
                 type: 'button' }),
             _react2.default.createElement('button', {
-                'aria-label': 'Next button',
+                'aria-label': nextCard,
                 className: 'consonant-Button--next',
                 'daa-ll': 'Next',
                 'daa-state': 'true',
@@ -47110,7 +47126,7 @@ var CardType = {
     endDate: _propTypes.string,
     cardDate: _propTypes.string,
     modifiedDate: _propTypes.string,
-    bannerMap: (0, _propTypes.shape)(Object).isRequired,
+    bannerMap: (0, _propTypes.shape)(_card.bannerMapType),
     tags: (0, _propTypes.arrayOf)((0, _propTypes.shape)(_card.tagsType)),
     onFocus: _propTypes.func.isRequired,
     origin: _propTypes.string,
@@ -47138,6 +47154,7 @@ var defaultProps = {
     cardDate: '',
     modifiedDate: '',
     tags: [],
+    bannerMap: {},
     origin: '',
     ariaHidden: false,
     tabIndex: 0
@@ -47396,7 +47413,7 @@ var Card = function Card(props) {
     var showHeader = !isProduct;
     var fromDexter = origin === 'Dexter';
     var showBadge = (isOneHalf || isThreeFourths || isFull) && (fromDexter || showCardBadges);
-    var showLogo = isOneHalf || isThreeFourths || isFull || isText;
+    var showLogo = isOneHalf || isThreeFourths || isFull || isText || isHalfHeight && showCardBadges;
     var showLabel = !isProduct && !isText;
     var showVideoButton = !isProduct && !isText && !isIcon;
     var showText = !isHalfHeight && !isFull && !isNews;
@@ -47440,11 +47457,6 @@ var Card = function Card(props) {
 
     var headingAria = videoURL || label || detailText || description || logoSrc || badgeText || hasBanner && !disableBanners || !isIcon ? '' : title;
 
-    var ariaText = title;
-    if (hasBanner && !disableBanners) {
-        ariaText = bannerDescriptionToUse + ' | ' + ariaText;
-    }
-
     var linkBlockerTarget = (0, _general.getLinkTarget)(overlayLink, ctaAction);
     var addParams = new URLSearchParams(additionalParams);
     var overlayParams = additionalParams && addParams.keys().next().value ? overlayLink + '?' + addParams.toString() : overlayLink;
@@ -47460,7 +47472,6 @@ var Card = function Card(props) {
         {
             'daa-lh': lh,
             className: cardStyle + ' ' + cardClassName,
-            'aria-label': ariaText,
             'data-testid': 'consonant-Card',
             id: id },
         showHeader && _react2.default.createElement(
@@ -47503,6 +47514,7 @@ var Card = function Card(props) {
                 badgeText
             ),
             showVideoButton && videoURL && !isHalfHeight && _react2.default.createElement(_videoButton2.default, {
+                title: title,
                 videoURL: videoURLToUse,
                 gateVideo: gateVideo,
                 onFocus: onFocus,
@@ -47542,6 +47554,7 @@ var Card = function Card(props) {
             {
                 className: 'consonant-Card-content' },
             showVideoButton && videoURL && isHalfHeight && _react2.default.createElement(_videoButton2.default, {
+                title: title,
                 videoURL: videoURLToUse,
                 gateVideo: gateVideo,
                 onFocus: onFocus,
@@ -49629,17 +49642,22 @@ var _modal = __webpack_require__(275);
 
 var _modal2 = _interopRequireDefault(_modal);
 
+var _hooks = __webpack_require__(5);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var VideoButton = function VideoButton(_ref) {
-    var name = _ref.name,
+    var title = _ref.title,
+        name = _ref.name,
         videoURL = _ref.videoURL,
         gateVideo = _ref.gateVideo,
         className = _ref.className,
         videoPolicy = _ref.videoPolicy,
         tabIndex = _ref.tabIndex;
 
+    var getConfig = (0, _hooks.useConfig)();
     var modalContainer = document.querySelector('.modalContainer');
+    var playVideo = getConfig('collection', 'i18n.playVideo');
 
     var modalElement = (0, _react.useRef)(null);
 
@@ -49650,6 +49668,7 @@ var VideoButton = function VideoButton(_ref) {
 
     var isAuthoredModal = /^#[a-zA-Z0-9_-]+/.test(videoURL);
     var isFullUrl = /https?:\/\/[a-zA-Z0-9_-]+/.test(videoURL);
+    var ariaLabel = playVideo.replace('{cardTitle}', title);
 
     var handleShowModal = function handleShowModal() {
         if (isAuthoredModal) {
@@ -49690,7 +49709,7 @@ var VideoButton = function VideoButton(_ref) {
                 'data-testid': 'consonant-Card-videoButton-wrapper' },
             _react2.default.createElement('button', {
                 'daa-ll': 'play',
-                'aria-label': 'Play',
+                'aria-label': ariaLabel,
                 onClick: handleShowModal,
                 tabIndex: tabIndex,
                 className: className })
@@ -49704,6 +49723,7 @@ var VideoButton = function VideoButton(_ref) {
 };
 
 VideoButton.propTypes = {
+    title: _propTypes.string,
     name: _propTypes.string,
     videoPolicy: _propTypes.string,
     videoURL: _propTypes.string.isRequired,
@@ -49713,6 +49733,7 @@ VideoButton.propTypes = {
 };
 
 VideoButton.defaultProps = {
+    title: '',
     name: 'video-modal',
     videoPolicy: 'autoplay; fullscreen',
     gateVideo: false,
