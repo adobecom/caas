@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.9 (6/24/2025, 23:32:01)
+ * Chimera UI Libraries - Build 0.35.9 (7/7/2025, 11:11:14)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -47453,11 +47453,6 @@ var Card = function Card(props) {
 
     var headingAria = videoURL || label || detailText || description || logoSrc || badgeText || hasBanner && !disableBanners || !isIcon ? '' : title;
 
-    var ariaText = title;
-    if (hasBanner && !disableBanners) {
-        ariaText = bannerDescriptionToUse + ' | ' + ariaText;
-    }
-
     var linkBlockerTarget = (0, _general.getLinkTarget)(overlayLink, ctaAction);
     var addParams = new URLSearchParams(additionalParams);
     var overlayParams = additionalParams && addParams.keys().next().value ? overlayLink + '?' + addParams.toString() : overlayLink;
@@ -47473,7 +47468,6 @@ var Card = function Card(props) {
         {
             'daa-lh': lh,
             className: cardStyle + ' ' + cardClassName,
-            'aria-label': ariaText,
             'data-testid': 'consonant-Card',
             id: id },
         showHeader && _react2.default.createElement(

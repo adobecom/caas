@@ -105,37 +105,6 @@ describe('Card Component - Specific Conditions', () => {
         expect(bannerElement).toBeNull();
     });
 
-    test('should set ariaText correctly when hasBanner is true and disableBanners is false', () => {
-        const bannerDescription = 'Register Now';
-        const bannerBackgroundColor = '#000';
-        const bannerFontColor = '#fff';
-        const title = 'Card Title';
-
-        // Render the card with the necessary props to trigger the condition
-        renderCard({
-            cardStyle: 'half-height', // Set card style to half-height
-            tags: [{ id: '/caas:gated' }], // Add gated tag
-            isRegistered: false, // Explicitly set to false to test not registered condition
-            bannerMap: {
-                register: {
-                    description: bannerDescription,
-                    backgroundColor: bannerBackgroundColor,
-                    fontColor: bannerFontColor,
-                },
-            },
-            contentArea: {
-                title, // Provide title
-            },
-            hasBanner: true,
-            disableBanners: false, // Ensure disableBanners is false
-        });
-
-        // Check if the ariaText is set correctly
-        const cardElement = screen.getByTestId('consonant-Card');
-        const ariaText = `${bannerDescription} | ${title}`;
-        expect(cardElement).toHaveAttribute('aria-label', ariaText);
-    });
-
     // Other Test Cases
     test('should set detail text for half-height card if current date is before start date', () => {
         const currentDate = new Date();
