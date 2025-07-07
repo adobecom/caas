@@ -1,5 +1,12 @@
 
 
+## [0.35.11](https://github.com/adobecom/caas/compare/0.35.10...0.35.11) (2025-07-07)
+
+
+### Bug Fixes
+
+* **mwpw-144121:** removes redundant aria-label attr ([#298](https://github.com/adobecom/caas/issues/298)) ([53dffcc](https://github.com/adobecom/caas/commit/53dffccf33f6f3871873d0f577e5f27f51c2720a))
+
 ## [0.35.10](https://github.com/adobecom/caas/compare/0.35.9...0.35.10) (2025-07-07)
 
 
