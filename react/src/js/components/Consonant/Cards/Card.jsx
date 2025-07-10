@@ -337,6 +337,7 @@ const Card = (props) => {
     const isFull = cardStyle === 'full-card';
     const isIcon = cardStyle === 'icon-card';
     const isNews = cardStyle === 'news-card';
+    const isBlade = cardStyle === 'blade-card';
 
     // Card elements to show
     const showHeader = !isProduct;
@@ -347,7 +348,7 @@ const Card = (props) => {
     const showLabel = !isProduct && !isText;
     const showVideoButton = !isProduct && !isText && !isIcon;
     const showText = !isHalfHeight && !isFull && !isNews;
-    const showFooter = isOneHalf || isProduct || isText || isNews;
+    const showFooter = isOneHalf || isProduct || isText || isNews || isBlade;
     const showFooterLeft = !isProduct;
     const showFooterCenter = !isProduct && !altCtaUsed;
     let hideBanner = false;

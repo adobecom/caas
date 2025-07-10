@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.11 (7/7/2025, 12:36:13)
+ * Chimera UI Libraries - Build 0.35.11 (7/9/2025, 13:26:10)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -47408,6 +47408,7 @@ var Card = function Card(props) {
     var isFull = cardStyle === 'full-card';
     var isIcon = cardStyle === 'icon-card';
     var isNews = cardStyle === 'news-card';
+    var isBlade = cardStyle === 'blade-card';
 
     // Card elements to show
     var showHeader = !isProduct;
@@ -47417,7 +47418,7 @@ var Card = function Card(props) {
     var showLabel = !isProduct && !isText;
     var showVideoButton = !isProduct && !isText && !isIcon;
     var showText = !isHalfHeight && !isFull && !isNews;
-    var showFooter = isOneHalf || isProduct || isText || isNews;
+    var showFooter = isOneHalf || isProduct || isText || isNews || isBlade;
     var showFooterLeft = !isProduct;
     var showFooterCenter = !isProduct && !altCtaUsed;
     var hideBanner = false;
