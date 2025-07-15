@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.11 (7/9/2025, 13:26:10)
+ * Chimera UI Libraries - Build 0.35.11 (7/12/2025, 24:14:11)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -47468,6 +47468,19 @@ var Card = function Card(props) {
     var overlay = altCtaUsed && isLive && altCtaLink !== '' ? altCtaLink : overlayParams;
     var getsFocus = isHalfHeight && !videoURLToUse || isThreeFourths || isFull || isDoubleWide || isIcon || hideCTA;
 
+    var parseMarkDown = function parseMarkDown() {
+        var md = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+        return md.replaceAll('{**', '<b>').replaceAll('**}', '</b>').replaceAll('{*', '<i>').replaceAll('*}', '</i>')
+        // Practice safe HTML
+        // Remove all <script>...</script> tags, including those
+        // with newlines and attributes, and case-insensitive
+        .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
+        // Remove all event handler attributes (e.g., onclick, onerror, etc.)
+        .replace(/\son\w+="[^"]*"/gi, '').replace(/\son\w+='[^']*'/gi, '')
+        // Remove javascript: URLs
+        .replace(/javascript:/gi, '');
+    };
+
     return _react2.default.createElement(
         'div',
         {
@@ -47587,13 +47600,11 @@ var Card = function Card(props) {
                 isProduct && mnemonic && _react2.default.createElement('img', { src: mnemonic, alt: 'mnemonic', loading: 'lazy' }),
                 title
             ),
-            showText && description && !isIcon && _react2.default.createElement(
-                'p',
-                {
-                    'data-testid': 'consonant-Card-text',
-                    className: 'consonant-Card-text' },
-                description
-            ),
+            showText && description && !isIcon && _react2.default.createElement('p', {
+                'data-testid': 'consonant-Card-text',
+                className: 'consonant-Card-text',
+                dangerouslySetInnerHTML: { __html: parseMarkDown(description) }
+            }),
             showFooter && !hideCTA && footer.map(function (footerItem) {
                 return _react2.default.createElement(_CardFooter2.default, {
                     divider: renderDivider || footerItem.divider,

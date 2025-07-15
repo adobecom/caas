@@ -7,10 +7,12 @@
             max-width: 100% !important;
             flex-direction: row;
             height: 320px;
+            background-color: transparent;
 
             .consonant-Card {
                 &-header {
                     background-size: cover;
+                    background-position: center;
                     width: 45%;
                 }
 
@@ -44,6 +46,23 @@
                 }
             }
         }
+    }
+}
+
+.consonant-u-themeDark .consonant-CardsGrid .consonant-Card.blade-card {
+    border-color: #4a4a4a;
+    background-color: #323232;
+
+    .consonant-Card-label {
+        color: #e3e3e3;
+    }
+
+    .consonant-Card-title {
+        color: #fff;
+    }
+
+    .consonant-Card-text {
+        color: #e3e3e3;
     }
 }
 

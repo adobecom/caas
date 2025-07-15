@@ -409,6 +409,22 @@ const Card = (props) => {
         || isIcon
         || hideCTA;
 
+    const parseMarkDown = (md = '') =>
+        md
+            .replaceAll('{**', '<b>')
+            .replaceAll('**}', '</b>')
+            .replaceAll('{*', '<i>')
+            .replaceAll('*}', '</i>')
+            // Practice safe HTML
+            // Remove all <script>...</script> tags, including those
+            // with newlines and attributes, and case-insensitive
+            .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
+            // Remove all event handler attributes (e.g., onclick, onerror, etc.)
+            .replace(/\son\w+="[^"]*"/gi, '')
+            .replace(/\son\w+='[^']*'/gi, '')
+            // Remove javascript: URLs
+            .replace(/javascript:/gi, '');
+
     return (
         <div
             daa-lh={lh}
@@ -538,9 +554,9 @@ const Card = (props) => {
                     !isIcon &&
                     <p
                         data-testid="consonant-Card-text"
-                        className="consonant-Card-text">
-                        {description}
-                    </p>
+                        className="consonant-Card-text"
+                        dangerouslySetInnerHTML={{ __html: parseMarkDown(description) }}
+                    />
                 }
                 {showFooter &&
                 !hideCTA &&
