@@ -408,6 +408,26 @@ const Card = (props) => {
         || isIcon
         || hideCTA;
 
+    const removeMarkDown = (md = '') => md
+        .replaceAll('{**', '')
+        .replaceAll('**}', '')
+        .replaceAll('{*', '')
+        .replaceAll('*}', '');
+
+    const parseMarkDown = (md = '') => {
+        let markup = '';
+        if (isProduct && mnemonic) {
+            markup += `<img src=${mnemonic} alt="mnemonic" loading="lazy" />`;
+        }
+        markup += md
+            .replace(/<[^>]*>/g, '') // remove any markup <>
+            .replaceAll('{**', '<b>')
+            .replaceAll('**}', '</b>')
+            .replaceAll('{*', '<i>')
+            .replaceAll('*}', '</i>');
+        return markup;
+    };
+
     return (
         <div
             daa-lh={lh}
@@ -527,19 +547,16 @@ const Card = (props) => {
                     aria-level={headingLevel}
                     data-testid="consonant-Card-title"
                     className="consonant-Card-title"
-                    title={title}>
-                    {isProduct && mnemonic && <img src={mnemonic} alt="mnemonic" loading="lazy" />}
-                    {title}
-                </p>
+                    title={removeMarkDown(title)}
+                    dangerouslySetInnerHTML={{ __html: parseMarkDown(title) }} />
                 {
                     showText &&
                     description &&
                     !isIcon &&
                     <p
                         data-testid="consonant-Card-text"
-                        className="consonant-Card-text">
-                        {description}
-                    </p>
+                        className="consonant-Card-text"
+                        dangerouslySetInnerHTML={{ __html: parseMarkDown(description) }} />
                 }
                 {showFooter &&
                 !hideCTA &&

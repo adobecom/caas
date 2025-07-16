@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.9 (7/7/2025, 11:11:14)
+ * Chimera UI Libraries - Build 0.35.11 (7/16/2025, 11:54:14)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -47463,6 +47463,23 @@ var Card = function Card(props) {
     var overlay = altCtaUsed && isLive && altCtaLink !== '' ? altCtaLink : overlayParams;
     var getsFocus = isHalfHeight && !videoURLToUse || isThreeFourths || isFull || isDoubleWide || isIcon || hideCTA;
 
+    var removeMarkDown = function removeMarkDown() {
+        var md = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+        return md.replaceAll('{**', '').replaceAll('**}', '').replaceAll('{*', '').replaceAll('*}', '');
+    };
+
+    var parseMarkDown = function parseMarkDown() {
+        var md = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
+        var markup = '';
+        if (isProduct && mnemonic) {
+            markup += '<img src=' + mnemonic + ' alt="mnemonic" loading="lazy" />';
+        }
+        markup += md.replace(/<[^>]*>/g, '') // remove any markup <>
+        .replaceAll('{**', '<b>').replaceAll('**}', '</b>').replaceAll('{*', '<i>').replaceAll('*}', '</i>');
+        return markup;
+    };
+
     return _react2.default.createElement(
         'div',
         {
@@ -47570,25 +47587,18 @@ var Card = function Card(props) {
                     className: 'consonant-Card-label' },
                 iconAlt
             ),
-            _react2.default.createElement(
-                'p',
-                {
-                    role: 'heading',
-                    'aria-label': headingAria,
-                    'aria-level': headingLevel,
-                    'data-testid': 'consonant-Card-title',
-                    className: 'consonant-Card-title',
-                    title: title },
-                isProduct && mnemonic && _react2.default.createElement('img', { src: mnemonic, alt: 'mnemonic', loading: 'lazy' }),
-                title
-            ),
-            showText && description && !isIcon && _react2.default.createElement(
-                'p',
-                {
-                    'data-testid': 'consonant-Card-text',
-                    className: 'consonant-Card-text' },
-                description
-            ),
+            _react2.default.createElement('p', {
+                role: 'heading',
+                'aria-label': headingAria,
+                'aria-level': headingLevel,
+                'data-testid': 'consonant-Card-title',
+                className: 'consonant-Card-title',
+                title: removeMarkDown(title),
+                dangerouslySetInnerHTML: { __html: parseMarkDown(title) } }),
+            showText && description && !isIcon && _react2.default.createElement('p', {
+                'data-testid': 'consonant-Card-text',
+                className: 'consonant-Card-text',
+                dangerouslySetInnerHTML: { __html: parseMarkDown(description) } }),
             showFooter && !hideCTA && footer.map(function (footerItem) {
                 return _react2.default.createElement(_CardFooter2.default, {
                     divider: renderDivider || footerItem.divider,
