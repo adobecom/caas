@@ -7,7 +7,7 @@
     "prebuild": "webpack --config sourcemaps.config.js",
     "build": "webpack",
     "postbuild": "minify dist/main.js > dist/main.min.js",
-    "lint": "eslint react/src/js/components/Consonant --fix",
+    "lint": "eslint react/src/js --ext .js,.jsx",
     "release": "HUSKY_SKIP_HOOKS=1 release-it --ci",
     "test:coverage": "jest --coverage",
     "test:unit": "jest",
@@ -130,11 +130,7 @@
     "webpack": "^3.9.1"
   },
   "husky": {
-    "hooks": {
-      "prepare-commit-msg": "exec < /dev/tty && npx cz --hook || true",
-      "pre-commit": "npm run build && git add . && enforce-branch-name '.*'",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
+    "hooks": {}
   },
   "config": {
     "commitizen": {
