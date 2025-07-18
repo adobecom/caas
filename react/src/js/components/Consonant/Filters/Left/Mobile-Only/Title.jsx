@@ -67,7 +67,8 @@ const Title = forwardRef((props, ref) => {
                 onClick={onClick}
                 className="consonant-LeftFilters-mobBack"
                 onKeyDown={onKeyDown}
-                ref={mobBackRef} />
+                ref={mobBackRef}
+                aria-label="Back" />
             <span tabIndex="-1" ref={mobTitleRef}>
                 {leftPanelMobileHeader}
             </span>

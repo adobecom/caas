@@ -110,7 +110,8 @@ const PanelFooter = forwardRef((props, ref) => {
                 className="consonant-LeftFilters-mobileFooterBtn"
                 onClick={onMobileFiltersToggleClick}
                 ref={footerBtnRef}
-                onKeyDown={handleMobileFooterButtonTab}>
+                onKeyDown={handleMobileFooterButtonTab}
+                aria-label={buttonText || 'Done'}>
                 {buttonText}
             </button>
         </div>
