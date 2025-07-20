@@ -14,7 +14,16 @@ import CardFooter from './CardFooter/CardFooter';
 import prettyFormatDate from '../Helpers/prettyFormat';
 import { INFOBIT_TYPE } from '../Helpers/constants';
 import { hasTag } from '../Helpers/Helpers';
-import { getEventBanner, getLinkTarget, isDateBeforeInterval, isDateWithinInterval, isDateAfterInterval, getCurrentDate, getSearchParam } from '../Helpers/general';
+import {
+    getEventBanner,
+    getLinkTarget,
+    isDateBeforeInterval,
+    isDateWithinInterval,
+    isDateAfterInterval,
+    getCurrentDate,
+    getSearchParam,
+    removeMarkDown,
+} from '../Helpers/general';
 import { useConfig, useRegistered } from '../Helpers/hooks';
 import {
     stylesType,
@@ -408,18 +417,12 @@ const Card = (props) => {
         || isIcon
         || hideCTA;
 
-    const removeMarkDown = (md = '') => md
-        .replaceAll('{**', '')
-        .replaceAll('**}', '')
-        .replaceAll('{*', '')
-        .replaceAll('*}', '');
-
     const parseMarkDown = (md = '') => {
         let markup = '';
         if (isProduct && mnemonic) {
             markup += `<img src=${mnemonic} alt="mnemonic" loading="lazy" />`;
         }
-        markup += md
+        markup += md && md.toString()
             .replace(/<[^>]*>/g, '') // remove any markup <>
             .replaceAll('{**', '<b>')
             .replaceAll('**}', '</b>')

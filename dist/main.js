@@ -1,9 +1,5 @@
 /*!
-<<<<<<< HEAD
- * Chimera UI Libraries - Build 0.35.11 (7/16/2025, 11:54:14)
-=======
- * Chimera UI Libraries - Build 0.35.11 (7/8/2025, 13:28:54)
->>>>>>> main
+ * Chimera UI Libraries - Build 0.35.11 (7/21/2025, 24:33:57)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -453,7 +449,7 @@ var useRegistered = exports.useRegistered = function useRegistered() {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.sanitizeEventFilter = exports.getSearchParam = exports.getGlobalNavHeight = exports.getLinkTarget = exports.getEventBanner = exports.getCurrentDate = exports.isDateAfterInterval = exports.isDateBeforeInterval = exports.isDateWithinInterval = exports.qs = exports.mergeDeep = exports.setByPath = exports.debounce = exports.getSelectedItemsCount = exports.getByPath = exports.template = exports.getEndNumber = exports.getStartNumber = exports.getPageStartEnd = exports.generateRange = exports.stopPropagation = exports.isAtleastOneFilterSelected = exports.isNullish = exports.parseToPrimitive = exports.isObject = exports.mapObject = exports.sanitizeText = exports.sortByKey = exports.intersection = exports.isSuperset = exports.chainFromIterable = exports.chain = exports.removeDuplicatesByKey = exports.truncateList = exports.truncateString = exports.readInclusionsFromLocalStorage = exports.readBookmarksFromLocalStorage = exports.saveBookmarksToLocalStorage = undefined;
+exports.removeMarkDown = exports.sanitizeEventFilter = exports.getSearchParam = exports.getGlobalNavHeight = exports.getLinkTarget = exports.getEventBanner = exports.getCurrentDate = exports.isDateAfterInterval = exports.isDateBeforeInterval = exports.isDateWithinInterval = exports.qs = exports.mergeDeep = exports.setByPath = exports.debounce = exports.getSelectedItemsCount = exports.getByPath = exports.template = exports.getEndNumber = exports.getStartNumber = exports.getPageStartEnd = exports.generateRange = exports.stopPropagation = exports.isAtleastOneFilterSelected = exports.isNullish = exports.parseToPrimitive = exports.isObject = exports.mapObject = exports.sanitizeText = exports.sortByKey = exports.intersection = exports.isSuperset = exports.chainFromIterable = exports.chain = exports.removeDuplicatesByKey = exports.truncateList = exports.truncateString = exports.readInclusionsFromLocalStorage = exports.readBookmarksFromLocalStorage = exports.saveBookmarksToLocalStorage = undefined;
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -1132,6 +1128,19 @@ var sanitizeEventFilter = exports.sanitizeEventFilter = function sanitizeEventFi
     if (!rawEventFilter || rawEventFilter.indexOf('all') > -1) return [];
     if (Array.isArray(rawEventFilter)) return rawEventFilter;
     return [rawEventFilter];
+};
+
+var removeMarkDown = exports.removeMarkDown = function removeMarkDown() {
+    var md = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
+    // if (!md) return '';
+    var text = md.toString() || '';
+    return text
+    // .replace(/{\*\*/g, '')
+    // .replace(/\*\*}/g, '')
+    // .replace(/{\*/g, '')
+    // .replace(/\*}/g, '');
+    .replaceAll('{**', '').replaceAll('**}', '').replaceAll('{*', '').replaceAll('*}', '');
 };
 
 /***/ }),
@@ -7665,7 +7674,7 @@ var Container = function Container(props) {
      * @returns {Object}
      * */
     var getFilteredCollection = function getFilteredCollection() {
-        return cardFilterer.sortCards(sortOption, sanitizedEventFilter, featuredCards, hideCtaIds, isFirstLoad).keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks).keepCardsWithinDateRange().filterCards(activeFilterIds, activePanels, filterLogic, _constants.FILTER_TYPES, currCategories).truncateList(totalCardLimit).searchCards(searchQuery, searchFields, cardStyle).removeCards(inclusionIds);
+        return cardFilterer.sortCards(sortOption, sanitizedEventFilter, featuredCards, hideCtaIds, isFirstLoad).keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks).keepCardsWithinDateRange().filterCards(activeFilterIds, activePanels, filterLogic, _constants.FILTER_TYPES, currCategories).truncateList(totalCardLimit).searchCards((0, _general.removeMarkDown)(searchQuery), searchFields, cardStyle).removeCards(inclusionIds);
     };
 
     /**
@@ -47467,11 +47476,6 @@ var Card = function Card(props) {
     var overlay = altCtaUsed && isLive && altCtaLink !== '' ? altCtaLink : overlayParams;
     var getsFocus = isHalfHeight && !videoURLToUse || isThreeFourths || isFull || isDoubleWide || isIcon || hideCTA;
 
-    var removeMarkDown = function removeMarkDown() {
-        var md = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-        return md.replaceAll('{**', '').replaceAll('**}', '').replaceAll('{*', '').replaceAll('*}', '');
-    };
-
     var parseMarkDown = function parseMarkDown() {
         var md = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
 
@@ -47479,7 +47483,7 @@ var Card = function Card(props) {
         if (isProduct && mnemonic) {
             markup += '<img src=' + mnemonic + ' alt="mnemonic" loading="lazy" />';
         }
-        markup += md.replace(/<[^>]*>/g, '') // remove any markup <>
+        markup += md && md.toString().replace(/<[^>]*>/g, '') // remove any markup <>
         .replaceAll('{**', '<b>').replaceAll('**}', '</b>').replaceAll('{*', '<i>').replaceAll('*}', '</i>');
         return markup;
     };
@@ -47597,7 +47601,7 @@ var Card = function Card(props) {
                 'aria-level': headingLevel,
                 'data-testid': 'consonant-Card-title',
                 className: 'consonant-Card-title',
-                title: removeMarkDown(title),
+                title: (0, _general.removeMarkDown)(title),
                 dangerouslySetInnerHTML: { __html: parseMarkDown(title) } }),
             showText && description && !isIcon && _react2.default.createElement('p', {
                 'data-testid': 'consonant-Card-text',
