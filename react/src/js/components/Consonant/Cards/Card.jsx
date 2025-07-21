@@ -14,7 +14,16 @@ import CardFooter from './CardFooter/CardFooter';
 import prettyFormatDate from '../Helpers/prettyFormat';
 import { INFOBIT_TYPE } from '../Helpers/constants';
 import { hasTag } from '../Helpers/Helpers';
-import { getEventBanner, getLinkTarget, isDateBeforeInterval, isDateWithinInterval, isDateAfterInterval, getCurrentDate, getSearchParam } from '../Helpers/general';
+import {
+    getEventBanner,
+    getLinkTarget,
+    isDateBeforeInterval,
+    isDateWithinInterval,
+    isDateAfterInterval,
+    getCurrentDate,
+    getSearchParam,
+    removeMarkDown,
+} from '../Helpers/general';
 import { useConfig, useRegistered } from '../Helpers/hooks';
 import {
     stylesType,
@@ -408,6 +417,20 @@ const Card = (props) => {
         || isIcon
         || hideCTA;
 
+    const parseMarkDown = (md = '') => {
+        let markup = '';
+        if (isProduct && mnemonic) {
+            markup += `<img src=${mnemonic} alt="mnemonic" loading="lazy" />`;
+        }
+        markup += md && md.toString()
+            .replace(/<[^>]*>/g, '') // remove any markup <>
+            .replaceAll('{**', '<b>')
+            .replaceAll('**}', '</b>')
+            .replaceAll('{*', '<i>')
+            .replaceAll('*}', '</i>');
+        return markup;
+    };
+
     return (
         <li
             daa-lh={lh}
@@ -527,19 +550,16 @@ const Card = (props) => {
                     aria-level={headingLevel}
                     data-testid="consonant-Card-title"
                     className="consonant-Card-title"
-                    title={title}>
-                    {isProduct && mnemonic && <img src={mnemonic} alt="mnemonic" loading="lazy" />}
-                    {title}
-                </p>
+                    title={removeMarkDown(title)}
+                    dangerouslySetInnerHTML={{ __html: parseMarkDown(title) }} />
                 {
                     showText &&
                     description &&
                     !isIcon &&
                     <p
                         data-testid="consonant-Card-text"
-                        className="consonant-Card-text">
-                        {description}
-                    </p>
+                        className="consonant-Card-text"
+                        dangerouslySetInnerHTML={{ __html: parseMarkDown(description) }} />
                 }
                 {showFooter &&
                 !hideCTA &&

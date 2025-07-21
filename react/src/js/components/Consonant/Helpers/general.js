@@ -579,3 +579,13 @@ export const sanitizeEventFilter = (rawEventFilter) => {
     if (Array.isArray(rawEventFilter)) return rawEventFilter;
     return [rawEventFilter];
 };
+
+export const removeMarkDown = (md = '') => {
+    if (!md) return '';
+    const text = md.toString() || '';
+    return text
+        .replaceAll('{**', '')
+        .replaceAll('**}', '')
+        .replaceAll('{*', '')
+        .replaceAll('*}', '');
+};
