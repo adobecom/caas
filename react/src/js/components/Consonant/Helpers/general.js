@@ -581,13 +581,9 @@ export const sanitizeEventFilter = (rawEventFilter) => {
 };
 
 export const removeMarkDown = (md = '') => {
-    // if (!md) return '';
+    if (!md) return '';
     const text = md.toString() || '';
     return text
-    // .replace(/{\*\*/g, '')
-    // .replace(/\*\*}/g, '')
-    // .replace(/{\*/g, '')
-    // .replace(/\*}/g, '');
         .replaceAll('{**', '')
         .replaceAll('**}', '')
         .replaceAll('{*', '')
