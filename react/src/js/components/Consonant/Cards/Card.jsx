@@ -131,8 +131,10 @@ const Card = (props) => {
         },
         contentArea: {
             title,
+            highlightedTitle,
             detailText: label,
             description,
+            highlightedDescription,
             dateDetailText: {
                 startTime = '',
                 endTime = '',
@@ -544,23 +546,42 @@ const Card = (props) => {
                     {iconAlt}
                 </span>
                 }
-                <p
-                    role="heading"
-                    aria-label={headingAria}
-                    aria-level={headingLevel}
-                    data-testid="consonant-Card-title"
-                    className="consonant-Card-title"
-                    title={removeMarkDown(title)}
-                    dangerouslySetInnerHTML={{ __html: parseMarkDown(title) }} />
-                {
-                    showText &&
-                    description &&
-                    !isIcon &&
+                { highlightedTitle ? (
                     <p
-                        data-testid="consonant-Card-text"
-                        className="consonant-Card-text"
-                        dangerouslySetInnerHTML={{ __html: parseMarkDown(description) }} />
-                }
+                        role="heading"
+                        aria-label={headingAria}
+                        aria-level={headingLevel}
+                        data-testid="consonant-Card-title"
+                        className="consonant-Card-title"
+                        title={removeMarkDown(title)}>
+                        {highlightedTitle}
+                    </p>
+                ) : (
+                    <p
+                        role="heading"
+                        aria-label={headingAria}
+                        aria-level={headingLevel}
+                        data-testid="consonant-Card-title"
+                        className="consonant-Card-title"
+                        title={removeMarkDown(title)}
+                        dangerouslySetInnerHTML={{ __html: parseMarkDown(title) }} />
+                ) }
+                { showText && !isIcon && (
+                    highlightedDescription ? (
+                        <p
+                            data-testid="consonant-Card-text"
+                            className="consonant-Card-text">
+                            {highlightedDescription}
+                        </p>
+                    ) : (
+                        description && (
+                            <p
+                                data-testid="consonant-Card-text"
+                                className="consonant-Card-text"
+                                dangerouslySetInnerHTML={{ __html: parseMarkDown(description) }} />
+                        )
+                    )
+                ) }
                 {showFooter &&
                 !hideCTA &&
                 footer.map(footerItem => (
