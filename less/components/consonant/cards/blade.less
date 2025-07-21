@@ -1,8 +1,8 @@
 .consonant-CardsGrid {
-    &[data-card-style = "blade-card"] {
+    &[data-card-style ^= "blade"] {
         display: block !important;
 
-        .consonant-Card.blade-card {
+        .consonant-Card[class ^= "blade"] {
             width: 100% !important;
             max-width: 100% !important;
             flex-direction: row;
@@ -46,6 +46,10 @@
                 }
             }
         }
+    }
+
+    & .blade-card-reverse {
+        direction: rtl;
     }
 }
 
