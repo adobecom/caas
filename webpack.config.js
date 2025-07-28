@@ -27,6 +27,10 @@ const plugins = [
         `,
         entryOnly: true,
     }),
+    // Inject environment variable for conditional code removal
+    new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    }),
 ];
 
 module.exports = {
