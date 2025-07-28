@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.11 (7/21/2025, 24:33:57)
+ * Chimera UI Libraries - Build 0.35.11 (7/29/2025, 24:34:58)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -1133,14 +1133,9 @@ var sanitizeEventFilter = exports.sanitizeEventFilter = function sanitizeEventFi
 var removeMarkDown = exports.removeMarkDown = function removeMarkDown() {
     var md = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
 
-    // if (!md) return '';
+    if (!md) return '';
     var text = md.toString() || '';
-    return text
-    // .replace(/{\*\*/g, '')
-    // .replace(/\*\*}/g, '')
-    // .replace(/{\*/g, '')
-    // .replace(/\*}/g, '');
-    .replaceAll('{**', '').replaceAll('**}', '').replaceAll('{*', '').replaceAll('*}', '');
+    return text.replaceAll('{**', '').replaceAll('**}', '').replaceAll('{*', '').replaceAll('*}', '');
 };
 
 /***/ }),
@@ -47275,6 +47270,7 @@ var Card = function Card(props) {
     var showCardBadges = getConfig('collection', 'showCardBadges');
     var altCtaUsed = getConfig('collection', 'dynamicCTAForLiveEvents');
     var ctaAction = getConfig('collection', 'ctaAction');
+    var searchEnabled = getConfig('search', 'enabled');
 
     /**
      * Class name for the card:
@@ -47476,9 +47472,13 @@ var Card = function Card(props) {
     var overlay = altCtaUsed && isLive && altCtaLink !== '' ? altCtaLink : overlayParams;
     var getsFocus = isHalfHeight && !videoURLToUse || isThreeFourths || isFull || isDoubleWide || isIcon || hideCTA;
 
+    // Sanitize markdown before dangerouslySetInnerHTML
     var parseMarkDown = function parseMarkDown() {
         var md = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
 
+        if (searchEnabled) {
+            return md.replace(/<[^>]*>/g, ''); // remove any markup <>
+        }
         var markup = '';
         if (isProduct && mnemonic) {
             markup += '<img src=' + mnemonic + ' alt="mnemonic" loading="lazy" />';
