@@ -1305,7 +1305,7 @@ const Container = (props) => {
         });
     });
 
-    const parseMarkDown = displayLeftFilterPanel && searchEnabled ? false : true;
+    // const parseMarkDown = displayLeftFilterPanel && searchEnabled ? false : true;
 
     /**
      **** Class names ****
@@ -1581,7 +1581,7 @@ const Container = (props) => {
                                 <Grid
                                     resultsPerPage={resultsPerPage}
                                     pages={currentPage}
-                                    parseMarkDown={parseMarkDown}
+                                    // parseMarkDown={parseMarkDown}
                                     cards={gridCards}
                                     forwardedRef={scrollElementRef}
                                     onCardBookmark={handleCardBookmarking}

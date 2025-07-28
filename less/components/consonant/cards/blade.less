@@ -7,7 +7,7 @@
             max-width: 100% !important;
             flex-direction: row;
             height: 320px;
-            background-color: transparent;
+            // background-color: transparent;
 
             .consonant-Card {
                 &-header {
@@ -48,8 +48,26 @@
         }
     }
 
-    & .blade-card-reverse {
-        direction: rtl;
+    & .blade-card.reverse {
+        flex-direction: row-reverse !important;
+    }
+
+    & .blade-card.light-text {
+        .consonant-Card-label {
+            color: #fff;
+        }
+
+        .consonant-Card-title {
+            color: #fff;
+        }
+
+        .consonant-Card-text {
+            color: #fff;
+        }
+    }
+
+    & .blade-card.transparent {
+        background-color: transparent;
     }
 }
 
