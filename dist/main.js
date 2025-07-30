@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.11 (7/29/2025, 24:34:58)
+ * Chimera UI Libraries - Build 0.35.11 (7/30/2025, 13:49:09)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -2266,7 +2266,14 @@ var highlightCard = exports.highlightCard = function highlightCard(baseCard, sea
         var searchFieldValue = (0, _general.getByPath)(draftCard, searchField, null);
         if (searchFieldValue === null || searchFieldValue === '') return;
         var highlightedSearchFieldValue = (0, _rendering.HighlightSearchField)(searchFieldValue, query);
-        (0, _general.setByPath)(draftCard, searchField, highlightedSearchFieldValue);
+        // Write highlights to separate fields for title and description to avoid string coercion
+        if (searchField === 'contentArea.title') {
+            (0, _general.setByPath)(draftCard, 'contentArea.highlightedTitle', highlightedSearchFieldValue);
+        } else if (searchField === 'contentArea.description') {
+            (0, _general.setByPath)(draftCard, 'contentArea.highlightedDescription', highlightedSearchFieldValue);
+        } else {
+            (0, _general.setByPath)(draftCard, searchField, highlightedSearchFieldValue);
+        }
     });
 };
 
@@ -47203,8 +47210,10 @@ var Card = function Card(props) {
         _props$contentArea = props.contentArea;
     _props$contentArea = _props$contentArea === undefined ? {} : _props$contentArea;
     var title = _props$contentArea.title,
+        highlightedTitle = _props$contentArea.highlightedTitle,
         label = _props$contentArea.detailText,
         description = _props$contentArea.description,
+        highlightedDescription = _props$contentArea.highlightedDescription,
         _props$contentArea$da = _props$contentArea.dateDetailText;
     _props$contentArea$da = _props$contentArea$da === undefined ? {} : _props$contentArea$da;
     var _props$contentArea$da2 = _props$contentArea$da.startTime,
@@ -47595,7 +47604,17 @@ var Card = function Card(props) {
                     className: 'consonant-Card-label' },
                 iconAlt
             ),
-            _react2.default.createElement('p', {
+            highlightedTitle ? _react2.default.createElement(
+                'p',
+                {
+                    role: 'heading',
+                    'aria-label': headingAria,
+                    'aria-level': headingLevel,
+                    'data-testid': 'consonant-Card-title',
+                    className: 'consonant-Card-title',
+                    title: (0, _general.removeMarkDown)(title) },
+                highlightedTitle
+            ) : _react2.default.createElement('p', {
                 role: 'heading',
                 'aria-label': headingAria,
                 'aria-level': headingLevel,
@@ -47603,10 +47622,16 @@ var Card = function Card(props) {
                 className: 'consonant-Card-title',
                 title: (0, _general.removeMarkDown)(title),
                 dangerouslySetInnerHTML: { __html: parseMarkDown(title) } }),
-            showText && description && !isIcon && _react2.default.createElement('p', {
+            showText && !isIcon && (highlightedDescription ? _react2.default.createElement(
+                'p',
+                {
+                    'data-testid': 'consonant-Card-text',
+                    className: 'consonant-Card-text' },
+                highlightedDescription
+            ) : description && _react2.default.createElement('p', {
                 'data-testid': 'consonant-Card-text',
                 className: 'consonant-Card-text',
-                dangerouslySetInnerHTML: { __html: parseMarkDown(description) } }),
+                dangerouslySetInnerHTML: { __html: parseMarkDown(description) } })),
             showFooter && !hideCTA && footer.map(function (footerItem) {
                 return _react2.default.createElement(_CardFooter2.default, {
                     divider: renderDivider || footerItem.divider,
