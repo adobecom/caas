@@ -22,7 +22,6 @@ import {
     isDateAfterInterval,
     getCurrentDate,
     getSearchParam,
-    removeMarkDown,
 } from '../Helpers/general';
 import { useConfig, useRegistered } from '../Helpers/hooks';
 import {
@@ -427,30 +426,6 @@ const Card = (props) => {
         || isIcon
         || hideCTA;
 
-    // const parseMarkDown = (md = '') => {
-    //     console.log(md);
-    //     return md
-    //         .replace(/<[^>]*>/g, '')
-    //         .replaceAll('{**', '<b>')
-    //         .replaceAll('**}', '</b>')
-    //         .replaceAll('{*', '<i>')
-    //         .replaceAll('*}', '</i>');
-    // };
-
-    const parseMarkDown = (md = '') => {
-        let markup = '';
-        if (isProduct && mnemonic) {
-            markup += `<img src=${mnemonic} alt="mnemonic" loading="lazy" />`;
-        }
-        markup += md && md.toString()
-            .replace(/<[^>]*>/g, '') // remove any markup <>
-            .replaceAll('{**', '<b>')
-            .replaceAll('**}', '</b>')
-            .replaceAll('{*', '<i>')
-            .replaceAll('*}', '</i>');
-        return markup;
-    };
-
     return (
         <div
             daa-lh={lh}
@@ -570,8 +545,11 @@ const Card = (props) => {
                     aria-level={headingLevel}
                     data-testid="consonant-Card-title"
                     className="consonant-Card-title"
-                    title={removeMarkDown(title)}
-                    dangerouslySetInnerHTML={{ __html: parseMarkDown(title) }} />
+                    title={title}>
+                    {isProduct && mnemonic && <img src={mnemonic} alt="mnemonic" loading="lazy" />}
+                    {title}
+                </p>
+
                 {
                     showText &&
                     description &&
@@ -579,8 +557,9 @@ const Card = (props) => {
                     <p
                         data-testid="consonant-Card-text"
                         className="consonant-Card-text"
-                        dangerouslySetInnerHTML={{ __html: parseMarkDown(description) }}
-                    />
+                        title={description}>
+                        {description}
+                    </p>
                 }
                 {showFooter &&
                 !hideCTA &&

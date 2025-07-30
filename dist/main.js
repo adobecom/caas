@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.11 (7/28/2025, 18:09:27)
+ * Chimera UI Libraries - Build 0.35.11 (7/29/2025, 23:20:17)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -449,7 +449,7 @@ var useRegistered = exports.useRegistered = function useRegistered() {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.removeMarkDown = exports.sanitizeEventFilter = exports.getSearchParam = exports.getGlobalNavHeight = exports.getLinkTarget = exports.getEventBanner = exports.getCurrentDate = exports.isDateAfterInterval = exports.isDateBeforeInterval = exports.isDateWithinInterval = exports.qs = exports.mergeDeep = exports.setByPath = exports.debounce = exports.getSelectedItemsCount = exports.getByPath = exports.template = exports.getEndNumber = exports.getStartNumber = exports.getPageStartEnd = exports.generateRange = exports.stopPropagation = exports.isAtleastOneFilterSelected = exports.isNullish = exports.parseToPrimitive = exports.isObject = exports.mapObject = exports.sanitizeText = exports.sortByKey = exports.intersection = exports.isSuperset = exports.chainFromIterable = exports.chain = exports.removeDuplicatesByKey = exports.truncateList = exports.truncateString = exports.readInclusionsFromLocalStorage = exports.readBookmarksFromLocalStorage = exports.saveBookmarksToLocalStorage = undefined;
+exports.sanitizeEventFilter = exports.getSearchParam = exports.getGlobalNavHeight = exports.getLinkTarget = exports.getEventBanner = exports.getCurrentDate = exports.isDateAfterInterval = exports.isDateBeforeInterval = exports.isDateWithinInterval = exports.qs = exports.mergeDeep = exports.setByPath = exports.debounce = exports.getSelectedItemsCount = exports.getByPath = exports.template = exports.getEndNumber = exports.getStartNumber = exports.getPageStartEnd = exports.generateRange = exports.stopPropagation = exports.isAtleastOneFilterSelected = exports.isNullish = exports.parseToPrimitive = exports.isObject = exports.mapObject = exports.sanitizeText = exports.sortByKey = exports.intersection = exports.isSuperset = exports.chainFromIterable = exports.chain = exports.removeDuplicatesByKey = exports.truncateList = exports.truncateString = exports.readInclusionsFromLocalStorage = exports.readBookmarksFromLocalStorage = exports.saveBookmarksToLocalStorage = undefined;
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -1128,14 +1128,6 @@ var sanitizeEventFilter = exports.sanitizeEventFilter = function sanitizeEventFi
     if (!rawEventFilter || rawEventFilter.indexOf('all') > -1) return [];
     if (Array.isArray(rawEventFilter)) return rawEventFilter;
     return [rawEventFilter];
-};
-
-var removeMarkDown = exports.removeMarkDown = function removeMarkDown() {
-    var md = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-
-    if (!md) return '';
-    var text = md.toString() || '';
-    return text.replaceAll('{**', '').replaceAll('**}', '').replaceAll('{*', '').replaceAll('*}', '');
 };
 
 /***/ }),
@@ -47482,28 +47474,6 @@ var Card = function Card(props) {
     var overlay = altCtaUsed && isLive && altCtaLink !== '' ? altCtaLink : overlayParams;
     var getsFocus = isHalfHeight && !videoURLToUse || isThreeFourths || isFull || isDoubleWide || isIcon || hideCTA;
 
-    // const parseMarkDown = (md = '') => {
-    //     console.log(md);
-    //     return md
-    //         .replace(/<[^>]*>/g, '')
-    //         .replaceAll('{**', '<b>')
-    //         .replaceAll('**}', '</b>')
-    //         .replaceAll('{*', '<i>')
-    //         .replaceAll('*}', '</i>');
-    // };
-
-    var parseMarkDown = function parseMarkDown() {
-        var md = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-
-        var markup = '';
-        if (isProduct && mnemonic) {
-            markup += '<img src=' + mnemonic + ' alt="mnemonic" loading="lazy" />';
-        }
-        markup += md && md.toString().replace(/<[^>]*>/g, '') // remove any markup <>
-        .replaceAll('{**', '<b>').replaceAll('**}', '</b>').replaceAll('{*', '<i>').replaceAll('*}', '</i>');
-        return markup;
-    };
-
     return _react2.default.createElement(
         'div',
         {
@@ -47611,19 +47581,26 @@ var Card = function Card(props) {
                     className: 'consonant-Card-label' },
                 iconAlt
             ),
-            _react2.default.createElement('p', {
-                role: 'heading',
-                'aria-label': headingAria,
-                'aria-level': headingLevel,
-                'data-testid': 'consonant-Card-title',
-                className: 'consonant-Card-title',
-                title: (0, _general.removeMarkDown)(title),
-                dangerouslySetInnerHTML: { __html: parseMarkDown(title) } }),
-            showText && description && !isIcon && _react2.default.createElement('p', {
-                'data-testid': 'consonant-Card-text',
-                className: 'consonant-Card-text',
-                dangerouslySetInnerHTML: { __html: parseMarkDown(description) }
-            }),
+            _react2.default.createElement(
+                'p',
+                {
+                    role: 'heading',
+                    'aria-label': headingAria,
+                    'aria-level': headingLevel,
+                    'data-testid': 'consonant-Card-title',
+                    className: 'consonant-Card-title',
+                    title: title },
+                isProduct && mnemonic && _react2.default.createElement('img', { src: mnemonic, alt: 'mnemonic', loading: 'lazy' }),
+                title
+            ),
+            showText && description && !isIcon && _react2.default.createElement(
+                'p',
+                {
+                    'data-testid': 'consonant-Card-text',
+                    className: 'consonant-Card-text',
+                    title: description },
+                description
+            ),
             showFooter && !hideCTA && footer.map(function (footerItem) {
                 return _react2.default.createElement(_CardFooter2.default, {
                     divider: renderDivider || footerItem.divider,
