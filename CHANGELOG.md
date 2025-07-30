@@ -1,5 +1,14 @@
 
 
+## [0.35.13](https://github.com/adobecom/caas/compare/0.35.12...0.35.13) (2025-07-28)
+
+## [0.35.12](https://github.com/adobecom/caas/compare/0.35.11...0.35.12) (2025-07-18)
+
+
+### Bug Fixes
+
+* **mwpw-175529:** refactors markup to OL > LI elements ([#299](https://github.com/adobecom/caas/issues/299)) ([bb41bea](https://github.com/adobecom/caas/commit/bb41bea138721805b68e4abbdd5f3d43308f0db8))
+
 ## [0.35.11](https://github.com/adobecom/caas/compare/0.35.10...0.35.11) (2025-07-07)
 
 
