@@ -98,9 +98,7 @@ const Bookmark = ({
             type="button"
             className={bookmarkInfobitClass}
             onClick={handleClick}
-            tabIndex="0"
-            aria-label={tooltipText}
-            title={tooltipText}>
+            tabIndex="0">
             {showOnCards && bookmarkIcon()}
             {showOnCards && <Tooltip
                 data-testid="consonant-Tooltip"
