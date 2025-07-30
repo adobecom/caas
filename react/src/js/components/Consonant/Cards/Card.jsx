@@ -199,7 +199,6 @@ const Card = (props) => {
     const showCardBadges = getConfig('collection', 'showCardBadges');
     const altCtaUsed = getConfig('collection', 'dynamicCTAForLiveEvents');
     const ctaAction = getConfig('collection', 'ctaAction');
-    const searchEnabled = getConfig('search', 'enabled');
 
     /**
      * Class name for the card:
@@ -422,9 +421,6 @@ const Card = (props) => {
 
     // Sanitize markdown before dangerouslySetInnerHTML
     const parseMarkDown = (md = '') => {
-        if (searchEnabled) {
-            return md.replace(/<[^>]*>/g, ''); // remove any markup <>
-        }
         let markup = '';
         if (isProduct && mnemonic) {
             markup += `<img src=${mnemonic} alt="mnemonic" loading="lazy" />`;

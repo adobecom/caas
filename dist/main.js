@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.13 (7/30/2025, 13:55:27)
+ * Chimera UI Libraries - Build 0.35.13 (7/30/2025, 20:03:23)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -17853,7 +17853,6 @@ var Card = function Card(props) {
     var showCardBadges = getConfig('collection', 'showCardBadges');
     var altCtaUsed = getConfig('collection', 'dynamicCTAForLiveEvents');
     var ctaAction = getConfig('collection', 'ctaAction');
-    var searchEnabled = getConfig('search', 'enabled');
 
     /**
      * Class name for the card:
@@ -18059,9 +18058,6 @@ var Card = function Card(props) {
     var parseMarkDown = function parseMarkDown() {
         var md = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
 
-        if (searchEnabled) {
-            return md.replace(/<[^>]*>/g, ''); // remove any markup <>
-        }
         var markup = '';
         if (isProduct && mnemonic) {
             markup += '<img src=' + mnemonic + ' alt="mnemonic" loading="lazy" />';
