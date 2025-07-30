@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.13 (7/30/2025, 16:24:39)
+ * Chimera UI Libraries - Build 0.35.14 (7/30/2025, 16:47:00)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -19549,9 +19549,7 @@ var Bookmark = function Bookmark(_ref) {
             type: 'button',
             className: bookmarkInfobitClass,
             onClick: handleClick,
-            tabIndex: '0',
-            'aria-label': tooltipText,
-            title: tooltipText },
+            tabIndex: '0' },
         showOnCards && bookmarkIcon(),
         showOnCards && _react2.default.createElement(_Tooltip2.default, {
             'data-testid': 'consonant-Tooltip',
