@@ -584,6 +584,7 @@ export const removeMarkDown = (md = '') => {
     if (!md) return '';
     const text = md.toString() || '';
     return text
+        .replace(/<[^>]*>/g, '')
         .replaceAll('{**', '')
         .replaceAll('**}', '')
         .replaceAll('{*', '')

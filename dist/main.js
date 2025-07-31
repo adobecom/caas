@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.13 (7/30/2025, 20:03:23)
+ * Chimera UI Libraries - Build 0.35.13 (7/31/2025, 13:49:14)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -1133,7 +1133,7 @@ var removeMarkDown = exports.removeMarkDown = function removeMarkDown() {
 
     if (!md) return '';
     var text = md.toString() || '';
-    return text.replaceAll('{**', '').replaceAll('**}', '').replaceAll('{*', '').replaceAll('*}', '');
+    return text.replace(/<[^>]*>/g, '').replaceAll('{**', '').replaceAll('**}', '').replaceAll('{*', '').replaceAll('*}', '');
 };
 
 /***/ }),
@@ -2971,6 +2971,8 @@ var _cuid = __webpack_require__(66);
 
 var _cuid2 = _interopRequireDefault(_cuid);
 
+var _general = __webpack_require__(6);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
@@ -2980,7 +2982,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @returns {String []} - HTML with text highlighting
  */
 var HighlightSearchField = exports.HighlightSearchField = function HighlightSearchField(text, value) {
-    var parts = text.split(new RegExp('(' + value + ')', 'gi'));
+    var parts = (0, _general.removeMarkDown)(text).split(new RegExp('(' + value + ')', 'gi'));
     return parts.map(function (part) {
         return part.toLowerCase() === value ? _react2.default.createElement(
             'span',
@@ -17853,6 +17855,7 @@ var Card = function Card(props) {
     var showCardBadges = getConfig('collection', 'showCardBadges');
     var altCtaUsed = getConfig('collection', 'dynamicCTAForLiveEvents');
     var ctaAction = getConfig('collection', 'ctaAction');
+    var searchEnabled = getConfig('search', 'enabled');
 
     /**
      * Class name for the card:
@@ -18058,6 +18061,9 @@ var Card = function Card(props) {
     var parseMarkDown = function parseMarkDown() {
         var md = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
 
+        if (searchEnabled) {
+            return (0, _general.removeMarkDown)(md.replace(/<[^>]*>/g, ''));
+        }
         var markup = '';
         if (isProduct && mnemonic) {
             markup += '<img src=' + mnemonic + ' alt="mnemonic" loading="lazy" />';
