@@ -549,7 +549,6 @@ const Card = (props) => {
                     {isProduct && mnemonic && <img src={mnemonic} alt="mnemonic" loading="lazy" />}
                     {title}
                 </p>
-
                 {
                     showText &&
                     description &&
