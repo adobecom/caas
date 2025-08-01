@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.14 (8/1/2025, 14:55:18)
+ * Chimera UI Libraries - Build 0.35.14 (8/1/2025, 15:03:18)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -18045,7 +18045,7 @@ var Card = function Card(props) {
     var getsFocus = isHalfHeight && !videoURLToUse || isThreeFourths || isFull || isDoubleWide || isIcon || hideCTA;
 
     return _react2.default.createElement(
-        'div',
+        'li',
         {
             'daa-lh': lh,
             className: cardStyle + ' ' + cardClassName + ' ' + bladeVariant,
