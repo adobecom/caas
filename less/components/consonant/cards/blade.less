@@ -1,0 +1,131 @@
+.consonant-CardsGrid {
+    &[data-card-style ^= "blade"] {
+        display: block !important;
+
+        .consonant-Card[class ^= "blade"] {
+            font-family: "Adobe Clean", adobe-clean, "Trebuchet MS", sans-serif; // needs cleanup
+            width: 100% !important;
+            max-width: 100% !important;
+            flex-direction: row;
+            height: 375px;
+            gap: 41.667px;
+
+            .consonant-Card {
+                &-header {
+                    background-size: cover;
+                    background-position: center;
+                    width: 42%;
+                }
+
+                &-content {
+                    padding: 0;
+                    border-bottom-left-radius: 4px;
+                    border-bottom-right-radius: 4px;
+                    font-size: 18px;
+                    padding-bottom: 24px;
+                    display: flex;
+                    justify-content: center;
+                    width: 55%;
+                }
+
+                &-label {
+                    font-size: 16px;
+                    text-transform: uppercase;
+                    font-weight: bolder;
+                }
+
+                &-title {
+                    font-size: 36px;
+                    margin: 16px 0;
+                    line-height: 1.25;
+                }
+
+                &-text {
+                    font-size: 18px;
+                    line-height: 27px;
+                }
+
+                &Footer {
+                    margin-top: 0;
+
+                    &-cell {
+                        flex-grow: unset;
+                    }
+
+                    &-cell--left {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+
+    & .blade-card.reverse {
+        flex-direction: row-reverse !important;
+    }
+
+    & .blade-card.light-text {
+        .consonant-Card-label {
+            color: #fff;
+        }
+
+        .consonant-Card-title {
+            color: #fff;
+        }
+
+        .consonant-Card-text {
+            color: #fff;
+        }
+    }
+
+    & .blade-card.transparent {
+        background-color: transparent;
+    }
+}
+
+.consonant-u-themeDark .consonant-CardsGrid .consonant-Card.blade-card {
+    border-color: #4a4a4a;
+    background-color: #323232;
+
+    .consonant-Card-label {
+        color: #e3e3e3;
+    }
+
+    .consonant-Card-title {
+        color: #fff;
+    }
+
+    .consonant-Card-text {
+        color: #e3e3e3;
+    }
+}
+
+// .consonant-Card.blade-card {
+//     width: 100% !important;
+//     flex-direction: row;
+//     height: 325px;
+
+//     .consonant-Card-header {
+//         background-size: cover;
+//         width: 45%;
+//     }
+
+//     .consonant-Card-content {
+//         padding: 16px;
+//         border-bottom-left-radius: 4px;
+//         border-bottom-right-radius: 4px;
+//         padding-bottom: 24px;
+//         display: flex;
+//         justify-content: center;
+//         width: 55%;
+//     }
+
+//     .consonant-Card-label {
+//         font-size: 12px;
+//         text-transform: uppercase;
+//     }
+
+//     .consonant-Card-title {
+//         font-size: 24px;
+//     }
+// }

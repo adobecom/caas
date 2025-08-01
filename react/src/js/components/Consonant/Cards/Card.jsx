@@ -14,7 +14,15 @@ import CardFooter from './CardFooter/CardFooter';
 import prettyFormatDate from '../Helpers/prettyFormat';
 import { INFOBIT_TYPE } from '../Helpers/constants';
 import { hasTag } from '../Helpers/Helpers';
-import { getEventBanner, getLinkTarget, isDateBeforeInterval, isDateWithinInterval, isDateAfterInterval, getCurrentDate, getSearchParam } from '../Helpers/general';
+import {
+    getEventBanner,
+    getLinkTarget,
+    isDateBeforeInterval,
+    isDateWithinInterval,
+    isDateAfterInterval,
+    getCurrentDate,
+    getSearchParam,
+} from '../Helpers/general';
 import { useConfig, useRegistered } from '../Helpers/hooks';
 import {
     stylesType,
@@ -188,6 +196,7 @@ const Card = (props) => {
     const showCardBadges = getConfig('collection', 'showCardBadges');
     const altCtaUsed = getConfig('collection', 'dynamicCTAForLiveEvents');
     const ctaAction = getConfig('collection', 'ctaAction');
+    const bladeCard = getConfig('collection', 'bladeCard');
 
     /**
      * Class name for the card:
@@ -338,6 +347,15 @@ const Card = (props) => {
     const isIcon = cardStyle === 'icon-card';
     const isNews = cardStyle === 'news-card';
 
+    const isBlade = cardStyle === 'blade-card';
+    const bladeVariant = isBlade
+        ? [
+            bladeCard.reverse ? 'reverse' : '',
+            bladeCard.lightText ? 'light-text' : '',
+            bladeCard.transparent ? 'transparent' : '',
+        ].filter(Boolean).join(' ')
+        : '';
+
     // Card elements to show
     const showHeader = !isProduct;
     const fromDexter = origin === 'Dexter';
@@ -347,7 +365,7 @@ const Card = (props) => {
     const showLabel = !isProduct && !isText;
     const showVideoButton = !isProduct && !isText && !isIcon;
     const showText = !isHalfHeight && !isFull && !isNews;
-    const showFooter = isOneHalf || isProduct || isText || isNews;
+    const showFooter = isOneHalf || isProduct || isText || isNews || isBlade;
     const showFooterLeft = !isProduct;
     const showFooterCenter = !isProduct && !altCtaUsed;
     let hideBanner = false;
@@ -409,9 +427,9 @@ const Card = (props) => {
         || hideCTA;
 
     return (
-        <li
+        <div
             daa-lh={lh}
-            className={`${cardStyle} ${cardClassName}`}
+            className={`${cardStyle} ${cardClassName} ${bladeVariant}`}
             data-testid="consonant-Card"
             id={id}>
             {showHeader &&
@@ -531,13 +549,15 @@ const Card = (props) => {
                     {isProduct && mnemonic && <img src={mnemonic} alt="mnemonic" loading="lazy" />}
                     {title}
                 </p>
+
                 {
                     showText &&
                     description &&
                     !isIcon &&
                     <p
                         data-testid="consonant-Card-text"
-                        className="consonant-Card-text">
+                        className="consonant-Card-text"
+                        title={description}>
                         {description}
                     </p>
                 }
@@ -579,7 +599,7 @@ const Card = (props) => {
                 ariaHidden={ariaHidden}
                 tabIndex={ariaHidden ? -1 : 0}
                 daa={ctaText} />}
-        </li>
+        </div>
     );
 };
 
