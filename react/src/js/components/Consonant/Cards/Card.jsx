@@ -199,6 +199,7 @@ const Card = (props) => {
     const showCardBadges = getConfig('collection', 'showCardBadges');
     const altCtaUsed = getConfig('collection', 'dynamicCTAForLiveEvents');
     const ctaAction = getConfig('collection', 'ctaAction');
+    const bladeCard = getConfig('collection', 'bladeCard');
     const searchEnabled = getConfig('search', 'enabled');
 
     /**
@@ -350,6 +351,15 @@ const Card = (props) => {
     const isIcon = cardStyle === 'icon-card';
     const isNews = cardStyle === 'news-card';
 
+    const isBlade = cardStyle === 'blade-card';
+    const bladeVariant = isBlade
+        ? [
+            bladeCard.reverse ? 'reverse' : '',
+            bladeCard.lightText ? 'light-text' : '',
+            bladeCard.transparent ? 'transparent' : '',
+        ].filter(Boolean).join(' ')
+        : '';
+
     // Card elements to show
     const showHeader = !isProduct;
     const fromDexter = origin === 'Dexter';
@@ -359,7 +369,7 @@ const Card = (props) => {
     const showLabel = !isProduct && !isText;
     const showVideoButton = !isProduct && !isText && !isIcon;
     const showText = !isHalfHeight && !isFull && !isNews;
-    const showFooter = isOneHalf || isProduct || isText || isNews;
+    const showFooter = isOneHalf || isProduct || isText || isNews || isBlade;
     const showFooterLeft = !isProduct;
     const showFooterCenter = !isProduct && !altCtaUsed;
     let hideBanner = false;
@@ -441,7 +451,7 @@ const Card = (props) => {
     return (
         <li
             daa-lh={lh}
-            className={`${cardStyle} ${cardClassName}`}
+            className={`${cardStyle} ${cardClassName} ${bladeVariant}`}
             data-testid="consonant-Card"
             id={id}>
             {showHeader &&
