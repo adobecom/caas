@@ -128,4 +128,18 @@ describe('Card Component - Specific Conditions', () => {
         expect(detailTextElement).toBeInTheDocument();
         expect(detailTextElement).toHaveTextContent(expectedText);
     });
+
+    // Parse Markdown Test Cases
+    test('should parse markdown correctly', () => {
+        renderCard({
+            cardStyle: 'one-half',
+            contentArea: {
+                description: 'This is a {**bold**} and {*italic*} text.',
+            },
+        });
+
+        const descriptionTextElement = screen.getByTestId('consonant-Card-text');
+        expect(descriptionTextElement).toBeInTheDocument();
+        expect(descriptionTextElement).toHaveTextContent('This is a bold and italic text.');
+    });
 });

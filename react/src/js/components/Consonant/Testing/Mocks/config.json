@@ -13,6 +13,11 @@
         "showTotalResults": true,
         "useOverlayLinks": false,
         "cardHoverEffect": "default",
+        "bladeCard": {
+            "reverse": false,
+            "lightText": false,
+            "transparent": false
+        },
         "i18n": {
             "prettyDateIntervalFormat": "{LLL} {dd} | {timeRange} {timeZone}",
             "totalResultsText": "{total} Results",

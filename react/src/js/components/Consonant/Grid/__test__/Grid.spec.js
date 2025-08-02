@@ -152,6 +152,12 @@ describe('Consonant/Grid', () => {
         expect(cardElement).toHaveClass('news');
     });
 
+    test('should apply blade card style class when specified', () => {
+        renderCardsGrid({}, { collection: { cardStyle: 'blade-card' } });
+        const cardElement = screen.getByTestId('consonant-Card');
+        expect(cardElement).toHaveClass('blade-card');
+    });
+
     test('should apply card hover grow effect when specified', () => {
         renderCardsGrid({}, { collection: { cardHoverEffect: 'grow' } });
         const gridElement = screen.getByTestId('consonant-CardsGrid');
@@ -194,7 +200,16 @@ describe('Consonant/Grid', () => {
     });
 
     test('should not show CTA button when showCTA prop is false', () => {
-        renderCardsGrid({}, { collection: { button: {style: 'primary' } } });
+        // renderCardsGrid({}, { collection: { button: {style: 'primary' } } });
+        renderCardsGrid({}, { collection: { collectionButtonStyle: 'hidden' } } );
+        const gridElement = screen.getByTestId('consonant-CardsGrid');
+        screen.debug(gridElement);
+        const ctaButton = screen.queryByTestId('consonant-BtnInfobit');
+        expect(ctaButton).not.toBeInTheDocument();
+    });
+
+    test('should not show CTA button when showCTA prop is false', () => {
+        renderCardsGrid({}, { collection: { collectionButtonStyle: 'hidden' } } );
         const gridElement = screen.getByTestId('consonant-CardsGrid');
         screen.debug(gridElement);
         const ctaButton = screen.queryByTestId('consonant-BtnInfobit');
