@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.14 (8/1/2025, 15:05:27)
+ * Chimera UI Libraries - Build 0.35.15 (8/2/2025, 11:08:45)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -447,7 +447,7 @@ var useRegistered = exports.useRegistered = function useRegistered() {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.sanitizeEventFilter = exports.getSearchParam = exports.getGlobalNavHeight = exports.getLinkTarget = exports.getEventBanner = exports.getCurrentDate = exports.isDateAfterInterval = exports.isDateBeforeInterval = exports.isDateWithinInterval = exports.qs = exports.mergeDeep = exports.setByPath = exports.debounce = exports.getSelectedItemsCount = exports.getByPath = exports.template = exports.getEndNumber = exports.getStartNumber = exports.getPageStartEnd = exports.generateRange = exports.stopPropagation = exports.isAtleastOneFilterSelected = exports.isNullish = exports.parseToPrimitive = exports.isObject = exports.mapObject = exports.sanitizeText = exports.sortByKey = exports.intersection = exports.isSuperset = exports.chainFromIterable = exports.chain = exports.removeDuplicatesByKey = exports.truncateList = exports.truncateString = exports.readInclusionsFromLocalStorage = exports.readBookmarksFromLocalStorage = exports.saveBookmarksToLocalStorage = undefined;
+exports.removeMarkDown = exports.sanitizeEventFilter = exports.getSearchParam = exports.getGlobalNavHeight = exports.getLinkTarget = exports.getEventBanner = exports.getCurrentDate = exports.isDateAfterInterval = exports.isDateBeforeInterval = exports.isDateWithinInterval = exports.qs = exports.mergeDeep = exports.setByPath = exports.debounce = exports.getSelectedItemsCount = exports.getByPath = exports.template = exports.getEndNumber = exports.getStartNumber = exports.getPageStartEnd = exports.generateRange = exports.stopPropagation = exports.isAtleastOneFilterSelected = exports.isNullish = exports.parseToPrimitive = exports.isObject = exports.mapObject = exports.sanitizeText = exports.sortByKey = exports.intersection = exports.isSuperset = exports.chainFromIterable = exports.chain = exports.removeDuplicatesByKey = exports.truncateList = exports.truncateString = exports.readInclusionsFromLocalStorage = exports.readBookmarksFromLocalStorage = exports.saveBookmarksToLocalStorage = undefined;
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -1126,6 +1126,14 @@ var sanitizeEventFilter = exports.sanitizeEventFilter = function sanitizeEventFi
     if (!rawEventFilter || rawEventFilter.indexOf('all') > -1) return [];
     if (Array.isArray(rawEventFilter)) return rawEventFilter;
     return [rawEventFilter];
+};
+
+var removeMarkDown = exports.removeMarkDown = function removeMarkDown() {
+    var md = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
+    if (!md) return '';
+    var text = md.toString() || '';
+    return text.replace(/<[^>]*>/g, '').replaceAll('{**', '').replaceAll('**}', '').replaceAll('{*', '').replaceAll('*}', '');
 };
 
 /***/ }),
@@ -2066,7 +2074,14 @@ var highlightCard = exports.highlightCard = function highlightCard(baseCard, sea
         var searchFieldValue = (0, _general.getByPath)(draftCard, searchField, null);
         if (searchFieldValue === null || searchFieldValue === '') return;
         var highlightedSearchFieldValue = (0, _rendering.HighlightSearchField)(searchFieldValue, query);
-        (0, _general.setByPath)(draftCard, searchField, highlightedSearchFieldValue);
+        // Write highlights to separate fields for title and description to avoid string coercion
+        if (searchField === 'contentArea.title') {
+            (0, _general.setByPath)(draftCard, 'contentArea.highlightedTitle', highlightedSearchFieldValue);
+        } else if (searchField === 'contentArea.description') {
+            (0, _general.setByPath)(draftCard, 'contentArea.highlightedDescription', highlightedSearchFieldValue);
+        } else {
+            (0, _general.setByPath)(draftCard, searchField, highlightedSearchFieldValue);
+        }
     });
 };
 
@@ -2956,6 +2971,8 @@ var _cuid = __webpack_require__(66);
 
 var _cuid2 = _interopRequireDefault(_cuid);
 
+var _general = __webpack_require__(6);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
@@ -2965,7 +2982,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @returns {String []} - HTML with text highlighting
  */
 var HighlightSearchField = exports.HighlightSearchField = function HighlightSearchField(text, value) {
-    var parts = text.split(new RegExp('(' + value + ')', 'gi'));
+    var parts = (0, _general.removeMarkDown)(text).split(new RegExp('(' + value + ')', 'gi'));
     return parts.map(function (part) {
         return part.toLowerCase() === value ? _react2.default.createElement(
             'span',
@@ -7316,7 +7333,7 @@ var Container = function Container(props) {
      * @returns {Object}
      * */
     var getFilteredCollection = function getFilteredCollection() {
-        return cardFilterer.sortCards(sortOption, sanitizedEventFilter, featuredCards, hideCtaIds, isFirstLoad).keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks).keepCardsWithinDateRange().filterCards(activeFilterIds, activePanels, filterLogic, _constants.FILTER_TYPES, currCategories).truncateList(totalCardLimit).searchCards(searchQuery, searchFields, cardStyle).removeCards(inclusionIds);
+        return cardFilterer.sortCards(sortOption, sanitizedEventFilter, featuredCards, hideCtaIds, isFirstLoad).keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks).keepCardsWithinDateRange().filterCards(activeFilterIds, activePanels, filterLogic, _constants.FILTER_TYPES, currCategories).truncateList(totalCardLimit).searchCards((0, _general.removeMarkDown)(searchQuery), searchFields, cardStyle).removeCards(inclusionIds);
     };
 
     /**
@@ -17772,8 +17789,10 @@ var Card = function Card(props) {
         _props$contentArea = props.contentArea;
     _props$contentArea = _props$contentArea === undefined ? {} : _props$contentArea;
     var title = _props$contentArea.title,
+        highlightedTitle = _props$contentArea.highlightedTitle,
         label = _props$contentArea.detailText,
         description = _props$contentArea.description,
+        highlightedDescription = _props$contentArea.highlightedDescription,
         _props$contentArea$da = _props$contentArea.dateDetailText;
     _props$contentArea$da = _props$contentArea$da === undefined ? {} : _props$contentArea$da;
     var _props$contentArea$da2 = _props$contentArea$da.startTime,
@@ -17840,6 +17859,7 @@ var Card = function Card(props) {
     var altCtaUsed = getConfig('collection', 'dynamicCTAForLiveEvents');
     var ctaAction = getConfig('collection', 'ctaAction');
     var bladeCard = getConfig('collection', 'bladeCard');
+    var searchEnabled = getConfig('search', 'enabled');
 
     /**
      * Class name for the card:
@@ -18044,6 +18064,22 @@ var Card = function Card(props) {
     var overlay = altCtaUsed && isLive && altCtaLink !== '' ? altCtaLink : overlayParams;
     var getsFocus = isHalfHeight && !videoURLToUse || isThreeFourths || isFull || isDoubleWide || isIcon || hideCTA;
 
+    // Sanitize markdown before dangerouslySetInnerHTML
+    var parseMarkDown = function parseMarkDown() {
+        var md = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
+        if (searchEnabled) {
+            return (0, _general.removeMarkDown)(md.replace(/<[^>]*>/g, ''));
+        }
+        var markup = '';
+        if (isProduct && mnemonic) {
+            markup += '<img src=' + mnemonic + ' alt="mnemonic" loading="lazy" />';
+        }
+        markup += md && md.toString().replace(/<[^>]*>/g, '') // remove any markup <>
+        .replaceAll('{**', '<b>').replaceAll('**}', '</b>').replaceAll('{*', '<i>').replaceAll('*}', '</i>');
+        return markup;
+    };
+
     return _react2.default.createElement(
         'li',
         {
@@ -18151,7 +18187,7 @@ var Card = function Card(props) {
                     className: 'consonant-Card-label' },
                 iconAlt
             ),
-            _react2.default.createElement(
+            highlightedTitle ? _react2.default.createElement(
                 'p',
                 {
                     role: 'heading',
@@ -18159,18 +18195,26 @@ var Card = function Card(props) {
                     'aria-level': headingLevel,
                     'data-testid': 'consonant-Card-title',
                     className: 'consonant-Card-title',
-                    title: title },
-                isProduct && mnemonic && _react2.default.createElement('img', { src: mnemonic, alt: 'mnemonic', loading: 'lazy' }),
-                title
-            ),
-            showText && description && !isIcon && _react2.default.createElement(
+                    title: (0, _general.removeMarkDown)(title) },
+                highlightedTitle
+            ) : _react2.default.createElement('p', {
+                role: 'heading',
+                'aria-label': headingAria,
+                'aria-level': headingLevel,
+                'data-testid': 'consonant-Card-title',
+                className: 'consonant-Card-title',
+                title: (0, _general.removeMarkDown)(title),
+                dangerouslySetInnerHTML: { __html: parseMarkDown(title) } }),
+            showText && !isIcon && (highlightedDescription ? _react2.default.createElement(
                 'p',
                 {
                     'data-testid': 'consonant-Card-text',
-                    className: 'consonant-Card-text',
-                    title: description },
-                description
-            ),
+                    className: 'consonant-Card-text' },
+                highlightedDescription
+            ) : description && _react2.default.createElement('p', {
+                'data-testid': 'consonant-Card-text',
+                className: 'consonant-Card-text',
+                dangerouslySetInnerHTML: { __html: parseMarkDown(description) } })),
             showFooter && !hideCTA && footer.map(function (footerItem) {
                 return _react2.default.createElement(_CardFooter2.default, {
                     divider: renderDivider || footerItem.divider,
