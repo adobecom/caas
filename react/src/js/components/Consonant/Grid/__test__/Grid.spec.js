@@ -200,15 +200,6 @@ describe('Consonant/Grid', () => {
     });
 
     test('should not show CTA button when showCTA prop is false', () => {
-        // renderCardsGrid({}, { collection: { button: {style: 'primary' } } });
-        renderCardsGrid({}, { collection: { collectionButtonStyle: 'hidden' } } );
-        const gridElement = screen.getByTestId('consonant-CardsGrid');
-        screen.debug(gridElement);
-        const ctaButton = screen.queryByTestId('consonant-BtnInfobit');
-        expect(ctaButton).not.toBeInTheDocument();
-    });
-
-    test('should not show CTA button when showCTA prop is false', () => {
         renderCardsGrid({}, { collection: { collectionButtonStyle: 'hidden' } } );
         const gridElement = screen.getByTestId('consonant-CardsGrid');
         screen.debug(gridElement);
