@@ -14,7 +14,16 @@ import CardFooter from './CardFooter/CardFooter';
 import prettyFormatDate from '../Helpers/prettyFormat';
 import { INFOBIT_TYPE } from '../Helpers/constants';
 import { hasTag } from '../Helpers/Helpers';
-import { getEventBanner, getLinkTarget, isDateBeforeInterval, isDateWithinInterval, isDateAfterInterval, getCurrentDate, getSearchParam } from '../Helpers/general';
+import {
+    getEventBanner,
+    getLinkTarget,
+    isDateBeforeInterval,
+    isDateWithinInterval,
+    isDateAfterInterval,
+    getCurrentDate,
+    getSearchParam,
+    removeMarkDown,
+} from '../Helpers/general';
 import { useConfig, useRegistered } from '../Helpers/hooks';
 import {
     stylesType,
@@ -122,8 +131,10 @@ const Card = (props) => {
         },
         contentArea: {
             title,
+            highlightedTitle,
             detailText: label,
             description,
+            highlightedDescription,
             dateDetailText: {
                 startTime = '',
                 endTime = '',
@@ -188,6 +199,7 @@ const Card = (props) => {
     const showCardBadges = getConfig('collection', 'showCardBadges');
     const altCtaUsed = getConfig('collection', 'dynamicCTAForLiveEvents');
     const ctaAction = getConfig('collection', 'ctaAction');
+    const searchEnabled = getConfig('search', 'enabled');
 
     /**
      * Class name for the card:
@@ -408,6 +420,24 @@ const Card = (props) => {
         || isIcon
         || hideCTA;
 
+    // Sanitize markdown before dangerouslySetInnerHTML
+    const parseMarkDown = (md = '') => {
+        if (searchEnabled) {
+            return removeMarkDown(md.replace(/<[^>]*>/g, ''));
+        }
+        let markup = '';
+        if (isProduct && mnemonic) {
+            markup += `<img src=${mnemonic} alt="mnemonic" loading="lazy" />`;
+        }
+        markup += md && md.toString()
+            .replace(/<[^>]*>/g, '') // remove any markup <>
+            .replaceAll('{**', '<b>')
+            .replaceAll('**}', '</b>')
+            .replaceAll('{*', '<i>')
+            .replaceAll('*}', '</i>');
+        return markup;
+    };
+
     return (
         <li
             daa-lh={lh}
@@ -521,26 +551,42 @@ const Card = (props) => {
                     {iconAlt}
                 </span>
                 }
-                <p
-                    role="heading"
-                    aria-label={headingAria}
-                    aria-level={headingLevel}
-                    data-testid="consonant-Card-title"
-                    className="consonant-Card-title"
-                    title={title}>
-                    {isProduct && mnemonic && <img src={mnemonic} alt="mnemonic" loading="lazy" />}
-                    {title}
-                </p>
-                {
-                    showText &&
-                    description &&
-                    !isIcon &&
+                { highlightedTitle ? (
                     <p
-                        data-testid="consonant-Card-text"
-                        className="consonant-Card-text">
-                        {description}
+                        role="heading"
+                        aria-label={headingAria}
+                        aria-level={headingLevel}
+                        data-testid="consonant-Card-title"
+                        className="consonant-Card-title"
+                        title={removeMarkDown(title)}>
+                        {highlightedTitle}
                     </p>
-                }
+                ) : (
+                    <p
+                        role="heading"
+                        aria-label={headingAria}
+                        aria-level={headingLevel}
+                        data-testid="consonant-Card-title"
+                        className="consonant-Card-title"
+                        title={removeMarkDown(title)}
+                        dangerouslySetInnerHTML={{ __html: parseMarkDown(title) }} />
+                ) }
+                { showText && !isIcon && (
+                    highlightedDescription ? (
+                        <p
+                            data-testid="consonant-Card-text"
+                            className="consonant-Card-text">
+                            {highlightedDescription}
+                        </p>
+                    ) : (
+                        description && (
+                            <p
+                                data-testid="consonant-Card-text"
+                                className="consonant-Card-text"
+                                dangerouslySetInnerHTML={{ __html: parseMarkDown(description) }} />
+                        )
+                    )
+                ) }
                 {showFooter &&
                 !hideCTA &&
                 footer.map(footerItem => (
