@@ -1,5 +1,12 @@
 
 
+# [0.36.0](https://github.com/adobecom/caas/compare/0.35.15...0.36.0) (2025-08-02)
+
+
+### Features
+
+* **mwpw-176061:** adds new blade-card style ([#304](https://github.com/adobecom/caas/issues/304)) ([8385d40](https://github.com/adobecom/caas/commit/8385d404ebaf6d7f1aa9c649c2245280f13dcf3e))
+
 ## [0.35.15](https://github.com/adobecom/caas/compare/0.35.14...0.35.15) (2025-08-02)
 
 
