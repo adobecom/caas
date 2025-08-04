@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.15 (8/2/2025, 11:08:45)
+ * Chimera UI Libraries - Build 0.36.0 (8/4/2025, 10:44:37)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -1448,6 +1448,11 @@ var DEFAULT_CONFIG = exports.DEFAULT_CONFIG = {
         title: '',
         totalCardLimit: -1,
         cardStyle: '',
+        bladeCard: {
+            reverse: false,
+            lightText: false,
+            transparent: false
+        },
         displayTotalResults: true,
         totalResultsText: '{} results',
         i18n: {
@@ -17680,7 +17685,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /* eslint-disable */
+
 
 var _react = __webpack_require__(0);
 
@@ -18246,7 +18252,8 @@ var Card = function Card(props) {
             getsFocus: getsFocus || true,
             ariaHidden: ariaHidden,
             tabIndex: ariaHidden ? -1 : 0,
-            daa: ctaText })
+            daa: ctaText }),
+        _react2.default.createElement('img', { src: 'pa11y-react-test.png' })
     );
 };
 

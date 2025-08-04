@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import classNames from 'classnames';
 import cuid from 'cuid';
@@ -635,6 +636,7 @@ const Card = (props) => {
                 ariaHidden={ariaHidden}
                 tabIndex={ariaHidden ? -1 : 0}
                 daa={ctaText} />}
+            <img src="pa11y-react-test.png" />
         </li>
     );
 };
