@@ -141,6 +141,11 @@ export const DEFAULT_CONFIG = {
         title: '',
         totalCardLimit: -1,
         cardStyle: '',
+        bladeCard: {
+            reverse: false,
+            lightText: false,
+            transparent: false,
+        },
         displayTotalResults: true,
         totalResultsText: '{} results',
         i18n: {

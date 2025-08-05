@@ -1,5 +1,21 @@
 
 
+## [0.36.1](https://github.com/adobecom/caas/compare/0.36.0...0.36.1) (2025-08-05)
+
+# [0.36.0](https://github.com/adobecom/caas/compare/0.35.15...0.36.0) (2025-08-02)
+
+
+### Features
+
+* **mwpw-176061:** adds new blade-card style ([#304](https://github.com/adobecom/caas/issues/304)) ([8385d40](https://github.com/adobecom/caas/commit/8385d404ebaf6d7f1aa9c649c2245280f13dcf3e))
+
+## [0.35.15](https://github.com/adobecom/caas/compare/0.35.14...0.35.15) (2025-08-02)
+
+
+### Bug Fixes
+
+* **mwpw-139930:** allows  bold & italic in title and description ([#300](https://github.com/adobecom/caas/issues/300)) ([c80358d](https://github.com/adobecom/caas/commit/c80358deff8c7c7cd222735361b97020f76814c1))
+
 ## [0.35.14](https://github.com/adobecom/caas/compare/0.35.13...0.35.14) (2025-07-30)
 
 ## [0.35.13](https://github.com/adobecom/caas/compare/0.35.12...0.35.13) (2025-07-28)
