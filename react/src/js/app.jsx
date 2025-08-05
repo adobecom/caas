@@ -69,6 +69,8 @@ export class ConsonantCardCollecton {
     }
 }
 
+console.log('some change');
+
 window.ConsonantCardCollection = ConsonantCardCollecton;
 
 if (window.Granite && window.dx) {

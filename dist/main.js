@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.14 (7/31/2025, 23:09:30)
+ * Chimera UI Libraries - Build 0.35.14 (8/5/2025, 16:05:09)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -9271,6 +9271,8 @@ var ConsonantCardCollecton = exports.ConsonantCardCollecton = function Consonant
         _react2.default.createElement(_Container2.default, { config: (0, _general.parseToPrimitive)(config) })
     ), element);
 };
+
+console.log('some change');
 
 window.ConsonantCardCollection = ConsonantCardCollecton;
 
