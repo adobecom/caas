@@ -19,7 +19,6 @@ import {
     readInclusionsFromLocalStorage,
     sanitizeEventFilter,
     getTransitions,
-    removeMarkDown,
 } from '../Helpers/general';
 import { configType } from '../types/config';
 import CardsCarousel from '../CardsCarousel/CardsCarousel';
@@ -1193,7 +1192,7 @@ const Container = (props) => {
         .keepCardsWithinDateRange()
         .filterCards(activeFilterIds, activePanels, filterLogic, FILTER_TYPES, currCategories)
         .truncateList(totalCardLimit)
-        .searchCards(removeMarkDown(searchQuery), searchFields, cardStyle)
+        .searchCards(searchQuery, searchFields, cardStyle)
         .removeCards(inclusionIds);
 
     /**

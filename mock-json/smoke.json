@@ -194,41 +194,6 @@
       "cardDate": "2020-07-02T09:41:35.933Z",
       "startDate": "2023-01-01T00:00:00.000Z",
       "endDate": "2025-01-01T00:00:00.000Z"
-    },
-    {
-      "id": "1.0.italic",
-      "showCard": {
-        "from": "2020-10-01T20:00:00Z",
-        "until": "2025-10-31T21:45:00Z"
-      },
-      "tags": [],
-      "overlays": {
-        "banner": {},
-        "logo": {},
-        "label": {},
-        "videoButton": {}
-      },
-      "contentArea": {
-        "detailText": "",
-        "title": "Test {**Bold**} & {*Italic*} Title",
-        "description": "Here’s a {**bold**} word and an {*italic*} word.",
-        "dateDetailText": {}
-      },
-      "styles": {
-        "typeOverride": "3:4",
-        "backgroundImage": ""
-      },
-      "footer": [
-        {
-          "divider": false,
-          "left": [],
-          "center": [],
-          "right": []
-        }
-      ],
-      "cardDate": "2020-07-02T09:41:35.933Z",
-      "startDate": "2023-01-01T00:00:00.000Z",
-      "endDate": "2025-01-01T00:00:00.000Z"
     }
   ]
 }

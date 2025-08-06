@@ -256,14 +256,7 @@ export const highlightCard = (baseCard, searchField, query) => produce(baseCard,
     const searchFieldValue = getByPath(draftCard, searchField, null);
     if (searchFieldValue === null || searchFieldValue === '') return;
     const highlightedSearchFieldValue = HighlightSearchField(searchFieldValue, query);
-    // Write highlights to separate fields for title and description to avoid string coercion
-    if (searchField === 'contentArea.title') {
-        setByPath(draftCard, 'contentArea.highlightedTitle', highlightedSearchFieldValue);
-    } else if (searchField === 'contentArea.description') {
-        setByPath(draftCard, 'contentArea.highlightedDescription', highlightedSearchFieldValue);
-    } else {
-        setByPath(draftCard, searchField, highlightedSearchFieldValue);
-    }
+    setByPath(draftCard, searchField, highlightedSearchFieldValue);
 });
 
 /**

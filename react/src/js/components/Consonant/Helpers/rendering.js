@@ -1,6 +1,5 @@
 import React from 'react';
 import cuid from 'cuid';
-import { removeMarkDown } from './general';
 
 /**
  * Handles highlighting search results on search
@@ -9,7 +8,7 @@ import { removeMarkDown } from './general';
  * @returns {String []} - HTML with text highlighting
  */
 export const HighlightSearchField = (text, value) => {
-    const parts = removeMarkDown(text).split(new RegExp(`(${value})`, 'gi'));
+    const parts = text.split(new RegExp(`(${value})`, 'gi'));
     return parts.map(part => (
         part.toLowerCase() === value ?
             (
