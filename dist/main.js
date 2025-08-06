@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.13 (7/30/2025, 16:24:39)
+ * Chimera UI Libraries - Build 0.36.1 (8/5/2025, 23:59:46)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -1440,6 +1440,11 @@ var DEFAULT_CONFIG = exports.DEFAULT_CONFIG = {
         title: '',
         totalCardLimit: -1,
         cardStyle: '',
+        bladeCard: {
+            reverse: false,
+            lightText: false,
+            transparent: false
+        },
         displayTotalResults: true,
         totalResultsText: '{} results',
         i18n: {
@@ -8050,6 +8055,7 @@ var Grid = function Grid(props) {
         'consonant-CardsGrid--with3xGutter': cardsGridGutter === _constants.GUTTER_SIZE.GUTTER_3_X,
         'consonant-CardsGrid--with4xGutter': cardsGridGutter === _constants.GUTTER_SIZE.GUTTER_4_X,
         'consonant-CardsGrid--doubleWideCards': collectionStyleOverride === _constants.CARD_STYLES.DOUBLE_WIDE,
+        'consonant-CardsGrid--blade': cardsGridLayout === _constants.GRID_TYPE.BLADE,
         'card-hover-grow': cardHoverEffect === 'grow'
     });
 
@@ -8083,6 +8089,8 @@ var Grid = function Grid(props) {
     /* *** MWPW-164509 *** */
     var cardsPerPage = function cardsPerPage() {
         switch (cardsGridLayout) {
+            case _constants.GRID_TYPE.BLADE:
+                return 1;
             case _constants.GRID_TYPE.FIVE_UP:
                 return 5;
             case _constants.GRID_TYPE.FOUR_UP:
@@ -17836,6 +17844,7 @@ var Card = function Card(props) {
     var showCardBadges = getConfig('collection', 'showCardBadges');
     var altCtaUsed = getConfig('collection', 'dynamicCTAForLiveEvents');
     var ctaAction = getConfig('collection', 'ctaAction');
+    var bladeCard = getConfig('collection', 'bladeCard');
 
     /**
      * Class name for the card:
@@ -17979,6 +17988,9 @@ var Card = function Card(props) {
     var isIcon = cardStyle === 'icon-card';
     var isNews = cardStyle === 'news-card';
 
+    var isBlade = cardStyle === 'blade-card';
+    var bladeVariant = isBlade ? [bladeCard.reverse ? 'reverse' : '', bladeCard.lightText ? 'light-text' : '', bladeCard.transparent ? 'transparent' : ''].filter(Boolean).join(' ') : '';
+
     // Card elements to show
     var showHeader = !isProduct;
     var fromDexter = origin === 'Dexter';
@@ -17987,7 +17999,7 @@ var Card = function Card(props) {
     var showLabel = !isProduct && !isText;
     var showVideoButton = !isProduct && !isText && !isIcon;
     var showText = !isHalfHeight && !isFull && !isNews;
-    var showFooter = isOneHalf || isProduct || isText || isNews;
+    var showFooter = isOneHalf || isProduct || isText || isNews || isBlade;
     var showFooterLeft = !isProduct;
     var showFooterCenter = !isProduct && !altCtaUsed;
     var hideBanner = false;
@@ -18041,7 +18053,7 @@ var Card = function Card(props) {
         'li',
         {
             'daa-lh': lh,
-            className: cardStyle + ' ' + cardClassName,
+            className: cardStyle + ' ' + cardClassName + ' ' + bladeVariant,
             'data-testid': 'consonant-Card',
             id: id },
         showHeader && _react2.default.createElement(
