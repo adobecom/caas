@@ -47,7 +47,7 @@ const generateUrl = (configOverrides = {}) => {
         // eslint-disable-next-line no-template-curly-in-string
         return `https://adobecom.github.io/caas/html/e2e/index.html?state=${state}`;
     }
-    return `http://localhost:65136/html/e2e/index.html?state=${state}`;
+    return `http://localhost:5000/html/e2e/index.html?state=${state}`;
 };
 
 module.exports = generateUrl;
