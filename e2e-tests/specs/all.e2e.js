@@ -383,94 +383,23 @@ describe('Live Pages with ?caasver=alpha (TESTS MILO PAGES ONLY)', () => {
 
     pages.forEach((page) => {
         it(`should display the first card on: ${page}`, async () => {
-            // Special handling for the problematic page in CI
-            const isProblematicPage = page.includes('change-page-size-of-pdf-in-4-steps.html');
-            const maxRetries = isProblematicPage ? 2 : 1;
+            // 1) Navigate with ?caasver=alpha
+            const url = `${page}?caasver=alpha`;
+            console.log(`Navigating to: ${url}`);
+            await browser.url(url);
 
-            let lastError;
-            for (let attempt = 1; attempt <= maxRetries; attempt++) {
-                try {
-                    console.log(`Navigating to: ${page}?caasver=alpha (Attempt ${attempt}/${maxRetries})`);
+            // 2) Scroll if needed (lazy loading for below-the-fold content)
+            await browser.scroll(0, 9999);
+            await browser.pause(3000);
 
-                    // 1) Navigate with ?caasver=alpha
-                    await browser.url(`${page}?caasver=alpha`);
+            // 3) Check for .consonant-Card
+            const cardSelector = '.consonant-Card';
+            await $(cardSelector).waitForExist({ timeout: 30000 });
+            await $(cardSelector).waitForDisplayed({ timeout: 30000 });
 
-                    // 2) Wait for page to be fully loaded
-                    await browser.waitUntil(async () => {
-                        const readyState = await browser.execute(() => document.readyState);
-                        return readyState === 'complete';
-                    }, {
-                        timeout: 15000,
-                        timeoutMsg: 'Page did not finish loading within timeout'
-                    });
-
-                    // 3) Extra wait for problematic page in CI environment
-                    if (isProblematicPage && process.env.GITHUB_ACTIONS) {
-                        console.log('CI environment detected - adding extra wait for problematic page');
-                        await browser.pause(8000);
-                    }
-
-                    // 4) Scroll to trigger lazy loading
-                    await browser.scroll(0, 9999);
-                    await browser.pause(3000);
-
-                    // 5) Check for .consonant-Card
-                    const cardSelector = '.consonant-Card';
-                    await $(cardSelector).waitForExist({ timeout: 45000 });
-                    await $(cardSelector).waitForDisplayed({ timeout: 45000 });
-
-                    // 6) Final verification
-                    const isDisplayed = await $(cardSelector).isDisplayed();
-                    expect(isDisplayed).toBe(true);
-
-                    // Success - break out of retry loop
-                    console.log(`✓ Successfully found cards on ${page} (attempt ${attempt})`);
-                    break;
-
-                } catch (error) {
-                    lastError = error;
-                    console.error(`✗ Attempt ${attempt} failed for ${page}: ${error.message}`);
-
-                    // Only do debugging on final attempt
-                    if (attempt === maxRetries) {
-                        console.error('=== FINAL ATTEMPT DEBUG INFO ===');
-                        try {
-                            const currentUrl = await browser.getUrl();
-                            const title = await browser.getTitle();
-                            console.log(`Current URL: ${currentUrl}`);
-                            console.log(`Page title: ${title}`);
-
-                            // Check for any CaaS-related elements
-                            const caasSelectors = ['.consonant-Card', '[class*="consonant"]', '[data-module-id]'];
-                            for (const selector of caasSelectors) {
-                                const elements = await $$(selector);
-                                console.log(`Elements found with "${selector}": ${elements.length}`);
-                            }
-
-                            // Check console errors
-                            try {
-                                const logs = await browser.getLogs('browser');
-                                const errors = logs.filter(log => log.level === 'SEVERE');
-                                if (errors.length > 0) {
-                                    console.log('Browser console errors:', errors.map(e => e.message));
-                                }
-                            } catch (logError) {
-                                console.log('Could not retrieve logs:', logError.message);
-                            }
-
-                        } catch (debugError) {
-                            console.error('Debug error:', debugError.message);
-                        }
-
-                        // Re-throw the last error to fail the test
-                        throw lastError;
-                    } else {
-                        // Wait before retrying
-                        console.log(`Waiting 5 seconds before retry...`);
-                        await browser.pause(5000);
-                    }
-                }
-            }
+            // 4) Final verification
+            const isDisplayed = await $(cardSelector).isDisplayed();
+            expect(isDisplayed).toBe(true);
         });
     });
 });
