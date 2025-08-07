@@ -70,6 +70,7 @@ export class ConsonantCardCollecton {
 }
 
 window.ConsonantCardCollection = ConsonantCardCollecton;
+console.log("Testing baseline");
 
 if (window.Granite && window.dx) {
     window.dx.author.watch.registerFunction(authorWatch);

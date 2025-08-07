@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.15 (8/2/2025, 11:08:45)
+ * Chimera UI Libraries - Build 0.36.1 (8/7/2025, 13:12:56)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -1448,6 +1448,11 @@ var DEFAULT_CONFIG = exports.DEFAULT_CONFIG = {
         title: '',
         totalCardLimit: -1,
         cardStyle: '',
+        bladeCard: {
+            reverse: false,
+            lightText: false,
+            transparent: false
+        },
         displayTotalResults: true,
         totalResultsText: '{} results',
         i18n: {
@@ -9276,6 +9281,7 @@ var ConsonantCardCollecton = exports.ConsonantCardCollecton = function Consonant
 };
 
 window.ConsonantCardCollection = ConsonantCardCollecton;
+console.log("Testing baseline");
 
 if (window.Granite && window.dx) {
     window.dx.author.watch.registerFunction(authorWatch);
