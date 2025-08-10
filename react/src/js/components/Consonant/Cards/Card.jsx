@@ -190,7 +190,20 @@ const Card = (props) => {
     const locale = getConfig('language', '');
     const disableBanners = getConfig('collection', 'disableBanners');
     const cardButtonStyle = getConfig('collection', 'button.style');
-    const headingLevel = getConfig('collection.i18n', 'cardTitleAccessibilityLevel');
+    // Accessibility: ensure headingLevel is a valid number for aria-level
+    let headingLevel = getConfig('collection.i18n', 'cardTitleAccessibilityLevel');
+    // Support config key 'titleHeadingLevel' if supplied (e.g. 'h2')
+    if (!headingLevel) {
+        const titleLevel = getConfig('collection.i18n', 'titleHeadingLevel');
+        if (typeof titleLevel === 'string') {
+            const parsed = parseInt(titleLevel.replace(/[^0-9]/g, ''), 10);
+            headingLevel = Number.isNaN(parsed) ? undefined : parsed;
+        }
+    }
+    // Default to level 2 if still undefined or invalid
+    if (!headingLevel || typeof headingLevel !== 'number') {
+        headingLevel = 2;
+    }
     const additionalParams = getConfig('collection', 'additionalRequestParams');
     const detailsTextOption = getConfig('collection', 'detailsTextOption');
     const lastModified = getConfig('collection', 'i18n.lastModified');
