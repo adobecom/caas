@@ -108,6 +108,7 @@ describe('Consonant/Container/Left Filter', () => {
         expect(filtersLeftElement).toHaveClass('is-opened');
     });
 
+
     test('should be able to search and filter', async () => {
         const configToUse = config;
         configToUse.filterPanel.filterLogic = 'xor';
