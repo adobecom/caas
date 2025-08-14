@@ -28,11 +28,9 @@ import LoadMore from '../Pagination/LoadMore';
 import Bookmarks from '../Bookmarks/Bookmarks';
 import Paginator from '../Pagination/Paginator';
 import Grid from '../Grid/Grid';
-import { getDataHook } from '../../../extensions/data';
-import { getComponent } from '../../../extensions/components';
 import CardFilterer from '../Helpers/CardFilterer';
 import FiltersPanelTop from '../Filters/Top/Panel';
-import DefaultLeftFilterPanel from '../Filters/Left/Panel';
+import LeftFilterPanel from '../Filters/Left/Panel';
 import JsonProcessor from '../Helpers/JsonProcessor';
 import { useWindowDimensions, useURLState } from '../Helpers/hooks';
 import { Info as LeftInfo } from '../Filters/Left/Info';
@@ -96,38 +94,6 @@ import {
 const Container = (props) => {
     const { config } = props;
     const getConfig = makeConfigGetter(config);
-    const defaultBuildRequest = (cfg) => {
-        const getCfg = makeConfigGetter(cfg);
-        let collectionEndpoint = getCfg('collection', 'endpoint');
-        const fallbackEndpoint = getCfg('collection', 'fallbackEndpoint');
-        const headersLocal = getCfg('headers', '');
-
-        const r = new RegExp('^(?:[a-z]+:)?//', 'i');
-        let collectionEndpointURI;
-        if (r.test(collectionEndpoint)) {
-            collectionEndpointURI = new URL(collectionEndpoint);
-        } else {
-            collectionEndpointURI = new URL(collectionEndpoint, window.location.origin);
-        }
-
-        if (!fallbackEndpoint) {
-            collectionEndpointURI.searchParams.set('flatFile', false);
-            collectionEndpoint = collectionEndpointURI.toString();
-        }
-
-        return {
-            url: collectionEndpoint,
-            options: { credentials: 'include', headers: headersLocal },
-        };
-    };
-
-    // default passthrough mapping
-    // eslint-disable-next-line no-unused-vars
-    const defaultMapResponse = (json, _cfg) => json;
-
-    // Resolve hooks once; do not include in effect deps to avoid refetch loops
-    const buildRequest = getDataHook('data.buildRequest', defaultBuildRequest);
-    const mapResponse = getDataHook('data.mapResponse', defaultMapResponse);
     const filterGroupPrefix = 'ch_';
     const searchPrefix = 'sh_';
     const CARD_HASH_LENGTH = 10;
@@ -190,7 +156,7 @@ const Container = (props) => {
     const sortEnabled = getConfig('sort', 'enabled');
     const cardStyle = getConfig('collection', 'cardStyle');
     const title = getConfig('collection', 'i18n.title');
-    // headers are resolved via defaultBuildRequest; no direct usage here
+    const headers = getConfig('headers', '');
     const partialLoadWithBackgroundFetch = getConfig('collection', 'partialLoadWithBackgroundFetch.enabled');
     const partialLoadCount = getConfig('collection', 'partialLoadWithBackgroundFetch.partialLoadCount');
     const renderOverlay = getConfig('collection', 'useOverlayLinks');
@@ -818,9 +784,21 @@ const Container = (props) => {
             __satelliteLoadedPromise: visitorPromise,
         } = window;
 
-        const { url: resolvedUrl, options: requestOptions } = buildRequest(config);
-        const collectionEndpoint = resolvedUrl;
+        let collectionEndpoint = getConfig('collection', 'endpoint');
         const fallbackEndpoint = getConfig('collection', 'fallbackEndpoint');
+
+        const r = new RegExp('^(?:[a-z]+:)?//', 'i');
+        let collectionEndpointURI;
+        if (r.test(collectionEndpoint)) {
+            collectionEndpointURI = new URL(collectionEndpoint);
+        } else {
+            collectionEndpointURI = new URL(collectionEndpoint, window.location.origin);
+        }
+
+        if (!fallbackEndpoint) {
+            collectionEndpointURI.searchParams.set('flatFile', false);
+            collectionEndpoint = collectionEndpointURI.toString();
+        }
 
         setLoading(true);
 
@@ -831,9 +809,12 @@ const Container = (props) => {
          * @param {String} endPoint, URL with params for card request
          * @returns {Void} - an updated state
          */
-        function getCards(endPoint = collectionEndpoint, options = requestOptions) {
+        function getCards(endPoint = collectionEndpoint) {
             const start = Date.now();
-            return window.fetch(endPoint, options)
+            return window.fetch(endPoint, {
+                credentials: 'include',
+                headers,
+            })
                 .then((resp) => {
                     const {
                         ok,
@@ -846,20 +827,11 @@ const Container = (props) => {
                         return resp.json().then((json) => {
                             const validData = !!Object.keys(json).length;
 
-                            if (!validData) {
-                                logLana({ message: `no valid response data from ${endPoint}`, tags: 'collection' });
-                                /* istanbul ignore next */
-                                return Promise.reject(new Error('no valid reponse data'));
-                            }
+                            if (validData) return json;
 
-                            const mapped = mapResponse(json, config) || {};
-                            const mappedValid = !!Object.keys(mapped).length;
-                            if (!mappedValid) {
-                                logLana({ message: `invalid mapped response data from ${endPoint}`, tags: 'collection' });
-                                return Promise.reject(new Error('invalid mapped response data'));
-                            }
-
-                            return mapped;
+                            logLana({ message: `no valid response data from ${endPoint}`, tags: 'collection' });
+                            /* istanbul ignore next */
+                            return Promise.reject(new Error('no valid reponse data'));
                         });
                     }
                     logLana({ message: `failure for call to ${url}`, tags: 'collection', errorMessage: `${status}: ${statusText}` });
@@ -1509,38 +1481,33 @@ const Container = (props) => {
                         }
                         { displayLeftFilterPanel && isStandardContainer &&
                         <div className="consonant-Wrapper-leftFilterWrapper">
-                            {(() => {
-                                const LeftFilterPanel = getComponent('Filters.Left.Panel', DefaultLeftFilterPanel);
-                                return (
-                                    <LeftFilterPanel
-                                        filters={filters}
-                                        selectedFiltersQty={selectedFiltersItemsQty}
-                                        windowWidth={windowWidth}
-                                        onFilterClick={handleFilterGroupClick}
-                                        onClearAllFilters={resetFiltersSearchAndBookmarks}
-                                        onClearFilterItems={clearFilterItem}
-                                        onCheckboxClick={handleCheckBoxChange}
-                                        onMobileFiltersToggleClick={handleMobileFiltersToggle}
-                                        onSelectedFilterClick={handleCheckBoxChange}
-                                        showMobileFilters={showMobileFilters}
-                                        resQty={gridCardLen}
-                                        bookmarkComponent={
-                                            <Bookmarks
-                                                showBookmarks={showBookmarks}
-                                                onClick={handleShowBookmarksFilterClick}
-                                                savedCardsCount={bookmarkedCardIds.length} />
-                                        }
-                                        searchComponent={
-                                            <Search
-                                                placeholderText={leftPanelSearchPlaceholder}
-                                                name="filtersSideSearch"
-                                                value={searchQuery}
-                                                autofocus={false}
-                                                onSearch={handleSearchInputChange} />
-                                        }
-                                        ref={filterItemRef} />
-                                );
-                            })()}
+                            <LeftFilterPanel
+                                filters={filters}
+                                selectedFiltersQty={selectedFiltersItemsQty}
+                                windowWidth={windowWidth}
+                                onFilterClick={handleFilterGroupClick}
+                                onClearAllFilters={resetFiltersSearchAndBookmarks}
+                                onClearFilterItems={clearFilterItem}
+                                onCheckboxClick={handleCheckBoxChange}
+                                onMobileFiltersToggleClick={handleMobileFiltersToggle}
+                                onSelectedFilterClick={handleCheckBoxChange}
+                                showMobileFilters={showMobileFilters}
+                                resQty={gridCardLen}
+                                bookmarkComponent={
+                                    <Bookmarks
+                                        showBookmarks={showBookmarks}
+                                        onClick={handleShowBookmarksFilterClick}
+                                        savedCardsCount={bookmarkedCardIds.length} />
+                                }
+                                searchComponent={
+                                    <Search
+                                        placeholderText={leftPanelSearchPlaceholder}
+                                        name="filtersSideSearch"
+                                        value={searchQuery}
+                                        autofocus={false}
+                                        onSearch={handleSearchInputChange} />
+                                }
+                                ref={filterItemRef} />
                         </div>
                         }
                         <div className={`consonant-Wrapper-collection${isLoading ? ' is-loading' : ''}`}>
