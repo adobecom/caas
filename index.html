@@ -48,6 +48,7 @@
 
 
     <script type="text/javascript" src="./dist/main.source.js"></script>
+    <script type="text/javascript" src="./dist/events.min.js"></script>
 
     <script type="text/javascript">
         var config = {
@@ -105,7 +106,7 @@
             featuredCards: ['c7d34f39-397c-3727-9dff-5d0d9d8cf731'],
             filterPanel: {
                 enabled: 'true',
-                type: 'top',
+                type: 'left',
                 eventFilter: 'all',
                 showEmptyFilters: true,
                 filters: [
@@ -319,6 +320,15 @@
                 trackImpressions: 'true',
                 collectionIdentifier: 'Some Identifier',
             },
+            events: {
+                enabled: true,
+                useAltEndpoint: false,
+                altEndpoint: 'https://example.com/events-api?size=10',
+                mySessions: {
+                    filterId: 'adobe-com-enterprise:availability',
+                    itemId: 'adobe-com-enterprise:availability/on-demand'
+                }
+            },
             customCard: ["data", "return `<div class=customCard><div class=backgroundImg></div> <section><label>PHOTO EDITING</label><p><b>Transform a landscape with Sky Replacement.</b></p></div></section> </div>`"],
             onCardSaved: function(){},
             onCardUnsaved: function(){}
@@ -363,6 +373,10 @@
         border: solid 1px #BCBCBC;
         border-radius: 6px;
         max-height: 439px;
+    }
+
+    .events-my-sessions {
+        display: block !important;
     }
 </style>
 

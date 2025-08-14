@@ -11,6 +11,7 @@ import {
 
 
 import Item from './Item';
+import { SlotRenderer } from '../../../../extensions/registry';
 import { useConfig } from '../../Helpers/hooks';
 import { filterType } from '../../types/config';
 import ChosenFilter from './Desktop-Only/ChosenItem';
@@ -187,6 +188,28 @@ const LeftFilterPanel = forwardRef(({
         event.preventDefault();
     };
 
+    // Build a minimal extension context for slot consumers
+    const selectedIds = (filters || []).reduce((acc, group) => (
+        acc.concat(group.items.filter(i => i.selected).map(i => i.id))
+    ), []);
+    const applyFilter = (arg1, arg2, arg3) => {
+        if (typeof arg1 === 'object' && arg1) {
+            const { filterId, itemId, isChecked } = arg1;
+            if (filterId && itemId) {
+                return onCheckboxClick(filterId, itemId, !!isChecked);
+            }
+            return null;
+        }
+        return onCheckboxClick(arg1, arg2, arg3);
+    };
+    const panelCtx = {
+        filters,
+        selectedIds,
+        applyFilter,
+        clearAllFilters: onClearAllFilters,
+        events: getConfig('events', ''),
+    };
+
     return (
         <div
             data-testid="consonant-LeftFilters"
@@ -230,6 +253,10 @@ const LeftFilterPanel = forwardRef(({
             </div>
             }
             {bookmarksEnabled && bookmarkComponent}
+            {/* Events extension point: render right after My Favorites */}
+            <div className="consonant-LeftFilters-list">
+                <SlotRenderer slotId="filters:left:afterMyFavorites" slotProps={panelCtx} />
+            </div>
             {atleastOneFilter &&
             <div className="consonant-LeftFilters-list">
                 {filters.map(filter => (

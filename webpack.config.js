@@ -33,7 +33,9 @@ const plugins = [
     }),
 ];
 
-module.exports = {
+const isEvents = process.env.BUILD_EVENTS === 'true';
+
+const baseConfig = {
     entry: {
         app: [
             './react/src/js/app.jsx',
@@ -96,3 +98,21 @@ module.exports = {
     },
     plugins,
 };
+
+const eventsConfig = {
+    entry: {
+        events: './react/src/js/events/index.js',
+    },
+    output: {
+        filename: 'events.min.js',
+        path: path.resolve(__dirname, 'dist'),
+    },
+    resolve: baseConfig.resolve,
+    module: baseConfig.module,
+    plugins: [
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+        }),
+    ],
+};
+module.exports = isEvents ? [baseConfig, eventsConfig] : baseConfig;
