@@ -1,0 +1,24 @@
+.consonant-CardsGrid {
+    .consonant-Card[class ^= "horizontal"] {
+        height: @consonant-HorizontalCard-height;
+        flex-direction: row;
+        gap: 41.667px;
+    }
+
+    .consonant-Card {
+        &-header {
+            background-size: cover;
+            background-position: center;
+            width: 20%;
+        }
+
+        &-content {
+            padding: 0;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+            display: flex;
+            justify-content: center;
+            width: 80%;
+        }
+    }
+}

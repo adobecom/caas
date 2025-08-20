@@ -359,6 +359,7 @@ const Card = (props) => {
             bladeCard.transparent ? 'transparent' : '',
         ].filter(Boolean).join(' ')
         : '';
+    const isHorizontal = cardStyle === 'horizontal-card';
 
     // Card elements to show
     const showHeader = !isProduct;
@@ -366,7 +367,7 @@ const Card = (props) => {
     const showBadge = (isOneHalf || isThreeFourths || isFull) && (fromDexter || showCardBadges);
     const showLogo = isOneHalf || isThreeFourths || isFull || isText
         || (isHalfHeight && showCardBadges);
-    const showLabel = !isProduct && !isText;
+    const showLabel = !isProduct && !isText && !isHorizontal;
     const showVideoButton = !isProduct && !isText && !isIcon;
     const showText = !isHalfHeight && !isFull && !isNews;
     const showFooter = isOneHalf || isProduct || isText || isNews || isBlade;
