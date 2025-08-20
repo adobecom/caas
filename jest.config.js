@@ -56,6 +56,24 @@ module.exports = {
                 plugins: [
                     ['@babel/plugin-transform-class-properties', { loose: true }],
                     ['@babel/plugin-transform-object-rest-spread', { loose: true }],
+                    [
+                        'istanbul',
+                        {
+                            exclude: [
+                                '**/Modal/**',
+                                '**/js/components/Consonant/Testing/**',
+                                '**/app.jsx',
+                                '**/ConsonantPageDOM.jsx',
+                                '**/polyfills.js',
+                                '**/watch.js',
+                                '**/js/components/Consonant/Helpers/TestingConstants/**',
+                                '**/__tests__/**',
+                                '**/__test__/**',
+                                '**/enzyme.config.js',
+                                '**/*.config.js',
+                            ],
+                        },
+                    ],
                 ],
             },
         ],
