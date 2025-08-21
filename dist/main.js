@@ -1,9 +1,13 @@
 /*!
 <<<<<<< HEAD
+<<<<<<< HEAD
  * Chimera UI Libraries - Build 0.36.2 (8/20/2025, 10:55:15)
 =======
  * Chimera UI Libraries - Build 0.36.1 (8/20/2025, 09:36:23)
 >>>>>>> cb218fe (feat(mwpw-173469): desktop css + browser.html additions)
+=======
+ * Chimera UI Libraries - Build 0.36.1 (8/21/2025, 13:47:36)
+>>>>>>> d51ba24 (feat(mwpw-173469): horizontal card style)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -18021,9 +18025,9 @@ var Card = function Card(props) {
     var fromDexter = origin === 'Dexter';
     var showBadge = (isOneHalf || isThreeFourths || isFull) && (fromDexter || showCardBadges);
     var showLogo = isOneHalf || isThreeFourths || isFull || isText || isHalfHeight && showCardBadges;
-    var showLabel = !isProduct && !isText && !isHorizontal;
+    var showLabel = !isProduct && !isText;
     var showVideoButton = !isProduct && !isText && !isIcon;
-    var showText = !isHalfHeight && !isFull && !isNews;
+    var showText = !isHalfHeight && !isFull && !isNews && !isHorizontal;
     var showFooter = isOneHalf || isProduct || isText || isNews || isBlade;
     var showFooterLeft = !isProduct;
     var showFooterCenter = !isProduct && !altCtaUsed;

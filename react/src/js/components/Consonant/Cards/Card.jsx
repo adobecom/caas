@@ -367,9 +367,9 @@ const Card = (props) => {
     const showBadge = (isOneHalf || isThreeFourths || isFull) && (fromDexter || showCardBadges);
     const showLogo = isOneHalf || isThreeFourths || isFull || isText
         || (isHalfHeight && showCardBadges);
-    const showLabel = !isProduct && !isText && !isHorizontal;
+    const showLabel = !isProduct && !isText;
     const showVideoButton = !isProduct && !isText && !isIcon;
-    const showText = !isHalfHeight && !isFull && !isNews;
+    const showText = !isHalfHeight && !isFull && !isNews && !isHorizontal;
     const showFooter = isOneHalf || isProduct || isText || isNews || isBlade;
     const showFooterLeft = !isProduct;
     const showFooterCenter = !isProduct && !altCtaUsed;
