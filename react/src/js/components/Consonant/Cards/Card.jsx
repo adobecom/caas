@@ -359,6 +359,7 @@ const Card = (props) => {
             bladeCard.transparent ? 'transparent' : '',
         ].filter(Boolean).join(' ')
         : '';
+    const isHorizontal = cardStyle === 'horizontal-card';
 
     // Card elements to show
     const showHeader = !isProduct;
@@ -368,7 +369,7 @@ const Card = (props) => {
         || (isHalfHeight && showCardBadges);
     const showLabel = !isProduct && !isText;
     const showVideoButton = !isProduct && !isText && !isIcon;
-    const showText = !isHalfHeight && !isFull && !isNews;
+    const showText = !isHalfHeight && !isFull && !isNews && !isHorizontal;
     const showFooter = isOneHalf || isProduct || isText || isNews || isBlade;
     const showFooterLeft = !isProduct;
     const showFooterCenter = !isProduct && !altCtaUsed;
