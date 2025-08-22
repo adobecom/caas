@@ -1,17 +1,5 @@
 /*!
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
- * Chimera UI Libraries - Build 0.36.2 (8/20/2025, 10:55:15)
-=======
- * Chimera UI Libraries - Build 0.36.1 (8/20/2025, 09:36:23)
->>>>>>> cb218fe (feat(mwpw-173469): desktop css + browser.html additions)
-=======
- * Chimera UI Libraries - Build 0.36.1 (8/21/2025, 13:47:36)
->>>>>>> d51ba24 (feat(mwpw-173469): horizontal card style)
-=======
- * Chimera UI Libraries - Build 0.36.1 (8/21/2025, 13:51:05)
->>>>>>> 51d6c2f (feat(mwpw-173469): build files)
+ * Chimera UI Libraries - Build 0.36.3 (8/22/2025, 13:20:14)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
