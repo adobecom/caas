@@ -1,5 +1,7 @@
 
 
+## [0.36.3](https://github.com/adobecom/caas/compare/0.36.2...0.36.3) (2025-08-22)
+
 ## [0.36.2](https://github.com/adobecom/caas/compare/0.36.1...0.36.2) (2025-08-08)
 
 ## [0.36.1](https://github.com/adobecom/caas/compare/0.36.0...0.36.1) (2025-08-05)
