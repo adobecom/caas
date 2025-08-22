@@ -37,6 +37,48 @@ module.exports = {
     // The test environment that will be used for testing
     testEnvironment: 'jest-environment-jsdom-fifteen',
 
+    // Use Babel 7 just for Jest, ignoring project .babelrc (Babel 6)
+    transform: {
+        '^.+\\.[jt]sx?$': [
+            'babel-jest',
+            {
+                babelrc: false,
+                presets: [
+                    [
+                        '@babel/preset-env',
+                        {
+                            targets: { node: 'current' },
+                            modules: 'commonjs',
+                        },
+                    ],
+                    ['@babel/preset-react', { runtime: 'classic' }],
+                ],
+                plugins: [
+                    ['@babel/plugin-transform-class-properties', { loose: true }],
+                    ['@babel/plugin-transform-object-rest-spread', { loose: true }],
+                    [
+                        'istanbul',
+                        {
+                            exclude: [
+                                '**/Modal/**',
+                                '**/js/components/Consonant/Testing/**',
+                                '**/app.jsx',
+                                '**/ConsonantPageDOM.jsx',
+                                '**/polyfills.js',
+                                '**/watch.js',
+                                '**/js/components/Consonant/Helpers/TestingConstants/**',
+                                '**/__tests__/**',
+                                '**/__test__/**',
+                                '**/enzyme.config.js',
+                                '**/*.config.js',
+                            ],
+                        },
+                    ],
+                ],
+            },
+        ],
+    },
+
     // The glob patterns Jest uses to detect test files
     testMatch: ['**/__tests__/**/*.js?(x)', '**/?(*.)+(spec|test).js?(x)'],
 

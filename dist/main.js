@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.35.15 (8/2/2025, 11:08:45)
+ * Chimera UI Libraries - Build 0.36.2 (8/20/2025, 10:55:15)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -1448,6 +1448,11 @@ var DEFAULT_CONFIG = exports.DEFAULT_CONFIG = {
         title: '',
         totalCardLimit: -1,
         cardStyle: '',
+        bladeCard: {
+            reverse: false,
+            lightText: false,
+            transparent: false
+        },
         displayTotalResults: true,
         totalResultsText: '{} results',
         i18n: {
