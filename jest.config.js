@@ -1,5 +1,7 @@
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
+// Ensure Enzyme is configured even if setupFiles resolution fails in CI
+require('./enzyme.config.js');
 
 module.exports = {
     // Automatically clear mock calls and instances between every test
@@ -34,7 +36,8 @@ module.exports = {
     // An array of file extensions your modules use
     moduleFileExtensions: ['js', 'json', 'jsx'],
 
-    setupFilesAfterEnv: [require.resolve('./enzyme.config.js')],
+    // Setup already required above for CI robustness
+    // setupFilesAfterEnv: [require.resolve('./enzyme.config.js')],
 
     // The test environment that will be used for testing
     testEnvironment: 'jsdom',
