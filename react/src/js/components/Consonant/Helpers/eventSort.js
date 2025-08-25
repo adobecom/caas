@@ -62,7 +62,7 @@ const updateTimeOverride = (base, increment) => {
             pathname = '',
         } = {},
     } = window;
-    const currentSearchParams = new URL(window.location).searchParams;
+    const currentSearchParams = new URL(window.location.href).searchParams;
 
     currentSearchParams.delete('servertime');
 

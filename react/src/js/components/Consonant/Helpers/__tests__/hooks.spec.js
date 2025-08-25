@@ -215,9 +215,9 @@ describe('utils/hooks', () => {
             const fn = jest.fn();
             const debouncedFn = debounce(fn, 1000);
             debouncedFn();
-            expect(fn).not.toBeCalled();
+            expect(fn).not.toHaveBeenCalled();
             jest.advanceTimersByTime(500);
-            expect(fn).not.toBeCalled();
+            expect(fn).not.toHaveBeenCalled();
             jest.advanceTimersByTime(500);
             expect(fn).toBeCalledTimes(1);
         });
@@ -226,7 +226,7 @@ describe('utils/hooks', () => {
             const debouncedFn = debounce(fn, 1000);
             debouncedFn('arg1', 'arg2');
             jest.advanceTimersByTime(1000);
-            expect(fn).toBeCalledWith('arg1', 'arg2');
+            expect(fn).toHaveBeenCalledWith('arg1', 'arg2');
         });
         test('should preserve the context of the debounced function', () => {
             const context = { value: 42 };
@@ -236,7 +236,7 @@ describe('utils/hooks', () => {
             const debouncedFn = debounce(fn, 1000);
             debouncedFn.call(context);
             jest.advanceTimersByTime(1000);
-            expect(fn).toBeCalled();
+            expect(fn).toHaveBeenCalled();
             expect(fn.mock.results[0].value).toBe(42);
         });
         test('should cancel the debounced function', () => {
@@ -245,7 +245,7 @@ describe('utils/hooks', () => {
             debouncedFn();
             debouncedFn.cancel();
             jest.advanceTimersByTime(1000);
-            expect(fn).not.toBeCalled();
+            expect(fn).not.toHaveBeenCalled();
         });
     });
 });

@@ -8,31 +8,24 @@ import { eventTiming, updateTimeOverride } from '../eventSort';
 
 describe('utils/timeSorting', () => {
     describe('updateTimeOverride', () => {
-        let originalLocation;
+        let originalHref;
         let originalReplaceState;
 
         beforeAll(() => {
-            // Save the original window.location and window.history.replaceState
-            originalLocation = window.location;
+            // Save the original URL and window.history.replaceState
+            originalHref = window.location.href;
             originalReplaceState = window.history.replaceState;
 
-            // Mock window.location
-            delete window.location;
-            window.location = {
-                origin: 'http://example.com',
-                pathname: '/path',
-                search: '?servertime=1000',
-                href: 'http://example.com/path?servertime=1000',
-                toString: () => 'http://example.com/path?servertime=1000',
-            };
+            // Initialize URL
+            window.location.href = 'http://example.com/path?servertime=1000';
 
             // Mock window.history.replaceState
             window.history.replaceState = jest.fn();
         });
 
         afterAll(() => {
-            // Restore the original window.location and window.history.replaceState
-            window.location = originalLocation;
+            // Restore the original URL and window.history.replaceState
+            window.location.href = originalHref;
             window.history.replaceState = originalReplaceState;
         });
 
@@ -47,9 +40,7 @@ describe('utils/timeSorting', () => {
         });
 
         test('should handle existing search parameters correctly', () => {
-            window.location.search = '?param1=value1&servertime=1000';
             window.location.href = 'http://example.com/path?param1=value1&servertime=1000';
-            window.location.toString = () => 'http://example.com/path?param1=value1&servertime=1000';
 
             const base = 1000;
             const increment = 500;
@@ -61,9 +52,7 @@ describe('utils/timeSorting', () => {
         });
 
         test('should handle no existing search parameters correctly', () => {
-            window.location.search = '';
             window.location.href = 'http://example.com/path';
-            window.location.toString = () => 'http://example.com/path';
 
             const base = 1000;
             const increment = 500;
@@ -75,9 +64,7 @@ describe('utils/timeSorting', () => {
         });
 
         test('should handle multiple existing search parameters correctly', () => {
-            window.location.search = '?param1=value1&param2=value2&servertime=1000';
             window.location.href = 'http://example.com/path?param1=value1&param2=value2&servertime=1000';
-            window.location.toString = () => 'http://example.com/path?param1=value1&param2=value2&servertime=1000';
 
             const base = 1000;
             const increment = 500;
@@ -89,9 +76,7 @@ describe('utils/timeSorting', () => {
         });
 
         test('should handle no servertime parameter correctly', () => {
-            window.location.search = '?param1=value1&param2=value2';
             window.location.href = 'http://example.com/path?param1=value1&param2=value2';
-            window.location.toString = () => 'http://example.com/path?param1=value1&param2=value2';
 
             const base = 1000;
             const increment = 500;

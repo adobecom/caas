@@ -25,8 +25,8 @@ describe('Consonant/Search', () => {
 
         fireEvent.change(inputElement, { target: { value: 'Second Search Query' } });
 
-        expect(onSearch).toBeCalled();
-        expect(onSearch).toBeCalledWith('Second Search Query');
+        expect(onSearch).toHaveBeenCalled();
+        expect(onSearch).toHaveBeenCalledWith('Second Search Query');
 
         onSearch.mockClear();
     });
@@ -37,7 +37,7 @@ describe('Consonant/Search', () => {
 
         fireEvent.click(buttonElement);
 
-        expect(onSearch).toBeCalled();
-        expect(onSearch).toBeCalledWith('');
+        expect(onSearch).toHaveBeenCalled();
+        expect(onSearch).toHaveBeenCalledWith('');
     });
 });

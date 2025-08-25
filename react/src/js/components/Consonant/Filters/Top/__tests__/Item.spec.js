@@ -46,7 +46,7 @@ describe('Consonant/Filters/Top/Item', () => {
         expect(checkboxElement).toBeDefined();
 
         fireEvent.click(checkboxElement);
-        expect(onCheck).toBeCalled();
+        expect(onCheck).toHaveBeenCalled();
     });
 
     test('Clicking the clear all button should work', () => {
@@ -56,7 +56,7 @@ describe('Consonant/Filters/Top/Item', () => {
         expect(clearBtn).not.toBeNull();
 
         fireEvent.click(clearBtn);
-        expect(onClearAll).toBeCalled();
+        expect(onClearAll).toHaveBeenCalled();
     });
 
     test('should be able to render analytics on filter items', () => {

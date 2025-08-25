@@ -29,13 +29,15 @@ module.exports = {
         },
     },
 
+    coverageProvider: 'babel',
+
     // An array of file extensions your modules use
     moduleFileExtensions: ['js', 'json', 'jsx'],
 
     setupFiles: ['<rootDir>/enzyme.config.js'],
 
     // The test environment that will be used for testing
-    testEnvironment: 'jest-environment-jsdom-fifteen',
+    testEnvironment: 'jsdom',
 
     // Use Babel 7 just for Jest, ignoring project .babelrc (Babel 6)
     transform: {
@@ -84,7 +86,7 @@ module.exports = {
 
     testPathIgnorePatterns: ['\\\\node_modules\\\\', '__tests__/mocks', '__tests__/utils', '__tests__/constants'],
 
-    testURL: 'http://localhost',
+    testEnvironmentOptions: { url: 'http://localhost' },
     transformIgnorePatterns: ['<rootDir>/node_modules/'],
 
     // Indicates whether each individual test should be reported during the run

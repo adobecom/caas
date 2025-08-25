@@ -78,7 +78,7 @@ describe('Consonant/Bookmarks', () => {
 
             fireEvent.click(boorkmarksElement);
 
-            expect(onClick).toBeCalled();
+            expect(onClick).toHaveBeenCalled();
         });
     });
 });

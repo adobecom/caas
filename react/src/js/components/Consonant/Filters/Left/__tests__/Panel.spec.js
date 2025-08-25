@@ -56,7 +56,7 @@ describe('Consonant/Left/Panel', () => {
         expect(filterItemElement).toBeDefined();
 
         fireEvent.click(filterItemElement);
-        expect(onFilterClick).toBeCalled();
+        expect(onFilterClick).toHaveBeenCalled();
     });
     test('Should be able to clear all filters', () => {
         const { props: { onClearAllFilters } } = renderFilterPanel();
@@ -65,7 +65,7 @@ describe('Consonant/Left/Panel', () => {
         expect(clearButtonElement).not.toBeNull();
 
         fireEvent.click(clearButtonElement);
-        expect(onClearAllFilters).toBeCalled();
+        expect(onClearAllFilters).toHaveBeenCalled();
 
         onClearAllFilters.mockClear();
     });
@@ -79,7 +79,7 @@ describe('Consonant/Left/Panel', () => {
         expect(mobileFooterClearElement).not.toBeNull();
 
         fireEvent.click(mobileFooterClearElement);
-        expect(onClearAllFilters).toBeCalled();
+        expect(onClearAllFilters).toHaveBeenCalled();
 
         onClearAllFilters.mockClear();
     });

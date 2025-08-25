@@ -28,7 +28,7 @@ describe('Consonant/Pagination/Load More', () => {
 
         fireEvent.click(buttonElement);
 
-        expect(onClick).toBeCalled();
+        expect(onClick).toHaveBeenCalled();
     });
     test('should load analytics for load more button', () => {
         renderLoadMore();
