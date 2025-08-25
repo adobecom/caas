@@ -34,7 +34,7 @@ module.exports = {
     // An array of file extensions your modules use
     moduleFileExtensions: ['js', 'json', 'jsx'],
 
-    setupFilesAfterEnv: ['<rootDir>/enzyme.config.js'],
+    setupFilesAfterEnv: [require.resolve('./enzyme.config.js')],
 
     // The test environment that will be used for testing
     testEnvironment: 'jsdom',
