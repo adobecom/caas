@@ -219,7 +219,7 @@ describe('utils/hooks', () => {
             jest.advanceTimersByTime(500);
             expect(fn).not.toHaveBeenCalled();
             jest.advanceTimersByTime(500);
-            expect(fn).toBeCalledTimes(1);
+            expect(fn).toHaveBeenCalledTimes(1);
         });
         test('should pass arguments to the debounced function', () => {
             const fn = jest.fn();

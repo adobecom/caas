@@ -35,8 +35,9 @@ describe('utils/timeSorting', () => {
 
             updateTimeOverride(base, increment);
 
-            const expectedUrl = 'http://example.com/path?servertime=1500';
-            expect(window.history.replaceState).toHaveBeenCalledWith(null, '', expectedUrl);
+            const expected = new URL(window.location.href);
+            expected.searchParams.set('servertime', String(base + increment));
+            expect(window.history.replaceState).toHaveBeenCalledWith(null, '', expected.toString());
         });
 
         test('should handle existing search parameters correctly', () => {
@@ -47,8 +48,10 @@ describe('utils/timeSorting', () => {
 
             updateTimeOverride(base, increment);
 
-            const expectedUrl = 'http://example.com/path?param1=value1&servertime=1500';
-            expect(window.history.replaceState).toHaveBeenCalledWith(null, '', expectedUrl);
+            const expected = new URL(window.location.href);
+            expected.searchParams.delete('servertime');
+            expected.searchParams.append('servertime', String(base + increment));
+            expect(window.history.replaceState).toHaveBeenCalledWith(null, '', expected.toString());
         });
 
         test('should handle no existing search parameters correctly', () => {
@@ -59,8 +62,9 @@ describe('utils/timeSorting', () => {
 
             updateTimeOverride(base, increment);
 
-            const expectedUrl = 'http://example.com/path?servertime=1500';
-            expect(window.history.replaceState).toHaveBeenCalledWith(null, '', expectedUrl);
+            const expected = new URL(window.location.href);
+            expected.searchParams.set('servertime', String(base + increment));
+            expect(window.history.replaceState).toHaveBeenCalledWith(null, '', expected.toString());
         });
 
         test('should handle multiple existing search parameters correctly', () => {
@@ -71,8 +75,10 @@ describe('utils/timeSorting', () => {
 
             updateTimeOverride(base, increment);
 
-            const expectedUrl = 'http://example.com/path?param1=value1&param2=value2&servertime=1500';
-            expect(window.history.replaceState).toHaveBeenCalledWith(null, '', expectedUrl);
+            const expected = new URL(window.location.href);
+            expected.searchParams.delete('servertime');
+            expected.searchParams.append('servertime', String(base + increment));
+            expect(window.history.replaceState).toHaveBeenCalledWith(null, '', expected.toString());
         });
 
         test('should handle no servertime parameter correctly', () => {
@@ -83,8 +89,9 @@ describe('utils/timeSorting', () => {
 
             updateTimeOverride(base, increment);
 
-            const expectedUrl = 'http://example.com/path?param1=value1&param2=value2&servertime=1500';
-            expect(window.history.replaceState).toHaveBeenCalledWith(null, '', expectedUrl);
+            const expected = new URL(window.location.href);
+            expected.searchParams.append('servertime', String(base + increment));
+            expect(window.history.replaceState).toHaveBeenCalledWith(null, '', expected.toString());
         });
     });
 
