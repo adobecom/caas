@@ -1,15 +1,13 @@
 .consonant-CardsGrid {
-    .consonant-Card[class ^= "horizontal"] {
+    .consonant-Card.horizontal-card {
         display: flex;
         width: 100%;
         height: @consonant-HorizontalCard-height;
         align-items: center;
         flex-direction: row;
         .font(@color: @consonantDarkGrey800);
-    }
 
-    .consonant-Card {
-        &-header {
+        .consonant-Card-header {
             width: 115px;
             flex-shrink: 0;
             align-self: stretch;
@@ -17,7 +15,7 @@
             background-position: center;
         }
 
-        &-content {
+        .consonant-Card-content {
             padding: 0 24px;
             border-bottom-left-radius: 4px;
             border-bottom-right-radius: 4px;
@@ -26,7 +24,7 @@
             width: 80%;
         }
 
-        &-title {
+        .consonant-Card-title {
             align-self: stretch;
             font-size: 18px;
 
@@ -35,14 +33,16 @@
             .font(1.125rem, 1.375rem, 700, @consonantGray900);
         }
 
-        &-label {
+        .consonant-Card-label {
             align-items: flex-start;
             align-self: stretch;
 
             .font(0.875rem, 150%, 400, @consonantDarkGrey800);
         }
+    }
 
-        &--1up {
+    &--1up {
+        .consonant-Card.horizontal-card {
             .consonant-Card-header {
                 width: 180px;
             }
