@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.36.2 (8/20/2025, 10:55:15)
+ * Chimera UI Libraries - Build 0.36.3 (8/26/2025, 14:33:30)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -18012,6 +18012,7 @@ var Card = function Card(props) {
     var bladeVariant = isBlade ? [bladeCard.reverse ? 'reverse' : '', bladeCard.lightText ? 'light-text' : '', bladeCard.transparent ? 'transparent' : ''].filter(Boolean).join(' ') : '';
 
     // Card elements to show
+    var isTitleOnly = isHalfHeight || isThreeFourths || isFull || isIcon || isNews;
     var showHeader = !isProduct;
     var fromDexter = origin === 'Dexter';
     var showBadge = (isOneHalf || isThreeFourths || isFull) && (fromDexter || showCardBadges);
@@ -18192,7 +18193,19 @@ var Card = function Card(props) {
                     className: 'consonant-Card-label' },
                 iconAlt
             ),
-            highlightedTitle ? _react2.default.createElement(
+            isTitleOnly && highlightedTitle && _react2.default.createElement(
+                'p',
+                {
+                    'data-testid': 'consonant-Card-title',
+                    className: 'consonant-Card-title' },
+                highlightedTitle
+            ),
+            isTitleOnly && !highlightedTitle && _react2.default.createElement('p', {
+                'data-testid': 'consonant-Card-title',
+                className: 'consonant-Card-title',
+                title: (0, _general.removeMarkDown)(title),
+                dangerouslySetInnerHTML: { __html: parseMarkDown(title) } }),
+            !isTitleOnly && highlightedTitle && _react2.default.createElement(
                 'p',
                 {
                     role: 'heading',
@@ -18202,7 +18215,8 @@ var Card = function Card(props) {
                     className: 'consonant-Card-title',
                     title: (0, _general.removeMarkDown)(title) },
                 highlightedTitle
-            ) : _react2.default.createElement('p', {
+            ),
+            !isTitleOnly && !highlightedTitle && _react2.default.createElement('p', {
                 role: 'heading',
                 'aria-label': headingAria,
                 'aria-level': headingLevel,
