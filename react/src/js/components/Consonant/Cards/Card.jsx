@@ -362,7 +362,7 @@ const Card = (props) => {
     const isHorizontal = cardStyle === 'horizontal-card';
 
     // Card elements to show
-    const accessibilityHeading = isHalfHeight || isThreeFourths || isFull || isIcon || isNews;
+    const isTitleOnly = isHalfHeight || isThreeFourths || isFull || isIcon || isNews;
     const showHeader = !isProduct;
     const fromDexter = origin === 'Dexter';
     const showBadge = (isOneHalf || isThreeFourths || isFull) && (fromDexter || showCardBadges);
@@ -563,21 +563,21 @@ const Card = (props) => {
                     {iconAlt}
                 </span>
                 }
-                { (accessibilityHeading && highlightedTitle) &&
+                { (isTitleOnly && highlightedTitle) &&
                     <p
                         data-testid="consonant-Card-title"
                         className="consonant-Card-title">
                         {highlightedTitle}
                     </p>
                 }
-                { (accessibilityHeading && !highlightedTitle) &&
+                { (isTitleOnly && !highlightedTitle) &&
                     <p
                         data-testid="consonant-Card-title"
                         className="consonant-Card-title"
                         title={removeMarkDown(title)}
                         dangerouslySetInnerHTML={{ __html: parseMarkDown(title) }} />
                 }
-                { (!accessibilityHeading && highlightedTitle) &&
+                { (!isTitleOnly && highlightedTitle) &&
                     <p
                         role="heading"
                         aria-label={headingAria}
@@ -588,7 +588,7 @@ const Card = (props) => {
                         {highlightedTitle}
                     </p>
                 }
-                { (!accessibilityHeading && !highlightedTitle) &&
+                { (!isTitleOnly && !highlightedTitle) &&
                     <p
                         role="heading"
                         aria-label={headingAria}
