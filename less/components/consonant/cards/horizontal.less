@@ -1,0 +1,53 @@
+.consonant-CardsGrid {
+    .consonant-Card.horizontal-card {
+        display: flex;
+        width: 100%;
+        height: @consonant-HorizontalCard-height;
+        align-items: center;
+        flex-direction: row;
+        .font(@color: @consonantDarkGrey800);
+
+        .consonant-Card {
+            &-header {
+                width: 115px;
+                flex-shrink: 0;
+                align-self: stretch;
+                background-size: cover;
+                background-position: center;
+            }
+
+            &-content {
+                padding: 0 24px;
+                border-bottom-left-radius: 4px;
+                border-bottom-right-radius: 4px;
+                display: flex;
+                justify-content: center;
+                width: 80%;
+            }
+
+            &-title {
+                align-self: stretch;
+                font-size: 18px;
+
+                .line-clamp(4);
+
+                .font(1.125rem, 1.375rem, 700, @consonantGray900);
+            }
+
+            &-label {
+                align-items: flex-start;
+                align-self: stretch;
+
+                .font(0.875rem, 150%, 400, @consonantDarkGrey800);
+            }
+        }
+    }
+
+    &--1up {
+        .consonant-Card.horizontal-card {
+            .consonant-Card-header {
+                width: 180px;
+            }
+        }
+    }
+}
