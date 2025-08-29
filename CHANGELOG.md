@@ -1,5 +1,16 @@
 
 
+# [0.37.0](https://github.com/adobecom/caas/compare/0.36.3...0.37.0) (2025-08-27)
+
+
+### Features
+
+* **mwpw-173469:** lol whoops ([155100e](https://github.com/adobecom/caas/commit/155100e2e3a986531937b8b690941bd9694608e5))
+* **mwpw-173469:** rebase ([489bb76](https://github.com/adobecom/caas/commit/489bb7638940ee094729bca411dcac6d93a263ef))
+* **mwpw-173469:** rebase ([e80f1f6](https://github.com/adobecom/caas/commit/e80f1f6043774893b70a1443383c420b500e005b))
+* **mwpw-173469:** rebase ([5538db3](https://github.com/adobecom/caas/commit/5538db31d1ca9429596a887e8f981adede73744e))
+* **mwpw-173469:** update css styling ([fff1652](https://github.com/adobecom/caas/commit/fff1652948b90904683f40c2fd403e7de347291d))
+
 ## [0.36.3](https://github.com/adobecom/caas/compare/0.36.2...0.36.3) (2025-08-22)
 
 ## [0.36.2](https://github.com/adobecom/caas/compare/0.36.1...0.36.2) (2025-08-08)
