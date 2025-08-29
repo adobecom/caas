@@ -1,5 +1,8 @@
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
+// Ensure Enzyme is configured even if setupFiles resolution fails in CI
+const path = require('path');
+require(path.resolve(__dirname, 'enzyme.config.js'));
 
 module.exports = {
     // Automatically clear mock calls and instances between every test
@@ -29,13 +32,16 @@ module.exports = {
         },
     },
 
+    coverageProvider: 'babel',
+
     // An array of file extensions your modules use
     moduleFileExtensions: ['js', 'json', 'jsx'],
 
-    setupFiles: ['<rootDir>/enzyme.config.js'],
+    // Setup again inside test environment for safety across runners
+    setupFilesAfterEnv: [path.resolve(__dirname, 'enzyme.config.js')],
 
     // The test environment that will be used for testing
-    testEnvironment: 'jest-environment-jsdom-fifteen',
+    testEnvironment: 'jsdom',
 
     // Use Babel 7 just for Jest, ignoring project .babelrc (Babel 6)
     transform: {
@@ -84,7 +90,7 @@ module.exports = {
 
     testPathIgnorePatterns: ['\\\\node_modules\\\\', '__tests__/mocks', '__tests__/utils', '__tests__/constants'],
 
-    testURL: 'http://localhost',
+    testEnvironmentOptions: { url: 'http://localhost' },
     transformIgnorePatterns: ['<rootDir>/node_modules/'],
 
     // Indicates whether each individual test should be reported during the run

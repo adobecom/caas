@@ -56,23 +56,12 @@ const timeOverride = () => {
  */
 /* eslint-disable no-unused-vars */
 const updateTimeOverride = (base, increment) => {
-    const {
-        location: {
-            origin = '',
-            pathname = '',
-        } = {},
-    } = window;
-    const currentSearchParams = new URL(window.location).searchParams;
-
-    currentSearchParams.delete('servertime');
-
-    const editedSearch = currentSearchParams.toString();
-    const basePath = `${origin}${pathname}`;
-    const newSeverTime = `${qs.stringify({ servertime: base + increment })}`;
-    const newSearch = `${editedSearch}${editedSearch && '&'}${newSeverTime}`;
-    const urlString = `${basePath}?${newSearch}`;
-
-    window.history.replaceState(null, '', urlString);
+    // Build from current href to avoid jsdom Location quirks
+    const url = new URL(window.location.href);
+    // Remove prior servertime and set new one
+    url.searchParams.delete('servertime');
+    url.searchParams.append('servertime', String(base + increment));
+    window.history.replaceState(null, '', url.toString());
 };
 // Definitions
 /* eslint-disable no-useless-escape */

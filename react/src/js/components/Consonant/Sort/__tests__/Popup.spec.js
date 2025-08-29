@@ -26,6 +26,6 @@ describe('Consonant/Sort/Popup', () => {
         const [optionElement] = screen.getAllByTestId('consonant-Select-option');
         fireEvent.click(optionElement);
 
-        expect(onSelect).toBeCalled();
+        expect(onSelect).toHaveBeenCalled();
     });
 });

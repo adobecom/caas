@@ -65,27 +65,29 @@ jobs:
   run-unit-tests:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 16.13.1
-    - name: Install
-      run: npm ci
-    - name: Coverage
-      run: npm run test:unit
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+      - name: Install
+        run: npm ci
+      - name: Coverage
+        run: npm run test:unit
   check-coverage-thresholds:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 16.13.1
-    - name: Install
-      run: npm ci
-    - name: Coverage
-      run: npm run test:coverage
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+      - name: Install
+        run: npm ci
+      - name: Coverage
+        run: npm run test:coverage
   deployment:
     needs: check-build
     environment:
@@ -261,4 +263,3 @@ jobs:
           minPerformanceScore: "30"
           minProgressiveWebAppScore: "30"
           minSeoScore: "70"
-

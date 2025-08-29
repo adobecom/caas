@@ -141,7 +141,7 @@ describe('utils/Helpers', () => {
                 );
             }
 
-            expect(throwError).toThrowError(new Error(expectedValue));
+            expect(throwError).toThrow(new Error(expectedValue));
         });
 
         // Additional test cases for full coverage

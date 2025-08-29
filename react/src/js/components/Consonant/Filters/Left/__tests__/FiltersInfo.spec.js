@@ -69,6 +69,6 @@ describe('Consonant/Filters/Left/Filters Info', () => {
 
         fireEvent.click(buttonElement);
 
-        expect(onMobileFiltersToggleClick).toBeCalled();
+        expect(onMobileFiltersToggleClick).toHaveBeenCalled();
     });
 });
