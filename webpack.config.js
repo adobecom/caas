@@ -4,6 +4,18 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const webpack = require('webpack');
 const packageJson = require('./package.json');
+const { execSync } = require('child_process');
+let version = process.env.RELEASE_TAG;
+if (!version) {
+    try {
+        version = execSync('git describe --tags --abbrev=0').toString().trim();
+        if (version.startsWith('v')) {
+            version = version.slice(1);
+        }
+    } catch (err) {
+        version = packageJson.version;
+    }
+}
 
 const extractStyles = new ExtractTextPlugin({
     filename: './app.css', // this is output name for file
@@ -23,7 +35,7 @@ const plugins = [
     extractStyles,
     listStyles,
     new webpack.BannerPlugin({
-        banner: `Chimera UI Libraries - Build ${packageJson.version} (${date})
+        banner: `Chimera UI Libraries - Build ${version} (${date})
         `,
         entryOnly: true,
     }),
