@@ -1,5 +1,12 @@
 
 
+## [0.37.3](https://github.com/adobecom/caas/compare/0.37.2...0.37.3) (2025-09-12)
+
+
+### Bug Fixes
+
+* **mwpw-175529:** overrides native ul features on grids ([7b7cf0b](https://github.com/adobecom/caas/commit/7b7cf0bb2cfbc920a226c8608e59478dd0ac6fb3))
+
 ## [0.37.2](https://github.com/adobecom/caas/compare/0.37.1...0.37.2) (2025-09-04)
 
 ## [0.37.1](https://github.com/adobecom/caas/compare/0.37.0...0.37.1) (2025-08-29)
