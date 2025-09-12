@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.36.3 (8/26/2025, 16:50:15)
+ * Chimera UI Libraries - Build 0.37.2 (9/11/2025, 10:01:50)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -19814,25 +19814,12 @@ var timeOverride = function timeOverride() {
  */
 /* eslint-disable no-unused-vars */
 var updateTimeOverride = function updateTimeOverride(base, increment) {
-    var _window2 = window,
-        _window2$location = _window2.location;
-    _window2$location = _window2$location === undefined ? {} : _window2$location;
-    var _window2$location$ori = _window2$location.origin,
-        origin = _window2$location$ori === undefined ? '' : _window2$location$ori,
-        _window2$location$pat = _window2$location.pathname,
-        pathname = _window2$location$pat === undefined ? '' : _window2$location$pat;
-
-    var currentSearchParams = new URL(window.location).searchParams;
-
-    currentSearchParams.delete('servertime');
-
-    var editedSearch = currentSearchParams.toString();
-    var basePath = '' + origin + pathname;
-    var newSeverTime = '' + _general.qs.stringify({ servertime: base + increment });
-    var newSearch = '' + editedSearch + (editedSearch && '&') + newSeverTime;
-    var urlString = basePath + '?' + newSearch;
-
-    window.history.replaceState(null, '', urlString);
+    // Build from current href to avoid jsdom Location quirks
+    var url = new URL(window.location.href);
+    // Remove prior servertime and set new one
+    url.searchParams.delete('servertime');
+    url.searchParams.append('servertime', String(base + increment));
+    window.history.replaceState(null, '', url.toString());
 };
 // Definitions
 /* eslint-disable no-useless-escape */
