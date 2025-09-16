@@ -1,5 +1,14 @@
 
 
+# [0.38.0](https://github.com/adobecom/caas/compare/0.37.3...0.38.0) (2025-09-16)
+
+
+### Features
+
+* **mwpw-180695:** build ([3db72fb](https://github.com/adobecom/caas/commit/3db72fb9b1dc6e0f2233bd3d51e5651aaf3b46b5))
+* **mwpw-180695:** reverting MWPW-175529 ([4c6c1f7](https://github.com/adobecom/caas/commit/4c6c1f7f124be940ec52b0fccfb92348a2506418))
+* **mwpw-180695:** reverting MWPW-175529-2 ([e7ac074](https://github.com/adobecom/caas/commit/e7ac0748dfc58553ec33e6d8af0bd4d80ba5319d))
+
 ## [0.37.3](https://github.com/adobecom/caas/compare/0.37.2...0.37.3) (2025-09-12)
 
 
