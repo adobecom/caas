@@ -1,6 +1,7 @@
 /*!
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
  * Chimera UI Libraries - Build 0.38.0 (9/18/2025, 10:57:49)
 =======
 =======
@@ -17,6 +18,9 @@
  * Chimera UI Libraries - Build 0.36.3 (8/26/2025, 14:33:30)
 >>>>>>> 813c452 (fix(mwpw-178390): change variable name)
 >>>>>>> ea86560 (fix(mwpw-178390): rebasing)
+=======
+ * Chimera UI Libraries - Build 0.38.0 (9/17/2025, 11:40:25)
+>>>>>>> 177a1ab (test(mwpw-178390): added unit tests to cover these aria label cases)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap

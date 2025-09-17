@@ -229,4 +229,12 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         const dateinterval = screen.getByTestId('consonant-DateIntervalInfobit');
         expect(dateinterval).not.toBeNull();
     });
+    test('should render a card with a heading and aria-label', () => {
+        renderCard({
+            cardStyle,
+        });
+
+        const cardHeader = screen.getByTestId('consonant-Card-title');
+        expect(cardHeader).toHaveAttribute('aria-label');
+    });
 });
