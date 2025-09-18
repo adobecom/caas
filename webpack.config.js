@@ -107,6 +107,10 @@ const eventsConfig = {
         filename: 'events.min.js',
         path: path.resolve(__dirname, 'dist'),
     },
+    externals: {
+        // Use React from the main bundle via global window.React
+        react: 'React',
+    },
     resolve: baseConfig.resolve,
     module: baseConfig.module,
     plugins: [

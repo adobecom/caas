@@ -14,6 +14,12 @@ if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined') {
     ReactAxe(React, ReactDOM, 1000);
 }
 
+// Expose React globally so extension bundles can reuse the same instance
+if (typeof window !== 'undefined') {
+    // eslint-disable-next-line no-underscore-dangle
+    window.React = React;
+}
+
 const domRegistry = new DOMRegistry(React, render);
 domRegistry.register({
     consonantPageRDC,
