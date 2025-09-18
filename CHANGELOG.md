@@ -1,5 +1,15 @@
 
 
+## [0.38.2](https://github.com/adobecom/caas/compare/0.38.1...0.38.2) (2025-09-18)
+
+
+### Bug Fixes
+
+* **mwpw-178390:** accessibility ([7564bed](https://github.com/adobecom/caas/commit/7564bed616a706fee23857174fe3c7302d654645))
+* **mwpw-178390:** accessibility ([0eddfbb](https://github.com/adobecom/caas/commit/0eddfbb57f9f2256001e790353013800c85f6ad9))
+* **mwpw-178390:** accessibility fixes ([f69c4cd](https://github.com/adobecom/caas/commit/f69c4cd6e3f8890304ae421633ba4ecdbcb715b2))
+* **mwpw-178390:** accessibility fixes ([5b277b4](https://github.com/adobecom/caas/commit/5b277b4464a4bbe5e500e98a3eb7b1841f108788))
+
 ## [0.38.1](https://github.com/adobecom/caas/compare/0.38.0...0.38.1) (2025-09-18)
 
 
