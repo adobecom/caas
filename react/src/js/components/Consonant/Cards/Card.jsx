@@ -362,7 +362,8 @@ const Card = (props) => {
     const isHorizontal = cardStyle === 'horizontal-card';
 
     // Card elements to show
-    const isTitleOnly = isHalfHeight || isThreeFourths || isFull || isIcon || isNews;
+    const isTitleOnly = isHalfHeight || isThreeFourths || isFull || isIcon
+        || isNews || isHorizontal;
     const showHeader = !isProduct;
     const fromDexter = origin === 'Dexter';
     const showBadge = (isOneHalf || isThreeFourths || isFull) && (fromDexter || showCardBadges);
