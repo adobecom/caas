@@ -1,26 +1,5 @@
 /*!
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
- * Chimera UI Libraries - Build 0.38.0 (9/18/2025, 10:57:49)
-=======
-=======
->>>>>>> ea86560 (fix(mwpw-178390): rebasing)
-<<<<<<< HEAD
- * Chimera UI Libraries - Build 0.37.3 (9/12/2025, 11:15:33)
-=======
- * Chimera UI Libraries - Build 0.36.3 (8/25/2025, 16:27:11)
->>>>>>> 3420a38 (fix(mwpw-178390): accessibility fixes for title on different card styles)
-<<<<<<< HEAD
->>>>>>> 50bca7d (fix(mwpw-178390): rebasing)
-=======
-=======
- * Chimera UI Libraries - Build 0.36.3 (8/26/2025, 14:33:30)
->>>>>>> 813c452 (fix(mwpw-178390): change variable name)
->>>>>>> ea86560 (fix(mwpw-178390): rebasing)
-=======
- * Chimera UI Libraries - Build 0.38.0 (9/17/2025, 11:40:25)
->>>>>>> 177a1ab (test(mwpw-178390): added unit tests to cover these aria label cases)
+ * Chimera UI Libraries - Build 0.38.0 (9/18/2025, 12:00:07)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap

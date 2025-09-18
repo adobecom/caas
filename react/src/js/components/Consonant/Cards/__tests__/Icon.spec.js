@@ -43,12 +43,4 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         const cardHeader = screen.getByTestId('consonant-Card-title');
         expect(cardHeader).not.toHaveAttribute('aria-label');
     });
-    test('should render a card without a heading and aria-label', () => {
-        renderCard({
-            cardStyle,
-        });
-
-        const cardHeader = screen.getByTestId('consonant-Card-title');
-        expect(cardHeader).not.toHaveAttribute('aria-label');
-    });
 });
