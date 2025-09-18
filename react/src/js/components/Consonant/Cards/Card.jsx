@@ -8,6 +8,7 @@ import {
     func,
     arrayOf,
     number,
+    object,
 } from 'prop-types';
 
 import CardFooter from './CardFooter/CardFooter';
@@ -35,6 +36,7 @@ import {
 } from '../types/card';
 import LinkBlocker from './LinkBlocker/LinkBlocker';
 import VideoButton from '../Modal/videoButton';
+import SpeakerLink from '../Modal/speakerLink';
 
 const CardType = {
     cardStyle: string,
@@ -63,6 +65,7 @@ const CardType = {
     origin: string,
     ariaHidden: bool,
     tabIndex: number,
+    search: object, // eslint-disable-line react/forbid-prop-types
 };
 
 const defaultProps = {
@@ -89,6 +92,7 @@ const defaultProps = {
     origin: '',
     ariaHidden: false,
     tabIndex: 0,
+    search: {},
 };
 
 /**
@@ -172,7 +176,10 @@ const Card = (props) => {
         origin,
         ariaHidden,
         tabIndex,
+        search = {},
     } = props;
+
+    const speakers = Array.isArray(search.speakers) ? search.speakers : [];
 
     let bannerBackgroundColorToUse = bannerBackgroundColor;
     let bannerIconToUse = bannerIcon;
@@ -597,6 +604,16 @@ const Card = (props) => {
                         )
                     )
                 ) }
+                {speakers.length > 0 && (
+                    <div className="consonant-Card-speakers" style={{ marginTop: '6px' }}>
+                        {speakers.map((sp, i) => (
+                            <span key={sp.speakerId || sp.globalFullName || i}>
+                                <SpeakerLink name={sp.globalFullName || sp.name || 'Speaker'} speaker={sp} />
+                                {i < speakers.length - 1 ? ', ' : ''}
+                            </span>
+                        ))}
+                    </div>
+                )}
                 {showFooter &&
                 !hideCTA &&
                 footer.map(footerItem => (
