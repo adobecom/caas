@@ -627,7 +627,7 @@ const Card = (props) => {
                         getsFocus={getsFocus || true}
                         daa={ctaText} />}
             </div>
-            {(renderOverlay || hideCTA || isHalfHeight || isIcon)
+            {(renderOverlay || hideCTA || isHalfHeight || isIcon || isHorizontal)
             && <LinkBlocker
                 target={linkBlockerTarget}
                 link={overlay}
