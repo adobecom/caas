@@ -362,6 +362,8 @@ const Card = (props) => {
     const isHorizontal = cardStyle === 'horizontal-card';
 
     // Card elements to show
+    const isTitleOnly = isHalfHeight || isThreeFourths || isFull || isIcon
+        || isNews || isHorizontal;
     const showHeader = !isProduct;
     const fromDexter = origin === 'Dexter';
     const showBadge = (isOneHalf || isThreeFourths || isFull) && (fromDexter || showCardBadges);
@@ -562,7 +564,21 @@ const Card = (props) => {
                     {iconAlt}
                 </span>
                 }
-                { highlightedTitle ? (
+                { (isTitleOnly && highlightedTitle) &&
+                    <p
+                        data-testid="consonant-Card-title"
+                        className="consonant-Card-title">
+                        {highlightedTitle}
+                    </p>
+                }
+                { (isTitleOnly && !highlightedTitle) &&
+                    <p
+                        data-testid="consonant-Card-title"
+                        className="consonant-Card-title"
+                        title={removeMarkDown(title)}
+                        dangerouslySetInnerHTML={{ __html: parseMarkDown(title) }} />
+                }
+                { (!isTitleOnly && highlightedTitle) &&
                     <p
                         role="heading"
                         aria-label={headingAria}
@@ -572,7 +588,8 @@ const Card = (props) => {
                         title={removeMarkDown(title)}>
                         {highlightedTitle}
                     </p>
-                ) : (
+                }
+                { (!isTitleOnly && !highlightedTitle) &&
                     <p
                         role="heading"
                         aria-label={headingAria}
@@ -581,7 +598,7 @@ const Card = (props) => {
                         className="consonant-Card-title"
                         title={removeMarkDown(title)}
                         dangerouslySetInnerHTML={{ __html: parseMarkDown(title) }} />
-                ) }
+                }
                 { showText && !isIcon && (
                     highlightedDescription ? (
                         <p

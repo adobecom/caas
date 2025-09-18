@@ -35,4 +35,12 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         expect(iconImgElement).toHaveAttribute('src', iconSrc);
         expect(iconImgElement).toHaveAttribute('alt', '');
     });
+    test('should render a card without a heading and aria-label', () => {
+        renderCard({
+            cardStyle,
+        });
+
+        const cardHeader = screen.getByTestId('consonant-Card-title');
+        expect(cardHeader).not.toHaveAttribute('aria-label');
+    });
 });

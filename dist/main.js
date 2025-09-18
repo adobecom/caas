@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.38.0 (9/18/2025, 10:57:49)
+ * Chimera UI Libraries - Build 0.38.0 (9/18/2025, 12:01:03)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -18013,6 +18013,7 @@ var Card = function Card(props) {
     var isHorizontal = cardStyle === 'horizontal-card';
 
     // Card elements to show
+    var isTitleOnly = isHalfHeight || isThreeFourths || isFull || isIcon || isNews || isHorizontal;
     var showHeader = !isProduct;
     var fromDexter = origin === 'Dexter';
     var showBadge = (isOneHalf || isThreeFourths || isFull) && (fromDexter || showCardBadges);
@@ -18193,7 +18194,19 @@ var Card = function Card(props) {
                     className: 'consonant-Card-label' },
                 iconAlt
             ),
-            highlightedTitle ? _react2.default.createElement(
+            isTitleOnly && highlightedTitle && _react2.default.createElement(
+                'p',
+                {
+                    'data-testid': 'consonant-Card-title',
+                    className: 'consonant-Card-title' },
+                highlightedTitle
+            ),
+            isTitleOnly && !highlightedTitle && _react2.default.createElement('p', {
+                'data-testid': 'consonant-Card-title',
+                className: 'consonant-Card-title',
+                title: (0, _general.removeMarkDown)(title),
+                dangerouslySetInnerHTML: { __html: parseMarkDown(title) } }),
+            !isTitleOnly && highlightedTitle && _react2.default.createElement(
                 'p',
                 {
                     role: 'heading',
@@ -18203,7 +18216,8 @@ var Card = function Card(props) {
                     className: 'consonant-Card-title',
                     title: (0, _general.removeMarkDown)(title) },
                 highlightedTitle
-            ) : _react2.default.createElement('p', {
+            ),
+            !isTitleOnly && !highlightedTitle && _react2.default.createElement('p', {
                 role: 'heading',
                 'aria-label': headingAria,
                 'aria-level': headingLevel,

@@ -139,4 +139,12 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         const gatedIcon = screen.queryByTestId('consonant-GatedInfobit');
         expect(gatedIcon).toBeNull();
     });
+    test('should render a card with a heading and aria-label', () => {
+        renderCard({
+            cardStyle,
+        });
+
+        const cardHeader = screen.getByTestId('consonant-Card-title');
+        expect(cardHeader).toHaveAttribute('aria-label');
+    });
 });
