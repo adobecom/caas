@@ -1,5 +1,12 @@
 
 
+## [0.38.1](https://github.com/adobecom/caas/compare/0.38.0...0.38.1) (2025-09-18)
+
+
+### Bug Fixes
+
+* **mwpw-181078:** add default overlay behavior for horizontal cards ([8dce32f](https://github.com/adobecom/caas/commit/8dce32ff80fe09173e9a9adb7003e5648cd73835))
+
 # [0.38.0](https://github.com/adobecom/caas/compare/0.37.3...0.38.0) (2025-09-16)
 
 
