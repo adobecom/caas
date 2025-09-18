@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.37.3 (9/12/2025, 11:15:33)
+ * Chimera UI Libraries - Build 0.38.0 (9/18/2025, 10:57:49)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -18245,7 +18245,7 @@ var Card = function Card(props) {
                 getsFocus: getsFocus || true,
                 daa: ctaText })
         ),
-        (renderOverlay || hideCTA || isHalfHeight || isIcon) && _react2.default.createElement(_LinkBlocker2.default, {
+        (renderOverlay || hideCTA || isHalfHeight || isIcon || isHorizontal) && _react2.default.createElement(_LinkBlocker2.default, {
             target: linkBlockerTarget,
             link: overlay,
             title: title,
