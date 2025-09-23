@@ -24,6 +24,8 @@
                         "**/polyfills.js",
                         "**/watch.js",
                         "**/js/components/Consonant/Helpers/TestingConstants/**",
+                        "**/jest.setup.js",
+                        "**/jest-axe-setup.js",
                         "**/__tests__/**",
                         "**/__test__/**",
                         "**/enzyme.config.js",
