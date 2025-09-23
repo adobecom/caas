@@ -1,11 +1,11 @@
 {
   "name": "CaaS",
-  "version": "0.35.4",
+  "version": "0.38.2",
   "private": false,
   "description": "",
   "scripts": {
     "prebuild": "webpack --config sourcemaps.config.js",
-    "build": "webpack",
+    "build": "cross-env NODE_ENV=production webpack",
     "postbuild": "minify dist/main.js > dist/main.min.js",
     "lint": "eslint react/src/js/components/Consonant --fix",
     "release": "HUSKY_SKIP_HOOKS=1 release-it --ci",
