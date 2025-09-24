@@ -49,7 +49,7 @@ describe('Consonant/Filters/Left/Item', () => {
 
         fireEvent.click(checkboxElement);
 
-        expect(onCheck).toBeCalled();
+        expect(onCheck).toHaveBeenCalled();
     });
 
     test('Clicking a filter item should work', () => {
@@ -61,7 +61,7 @@ describe('Consonant/Filters/Left/Item', () => {
 
         fireEvent.click(itemLinkElement);
 
-        expect(onClick).toBeCalled();
+        expect(onClick).toHaveBeenCalled();
     });
 
     test('Should be able to clear all filters', () => {
@@ -73,7 +73,7 @@ describe('Consonant/Filters/Left/Item', () => {
 
         fireEvent.click(badgeElement);
 
-        expect(onClearAll).toBeCalled();
+        expect(onClearAll).toHaveBeenCalled();
     });
 
     test('should load analytics for filter items', () => {

@@ -1,5 +1,84 @@
 
 
+## [0.38.2](https://github.com/adobecom/caas/compare/0.38.1...0.38.2) (2025-09-18)
+
+
+### Bug Fixes
+
+* **mwpw-178390:** accessibility ([7564bed](https://github.com/adobecom/caas/commit/7564bed616a706fee23857174fe3c7302d654645))
+* **mwpw-178390:** accessibility ([0eddfbb](https://github.com/adobecom/caas/commit/0eddfbb57f9f2256001e790353013800c85f6ad9))
+* **mwpw-178390:** accessibility fixes ([f69c4cd](https://github.com/adobecom/caas/commit/f69c4cd6e3f8890304ae421633ba4ecdbcb715b2))
+* **mwpw-178390:** accessibility fixes ([5b277b4](https://github.com/adobecom/caas/commit/5b277b4464a4bbe5e500e98a3eb7b1841f108788))
+
+## [0.38.1](https://github.com/adobecom/caas/compare/0.38.0...0.38.1) (2025-09-18)
+
+
+### Bug Fixes
+
+* **mwpw-181078:** add default overlay behavior for horizontal cards ([8dce32f](https://github.com/adobecom/caas/commit/8dce32ff80fe09173e9a9adb7003e5648cd73835))
+
+# [0.38.0](https://github.com/adobecom/caas/compare/0.37.3...0.38.0) (2025-09-16)
+
+
+### Features
+
+* **mwpw-180695:** build ([3db72fb](https://github.com/adobecom/caas/commit/3db72fb9b1dc6e0f2233bd3d51e5651aaf3b46b5))
+* **mwpw-180695:** reverting MWPW-175529 ([4c6c1f7](https://github.com/adobecom/caas/commit/4c6c1f7f124be940ec52b0fccfb92348a2506418))
+* **mwpw-180695:** reverting MWPW-175529-2 ([e7ac074](https://github.com/adobecom/caas/commit/e7ac0748dfc58553ec33e6d8af0bd4d80ba5319d))
+
+## [0.37.3](https://github.com/adobecom/caas/compare/0.37.2...0.37.3) (2025-09-12)
+
+
+### Bug Fixes
+
+* **mwpw-175529:** overrides native ul features on grids ([7b7cf0b](https://github.com/adobecom/caas/commit/7b7cf0bb2cfbc920a226c8608e59478dd0ac6fb3))
+
+## [0.37.2](https://github.com/adobecom/caas/compare/0.37.1...0.37.2) (2025-09-04)
+
+## [0.37.1](https://github.com/adobecom/caas/compare/0.37.0...0.37.1) (2025-08-29)
+
+# [0.37.0](https://github.com/adobecom/caas/compare/0.36.3...0.37.0) (2025-08-27)
+
+
+### Features
+
+* **mwpw-173469:** lol whoops ([155100e](https://github.com/adobecom/caas/commit/155100e2e3a986531937b8b690941bd9694608e5))
+* **mwpw-173469:** rebase ([489bb76](https://github.com/adobecom/caas/commit/489bb7638940ee094729bca411dcac6d93a263ef))
+* **mwpw-173469:** rebase ([e80f1f6](https://github.com/adobecom/caas/commit/e80f1f6043774893b70a1443383c420b500e005b))
+* **mwpw-173469:** rebase ([5538db3](https://github.com/adobecom/caas/commit/5538db31d1ca9429596a887e8f981adede73744e))
+* **mwpw-173469:** update css styling ([fff1652](https://github.com/adobecom/caas/commit/fff1652948b90904683f40c2fd403e7de347291d))
+
+## [0.36.3](https://github.com/adobecom/caas/compare/0.36.2...0.36.3) (2025-08-22)
+
+## [0.36.2](https://github.com/adobecom/caas/compare/0.36.1...0.36.2) (2025-08-08)
+
+## [0.36.1](https://github.com/adobecom/caas/compare/0.36.0...0.36.1) (2025-08-05)
+
+# [0.36.0](https://github.com/adobecom/caas/compare/0.35.15...0.36.0) (2025-08-02)
+
+
+### Features
+
+* **mwpw-176061:** adds new blade-card style ([#304](https://github.com/adobecom/caas/issues/304)) ([8385d40](https://github.com/adobecom/caas/commit/8385d404ebaf6d7f1aa9c649c2245280f13dcf3e))
+
+## [0.35.15](https://github.com/adobecom/caas/compare/0.35.14...0.35.15) (2025-08-02)
+
+
+### Bug Fixes
+
+* **mwpw-139930:** allows  bold & italic in title and description ([#300](https://github.com/adobecom/caas/issues/300)) ([c80358d](https://github.com/adobecom/caas/commit/c80358deff8c7c7cd222735361b97020f76814c1))
+
+## [0.35.14](https://github.com/adobecom/caas/compare/0.35.13...0.35.14) (2025-07-30)
+
+## [0.35.13](https://github.com/adobecom/caas/compare/0.35.12...0.35.13) (2025-07-28)
+
+## [0.35.12](https://github.com/adobecom/caas/compare/0.35.11...0.35.12) (2025-07-18)
+
+
+### Bug Fixes
+
+* **mwpw-175529:** refactors markup to OL > LI elements ([#299](https://github.com/adobecom/caas/issues/299)) ([bb41bea](https://github.com/adobecom/caas/commit/bb41bea138721805b68e4abbdd5f3d43308f0db8))
+
 ## [0.35.11](https://github.com/adobecom/caas/compare/0.35.10...0.35.11) (2025-07-07)
 
 

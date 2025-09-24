@@ -18,7 +18,7 @@ describe('Consonant/SearchIcon', () => {
 
             fireEvent.click(iconElement);
 
-            expect(onClick).toBeCalled();
+            expect(onClick).toHaveBeenCalled();
         });
     });
 });

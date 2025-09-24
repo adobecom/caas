@@ -128,7 +128,7 @@ describe('Consonant/Filters/Top/Panel', () => {
         const clearButtonElement = screen.queryByTestId('consonant-TopFilters-clearBtn');
 
         fireEvent.click(clearButtonElement);
-        expect(onClearAllFilters).toBeCalled();
+        expect(onClearAllFilters).toHaveBeenCalled();
     });
 
     test('should load analytics onto the filter panel', () => {

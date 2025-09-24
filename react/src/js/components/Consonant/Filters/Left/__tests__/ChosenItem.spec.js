@@ -23,7 +23,7 @@ describe('Consonant/Filters/Left/Chosen Item', () => {
 
             fireEvent.click(buttonElement);
 
-            expect(onClick).toBeCalled();
+            expect(onClick).toHaveBeenCalled();
             expect(onClick).toHaveBeenCalledWith(parentId, id, false);
         });
     });
