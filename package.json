@@ -13,9 +13,14 @@
     "test:unit": "jest",
     "test:e2e-local": "wdio run wdio.local.conf.js env=LOCAL",
     "test:e2e-prod": "wdio run wdio.conf.js env=PROD",
+    "test:a11y": "jest --config=jest.a11y.config.js",
+    "test:a11y:coverage": "jest --config=jest.a11y.config.js --coverage",
     "serve": "serve",
     "watch": "npm run serve & webpack -w",
-    "start": "npm run serve"
+    "start": "npm run serve",
+    "a11y:serve": "serve -l 5000",
+    "a11y:pa11y": "pa11y-ci",
+    "a11y": "start-server-and-test a11y:serve http://localhost:5000 a11y:pa11y"
   },
   "author": "",
   "license": "ISC",
@@ -72,7 +77,7 @@
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.0.1",
-    "babel-jest": "^30.0.0",
+    "babel-jest": "^29.7.0",
     "@babel/core": "^7.24.0",
     "@babel/preset-env": "^7.24.0",
     "@babel/preset-react": "^7.24.0",
@@ -108,8 +113,13 @@
     "husky": "^4.3.8",
     "ignore-loader": "^0.1.2",
     "inject-loader": "^3.0.1",
-    "jest": "^30.0.0",
-    "jest-environment-jsdom": "^30.0.0",
+    "jest": "^29.7.0",
+    "jest-circus": "^29.7.0",
+    "jest-axe": "^8.0.0",
+    "axe-core": "^4.10.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "fetch-blob": "^3.2.0",
+    "web-streams-polyfill": "^3.3.3",
     "jest-fetch-mock": "^3.0.2",
     "jest-raw-loader": "^1.0.1",
     "less": "^3.11.1",
@@ -131,7 +141,9 @@
     "stylelint-webpack-plugin": "^0.9.0",
     "uglifyjs-webpack-plugin": "^1.2.4",
     "wdio-chromedriver-service": "^8.0.1",
-    "webpack": "^3.9.1"
+    "webpack": "^3.9.1",
+    "pa11y-ci": "^3.0.1",
+    "start-server-and-test": "^2.0.3"
   },
   "husky": {
     "hooks": {

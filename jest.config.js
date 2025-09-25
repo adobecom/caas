@@ -2,6 +2,39 @@
 // https://jestjs.io/docs/en/configuration.html
 // Ensure Enzyme is configured even if setupFiles resolution fails in CI
 const path = require('path');
+
+// Define File/Blob early to satisfy undici/jsdom when the environment initializes
+(() => {
+    try {
+        if (typeof globalThis.File === 'undefined') {
+            const { File } = require('fetch-blob/file.js');
+            globalThis.File = File;
+        }
+        if (typeof globalThis.Blob === 'undefined') {
+            const { Blob } = require('buffer');
+            globalThis.Blob = globalThis.Blob || Blob;
+        }
+        // Polyfill Web Streams API early (ReadableStream, etc.) before undici/jsdom loads
+        if (typeof globalThis.ReadableStream === 'undefined') {
+            try {
+                const streams = require('web-streams-polyfill/ponyfill/es2018');
+                const { ReadableStream, WritableStream, TransformStream } = streams;
+                globalThis.ReadableStream = ReadableStream;
+                if (typeof globalThis.WritableStream === 'undefined') {
+                    globalThis.WritableStream = WritableStream;
+                }
+                if (typeof globalThis.TransformStream === 'undefined') {
+                    globalThis.TransformStream = TransformStream;
+                }
+            } catch (e) {
+                // ignore if polyfill missing; Node >=18 typically provides these
+            }
+        }
+    } catch (e) {
+        // If fetch-blob isn't available, the custom env will attempt to define File later
+    }
+})();
+
 require(path.resolve(__dirname, 'enzyme.config.js'));
 
 module.exports = {
@@ -34,6 +67,12 @@ module.exports = {
 
     coverageProvider: 'babel',
 
+    // Pre-test setup files (polyfills)
+    setupFiles: [
+        'whatwg-fetch',
+        '<rootDir>/jest.setup.js',
+    ],
+
     // An array of file extensions your modules use
     moduleFileExtensions: ['js', 'json', 'jsx'],
 
@@ -41,7 +80,7 @@ module.exports = {
     setupFilesAfterEnv: [path.resolve(__dirname, 'enzyme.config.js')],
 
     // The test environment that will be used for testing
-    testEnvironment: 'jsdom',
+    testEnvironment: '<rootDir>/jest.env.jsdom.file.js',
 
     // Use Babel 7 just for Jest, ignoring project .babelrc (Babel 6)
     transform: {
@@ -62,24 +101,6 @@ module.exports = {
                 plugins: [
                     ['@babel/plugin-transform-class-properties', { loose: true }],
                     ['@babel/plugin-transform-object-rest-spread', { loose: true }],
-                    [
-                        'istanbul',
-                        {
-                            exclude: [
-                                '**/Modal/**',
-                                '**/js/components/Consonant/Testing/**',
-                                '**/app.jsx',
-                                '**/ConsonantPageDOM.jsx',
-                                '**/polyfills.js',
-                                '**/watch.js',
-                                '**/js/components/Consonant/Helpers/TestingConstants/**',
-                                '**/__tests__/**',
-                                '**/__test__/**',
-                                '**/enzyme.config.js',
-                                '**/*.config.js',
-                            ],
-                        },
-                    ],
                 ],
             },
         ],
@@ -92,6 +113,9 @@ module.exports = {
 
     testEnvironmentOptions: { url: 'http://localhost' },
     transformIgnorePatterns: ['<rootDir>/node_modules/'],
+    moduleNameMapper: {
+        '^undici$': '<rootDir>/tests/setup/undici-shim.js',
+    },
 
     // Indicates whether each individual test should be reported during the run
     verbose: false,
