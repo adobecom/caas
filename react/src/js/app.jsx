@@ -1,6 +1,19 @@
 /* eslint-disable */
 import "./polyfills";
 import React from 'react';
+// Expose React (preact/compat) to window for runtime inspection
+if (typeof window !== 'undefined' && React) {
+    window.ReactCompat = React;
+    console.log('ReactCompat.createElement.name =', React.createElement.name);
+    console.log('ReactCompat.version =', React.version);
+}
+// Import Preact directly to inspect its version and createElement (h)
+import { version as preactVersion, h as preactH } from 'preact';
+if (typeof window !== 'undefined') {
+    window.preactH = preactH;
+    console.log('preact.h.name =', preactH.name);
+    console.log('preact.version =', preactVersion);
+}
 import ReactDOM, { render } from 'react-dom';
 import { DOMRegistry } from 'react-dom-components';
 import { parseToPrimitive } from './components/Consonant/Helpers/general';
