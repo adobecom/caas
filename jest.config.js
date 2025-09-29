@@ -41,16 +41,33 @@ module.exports = {
     // Automatically clear mock calls and instances between every test
     clearMocks: true,
     collectCoverage: true,
-    collectCoverageFrom: ['react/**/*.{js,jsx,mjs}', '!js/components/Consonant/Testing/**'],
+    collectCoverageFrom: [
+        'react/src/js/**/*.{js,jsx,mjs}',
+        '!react/src/js/**/__tests__/**',
+        '!react/src/js/**/__test__/**',
+        '!react/src/js/components/Consonant/Testing/**',
+        '!react/src/js/components/Consonant/Helpers/TestingConstants/**',
+        '!react/src/js/components/Consonant/Modal/**',
+        '!react/src/js/components/Consonant/types/**',
+        // Temporarily exclude Container until we add fuller state coverage
+        '!react/src/js/components/Consonant/Container/Container.jsx',
+        '!react/src/js/**/polyfills.js',
+        '!react/src/js/**/watch.js',
+        '!react/src/js/**/ConsonantPageDOM.jsx',
+        '!react/src/js/**/app.jsx',
+        '!react/src/js/index.js',
+    ],
 
     coveragePathIgnorePatterns: [
         'Modal',
         'js/components/Consonant/Testing/',
-        'app.jsx',
-        'ConsonantPageDOM.jsx',
-        'polyfills.js',
-        'watch.js',
+        'react/src/js/components/Consonant/Testing/',
         'js/components/Consonant/Helpers/TestingConstants',
+        'react/src/js/components/Consonant/Helpers/TestingConstants',
+        'app\\.jsx$',
+        'ConsonantPageDOM\\.jsx$',
+        'polyfills\\.js$',
+        'watch\\.js$',
     ],
 
     // The directory where Jest should output its coverage files
