@@ -1,5 +1,12 @@
 
 
+## [0.38.4](https://github.com/adobecom/caas/compare/0.38.3...0.38.4) (2025-09-30)
+
+
+### Bug Fixes
+
+* **mwpw-181388:** sets transparent background to primary cta ([#327](https://github.com/adobecom/caas/issues/327)) ([66022ed](https://github.com/adobecom/caas/commit/66022ed6914522f3205d528dbc8f3532f762d924))
+
 ## [0.38.3](https://github.com/adobecom/caas/compare/0.38.2...0.38.3) (2025-09-28)
 
 
