@@ -1,21 +1,23 @@
 .consonant-CardsGrid {
     &[data-card-style ^= "blade"] {
         display: block !important;
+        padding: 24px 0;
 
         .consonant-Card[class ^= "blade"] {
             font-family: "Adobe Clean", adobe-clean, "Trebuchet MS", sans-serif; // needs cleanup
             width: 100% !important;
             max-width: 100% !important;
             flex-direction: row;
-            min-height: 423px;
-            padding: 24px 0;
+            min-height: 375px;
             gap: 40px;
+            height: auto;
 
             .consonant-Card {
                 &-header {
                     background-size: cover;
                     background-position: center;
                     width: 42%;
+                    height: auto;
                     max-height: 375px;
                 }
 
@@ -40,7 +42,6 @@
                     font-size: 36px;
                     margin: 16px 0;
                     line-height: 1.25;
-                    overflow: visible;
 
                     + p {
                         max-height: none;
@@ -50,6 +51,7 @@
                 &-text {
                     font-size: 18px;
                     line-height: 27px;
+                    -webkit-line-clamp: none;
                 }
 
                 &Footer {
@@ -64,7 +66,8 @@
                     }
 
                     &-row {
-                        justify-content: flex-start;
+                        justify-content: flex-end;
+                        flex-direction: row-reverse;
                         gap: 24px;
                     }
                 }
@@ -87,6 +90,22 @@
 
         .consonant-Card-text {
             color: #fff;
+        }
+
+        .consonant-BtnInfobit {
+            border-color: #fff;
+
+            span {
+                color: #fff;
+            }
+        }
+
+        .consonant-BtnInfobit:hover {
+            background-color: #fff;
+
+            span {
+                color: #000;
+            }
         }
     }
 

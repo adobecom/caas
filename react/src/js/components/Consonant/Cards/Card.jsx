@@ -452,7 +452,7 @@ const Card = (props) => {
     };
 
     return (
-        <div
+        <li
             daa-lh={lh}
             className={`${cardStyle} ${cardClassName} ${bladeVariant}`}
             data-testid="consonant-Card"
@@ -653,7 +653,7 @@ const Card = (props) => {
                 ariaHidden={ariaHidden}
                 tabIndex={ariaHidden ? -1 : 0}
                 daa={ctaText} />}
-        </div>
+        </li>
     );
 };
 
