@@ -40,8 +40,9 @@
 
                 &-title {
                     font-size: 36px;
-                    margin: 16px 0;
+                    margin: 4px 0 12px;
                     line-height: 1.25;
+                    -webkit-line-clamp: 7;
 
                     + p {
                         max-height: none;
@@ -69,6 +70,10 @@
                         justify-content: flex-end;
                         flex-direction: row-reverse;
                         gap: 24px;
+                    }
+
+                    .consonant-BtnInfobit span {
+                        font-size: 15px;
                     }
                 }
             }
@@ -131,6 +136,19 @@
     }
 }
 
+@media (max-width: 1200px) {
+    .consonant-CardsGrid {
+        &[data-card-style ^= "blade"] {
+            .consonant-Card[class ^= "blade"] {
+                .consonant-Card-title {
+                    font-size: 28px;
+                    -webkit-line-clamp: 5;
+                }
+            }
+        }
+    }
+}
+
 @media (max-width: 600px) {
     .consonant-CardsGrid {
         &[data-card-style ^= "blade"] {
@@ -145,10 +163,6 @@
                     &-header {
                         width: 100%;
                         height: 275px;
-                    }
-
-                    &-title {
-                        font-size: 28px;
                     }
 
                     &-content {
