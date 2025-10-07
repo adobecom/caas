@@ -4,6 +4,7 @@ import { string, func, bool, number } from 'prop-types';
 
 import { useConfig } from '../../Helpers/hooks';
 import { getLinkTarget } from '../../Helpers/general';
+import VideoButton from '../../Modal/videoButton';
 
 const BUTTON_STYLE = {
     PRIMARY: 'primary',
@@ -120,6 +121,17 @@ const Button = ({
     const addParams = new URLSearchParams(additionalParams);
     const buttonLink = (additionalParams && addParams.keys().next().value) ? `${href}?${addParams.toString()}` : href;
     const ariaLabel = `${text} ${title}`;
+
+    if (buttonLink.includes('#_modal')) {
+        return (
+            <VideoButton
+                title={title}
+                name={text}
+                videoURL={buttonLink}
+                className={`modal-video-cta ${buttonClass}`}
+            />
+        );
+    }
 
     return (
         <a
