@@ -1,5 +1,13 @@
 
 
+## [0.38.5](https://github.com/adobecom/caas/compare/0.38.4...0.38.5) (2025-10-07)
+
+
+### Bug Fixes
+
+* minor css updates ([a624b73](https://github.com/adobecom/caas/commit/a624b73d405927ac539078c4d8046aae60092629))
+* progress initial commit ([7cb2037](https://github.com/adobecom/caas/commit/7cb203770305f634bb56bd8b4195b42bd229c546))
+
 ## [0.38.4](https://github.com/adobecom/caas/compare/0.38.3...0.38.4) (2025-09-30)
 
 
