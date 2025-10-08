@@ -128,7 +128,7 @@ const Button = ({
                 title={title}
                 name={text}
                 videoURL={buttonLink}
-                className={`modal-video-cta ${buttonClass}`}
+                className={`caas-modal-cta ${buttonClass}`}
             />
         );
     }

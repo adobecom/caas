@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.38.5 (10/8/2025, 09:52:33)
+ * Chimera UI Libraries - Build 0.38.5 (10/8/2025, 09:55:58)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -9186,7 +9186,7 @@ var VideoButton = function VideoButton(_ref) {
                     onClick: handleShowModal,
                     tabIndex: tabIndex,
                     className: className },
-                className.includes('modal-video-cta') && _react2.default.createElement(
+                className.includes('caas-modal-cta') && _react2.default.createElement(
                     'span',
                     null,
                     name
@@ -19127,7 +19127,7 @@ var Button = function Button(_ref) {
             title: title,
             name: text,
             videoURL: buttonLink,
-            className: 'modal-video-cta ' + buttonClass
+            className: 'caas-modal-cta ' + buttonClass
         });
     }
 

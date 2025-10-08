@@ -67,7 +67,7 @@ const VideoButton = ({
                     onClick={handleShowModal}
                     tabIndex={tabIndex}
                     className={className}>
-                    {className.includes('modal-video-cta') && <span>{name}</span>}
+                    {className.includes('caas-modal-cta') && <span>{name}</span>}
                 </button>
             </div>
             {isOpen && createPortal(
