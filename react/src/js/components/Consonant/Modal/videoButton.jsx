@@ -66,7 +66,9 @@ const VideoButton = ({
                     aria-label={ariaLabel}
                     onClick={handleShowModal}
                     tabIndex={tabIndex}
-                    className={className} />
+                    className={className}>
+                    {className.includes('caas-modal-cta') && <span>{name}</span>}
+                </button>
             </div>
             {isOpen && createPortal(
                 <ModalWindow
