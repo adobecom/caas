@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.38.4 (10/7/2025, 11:32:12)
+ * Chimera UI Libraries - Build 0.38.5 (10/8/2025, 09:52:33)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
