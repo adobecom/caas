@@ -1,5 +1,12 @@
 
 
+# [0.39.0](https://github.com/adobecom/caas/compare/0.38.5...0.39.0) (2025-10-13)
+
+
+### Features
+
+* **mwpw-181844:** adds popup functionality to ctas ([#329](https://github.com/adobecom/caas/issues/329)) ([a295910](https://github.com/adobecom/caas/commit/a2959101c64c843a55f416b7a4aadfc7d538bfd3))
+
 ## [0.38.5](https://github.com/adobecom/caas/compare/0.38.4...0.38.5) (2025-10-07)
 
 
