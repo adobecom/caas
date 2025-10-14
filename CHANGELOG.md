@@ -1,5 +1,34 @@
 
 
+# [0.39.0](https://github.com/adobecom/caas/compare/0.38.5...0.39.0) (2025-10-13)
+
+
+### Features
+
+* **mwpw-181844:** adds popup functionality to ctas ([#329](https://github.com/adobecom/caas/issues/329)) ([a295910](https://github.com/adobecom/caas/commit/a2959101c64c843a55f416b7a4aadfc7d538bfd3))
+
+## [0.38.5](https://github.com/adobecom/caas/compare/0.38.4...0.38.5) (2025-10-07)
+
+
+### Bug Fixes
+
+* minor css updates ([a624b73](https://github.com/adobecom/caas/commit/a624b73d405927ac539078c4d8046aae60092629))
+* progress initial commit ([7cb2037](https://github.com/adobecom/caas/commit/7cb203770305f634bb56bd8b4195b42bd229c546))
+
+## [0.38.4](https://github.com/adobecom/caas/compare/0.38.3...0.38.4) (2025-09-30)
+
+
+### Bug Fixes
+
+* **mwpw-181388:** sets transparent background to primary cta ([#327](https://github.com/adobecom/caas/issues/327)) ([66022ed](https://github.com/adobecom/caas/commit/66022ed6914522f3205d528dbc8f3532f762d924))
+
+## [0.38.3](https://github.com/adobecom/caas/compare/0.38.2...0.38.3) (2025-09-28)
+
+
+### Bug Fixes
+
+* **mwpw-175529:** refactors markup to ol > li elements ([#324](https://github.com/adobecom/caas/issues/324)) ([d68d870](https://github.com/adobecom/caas/commit/d68d870656cc2a0d65638d4fdb0affb1fd185c21))
+
 ## [0.38.2](https://github.com/adobecom/caas/compare/0.38.1...0.38.2) (2025-09-18)
 
 
