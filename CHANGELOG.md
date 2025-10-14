@@ -1,5 +1,12 @@
 
 
+## [0.39.1](https://github.com/adobecom/caas/compare/0.39.0...0.39.1) (2025-10-14)
+
+
+### Bug Fixes
+
+* **mwpw-175529:** reverts previous commit ([#331](https://github.com/adobecom/caas/issues/331)) ([5310ad2](https://github.com/adobecom/caas/commit/5310ad20c1f93cfa3a32ce3414985649fa55da84))
+
 # [0.39.0](https://github.com/adobecom/caas/compare/0.38.5...0.39.0) (2025-10-13)
 
 
