@@ -1,9 +1,5 @@
 /*!
-<<<<<<< HEAD
- * Chimera UI Libraries - Build 0.38.5 (10/13/2025, 09:55:28)
-=======
- * Chimera UI Libraries - Build 0.38.5 (10/8/2025, 09:55:58)
->>>>>>> main
+ * Chimera UI Libraries - Build 0.39.0 (10/15/2025, 15:15:22)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -8195,7 +8191,7 @@ var Grid = function Grid(props) {
     };
 
     return cardsToshow.length > 0 && _react2.default.createElement(
-        'ul',
+        'div',
         {
             ref: forwardedRef,
             'data-card-style': collectionStyleOverride,
@@ -18219,7 +18215,7 @@ var Card = function Card(props) {
     };
 
     return _react2.default.createElement(
-        'li',
+        'div',
         {
             'daa-lh': lh,
             className: cardStyle + ' ' + cardClassName + ' ' + bladeVariant,
