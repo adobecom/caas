@@ -248,7 +248,7 @@ const Grid = (props) => {
                 const { contentArea: { title = '' } = {}, id } = card;
                 const cardNumber = index + 1;
                 const hideCTA = getHideCta(card, collectionButtonStyle);
-                const ariaHidden = index >= cardsPerPage();
+                const ariaHidden = isCarousel ? index >= cardsPerPage() : false;
 
                 switch (cardStyle) {
                     /* istanbul ignore next */

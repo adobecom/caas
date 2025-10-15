@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.39.0 (10/14/2025, 11:24:14)
+ * Chimera UI Libraries - Build 0.39.0 (10/14/2025, 16:44:55)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -8209,7 +8209,7 @@ var Grid = function Grid(props) {
 
             var cardNumber = index + 1;
             var hideCTA = getHideCta(card, collectionButtonStyle);
-            var ariaHidden = index >= cardsPerPage();
+            var ariaHidden = isCarousel ? index >= cardsPerPage() : false;
 
             switch (cardStyle) {
                 /* istanbul ignore next */
