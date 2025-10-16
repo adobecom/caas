@@ -1,5 +1,12 @@
 
 
+## [0.39.3](https://github.com/adobecom/caas/compare/0.39.2...0.39.3) (2025-10-16)
+
+
+### Bug Fixes
+
+* **MWPW-181211:** updates css mobile styles ([#330](https://github.com/adobecom/caas/issues/330)) ([3c871c6](https://github.com/adobecom/caas/commit/3c871c629038e90575b78e78d1b4caa7de772007))
+
 ## [0.39.2](https://github.com/adobecom/caas/compare/0.39.1...0.39.2) (2025-10-15)
 
 ## [0.39.1](https://github.com/adobecom/caas/compare/0.39.0...0.39.1) (2025-10-14)
