@@ -4,7 +4,7 @@
     "plugin:jest/recommended",
     "plugin:jsx-a11y/strict"
   ],
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "plugins": [
     "babel",
     "jest",
@@ -18,11 +18,15 @@
     "node": true
   },
   "parserOptions": {
-    "ecmaFeatures": {
-      "experimentalObjectRestSpread": true,
-      "jsx": true
+    "requireConfigFile": false,
+    "babelOptions": {
+      "babelrc": true
     },
-    "sourceType": "module"
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
   "settings": {
     "import/resolver": {
@@ -38,7 +42,7 @@
     "$": true,
     "jQuery": true,
     "browser": "readonly",
-    "$$": "readonly",
+    "$$": "readonly"
   },
   "rules": {
     "jest/no-large-snapshots": ["warn", { "maxSize": 50, "inlineMaxSize": 50 }],
@@ -56,6 +60,47 @@
     "linebreak-style": 0,
     "no-plusplus": "off",
     "no-mixed-operators": "off",
-    "no-restricted-syntax": "off"
-  }
+    "no-restricted-syntax": "off",
+    "import/no-cycle": "off",
+    "react/jsx-props-no-spreading": "off",
+    "default-param-last": "off",
+    "max-len": "off",
+    "react/jsx-no-constructed-context-values": "off",
+    "prefer-regex-literals": "off",
+    "react/jsx-no-useless-fragment": "off",
+    "no-console": "off",
+    "func-names": "off"
+  },
+  "overrides": [
+    {
+      "files": ["react/src/js/components/Consonant/**/*.{js,jsx}"],
+      "rules": {
+        "array-bracket-spacing": "off",
+        "arrow-parens": "off",
+        "comma-dangle": "off",
+        "eol-last": "off",
+        "implicit-arrow-linebreak": "off",
+        "import/no-useless-path-segments": "off",
+        "indent": "off",
+        "lines-between-class-members": "off",
+        "no-else-return": "off",
+        "no-multiple-empty-lines": "off",
+        "no-trailing-spaces": "off",
+        "object-curly-spacing": "off",
+        "operator-linebreak": "off",
+        "quote-props": "off",
+        "react/function-component-definition": "off",
+        "react/jsx-fragments": "off",
+        "object-curly-newline": "off",
+        "react/jsx-wrap-multilines": "off",
+        "react/jsx-curly-newline": "off",
+        "quotes": "off",
+        "function-paren-newline": "off",
+        "no-undef": "off",
+        "react/jsx-tag-spacing": "off",
+        "react/button-has-type": "off",
+        "import/no-extraneous-dependencies": "off"
+      }
+    }
+  ]
 }

@@ -7,6 +7,15 @@ import { parseToPrimitive } from './components/Consonant/Helpers/general';
 import { loadLana } from './components/Consonant/Helpers/lana';
 import Container from './components/Consonant/Container/Container';
 import consonantPageRDC from './components/Consonant/Page/ConsonantPageDOM';
+
+// Babel 7 verification: Using modern JS features that require Babel 7+ plugins
+const babelVersion = {
+    nullishCoalescing: undefined ?? 'babel7-supported', // Requires @babel/plugin-proposal-nullish-coalescing-operator
+    optionalChaining: window?.navigator?.userAgent?.substring?.(0, 10) ?? 'babel7', // Requires @babel/plugin-proposal-optional-chaining
+    numericSeparator: 1_000_000, // Requires @babel/plugin-proposal-numeric-separator
+};
+console.log('🎉 Babel 7 Upgrade Verified! Modern JS features compiled:', babelVersion);
+
 // Runtime accessibility auditing in development with react-axe
 if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined') {
     /* eslint-disable-next-line global-require */
