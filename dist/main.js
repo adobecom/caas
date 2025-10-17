@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.39.4 (10/17/2025, 12:51:59)
+ * Chimera UI Libraries - Build 0.39.4 (10/17/2025, 13:00:35)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -8844,7 +8844,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_Consonant_Container_Container__ = __webpack_require__(103);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_Consonant_Page_ConsonantPageDOM__ = __webpack_require__(300);
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-var _window$navigator$use, _window, _window$navigator, _window$navigator$use2, _window$navigator$use3;
 function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
 function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
@@ -8860,21 +8859,22 @@ function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Can
 
 
 
-// Babel 7 verification: Using modern JS features that require Babel 7+ plugins
-var babelVersion = {
-  nullishCoalescing: undefined !== null && undefined !== void 0 ? undefined : 'babel7-supported',
-  // Requires @babel/plugin-proposal-nullish-coalescing-operator
-  optionalChaining: (_window$navigator$use = (_window = window) === null || _window === void 0 ? void 0 : (_window$navigator = _window.navigator) === null || _window$navigator === void 0 ? void 0 : (_window$navigator$use2 = _window$navigator.userAgent) === null || _window$navigator$use2 === void 0 ? void 0 : (_window$navigator$use3 = _window$navigator$use2.substring) === null || _window$navigator$use3 === void 0 ? void 0 : _window$navigator$use3.call(_window$navigator$use2, 0, 10)) !== null && _window$navigator$use !== void 0 ? _window$navigator$use : 'babel7',
-  // Requires @babel/plugin-proposal-optional-chaining
-  numericSeparator: 1000000 // Requires @babel/plugin-proposal-numeric-separator
-};
-console.log('🎉 Babel 7 Upgrade Verified! Modern JS features compiled:', babelVersion);
-
 // Runtime accessibility auditing in development with react-axe
 if (false) {
+  var _window$navigator$use, _window, _window$navigator, _window$navigator$use2, _window$navigator$use3;
   /* eslint-disable-next-line global-require */
   var ReactAxe = require('react-axe');
   ReactAxe(React, ReactDOM, 1000);
+
+  // Babel 7 verification: Using modern JS features that require Babel 7+ plugins
+  var babelVersion = {
+    nullishCoalescing: undefined !== null && undefined !== void 0 ? undefined : 'babel7-supported',
+    // Requires @babel/plugin-proposal-nullish-coalescing-operator
+    optionalChaining: (_window$navigator$use = (_window = window) === null || _window === void 0 ? void 0 : (_window$navigator = _window.navigator) === null || _window$navigator === void 0 ? void 0 : (_window$navigator$use2 = _window$navigator.userAgent) === null || _window$navigator$use2 === void 0 ? void 0 : (_window$navigator$use3 = _window$navigator$use2.substring) === null || _window$navigator$use3 === void 0 ? void 0 : _window$navigator$use3.call(_window$navigator$use2, 0, 10)) !== null && _window$navigator$use !== void 0 ? _window$navigator$use : 'babel7',
+    // Requires @babel/plugin-proposal-optional-chaining
+    numericSeparator: 1000000 // Requires @babel/plugin-proposal-numeric-separator
+  };
+  console.log('🎉 Babel 7 Upgrade Verified! Modern JS features compiled:', babelVersion);
 }
 var domRegistry = new __WEBPACK_IMPORTED_MODULE_3_react_dom_components__["DOMRegistry"](__WEBPACK_IMPORTED_MODULE_1_react___default.a, __WEBPACK_IMPORTED_MODULE_2_react_dom__["render"]);
 domRegistry.register({
