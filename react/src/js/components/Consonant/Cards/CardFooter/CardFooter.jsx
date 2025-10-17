@@ -158,8 +158,7 @@ const CardFooter = (props) => {
                         onFocus={onFocus}
                         title={title}
                         tabIndex={tabIndex}
-                        renderOverlay={renderOverlay}
-                    />
+                        renderOverlay={renderOverlay}/>
                 </div>
                 }
                 {shouldRenderAltRightUpcoming &&

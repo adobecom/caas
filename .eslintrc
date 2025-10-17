@@ -69,7 +69,8 @@
     "prefer-regex-literals": "off",
     "react/jsx-no-useless-fragment": "off",
     "no-console": "off",
-    "func-names": "off"
+    "func-names": "off",
+    "no-promise-executor-return": "off"
   },
   "overrides": [
     {

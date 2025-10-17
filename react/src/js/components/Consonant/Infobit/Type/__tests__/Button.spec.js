@@ -94,7 +94,7 @@ describe('Consonant/Infobits/Type/Button', () => {
     
     test('Should set tabIndex to -1 when renderOverlay is true', () => {
         const customTabIndex = '0';
-        render(<Button tabIndex={customTabIndex} renderOverlay={true} />);
+        render(<Button tabIndex={customTabIndex} renderOverlay />);
         
         const buttonElement = screen.getByTestId('consonant-BtnInfobit');
         expect(buttonElement).toHaveAttribute('tabIndex', '-1');
