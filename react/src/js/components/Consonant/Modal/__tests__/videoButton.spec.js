@@ -9,11 +9,7 @@ jest.mock('../../Helpers/hooks', () => ({
 }));
 
 // Mock the Modal class
-jest.mock('../modal', () => {
-  return jest.fn().mockImplementation(() => {
-    return { open: jest.fn() };
-  });
-});
+jest.mock('../modal', () => jest.fn().mockImplementation(() => ({ open: jest.fn() })));
 
 // Mock createPortal to render children directly
 jest.mock('react-dom', () => ({
@@ -42,10 +38,9 @@ describe('VideoButton Component', () => {
 
   it('should render correctly with required props', () => {
     const wrapper = mount(
-      <VideoButton
-        videoURL="https://example.com/video.mp4"
-        className="video-button"
-      />
+        <VideoButton
+            videoURL="https://example.com/video.mp4"
+            className="video-button"/>
     );
 
     const button = wrapper.find('button');
@@ -55,10 +50,9 @@ describe('VideoButton Component', () => {
 
   it('should use default props when not provided', () => {
     const wrapper = mount(
-      <VideoButton
-        videoURL="https://example.com/video.mp4"
-        className="video-button"
-      />
+        <VideoButton
+            videoURL="https://example.com/video.mp4"
+            className="video-button"/>
     );
 
     const button = wrapper.find('button');
@@ -67,10 +61,9 @@ describe('VideoButton Component', () => {
 
   it('should open modal when button is clicked with a regular video URL', () => {
     const wrapper = mount(
-      <VideoButton
-        videoURL="https://example.com/video.mp4"
-        className="video-button"
-      />
+        <VideoButton
+            videoURL="https://example.com/video.mp4"
+            className="video-button"/>
     );
 
     expect(wrapper.find('VideoModal').exists()).toBe(false);
@@ -84,10 +77,9 @@ describe('VideoButton Component', () => {
 
   it('should update window.location.hash when clicked with an authored modal URL', () => {
     const wrapper = mount(
-      <VideoButton
-        videoURL="#modal-id"
-        className="video-button"
-      />
+        <VideoButton
+            videoURL="#modal-id"
+            className="video-button"/>
     );
 
     wrapper.find('button').simulate('click');
@@ -96,11 +88,10 @@ describe('VideoButton Component', () => {
 
   it('should open a new window when clicked with a gated video URL', () => {
     const wrapper = mount(
-      <VideoButton
-        videoURL="https://example.com/video.mp4"
-        className="video-button"
-        gateVideo={true}
-      />
+        <VideoButton
+            videoURL="https://example.com/video.mp4"
+            className="video-button"
+            gateVideo/>
     );
 
     wrapper.find('button').simulate('click');
@@ -109,10 +100,9 @@ describe('VideoButton Component', () => {
 
   it('should close modal when close handler is triggered', () => {
     const wrapper = mount(
-      <VideoButton
-        videoURL="https://example.com/video.mp4"
-        className="video-button"
-      />
+        <VideoButton
+            videoURL="https://example.com/video.mp4"
+            className="video-button"/>
     );
 
     wrapper.find('button').simulate('click');
@@ -130,12 +120,11 @@ describe('VideoButton Component', () => {
 
   it('should pass correct props to the Modal component', () => {
     const wrapper = mount(
-      <VideoButton
-        name="custom-modal"
-        videoURL="https://example.com/video.mp4"
-        className="video-button"
-        videoPolicy="autoplay"
-      />
+        <VideoButton
+            name="custom-modal"
+            videoURL="https://example.com/video.mp4"
+            className="video-button"
+            videoPolicy="autoplay"/>
     );
 
     wrapper.find('button').simulate('click');
@@ -150,11 +139,10 @@ describe('VideoButton Component', () => {
 
   it('should set correct aria-label with title', () => {
     const wrapper = mount(
-      <VideoButton
-        videoURL="https://example.com/video.mp4"
-        className="video-button"
-        title="Test Video"
-      />
+        <VideoButton
+            videoURL="https://example.com/video.mp4"
+            className="video-button"
+            title="Test Video"/>
     );
 
     const button = wrapper.find('button');

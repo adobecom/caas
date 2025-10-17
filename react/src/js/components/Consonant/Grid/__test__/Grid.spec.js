@@ -82,25 +82,25 @@ describe('Consonant/Grid', () => {
     
     test('should apply correct gutter classes for 1x', () => {
         renderCardsGrid({}, { collection: { layout: { gutter: '1x' } } });
-        let gridElement = screen.getByTestId('consonant-CardsGrid');
+        const gridElement = screen.getByTestId('consonant-CardsGrid');
         expect(gridElement).toHaveClass('consonant-CardsGrid--with1xGutter');
     });
 
     test('should apply correct gutter classes for 2x', () => {
         renderCardsGrid({}, { collection: { layout: { gutter: '2x' } } });
-        let gridElement = screen.getByTestId('consonant-CardsGrid');
+        const gridElement = screen.getByTestId('consonant-CardsGrid');
         expect(gridElement).toHaveClass('consonant-CardsGrid--with2xGutter');
     });
 
     test('should apply correct gutter classes for 3x', () => {
         renderCardsGrid({}, { collection: { layout: { gutter: '3x' } } });
-        let gridElement = screen.getByTestId('consonant-CardsGrid');
+        const gridElement = screen.getByTestId('consonant-CardsGrid');
         expect(gridElement).toHaveClass('consonant-CardsGrid--with3xGutter');
     });
 
     test('should apply correct gutter classes for 4x', () => {
         renderCardsGrid({}, { collection: { layout: { gutter: '4x' } } });
-        let gridElement = screen.getByTestId('consonant-CardsGrid');
+        const gridElement = screen.getByTestId('consonant-CardsGrid');
         expect(gridElement).toHaveClass('consonant-CardsGrid--with4xGutter');
     });    
     
@@ -200,7 +200,7 @@ describe('Consonant/Grid', () => {
     });
 
     test('should not show CTA button when showCTA prop is false', () => {
-        renderCardsGrid({}, { collection: { collectionButtonStyle: 'hidden' } } );
+        renderCardsGrid({}, { collection: { collectionButtonStyle: 'hidden' } });
         const gridElement = screen.getByTestId('consonant-CardsGrid');
         screen.debug(gridElement);
         const ctaButton = screen.queryByTestId('consonant-BtnInfobit');

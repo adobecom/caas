@@ -66,22 +66,11 @@ module.exports = {
                 exclude: /(node_modules|bower_components|\.spec\.js$)/,
                 use: {
                     loader: 'babel-loader',
-                    options: {
-                        presets: ['env'],
-                        plugins: ['transform-class-properties', 'transform-object-rest-spread'],
-                    },
+                    // Options are now in .babelrc
                 },
             },
-            {
-                test: /\.(js|jsx)$/,
-                exclude: /(node_modules|@dexter|bower_components|\.spec\.js$)/,
-                enforce: 'pre',
-                loader: 'eslint-loader',
-                options: {
-                    failOnError: true,
-                    fix: false,
-                },
-            },
+            // eslint-loader removed due to incompatibility with eslint 8+
+            // Run linting separately with: npm run lint
             {
                 test: /\.css$/,
                 loader: 'style-loader!css-loader',

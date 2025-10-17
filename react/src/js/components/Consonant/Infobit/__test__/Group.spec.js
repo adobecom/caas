@@ -26,13 +26,12 @@ describe('Consonant/Infobits/Group', () => {
     ];
 
     render(
-      <Group 
-        renderList={renderList}
-        onFocus={mockOnFocus}
-        title={title}
-        tabIndex={tabIndex}
-        renderOverlay={renderOverlay}
-      />
+        <Group 
+            renderList={renderList}
+            onFocus={mockOnFocus}
+            title={title}
+            tabIndex={tabIndex}
+            renderOverlay={renderOverlay}/>
     );
 
     const buttonElement = screen.getByTestId('consonant-BtnInfobit');

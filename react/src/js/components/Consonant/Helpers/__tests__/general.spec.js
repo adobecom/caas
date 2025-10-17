@@ -343,7 +343,7 @@ describe('utils/general', () => {
     });
 
     describe('sanitizeEventFilter', () => {
-        PROPS.sanitizeEventFilter.forEach(( { filter, expectedValue }) => {
+        PROPS.sanitizeEventFilter.forEach(({ filter, expectedValue }) => {
             test('should return sanitized event filter', () => {
                 const value = sanitizeEventFilter(filter);
                 expect(value).toEqual(expectedValue);
