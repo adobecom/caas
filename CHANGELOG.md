@@ -1,5 +1,12 @@
 
 
+## [0.39.5](https://github.com/adobecom/caas/compare/0.39.4...0.39.5) (2025-10-17)
+
+
+### Bug Fixes
+
+* **mwpw-177042:** add missing release-it dependency for CI/CD ([ea5df26](https://github.com/adobecom/caas/commit/ea5df261e4291a48eb7c1f08a2853968cd2a5817))
+
 ## [0.39.4](https://github.com/adobecom/caas/compare/0.39.3...0.39.4) (2025-10-16)
 
 ## [0.39.3](https://github.com/adobecom/caas/compare/0.39.2...0.39.3) (2025-10-16)
