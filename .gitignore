@@ -115,3 +115,9 @@ web_modules/
 
 .idea
 .DS_Store
+
+# Build output (will be built by CI/CD and during releases)
+# Ignore all dist/ files except vendored React libraries
+dist/*
+!dist/react.umd.js
+!dist/react.dom.umd.js
