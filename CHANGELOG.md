@@ -1,5 +1,7 @@
 
 
+## [0.40.2](https://github.com/adobecom/caas/compare/0.40.1...0.40.2) (2025-10-20)
+
 ## [0.40.1](https://github.com/adobecom/caas/compare/test-manual-trigger-1...0.40.1) (2025-10-20)
 
 
