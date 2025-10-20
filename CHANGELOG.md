@@ -1,5 +1,17 @@
 
 
+# [0.40.0](https://github.com/adobecom/caas/compare/0.39.7...0.40.0) (2025-10-20)
+
+
+### Bug Fixes
+
+* **mwpw-000:** trigger release workflow on tag push instead of release event ([17f6847](https://github.com/adobecom/caas/commit/17f68475161fedd1a32939c274c307f93a85aeb0))
+
+
+### Features
+
+* **mwpw-000:** add manual workflow to build release assets retroactively ([a248473](https://github.com/adobecom/caas/commit/a248473d9fcd4ddacf58d1711ea0c19d8687be39))
+
 ## [0.39.7](https://github.com/adobecom/caas/compare/0.39.6...0.39.7) (2025-10-20)
 
 ## [0.39.6](https://github.com/adobecom/caas/compare/0.39.5...0.39.6) (2025-10-20)
