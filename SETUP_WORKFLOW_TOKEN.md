@@ -4,7 +4,10 @@
 When GitHub Actions uses `GITHUB_TOKEN` to push tags, it doesn't trigger other workflows (by design, to prevent infinite loops). This means our `release-assets.yml` workflow never runs automatically.
 
 ## Solution
-Create a Personal Access Token (PAT) that CAN trigger workflows.
+Use a Personal Access Token (PAT) that CAN trigger workflows. The workflow will try to use tokens in this order:
+1. `BOT_TOKEN` (if it exists and has the right permissions)
+2. `WORKFLOW_TOKEN` (if configured)
+3. `GITHUB_TOKEN` (fallback, but won't trigger workflows)
 
 ---
 
@@ -29,9 +32,11 @@ Create a Personal Access Token (PAT) that CAN trigger workflows.
 1. Go to repository: https://github.com/adobecom/caas
 2. Navigate to: **Settings** → **Secrets and variables** → **Actions**
 3. Click **New repository secret**
-4. Name: `WORKFLOW_TOKEN`
+4. Name: `BOT_TOKEN` or `WORKFLOW_TOKEN`
 5. Value: Paste the token you copied
 6. Click **Add secret**
+
+**Note:** If you already have a `BOT_TOKEN` secret, you can update it with the new token that has `repo` + `workflow` scopes, or create a separate `WORKFLOW_TOKEN`.
 
 ---
 
@@ -76,15 +81,15 @@ Merge PR → npm run release → Pushes tag with WORKFLOW_TOKEN (PAT)
 
 ## Fallback Behavior
 
-The code uses: `${{ secrets.WORKFLOW_TOKEN || secrets.GITHUB_TOKEN }}`
+The code uses: `${{ secrets.BOT_TOKEN || secrets.WORKFLOW_TOKEN || secrets.GITHUB_TOKEN }}`
 
-**If WORKFLOW_TOKEN doesn't exist:**
+**If neither BOT_TOKEN nor WORKFLOW_TOKEN exists (or they lack proper permissions):**
 - ✅ Release process still works
 - ✅ Creates release and pushes tag
 - ❌ But won't trigger release-assets workflow (same as before)
 - ✅ Can use manual workflow as backup
 
-**Once WORKFLOW_TOKEN is added:**
+**Once BOT_TOKEN or WORKFLOW_TOKEN is added with proper permissions:**
 - ✅ Everything works automatically!
 
 ---
