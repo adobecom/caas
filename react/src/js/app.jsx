@@ -23,6 +23,8 @@ if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined') {
     console.log('🎉 Babel 7 Upgrade Verified! Modern JS features compiled:', babelVersion);
 }
 
+alert('hello');
+
 const domRegistry = new DOMRegistry(React, render);
 domRegistry.register({
     consonantPageRDC,
