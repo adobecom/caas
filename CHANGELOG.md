@@ -1,5 +1,12 @@
 
 
+## [0.40.1](https://github.com/adobecom/caas/compare/test-manual-trigger-1...0.40.1) (2025-10-20)
+
+
+### Bug Fixes
+
+* **mwpw-000:** use BOT_TOKEN as primary option for workflow triggering ([df2abae](https://github.com/adobecom/caas/commit/df2abae88dfb696f9bf9dffe44d9982bc120678b))
+
 # [0.40.0](https://github.com/adobecom/caas/compare/0.39.7...0.40.0) (2025-10-20)
 
 
