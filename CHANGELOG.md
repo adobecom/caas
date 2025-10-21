@@ -1,5 +1,12 @@
 
 
+## [0.40.7](https://github.com/adobecom/caas/compare/0.40.6...0.40.7) (2025-10-21)
+
+
+### Bug Fixes
+
+* **mwpw-000:** skip Commitizen prompt for merge commits ([6258c17](https://github.com/adobecom/caas/commit/6258c1799ea870c0343abca3d3d8f51b7bbc982e))
+
 ## [0.40.6](https://github.com/adobecom/caas/compare/0.40.5...0.40.6) (2025-10-21)
 
 ## [0.40.5](https://github.com/adobecom/caas/compare/0.40.4...0.40.5) (2025-10-21)
