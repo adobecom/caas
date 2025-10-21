@@ -1,5 +1,12 @@
 
 
+## [0.40.5](https://github.com/adobecom/caas/compare/0.40.4...0.40.5) (2025-10-21)
+
+
+### Bug Fixes
+
+* **mwpw-000:** use workflow conditional instead of [skip ci] ([fabf948](https://github.com/adobecom/caas/commit/fabf948057b5a38f0b3dbed4c0040025e1a718a8))
+
 ## [0.40.4](https://github.com/adobecom/caas/compare/0.40.3...0.40.4) (2025-10-21)
 
 
