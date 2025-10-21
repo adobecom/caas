@@ -1,6 +1,6 @@
 {
   "name": "CaaS",
-  "version": "0.39.5",
+  "version": "0.40.6",
   "private": false,
   "description": "",
   "scripts": {
@@ -135,9 +135,7 @@
   "husky": {
     "hooks": {
       "prepare-commit-msg": "exec < /dev/tty && npx cz --hook || true",
-      "pre-commit": "npm run build && git add . && enforce-branch-name '.*'",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "after:bump": "RELEASE_TAG=${version} npm run build && git add dist"
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "config": {

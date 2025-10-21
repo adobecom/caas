@@ -1,5 +1,48 @@
 
 
+## [0.40.6](https://github.com/adobecom/caas/compare/0.40.5...0.40.6) (2025-10-21)
+
+## [0.40.5](https://github.com/adobecom/caas/compare/0.40.4...0.40.5) (2025-10-21)
+
+
+### Bug Fixes
+
+* **mwpw-000:** use workflow conditional instead of [skip ci] ([fabf948](https://github.com/adobecom/caas/commit/fabf948057b5a38f0b3dbed4c0040025e1a718a8))
+
+## [0.40.4](https://github.com/adobecom/caas/compare/0.40.3...0.40.4) (2025-10-21)
+
+
+### Bug Fixes
+
+* **mwpw-000:** prevent infinite release loop by adding [skip ci] ([70056a4](https://github.com/adobecom/caas/commit/70056a46a5a07b63c44fe3d72934e25790c6e743))
+
+## [0.40.3](https://github.com/adobecom/caas/compare/0.40.2...0.40.3) (2025-10-20)
+
+## [0.40.2](https://github.com/adobecom/caas/compare/0.40.1...0.40.2) (2025-10-20)
+
+## [0.40.1](https://github.com/adobecom/caas/compare/test-manual-trigger-1...0.40.1) (2025-10-20)
+
+
+### Bug Fixes
+
+* **mwpw-000:** use BOT_TOKEN as primary option for workflow triggering ([df2abae](https://github.com/adobecom/caas/commit/df2abae88dfb696f9bf9dffe44d9982bc120678b))
+
+# [0.40.0](https://github.com/adobecom/caas/compare/0.39.7...0.40.0) (2025-10-20)
+
+
+### Bug Fixes
+
+* **mwpw-000:** trigger release workflow on tag push instead of release event ([17f6847](https://github.com/adobecom/caas/commit/17f68475161fedd1a32939c274c307f93a85aeb0))
+
+
+### Features
+
+* **mwpw-000:** add manual workflow to build release assets retroactively ([a248473](https://github.com/adobecom/caas/commit/a248473d9fcd4ddacf58d1711ea0c19d8687be39))
+
+## [0.39.7](https://github.com/adobecom/caas/compare/0.39.6...0.39.7) (2025-10-20)
+
+## [0.39.6](https://github.com/adobecom/caas/compare/0.39.5...0.39.6) (2025-10-20)
+
 ## [0.39.5](https://github.com/adobecom/caas/compare/0.39.4...0.39.5) (2025-10-17)
 
 
