@@ -10,6 +10,8 @@ permissions: write-all
 jobs:
   run-release:
     runs-on: ubuntu-latest
+    # Skip if this is a release commit (prevents infinite loop)
+    if: "!startsWith(github.event.head_commit.message, 'chore: release')"
     steps:
       - uses: actions/checkout@v2
         with:
