@@ -1,0 +1,13 @@
+{
+  "hooks": {
+    "pre-bash": [
+      {
+        "name": "prevent-push-to-main",
+        "description": "Prevents pushing directly to main or master branches",
+        "pattern": "git push.*origin.*(main|master)",
+        "action": "block",
+        "message": "❌ BLOCKED: Never push directly to main/master branch!\n\nPlease:\n1. Create a feature branch: git checkout -b <branch-name>\n2. Make your changes and commit\n3. Push to the feature branch: git push origin <branch-name>\n4. Create a Pull Request\n\nIf you need to update main, ask the user first."
+      }
+    ]
+  }
+}
