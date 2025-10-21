@@ -1,5 +1,12 @@
 
 
+## [0.40.4](https://github.com/adobecom/caas/compare/0.40.3...0.40.4) (2025-10-21)
+
+
+### Bug Fixes
+
+* **mwpw-000:** prevent infinite release loop by adding [skip ci] ([70056a4](https://github.com/adobecom/caas/commit/70056a46a5a07b63c44fe3d72934e25790c6e743))
+
 ## [0.40.3](https://github.com/adobecom/caas/compare/0.40.2...0.40.3) (2025-10-20)
 
 ## [0.40.2](https://github.com/adobecom/caas/compare/0.40.1...0.40.2) (2025-10-20)
