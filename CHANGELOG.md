@@ -1,5 +1,12 @@
 
 
+# [0.41.0](https://github.com/adobecom/caas/compare/0.40.7...0.41.0) (2025-10-22)
+
+
+### Features
+
+* **mwpw-182058:** adds new functionality to center play buttons ([#343](https://github.com/adobecom/caas/issues/343)) ([7715646](https://github.com/adobecom/caas/commit/771564674e07642ebdb055ce91372c48bf8c5e5c))
+
 ## [0.40.7](https://github.com/adobecom/caas/compare/0.40.6...0.40.7) (2025-10-21)
 
 
