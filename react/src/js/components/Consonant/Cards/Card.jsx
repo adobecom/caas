@@ -200,6 +200,7 @@ const Card = (props) => {
     const altCtaUsed = getConfig('collection', 'dynamicCTAForLiveEvents');
     const ctaAction = getConfig('collection', 'ctaAction');
     const bladeCard = getConfig('collection', 'bladeCard');
+    const useCenterVideoPlay = getConfig('collection', 'useCenterVideoPlay');
     const searchEnabled = getConfig('search', 'enabled');
 
     /**
@@ -371,6 +372,7 @@ const Card = (props) => {
         || (isHalfHeight && showCardBadges);
     const showLabel = !isProduct && !isText;
     const showVideoButton = !isProduct && !isText && !isIcon;
+    const videoButtonStyle = useCenterVideoPlay ? "center" : "";
     const showText = !isHalfHeight && !isFull && !isNews && !isHorizontal;
     const showFooter = isOneHalf || isProduct || isText || isNews || isBlade;
     const showFooterLeft = !isProduct;
@@ -501,7 +503,7 @@ const Card = (props) => {
                     gateVideo={gateVideo}
                     onFocus={onFocus}
                     tabIndex={tabIndex}
-                    className="consonant-Card-videoIco" />
+                    className={`consonant-Card-videoIco ${videoButtonStyle}`} />
                 }
                 {showLogo &&
                 (logoSrc || (isText && image)) &&
@@ -545,7 +547,7 @@ const Card = (props) => {
                     gateVideo={gateVideo}
                     onFocus={onFocus}
                     tabIndex={tabIndex}
-                    className="consonant-Card-videoIco" />
+                    className={`consonant-Card-videoIco ${videoButtonStyle}`} />
                 }
 
                 {showLabel &&
