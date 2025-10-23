@@ -71,4 +71,10 @@ describe('Consonant/Filters/Left/Filters Info', () => {
 
         expect(onMobileFiltersToggleClick).toHaveBeenCalled();
     });
+
+    // Accessibility test with jest-axe
+    describe('Accessibility', () => {
+        const { testAccessibility } = require('../../../Testing/Utils/a11yTest');
+        testAccessibility(renderFiltersInfo, {}, 'Filters Info');
+    });
 });

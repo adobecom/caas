@@ -35,4 +35,10 @@ describe('Consonant/Pagination/Load More', () => {
         const buttonElement = screen.getByTestId('consonant-LoadMore-btn');
         expect(buttonElement).toHaveAttribute('daa-ll', 'Load More');
     });
+
+    // Accessibility test with jest-axe
+    describe('Accessibility', () => {
+        const { testAccessibility } = require('../../Testing/Utils/a11yTest');
+        testAccessibility(renderLoadMore, {}, 'Load More');
+    });
 });

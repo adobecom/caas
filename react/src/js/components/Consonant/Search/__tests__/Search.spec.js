@@ -4,6 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import Search from '../Search';
 import setup from '../../Testing/Utils/Settings';
 import { DEFAULT_PROPS } from '../../Testing/Constants/Search';
+import { testA11yForConfigs } from '../../Testing/Utils/a11yTest';
 
 const renderSearch = setup(Search, DEFAULT_PROPS);
 
@@ -40,4 +41,16 @@ describe('Consonant/Search', () => {
         expect(onSearch).toHaveBeenCalled();
         expect(onSearch).toHaveBeenCalledWith('');
     });
+
+    // Accessibility tests with jest-axe
+    testA11yForConfigs(renderSearch, [
+        {
+            name: 'Search with empty value',
+            props: { value: '' }
+        },
+        {
+            name: 'Search with populated value',
+            props: { value: 'Test search query' }
+        }
+    ]);
 });

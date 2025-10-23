@@ -28,4 +28,10 @@ describe('Consonant/Sort/Popup', () => {
 
         expect(onSelect).toHaveBeenCalled();
     });
+
+    // Accessibility test with jest-axe
+    describe('Accessibility', () => {
+        const { testAccessibility } = require('../../Testing/Utils/a11yTest');
+        testAccessibility(renderSortPopup, {}, 'Sort Popup');
+    });
 });

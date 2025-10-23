@@ -211,4 +211,10 @@ describe('Consonant/Filters/Top/Panel', () => {
         const filterGroupElements = screen.queryAllByTestId('consonant-TopFilter-items');
         expect(filterGroupElements).toHaveLength(filters.length);
     });
+
+    // Accessibility test with jest-axe
+    describe('Accessibility', () => {
+        const { testAccessibility } = require('../../../Testing/Utils/a11yTest');
+        testAccessibility(renderTopFilterPanel, { filterPanelEnabled: true }, 'Top Filter Panel');
+    });
 });

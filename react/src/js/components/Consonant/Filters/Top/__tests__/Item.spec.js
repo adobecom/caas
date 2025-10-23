@@ -93,4 +93,10 @@ describe('Consonant/Filters/Top/Item', () => {
         expect(categoryTitles[0]).toHaveTextContent('category1');
         expect(categoryTitles[1]).toHaveTextContent('category2');
     });
+
+    // Accessibility test with jest-axe
+    describe('Accessibility', () => {
+        const { testAccessibility } = require('../../../Testing/Utils/a11yTest');
+        testAccessibility(renderTopFilterItem, {}, 'Top Filter Item');
+    });
 });

@@ -4,8 +4,11 @@ import {
     render,
     screen,
 } from '@testing-library/react';
+import { axe, toHaveNoViolations } from 'jest-axe';
 
 import Link from '../Link';
+
+expect.extend(toHaveNoViolations);
 
 const props = {
     href: 'https://www.someTestUrl.com/',
@@ -31,5 +34,14 @@ describe('Consonant/Infobits/Type/Link', () => {
         const linkWithIcon = screen.getByTestId('consonant-LinkInfobit');
 
         expect(linkWithIcon.target).toBe('_blank');
+    });
+
+    // Accessibility test with jest-axe
+    describe('Accessibility', () => {
+        test('Link should have no accessibility violations', async () => {
+            const { container } = render(<Link {...props} />);
+            const results = await axe(container);
+            expect(results).toHaveNoViolations();
+        });
     });
 });

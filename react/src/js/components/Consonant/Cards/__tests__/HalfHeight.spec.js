@@ -6,6 +6,7 @@ import Card from '../Card';
 import { DEFAULT_PROPS_HALF_HEIGHT } from '../../Testing/Constants/Card';
 
 import setup from '../../Testing/Utils/Settings';
+import { testA11yForConfigs } from '../../Testing/Utils/a11yTest';
 
 const renderCard = setup(Card, DEFAULT_PROPS_HALF_HEIGHT);
 
@@ -143,4 +144,21 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         const cardHeader = screen.getByTestId('consonant-Card-title');
         expect(cardHeader).not.toHaveAttribute('aria-label');
     });
+
+    // Accessibility tests with jest-axe
+    testA11yForConfigs(renderCard, [
+        {
+            name: 'Default half-height card',
+            props: { cardStyle }
+        },
+        {
+            name: 'Half-height card with video button',
+            props: {
+                cardStyle,
+                overlays: {
+                    videoButton: { url: 'https://example.com/video.mp4' }
+                }
+            }
+        }
+    ]);
 });

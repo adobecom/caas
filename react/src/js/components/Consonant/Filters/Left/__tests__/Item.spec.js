@@ -114,4 +114,10 @@ describe('Consonant/Filters/Left/Item', () => {
         expect(leftFilterElement).toHaveClass('is-opened');
         expect(leftFilterLink).toHaveAttribute('aria-expanded', 'true');
     });
+
+    // Accessibility test with jest-axe
+    describe('Accessibility', () => {
+        const { testAccessibility } = require('../../../Testing/Utils/a11yTest');
+        testAccessibility(renderItemComponent, {}, 'Left Filter Item');
+    });
 });

@@ -81,4 +81,10 @@ describe('Consonant/Bookmarks', () => {
             expect(onClick).toHaveBeenCalled();
         });
     });
+
+    // Accessibility test with jest-axe
+    describe('Accessibility', () => {
+        const { testAccessibility } = require('../../Testing/Utils/a11yTest');
+        testAccessibility(setup, {}, 'Bookmarks');
+    });
 });

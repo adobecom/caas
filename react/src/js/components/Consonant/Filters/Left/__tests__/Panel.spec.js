@@ -106,4 +106,10 @@ describe('Consonant/Left/Panel', () => {
         const leftFilterPanel = screen.queryByTestId('consonant-LeftFilters');
         expect(leftFilterPanel).toHaveAttribute('daa-lh', 'Filters');
     });
+
+    // Accessibility test with jest-axe
+    describe('Accessibility', () => {
+        const { testAccessibility } = require('../../../Testing/Utils/a11yTest');
+        testAccessibility(renderFilterPanel, {}, 'Left Filter Panel');
+    });
 });

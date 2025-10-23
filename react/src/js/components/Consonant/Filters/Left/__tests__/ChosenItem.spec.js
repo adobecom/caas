@@ -27,4 +27,10 @@ describe('Consonant/Filters/Left/Chosen Item', () => {
             expect(onClick).toHaveBeenCalledWith(parentId, id, false);
         });
     });
+
+    // Accessibility test with jest-axe
+    describe('Accessibility', () => {
+        const { testAccessibility } = require('../../../Testing/Utils/a11yTest');
+        testAccessibility(setup, {}, 'Chosen Filter Item');
+    });
 });

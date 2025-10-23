@@ -87,4 +87,10 @@ describe('Consonant/Pagination/Paginator', () => {
         fireEvent.click(prevButton);
         expect(onClick).toHaveBeenCalledWith(1);
     });
+
+    // Accessibility test with jest-axe
+    describe('Accessibility', () => {
+        const { testAccessibility } = require('../../Testing/Utils/a11yTest');
+        testAccessibility(renderComponent, {}, 'Paginator');
+    });
 });
