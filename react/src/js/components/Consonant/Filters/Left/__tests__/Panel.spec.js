@@ -6,6 +6,7 @@ import {
 
 import Panel from '../Panel';
 import setup from '../../../Testing/Utils/Settings';
+import { testAccessibility } from '../../../Testing/Utils/a11yTest';
 import {
     DEFAULT_PROPS,
     NON_DESKTOP_WIDTH,
@@ -109,7 +110,6 @@ describe('Consonant/Left/Panel', () => {
 
     // Accessibility test with jest-axe
     describe('Accessibility', () => {
-        const { testAccessibility } = require('../../../Testing/Utils/a11yTest');
         testAccessibility(renderFilterPanel, {}, 'Left Filter Panel');
     });
 });

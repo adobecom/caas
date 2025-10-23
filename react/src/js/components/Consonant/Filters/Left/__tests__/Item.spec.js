@@ -10,6 +10,7 @@ import {
 } from '../../../Testing/Constants/FilterItem';
 
 import setup from '../../../Testing/Utils/Settings';
+import { testAccessibility } from '../../../Testing/Utils/a11yTest';
 
 const renderItemComponent = setup(Item, DEFAULT_PROPS);
 
@@ -117,7 +118,6 @@ describe('Consonant/Filters/Left/Item', () => {
 
     // Accessibility test with jest-axe
     describe('Accessibility', () => {
-        const { testAccessibility } = require('../../../Testing/Utils/a11yTest');
         testAccessibility(renderItemComponent, {}, 'Left Filter Item');
     });
 });

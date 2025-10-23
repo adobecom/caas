@@ -6,6 +6,7 @@ import LoadMore from '../LoadMore';
 import { DEFAULT_PROPS } from '../../Testing/Constants/LoadMore';
 
 import setup from '../../Testing/Utils/Settings';
+import { testAccessibility } from '../../Testing/Utils/a11yTest';
 
 const renderLoadMore = setup(LoadMore, DEFAULT_PROPS);
 
@@ -38,7 +39,6 @@ describe('Consonant/Pagination/Load More', () => {
 
     // Accessibility test with jest-axe
     describe('Accessibility', () => {
-        const { testAccessibility } = require('../../Testing/Utils/a11yTest');
         testAccessibility(renderLoadMore, {}, 'Load More');
     });
 });

@@ -5,6 +5,7 @@ import {
 
 import { Group } from '../Group';
 import setup from '../../../Testing/Utils/Settings';
+import { testAccessibility } from '../../../Testing/Utils/a11yTest';
 import {
     DEFAULT_PROPS,
 } from '../../../Testing/Constants/FilterItem';
@@ -52,7 +53,6 @@ describe('Consonant/Filters/Top/Group', () => {
 
     // Accessibility test with jest-axe
     describe('Accessibility', () => {
-        const { testAccessibility } = require('../../../Testing/Utils/a11yTest');
         testAccessibility(renderTopFilterGroup, {}, 'Top Filter Group');
     });
 });

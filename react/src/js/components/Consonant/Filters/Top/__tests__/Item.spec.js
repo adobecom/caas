@@ -6,6 +6,7 @@ import {
 
 import { Group as Item } from '../Group';
 import setup from '../../../Testing/Utils/Settings';
+import { testAccessibility } from '../../../Testing/Utils/a11yTest';
 import {
     DEFAULT_PROPS,
     selectedAllItems,
@@ -96,7 +97,6 @@ describe('Consonant/Filters/Top/Item', () => {
 
     // Accessibility test with jest-axe
     describe('Accessibility', () => {
-        const { testAccessibility } = require('../../../Testing/Utils/a11yTest');
         testAccessibility(renderTopFilterItem, {}, 'Top Filter Item');
     });
 });

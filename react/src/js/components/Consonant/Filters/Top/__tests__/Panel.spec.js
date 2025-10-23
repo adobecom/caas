@@ -9,6 +9,7 @@ import FilterPanelTop from '../Panel';
 import Popup from '../../../Sort/Popup';
 import Search from '../../../Search/Search';
 import setup from '../../../Testing/Utils/Settings';
+import { testAccessibility } from '../../../Testing/Utils/a11yTest';
 import { DEFAULT_PROPS as SEARCH_DEFAULT_PROPS } from '../../../Testing/Constants/Search';
 import { DEFAULT_PROPS as SELECT_DEFAULT_PROPS } from '../../../Testing/Constants/Select';
 import { ANALYTICS_ITEMS } from '../../../Testing/Constants/Panel';
@@ -214,7 +215,6 @@ describe('Consonant/Filters/Top/Panel', () => {
 
     // Accessibility test with jest-axe
     describe('Accessibility', () => {
-        const { testAccessibility } = require('../../../Testing/Utils/a11yTest');
         testAccessibility(renderTopFilterPanel, { filterPanelEnabled: true }, 'Top Filter Panel');
     });
 });

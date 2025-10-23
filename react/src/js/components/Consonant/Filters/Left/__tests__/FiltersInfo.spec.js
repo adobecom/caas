@@ -5,6 +5,7 @@ import {
 } from '@testing-library/react';
 
 import setup from '../../../Testing/Utils/Settings';
+import { testAccessibility } from '../../../Testing/Utils/a11yTest';
 import { Info } from '../Info';
 import {
     DEFAULT_PROPS,
@@ -74,7 +75,6 @@ describe('Consonant/Filters/Left/Filters Info', () => {
 
     // Accessibility test with jest-axe
     describe('Accessibility', () => {
-        const { testAccessibility } = require('../../../Testing/Utils/a11yTest');
         testAccessibility(renderFiltersInfo, {}, 'Filters Info');
     });
 });

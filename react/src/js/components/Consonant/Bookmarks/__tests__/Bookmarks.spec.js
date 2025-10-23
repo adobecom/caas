@@ -10,6 +10,7 @@ import {
 } from '../../Testing/Constants/Bookmarks';
 
 import makeSetup from '../../Testing/Utils/Settings';
+import { testAccessibility } from '../../Testing/Utils/a11yTest';
 
 const setup = makeSetup(Bookmarks, DEFAULT_PROPS);
 
@@ -84,7 +85,6 @@ describe('Consonant/Bookmarks', () => {
 
     // Accessibility test with jest-axe
     describe('Accessibility', () => {
-        const { testAccessibility } = require('../../Testing/Utils/a11yTest');
         testAccessibility(setup, {}, 'Bookmarks');
     });
 });
