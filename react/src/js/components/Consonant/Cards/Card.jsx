@@ -464,8 +464,8 @@ const Card = (props) => {
                 data-testid="consonant-Card-header"
                 className="consonant-Card-header"
                 style={{ backgroundImage: `url("${image}")` }}
-                role={altText && 'img'}
-                aria-label={altText}>
+                role={(!isIcon && altText) ? 'img' : ''}
+                aria-label={!isIcon ? altText : ''}>
                 {hasBanner && !disableBanners && !isIcon && !isNews &&
                 <span
                     data-testid="consonant-Card-banner"
