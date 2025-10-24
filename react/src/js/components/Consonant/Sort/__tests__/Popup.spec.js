@@ -4,6 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { DEFAULT_PROPS } from '../../Testing/Constants/Select';
 import Popup from '../Popup';
 import setup from '../../Testing/Utils/Settings';
+import { testAccessibility } from '../../Testing/Utils/a11yTest';
 
 const renderSortPopup = setup(Popup, DEFAULT_PROPS);
 
@@ -27,5 +28,10 @@ describe('Consonant/Sort/Popup', () => {
         fireEvent.click(optionElement);
 
         expect(onSelect).toHaveBeenCalled();
+    });
+
+    // Accessibility test with jest-axe
+    describe('Accessibility', () => {
+        testAccessibility(renderSortPopup, {}, 'Sort Popup');
     });
 });

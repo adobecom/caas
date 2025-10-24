@@ -5,9 +5,12 @@ import {
     render,
     screen,
 } from '@testing-library/react';
-import { ConfigContext } from '../../../Helpers/contexts'; // Adjust the import path as necessary
+import { axe, toHaveNoViolations } from 'jest-axe';
+import { ConfigContext } from '../../../Helpers/contexts';
 
-import Button from '../Button';
+import Button from '../Button'; // Adjust the import path as necessary
+
+expect.extend(toHaveNoViolations);
 
 describe('Consonant/Infobits/Type/Button', () => {
     test('Buttons should be able to render when the cta style is authored', async () => {
@@ -104,5 +107,14 @@ describe('Consonant/Infobits/Type/Button', () => {
         render(<Button tabIndex={customTabIndex} renderOverlay={false} />);
         const buttonElement = screen.getByTestId('consonant-BtnInfobit');
         expect(buttonElement).toHaveAttribute('tabIndex', customTabIndex);
+    });
+
+    // Accessibility test with jest-axe
+    describe('Accessibility', () => {
+        test('Button should have no accessibility violations', async () => {
+            const { container } = render(<Button href="https://example.com" text="Click me" />);
+            const results = await axe(container);
+            expect(results).toHaveNoViolations();
+        });
     });
 });

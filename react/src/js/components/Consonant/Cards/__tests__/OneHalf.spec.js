@@ -6,6 +6,7 @@ import Card from '../Card';
 import { DEFAULT_PROPS_ONE_HALF } from '../../Testing/Constants/Card';
 
 import setup from '../../Testing/Utils/Settings';
+import { testA11yForConfigs } from '../../Testing/Utils/a11yTest';
 
 const renderCard = setup(Card, DEFAULT_PROPS_ONE_HALF);
 
@@ -229,12 +230,29 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         const dateinterval = screen.getByTestId('consonant-DateIntervalInfobit');
         expect(dateinterval).not.toBeNull();
     });
-    test('should render a card with a heading and aria-label', () => {
+    test('should render a card with a heading and aria-level', () => {
         renderCard({
             cardStyle,
         });
 
         const cardHeader = screen.getByTestId('consonant-Card-title');
-        expect(cardHeader).toHaveAttribute('aria-label');
+        expect(cardHeader).toHaveAttribute('aria-level');
     });
+
+    // Accessibility tests with jest-axe
+    testA11yForConfigs(renderCard, [
+        {
+            name: 'Default one-half card',
+            props: { cardStyle }
+        },
+        {
+            name: 'One-half card with video button',
+            props: {
+                cardStyle,
+                overlays: {
+                    videoButton: { url: 'https://example.com/video.mp4' }
+                }
+            }
+        }
+    ]);
 });

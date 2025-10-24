@@ -10,6 +10,7 @@ import {
 } from '../../../Testing/Constants/FilterItem';
 
 import setup from '../../../Testing/Utils/Settings';
+import { testAccessibility } from '../../../Testing/Utils/a11yTest';
 
 const renderItemComponent = setup(Item, DEFAULT_PROPS);
 
@@ -113,5 +114,10 @@ describe('Consonant/Filters/Left/Item', () => {
 
         expect(leftFilterElement).toHaveClass('is-opened');
         expect(leftFilterLink).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    // Accessibility test with jest-axe
+    describe('Accessibility', () => {
+        testAccessibility(renderItemComponent, {}, 'Left Filter Item');
     });
 });

@@ -6,6 +6,7 @@ import LoadMore from '../LoadMore';
 import { DEFAULT_PROPS } from '../../Testing/Constants/LoadMore';
 
 import setup from '../../Testing/Utils/Settings';
+import { testAccessibility } from '../../Testing/Utils/a11yTest';
 
 const renderLoadMore = setup(LoadMore, DEFAULT_PROPS);
 
@@ -34,5 +35,10 @@ describe('Consonant/Pagination/Load More', () => {
         renderLoadMore();
         const buttonElement = screen.getByTestId('consonant-LoadMore-btn');
         expect(buttonElement).toHaveAttribute('daa-ll', 'Load More');
+    });
+
+    // Accessibility test with jest-axe
+    describe('Accessibility', () => {
+        testAccessibility(renderLoadMore, {}, 'Load More');
     });
 });

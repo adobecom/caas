@@ -9,6 +9,7 @@ import { getItemsRange } from '../../Testing/Utils/Pagination';
 import config from '../../Testing/Mocks/config.json';
 import Paginator from '../Paginator';
 import setup from '../../Testing/Utils/Settings';
+import { testAccessibility } from '../../Testing/Utils/a11yTest';
 
 import {
     PAGE_LIST,
@@ -86,5 +87,10 @@ describe('Consonant/Pagination/Paginator', () => {
 
         fireEvent.click(prevButton);
         expect(onClick).toHaveBeenCalledWith(1);
+    });
+
+    // Accessibility test with jest-axe
+    describe('Accessibility', () => {
+        testAccessibility(renderComponent, {}, 'Paginator');
     });
 });

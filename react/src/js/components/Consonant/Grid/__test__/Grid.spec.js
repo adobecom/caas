@@ -6,6 +6,7 @@ import Grid from '../Grid';
 import { DEFAULT_PROPS, GRID_ANALYTICS } from '../../Testing/Constants/Grid';
 
 import setup from '../../Testing/Utils/Settings';
+import { testAccessibility } from '../../Testing/Utils/a11yTest';
 
 const renderCardsGrid = setup(Grid, DEFAULT_PROPS);
 
@@ -205,5 +206,10 @@ describe('Consonant/Grid', () => {
         screen.debug(gridElement);
         const ctaButton = screen.queryByTestId('consonant-BtnInfobit');
         expect(ctaButton).not.toBeInTheDocument();
+    });
+
+    // Accessibility test with jest-axe
+    describe('Accessibility', () => {
+        testAccessibility(renderCardsGrid, {}, 'Grid with default cards');
     });
 });

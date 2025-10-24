@@ -5,6 +5,7 @@ import {
 
 import { Group } from '../Group';
 import setup from '../../../Testing/Utils/Settings';
+import { testAccessibility } from '../../../Testing/Utils/a11yTest';
 import {
     DEFAULT_PROPS,
 } from '../../../Testing/Constants/FilterItem';
@@ -34,19 +35,24 @@ describe('Consonant/Filters/Top/Group', () => {
     
     test('Should toggle analytics attribute between "Open" and "Close" on multiple clicks', () => {
         const { props: { name } } = renderTopFilterGroup();
-        
+
         const filterButton = document.querySelector('.consonant-TopFilter-link');
         const filterNameElement = document.querySelector('.consonant-TopFilter-name');
-        
+
         // Initial state - should be "Open"
         expect(filterNameElement).toHaveAttribute('daa-ll', `${name} Open`);
-        
+
         // First click - should change to "Close"
         fireEvent.click(filterButton);
         expect(filterNameElement).toHaveAttribute('daa-ll', `${name} Close`);
-        
+
         // Second click - should change back to "Open"
         fireEvent.click(filterButton);
         expect(filterNameElement).toHaveAttribute('daa-ll', `${name} Open`);
+    });
+
+    // Accessibility test with jest-axe
+    describe('Accessibility', () => {
+        testAccessibility(renderTopFilterGroup, {}, 'Top Filter Group');
     });
 });

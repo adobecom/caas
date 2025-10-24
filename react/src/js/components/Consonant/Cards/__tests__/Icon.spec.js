@@ -6,6 +6,7 @@ import Card from '../Card';
 import { DEFAULT_PROPS_ICON } from '../../Testing/Constants/Card';
 
 import setup from '../../Testing/Utils/Settings';
+import { testA11yForConfigs } from '../../Testing/Utils/a11yTest';
 
 const renderCard = setup(Card, DEFAULT_PROPS_ICON);
 
@@ -33,7 +34,7 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         const iconImgElement = screen.getByTestId('consonant-Card-logoImg');
         expect(iconElement).not.toBeNull();
         expect(iconImgElement).toHaveAttribute('src', iconSrc);
-        expect(iconImgElement).toHaveAttribute('alt', '');
+        expect(iconImgElement).toHaveAttribute('alt'); // Now has proper alt text
     });
     test('should render a card without a heading and aria-label', () => {
         renderCard({
@@ -43,4 +44,21 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         const cardHeader = screen.getByTestId('consonant-Card-title');
         expect(cardHeader).not.toHaveAttribute('aria-label');
     });
+
+    // Accessibility tests with jest-axe
+    testA11yForConfigs(renderCard, [
+        {
+            name: 'Default icon-card',
+            props: { cardStyle }
+        },
+        {
+            name: 'Icon-card with video button',
+            props: {
+                cardStyle,
+                overlays: {
+                    videoButton: { url: 'https://example.com/video.mp4' }
+                }
+            }
+        }
+    ]);
 });

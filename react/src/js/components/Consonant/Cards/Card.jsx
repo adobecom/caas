@@ -190,7 +190,7 @@ const Card = (props) => {
     const locale = getConfig('language', '');
     const disableBanners = getConfig('collection', 'disableBanners');
     const cardButtonStyle = getConfig('collection', 'button.style');
-    const headingLevel = getConfig('collection.i18n', 'cardTitleAccessibilityLevel');
+    const headingLevel = getConfig('collection.i18n', 'cardTitleAccessibilityLevel') || 3;
     const additionalParams = getConfig('collection', 'additionalRequestParams');
     const detailsTextOption = getConfig('collection', 'detailsTextOption');
     const lastModified = getConfig('collection', 'i18n.lastModified');
@@ -517,7 +517,7 @@ const Card = (props) => {
                     <img
                         // the text card uses the image as logo
                         src={isText ? image : logoSrc}
-                        alt={isText ? altText : logoAlt || ''}
+                        alt={isText ? '' : (logoAlt || '')}
                         loading="lazy"
                         width="32" />
                 </div>
@@ -528,7 +528,7 @@ const Card = (props) => {
                     className="consonant-Card-logo">
                     <img
                         src={cardIcon}
-                        alt=""
+                        alt={iconAlt || ''}
                         loading="lazy"
                         width="32"
                         data-testid="consonant-Card-logoImg" />
@@ -583,7 +583,7 @@ const Card = (props) => {
                 { (!isTitleOnly && highlightedTitle) &&
                     <p
                         role="heading"
-                        aria-label={headingAria}
+                        {...(headingAria && { 'aria-label': headingAria })}
                         aria-level={headingLevel}
                         data-testid="consonant-Card-title"
                         className="consonant-Card-title"
@@ -594,7 +594,7 @@ const Card = (props) => {
                 { (!isTitleOnly && !highlightedTitle) &&
                     <p
                         role="heading"
-                        aria-label={headingAria}
+                        {...(headingAria && { 'aria-label': headingAria })}
                         aria-level={headingLevel}
                         data-testid="consonant-Card-title"
                         className="consonant-Card-title"

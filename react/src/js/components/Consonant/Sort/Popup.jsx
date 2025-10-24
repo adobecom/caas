@@ -107,7 +107,8 @@ const Popup = ({
                 className={openButtonClass}
                 tabIndex="0"
                 aria-haspopup="menu"
-                aria-expanded={opened}>
+                aria-expanded={opened}
+                aria-label={val.label || 'Sort options'}>
                 {val.label}
             </button>
             { opened &&

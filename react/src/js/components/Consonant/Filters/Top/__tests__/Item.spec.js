@@ -6,6 +6,7 @@ import {
 
 import { Group as Item } from '../Group';
 import setup from '../../../Testing/Utils/Settings';
+import { testAccessibility } from '../../../Testing/Utils/a11yTest';
 import {
     DEFAULT_PROPS,
     selectedAllItems,
@@ -92,5 +93,10 @@ describe('Consonant/Filters/Top/Item', () => {
         expect(categoryTitles).toHaveLength(2);
         expect(categoryTitles[0]).toHaveTextContent('category1');
         expect(categoryTitles[1]).toHaveTextContent('category2');
+    });
+
+    // Accessibility test with jest-axe
+    describe('Accessibility', () => {
+        testAccessibility(renderTopFilterItem, {}, 'Top Filter Item');
     });
 });

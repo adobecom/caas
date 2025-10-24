@@ -6,6 +6,7 @@ import {
 
 import Panel from '../Panel';
 import setup from '../../../Testing/Utils/Settings';
+import { testAccessibility } from '../../../Testing/Utils/a11yTest';
 import {
     DEFAULT_PROPS,
     NON_DESKTOP_WIDTH,
@@ -105,5 +106,10 @@ describe('Consonant/Left/Panel', () => {
         renderFilterPanel();
         const leftFilterPanel = screen.queryByTestId('consonant-LeftFilters');
         expect(leftFilterPanel).toHaveAttribute('daa-lh', 'Filters');
+    });
+
+    // Accessibility test with jest-axe
+    describe('Accessibility', () => {
+        testAccessibility(renderFilterPanel, {}, 'Left Filter Panel');
     });
 });
