@@ -1,5 +1,12 @@
 
 
+## [0.41.2](https://github.com/adobecom/caas/compare/0.41.1...0.41.2) (2025-10-24)
+
+
+### Bug Fixes
+
+* **mwpw-182494:** fixes accesssibility issues ([#345](https://github.com/adobecom/caas/issues/345)) ([f24c175](https://github.com/adobecom/caas/commit/f24c17547380b5970663f078b76b846504b29ad8))
+
 ## [0.41.1](https://github.com/adobecom/caas/compare/0.41.0...0.41.1) (2025-10-24)
 
 # [0.41.0](https://github.com/adobecom/caas/compare/0.40.7...0.41.0) (2025-10-22)
