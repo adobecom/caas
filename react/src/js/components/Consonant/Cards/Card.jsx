@@ -517,7 +517,7 @@ const Card = (props) => {
                     <img
                         // the text card uses the image as logo
                         src={isText ? image : logoSrc}
-                        alt={isText ? (altText || 'Card image') : (logoAlt || 'Logo')}
+                        alt={isText ? '' : (logoAlt || '')}
                         loading="lazy"
                         width="32" />
                 </div>
@@ -528,7 +528,7 @@ const Card = (props) => {
                     className="consonant-Card-logo">
                     <img
                         src={cardIcon}
-                        alt={iconAlt || 'Icon'}
+                        alt={iconAlt || ''}
                         loading="lazy"
                         width="32"
                         data-testid="consonant-Card-logoImg" />
