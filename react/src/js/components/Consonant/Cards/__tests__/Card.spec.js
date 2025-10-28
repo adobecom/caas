@@ -5,7 +5,7 @@ import setup from '../../Testing/Utils/Settings';
 import prettyFormatDate from '../../Helpers/prettyFormat';
 
 // Setup function to render the Card component with default props
-const renderCard = setup(Card, {});
+const renderCard = setup(Card, { onClick: jest.fn(), onFocus: jest.fn() }, { wrapInList: true });
 
 describe('Card Component - Specific Conditions', () => {
     beforeEach(() => {
