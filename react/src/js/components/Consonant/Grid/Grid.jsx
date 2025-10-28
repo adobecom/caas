@@ -236,7 +236,7 @@ const Grid = (props) => {
     };
 
     return cardsToshow.length > 0 && (
-        <div
+        <ul
             ref={forwardedRef}
             data-card-style={collectionStyleOverride}
             data-testid="consonant-CardsGrid"
@@ -276,7 +276,7 @@ const Grid = (props) => {
                         );
                 }
             })}
-        </div>
+        </ul>
     );
 };
 
