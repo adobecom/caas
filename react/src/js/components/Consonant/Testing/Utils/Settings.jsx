@@ -12,7 +12,7 @@ export const createTree = component => renderer
     .create(component)
     .toJSON();
 
-export default (Component, defaultProps) => (passedProps, passedConfig) => {
+export default (Component, defaultProps, options = {}) => (passedProps, passedConfig) => {
     const props = {
         ...defaultProps,
         ...passedProps,
@@ -22,11 +22,17 @@ export default (Component, defaultProps) => (passedProps, passedConfig) => {
         ...passedConfig,
     };
 
-    const WrapperComponent = () => (
-        <ContextProvider context={config}>
-            <Component {...props} />
-        </ContextProvider>
-    );
+    const { wrapInList = false } = options;
+
+    const WrapperComponent = () => {
+        const component = <Component {...props} />;
+        
+        return (
+            <ContextProvider context={config}>
+                {wrapInList ? <ul>{component}</ul> : component}
+            </ContextProvider>
+        );
+    };
 
     const wrapper = render(<WrapperComponent />);
     const tree = createTree(<WrapperComponent />);

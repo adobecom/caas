@@ -8,7 +8,7 @@ import { DEFAULT_PROPS_ONE_HALF } from '../../Testing/Constants/Card';
 import setup from '../../Testing/Utils/Settings';
 import { testA11yForConfigs } from '../../Testing/Utils/a11yTest';
 
-const renderCard = setup(Card, DEFAULT_PROPS_ONE_HALF);
+const renderCard = setup(Card, DEFAULT_PROPS_ONE_HALF, { wrapInList: true });
 
 const cardStyle = 'one-half';
 

@@ -8,7 +8,7 @@ import { DEFAULT_PROPS_DOUBLE_WIDE } from '../../Testing/Constants/Card';
 import setup from '../../Testing/Utils/Settings';
 import { testA11yForConfigs } from '../../Testing/Utils/a11yTest';
 
-const renderCard = setup(Card, DEFAULT_PROPS_DOUBLE_WIDE);
+const renderCard = setup(Card, DEFAULT_PROPS_DOUBLE_WIDE, { wrapInList: true });
 
 const cardStyle = 'double-wide';
 

@@ -8,7 +8,7 @@ import { DEFAULT_PROPS_ICON } from '../../Testing/Constants/Card';
 import setup from '../../Testing/Utils/Settings';
 import { testA11yForConfigs } from '../../Testing/Utils/a11yTest';
 
-const renderCard = setup(Card, DEFAULT_PROPS_ICON);
+const renderCard = setup(Card, DEFAULT_PROPS_ICON, { wrapInList: true });
 
 const cardStyle = 'horizontal-card';
 
