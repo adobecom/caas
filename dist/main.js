@@ -1,5 +1,5 @@
 /*!
- * Chimera UI Libraries - Build 0.39.0 (10/14/2025, 11:24:14)
+ * Chimera UI Libraries - Build 0.39.1 (10/30/2025, 14:18:34)
  *         
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -18134,6 +18134,7 @@ var Card = function Card(props) {
     var isFull = cardStyle === 'full-card';
     var isIcon = cardStyle === 'icon-card';
     var isNews = cardStyle === 'news-card';
+    var isIconBlock = cardStyle === 'icon-block';
 
     var isBlade = cardStyle === 'blade-card';
     var bladeVariant = isBlade ? [bladeCard.reverse ? 'reverse' : '', bladeCard.lightText ? 'light-text' : '', bladeCard.transparent ? 'transparent' : ''].filter(Boolean).join(' ') : '';
@@ -18378,6 +18379,15 @@ var Card = function Card(props) {
                     title: title,
                     tabIndex: tabIndex,
                     renderOverlay: renderOverlay });
+            }),
+            isIconBlock && footer.map(function (footerItem) {
+                return _react2.default.createElement(_CardFooter2.default, {
+                    divider: renderDivider || footerItem.divider,
+                    isFluid: footerItem.isFluid,
+                    key: (0, _cuid2.default)(),
+                    left: extendFooterData(footerItem.right),
+                    center: extendFooterData(footerItem.center),
+                    right: extendFooterData(footerItem.left) });
             }),
             (isThreeFourths || isDoubleWide || isFull) && !renderOverlay && _react2.default.createElement(_LinkBlocker2.default, {
                 target: linkBlockerTarget,

@@ -350,6 +350,7 @@ const Card = (props) => {
     const isFull = cardStyle === 'full-card';
     const isIcon = cardStyle === 'icon-card';
     const isNews = cardStyle === 'news-card';
+    const isIconBlock = cardStyle === 'icon-block';
 
     const isBlade = cardStyle === 'blade-card';
     const bladeVariant = isBlade
@@ -635,6 +636,17 @@ const Card = (props) => {
                         tabIndex={tabIndex}
                         renderOverlay={renderOverlay} />
                 ))}
+                {isIconBlock &&
+                footer.map(footerItem => (
+                    <CardFooter
+                        divider={renderDivider || footerItem.divider}
+                        isFluid={footerItem.isFluid}
+                        key={cuid()}
+                        left={extendFooterData(footerItem.right)}
+                        center={extendFooterData(footerItem.center)}
+                        right={extendFooterData(footerItem.left)} />
+                ))
+                }
                 {(isThreeFourths || isDoubleWide || isFull)
                     && !renderOverlay
                     && <LinkBlocker
