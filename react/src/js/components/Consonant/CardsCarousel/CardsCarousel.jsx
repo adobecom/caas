@@ -173,7 +173,7 @@ function CardsCarousel({
     }
 
     function shouldHideNextButton() {
-        const atEndOfCarousel = firstVisibleCard >= cards.length - cardsPerPage;
+        const atEndOfCarousel = firstVisibleCard > cards.length - cardsPerPage;
         if (atEndOfCarousel) {
             hideNextButton();
             if (userIsTabbing()) {
