@@ -1,5 +1,12 @@
 
 
+## [0.41.4](https://github.com/adobecom/caas/compare/0.41.3...0.41.4) (2025-10-31)
+
+
+### Bug Fixes
+
+* **mwpw-183221:** fixes carousel navigation ([#347](https://github.com/adobecom/caas/issues/347)) ([22f764c](https://github.com/adobecom/caas/commit/22f764c04560907a367887a47f4209b013937b6c))
+
 ## [0.41.3](https://github.com/adobecom/caas/compare/0.41.2...0.41.3) (2025-10-29)
 
 
