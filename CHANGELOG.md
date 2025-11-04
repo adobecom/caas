@@ -1,5 +1,12 @@
 
 
+## [0.41.6](https://github.com/adobecom/caas/compare/0.41.5...0.41.6) (2025-11-04)
+
+
+### Bug Fixes
+
+* **mwpw-183312:** fix for flicker ([fe6dda5](https://github.com/adobecom/caas/commit/fe6dda5bfdd3e2aae2f6b27e5c91f18a5bc4ebfa))
+
 ## [0.41.5](https://github.com/adobecom/caas/compare/0.41.4...0.41.5) (2025-11-04)
 
 ## [0.41.4](https://github.com/adobecom/caas/compare/0.41.3...0.41.4) (2025-10-31)
