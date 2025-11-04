@@ -4,7 +4,7 @@
 			"id": "1",
 			"showCard": {
 				"from": "2020-10-01T20:00:00Z",
-				"until": "2025-10-31T21:45:00Z"
+				"until": "2099-12-31T21:45:00Z"
 			},
 			"styles": {
 				"typeOverride": "3:2",
@@ -52,7 +52,7 @@
 			"id": "2",
 			"showCard": {
 				"from": "2020-10-01T20:00:00Z",
-				"until": "2025-10-31T21:45:00Z"
+				"until": "2099-12-31T21:45:00Z"
 			},
 			"styles": {
 				"typeOverride": "3:2",
@@ -107,7 +107,7 @@
 			"id": "3",
 			"showCard": {
 				"from": "2020-10-01T20:00:00Z",
-				"until": "2025-10-31T21:45:00Z"
+				"until": "2099-12-31T21:45:00Z"
 			},
 			"styles": {
 				"typeOverride": "3:2",
@@ -160,7 +160,7 @@
 			"id": "4",
 			"showCard": {
 				"from": "2020-10-01T20:00:00Z",
-				"until": "2025-10-31T21:45:00Z"
+				"until": "2099-12-31T21:45:00Z"
 			},
 			"styles": {
 				"typeOverride": "3:2",
@@ -223,7 +223,7 @@
 			"id": "5",
 			"showCard": {
 				"from": "2020-10-01T20:00:00Z",
-				"until": "2025-10-31T21:45:00Z"
+				"until": "2099-12-31T21:45:00Z"
 			},
 			"styles": {
 				"typeOverride": "3:2",
@@ -286,7 +286,7 @@
 			"id": "6",
 			"showCard": {
 				"from": "2020-10-01T20:00:00Z",
-				"until": "2025-10-31T21:45:00Z"
+				"until": "2099-12-31T21:45:00Z"
 			},
 			"styles": {
 				"typeOverride": "3:2",
@@ -331,7 +331,7 @@
 			"id": "7",
 			"showCard": {
 				"from": "2020-10-01T20:00:00Z",
-				"until": "2025-10-31T21:45:00Z"
+				"until": "2099-12-31T21:45:00Z"
 			},
 			"styles": {
 				"typeOverride": "1:1",
@@ -363,7 +363,7 @@
 			"id": "8",
 			"showCard": {
 				"from": "2020-10-01T20:00:00Z",
-				"until": "2025-10-31T21:45:00Z"
+				"until": "2099-12-31T21:45:00Z"
 			},
 			"styles": {
 				"typeOverride": "1:1",
@@ -399,7 +399,7 @@
 			"id": "9",
 			"showCard": {
 				"from": "2020-10-01T20:00:00Z",
-				"until": "2025-10-31T21:45:00Z"
+				"until": "2099-12-31T21:45:00Z"
 			},
 			"styles": {
 				"typeOverride": "1:1",
@@ -433,7 +433,7 @@
 			"id": "10",
 			"showCard": {
 				"from": "2020-10-01T20:00:00Z",
-				"until": "2025-10-31T21:45:00Z"
+				"until": "2099-12-31T21:45:00Z"
 			},
 			"styles": {
 				"typeOverride": "1:1",
@@ -472,7 +472,7 @@
 			"id": "11",
 			"showCard": {
 				"from": "2020-10-01T20:00:00Z",
-				"until": "2025-10-31T21:45:00Z"
+				"until": "2099-12-31T21:45:00Z"
 			},
 			"styles": {
 				"typeOverride": "full-card",
@@ -504,7 +504,7 @@
 			"id": "12",
 			"showCard": {
 				"from": "2020-10-01T20:00:00Z",
-				"until": "2025-10-31T21:45:00Z"
+				"until": "2099-12-31T21:45:00Z"
 			},
 			"styles": {
 				"typeOverride": "full-card",
@@ -540,7 +540,7 @@
 			"id": "13",
 			"showCard": {
 				"from": "2020-10-01T20:00:00Z",
-				"until": "2025-10-31T21:45:00Z"
+				"until": "2099-12-31T21:45:00Z"
 			},
 			"styles": {
 				"typeOverride": "full-card",
