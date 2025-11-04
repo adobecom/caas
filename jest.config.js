@@ -41,8 +41,7 @@ module.exports = {
     setupFilesAfterEnv: [path.resolve(__dirname, 'enzyme.config.js')],
 
     // The test environment that will be used for testing
-    // Use custom environment to fix fetch support in Jest 30 with jsdom 26
-    testEnvironment: './jest-environment-jsdom-with-fetch.js',
+    testEnvironment: 'jsdom',
 
     // Use Babel 7 just for Jest, ignoring project .babelrc (Babel 6)
     transform: {
@@ -91,10 +90,7 @@ module.exports = {
 
     testPathIgnorePatterns: ['\\\\node_modules\\\\', '__tests__/mocks', '__tests__/utils', '__tests__/constants'],
 
-    testEnvironmentOptions: {
-        url: 'http://localhost',
-        resources: 'usable',
-    },
+    testEnvironmentOptions: { url: 'http://localhost' },
     transformIgnorePatterns: ['<rootDir>/node_modules/'],
 
     // Indicates whether each individual test should be reported during the run
