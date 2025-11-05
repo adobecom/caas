@@ -78,8 +78,8 @@ function CardsCarousel({
     const title = getConfig('collection', 'i18n.title');
     const showTotalResults = getConfig('collection', 'showTotalResults');
     const showTotalResultsText = getConfig('collection', 'i18n.totalResultsText');
-    const nextCard = getConfig('collection', 'i18n.nextCards');
-    const prevCard = getConfig('collection', 'i18n.prevCards');
+    const nextCard = getConfig('collection', 'i18n.nextCards') || 'Next Cards';
+    const prevCard = getConfig('collection', 'i18n.prevCards') || 'Previous Cards';
     const useLightText = getConfig('collection', 'useLightText');
     const isIncremental = getConfig('pagination', 'animationStyle') === 'incremental';
     const renderOverlay = getConfig('collection', 'useOverlayLinks');
