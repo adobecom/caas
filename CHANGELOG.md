@@ -1,5 +1,12 @@
 
 
+## [0.41.9](https://github.com/adobecom/caas/compare/0.41.8...0.41.9) (2025-11-11)
+
+
+### Bug Fixes
+
+* **mwpw-182728:** adds fallback en strings ([#351](https://github.com/adobecom/caas/issues/351)) ([868a251](https://github.com/adobecom/caas/commit/868a251059c63b243a160ccf81f326d7096f8433))
+
 ## [0.41.8](https://github.com/adobecom/caas/compare/0.41.7...0.41.8) (2025-11-07)
 
 ## [0.41.7](https://github.com/adobecom/caas/compare/0.41.6...0.41.7) (2025-11-05)
