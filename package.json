@@ -13,6 +13,7 @@
     "test:unit": "jest",
     "test:e2e-local": "wdio run wdio.local.conf.js env=LOCAL",
     "test:e2e-prod": "wdio run wdio.conf.js env=PROD",
+    "perf": "lhci autorun",
     "serve": "serve",
     "watch": "npm run serve & webpack -w",
     "start": "npm run serve"
@@ -70,6 +71,7 @@
     "@babel/preset-react": "^7.23.3",
     "@commitlint/cli": "^17.4.0",
     "@commitlint/config-conventional": "^17.4.0",
+    "@lhci/cli": "^0.15.1",
     "@release-it/conventional-changelog": "^5.1.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.0.4",

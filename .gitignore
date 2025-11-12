@@ -121,3 +121,7 @@ web_modules/
 dist/*
 !dist/react.umd.js
 !dist/react.dom.umd.js
+
+# Lighthouse reports
+.lighthouseci/
+lighthouse-reports/
