@@ -1,5 +1,15 @@
 
 
+## [0.41.10](https://github.com/adobecom/caas/compare/0.41.9...0.41.10) (2025-11-12)
+
+
+### Performance Improvements
+
+* **mwpw-000:** adding cwv and lh to ci/cd ([a5b10ca](https://github.com/adobecom/caas/commit/a5b10ca16f5ffb80ecfd673a8d4085dd4dcda1fe))
+* **mwpw-000:** purposefully increasing threshold too high to see if ci/cd flags it ([eb7b1ef](https://github.com/adobecom/caas/commit/eb7b1ef9504b6ec6d66e1fe412c59207f7c6e0f5))
+* **mwpw-000:** purposefully resetting thresholds back as full e2e ci/cd checks seem to work ([de96978](https://github.com/adobecom/caas/commit/de96978346c0f0d7456afdb66dcfda4563120e5e))
+* **mwpw-000:** updating node version for ci/cd ([4793625](https://github.com/adobecom/caas/commit/47936251b9ba74a358e933a56e6b0e09468b700d))
+
 ## [0.41.9](https://github.com/adobecom/caas/compare/0.41.8...0.41.9) (2025-11-11)
 
 
