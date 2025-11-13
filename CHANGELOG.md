@@ -1,5 +1,12 @@
 
 
+## [0.41.11](https://github.com/adobecom/caas/compare/0.41.10...0.41.11) (2025-11-13)
+
+
+### Bug Fixes
+
+* **mwpw-183568:** prevents half-height card from centering play button ([#354](https://github.com/adobecom/caas/issues/354)) ([525cd78](https://github.com/adobecom/caas/commit/525cd78a2714d0a0a1205564dd73aec999c9d3ac))
+
 ## [0.41.10](https://github.com/adobecom/caas/compare/0.41.9...0.41.10) (2025-11-12)
 
 
