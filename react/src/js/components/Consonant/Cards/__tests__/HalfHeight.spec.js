@@ -30,7 +30,7 @@ describe(`Consonant/Card/${cardStyle}`, () => {
                 },
             },
         } = renderCard({
-            cardStyle,
+            cardStyle, 
         });
         const cardHeader = screen.getByTestId('consonant-Card-header');
 
@@ -143,6 +143,19 @@ describe(`Consonant/Card/${cardStyle}`, () => {
 
         const cardHeader = screen.getByTestId('consonant-Card-title');
         expect(cardHeader).not.toHaveAttribute('aria-label');
+    });
+
+    test('should not have the center class on the video play button', () => {
+        const { wrapper } = renderCard({
+            cardStyle,
+        }, {
+            collection: {
+                useCenterVideoPlay: true,
+            },
+        });
+
+        const videoButton = wrapper.container.querySelector('.consonant-Card-videoIco');
+        expect(videoButton).not.toHaveClass('center');
     });
 
     // Accessibility tests with jest-axe

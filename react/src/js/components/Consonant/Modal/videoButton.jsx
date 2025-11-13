@@ -66,6 +66,7 @@ const VideoButton = ({
                     aria-label={ariaLabel}
                     onClick={handleShowModal}
                     tabIndex={tabIndex}
+                    data-testid="consonant-Card-videoIco"
                     className={className}>
                     {className.includes('caas-modal-cta') && <span>{name}</span>}
                 </button>

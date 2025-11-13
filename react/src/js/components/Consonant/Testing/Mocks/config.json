@@ -13,6 +13,7 @@
         "showTotalResults": true,
         "useOverlayLinks": false,
         "cardHoverEffect": "default",
+        "useCenterVideoPlay": false,
         "bladeCard": {
             "reverse": false,
             "lightText": false,
