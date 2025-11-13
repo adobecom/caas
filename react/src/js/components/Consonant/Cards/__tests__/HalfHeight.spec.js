@@ -30,7 +30,7 @@ describe(`Consonant/Card/${cardStyle}`, () => {
                 },
             },
         } = renderCard({
-            cardStyle, 
+            cardStyle,
         });
         const cardHeader = screen.getByTestId('consonant-Card-header');
 
