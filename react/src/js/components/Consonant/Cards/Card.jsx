@@ -372,7 +372,7 @@ const Card = (props) => {
         || (isHalfHeight && showCardBadges);
     const showLabel = !isProduct && !isText;
     const showVideoButton = !isProduct && !isText && !isIcon;
-    const videoButtonStyle = useCenterVideoPlay ? "center" : "";
+    const videoButtonStyle = useCenterVideoPlay && !isHalfHeight ? "center" : "";
     const showText = !isHalfHeight && !isFull && !isNews && !isHorizontal;
     const showFooter = isOneHalf || isProduct || isText || isNews || isBlade;
     const showFooterLeft = !isProduct;

@@ -152,6 +152,20 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         expect(cardHeader).not.toHaveAttribute('aria-label');
     });
 
+    test('should have the center class on the video play button', () => {
+        renderCard({
+            cardStyle,
+        }, {
+            collection: {
+                useCenterVideoPlay: true,
+            },
+        });
+
+        const videoButton = screen.getByTestId('consonant-Card-videoIco');
+        expect(videoButton).not.toBeNull();
+        expect(videoButton).toHaveClass('center');
+    });
+    
     // Accessibility tests with jest-axe
     testA11yForConfigs(renderCard, [
         {
