@@ -1,5 +1,12 @@
 
 
+## [0.41.12](https://github.com/adobecom/caas/compare/0.41.11...0.41.12) (2025-11-17)
+
+
+### Bug Fixes
+
+* **mwpw-79208:** fixes carousel width ([#355](https://github.com/adobecom/caas/issues/355)) ([3babdda](https://github.com/adobecom/caas/commit/3babdda8bbaf0fe2bf8a06c5dfaff6c5055402bf))
+
 ## [0.41.11](https://github.com/adobecom/caas/compare/0.41.10...0.41.11) (2025-11-13)
 
 
