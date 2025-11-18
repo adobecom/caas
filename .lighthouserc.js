@@ -42,7 +42,7 @@ module.exports = {
         // Weighted score of all performance metrics (0-100)
         // Current baseline: ~75%, threshold allows 5-point drop
         // Goal: Gradually increase to 85%+
-        'categories:performance': ['error', {minScore: 0.7}],
+        'categories:performance': ['error', {minScore: 0.85}],
 
         // ============================================
         // CORE WEB VITALS (Google ranking factors)

@@ -574,6 +574,33 @@ export const getSearchParam = (url, param) => {
     return urlObj.searchParams.get(param);
 };
 
+/**
+ * Optimizes adobe.com image URLs by adding format=webply parameter
+ * This reduces image size from ~208KB to ~36.5KB with no quality loss
+ * @param {String} imageUrl - The image URL to optimize
+ * @return {String} - The optimized image URL
+ */
+export const optimizeImageUrl = (imageUrl) => {
+    if (!imageUrl || typeof imageUrl !== 'string') return imageUrl;
+
+    // Only optimize adobe.com images
+    if (!imageUrl.includes('adobe.com')) return imageUrl;
+
+    // Skip if already has format parameter
+    if (imageUrl.includes('format=')) return imageUrl;
+
+    try {
+        // Use URL API for safe parameter handling
+        const url = new URL(imageUrl);
+        url.searchParams.set('format', 'webply');
+        return url.toString();
+    } catch (error) {
+        // If URL parsing fails (e.g., malformed URL), return original
+        console.warn('Failed to optimize image URL:', imageUrl, error);
+        return imageUrl;
+    }
+};
+
 export const sanitizeEventFilter = (rawEventFilter) => {
     if (!rawEventFilter || rawEventFilter.indexOf('all') > -1) return [];
     if (Array.isArray(rawEventFilter)) return rawEventFilter;

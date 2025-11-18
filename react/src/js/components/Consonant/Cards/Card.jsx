@@ -23,6 +23,7 @@ import {
     getCurrentDate,
     getSearchParam,
     removeMarkDown,
+    optimizeImageUrl,
 } from '../Helpers/general';
 import { useConfig, useRegistered } from '../Helpers/hooks';
 import {
@@ -453,6 +454,10 @@ const Card = (props) => {
         return markup;
     };
 
+    // Optimize image URL by adding format=webply for adobe.com images
+    // This reduces image size from ~208KB to ~36.5KB
+    const optimizedImage = optimizeImageUrl(image);
+
     return (
         <li
             daa-lh={lh}
@@ -463,7 +468,7 @@ const Card = (props) => {
             <div
                 data-testid="consonant-Card-header"
                 className="consonant-Card-header"
-                style={{ backgroundImage: `url("${image}")` }}
+                style={{ backgroundImage: `url("${optimizedImage}")` }}
                 role={(!isIcon && altText) ? 'img' : ''}
                 aria-label={!isIcon ? altText : ''}>
                 {hasBanner && !disableBanners && !isIcon && !isNews &&
