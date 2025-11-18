@@ -125,3 +125,6 @@ dist/*
 # Lighthouse reports
 .lighthouseci/
 lighthouse-reports/
+
+# AssistivTunnel
+AssistivTunnel
