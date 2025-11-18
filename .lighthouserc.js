@@ -40,9 +40,7 @@ module.exports = {
         // OVERALL PERFORMANCE SCORE
         // ============================================
         // Weighted score of all performance metrics (0-100)
-        // Current baseline: ~75%, threshold allows 5-point drop
-        // Goal: Gradually increase to 85%+
-        'categories:performance': ['error', {minScore: 0.85}],
+        'categories:performance': ['error', {minScore: 0.9}],
 
         // ============================================
         // CORE WEB VITALS (Google ranking factors)
@@ -51,10 +49,8 @@ module.exports = {
         // LCP - Largest Contentful Paint (Core Web Vital #1)
         // When main content becomes visible to user
         // Google "good": <2.5s, "poor": >4s
-        // Current mobile: ~5.8s, threshold allows up to 6.5s
-        // Why 6500ms: Mobile is slower, allows buffer for variance
-        // Goal: Improve to <4s over time
-        'largest-contentful-paint': ['error', {maxNumericValue: 4500}],
+        // Gives 500 ms margin of error
+        'largest-contentful-paint': ['error', {maxNumericValue: 3500}],
 
         // TBT - Total Blocking Time (Core Web Vital #2, FID proxy)
         // How long page is frozen/unresponsive during load
