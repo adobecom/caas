@@ -160,6 +160,8 @@ const Container = (props) => {
     const partialLoadWithBackgroundFetch = getConfig('collection', 'partialLoadWithBackgroundFetch.enabled');
     const partialLoadCount = getConfig('collection', 'partialLoadWithBackgroundFetch.partialLoadCount');
     const renderOverlay = getConfig('collection', 'useOverlayLinks');
+    const isModernCarousel = getConfig('pagination', 'animationStyle').toLowerCase().includes('modern');
+
 
     /**
      **** Constants ****
@@ -1510,7 +1512,7 @@ const Container = (props) => {
                                 ref={filterItemRef} />
                         </div>
                         }
-                        <div className={`consonant-Wrapper-collection${isLoading ? ' is-loading' : ''}`}>
+                        <div className={`consonant-Wrapper-collection${isLoading ? ' is-loading' : ''}${isModernCarousel ? ' modern-carousel' : ''}`}>
                             { isTopFilterPanel && isStandardContainer &&
                             <FiltersPanelTop
                                 filterPanelEnabled={filterPanelEnabled}
