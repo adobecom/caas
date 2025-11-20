@@ -1,5 +1,12 @@
 
 
+## [0.41.16](https://github.com/adobecom/caas/compare/0.41.15...0.41.16) (2025-11-20)
+
+
+### Bug Fixes
+
+* **mwpw-177138:** adds focus ring to filters ([#359](https://github.com/adobecom/caas/issues/359)) ([b13ab9c](https://github.com/adobecom/caas/commit/b13ab9c4b4b29956654df3a547cec3b9b7805e74))
+
 ## [0.41.15](https://github.com/adobecom/caas/compare/0.41.14...0.41.15) (2025-11-20)
 
 
