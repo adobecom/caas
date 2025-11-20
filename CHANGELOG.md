@@ -1,5 +1,12 @@
 
 
+## [0.41.15](https://github.com/adobecom/caas/compare/0.41.14...0.41.15) (2025-11-20)
+
+
+### Bug Fixes
+
+* **mwpw-177233:** status message for search and filters announced ([4598316](https://github.com/adobecom/caas/commit/4598316b87c4ecfccf0439d56ee161164ae7b2f4))
+
 ## [0.41.14](https://github.com/adobecom/caas/compare/0.41.13...0.41.14) (2025-11-18)
 
 ## [0.41.13](https://github.com/adobecom/caas/compare/0.41.12...0.41.13) (2025-11-18)
