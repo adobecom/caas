@@ -24,12 +24,13 @@ const defaultProps = {
 const Title = (props) => {
     const {
         panelHeader,
+        HeadingLevel,
     } = props;
 
     return (
-        <p className="consonant-LeftFilters-deskTitle">
+        <HeadingLevel className="consonant-LeftFilters-deskTitle">
             {panelHeader}
-        </p>
+        </HeadingLevel>
     );
 };
 
