@@ -1,5 +1,12 @@
 
 
+## [0.41.17](https://github.com/adobecom/caas/compare/0.41.16...0.41.17) (2025-11-24)
+
+
+### Bug Fixes
+
+* **mwpw-183864:** removes extra 83.3 percent css rules ([#361](https://github.com/adobecom/caas/issues/361)) ([431e802](https://github.com/adobecom/caas/commit/431e80250c782701d2750cff93b93bcb15c3d42f))
+
 ## [0.41.16](https://github.com/adobecom/caas/compare/0.41.15...0.41.16) (2025-11-20)
 
 
