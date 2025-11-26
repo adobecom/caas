@@ -345,4 +345,41 @@
             }
         }
     }
+
+    .modern-carousel {
+        display: grid;
+
+        .consonant-CarouselInfo {
+            order: 1;
+        }
+
+        .consonant-Container--carousel {
+            order: 2;
+        }
+
+        .consonant-Navigation--carousel {
+            order: 3;
+            display: flex;
+            justify-content: space-between;
+            height: 36px;
+            width: 120px;
+            margin: 0 auto;
+            background: #b6d4ed;
+            border-radius: 16px;
+
+            button {
+                position: relative;
+                top: 0;
+                transform: none;
+            }
+
+            button.consonant-Button--previous {
+                transform: rotate(180deg) !important;
+            }
+
+            // button.consonant-Button--next {
+            //     right: 46%;
+            // }
+        }
+    }
 }
