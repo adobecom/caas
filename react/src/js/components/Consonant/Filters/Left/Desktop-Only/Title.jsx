@@ -1,8 +1,9 @@
 import React from 'react';
-import { string } from 'prop-types';
+import { string, elementType } from 'prop-types';
 
 const titleType = {
     panelHeader: string,
+    HeadingLevel: elementType.isRequired,
 };
 
 const defaultProps = {
