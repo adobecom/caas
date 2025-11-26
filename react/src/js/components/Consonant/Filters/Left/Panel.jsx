@@ -102,6 +102,7 @@ const LeftFilterPanel = forwardRef(({
     const leftPanelMobileHeader = getConfig('filterPanel', 'i18n.leftPanel.mobile.panel.header');
     const applyText = getConfig('filterPanel', 'i18n.leftPanel.mobile.panel.applyBtnText');
     const doneText = getConfig('filterPanel', 'i18n.leftPanel.mobile.panel.doneBtnText');
+    const HeadingLevel = getConfig('collection', 'i18n.titleHeadingLevel') || 'h3';
 
     /**
      **** Constants ****
@@ -203,7 +204,8 @@ const LeftFilterPanel = forwardRef(({
                 }
                 {DESKTOP_SCREEN_SIZE &&
                 <DesktopTitle
-                    panelHeader={panelHeader} />
+                    panelHeader={panelHeader}
+                    HeadingLevel={HeadingLevel} />
                 }
                 {DESKTOP_SCREEN_SIZE &&
                 <DesktopClearBtn
