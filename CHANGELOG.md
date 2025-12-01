@@ -1,5 +1,12 @@
 
 
+## [0.41.18](https://github.com/adobecom/caas/compare/0.41.17...0.41.18) (2025-12-01)
+
+
+### Bug Fixes
+
+* **mwpw-177245:** adds heading level to filters heading ([#362](https://github.com/adobecom/caas/issues/362)) ([5734a0b](https://github.com/adobecom/caas/commit/5734a0b7edbb3e318bc14e8399ee1e1984542e79))
+
 ## [0.41.17](https://github.com/adobecom/caas/compare/0.41.16...0.41.17) (2025-11-24)
 
 
