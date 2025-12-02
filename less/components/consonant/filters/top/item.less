@@ -501,42 +501,24 @@
 
         /* Start nested category items */
 
-        &-category {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 8px;
+        &-item--category {
+            // Reuse existing item styles
         }
 
-        &-categoryToggle {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            padding: 8px 12px;
-            background-color: transparent;
-            border: 1px solid @consonantLightGrey200;
-            border-radius: 4px;
-            outline: 0;
-            cursor: pointer;
-            text-align: left;
-            transition: background-color @consonantTransitionTime @consonantTransitionFunc;
-
-            &:hover {
-                background-color: @consonantLightGrey100;
-            }
-
-            &:focus {
-                outline: 2px solid @consonantFocusedColor;
-            }
+        &-itemCheckmark--category {
+            position: relative;
+            // Category checkmark always shows the box
         }
 
         &-categoryIcon {
-            display: inline-flex;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
             align-items: center;
             justify-content: center;
-            min-width: 16px;
-            width: 16px;
-            height: 16px;
-            margin-right: 8px;
             font-size: 14px;
             font-weight: 700;
             line-height: 1;
@@ -544,25 +526,14 @@
             pointer-events: none;
         }
 
-        &-categoryLabel {
-            flex: 1;
-            font-size: 0.875rem;
-            line-height: 1.1875rem;
-            font-weight: 600;
-            color: @consonantDarkGrey400;
-            pointer-events: none;
-        }
-
-        &-categoryItems {
-            list-style-type: none;
-            padding: 0;
-            margin: 8px 0 0 0;
-            display: flex;
-            flex-wrap: wrap;
-        }
-
         &-item--nested {
-            margin-left: 16px;
+            padding-left: 26px;
+        }
+
+        @media @consonant-desktop-up {
+            &-item--nested {
+                padding-left: 34px;
+            }
         }
 
         /* End nested category items */

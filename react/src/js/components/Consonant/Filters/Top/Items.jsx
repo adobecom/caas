@@ -71,52 +71,54 @@ const Items = (props) => {
                 if (item.isCategory) {
                     return (
                         <Fragment key={item.id}>
-                            <li className="consonant-TopFilter-category">
-                                <button
-                                    type="button"
-                                    className="consonant-TopFilter-categoryToggle"
+                            <li
+                                data-testid="consonant-TopFilter-item"
+                                className="consonant-TopFilter-item consonant-TopFilter-item--category">
+                                <label
+                                    className="consonant-TopFilter-itemLabel"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         onCategoryToggle && onCategoryToggle(item.id);
                                     }}
-                                    aria-expanded={item.opened}>
-                                    <span className="consonant-TopFilter-categoryIcon">
-                                        {item.opened ? '−' : '+'}
+                                    style={{ cursor: 'pointer' }}>
+                                    <span
+                                        className="consonant-TopFilter-itemCheckmark consonant-TopFilter-itemCheckmark--category">
+                                        {item.opened && (
+                                            <span className="consonant-TopFilter-categoryIcon">−</span>
+                                        )}
                                     </span>
-                                    <span className="consonant-TopFilter-categoryLabel">
+                                    <span className="consonant-TopFilter-itemName">
                                         {item.label}
                                     </span>
-                                </button>
-                                {item.opened && item.items && (
-                                    <ul className="consonant-TopFilter-categoryItems">
-                                        {item.items.map(nestedItem => (
-                                            <li
-                                                key={nestedItem.id}
-                                                data-testid="consonant-TopFilter-item"
-                                                daa-ll={nestedItem.label}
-                                                className="consonant-TopFilter-item consonant-TopFilter-item--nested">
-                                                <label
-                                                    htmlFor={nestedItem.id}
-                                                    className="consonant-TopFilter-itemLabel"
-                                                    onClick={stopPropagation}>
-                                                    <input
-                                                        data-testid="consonant-TopFilter-itemCheckbox"
-                                                        id={nestedItem.id}
-                                                        value={nestedItem.id}
-                                                        type="checkbox"
-                                                        onChange={handleCheck}
-                                                        checked={nestedItem.selected}
-                                                        tabIndex="0" />
-                                                    <span className="consonant-TopFilter-itemCheckmark" />
-                                                    <span className="consonant-TopFilter-itemName">
-                                                        {nestedItem.label}
-                                                    </span>
-                                                </label>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                )}
+                                </label>
                             </li>
+                            {item.opened && item.items && (
+                                item.items.map(nestedItem => (
+                                    <li
+                                        key={nestedItem.id}
+                                        data-testid="consonant-TopFilter-item"
+                                        daa-ll={nestedItem.label}
+                                        className="consonant-TopFilter-item consonant-TopFilter-item--nested">
+                                        <label
+                                            htmlFor={nestedItem.id}
+                                            className="consonant-TopFilter-itemLabel"
+                                            onClick={stopPropagation}>
+                                            <input
+                                                data-testid="consonant-TopFilter-itemCheckbox"
+                                                id={nestedItem.id}
+                                                value={nestedItem.id}
+                                                type="checkbox"
+                                                onChange={handleCheck}
+                                                checked={nestedItem.selected}
+                                                tabIndex="0" />
+                                            <span className="consonant-TopFilter-itemCheckmark" />
+                                            <span className="consonant-TopFilter-itemName">
+                                                {nestedItem.label}
+                                            </span>
+                                        </label>
+                                    </li>
+                                ))
+                            )}
                         </Fragment>
                     );
                 }

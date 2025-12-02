@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import {
     arrayOf,
     shape,
@@ -43,54 +43,55 @@ const Items = (props) => {
                 // Check if this is a category
                 if (item.isCategory) {
                     return (
-                        <li
-                            key={item.id}
-                            data-testid="consonant-LeftFilter-category"
-                            className="consonant-LeftFilter-category">
-                            <button
-                                type="button"
-                                className="consonant-LeftFilter-categoryToggle"
-                                onClick={() => onCategoryToggle && onCategoryToggle(item.id)}
-                                aria-expanded={item.opened}>
-                                <span className="consonant-LeftFilter-categoryIcon">
-                                    {item.opened ? '−' : '+'}
-                                </span>
-                                <span className="consonant-LeftFilter-categoryLabel">
-                                    {item.label && sanitizeStr(item.label.toString())}
-                                </span>
-                            </button>
+                        <Fragment key={item.id}>
+                            <li
+                                data-testid="consonant-LeftFilter-category"
+                                className="consonant-LeftFilter-itemsItem consonant-LeftFilter-itemsItem--category">
+                                <label
+                                    className="consonant-LeftFilter-itemsItemLabel"
+                                    onClick={() => onCategoryToggle && onCategoryToggle(item.id)}
+                                    style={{ cursor: 'pointer' }}>
+                                    <span
+                                        className="consonant-LeftFilter-itemsItemCheckmark consonant-LeftFilter-itemsItemCheckmark--category">
+                                        {item.opened && (
+                                            <span className="consonant-LeftFilter-categoryIcon">−</span>
+                                        )}
+                                    </span>
+                                    <span className="consonant-LeftFilter-itemsItemName">
+                                        {item.label && sanitizeStr(item.label.toString())}
+                                    </span>
+                                </label>
+                            </li>
                             {item.opened && item.items && (
-                                <ul className="consonant-LeftFilter-categoryItems">
-                                    {item.items.map(nestedItem => (
-                                        <li
-                                            key={nestedItem.id}
-                                            data-testid="consonant-LeftFilter-itemsItem"
-                                            daa-ll={nestedItem.label}
-                                            className="consonant-LeftFilter-itemsItem consonant-LeftFilter-itemsItem--nested">
-                                            <label
-                                                htmlFor={nestedItem.id}
-                                                className="consonant-LeftFilter-itemsItemLabel">
-                                                <input
-                                                    data-testid="consonant-LeftFilter-itemsItemCheckbox"
-                                                    id={nestedItem.id}
-                                                    value={nestedItem.id}
-                                                    daa-im={nestedItem.label}
-                                                    type="checkbox"
-                                                    onChange={handleCheck}
-                                                    checked={nestedItem.selected}
-                                                    tabIndex="0" />
-                                                <span
-                                                    className="consonant-LeftFilter-itemsItemCheckmark" />
-                                                <span
-                                                    className="consonant-LeftFilter-itemsItemName">
-                                                    {nestedItem.label && sanitizeStr(nestedItem.label.toString())}
-                                                </span>
-                                            </label>
-                                        </li>
-                                    ))}
-                                </ul>
+                                item.items.map(nestedItem => (
+                                    <li
+                                        key={nestedItem.id}
+                                        data-testid="consonant-LeftFilter-itemsItem"
+                                        daa-ll={nestedItem.label}
+                                        className="consonant-LeftFilter-itemsItem consonant-LeftFilter-itemsItem--nested">
+                                        <label
+                                            htmlFor={nestedItem.id}
+                                            className="consonant-LeftFilter-itemsItemLabel">
+                                            <input
+                                                data-testid="consonant-LeftFilter-itemsItemCheckbox"
+                                                id={nestedItem.id}
+                                                value={nestedItem.id}
+                                                daa-im={nestedItem.label}
+                                                type="checkbox"
+                                                onChange={handleCheck}
+                                                checked={nestedItem.selected}
+                                                tabIndex="0" />
+                                            <span
+                                                className="consonant-LeftFilter-itemsItemCheckmark" />
+                                            <span
+                                                className="consonant-LeftFilter-itemsItemName">
+                                                {nestedItem.label && sanitizeStr(nestedItem.label.toString())}
+                                            </span>
+                                        </label>
+                                    </li>
+                                ))
                             )}
-                        </li>
+                        </Fragment>
                     );
                 }
 
