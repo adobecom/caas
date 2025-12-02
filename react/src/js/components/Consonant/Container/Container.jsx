@@ -66,6 +66,7 @@ import {
     getActiveFilterIds,
     getActivePanels,
     getUpdatedCardBookmarkData,
+    transformFiltersWithCategories,
 } from '../Helpers/Helpers';
 
 
@@ -109,6 +110,7 @@ const Container = (props) => {
     const resultsPerPage = getConfig('collection', 'resultsPerPage');
     const onlyShowBookmarks = getConfig('bookmarks', 'leftFilterPanel.bookmarkOnlyCollection');
     const authoredFilters = getConfig('filterPanel', 'filters');
+    const categoryMappings = getConfig('filterPanel', 'categoryMappings');
     const filterLogic = getConfig('filterPanel', 'filterLogic').toLowerCase().trim();
     let totalCardLimit = getConfig('collection', 'totalCardsToShow');
     const sampleSize = getConfig('collection', 'reservoir.sample');
@@ -609,14 +611,52 @@ const Container = (props) => {
 
             return {
                 ...filter,
-                items: filter.items.map(item => ({
-                    ...item,
-                    selected: item.id === itemId ? !item.selected : item.selected,
-                })),
+                items: filter.items.map((item) => {
+                    // If it's a category, check nested items
+                    if (item.isCategory) {
+                        return {
+                            ...item,
+                            items: item.items.map(nestedItem => ({
+                                ...nestedItem,
+                                selected: nestedItem.id === itemId ? !nestedItem.selected : nestedItem.selected,
+                            })),
+                        };
+                    }
+                    // Regular flat item
+                    return {
+                        ...item,
+                        selected: item.id === itemId ? !item.selected : item.selected,
+                    };
+                }),
             };
         }));
         setCurrentPage(1);
         changeUrlState(filterId, itemId, isChecked);
+    };
+
+    /**
+     * Toggles category opened/closed state
+     *
+     * @param {String} filterId - The filter ID
+     * @param {String} categoryId - The category ID to toggle
+     */
+    const handleCategoryToggle = (filterId, categoryId) => {
+        setFilters(prevFilters => prevFilters.map((filter) => {
+            if (filter.id !== filterId) return filter;
+
+            return {
+                ...filter,
+                items: filter.items.map((item) => {
+                    if (item.id === categoryId && item.isCategory) {
+                        return {
+                            ...item,
+                            opened: !item.opened,
+                        };
+                    }
+                    return item;
+                }),
+            };
+        }));
     };
 
     /**
@@ -697,14 +737,39 @@ const Container = (props) => {
      */
 
     useEffect(() => {
-        setFilters(authoredFilters.map(filterGroup => ({
+        // Transform filters with category groupings if categoryMappings exist
+        const transformedFilters = transformFiltersWithCategories(authoredFilters, categoryMappings);
+
+        const finalFilters = transformedFilters.map(filterGroup => ({
             ...filterGroup,
             opened: DESKTOP_SCREEN_SIZE ? filterGroup.openedOnLoad : false,
             items: filterGroup.items.map(filterItem => ({
                 ...filterItem,
                 selected: false,
+                // If it's a category, preserve its nested items structure
+                ...(filterItem.isCategory && {
+                    items: filterItem.items.map(nestedItem => ({
+                        ...nestedItem,
+                        selected: false,
+                    })),
+                }),
             })),
-        })));
+        }));
+
+        // DEBUG: Only log Products filter items
+        const productsFilter = finalFilters.find(f => f.id === 'caas:products');
+        if (productsFilter) {
+            console.log('[DEBUG] Products filter items after state mapping:',
+                productsFilter.items.map(item => ({
+                    id: item.id,
+                    label: item.label,
+                    isCategory: item.isCategory,
+                    hasNestedItems: item.items ? item.items.length : 0
+                }))
+            );
+        }
+
+        setFilters(finalFilters);
     }, []);
 
     /**
@@ -723,10 +788,23 @@ const Container = (props) => {
                 ...filter,
                 opened: true,
                 /* istanbul ignore next */
-                items: items.map(item => ({
-                    ...item,
-                    selected: urlStateArray.includes(String(item.label)),
-                })),
+                items: items.map(item => {
+                    // If it's a category, preserve nested items structure
+                    if (item.isCategory && item.items) {
+                        return {
+                            ...item,
+                            items: item.items.map(nestedItem => ({
+                                ...nestedItem,
+                                selected: urlStateArray.includes(String(nestedItem.label)),
+                            })),
+                        };
+                    }
+                    // Flat item
+                    return {
+                        ...item,
+                        selected: urlStateArray.includes(String(item.label)),
+                    };
+                }),
             };
         }));
         const urlSearchValue = urlState[searchPrefix];
@@ -890,7 +968,8 @@ const Container = (props) => {
                             };
                         }));
                     } else {
-                        setFilters(() => authoredFilters.map((filter) => {
+                        // Use prevFilters to preserve transformation (including categoryMappings)
+                        setFilters(prevFilters => prevFilters.map((filter) => {
                             const { group, items } = filter;
                             const urlStateValue = urlState[filterGroupPrefix + group];
                             if (!urlStateValue) return filter;
@@ -898,10 +977,22 @@ const Container = (props) => {
                             return {
                                 ...filter,
                                 opened: true,
-                                items: items.map(item => ({
-                                    ...item,
-                                    selected: urlStateArray.includes(String(item.label)),
-                                })),
+                                items: items.map(item => {
+                                    // Preserve nested items for categories
+                                    if (item.isCategory && item.items) {
+                                        return {
+                                            ...item,
+                                            items: item.items.map(nestedItem => ({
+                                                ...nestedItem,
+                                                selected: urlStateArray.includes(String(nestedItem.label)),
+                                            })),
+                                        };
+                                    }
+                                    return {
+                                        ...item,
+                                        selected: urlStateArray.includes(String(item.label)),
+                                    };
+                                }),
                             };
                         }));
                     }
@@ -1489,6 +1580,7 @@ const Container = (props) => {
                                 onClearAllFilters={resetFiltersSearchAndBookmarks}
                                 onClearFilterItems={clearFilterItem}
                                 onCheckboxClick={handleCheckBoxChange}
+                                onCategoryToggle={handleCategoryToggle}
                                 onMobileFiltersToggleClick={handleMobileFiltersToggle}
                                 onSelectedFilterClick={handleCheckBoxChange}
                                 showMobileFilters={showMobileFilters}
@@ -1519,6 +1611,7 @@ const Container = (props) => {
                                 windowWidth={windowWidth}
                                 resQty={gridCardLen}
                                 onCheckboxClick={handleCheckBoxChange}
+                                onCategoryToggle={handleCategoryToggle}
                                 onFilterClick={handleFilterGroupClick}
                                 onClearFilterItems={clearFilterItem}
                                 categories={currCategories}

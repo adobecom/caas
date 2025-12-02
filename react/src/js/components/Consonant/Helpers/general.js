@@ -335,8 +335,19 @@ export const getByPath = (object, path, defaultValue) => {
  * @param {items} array - filter items
  * @returns {number} - selected items count
  */
-export const getSelectedItemsCount = items =>
-    items.filter(({ selected }) => Boolean(selected)).length;
+export const getSelectedItemsCount = (items) => {
+    let count = 0;
+    items.forEach((item) => {
+        if (item.isCategory && item.items) {
+            // Count selected items within category
+            count += item.items.filter(({ selected }) => Boolean(selected)).length;
+        } else if (item.selected) {
+            // Count flat selected item
+            count += 1;
+        }
+    });
+    return count;
+};
 
 /**
  * Func to make debounced functions

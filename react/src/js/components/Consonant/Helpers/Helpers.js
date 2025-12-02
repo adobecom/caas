@@ -89,9 +89,25 @@ export const getBookmarkedCards =
  * @param {Array} filters - All filters on page
  * @returns {Array} - All checked filters by user
  */
-export const getActiveFilterIds = filters => chainFromIterable(filters.map(f => f.items))
-    .filter(item => item.selected)
-    .map(item => item.id);
+export const getActiveFilterIds = (filters) => {
+    const allItems = [];
+    filters.forEach((filter) => {
+        filter.items.forEach((item) => {
+            if (item.isCategory && item.items) {
+                // Add selected items from within category
+                item.items.forEach((nestedItem) => {
+                    if (nestedItem.selected) {
+                        allItems.push(nestedItem.id);
+                    }
+                });
+            } else if (item.selected) {
+                // Add flat selected item
+                allItems.push(item.id);
+            }
+        });
+    });
+    return allItems;
+};
 
 /**
  * Gets all filter panels with filters checked by a user
@@ -624,3 +640,66 @@ export const sanitizeStr = str => str
     .replaceAll('&amp;', '&')
     .replaceAll('&lt;', '<')
     .replaceAll('&gt;', '>');
+
+/**
+ * Transforms filters by grouping items into categories based on categoryMappings
+ *
+ * @param {Array} authoredFilters - The original flat filters array
+ * @param {Object} categoryMappings - Mapping of category IDs to item IDs
+ * @returns {Array} - Transformed filters with nested category structure
+ */
+export const transformFiltersWithCategories = (authoredFilters, categoryMappings = {}) => {
+    if (!categoryMappings || Object.keys(categoryMappings).length === 0) {
+        return authoredFilters;
+    }
+
+    // Build a reverse lookup: itemId -> categoryId
+    const itemToCategoryMap = {};
+    Object.entries(categoryMappings).forEach(([categoryId, categoryData]) => {
+        categoryData.items.forEach((itemId) => {
+            itemToCategoryMap[itemId] = {
+                categoryId,
+                label: categoryData.label,
+            };
+        });
+    });
+
+    return authoredFilters.map((filter) => {
+        const categorizedItems = {};
+        const uncategorizedItems = [];
+
+        // Group items by category
+        filter.items.forEach((item) => {
+            const categoryInfo = itemToCategoryMap[item.id];
+
+            if (categoryInfo) {
+                // Item belongs to a category
+                const { categoryId, label } = categoryInfo;
+                if (!categorizedItems[categoryId]) {
+                    categorizedItems[categoryId] = {
+                        id: categoryId,
+                        label,
+                        isCategory: true,
+                        opened: false,
+                        items: [],
+                    };
+                }
+                categorizedItems[categoryId].items.push(item);
+            } else {
+                // Item doesn't belong to any category - keep it flat
+                uncategorizedItems.push(item);
+            }
+        });
+
+        // Build final items array: categories first, then uncategorized items
+        const transformedItems = [
+            ...Object.values(categorizedItems),
+            ...uncategorizedItems,
+        ];
+
+        return {
+            ...filter,
+            items: transformedItems,
+        };
+    });
+};

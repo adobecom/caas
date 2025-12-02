@@ -114,7 +114,7 @@
             featuredCards: ['c7d34f39-397c-3727-9dff-5d0d9d8cf731'],
             filterPanel: {
                 enabled: 'true',
-                type: 'top',
+                type: 'left',
                 eventFilter: 'all',
                 showEmptyFilters: true,
                 filters: [
@@ -205,9 +205,100 @@
                                 "id": "adobe-com-enterprise:rating/4"
                             }
                         ]
+                    },
+                    {
+                        "group": "Products",
+                        "id": "caas:products",
+                        "items": [
+                            {
+                                "label": "Photoshop",
+                                "id": "caas:products/photoshop"
+                            },
+                            {
+                                "label": "Illustrator",
+                                "id": "caas:products/illustrator"
+                            },
+                            {
+                                "label": "InDesign",
+                                "id": "caas:products/indesign"
+                            },
+                            {
+                                "label": "Premiere Pro",
+                                "id": "caas:products/premiere-pro"
+                            },
+                            {
+                                "label": "After Effects",
+                                "id": "caas:products/after-effects"
+                            },
+                            {
+                                "label": "Acrobat",
+                                "id": "caas:products/acrobat"
+                            },
+                            {
+                                "label": "Sign",
+                                "id": "caas:products/sign"
+                            },
+                            {
+                                "label": "Analytics",
+                                "id": "caas:products/analytics"
+                            },
+                            {
+                                "label": "Target",
+                                "id": "caas:products/target"
+                            },
+                            {
+                                "label": "Experience Manager",
+                                "id": "caas:products/experience-manager"
+                            },
+                            {
+                                "label": "Campaign",
+                                "id": "caas:products/campaign"
+                            },
+                            {
+                                "label": "Audience Manager",
+                                "id": "caas:products/audience-manager"
+                            },
+                            {
+                                "label": "Workfront",
+                                "id": "caas:products/workfront"
+                            },
+                            {
+                                "label": "Marketo",
+                                "id": "caas:products/marketo"
+                            }
+                        ]
                     }
                 ],
                 filterLogic: 'or',
+                categoryMappings: {
+                    "creative-cloud": {
+                        label: "Creative Cloud",
+                        items: [
+                            "caas:products/photoshop",
+                            "caas:products/illustrator",
+                            "caas:products/indesign",
+                            "caas:products/premiere-pro",
+                            "caas:products/after-effects"
+                        ]
+                    },
+                    "document-cloud": {
+                        label: "Document Cloud",
+                        items: [
+                            "caas:products/acrobat",
+                            "caas:products/sign"
+                        ]
+                    },
+                    "experience-cloud": {
+                        label: "Experience Cloud",
+                        items: [
+                            "caas:products/analytics",
+                            "caas:products/target",
+                            "caas:products/experience-manager",
+                            "caas:products/campaign",
+                            "caas:products/audience-manager"
+                        ]
+                    }
+                },
                 topPanel: {
                     mobile: {
                         blurFilters: true,

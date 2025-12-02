@@ -31,6 +31,7 @@ const leftFilterPanelType = {
     selectedFiltersQty: number,
     onFilterClick: func.isRequired,
     onCheckboxClick: func.isRequired,
+    onCategoryToggle: func,
     searchComponent: node.isRequired,
     bookmarkComponent: node.isRequired,
     onClearAllFilters: func.isRequired,
@@ -80,6 +81,7 @@ const LeftFilterPanel = forwardRef(({
     onClearAllFilters,
     onClearFilterItems,
     onCheckboxClick,
+    onCategoryToggle,
     onMobileFiltersToggleClick,
     onSelectedFilterClick,
     resQty,
@@ -247,6 +249,7 @@ const LeftFilterPanel = forwardRef(({
                         onCheck={onCheckboxClick}
                         onClick={onFilterClick}
                         onClearAll={onClearFilterItems}
+                        onCategoryToggle={(categoryId) => onCategoryToggle && onCategoryToggle(filter.id, categoryId)}
                         clearFilterText={clearFilterText} />
                 ))}
             </div>

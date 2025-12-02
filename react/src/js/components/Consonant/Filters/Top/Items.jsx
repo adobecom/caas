@@ -14,6 +14,7 @@ const itemsType = {
     stopPropagation: func.isRequired,
     clipWrapperItemsCount: number.isRequired,
     items: arrayOf(shape(filterItemType)).isRequired,
+    onCategoryToggle: func,
 };
 
 /**
@@ -37,6 +38,7 @@ const Items = (props) => {
         handleCheck,
         stopPropagation,
         clipWrapperItemsCount,
+        onCategoryToggle,
     } = props;
 
     /**
@@ -65,6 +67,61 @@ const Items = (props) => {
             data-testid="consonant-TopFilter-items"
             className={clipFilterItemsClass}>
             {items.map((item) => {
+                // Check if this is a category
+                if (item.isCategory) {
+                    return (
+                        <Fragment key={item.id}>
+                            <li className="consonant-TopFilter-category">
+                                <button
+                                    type="button"
+                                    className="consonant-TopFilter-categoryToggle"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        onCategoryToggle && onCategoryToggle(item.id);
+                                    }}
+                                    aria-expanded={item.opened}>
+                                    <span className="consonant-TopFilter-categoryIcon">
+                                        {item.opened ? '−' : '+'}
+                                    </span>
+                                    <span className="consonant-TopFilter-categoryLabel">
+                                        {item.label}
+                                    </span>
+                                </button>
+                                {item.opened && item.items && (
+                                    <ul className="consonant-TopFilter-categoryItems">
+                                        {item.items.map(nestedItem => (
+                                            <li
+                                                key={nestedItem.id}
+                                                data-testid="consonant-TopFilter-item"
+                                                daa-ll={nestedItem.label}
+                                                className="consonant-TopFilter-item consonant-TopFilter-item--nested">
+                                                <label
+                                                    htmlFor={nestedItem.id}
+                                                    className="consonant-TopFilter-itemLabel"
+                                                    onClick={stopPropagation}>
+                                                    <input
+                                                        data-testid="consonant-TopFilter-itemCheckbox"
+                                                        id={nestedItem.id}
+                                                        value={nestedItem.id}
+                                                        type="checkbox"
+                                                        onChange={handleCheck}
+                                                        checked={nestedItem.selected}
+                                                        tabIndex="0" />
+                                                    <span className="consonant-TopFilter-itemCheckmark" />
+                                                    <span className="consonant-TopFilter-itemName">
+                                                        {nestedItem.label}
+                                                    </span>
+                                                </label>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </li>
+                        </Fragment>
+                    );
+                }
+
+                // Regular flat item
                 const category = item.id.split('/')[0];
                 let title;
                 if (!set.has(category)) {
