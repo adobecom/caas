@@ -427,6 +427,13 @@ const Container = (props) => {
         items: filterGroup.items.map(filterItem => ({
             ...filterItem,
             selected: false,
+            // Clear nested items in categories
+            ...(filterItem.isCategory && filterItem.items && {
+                items: filterItem.items.map(nestedItem => ({
+                    ...nestedItem,
+                    selected: false,
+                })),
+            }),
         })),
     }));
 
@@ -445,6 +452,13 @@ const Container = (props) => {
             items: filterGroup.items.map(filterItem => ({
                 ...filterItem,
                 selected: false,
+                // Clear nested items in categories
+                ...(filterItem.isCategory && filterItem.items && {
+                    items: filterItem.items.map(nestedItem => ({
+                        ...nestedItem,
+                        selected: false,
+                    })),
+                }),
             })),
         };
     });
