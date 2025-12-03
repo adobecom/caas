@@ -346,6 +346,7 @@
         }
     }
 
+    /* Modern Carousel styles and overrides */
     .modern-carousel {
         display: grid;
 
@@ -361,25 +362,56 @@
             order: 3;
             display: flex;
             justify-content: space-between;
-            height: 36px;
+            height: 40px;
             width: 120px;
-            margin: 0 auto;
-            background: #b6d4ed;
+            margin: 4px auto;
+            background: #e6e6e6;
             border-radius: 16px;
 
             button {
                 position: relative;
                 top: 0;
                 transform: none;
+                background: #242424;
+                color: #e6e6e6;
+                height: 40px;
+                width: 40px;
+            }
+
+            /*
+            button.hide {
+                display: block !important;
+                opacity: 0.2;
+            }
+            */
+
+            button:active {
+                background: #373737;
+                color: #b1b1b1;
+            }
+
+            button.disabled {
+                opacity: 0.2;
+                cursor: not-allowed;
+            }
+
+            button:before,
+            button:after {
+                background-color: #e6e6e6;
+                left: 20px;
+            }
+
+            button:before {
+                top: 16px;
+            }
+
+            button:after {
+                top: 20px;
             }
 
             button.consonant-Button--previous {
                 transform: rotate(180deg) !important;
             }
-
-            // button.consonant-Button--next {
-            //     right: 46%;
-            // }
         }
     }
 }

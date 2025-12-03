@@ -69,6 +69,7 @@ export function userIsTabbing() {
 function CardsCarousel({
     cards,
     cardStyle,
+    carouselType,
     onCardBookmark,
     resQty,
 } = {}) {
@@ -81,7 +82,7 @@ function CardsCarousel({
     const nextCard = getConfig('collection', 'i18n.nextCards') || 'Next Cards';
     const prevCard = getConfig('collection', 'i18n.prevCards') || 'Previous Cards';
     const useLightText = getConfig('collection', 'useLightText');
-    const isIncremental = getConfig('pagination', 'animationStyle') === 'incremental';
+    const isIncremental = getConfig('pagination', 'animationStyle').includes('incremental');
     const renderOverlay = getConfig('collection', 'useOverlayLinks');
 
     if (cardsUp.includes('2up')) {
@@ -113,33 +114,49 @@ function CardsCarousel({
 
     function hideNextButton() {
         const nextBtn = next.current;
-        if (nextBtn) {
+        if (nextBtn && carouselType === 'default') {
             nextBtn.classList.add('hide');
             nextBtn.setAttribute('aria-hidden', 'true');
+        } else {
+            nextBtn.setAttribute('disabled', 'true');
+            nextBtn.setAttribute('aria-hiden', 'true');
+            nextBtn.classList.add('disabled');
         }
     }
 
     function hidePrevButton() {
         const prevBtn = prev.current;
-        if (prevBtn) {
+        if (prevBtn && carouselType === 'default') {
             prevBtn.classList.add('hide');
             prevBtn.setAttribute('aria-hidden', 'true');
+        } else {
+            prevBtn.setAttribute('disabled', 'true');
+            prevBtn.setAttribute('aria-hidden', 'true');
+            prevBtn.classList.add('disabled');
         }
     }
 
     function showNextButton() {
         const nextBtn = next.current;
-        if (nextBtn) {
+        if (nextBtn && carouselType === 'default') {
             nextBtn.classList.remove('hide');
             nextBtn.setAttribute('aria-hidden', 'false');
+        } else {
+            nextBtn.removeAttribute('disabled');
+            nextBtn.removeAttribute('aria-hidden');
+            nextBtn.classList.remove('disabled');
         }
     }
 
     function showPrevButton() {
         const prevBtn = prev.current;
-        if (prevBtn) {
+        if (prevBtn && carouselType === 'default') {
             prevBtn.classList.remove('hide');
             prevBtn.setAttribute('aria-hidden', 'false');
+        } else {
+            prevBtn.removeAttribute('disabled');
+            prevBtn.removeAttribute('aria-hidden');
+            prevBtn.classList.remove('disabled');
         }
     }
 
@@ -189,6 +206,7 @@ function CardsCarousel({
             showNav();
             shouldHidePrevButton();
             shouldHideNextButton();
+
         }
     }
 
@@ -306,7 +324,7 @@ function CardsCarousel({
                 <button
                     aria-label={prevCard}
                     aria-hidden="true"
-                    className="consonant-Button--previous"
+                    className="consonant-Button--previous disabled"
                     onClick={prevButtonClick}
                     daa-ll="Previous"
                     daa-state="true"
@@ -315,7 +333,7 @@ function CardsCarousel({
                     type="button" />
                 <button
                     aria-label={nextCard}
-                    className="consonant-Button--next"
+                    className="consonant-Button--next disabled"
                     daa-ll="Next"
                     daa-state="true"
                     onClick={nextButtonClick}

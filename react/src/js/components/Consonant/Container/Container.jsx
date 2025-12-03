@@ -1608,6 +1608,7 @@ const Container = (props) => {
                                 resQty={gridCardLen}
                                 cards={gridCards}
                                 cardStyle={cardStyle}
+                                carouselType={isModernCarousel ? 'modern' : 'default'}
                                 role="tablist"
                                 onCardBookmark={handleCardBookmarking} />
                             }
