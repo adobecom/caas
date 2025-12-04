@@ -656,12 +656,14 @@ export const transformFiltersWithCategories = (authoredFilters, categoryMappings
     // Build a reverse lookup: itemId -> categoryId
     const itemToCategoryMap = {};
     Object.entries(categoryMappings).forEach(([categoryId, categoryData]) => {
-        categoryData.items.forEach((itemId) => {
-            itemToCategoryMap[itemId] = {
-                categoryId,
-                label: categoryData.label,
-            };
-        });
+        if (categoryData?.items && Array.isArray(categoryData.items)) {
+            categoryData.items.forEach((itemId) => {
+                itemToCategoryMap[itemId] = {
+                    categoryId,
+                    label: categoryData.label,
+                };
+            });
+        }
     });
 
     return authoredFilters.map((filter) => {
