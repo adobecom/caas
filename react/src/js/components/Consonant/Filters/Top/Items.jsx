@@ -73,20 +73,28 @@ const Items = (props) => {
                         <Fragment key={item.id}>
                             <li
                                 data-testid="consonant-TopFilter-item"
-                                className="consonant-TopFilter-item consonant-TopFilter-item--category">
+                                className={`consonant-TopFilter-item consonant-TopFilter-item--category ${item.opened ? 'is-opened' : ''}`}>
                                 <label
-                                    className="consonant-TopFilter-itemLabel"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        onCategoryToggle && onCategoryToggle(item.id);
-                                    }}
-                                    style={{ cursor: 'pointer' }}>
-                                    <span
-                                        className="consonant-TopFilter-itemCheckmark consonant-TopFilter-itemCheckmark--category">
-                                        {item.opened && (
-                                            <span className="consonant-TopFilter-categoryIcon">−</span>
-                                        )}
-                                    </span>
+                                    htmlFor={item.id}
+                                    className="consonant-TopFilter-itemLabel consonant-TopFilter-itemLabel--category"
+                                    onClick={stopPropagation}>
+                                    <input
+                                        data-testid="consonant-TopFilter-categoryCheckbox"
+                                        id={item.id}
+                                        value={item.id}
+                                        type="checkbox"
+                                        onChange={(e) => {
+                                            handleCheck(e);
+                                            // Top filter: Only expand when selecting (not context-aware)
+                                            if (e.target.checked && !item.opened) {
+                                                onCategoryToggle && onCategoryToggle(item.id);
+                                            } else if (!e.target.checked && item.opened) {
+                                                onCategoryToggle && onCategoryToggle(item.id);
+                                            }
+                                        }}
+                                        checked={item.selected}
+                                        tabIndex="0" />
+                                    <span className="consonant-TopFilter-itemCheckmark" />
                                     <span className="consonant-TopFilter-itemName">
                                         {item.label}
                                     </span>

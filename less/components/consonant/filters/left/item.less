@@ -271,7 +271,34 @@
         /* Start nested category items */
 
         &-itemsItem--category {
+            position: relative;
             // Reuse existing item styles
+        }
+
+        &-itemsItemLabel--category {
+            position: relative;
+            padding-right: 30px !important;
+
+            &:after {
+                content: '';
+                position: absolute;
+                right: 12px;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+                width: 8px;
+                height: 8px;
+                border: 2px solid @consonantAccessibleLightGray;
+                transform: rotate(-135deg);
+                border-top: 0;
+                border-right: 0;
+                pointer-events: none;
+            }
+        }
+
+        &-itemsItem--category.is-opened &-itemsItemLabel--category:after {
+            border-color: @consonantLightGrey800;
+            transform: rotate(135deg);
         }
 
         &-itemsItemCheckmark--category {

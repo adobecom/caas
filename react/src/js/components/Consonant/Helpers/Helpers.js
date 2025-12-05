@@ -94,12 +94,17 @@ export const getActiveFilterIds = (filters) => {
     filters.forEach((filter) => {
         filter.items.forEach((item) => {
             if (item.isCategory && item.items) {
-                // Add selected items from within category
-                item.items.forEach((nestedItem) => {
-                    if (nestedItem.selected) {
-                        allItems.push(nestedItem.id);
-                    }
-                });
+                // If the category itself is selected, add it
+                if (item.selected) {
+                    allItems.push(item.id);
+                } else {
+                    // Otherwise, add selected items from within category
+                    item.items.forEach((nestedItem) => {
+                        if (nestedItem.selected) {
+                            allItems.push(nestedItem.id);
+                        }
+                    });
+                }
             } else if (item.selected) {
                 // Add flat selected item
                 allItems.push(item.id);
@@ -116,6 +121,33 @@ export const getActiveFilterIds = (filters) => {
  */
 export const getActivePanels =
     activeFilters => new Set(activeFilters.map(filter => filter.replace(/\/.*$/, '')));
+
+/**
+ * Expands group filter IDs to their child filter IDs based on categoryMappings
+ * @param {Array} activeFilterIds - All selected filter IDs (may include group IDs)
+ * @param {Object} categoryMappings - Mapping of group IDs to their child IDs
+ * @returns {Array} - Expanded filter IDs with group IDs replaced by their children
+ */
+export const expandGroupFiltersToChildren = (activeFilterIds, categoryMappings = {}) => {
+    if (!categoryMappings || Object.keys(categoryMappings).length === 0) {
+        return activeFilterIds;
+    }
+
+    const expandedFilters = [];
+
+    activeFilterIds.forEach((filterId) => {
+        // Check if this filter ID is a group/category
+        if (categoryMappings[filterId]) {
+            // It's a group - expand to all children
+            expandedFilters.push(...categoryMappings[filterId].items);
+        } else {
+            // It's a regular filter - keep as is
+            expandedFilters.push(filterId);
+        }
+    });
+
+    return expandedFilters;
+};
 
 /**
  * Helper method to dermine whether author chose XOR or AND type filtering

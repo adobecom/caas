@@ -339,8 +339,13 @@ export const getSelectedItemsCount = (items) => {
     let count = 0;
     items.forEach((item) => {
         if (item.isCategory && item.items) {
-            // Count selected items within category
-            count += item.items.filter(({ selected }) => Boolean(selected)).length;
+            // If the category itself is selected, count it as 1
+            if (item.selected) {
+                count += 1;
+            } else {
+                // Otherwise, count selected items within category
+                count += item.items.filter(({ selected }) => Boolean(selected)).length;
+            }
         } else if (item.selected) {
             // Count flat selected item
             count += 1;

@@ -67,6 +67,7 @@ import {
     getActivePanels,
     getUpdatedCardBookmarkData,
     transformFiltersWithCategories,
+    expandGroupFiltersToChildren,
 } from '../Helpers/Helpers';
 
 
@@ -623,11 +624,76 @@ const Container = (props) => {
         setFilters(prevFilters => prevFilters.map((filter) => {
             if (filter.id !== filterId) return filter;
 
+            // Check if the clicked item is a category/group
+            const clickedItem = filter.items.find(item => item.id === itemId);
+            const isClickingCategory = clickedItem && clickedItem.isCategory;
+
+            // Check if the clicked item is a nested child within a category
+            let parentCategory = null;
+            if (!isClickingCategory) {
+                parentCategory = filter.items.find(item =>
+                    item.isCategory && item.items && item.items.some(nested => nested.id === itemId)
+                );
+            }
+
             return {
                 ...filter,
                 items: filter.items.map((item) => {
-                    // If it's a category, check nested items
+                    // If we're clicking a category and selecting it, deselect all other categories
+                    if (isClickingCategory && isChecked && item.isCategory && item.id !== itemId) {
+                        return {
+                            ...item,
+                            selected: false,
+                        };
+                    }
+
+                    // If it's a category, handle category selection
                     if (item.isCategory) {
+                        // If this is the category being clicked
+                        if (item.id === itemId) {
+                            // Context-aware behavior only for LEFT filter panel
+                            if (filterPanelType === 'left') {
+                                // If expanded: clear everything and deselect
+                                if (item.opened) {
+                                    return {
+                                        ...item,
+                                        selected: false,
+                                        items: item.items.map(nestedItem => ({
+                                            ...nestedItem,
+                                            selected: false,
+                                        })),
+                                    };
+                                }
+                                // If collapsed: select the group
+                                return {
+                                    ...item,
+                                    selected: true,
+                                };
+                            }
+                            // Standard toggle behavior for TOP filter panel
+                            const newSelected = !item.selected;
+                            return {
+                                ...item,
+                                selected: newSelected,
+                                // If unchecking category, also uncheck all children
+                                items: newSelected ? item.items : item.items.map(nestedItem => ({
+                                    ...nestedItem,
+                                    selected: false,
+                                })),
+                            };
+                        }
+                        // If clicking a child while this category is selected, deselect the category
+                        if (parentCategory && item.id === parentCategory.id && isChecked) {
+                            return {
+                                ...item,
+                                selected: false,
+                                items: item.items.map(nestedItem => ({
+                                    ...nestedItem,
+                                    selected: nestedItem.id === itemId ? !nestedItem.selected : nestedItem.selected,
+                                })),
+                            };
+                        }
+                        // Otherwise, check nested items for individual product selection
                         return {
                             ...item,
                             items: item.items.map(nestedItem => ({
@@ -1268,10 +1334,16 @@ const Container = (props) => {
     const activeFilterIds = getActiveFilterIds(filters);
 
     /**
+     * Expand group/category filters to their child filters
+     * @type {Array}
+     */
+    const expandedFilterIds = expandGroupFiltersToChildren(activeFilterIds, categoryMappings);
+
+    /**
      * Array of filters panels (groupings) created by the author
      * @type {Array}
      */
-    const activePanels = getActivePanels(activeFilterIds) || new Set();
+    const activePanels = getActivePanels(expandedFilterIds) || new Set();
 
     /**
      * Instance of CardFilterer class that handles returning subset of cards
@@ -1296,7 +1368,7 @@ const Container = (props) => {
         .sortCards(sortOption, sanitizedEventFilter, featuredCards, hideCtaIds, isFirstLoad)
         .keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks)
         .keepCardsWithinDateRange()
-        .filterCards(activeFilterIds, activePanels, filterLogic, FILTER_TYPES, currCategories)
+        .filterCards(expandedFilterIds, activePanels, filterLogic, FILTER_TYPES, currCategories)
         .truncateList(totalCardLimit)
         .searchCards(removeMarkDown(searchQuery), searchFields, cardStyle)
         .removeCards(inclusionIds);

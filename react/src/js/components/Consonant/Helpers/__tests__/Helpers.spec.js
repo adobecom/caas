@@ -30,6 +30,7 @@ import {
     getFeaturedCards,
     sanitizeStr,
     getActivePanels,
+    expandGroupFiltersToChildren,
 } from '../Helpers';
 
 describe('utils/Helpers', () => {
@@ -511,6 +512,90 @@ describe('utils/Helpers', () => {
             const expectedValue = new Set(['panel1', 'panel2', 'panel3']);
             const result = getActivePanels(activeFilters);
             expect(result).toEqual(expectedValue);
+        });
+    });
+    describe('expandGroupFiltersToChildren', () => {
+        test('should return same filters when no categoryMappings provided', () => {
+            const activeFilterIds = ['caas:products/photoshop', 'caas:products/illustrator'];
+            const result = expandGroupFiltersToChildren(activeFilterIds);
+            expect(result).toEqual(['caas:products/photoshop', 'caas:products/illustrator']);
+        });
+
+        test('should return same filters when categoryMappings is empty', () => {
+            const activeFilterIds = ['caas:products/photoshop'];
+            const categoryMappings = {};
+            const result = expandGroupFiltersToChildren(activeFilterIds, categoryMappings);
+            expect(result).toEqual(['caas:products/photoshop']);
+        });
+
+        test('should expand group filter to child filters', () => {
+            const activeFilterIds = ['caas:products/creative-cloud'];
+            const categoryMappings = {
+                'caas:products/creative-cloud': {
+                    label: 'Creative Cloud',
+                    items: ['caas:products/photoshop', 'caas:products/illustrator', 'caas:products/indesign'],
+                },
+            };
+            const result = expandGroupFiltersToChildren(activeFilterIds, categoryMappings);
+            expect(result).toEqual(['caas:products/photoshop', 'caas:products/illustrator', 'caas:products/indesign']);
+        });
+
+        test('should expand multiple group filters', () => {
+            const activeFilterIds = ['caas:products/creative-cloud', 'caas:products/document-cloud'];
+            const categoryMappings = {
+                'caas:products/creative-cloud': {
+                    label: 'Creative Cloud',
+                    items: ['caas:products/photoshop', 'caas:products/illustrator'],
+                },
+                'caas:products/document-cloud': {
+                    label: 'Document Cloud',
+                    items: ['caas:products/acrobat', 'caas:products/sign'],
+                },
+            };
+            const result = expandGroupFiltersToChildren(activeFilterIds, categoryMappings);
+            expect(result).toEqual([
+                'caas:products/photoshop',
+                'caas:products/illustrator',
+                'caas:products/acrobat',
+                'caas:products/sign',
+            ]);
+        });
+
+        test('should keep non-group filters unchanged', () => {
+            const activeFilterIds = ['caas:products/photoshop', 'caas:products/creative-cloud'];
+            const categoryMappings = {
+                'caas:products/creative-cloud': {
+                    label: 'Creative Cloud',
+                    items: ['caas:products/illustrator', 'caas:products/indesign'],
+                },
+            };
+            const result = expandGroupFiltersToChildren(activeFilterIds, categoryMappings);
+            expect(result).toEqual([
+                'caas:products/photoshop',
+                'caas:products/illustrator',
+                'caas:products/indesign',
+            ]);
+        });
+
+        test('should handle mix of group and non-group filters', () => {
+            const activeFilterIds = [
+                'adobe-com-enterprise:topic/digital-trends',
+                'caas:products/creative-cloud',
+                'caas:products/workfront',
+            ];
+            const categoryMappings = {
+                'caas:products/creative-cloud': {
+                    label: 'Creative Cloud',
+                    items: ['caas:products/photoshop', 'caas:products/illustrator'],
+                },
+            };
+            const result = expandGroupFiltersToChildren(activeFilterIds, categoryMappings);
+            expect(result).toEqual([
+                'adobe-com-enterprise:topic/digital-trends',
+                'caas:products/photoshop',
+                'caas:products/illustrator',
+                'caas:products/workfront',
+            ]);
         });
     });
 });

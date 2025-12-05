@@ -46,17 +46,27 @@ const Items = (props) => {
                         <Fragment key={item.id}>
                             <li
                                 data-testid="consonant-LeftFilter-category"
-                                className="consonant-LeftFilter-itemsItem consonant-LeftFilter-itemsItem--category">
+                                className={`consonant-LeftFilter-itemsItem consonant-LeftFilter-itemsItem--category ${item.opened ? 'is-opened' : ''}`}>
                                 <label
-                                    className="consonant-LeftFilter-itemsItemLabel"
-                                    onClick={() => onCategoryToggle && onCategoryToggle(item.id)}
-                                    style={{ cursor: 'pointer' }}>
+                                    htmlFor={item.id}
+                                    className="consonant-LeftFilter-itemsItemLabel consonant-LeftFilter-itemsItemLabel--category">
+                                    <input
+                                        data-testid="consonant-LeftFilter-categoryCheckbox"
+                                        id={item.id}
+                                        value={item.id}
+                                        daa-im={item.label}
+                                        type="checkbox"
+                                        onChange={(e) => {
+                                            handleCheck(e);
+                                            // Context-aware expand/collapse:
+                                            // - If collapsed: expand (selecting the group)
+                                            // - If expanded: collapse (clearing the group)
+                                            onCategoryToggle && onCategoryToggle(item.id);
+                                        }}
+                                        checked={item.selected}
+                                        tabIndex="0" />
                                     <span
-                                        className="consonant-LeftFilter-itemsItemCheckmark consonant-LeftFilter-itemsItemCheckmark--category">
-                                        {item.opened && (
-                                            <span className="consonant-LeftFilter-categoryIcon">−</span>
-                                        )}
-                                    </span>
+                                        className="consonant-LeftFilter-itemsItemCheckmark" />
                                     <span className="consonant-LeftFilter-itemsItemName">
                                         {item.label && sanitizeStr(item.label.toString())}
                                     </span>
