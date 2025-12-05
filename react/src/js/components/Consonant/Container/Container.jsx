@@ -752,7 +752,18 @@ const Container = (props) => {
 
     useEffect(() => {
         // Transform filters with category groupings if categoryMappings exist
-        const transformedFilters = transformFiltersWithCategories(authoredFilters, categoryMappings);
+        
+        // const transformedFilters = transformFiltersWithCategories(
+        //     authoredFilters.filter(filter => filter.group === 'Products'),
+        //     categoryMappings
+        // );
+
+        const transformedFilters = transformFiltersWithCategories(
+            authoredFilters,
+            categoryMappings
+        );
+
+        console.log('>>>>>>>>>> Container > transformedFilters', transformedFilters);
 
         const finalFilters = transformedFilters.map(filterGroup => ({
             ...filterGroup,
@@ -771,7 +782,8 @@ const Container = (props) => {
         }));
 
         // DEBUG: Only log Products filter items
-        const productsFilter = finalFilters.find(f => f.id === 'caas:products');
+        // const productsFilter = finalFilters.find(f => f.id === 'caas:products');
+        const productsFilter = finalFilters.find(f => f.useCategoryMappings === true);
         if (productsFilter) {
             console.log('[DEBUG] Products filter items after state mapping:',
                 productsFilter.items.map(item => ({

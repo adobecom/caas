@@ -653,13 +653,18 @@ export const transformFiltersWithCategories = (authoredFilters, categoryMappings
         return authoredFilters;
     }
 
+    console.log('>>>>>>>>>> Helpers > categoryMappings', categoryMappings);
+    console.log('>>>>>>>>>> Helpers > authoredFilters', authoredFilters);
+
     // Build a reverse lookup: itemId -> categoryId
     const itemToCategoryMap = {};
     Object.entries(categoryMappings).forEach(([categoryId, categoryData]) => {
+        console.log('>>>>>>>>>> Helpers > processing categoryData', categoryData);
         if (categoryData?.items && Array.isArray(categoryData.items)) {
             categoryData.items.forEach((itemId) => {
                 itemToCategoryMap[itemId] = {
                     categoryId,
+                    id: categoryData.id,
                     label: categoryData.label,
                 };
             });
@@ -667,31 +672,49 @@ export const transformFiltersWithCategories = (authoredFilters, categoryMappings
     });
 
     return authoredFilters.map((filter) => {
+        // Check if this filter has any items that match the categoryMappings
+        const hasMatchingItems = filter.items?.some(item => itemToCategoryMap[item.id]);
+
+        // If no matching items, return the filter unchanged
+        if (!hasMatchingItems) {
+            return filter;
+        }
+
+        // console.log('>>>>>>>>>> Helpers > filter', filter); // category filter
+
         const categorizedItems = {};
         const uncategorizedItems = [];
+        const useCats = !!filter.useCategoryMappings;
+        console.log('>>>>>>>>>> Helpers > useCats', filter.id, useCats);
 
         // Group items by category
         filter.items.forEach((item) => {
+            // console.log('>>>>>>>>>> Helpers > item.id', item.id); // each filters id
             const categoryInfo = itemToCategoryMap[item.id];
-
+            // const categoryInfo = item.id;
             if (categoryInfo) {
                 // Item belongs to a category
-                const { categoryId, label } = categoryInfo;
-                if (!categorizedItems[categoryId]) {
-                    categorizedItems[categoryId] = {
-                        id: categoryId,
+                console.log('>>>>>>>>>> Helpers > categoryInfo', categoryInfo);
+                const { id, label } = categoryInfo;
+                console.log('>>>>>>>>>> Helpers > id', id);
+                console.log('>>>>>>>>>> Helpers > label', label);
+                if (!categorizedItems[id]) {
+                    categorizedItems[id] = {
+                        id,
                         label,
                         isCategory: true,
                         opened: false,
                         items: [],
                     };
                 }
-                categorizedItems[categoryId].items.push(item);
+                categorizedItems[id].items.push(item);
             } else {
                 // Item doesn't belong to any category - keep it flat
                 uncategorizedItems.push(item);
             }
         });
+
+        console.log('>>>>>>>>>> Helpers > categorizedItems', categorizedItems);
 
         // Build final items array: categories first, then uncategorized items
         const transformedItems = [

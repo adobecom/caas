@@ -68,6 +68,7 @@ const Item = (props) => {
         items,
         numItemsSelected,
         isOpened,
+        useCats,
         onCheck,
         onClick,
         onClearAll,
@@ -116,7 +117,8 @@ const Item = (props) => {
     const selectedFilters = items.filter(item => item.selected);
 
     // DEBUG: Only log Products filter
-    if (id === 'caas:products') {
+    // if (id === 'caas:products') {
+    if (useCats || id === 'caas:products') {
         console.log('[DEBUG] Products Item received items:',
             items.map(item => ({
                 id: item.id,

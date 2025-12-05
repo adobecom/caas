@@ -246,6 +246,7 @@ const LeftFilterPanel = forwardRef(({
                         results={resQty}
                         id={filter.id}
                         isOpened={filter.opened}
+                        useCats={filter.useCategoryMappings}
                         onCheck={onCheckboxClick}
                         onClick={onFilterClick}
                         onClearAll={onClearFilterItems}
