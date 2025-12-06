@@ -31,6 +31,7 @@ import {
     sanitizeStr,
     getActivePanels,
     expandGroupFiltersToChildren,
+    transformFiltersWithCategories,
 } from '../Helpers';
 
 describe('utils/Helpers', () => {
@@ -596,6 +597,143 @@ describe('utils/Helpers', () => {
                 'caas:products/illustrator',
                 'caas:products/workfront',
             ]);
+        });
+    });
+    describe('transformFiltersWithCategories', () => {
+        test('should return unchanged filters when no categoryMappings provided', () => {
+            const authoredFilters = [
+                {
+                    id: 'caas:products',
+                    group: 'Products',
+                    items: [
+                        { id: 'caas:products/photoshop', label: 'Photoshop' },
+                        { id: 'caas:products/illustrator', label: 'Illustrator' },
+                    ],
+                },
+            ];
+            const result = transformFiltersWithCategories(authoredFilters);
+            expect(result).toEqual(authoredFilters);
+        });
+
+        test('should return unchanged filters when categoryMappings is empty', () => {
+            const authoredFilters = [
+                {
+                    id: 'caas:products',
+                    group: 'Products',
+                    items: [
+                        { id: 'caas:products/photoshop', label: 'Photoshop' },
+                    ],
+                },
+            ];
+            const result = transformFiltersWithCategories(authoredFilters, {});
+            expect(result).toEqual(authoredFilters);
+        });
+
+        test('should group items into categories', () => {
+            const authoredFilters = [
+                {
+                    id: 'caas:products',
+                    group: 'Products',
+                    items: [
+                        { id: 'caas:products/photoshop', label: 'Photoshop' },
+                        { id: 'caas:products/illustrator', label: 'Illustrator' },
+                    ],
+                },
+            ];
+            const categoryMappings = {
+                'caas:products/creative-cloud': {
+                    label: 'Creative Cloud',
+                    items: ['caas:products/photoshop', 'caas:products/illustrator'],
+                },
+            };
+            const result = transformFiltersWithCategories(authoredFilters, categoryMappings);
+
+            expect(result).toHaveLength(1);
+            expect(result[0].items).toHaveLength(1);
+            expect(result[0].items[0]).toMatchObject({
+                id: 'caas:products/creative-cloud',
+                label: 'Creative Cloud',
+                isCategory: true,
+                opened: false,
+            });
+            expect(result[0].items[0].items).toHaveLength(2);
+        });
+
+        test('should handle mix of categorized and uncategorized items', () => {
+            const authoredFilters = [
+                {
+                    id: 'caas:products',
+                    group: 'Products',
+                    items: [
+                        { id: 'caas:products/photoshop', label: 'Photoshop' },
+                        { id: 'caas:products/illustrator', label: 'Illustrator' },
+                        { id: 'caas:products/workfront', label: 'Workfront' },
+                    ],
+                },
+            ];
+            const categoryMappings = {
+                'caas:products/creative-cloud': {
+                    label: 'Creative Cloud',
+                    items: ['caas:products/photoshop', 'caas:products/illustrator'],
+                },
+            };
+            const result = transformFiltersWithCategories(authoredFilters, categoryMappings);
+
+            expect(result[0].items).toHaveLength(2);
+            expect(result[0].items[0].isCategory).toBe(true);
+            expect(result[0].items[1].id).toBe('caas:products/workfront');
+        });
+
+        test('should handle multiple categories', () => {
+            const authoredFilters = [
+                {
+                    id: 'caas:products',
+                    group: 'Products',
+                    items: [
+                        { id: 'caas:products/photoshop', label: 'Photoshop' },
+                        { id: 'caas:products/acrobat', label: 'Acrobat' },
+                    ],
+                },
+            ];
+            const categoryMappings = {
+                'caas:products/creative-cloud': {
+                    label: 'Creative Cloud',
+                    items: ['caas:products/photoshop'],
+                },
+                'caas:products/document-cloud': {
+                    label: 'Document Cloud',
+                    items: ['caas:products/acrobat'],
+                },
+            };
+            const result = transformFiltersWithCategories(authoredFilters, categoryMappings);
+
+            expect(result[0].items).toHaveLength(2);
+            expect(result[0].items[0].label).toBe('Creative Cloud');
+            expect(result[0].items[1].label).toBe('Document Cloud');
+        });
+
+        test('should preserve filter properties', () => {
+            const authoredFilters = [
+                {
+                    id: 'caas:products',
+                    group: 'Products',
+                    icon: 'some-icon',
+                    items: [
+                        { id: 'caas:products/photoshop', label: 'Photoshop' },
+                    ],
+                },
+            ];
+            const categoryMappings = {
+                'caas:products/creative-cloud': {
+                    label: 'Creative Cloud',
+                    items: ['caas:products/photoshop'],
+                },
+            };
+            const result = transformFiltersWithCategories(authoredFilters, categoryMappings);
+
+            expect(result[0].id).toBe('caas:products');
+            expect(result[0].group).toBe('Products');
+            expect(result[0].icon).toBe('some-icon');
         });
     });
 });
