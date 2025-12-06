@@ -7,7 +7,6 @@ import {
     isSuperset,
     intersection,
     sanitizeText,
-    chainFromIterable,
     removeDuplicatesByKey,
 } from './general';
 import { EVENT_TIMING_IDS } from './constants';

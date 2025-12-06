@@ -36,6 +36,7 @@ const defaultProps = {
     isOpened: false,
     numItemsSelected: 0,
     clearFilterText: '',
+    onCategoryToggle: () => {},
 };
 
 /**

@@ -51,6 +51,7 @@ const defaultProps = {
     filters: [],
     searchQuery: '',
     showLimitedFiltersQty: false,
+    onCategoryToggle: () => {},
 };
 
 /**

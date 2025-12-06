@@ -32,6 +32,7 @@ const groupType = {
 const defaultProps = {
     numItemsSelected: 0,
     clearFilterText: '',
+    onCategoryToggle: () => {},
 };
 
 /**

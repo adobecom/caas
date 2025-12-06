@@ -77,7 +77,9 @@ const Items = (props) => {
                                 <label
                                     htmlFor={item.id}
                                     className="consonant-TopFilter-itemLabel consonant-TopFilter-itemLabel--category"
-                                    onClick={stopPropagation}>
+                                    onClick={stopPropagation}
+                                    onKeyDown={stopPropagation}
+                                    role="presentation">
                                     <input
                                         data-testid="consonant-TopFilter-categoryCheckbox"
                                         id={item.id}
@@ -87,9 +89,9 @@ const Items = (props) => {
                                             handleCheck(e);
                                             // Top filter: Only expand when selecting (not context-aware)
                                             if (e.target.checked && !item.opened) {
-                                                onCategoryToggle && onCategoryToggle(item.id);
+                                                onCategoryToggle(item.id);
                                             } else if (!e.target.checked && item.opened) {
-                                                onCategoryToggle && onCategoryToggle(item.id);
+                                                onCategoryToggle(item.id);
                                             }
                                         }}
                                         checked={item.selected}
@@ -110,7 +112,9 @@ const Items = (props) => {
                                         <label
                                             htmlFor={nestedItem.id}
                                             className="consonant-TopFilter-itemLabel"
-                                            onClick={stopPropagation}>
+                                            onClick={stopPropagation}
+                                            onKeyDown={stopPropagation}
+                                            role="presentation">
                                             <input
                                                 data-testid="consonant-TopFilter-itemCheckbox"
                                                 id={nestedItem.id}
@@ -174,6 +178,9 @@ const Items = (props) => {
 };
 
 Items.propTypes = itemsType;
+Items.defaultProps = {
+    onCategoryToggle: () => {},
+};
 
 /* eslint-disable-next-line import/prefer-default-export */
 export { Items };

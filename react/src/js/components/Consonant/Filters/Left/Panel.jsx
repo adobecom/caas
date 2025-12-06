@@ -47,6 +47,7 @@ const defaultProps = {
     selectedFiltersQty: 0,
     showMobileFilters: false,
     windowWidth: window.innerWidth,
+    onCategoryToggle: () => {},
 };
 
 /**
