@@ -374,7 +374,7 @@
                 top: 0;
                 transform: none;
                 background: #d5d5d5;
-                color: #000000;
+                color: #000;
                 height: 40px;
                 width: 40px;
             }
@@ -389,13 +389,19 @@
             }
 
             button.disabled {
-                opacity: 0.2;
+                // opacity: 0.2;
+                background: #232323;
                 cursor: not-allowed;
+            }
+
+            button.disabled:before,
+            button.disabled:after {
+                background-color: #999;
             }
 
             button:before,
             button:after {
-                background-color: #000000;
+                background-color: #000;
                 left: 20px;
             }
 
