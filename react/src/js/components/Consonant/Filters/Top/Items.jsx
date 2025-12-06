@@ -14,6 +14,7 @@ const itemsType = {
     stopPropagation: func.isRequired,
     clipWrapperItemsCount: number.isRequired,
     items: arrayOf(shape(filterItemType)).isRequired,
+    // eslint-disable-next-line react/require-default-props
     onCategoryToggle: func,
 };
 
@@ -88,10 +89,12 @@ const Items = (props) => {
                                         onChange={(e) => {
                                             handleCheck(e);
                                             // Top filter: Only expand when selecting (not context-aware)
-                                            if (e.target.checked && !item.opened) {
-                                                onCategoryToggle(item.id);
-                                            } else if (!e.target.checked && item.opened) {
-                                                onCategoryToggle(item.id);
+                                            if (onCategoryToggle) {
+                                                if (e.target.checked && !item.opened) {
+                                                    onCategoryToggle(item.id);
+                                                } else if (!e.target.checked && item.opened) {
+                                                    onCategoryToggle(item.id);
+                                                }
                                             }
                                         }}
                                         checked={item.selected}
@@ -178,9 +181,6 @@ const Items = (props) => {
 };
 
 Items.propTypes = itemsType;
-Items.defaultProps = {
-    onCategoryToggle: () => {},
-};
 
 /* eslint-disable-next-line import/prefer-default-export */
 export { Items };

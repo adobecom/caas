@@ -11,6 +11,7 @@ import { sanitizeStr } from '../../Helpers/Helpers';
 const ItemsType = {
     handleCheck: func.isRequired,
     items: arrayOf(shape(filterItemType)).isRequired,
+    // eslint-disable-next-line react/require-default-props
     onCategoryToggle: func,
 };
 
@@ -61,7 +62,9 @@ const Items = (props) => {
                                             // Context-aware expand/collapse:
                                             // - If collapsed: expand (selecting the group)
                                             // - If expanded: collapse (clearing the group)
-                                            onCategoryToggle(item.id);
+                                            if (onCategoryToggle) {
+                                                onCategoryToggle(item.id);
+                                            }
                                         }}
                                         checked={item.selected}
                                         tabIndex="0" />
@@ -139,9 +142,6 @@ const Items = (props) => {
 };
 
 Items.propTypes = ItemsType;
-Items.defaultProps = {
-    onCategoryToggle: () => {},
-};
 
 /* eslint-disable-next-line import/prefer-default-export */
 export { Items };

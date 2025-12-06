@@ -28,6 +28,7 @@ const itemType = {
     results: number.isRequired,
     onClearAll: func.isRequired,
     items: arrayOf(shape(filterItemType)).isRequired,
+    // eslint-disable-next-line react/require-default-props
     onCategoryToggle: func,
 };
 
@@ -36,7 +37,6 @@ const defaultProps = {
     isOpened: false,
     numItemsSelected: 0,
     clearFilterText: '',
-    onCategoryToggle: () => {},
 };
 
 /**

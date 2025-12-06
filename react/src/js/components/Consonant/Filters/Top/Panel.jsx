@@ -35,6 +35,7 @@ const filtersPanelTopType = {
     sortComponent: node.isRequired,
     windowWidth: number.isRequired,
     onFilterClick: func.isRequired,
+    // eslint-disable-next-line react/require-default-props
     onCategoryToggle: func,
     onShowAllClick: func.isRequired,
     searchComponent: node.isRequired,
@@ -51,7 +52,6 @@ const defaultProps = {
     filters: [],
     searchQuery: '',
     showLimitedFiltersQty: false,
-    onCategoryToggle: () => {},
 };
 
 /**

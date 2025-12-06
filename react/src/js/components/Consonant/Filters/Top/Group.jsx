@@ -23,6 +23,7 @@ const groupType = {
     clearFilterText: string,
     numItemsSelected: number,
     onCheck: func.isRequired,
+    // eslint-disable-next-line react/require-default-props
     onCategoryToggle: func,
     results: number.isRequired,
     onClearAll: func.isRequired,
@@ -32,7 +33,6 @@ const groupType = {
 const defaultProps = {
     numItemsSelected: 0,
     clearFilterText: '',
-    onCategoryToggle: () => {},
 };
 
 /**

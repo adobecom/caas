@@ -31,6 +31,7 @@ const leftFilterPanelType = {
     selectedFiltersQty: number,
     onFilterClick: func.isRequired,
     onCheckboxClick: func.isRequired,
+    // eslint-disable-next-line react/require-default-props
     onCategoryToggle: func,
     searchComponent: node.isRequired,
     bookmarkComponent: node.isRequired,
@@ -47,7 +48,6 @@ const defaultProps = {
     selectedFiltersQty: 0,
     showMobileFilters: false,
     windowWidth: window.innerWidth,
-    onCategoryToggle: () => {},
 };
 
 /**
