@@ -28,6 +28,8 @@ const itemType = {
     results: number.isRequired,
     onClearAll: func.isRequired,
     items: arrayOf(shape(filterItemType)).isRequired,
+    // eslint-disable-next-line react/require-default-props
+    onCategoryToggle: func,
 };
 
 const defaultProps = {
@@ -72,6 +74,7 @@ const Item = (props) => {
         onClearAll,
         results,
         clearFilterText,
+        onCategoryToggle,
     } = props;
 
     const getConfig = useConfig();
@@ -112,6 +115,17 @@ const Item = (props) => {
      * @type {Array}
      */
     const selectedFilters = items.filter(item => item.selected);
+
+    // DEBUG: Only log Products filter
+    if (id === 'caas:products') {
+        console.log('[DEBUG] Products Item received items:',
+            items.map(item => ({
+                id: item.id,
+                label: item.label,
+                isCategory: item.isCategory
+            }))
+        );
+    }
 
     /**
      * Array of the selected filters labels shown on mobile and tablet breakpoints
@@ -220,7 +234,8 @@ const Item = (props) => {
                         aria-labelledby={`${id}-link`}>
                         <Items
                             items={items}
-                            handleCheck={handleCheck} />
+                            handleCheck={handleCheck}
+                            onCategoryToggle={onCategoryToggle} />
                     </section>
                     <GroupFooter
                         ctaText={buttonText}
