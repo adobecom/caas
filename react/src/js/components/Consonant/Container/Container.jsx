@@ -823,36 +823,19 @@ const Container = (props) => {
         const finalFilters = transformedFilters.map(filterGroup => ({
             ...filterGroup,
             opened: DESKTOP_SCREEN_SIZE ? filterGroup.openedOnLoad : false,
-            items: filterGroup.items.map(filterItem => {
-                console.log('>>>>>>>>>>>> filterItem', filterItem);
-                return {
-                    ...filterItem,
-                    selected: false,
-                    // If it's a category, preserve its nested items structure
-                    ...(filterItem.isCategory && {
-                        items: filterItem.items.map(nestedItem => ({
-                            ...nestedItem,
-                            selected: false,
-                        })),
-                    }),
-                };
-            }),
+            items: filterGroup.items.map(filterItem => ({
+                ...filterItem,
+                selected: false,
+                // If it's a category, preserve its nested items structure
+                ...(filterItem.isCategory && {
+                    items: filterItem.items.map(nestedItem => ({
+                        ...nestedItem,
+                        selected: false,
+                    })),
+                }),
+            })),
         }));
 
-        // // DEBUG: Only log Products filter items
-        // const productsFilter = finalFilters.find(f => f.id === 'caas:products');
-        // if (productsFilter) {
-        //     console.log('[DEBUG] Products filter items after state mapping:',
-        //         productsFilter.items.map(item => ({
-        //             id: item.id,
-        //             label: item.label,
-        //             isCategory: item.isCategory,
-        //             hasNestedItems: item.items ? item.items.length : 0
-        //         }))
-        //     );
-        // }
-
-        console.log('>>>>>>>>>>>> Final filters:', finalFilters);
         setFilters(finalFilters);
     }, []);
 
@@ -924,8 +907,9 @@ const Container = (props) => {
             /* istanbul ignore next */
             items: filter.items.filter(item => tags.includes(item.id)
             || tags.includes(item.label)
-            || tags.toString().includes(`/${item.id}`) // ***** FIX  HERE *****
-            || timingTags.includes(item.id)),
+            || tags.toString().includes(`/${item.id}`)
+            || timingTags.includes(item.id)
+            || item.isCategory && item.items.some(nestedItem => tags.includes(nestedItem.id))),
         })).filter(filter => filter.items.length > 0);
     };
 

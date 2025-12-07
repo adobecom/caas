@@ -119,20 +119,6 @@ const Item = (props) => {
      */
     const selectedFilters = items.filter(item => item.selected);
 
-    // console.log('>>>>>>>>>>>> useCategoryMappings', useCategoryMappings);
-    // console.log('>>>>>>>>>>>> id', id);
-
-    // DEBUG: Only log Products filter
-    // if (id === 'caas:products' || useCategoryMappings) {
-    //     console.log('[DEBUG] Products Item received items:',
-    //         items.map(item => ({
-    //             id: item.id,
-    //             label: item.label,
-    //             isCategory: item.isCategory
-    //         }))
-    //     );
-    // }
-
     /**
      * Array of the selected filters labels shown on mobile and tablet breakpoints
      * @type {Array}
