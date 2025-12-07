@@ -40,6 +40,7 @@ const leftFilterPanelType = {
     onClearFilterItems: func.isRequired,
     onSelectedFilterClick: func.isRequired,
     onMobileFiltersToggleClick: func.isRequired,
+    useCategoryMappings: bool,
 };
 
 const defaultProps = {
@@ -48,6 +49,7 @@ const defaultProps = {
     selectedFiltersQty: 0,
     showMobileFilters: false,
     windowWidth: window.innerWidth,
+    useCategoryMappings: false,
 };
 
 /**
@@ -89,6 +91,7 @@ const LeftFilterPanel = forwardRef(({
     searchComponent,
     bookmarkComponent,
     windowWidth,
+    useCategoryMappings,
 }, ref) => {
     const getConfig = useConfig();
 
@@ -247,6 +250,7 @@ const LeftFilterPanel = forwardRef(({
                         results={resQty}
                         id={filter.id}
                         isOpened={filter.opened}
+                        useCategoryMappings={useCategoryMappings}
                         onCheck={onCheckboxClick}
                         onClick={onFilterClick}
                         onClearAll={onClearFilterItems}

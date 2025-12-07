@@ -19,6 +19,7 @@ export const DEFAULT_PROPS = {
     results: 0, // filtered cards count
     name: group,
     isOpened: false,
+    useCategoryMappings: false,
     numItemsSelected: 0,
 
     onCheck: jest.fn(),

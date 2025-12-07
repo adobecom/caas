@@ -30,6 +30,7 @@ const itemType = {
     items: arrayOf(shape(filterItemType)).isRequired,
     // eslint-disable-next-line react/require-default-props
     onCategoryToggle: func,
+    useCategoryMappings: bool,
 };
 
 const defaultProps = {
@@ -37,6 +38,7 @@ const defaultProps = {
     isOpened: false,
     numItemsSelected: 0,
     clearFilterText: '',
+    useCategoryMappings: false,
 };
 
 /**
@@ -75,6 +77,7 @@ const Item = (props) => {
         results,
         clearFilterText,
         onCategoryToggle,
+        useCategoryMappings,
     } = props;
 
     const getConfig = useConfig();
@@ -116,16 +119,19 @@ const Item = (props) => {
      */
     const selectedFilters = items.filter(item => item.selected);
 
+    // console.log('>>>>>>>>>>>> useCategoryMappings', useCategoryMappings);
+    // console.log('>>>>>>>>>>>> id', id);
+
     // DEBUG: Only log Products filter
-    if (id === 'caas:products') {
-        console.log('[DEBUG] Products Item received items:',
-            items.map(item => ({
-                id: item.id,
-                label: item.label,
-                isCategory: item.isCategory
-            }))
-        );
-    }
+    // if (id === 'caas:products' || useCategoryMappings) {
+    //     console.log('[DEBUG] Products Item received items:',
+    //         items.map(item => ({
+    //             id: item.id,
+    //             label: item.label,
+    //             isCategory: item.isCategory
+    //         }))
+    //     );
+    // }
 
     /**
      * Array of the selected filters labels shown on mobile and tablet breakpoints
