@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'; // Import jest-dom for additional matchers
 import Container from '../Container';
 import setupIntersectionObserverMock from '../../Testing/Mocks/intersectionObserver';
@@ -988,6 +988,101 @@ describe('Container Component', () => {
             const { container } = render(<Container config={multiGroupConfig} />);
             // When selecting Photoshop while Creative Cloud is selected,
             // Creative Cloud should deselect
+            expect(container.querySelector('.consonant-Wrapper')).toBeInTheDocument();
+        });
+    });
+
+    describe('Multi-level filtering with nested categories', () => {
+        test('should render container with nested category filter items without crashing', () => {
+            const nestedFilterConfig = {
+                collection: {
+                    endpoint: 'https://www.somedomain.com/some-test-api.json',
+                    totalCardsToShow: 50,
+                    cardStyle: 'full-card',
+                    resultsPerPage: 10,
+                    lazyLoad: false,
+                    i18n: {
+                        prettyDateIntervalFormat: '{LLL} {dd} | {timeRange} {timeZone}',
+                        totalResultsText: '{total} Results',
+                        title: 'Your Top Picks',
+                        titleHeadingLevel: 'h2',
+                    },
+                },
+                filterPanel: {
+                    enabled: true,
+                    type: 'left',
+                    filterLogic: 'or',
+                    filters: [
+                        {
+                            group: 'Products',
+                            id: 'caas:products',
+                            items: [
+                                {
+                                    label: 'Creative Cloud',
+                                    id: 'caas:products/creative-cloud',
+                                    isCategory: true,
+                                    items: [
+                                        {
+                                            label: 'Photoshop',
+                                            id: 'caas:products/photoshop',
+                                        },
+                                        {
+                                            label: 'Illustrator',
+                                            id: 'caas:products/illustrator',
+                                        },
+                                    ],
+                                },
+                                {
+                                    label: 'Document Cloud',
+                                    id: 'caas:products/document-cloud',
+                                    isCategory: true,
+                                    items: [
+                                        {
+                                            label: 'Acrobat',
+                                            id: 'caas:products/acrobat',
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                    i18n: {
+                        leftPanel: {
+                            header: 'Refine The Results',
+                            mobile: {
+                                filtersBtnLabel: 'Filters',
+                                panel: {
+                                    header: 'Filter by',
+                                    totalResultsText: '{total} Results',
+                                    applyBtnText: 'Apply',
+                                    clearAllBtnText: 'Clear All',
+                                    doneBtnText: 'Done',
+                                },
+                                group: {
+                                    totalResultsText: '{total} Results',
+                                    applyBtnText: 'Apply',
+                                    clearBtnText: 'Clear',
+                                    doneBtnText: 'Done',
+                                },
+                            },
+                        },
+                    },
+                },
+            };
+
+            // Mock cards with tags that match nested items to ensure coverage of line 912
+            global.fetch = jest.fn(() =>
+                Promise.resolve({
+                    ok: 'ok',
+                    status: 200,
+                    statusText: 'success',
+                    url: 'test.html',
+                    json: () => Promise.resolve({ cards }),
+                }));
+
+            const { container } = render(<Container config={nestedFilterConfig} />);
+
+            // Just verify the component renders without crashing
             expect(container.querySelector('.consonant-Wrapper')).toBeInTheDocument();
         });
     });

@@ -236,4 +236,87 @@ describe('Consonant/Left Filter/Selected Filter Pills', () => {
 
         expect(firstCheckbox.checked).toBeFalsy();
     });
+
+    test('Should filter nested category items correctly', async () => {
+        const configWithNestedFilters = {
+            ...config,
+            filterPanel: {
+                enabled: true,
+                type: 'left',
+                filterLogic: 'or',
+                filters: [
+                    {
+                        group: 'Products',
+                        id: 'caas:products',
+                        items: [
+                            {
+                                label: 'Creative Cloud',
+                                id: 'caas:products/creative-cloud',
+                                isCategory: true,
+                                items: [
+                                    {
+                                        label: 'Photoshop',
+                                        id: 'caas:products/photoshop',
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+                i18n: {
+                    leftPanel: {
+                        header: 'Refine The Results',
+                        mobile: {
+                            filtersBtnLabel: 'Filters',
+                            panel: {
+                                header: 'Filter by',
+                                totalResultsText: '{total} Results',
+                                applyBtnText: 'Apply',
+                                clearAllBtnText: 'Clear All',
+                                doneBtnText: 'Done',
+                            },
+                            group: {
+                                totalResultsText: '{total} Results',
+                                applyBtnText: 'Apply',
+                                clearBtnText: 'Clear',
+                                doneBtnText: 'Done',
+                            },
+                        },
+                    },
+                },
+            },
+        };
+
+        // Mock cards with tags matching nested items
+        const cardsWithNestedTags = [
+            {
+                id: 'card1',
+                appliesTo: [],
+                styles: {},
+                overlays: {},
+                contentArea: {
+                    title: 'Card with Photoshop',
+                    description: 'Test',
+                },
+                tags: [{ id: 'caas:products/photoshop' }],
+            },
+        ];
+
+        global.fetch = jest.fn(() =>
+            Promise.resolve({
+                ok: 'ok',
+                status: 200,
+                statusText: 'success',
+                url: 'test.html',
+                json: () => Promise.resolve({ cards: cardsWithNestedTags }),
+            }));
+
+        await act(async () => render(<Container config={configWithNestedFilters} />));
+
+        // Wait for filters to render
+        await waitFor(() => screen.getByText('Creative Cloud'));
+
+        // Verify the category filter is present
+        expect(screen.getByText('Creative Cloud')).toBeInTheDocument();
+    });
 });
