@@ -116,17 +116,6 @@ const Item = (props) => {
      */
     const selectedFilters = items.filter(item => item.selected);
 
-    // DEBUG: Only log Products filter
-    if (id === 'caas:products') {
-        console.log('[DEBUG] Products Item received items:',
-            items.map(item => ({
-                id: item.id,
-                label: item.label,
-                isCategory: item.isCategory
-            }))
-        );
-    }
-
     /**
      * Array of the selected filters labels shown on mobile and tablet breakpoints
      * @type {Array}
