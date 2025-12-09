@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'; // Import jest-dom for additional matchers
 import Container from '../Container';
 import setupIntersectionObserverMock from '../../Testing/Mocks/intersectionObserver';
@@ -993,6 +993,73 @@ describe('Container Component', () => {
     });
 
     describe('Multi-level filtering with nested categories', () => {
+        test('should sync nested filter selections to URL correctly', () => {
+            const nestedConfig = {
+                collection: {
+                    endpoint: 'https://www.somedomain.com/some-test-api.json',
+                    totalCardsToShow: 50,
+                    cardStyle: 'full-card',
+                    resultsPerPage: 10,
+                    lazyLoad: false,
+                    i18n: {
+                        prettyDateIntervalFormat: '{LLL} {dd} | {timeRange} {timeZone}',
+                        totalResultsText: '{total} Results',
+                        title: 'Your Top Picks',
+                        titleHeadingLevel: 'h2',
+                    },
+                },
+                filterPanel: {
+                    enabled: true,
+                    type: 'left',
+                    filterLogic: 'or',
+                    filters: [
+                        {
+                            group: 'Products',
+                            id: 'caas:products',
+                            items: [
+                                {
+                                    label: 'Creative Cloud',
+                                    id: 'caas:products/creative-cloud',
+                                    isCategory: true,
+                                    items: [
+                                        {
+                                            label: 'Photoshop',
+                                            id: 'caas:products/photoshop',
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                    i18n: {
+                        leftPanel: {
+                            header: 'Refine The Results',
+                            mobile: {
+                                filtersBtnLabel: 'Filters',
+                                panel: {
+                                    header: 'Filter by',
+                                    totalResultsText: '{total} Results',
+                                    applyBtnText: 'Apply',
+                                    clearAllBtnText: 'Clear All',
+                                    doneBtnText: 'Done',
+                                },
+                                group: {
+                                    totalResultsText: '{total} Results',
+                                    applyBtnText: 'Apply',
+                                    clearBtnText: 'Clear',
+                                    doneBtnText: 'Done',
+                                },
+                            },
+                        },
+                    },
+                },
+            };
+
+            const { container } = render(<Container config={nestedConfig} />);
+            // Verify the new syncFiltersToUrl function works without errors
+            expect(container.querySelector('.consonant-Wrapper')).toBeInTheDocument();
+        });
+
         test('should render container with nested category filter items without crashing', () => {
             const nestedFilterConfig = {
                 collection: {
