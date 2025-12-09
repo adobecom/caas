@@ -585,28 +585,46 @@ const Container = (props) => {
     };
 
     /**
-     * Will find and set needed filter to url
+     * Syncs complete filter state to URL (replaces incremental update approach)
+     * This ensures URL always matches the actual filter state
      *
-     * @param {string} filterId - selected filter group id
-     * @param {string} itemId - selected filter item id
-     * @param {boolean} isChecked
+     * @param {string} filterId - filter group id
+     * @param {Array} currentFilters - the current filter state
      * @returns {Void} - an updated url
      */
-    const changeUrlState = (filterId, itemId, isChecked) => {
-        const { group, items } = filters.find(({ id }) => id === filterId);
-        const { label } = items.find(({ id }) => id === itemId);
+    const syncFiltersToUrl = (filterId, currentFilters) => {
+        const filter = currentFilters.find(({ id }) => id === filterId);
+        if (!filter) return;
 
-        let urlStateValue = urlState[filterGroupPrefix + group] || [];
-        /* istanbul ignore if  */
-        if (typeof urlStateValue === 'string') {
-            urlStateValue = urlStateValue.split(',');
-        }
+        const { group, items } = filter;
+        const selectedLabels = [];
 
-        const value = isChecked
-            ? [...urlStateValue, label]
-            : urlStateValue.filter(item => item !== label);
+        // Collect all selected items (both top-level and nested)
+        items.forEach(item => {
+            if (item.selected && !item.isCategory) {
+                // Regular flat item that's selected
+                selectedLabels.push(item.label);
+            }
 
-        setUrlState(filterGroupPrefix + group, value);
+            if (item.isCategory) {
+                // Check if category itself is selected
+                if (item.selected) {
+                    selectedLabels.push(item.label);
+                }
+                // Check nested items within category
+                if (item.items) {
+                    item.items.forEach(nestedItem => {
+                        if (nestedItem.selected) {
+                            selectedLabels.push(nestedItem.label);
+                        }
+                    });
+                }
+            }
+        });
+
+        // Update URL with complete state (using Set to avoid duplicates)
+        const uniqueLabels = [...new Set(selectedLabels)];
+        setUrlState(filterGroupPrefix + group, uniqueLabels);
     };
 
     /**
@@ -621,97 +639,116 @@ const Container = (props) => {
             clearAllFilters();
         }
 
-        setFilters(prevFilters => prevFilters.map((filter) => {
-            if (filter.id !== filterId) return filter;
+        setFilters(prevFilters => {
+            const newFilters = prevFilters.map((filter) => {
+                if (filter.id !== filterId) return filter;
 
-            // Check if the clicked item is a category/group
-            const clickedItem = filter.items.find(item => item.id === itemId);
-            const isClickingCategory = clickedItem && clickedItem.isCategory;
+                // Check if the clicked item is a category/group
+                const clickedItem = filter.items.find(item => item.id === itemId);
+                const isClickingCategory = clickedItem && clickedItem.isCategory;
 
-            // Check if the clicked item is a nested child within a category
-            let parentCategory = null;
-            if (!isClickingCategory) {
-                parentCategory = filter.items.find(item =>
-                    item.isCategory && item.items && item.items.some(nested => nested.id === itemId)
-                );
-            }
+                // Check if the clicked item is a nested child within a category
+                let parentCategory = null;
+                if (!isClickingCategory) {
+                    parentCategory = filter.items.find(item =>
+                        item.isCategory && item.items && item.items.some(nested => nested.id === itemId)
+                    );
+                }
 
-            return {
-                ...filter,
-                items: filter.items.map((item) => {
-                    // If we're clicking a category and selecting it, deselect all other categories
-                    if (isClickingCategory && isChecked && item.isCategory && item.id !== itemId) {
-                        return {
-                            ...item,
-                            selected: false,
-                        };
-                    }
-
-                    // If it's a category, handle category selection
-                    if (item.isCategory) {
-                        // If this is the category being clicked
-                        if (item.id === itemId) {
-                            // Context-aware behavior only for LEFT filter panel
-                            if (filterPanelType === 'left') {
-                                // If expanded: clear everything and deselect
-                                if (item.opened) {
-                                    return {
-                                        ...item,
-                                        selected: false,
-                                        items: item.items.map(nestedItem => ({
-                                            ...nestedItem,
-                                            selected: false,
-                                        })),
-                                    };
-                                }
-                                // If collapsed: select the group
-                                return {
-                                    ...item,
-                                    selected: true,
-                                };
-                            }
-                            // Standard toggle behavior for TOP filter panel
-                            const newSelected = !item.selected;
-                            return {
-                                ...item,
-                                selected: newSelected,
-                                // If unchecking category, also uncheck all children
-                                items: newSelected ? item.items : item.items.map(nestedItem => ({
-                                    ...nestedItem,
-                                    selected: false,
-                                })),
-                            };
-                        }
-                        // If clicking a child while this category is selected, deselect the category
-                        if (parentCategory && item.id === parentCategory.id && isChecked) {
+                return {
+                    ...filter,
+                    items: filter.items.map((item) => {
+                        // If we're clicking a category and selecting it, deselect all other categories
+                        if (isClickingCategory && isChecked && item.isCategory && item.id !== itemId) {
                             return {
                                 ...item,
                                 selected: false,
+                            };
+                        }
+
+                        // If it's a category, handle category selection
+                        if (item.isCategory) {
+                            // If this is the category being clicked
+                            if (item.id === itemId) {
+                                // Context-aware behavior only for LEFT filter panel
+                                if (filterPanelType === 'left') {
+                                    // If expanded: clear everything and deselect
+                                    if (item.opened) {
+                                        return {
+                                            ...item,
+                                            selected: false,
+                                            items: item.items.map(nestedItem => ({
+                                                ...nestedItem,
+                                                selected: false,
+                                            })),
+                                        };
+                                    }
+                                    // If collapsed: check if any nested items are already selected
+                                    const hasSelectedNestedItems = item.items && item.items.some(nestedItem => nestedItem.selected);
+                                    if (hasSelectedNestedItems) {
+                                        // If nested items are selected, deselect them all
+                                        return {
+                                            ...item,
+                                            selected: false,
+                                            items: item.items.map(nestedItem => ({
+                                                ...nestedItem,
+                                                selected: false,
+                                            })),
+                                        };
+                                    }
+                                    // If no nested items selected: select the group
+                                    return {
+                                        ...item,
+                                        selected: true,
+                                    };
+                                }
+                                // Standard toggle behavior for TOP filter panel
+                                const newSelected = !item.selected;
+                                return {
+                                    ...item,
+                                    selected: newSelected,
+                                    // If unchecking category, also uncheck all children
+                                    items: newSelected ? item.items : item.items.map(nestedItem => ({
+                                        ...nestedItem,
+                                        selected: false,
+                                    })),
+                                };
+                            }
+                            // If clicking a child while this category is selected, deselect the category
+                            if (parentCategory && item.id === parentCategory.id && isChecked) {
+                                return {
+                                    ...item,
+                                    selected: false,
+                                    items: item.items.map(nestedItem => ({
+                                        ...nestedItem,
+                                        selected: nestedItem.id === itemId ? !nestedItem.selected : nestedItem.selected,
+                                    })),
+                                };
+                            }
+                            // Otherwise, check nested items for individual product selection
+                            return {
+                                ...item,
                                 items: item.items.map(nestedItem => ({
                                     ...nestedItem,
                                     selected: nestedItem.id === itemId ? !nestedItem.selected : nestedItem.selected,
                                 })),
                             };
                         }
-                        // Otherwise, check nested items for individual product selection
+                        // Regular flat item
                         return {
                             ...item,
-                            items: item.items.map(nestedItem => ({
-                                ...nestedItem,
-                                selected: nestedItem.id === itemId ? !nestedItem.selected : nestedItem.selected,
-                            })),
+                            selected: item.id === itemId ? !item.selected : item.selected,
                         };
-                    }
-                    // Regular flat item
-                    return {
-                        ...item,
-                        selected: item.id === itemId ? !item.selected : item.selected,
-                    };
-                }),
-            };
-        }));
+                    }),
+                };
+            });
+
+            // Sync the complete filter state to URL after updating
+            syncFiltersToUrl(filterId, newFilters);
+
+            return newFilters;
+        });
         setCurrentPage(1);
-        changeUrlState(filterId, itemId, isChecked);
     };
 
     /**
@@ -856,14 +893,21 @@ const Container = (props) => {
                 opened: true,
                 /* istanbul ignore next */
                 items: items.map(item => {
-                    // If it's a category, preserve nested items structure
+                    // If it's a category, check both category and nested items
                     if (item.isCategory && item.items) {
+                        const isCategorySelected = urlStateArray.includes(String(item.label));
+                        const mappedNestedItems = item.items.map(nestedItem => ({
+                            ...nestedItem,
+                            selected: urlStateArray.includes(String(nestedItem.label)),
+                        }));
+                        // Check if any nested items are selected from URL
+                        const hasSelectedNestedItems = mappedNestedItems.some(nestedItem => nestedItem.selected);
+
                         return {
                             ...item,
-                            items: item.items.map(nestedItem => ({
-                                ...nestedItem,
-                                selected: urlStateArray.includes(String(nestedItem.label)),
-                            })),
+                            selected: isCategorySelected,
+                            opened: isCategorySelected || hasSelectedNestedItems, // Expand if category or any nested item is selected
+                            items: mappedNestedItems,
                         };
                     }
                     // Flat item
