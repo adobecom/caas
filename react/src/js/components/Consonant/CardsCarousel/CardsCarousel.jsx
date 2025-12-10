@@ -206,7 +206,6 @@ function CardsCarousel({
             showNav();
             shouldHidePrevButton();
             shouldHideNextButton();
-
         }
     }
 
@@ -381,4 +380,5 @@ CardsCarousel.propTypes = {
     onCardBookmark: PropTypes.func.isRequired,
     resQty: PropTypes.number.isRequired,
     cardStyle: PropTypes.string.isRequired,
+    carouselType: PropTypes.string.isRequired,
 };
