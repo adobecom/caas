@@ -345,4 +345,77 @@
             }
         }
     }
+
+    /* Modern Carousel styles and overrides */
+    .modern-carousel {
+        display: grid;
+
+        .consonant-CarouselInfo {
+            order: 1;
+        }
+
+        .consonant-Container--carousel {
+            order: 2;
+        }
+
+        .consonant-Navigation--carousel {
+            order: 3;
+            display: flex;
+            justify-content: space-between;
+            height: 48px;
+            width: 122px;
+            margin: 4px auto;
+            background: rgb(36, 36, 36);
+            border-radius: 24px;
+            padding: 4px;
+
+            button {
+                position: relative;
+                top: 0;
+                transform: none;
+                background: #d5d5d5;
+                color: #000;
+                height: 40px;
+                width: 40px;
+            }
+
+            button:hover {
+                background: #a6a6a6;
+            }
+
+            button:active {
+                background: #373737;
+                color: #b1b1b1;
+            }
+
+            button.disabled {
+                // opacity: 0.2;
+                background: #232323;
+                cursor: not-allowed;
+            }
+
+            button.disabled:before,
+            button.disabled:after {
+                background-color: #999;
+            }
+
+            button:before,
+            button:after {
+                background-color: #000;
+                left: 20px;
+            }
+
+            button:before {
+                top: 16px;
+            }
+
+            button:after {
+                top: 20px;
+            }
+
+            button.consonant-Button--previous {
+                transform: rotate(180deg) !important;
+            }
+        }
+    }
 }

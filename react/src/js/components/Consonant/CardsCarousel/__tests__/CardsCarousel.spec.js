@@ -318,4 +318,49 @@ describe('CardsCarousel comprehensive behaviors', () => {
     const prevBtn = c.querySelector('[name="previous"]');
     expect(document.activeElement).toBe(prevBtn);
   });
+
+  // Test for carouselType
+  test('should set carouselType to Modern when animationStyle is incrementalModern', async () => {   
+    const cfg = JSON.parse(JSON.stringify(config));
+    cfg.collection.layout.container = 'carousel';
+    cfg.pagination.animationStyle = 'incrementalModern';
+    await act(async () => {
+      ({ container } = render(<Container config={cfg} />));
+    });
+    const carousel = container.querySelector('.consonant-Wrapper-collection');
+    expect(carousel.classList.contains('modern-carousel')).toBe(true);
+  });
+
+  test('should set carouselType to Modern when animationStyle is pagedModern', async () => {   
+    const cfg = JSON.parse(JSON.stringify(config));
+    cfg.collection.layout.container = 'carousel';
+    cfg.pagination.animationStyle = 'pagedModern';
+    await act(async () => {
+      ({ container } = render(<Container config={cfg} />));
+    });
+    const carousel = container.querySelector('.consonant-Wrapper-collection');
+    expect(carousel.classList.contains('modern-carousel')).toBe(true);
+  });
+
+  test('should set carouselType to default when animationStyle is incremental', async () => {   
+    const cfg = JSON.parse(JSON.stringify(config));
+    cfg.collection.layout.container = 'carousel';
+    cfg.pagination.animationStyle = 'incremental';
+    await act(async () => {
+      ({ container } = render(<Container config={cfg} />));
+    });
+    const carousel = container.querySelector('.consonant-Wrapper-collection');
+    expect(carousel.classList.contains('modern-carousel')).toBe(false);
+  });
+
+  test('should set carouselType to default when animationStyle is paged', async () => {   
+    const cfg = JSON.parse(JSON.stringify(config));
+    cfg.collection.layout.container = 'carousel';
+    cfg.pagination.animationStyle = 'paged';
+    await act(async () => {
+      ({ container } = render(<Container config={cfg} />));
+    });
+    const carousel = container.querySelector('.consonant-Wrapper-collection');
+    expect(carousel.classList.contains('modern-carousel')).toBe(false);
+  });
 });
