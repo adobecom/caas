@@ -385,4 +385,22 @@ describe('CardsCarousel comprehensive behaviors', () => {
     const carousel = container.querySelector('.consonant-Wrapper-collection');
     expect(carousel.classList.contains('modern-carousel--light')).toBe(true);
   });
+
+  test('should set modern carousel with incremental pagination', async () => {
+    const cfg = JSON.parse(JSON.stringify(config));
+    cfg.pagination.animationStyle = 'incrementalModern-light';
+    cfg.collection.layout = { container: 'carousel', gutter: '3x', type: '2up' };
+
+    await act(async () => {
+      ({ container } = render(<Container config={cfg} />));
+    });
+    
+    const carousel = container.querySelector('.consonant-Container--carousel');
+    const initialScroll = carousel.scrollLeft;
+    fireEvent.click(container.querySelector('[name="next"]'));
+    expect(carousel.scrollLeft).toBe(initialScroll + 595); // cardWidth (579) + gridGap (16)
+
+    fireEvent.click(container.querySelector('[name="previous"]'));
+    expect(carousel.scrollLeft).toBe(initialScroll);
+  });
 });
