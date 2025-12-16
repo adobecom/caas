@@ -363,4 +363,26 @@ describe('CardsCarousel comprehensive behaviors', () => {
     const carousel = container.querySelector('.consonant-Wrapper-collection');
     expect(carousel.classList.contains('modern-carousel')).toBe(false);
   });
+
+  test('should NOT set carousel class to --light', async () => {
+    const cfg = JSON.parse(JSON.stringify(config));
+    cfg.collection.layout.container = 'carousel';
+    cfg.pagination.animationStyle = 'pagedModern';
+    await act(async () => {
+      ({ container } = render(<Container config={cfg} />));
+    });
+    const carousel = container.querySelector('.consonant-Wrapper-collection');
+    expect(carousel.classList.contains('modern-carousel--light')).toBe(false);
+  });
+
+  test('should NOT set carousel class to --light', async () => {
+    const cfg = JSON.parse(JSON.stringify(config));
+    cfg.collection.layout.container = 'carousel';
+    cfg.pagination.animationStyle = 'pagedModern-light';
+    await act(async () => {
+      ({ container } = render(<Container config={cfg} />));
+    });
+    const carousel = container.querySelector('.consonant-Wrapper-collection');
+    expect(carousel.classList.contains('modern-carousel--light')).toBe(true);
+  });
 });
