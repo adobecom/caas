@@ -160,7 +160,10 @@ const Container = (props) => {
     const partialLoadWithBackgroundFetch = getConfig('collection', 'partialLoadWithBackgroundFetch.enabled');
     const partialLoadCount = getConfig('collection', 'partialLoadWithBackgroundFetch.partialLoadCount');
     const renderOverlay = getConfig('collection', 'useOverlayLinks');
-    const isModernCarousel = getConfig('pagination', 'animationStyle')?.toLowerCase().includes('modern');
+    // const isModernCarousel = getConfig('pagination', 'animationStyle')?.toLowerCase().includes('modern');
+    const animationStyle = getConfig('pagination', 'animationStyle');
+    const isModernCarousel = animationStyle?.toLowerCase().includes('modern');
+    const isLightCarousel = animationStyle?.toLowerCase().includes('light');
 
 
     /**
@@ -1436,6 +1439,11 @@ const Container = (props) => {
         }
     }, []);
 
+    const carouselClass = classNames({
+        'modern-carousel': isModernCarousel,
+        'modern-carousel--light': isLightCarousel,
+    });
+
     return (
         <ConfigContext.Provider value={config}>
             <ExpandableContext.Provider value={{ value: openDropdown, setValue: setOpenDropdown }} >
@@ -1512,7 +1520,7 @@ const Container = (props) => {
                                 ref={filterItemRef} />
                         </div>
                         }
-                        <div className={`consonant-Wrapper-collection${isLoading ? ' is-loading' : ''}${isModernCarousel ? ' modern-carousel' : ''}`}>
+                        <div className={`consonant-Wrapper-collection${isLoading ? ' is-loading' : ''} ${carouselClass}`}>
                             { isTopFilterPanel && isStandardContainer &&
                             <FiltersPanelTop
                                 filterPanelEnabled={filterPanelEnabled}
