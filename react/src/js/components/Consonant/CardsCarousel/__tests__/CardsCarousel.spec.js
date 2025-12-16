@@ -375,7 +375,7 @@ describe('CardsCarousel comprehensive behaviors', () => {
     expect(carousel.classList.contains('modern-carousel--light')).toBe(false);
   });
 
-  test('should NOT set carousel class to --light', async () => {
+  test('should set carousel class to --light', async () => {
     const cfg = JSON.parse(JSON.stringify(config));
     cfg.collection.layout.container = 'carousel';
     cfg.pagination.animationStyle = 'pagedModern-light';
