@@ -1,5 +1,12 @@
 
 
+## [0.41.20](https://github.com/adobecom/caas/compare/0.41.19...0.41.20) (2026-01-07)
+
+
+### Bug Fixes
+
+* **mwpw-185283:** remove test console.log from production build ([30f41b3](https://github.com/adobecom/caas/commit/30f41b3f30b724230360c8de1bb7d06e10cd3b38))
+
 ## [0.41.19](https://github.com/adobecom/caas/compare/0.41.18...0.41.19) (2025-12-09)
 
 ## [0.41.18](https://github.com/adobecom/caas/compare/0.41.17...0.41.18) (2025-12-01)
