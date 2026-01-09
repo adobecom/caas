@@ -109,6 +109,15 @@ describe('Consonant/Infobits/Type/Button', () => {
         expect(buttonElement).toHaveAttribute('tabIndex', customTabIndex);
     });
 
+    test('Should render VideoButton when href contains #_modal', () => {
+        const href = 'https://example.com/#_modal';
+        render(<Button href={href} text="Watch Video" title="Video Title" />);
+        
+        // VideoButton should be rendered with modal trigger
+        const videoButton = screen.getByTestId('consonant-Card-videoIco');
+        expect(videoButton).toBeInTheDocument();
+    });
+
     // Accessibility test with jest-axe
     describe('Accessibility', () => {
         test('Button should have no accessibility violations', async () => {
