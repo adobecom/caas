@@ -4,6 +4,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const webpack = require('webpack');
 const packageJson = require('./package.json');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { execSync } = require('child_process');
 let version = process.env.RELEASE_TAG;
 if (!version) {
@@ -44,6 +45,15 @@ const plugins = [
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     }),
 ];
+
+// Add bundle analyzer when ANALYZE env var is set
+if (process.env.ANALYZE) {
+    plugins.push(new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
+        reportFilename: 'bundle-report.html',
+        openAnalyzer: false,
+    }));
+}
 
 module.exports = {
     entry: {
