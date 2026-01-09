@@ -119,7 +119,7 @@ function CardsCarousel({
             nextBtn.setAttribute('aria-hidden', 'true');
         } else {
             nextBtn.setAttribute('disabled', 'true');
-            nextBtn.setAttribute('aria-hiden', 'true');
+            nextBtn.setAttribute('aria-hidden', 'true');
             nextBtn.classList.add('disabled');
         }
     }
