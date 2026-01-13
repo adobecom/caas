@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import classNames from 'classnames';
 import { shape } from 'prop-types';
-import 'whatwg-fetch';
+// import 'whatwg-fetch'; // Removed: fetch is native in modern browsers
 import { logLana } from '../Helpers/lana';
 import Popup from '../Sort/Popup';
 import Search from '../Search/Search';
