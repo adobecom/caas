@@ -1,5 +1,12 @@
 
 
+## [0.41.21](https://github.com/adobecom/caas/compare/0.41.20...0.41.21) (2026-01-13)
+
+
+### Performance Improvements
+
+* remove IE 11 support and reduce bundle by 92.52 KB ([aaf4749](https://github.com/adobecom/caas/commit/aaf47491f9cabcfc22984691d9c4a08ea2b07943))
+
 ## [0.41.20](https://github.com/adobecom/caas/compare/0.41.19...0.41.20) (2026-01-07)
 
 
