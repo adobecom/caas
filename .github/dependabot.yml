@@ -1,0 +1,74 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+
+    # Schedule: Only Mondays at 9am Pacific (not constantly!)
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Los_Angeles"
+
+    # Limit: Max 5 open PRs at once (prevents overwhelming flood)
+    open-pull-requests-limit: 5
+
+    # Group related packages to reduce noise
+    groups:
+      # All Babel packages together (1 PR instead of 15)
+      babel:
+        patterns:
+          - "@babel/*"
+
+      # All testing packages together
+      testing:
+        patterns:
+          - "@testing-library/*"
+          - "jest"
+          - "jest-*"
+          - "enzyme*"
+          - "@wdio/*"
+          - "wdio-*"
+
+      # Build tools together
+      build-tools:
+        patterns:
+          - "webpack*"
+          - "*-loader"
+          - "*-plugin"
+          - "babel-loader"
+          - "css-loader"
+          - "less-loader"
+
+      # React ecosystem together
+      react-ecosystem:
+        patterns:
+          - "react"
+          - "react-*"
+
+      # Redux ecosystem together
+      redux-ecosystem:
+        patterns:
+          - "redux"
+          - "react-redux"
+          - "*redux*"
+
+      # ESLint packages together
+      eslint:
+        patterns:
+          - "eslint"
+          - "eslint-*"
+          - "@babel/eslint-parser"
+
+      # Commitlint packages together
+      commitlint:
+        patterns:
+          - "@commitlint/*"
+          - "commitizen"
+          - "cz-*"
+
+    # Safety: Ignore major version bumps (too risky to auto-update)
+    # We'll handle React 16→18, Webpack 3→5 manually
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
