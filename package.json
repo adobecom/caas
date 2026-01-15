@@ -123,7 +123,7 @@
     "release-it": "^15.11.0",
     "reset-css": "^2.2.1",
     "s3-deploy": "^1.4.0",
-    "serve": "^11.3.0",
+    "serve": "^14.2.5",
     "sinon": "^7.5.0",
     "style-loader": "^0.14.1",
     "stylelint": "^8.4.0",
