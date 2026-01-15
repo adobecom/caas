@@ -73,7 +73,7 @@
     "@wdio/local-runner": "^8.1.2",
     "@wdio/mocha-framework": "^8.1.2",
     "@wdio/spec-reporter": "^8.1.2",
-    "aemsync": "^3.0.2",
+    "aemsync": "^5.2.3",
     "axe-core": "^4.11.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^30.0.0",
