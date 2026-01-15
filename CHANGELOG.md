@@ -1,5 +1,12 @@
 
 
+## [0.41.23](https://github.com/adobecom/caas/compare/0.41.22...0.41.23) (2026-01-15)
+
+
+### Bug Fixes
+
+* skip JIRA ticket check for Dependabot PRs ([d205c10](https://github.com/adobecom/caas/commit/d205c103da4f94f67e72a49885a886f3679eda8f))
+
 ## [0.41.22](https://github.com/adobecom/caas/compare/0.41.21...0.41.22) (2026-01-15)
 
 ## [0.41.21](https://github.com/adobecom/caas/compare/0.41.20...0.41.21) (2026-01-13)
