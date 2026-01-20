@@ -128,7 +128,9 @@ function CardsCarousel({
 
     function hidePrevButton() {
         const prevBtn = prev.current;
-        if (prevBtn && carouselType === 'default') {
+        if (!prevBtn) return;
+
+        if (carouselType === 'default') {
             prevBtn.classList.add('hide');
             prevBtn.setAttribute('aria-hidden', 'true');
         } else {
@@ -140,7 +142,9 @@ function CardsCarousel({
 
     function showNextButton() {
         const nextBtn = next.current;
-        if (nextBtn && carouselType === 'default') {
+        if (!nextBtn) return;
+
+        if (carouselType === 'default') {
             nextBtn.classList.remove('hide');
             nextBtn.setAttribute('aria-hidden', 'false');
         } else {
@@ -152,7 +156,9 @@ function CardsCarousel({
 
     function showPrevButton() {
         const prevBtn = prev.current;
-        if (prevBtn && carouselType === 'default') {
+        if (!prevBtn) return;
+
+        if (carouselType === 'default') {
             prevBtn.classList.remove('hide');
             prevBtn.setAttribute('aria-hidden', 'false');
         } else {
