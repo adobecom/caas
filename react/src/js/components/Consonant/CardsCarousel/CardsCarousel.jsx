@@ -114,7 +114,9 @@ function CardsCarousel({
 
     function hideNextButton() {
         const nextBtn = next.current;
-        if (nextBtn && carouselType === 'default') {
+        if (!nextBtn) return;
+
+        if (carouselType === 'default') {
             nextBtn.classList.add('hide');
             nextBtn.setAttribute('aria-hidden', 'true');
         } else {
