@@ -160,7 +160,6 @@ const Container = (props) => {
     const partialLoadWithBackgroundFetch = getConfig('collection', 'partialLoadWithBackgroundFetch.enabled');
     const partialLoadCount = getConfig('collection', 'partialLoadWithBackgroundFetch.partialLoadCount');
     const renderOverlay = getConfig('collection', 'useOverlayLinks');
-    // const isModernCarousel = getConfig('pagination', 'animationStyle')?.toLowerCase().includes('modern');
     const animationStyle = getConfig('pagination', 'animationStyle');
     const isModernCarousel = animationStyle?.toLowerCase().includes('modern');
     const isLightCarousel = animationStyle?.toLowerCase().includes('light');
