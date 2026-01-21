@@ -89,6 +89,40 @@ describe('Consonant/Pagination/Paginator', () => {
         expect(onClick).toHaveBeenCalledWith(1);
     });
 
+    test('Should scroll to top when caasWrapper is above viewport', () => {
+        const { props: { onClick } } = renderComponent({ currentPageNumber: 1 });
+        
+        // Create a mock wrapper element
+        const mockWrapper = document.createElement('div');
+        mockWrapper.classList.add('consonant-Wrapper');
+        document.body.appendChild(mockWrapper);
+        
+        // Mock getBoundingClientRect to return negative y position (above viewport)
+        mockWrapper.getBoundingClientRect = jest.fn(() => ({
+            y: -100,
+            top: -100,
+        }));
+        
+        // Mock window.scrollTo
+        const scrollToSpy = jest.fn();
+        window.scrollTo = scrollToSpy;
+        window.scrollY = 500;
+        
+        // Find next button and append it to the wrapper so closest() works
+        const nextButton = screen.getByTestId('consonant-Pagination-btn--next');
+        mockWrapper.appendChild(nextButton);
+        
+        // Click the button
+        fireEvent.click(nextButton);
+        
+        // Verify scrollTo was called
+        expect(scrollToSpy).toHaveBeenCalled();
+        expect(onClick).toHaveBeenCalledWith(2);
+        
+        // Cleanup
+        document.body.removeChild(mockWrapper);
+    });
+
     // Accessibility test with jest-axe
     describe('Accessibility', () => {
         testAccessibility(renderComponent, {}, 'Paginator');
