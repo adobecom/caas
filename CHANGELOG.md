@@ -1,5 +1,12 @@
 
 
+## [0.41.25](https://github.com/adobecom/caas/compare/0.41.24...0.41.25) (2026-01-21)
+
+
+### Reverts
+
+* Revert "adding proposal" ([eb72721](https://github.com/adobecom/caas/commit/eb727215fdb787df5bfb2621d399307419629063))
+
 ## [0.41.24](https://github.com/adobecom/caas/compare/0.41.23...0.41.24) (2026-01-21)
 
 
