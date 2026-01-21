@@ -31,6 +31,8 @@ import {
     debounce,
     mergeDeep,
     template,
+    optimizeImageUrl,
+    preloadFirstCardImage,
 } from '../general';
 
 jest.useFakeTimers();
@@ -348,6 +350,148 @@ describe('utils/general', () => {
                 const value = sanitizeEventFilter(filter);
                 expect(value).toEqual(expectedValue);
             });
+        });
+    });
+
+    describe('optimizeImageUrl', () => {
+        test('should add format=webply to adobe.com images', () => {
+            const url = 'https://business.adobe.com/solutions/media_test.png';
+            const result = optimizeImageUrl(url);
+            expect(result).toBe('https://business.adobe.com/solutions/media_test.png?format=webply');
+        });
+
+        test('should not modify URL if format parameter already exists', () => {
+            const url = 'https://business.adobe.com/solutions/media_test.png?format=pjpg';
+            const result = optimizeImageUrl(url);
+            expect(result).toBe(url);
+        });
+
+        test('should not modify non-adobe.com URLs', () => {
+            const url = 'https://example.com/image.png';
+            const result = optimizeImageUrl(url);
+            expect(result).toBe(url);
+        });
+
+        test('should return original URL if null', () => {
+            const result = optimizeImageUrl(null);
+            expect(result).toBe(null);
+        });
+
+        test('should return original URL if not a string', () => {
+            const result = optimizeImageUrl(123);
+            expect(result).toBe(123);
+        });
+
+        test('should handle malformed URLs gracefully', () => {
+            const url = 'not a valid url';
+            const result = optimizeImageUrl(url);
+            expect(result).toBe(url);
+        });
+    });
+
+    describe('preloadFirstCardImage', () => {
+        beforeEach(() => {
+            // Clear any existing preload links
+            document.head.querySelectorAll('link[rel="preload"]').forEach(link => link.remove());
+        });
+
+        afterEach(() => {
+            // Clean up
+            document.head.querySelectorAll('link[rel="preload"]').forEach(link => link.remove());
+        });
+
+        test('should inject preload link for first card image', () => {
+            const cards = [{
+                styles: {
+                    backgroundImage: 'https://business.adobe.com/test.png?format=pjpg',
+                },
+            }];
+
+            preloadFirstCardImage(cards);
+
+            const preloadLink = document.querySelector('link[rel="preload"]');
+            expect(preloadLink).not.toBeNull();
+            expect(preloadLink.href).toBe('https://business.adobe.com/test.png?format=pjpg');
+            expect(preloadLink.as).toBe('image');
+            expect(preloadLink.type).toBe('image/jpeg');
+        });
+
+        test('should detect webp format', () => {
+            const cards = [{
+                styles: {
+                    backgroundImage: 'https://business.adobe.com/test.png?format=webply',
+                },
+            }];
+
+            preloadFirstCardImage(cards);
+
+            const preloadLink = document.querySelector('link[rel="preload"]');
+            expect(preloadLink.type).toBe('image/webp');
+        });
+
+        test('should detect png format', () => {
+            const cards = [{
+                styles: {
+                    backgroundImage: 'https://business.adobe.com/test.png',
+                },
+            }];
+
+            preloadFirstCardImage(cards);
+
+            const preloadLink = document.querySelector('link[rel="preload"]');
+            expect(preloadLink.type).toBe('image/png');
+        });
+
+        test('should not inject duplicate preload links', () => {
+            const cards = [{
+                styles: {
+                    backgroundImage: 'https://business.adobe.com/test.png',
+                },
+            }];
+
+            preloadFirstCardImage(cards);
+            preloadFirstCardImage(cards);
+
+            const preloadLinks = document.querySelectorAll('link[rel="preload"]');
+            expect(preloadLinks.length).toBe(1);
+        });
+
+        test('should do nothing if cards array is empty', () => {
+            preloadFirstCardImage([]);
+
+            const preloadLinks = document.querySelectorAll('link[rel="preload"]');
+            expect(preloadLinks.length).toBe(0);
+        });
+
+        test('should do nothing if cards is null', () => {
+            preloadFirstCardImage(null);
+
+            const preloadLinks = document.querySelectorAll('link[rel="preload"]');
+            expect(preloadLinks.length).toBe(0);
+        });
+
+        test('should do nothing if first card has no image', () => {
+            const cards = [{
+                styles: {},
+            }];
+
+            preloadFirstCardImage(cards);
+
+            const preloadLinks = document.querySelectorAll('link[rel="preload"]');
+            expect(preloadLinks.length).toBe(0);
+        });
+
+        test('should do nothing if backgroundImage is not a string', () => {
+            const cards = [{
+                styles: {
+                    backgroundImage: 123,
+                },
+            }];
+
+            preloadFirstCardImage(cards);
+
+            const preloadLinks = document.querySelectorAll('link[rel="preload"]');
+            expect(preloadLinks.length).toBe(0);
         });
     });
 });
