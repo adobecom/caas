@@ -31,6 +31,8 @@ const leftFilterPanelType = {
     selectedFiltersQty: number,
     onFilterClick: func.isRequired,
     onCheckboxClick: func.isRequired,
+    // eslint-disable-next-line react/require-default-props
+    onCategoryToggle: func,
     searchComponent: node.isRequired,
     bookmarkComponent: node.isRequired,
     onClearAllFilters: func.isRequired,
@@ -80,6 +82,7 @@ const LeftFilterPanel = forwardRef(({
     onClearAllFilters,
     onClearFilterItems,
     onCheckboxClick,
+    onCategoryToggle,
     onMobileFiltersToggleClick,
     onSelectedFilterClick,
     resQty,
@@ -102,6 +105,7 @@ const LeftFilterPanel = forwardRef(({
     const leftPanelMobileHeader = getConfig('filterPanel', 'i18n.leftPanel.mobile.panel.header');
     const applyText = getConfig('filterPanel', 'i18n.leftPanel.mobile.panel.applyBtnText');
     const doneText = getConfig('filterPanel', 'i18n.leftPanel.mobile.panel.doneBtnText');
+    const HeadingLevel = getConfig('collection', 'i18n.titleHeadingLevel') || 'h3';
 
     /**
      **** Constants ****
@@ -203,7 +207,8 @@ const LeftFilterPanel = forwardRef(({
                 }
                 {DESKTOP_SCREEN_SIZE &&
                 <DesktopTitle
-                    panelHeader={panelHeader} />
+                    panelHeader={panelHeader}
+                    HeadingLevel={HeadingLevel} />
                 }
                 {DESKTOP_SCREEN_SIZE &&
                 <DesktopClearBtn
@@ -245,6 +250,7 @@ const LeftFilterPanel = forwardRef(({
                         onCheck={onCheckboxClick}
                         onClick={onFilterClick}
                         onClearAll={onClearFilterItems}
+                        onCategoryToggle={(categoryId) => onCategoryToggle && onCategoryToggle(filter.id, categoryId)}
                         clearFilterText={clearFilterText} />
                 ))}
             </div>

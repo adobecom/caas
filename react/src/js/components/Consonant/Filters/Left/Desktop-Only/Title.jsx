@@ -1,8 +1,9 @@
 import React from 'react';
-import { string } from 'prop-types';
+import { string, elementType } from 'prop-types';
 
 const titleType = {
     panelHeader: string,
+    HeadingLevel: elementType.isRequired,
 };
 
 const defaultProps = {
@@ -24,12 +25,13 @@ const defaultProps = {
 const Title = (props) => {
     const {
         panelHeader,
+        HeadingLevel,
     } = props;
 
     return (
-        <p className="consonant-LeftFilters-deskTitle">
+        <HeadingLevel className="consonant-LeftFilters-deskTitle">
             {panelHeader}
-        </p>
+        </HeadingLevel>
     );
 };
 

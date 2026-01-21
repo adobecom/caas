@@ -7,7 +7,6 @@ import {
     isSuperset,
     intersection,
     sanitizeText,
-    chainFromIterable,
     removeDuplicatesByKey,
 } from './general';
 import { EVENT_TIMING_IDS } from './constants';
@@ -89,9 +88,30 @@ export const getBookmarkedCards =
  * @param {Array} filters - All filters on page
  * @returns {Array} - All checked filters by user
  */
-export const getActiveFilterIds = filters => chainFromIterable(filters.map(f => f.items))
-    .filter(item => item.selected)
-    .map(item => item.id);
+export const getActiveFilterIds = (filters) => {
+    const allItems = [];
+    filters.forEach((filter) => {
+        filter.items.forEach((item) => {
+            if (item.isCategory && item.items) {
+                // If the category itself is selected, add it
+                if (item.selected) {
+                    allItems.push(item.id);
+                } else {
+                    // Otherwise, add selected items from within category
+                    item.items.forEach((nestedItem) => {
+                        if (nestedItem.selected) {
+                            allItems.push(nestedItem.id);
+                        }
+                    });
+                }
+            } else if (item.selected) {
+                // Add flat selected item
+                allItems.push(item.id);
+            }
+        });
+    });
+    return allItems;
+};
 
 /**
  * Gets all filter panels with filters checked by a user
@@ -100,6 +120,33 @@ export const getActiveFilterIds = filters => chainFromIterable(filters.map(f => 
  */
 export const getActivePanels =
     activeFilters => new Set(activeFilters.map(filter => filter.replace(/\/.*$/, '')));
+
+/**
+ * Expands group filter IDs to their child filter IDs based on categoryMappings
+ * @param {Array} activeFilterIds - All selected filter IDs (may include group IDs)
+ * @param {Object} categoryMappings - Mapping of group IDs to their child IDs
+ * @returns {Array} - Expanded filter IDs with group IDs replaced by their children
+ */
+export const expandGroupFiltersToChildren = (activeFilterIds, categoryMappings = {}) => {
+    if (!categoryMappings || Object.keys(categoryMappings).length === 0) {
+        return activeFilterIds;
+    }
+
+    const expandedFilters = [];
+
+    activeFilterIds.forEach((filterId) => {
+        // Check if this filter ID is a group/category
+        if (categoryMappings[filterId]) {
+            // It's a group - expand to all children
+            expandedFilters.push(...categoryMappings[filterId].items);
+        } else {
+            // It's a regular filter - keep as is
+            expandedFilters.push(filterId);
+        }
+    });
+
+    return expandedFilters;
+};
 
 /**
  * Helper method to dermine whether author chose XOR or AND type filtering
@@ -624,3 +671,66 @@ export const sanitizeStr = str => str
     .replaceAll('&amp;', '&')
     .replaceAll('&lt;', '<')
     .replaceAll('&gt;', '>');
+
+/**
+ * Transforms filters by grouping items into categories based on categoryMappings
+ *
+ * @param {Array} authoredFilters - The original flat filters array
+ * @param {Object} categoryMappings - Mapping of category IDs to item IDs
+ * @returns {Array} - Transformed filters with nested category structure
+ */
+export const transformFiltersWithCategories = (authoredFilters, categoryMappings = {}) => {
+    if (!categoryMappings || Object.keys(categoryMappings).length === 0) {
+        return authoredFilters;
+    }
+
+    // Build a reverse lookup: itemId -> categoryId
+    const itemToCategoryMap = {};
+    Object.entries(categoryMappings).forEach(([categoryId, categoryData]) => {
+        categoryData.items.forEach((itemId) => {
+            itemToCategoryMap[itemId] = {
+                categoryId,
+                label: categoryData.label,
+            };
+        });
+    });
+
+    return authoredFilters.map((filter) => {
+        const categorizedItems = {};
+        const uncategorizedItems = [];
+
+        // Group items by category
+        filter.items.forEach((item) => {
+            const categoryInfo = itemToCategoryMap[item.id];
+
+            if (categoryInfo) {
+                // Item belongs to a category
+                const { categoryId, label } = categoryInfo;
+                if (!categorizedItems[categoryId]) {
+                    categorizedItems[categoryId] = {
+                        id: categoryId,
+                        label,
+                        isCategory: true,
+                        opened: false,
+                        items: [],
+                    };
+                }
+                categorizedItems[categoryId].items.push(item);
+            } else {
+                // Item doesn't belong to any category - keep it flat
+                uncategorizedItems.push(item);
+            }
+        });
+
+        // Build final items array: categories first, then uncategorized items
+        const transformedItems = [
+            ...Object.values(categorizedItems),
+            ...uncategorizedItems,
+        ];
+
+        return {
+            ...filter,
+            items: transformedItems,
+        };
+    });
+};

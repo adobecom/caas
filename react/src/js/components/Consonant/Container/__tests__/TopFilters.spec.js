@@ -344,4 +344,89 @@ describe('Consonant/Top Filters/Desktop', () => {
 
         expect(screen.queryByTestId('consonant-TopFilters-results')).not.toBeNull();
     });
+
+    test('Should handle nested category items in TOP filter panel', async () => {
+        global.innerWidth = DESKTOP_WIDTH;
+        const configWithNestedFilters = {
+            ...config,
+            filterPanel: {
+                enabled: true,
+                type: 'top',
+                filterLogic: 'or',
+                filters: [
+                    {
+                        group: 'Products',
+                        id: 'caas:products',
+                        items: [
+                            {
+                                label: 'Creative Cloud',
+                                id: 'caas:products/creative-cloud',
+                                isCategory: true,
+                                items: [
+                                    {
+                                        label: 'Photoshop',
+                                        id: 'caas:products/photoshop',
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+                i18n: {
+                    topPanel: {
+                        groupLabel: 'Filters:',
+                        clearAllFiltersText: 'Clear All',
+                        moreFiltersBtnText: 'More Filters +',
+                        doneBtnText: 'Done',
+                        clearFilterText: 'Clear',
+                        mobile: {
+                            filtersBtnLabel: 'Filters',
+                            panel: {
+                                header: 'Filter by',
+                                totalResultsText: '{total} Results',
+                                applyBtnText: 'Apply',
+                                clearAllBtnText: 'Clear All',
+                                doneBtnText: 'Done',
+                            },
+                            group: {
+                                totalResultsText: '{total} Results',
+                                applyBtnText: 'Apply',
+                                clearBtnText: 'Clear',
+                                doneBtnText: 'Done',
+                            },
+                        },
+                    },
+                },
+            },
+        };
+
+        const cardsWithNestedTags = [
+            {
+                id: 'card1',
+                appliesTo: [],
+                styles: {},
+                overlays: {},
+                contentArea: {
+                    title: 'Card with Photoshop',
+                    description: 'Test',
+                },
+                tags: [{ id: 'caas:products/photoshop' }],
+            },
+        ];
+
+        global.fetch = jest.fn(() =>
+            Promise.resolve({
+                ok: 'ok',
+                status: 200,
+                statusText: 'success',
+                url: 'test.html',
+                json: () => Promise.resolve({ cards: cardsWithNestedTags }),
+            }));
+
+        await act(async () => render(<Container config={configWithNestedFilters} />));
+
+        // Just verify component renders with nested categories in TOP panel
+        await waitFor(() => screen.getByText('Creative Cloud'));
+        expect(screen.getByText('Creative Cloud')).toBeInTheDocument();
+    });
 });

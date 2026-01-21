@@ -1,5 +1,69 @@
 
 
+## [0.41.24](https://github.com/adobecom/caas/compare/0.41.23...0.41.24) (2026-01-21)
+
+
+### Bug Fixes
+
+* optimize LCP with static + dynamic image preload ([1fe96ed](https://github.com/adobecom/caas/commit/1fe96edb51ba7cd970d6cfccc6f55dae5adbc30b))
+
+## [0.41.23](https://github.com/adobecom/caas/compare/0.41.22...0.41.23) (2026-01-15)
+
+
+### Bug Fixes
+
+* skip JIRA ticket check for Dependabot PRs ([d205c10](https://github.com/adobecom/caas/commit/d205c103da4f94f67e72a49885a886f3679eda8f))
+
+## [0.41.22](https://github.com/adobecom/caas/compare/0.41.21...0.41.22) (2026-01-15)
+
+## [0.41.21](https://github.com/adobecom/caas/compare/0.41.20...0.41.21) (2026-01-13)
+
+
+### Performance Improvements
+
+* remove IE 11 support and reduce bundle by 92.52 KB ([aaf4749](https://github.com/adobecom/caas/commit/aaf47491f9cabcfc22984691d9c4a08ea2b07943))
+
+## [0.41.20](https://github.com/adobecom/caas/compare/0.41.19...0.41.20) (2026-01-07)
+
+
+### Bug Fixes
+
+* **mwpw-185283:** remove test console.log from production build ([30f41b3](https://github.com/adobecom/caas/commit/30f41b3f30b724230360c8de1bb7d06e10cd3b38))
+
+## [0.41.19](https://github.com/adobecom/caas/compare/0.41.18...0.41.19) (2025-12-09)
+
+## [0.41.18](https://github.com/adobecom/caas/compare/0.41.17...0.41.18) (2025-12-01)
+
+
+### Bug Fixes
+
+* **mwpw-177245:** adds heading level to filters heading ([#362](https://github.com/adobecom/caas/issues/362)) ([5734a0b](https://github.com/adobecom/caas/commit/5734a0b7edbb3e318bc14e8399ee1e1984542e79))
+
+## [0.41.17](https://github.com/adobecom/caas/compare/0.41.16...0.41.17) (2025-11-24)
+
+
+### Bug Fixes
+
+* **mwpw-183864:** removes extra 83.3 percent css rules ([#361](https://github.com/adobecom/caas/issues/361)) ([431e802](https://github.com/adobecom/caas/commit/431e80250c782701d2750cff93b93bcb15c3d42f))
+
+## [0.41.16](https://github.com/adobecom/caas/compare/0.41.15...0.41.16) (2025-11-20)
+
+
+### Bug Fixes
+
+* **mwpw-177138:** adds focus ring to filters ([#359](https://github.com/adobecom/caas/issues/359)) ([b13ab9c](https://github.com/adobecom/caas/commit/b13ab9c4b4b29956654df3a547cec3b9b7805e74))
+
+## [0.41.15](https://github.com/adobecom/caas/compare/0.41.14...0.41.15) (2025-11-20)
+
+
+### Bug Fixes
+
+* **mwpw-177233:** status message for search and filters announced ([4598316](https://github.com/adobecom/caas/commit/4598316b87c4ecfccf0439d56ee161164ae7b2f4))
+
+## [0.41.14](https://github.com/adobecom/caas/compare/0.41.13...0.41.14) (2025-11-18)
+
+## [0.41.13](https://github.com/adobecom/caas/compare/0.41.12...0.41.13) (2025-11-18)
+
 ## [0.41.12](https://github.com/adobecom/caas/compare/0.41.11...0.41.12) (2025-11-17)
 
 

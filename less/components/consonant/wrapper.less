@@ -8,7 +8,7 @@
 
 .consonant {
     &-Wrapper {
-        font-family: "Adobe Clean", adobe-clean, "Trebuchet MS", sans-serif;
+        font-family: "adobe-clean", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         position: relative;
         width: 100%;
         height: 100%;
@@ -45,14 +45,12 @@
         /* Modifiers */
 
         &--1200MaxWidth &-inner {
-            width: 83.3%;
             max-width: @consonantDesktopMinWidth;
             margin-left: auto;
             margin-right: auto;
         }
 
         &--1600MaxWidth &-inner {
-            width: 83.3%;
             max-width: @consonantLargeDesktopMinWidth;
             margin-left: auto;
             margin-right: auto;
