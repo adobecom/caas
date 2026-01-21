@@ -1,5 +1,12 @@
 
 
+# [0.42.0](https://github.com/adobecom/caas/compare/0.41.25...0.42.0) (2026-01-21)
+
+
+### Features
+
+* **mwpw-183491:** implements modern carousel style ([#365](https://github.com/adobecom/caas/issues/365)) ([ff97956](https://github.com/adobecom/caas/commit/ff97956b2bd40e620330f4b9b77f698a357e5578))
+
 ## [0.41.25](https://github.com/adobecom/caas/compare/0.41.24...0.41.25) (2026-01-21)
 
 
