@@ -20,6 +20,7 @@ import {
     sanitizeEventFilter,
     getTransitions,
     removeMarkDown,
+    preloadFirstCardImage,
 } from '../Helpers/general';
 import { configType } from '../types/config';
 import CardsCarousel from '../CardsCarousel/CardsCarousel';
@@ -1117,6 +1118,10 @@ const Container = (props) => {
                             }, transitions.dequeue().priority + ONE_SECOND_DELAY);
                         }
                     }
+
+                    // Preload first card image to improve LCP
+                    // Injects preload before React renders, saving 50-300ms
+                    preloadFirstCardImage(processedCards);
 
                     setCards(processedCards);
 

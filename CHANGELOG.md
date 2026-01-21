@@ -1,5 +1,12 @@
 
 
+## [0.41.24](https://github.com/adobecom/caas/compare/0.41.23...0.41.24) (2026-01-21)
+
+
+### Bug Fixes
+
+* optimize LCP with static + dynamic image preload ([1fe96ed](https://github.com/adobecom/caas/commit/1fe96edb51ba7cd970d6cfccc6f55dae5adbc30b))
+
 ## [0.41.23](https://github.com/adobecom/caas/compare/0.41.22...0.41.23) (2026-01-15)
 
 
