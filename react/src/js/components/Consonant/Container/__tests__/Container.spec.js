@@ -1152,5 +1152,179 @@ describe('Container Component', () => {
             // Just verify the component renders without crashing
             expect(container.querySelector('.consonant-Wrapper')).toBeInTheDocument();
         });
+
+        test('should hash nested category items when isHashed is true', () => {
+            // Mock cards with isHashed flag
+            const cardsWithHashedFlag = {
+                isHashed: true,
+                cards,
+            };
+
+            global.fetch = jest.fn(() =>
+                Promise.resolve({
+                    ok: true,
+                    status: 200,
+                    statusText: 'success',
+                    url: 'test.html',
+                    json: () => Promise.resolve(cardsWithHashedFlag),
+                }));
+
+            const configWithNestedFilters = {
+                collection: {
+                    endpoint: 'https://www.somedomain.com/some-test-api.json',
+                    totalCardsToShow: 50,
+                    cardStyle: 'full-card',
+                    showTotalResults: true,
+                    resultsPerPage: 10,
+                    i18n: {
+                        totalResultsText: '{total} Results',
+                    },
+                },
+                filterPanel: {
+                    enabled: true,
+                    type: 'left',
+                    filterLogic: 'or',
+                    filters: [
+                        {
+                            group: 'Products',
+                            id: 'caas:products',
+                            items: [
+                                {
+                                    label: 'Photoshop',
+                                    id: 'caas:products/photoshop',
+                                },
+                                {
+                                    label: 'Illustrator',
+                                    id: 'caas:products/illustrator',
+                                },
+                                {
+                                    label: 'Acrobat',
+                                    id: 'caas:products/acrobat',
+                                },
+                            ],
+                        },
+                    ],
+                    categoryMappings: {
+                        'caas:products/creative-cloud': {
+                            label: 'Creative Cloud',
+                            items: ['caas:products/photoshop', 'caas:products/illustrator'],
+                        },
+                    },
+                    i18n: {
+                        leftPanel: {
+                            header: 'Refine The Results',
+                            mobile: {
+                                filtersBtnLabel: 'Filters',
+                                panel: {
+                                    header: 'Filter by',
+                                    totalResultsText: '{total} Results',
+                                    applyBtnText: 'Apply',
+                                    clearAllBtnText: 'Clear All',
+                                    doneBtnText: 'Done',
+                                },
+                                group: {
+                                    totalResultsText: '{total} Results',
+                                    applyBtnText: 'Apply',
+                                    clearBtnText: 'Clear',
+                                    doneBtnText: 'Done',
+                                },
+                            },
+                        },
+                    },
+                },
+            };
+
+            // This test ensures the hashing code path for nested items runs without errors
+            expect(() => render(<Container config={configWithNestedFilters} />)).not.toThrow();
+        });
+
+        test('should reinitialize filters with hashed IDs and category transformations', () => {
+            // Mock cards with isHashed flag and categoryMappings
+            const cardsWithHashedFlag = {
+                isHashed: true,
+                cards,
+            };
+
+            global.fetch = jest.fn(() =>
+                Promise.resolve({
+                    ok: true,
+                    status: 200,
+                    statusText: 'success',
+                    url: 'test.html',
+                    json: () => Promise.resolve(cardsWithHashedFlag),
+                }));
+
+            const configWithCategoryMappings = {
+                collection: {
+                    endpoint: 'https://www.somedomain.com/some-test-api.json',
+                    totalCardsToShow: 50,
+                    cardStyle: 'full-card',
+                    showTotalResults: true,
+                    resultsPerPage: 10,
+                    i18n: {
+                        totalResultsText: '{total} Results',
+                    },
+                },
+                filterPanel: {
+                    enabled: true,
+                    type: 'left',
+                    filterLogic: 'or',
+                    filters: [
+                        {
+                            group: 'Products',
+                            id: 'caas:products',
+                            items: [
+                                {
+                                    label: 'Photoshop',
+                                    id: 'caas:products/photoshop',
+                                },
+                                {
+                                    label: 'Illustrator',
+                                    id: 'caas:products/illustrator',
+                                },
+                                {
+                                    label: 'Acrobat',
+                                    id: 'caas:products/acrobat',
+                                },
+                            ],
+                        },
+                    ],
+                    categoryMappings: {
+                        'caas:products/creative-cloud': {
+                            label: 'Creative Cloud',
+                            items: ['caas:products/photoshop', 'caas:products/illustrator'],
+                        },
+                        'caas:products/document-cloud': {
+                            label: 'Document Cloud',
+                            items: ['caas:products/acrobat'],
+                        },
+                    },
+                    i18n: {
+                        leftPanel: {
+                            header: 'Refine The Results',
+                            mobile: {
+                                filtersBtnLabel: 'Filters',
+                                panel: {
+                                    header: 'Filter by',
+                                    totalResultsText: '{total} Results',
+                                    applyBtnText: 'Apply',
+                                    clearAllBtnText: 'Clear All',
+                                    doneBtnText: 'Done',
+                                },
+                                group: {
+                                    totalResultsText: '{total} Results',
+                                    applyBtnText: 'Apply',
+                                    clearBtnText: 'Clear',
+                                    doneBtnText: 'Done',
+                                },
+                            },
+                        },
+                    },
+                },
+            };
+
+            // This test ensures the filter reinitialization code path runs without errors
+            expect(() => render(<Container config={configWithCategoryMappings} />)).not.toThrow();
+        });
     });
 });

@@ -1048,6 +1048,14 @@ const Container = (props) => {
                             for (const filterItem of group.items) {
                                 const [parent, child] = getParentChild(filterItem.id);
                                 filterItem.id = `${rollingHash(parent, TAG_HASH_LENGTH)}/${rollingHash(child, TAG_HASH_LENGTH)}`;
+ 
+                                // If this is a category with nested items, hash those too
+                                if (filterItem.isCategory && filterItem.items) {
+                                    for (const nestedItem of filterItem.items) {
+                                        const [nestedParent, nestedChild] = getParentChild(nestedItem.id);
+                                        nestedItem.id = `${rollingHash(nestedParent, TAG_HASH_LENGTH)}/${rollingHash(nestedChild, TAG_HASH_LENGTH)}`;
+                                    }
+                                }
                             }
                         }
                         const temp = [];
@@ -1058,6 +1066,25 @@ const Container = (props) => {
                             }
                         }
                         hideCtaTags = temp;
+
+                        // Re-initialize filters with hashed IDs and apply category transformations
+                        const hashedTransformedFilters = transformFiltersWithCategories(authoredFilters, categoryMappings);
+                        const hashedFinalFilters = hashedTransformedFilters.map(filterGroup => ({
+                            ...filterGroup,
+                            opened: DESKTOP_SCREEN_SIZE ? filterGroup.openedOnLoad : false,
+                            items: filterGroup.items.map(filterItem => ({
+                                ...filterItem,
+                                selected: false,
+                                // If it's a category, preserve its nested items structure
+                                ...(filterItem.isCategory && {
+                                    items: filterItem.items.map(nestedItem => ({
+                                        ...nestedItem,
+                                        selected: false,
+                                    })),
+                                }),
+                            })),
+                        }));
+                        setFilters(hashedFinalFilters);
                     }
                     setCardCount(payload.totalCount ? payload.totalCount : payload.cards.length);
                     const { processedCards = [] } = new JsonProcessor(payload.cards)
