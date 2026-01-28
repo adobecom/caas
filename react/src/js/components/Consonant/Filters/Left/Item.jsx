@@ -28,8 +28,6 @@ const itemType = {
     results: number.isRequired,
     onClearAll: func.isRequired,
     items: arrayOf(shape(filterItemType)).isRequired,
-    // eslint-disable-next-line react/require-default-props
-    onCategoryToggle: func,
 };
 
 const defaultProps = {
@@ -74,7 +72,6 @@ const Item = (props) => {
         onClearAll,
         results,
         clearFilterText,
-        onCategoryToggle,
     } = props;
 
     const getConfig = useConfig();
@@ -223,8 +220,7 @@ const Item = (props) => {
                         aria-labelledby={`${id}-link`}>
                         <Items
                             items={items}
-                            handleCheck={handleCheck}
-                            onCategoryToggle={onCategoryToggle} />
+                            handleCheck={handleCheck} />
                     </section>
                     <GroupFooter
                         ctaText={buttonText}
