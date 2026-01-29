@@ -14,8 +14,6 @@ const itemsType = {
     stopPropagation: func.isRequired,
     clipWrapperItemsCount: number.isRequired,
     items: arrayOf(shape(filterItemType)).isRequired,
-    // eslint-disable-next-line react/require-default-props
-    onCategoryToggle: func,
 };
 
 /**
@@ -39,7 +37,6 @@ const Items = (props) => {
         handleCheck,
         stopPropagation,
         clipWrapperItemsCount,
-        onCategoryToggle,
     } = props;
 
     /**
@@ -68,77 +65,6 @@ const Items = (props) => {
             data-testid="consonant-TopFilter-items"
             className={clipFilterItemsClass}>
             {items.map((item) => {
-                // Check if this is a category
-                if (item.isCategory) {
-                    return (
-                        <Fragment key={item.id}>
-                            <li
-                                data-testid="consonant-TopFilter-item"
-                                className={`consonant-TopFilter-item consonant-TopFilter-item--category ${item.opened ? 'is-opened' : ''}`}>
-                                <label
-                                    htmlFor={item.id}
-                                    className="consonant-TopFilter-itemLabel consonant-TopFilter-itemLabel--category"
-                                    onClick={stopPropagation}
-                                    onKeyDown={stopPropagation}
-                                    role="presentation">
-                                    <input
-                                        data-testid="consonant-TopFilter-categoryCheckbox"
-                                        id={item.id}
-                                        value={item.id}
-                                        type="checkbox"
-                                        onChange={(e) => {
-                                            handleCheck(e);
-                                            // Top filter: Only expand when selecting (not context-aware)
-                                            if (onCategoryToggle) {
-                                                if (e.target.checked && !item.opened) {
-                                                    onCategoryToggle(item.id);
-                                                } else if (!e.target.checked && item.opened) {
-                                                    onCategoryToggle(item.id);
-                                                }
-                                            }
-                                        }}
-                                        checked={item.selected}
-                                        tabIndex="0" />
-                                    <span className="consonant-TopFilter-itemCheckmark" />
-                                    <span className="consonant-TopFilter-itemName">
-                                        {item.label}
-                                    </span>
-                                </label>
-                            </li>
-                            {item.opened && item.items && (
-                                item.items.map(nestedItem => (
-                                    <li
-                                        key={nestedItem.id}
-                                        data-testid="consonant-TopFilter-item"
-                                        daa-ll={nestedItem.label}
-                                        className="consonant-TopFilter-item consonant-TopFilter-item--nested">
-                                        <label
-                                            htmlFor={nestedItem.id}
-                                            className="consonant-TopFilter-itemLabel"
-                                            onClick={stopPropagation}
-                                            onKeyDown={stopPropagation}
-                                            role="presentation">
-                                            <input
-                                                data-testid="consonant-TopFilter-itemCheckbox"
-                                                id={nestedItem.id}
-                                                value={nestedItem.id}
-                                                type="checkbox"
-                                                onChange={handleCheck}
-                                                checked={nestedItem.selected}
-                                                tabIndex="0" />
-                                            <span className="consonant-TopFilter-itemCheckmark" />
-                                            <span className="consonant-TopFilter-itemName">
-                                                {nestedItem.label}
-                                            </span>
-                                        </label>
-                                    </li>
-                                ))
-                            )}
-                        </Fragment>
-                    );
-                }
-
-                // Regular flat item
                 const category = item.id.split('/')[0];
                 let title;
                 if (!set.has(category)) {

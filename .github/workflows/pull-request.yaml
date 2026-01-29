@@ -123,6 +123,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
+          overwrite: true
           name: github-pages
 
       # 7. Deploy the uploaded artifact to GitHub Pages
