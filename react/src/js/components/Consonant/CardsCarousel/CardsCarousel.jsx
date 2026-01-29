@@ -82,6 +82,7 @@ function CardsCarousel({
     const nextCard = getConfig('collection', 'i18n.nextCards') || 'Next Cards';
     const prevCard = getConfig('collection', 'i18n.prevCards') || 'Previous Cards';
     const useLightText = getConfig('collection', 'useLightText');
+    // eslint-disable-next-line no-use-before-define
     const isIncremental = isMobile() || getConfig('pagination', 'animationStyle').includes('incremental');
     const renderOverlay = getConfig('collection', 'useOverlayLinks');
 
