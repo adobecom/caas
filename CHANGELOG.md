@@ -1,5 +1,12 @@
 
 
+## [0.42.2](https://github.com/adobecom/caas/compare/0.42.1...0.42.2) (2026-01-30)
+
+
+### Bug Fixes
+
+* stabilize lighthouse CI with dedicated test page ([#389](https://github.com/adobecom/caas/issues/389)) ([08cefe4](https://github.com/adobecom/caas/commit/08cefe406c5f87b28225f96d51daffc8d5b3f17a))
+
 ## [0.42.1](https://github.com/adobecom/caas/compare/0.42.0...0.42.1) (2026-01-29)
 
 # [0.42.0](https://github.com/adobecom/caas/compare/0.41.25...0.42.0) (2026-01-21)
