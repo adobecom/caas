@@ -82,7 +82,8 @@ function CardsCarousel({
     const nextCard = getConfig('collection', 'i18n.nextCards') || 'Next Cards';
     const prevCard = getConfig('collection', 'i18n.prevCards') || 'Previous Cards';
     const useLightText = getConfig('collection', 'useLightText');
-    const isIncremental = getConfig('pagination', 'animationStyle').includes('incremental');
+    // eslint-disable-next-line no-use-before-define
+    const isIncremental = isMobile() || getConfig('pagination', 'animationStyle').includes('incremental');
     const renderOverlay = getConfig('collection', 'useOverlayLinks');
 
     if (cardsUp.includes('2up')) {
@@ -208,7 +209,7 @@ function CardsCarousel({
     }
 
     function mobileLogic() {
-        if (isMobile()) {
+        if (isMobile() && carouselType === 'default') {
             hideNav();
         } else {
             showNav();
@@ -283,7 +284,7 @@ function CardsCarousel({
     }
 
     function nextButtonClick() {
-        if (isMobile()) {
+        if (isMobile() && carouselType === 'default') {
             centerClick();
         } else {
             const carousel = carouselRef.current;
@@ -296,7 +297,7 @@ function CardsCarousel({
     }
 
     function prevButtonClick() {
-        if (isMobile()) {
+        if (isMobile() && carouselType === 'default') {
             centerClick();
         } else {
             const carousel = carouselRef.current;
