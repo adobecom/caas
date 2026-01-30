@@ -1,5 +1,12 @@
 
 
+## [0.42.3](https://github.com/adobecom/caas/compare/0.42.2...0.42.3) (2026-01-30)
+
+
+### Bug Fixes
+
+* **mwpw-183491:** fixes modern carousel nav controls in mobile ([#388](https://github.com/adobecom/caas/issues/388)) ([c6ab4e8](https://github.com/adobecom/caas/commit/c6ab4e8eaf063b5a1d6a5b06883f758d669be7bb))
+
 ## [0.42.2](https://github.com/adobecom/caas/compare/0.42.1...0.42.2) (2026-01-30)
 
 
