@@ -2,7 +2,8 @@ module.exports = {
   ci: {
     collect: {
       // URL to test - production GitHub Pages deployment
-      url: ['https://adobecom.github.io/caas/index.html'],
+      // Using index-lh.html so developers can modify index.html without affecting CI
+      url: ['https://adobecom.github.io/caas/index-lh.html'],
 
       // Run 3 times and take median to reduce variance
       // Lighthouse scores naturally vary ±5 points between runs
