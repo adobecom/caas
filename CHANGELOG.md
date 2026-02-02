@@ -1,5 +1,35 @@
 
 
+## [0.42.3](https://github.com/adobecom/caas/compare/0.42.2...0.42.3) (2026-01-30)
+
+
+### Bug Fixes
+
+* **mwpw-183491:** fixes modern carousel nav controls in mobile ([#388](https://github.com/adobecom/caas/issues/388)) ([c6ab4e8](https://github.com/adobecom/caas/commit/c6ab4e8eaf063b5a1d6a5b06883f758d669be7bb))
+
+## [0.42.2](https://github.com/adobecom/caas/compare/0.42.1...0.42.2) (2026-01-30)
+
+
+### Bug Fixes
+
+* stabilize lighthouse CI with dedicated test page ([#389](https://github.com/adobecom/caas/issues/389)) ([08cefe4](https://github.com/adobecom/caas/commit/08cefe406c5f87b28225f96d51daffc8d5b3f17a))
+
+## [0.42.1](https://github.com/adobecom/caas/compare/0.42.0...0.42.1) (2026-01-29)
+
+# [0.42.0](https://github.com/adobecom/caas/compare/0.41.25...0.42.0) (2026-01-21)
+
+
+### Features
+
+* **mwpw-183491:** implements modern carousel style ([#365](https://github.com/adobecom/caas/issues/365)) ([ff97956](https://github.com/adobecom/caas/commit/ff97956b2bd40e620330f4b9b77f698a357e5578))
+
+## [0.41.25](https://github.com/adobecom/caas/compare/0.41.24...0.41.25) (2026-01-21)
+
+
+### Reverts
+
+* Revert "adding proposal" ([eb72721](https://github.com/adobecom/caas/commit/eb727215fdb787df5bfb2621d399307419629063))
+
 ## [0.41.24](https://github.com/adobecom/caas/compare/0.41.23...0.41.24) (2026-01-21)
 
 
