@@ -4,6 +4,11 @@ on:
     branches:
     - 'main'
 
+# Ensure only one release job runs for main at a time.
+concurrency:
+  group: release-main
+  cancel-in-progress: true
+
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions: write-all
 
