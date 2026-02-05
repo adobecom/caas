@@ -1,5 +1,12 @@
 
 
+## [0.42.6](https://github.com/adobecom/caas/compare/0.42.5...0.42.6) (2026-02-05)
+
+
+### Bug Fixes
+
+* **mwpw-187446:** make initReact constructible ([#391](https://github.com/adobecom/caas/issues/391)) ([d21c9e6](https://github.com/adobecom/caas/commit/d21c9e6492915351b26cc8dcdc9e72b56243c829))
+
 ## [0.42.5](https://github.com/adobecom/caas/compare/0.42.4...0.42.5) (2026-02-04)
 
 ## [0.42.4](https://github.com/adobecom/caas/compare/0.42.3...0.42.4) (2026-02-04)
