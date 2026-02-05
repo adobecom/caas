@@ -1,4 +1,12 @@
 <!DOCTYPE HTML>
+<!--
+    index-lh.html - Lighthouse CI Performance Test Page
+
+    This file is used exclusively by Lighthouse CI (.lighthouserc.js) for performance testing.
+    It uses a stable API endpoint (no origin filter) to ensure consistent test results.
+
+    Developers can freely modify index.html without affecting CI performance checks.
+-->
 <html lang="en">
 
 <head>
@@ -15,7 +23,8 @@
     <link rel="preload" href="./dependencies/typekit.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
 
     <!-- Preload first card image to improve LCP -->
-    <link rel="preload" href="https://business.adobe.com/resources/media_13742c7f2bfe74e8c307ecdc859c9476bc127a572.png?width=1200&format=pjpg&optimize=medium" as="image" type="image/jpeg">
+    <!-- Using stable API (no origin filter) with www.adobe.com images that support webply -->
+    <link rel="preload" href="https://www.adobe.com/content/dam/www/us/en/max/2021/speakers/S907-Deep-Blizzard_1628658923394001pGLY.jpg?format=webply" as="image" type="image/webp">
 
     <noscript>
         <link rel="stylesheet" href="./dist/app.css">
@@ -90,7 +99,7 @@
                     }
                 },
                 resultsPerPage: '20',
-                endpoint: location.hostname === "localhost" ? "../../mock-json/test-group-filters.json" : "https://www.adobe.com/chimera-api/collection?originSelection=bacom&size=10",
+                endpoint: location.hostname === "localhost" ? "../../mock-json/test-group-filters.json" : "https://www.adobe.com/chimera-api/collection?size=10",
                 totalCardsToShow: '55',
                 cardStyle: "1:2", // available options: "1:2", "3:4", "full-card", "half-height", "custom-card", "product", "double-wide";
                 showTotalResults: 'true',
@@ -111,7 +120,7 @@
                     partialLoadCount: 10,
                 }
             },
-            featuredCards: ['c7d34f39-397c-3727-9dff-5d0d9d8cf731'],
+            featuredCards: ['2x79fwr'], // Featured card from stable API (no origin filter)
             filterPanel: {
                 enabled: 'true',
                 type: 'left',

@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import classNames from 'classnames';
 import { shape } from 'prop-types';
-import 'whatwg-fetch';
+// import 'whatwg-fetch'; // Removed: fetch is native in modern browsers
 import { logLana } from '../Helpers/lana';
 import Popup from '../Sort/Popup';
 import Search from '../Search/Search';
@@ -20,6 +20,7 @@ import {
     sanitizeEventFilter,
     getTransitions,
     removeMarkDown,
+    preloadFirstCardImage,
 } from '../Helpers/general';
 import { configType } from '../types/config';
 import CardsCarousel from '../CardsCarousel/CardsCarousel';
@@ -66,7 +67,6 @@ import {
     getActiveFilterIds,
     getActivePanels,
     getUpdatedCardBookmarkData,
-    transformFiltersWithCategories,
 } from '../Helpers/Helpers';
 
 
@@ -110,7 +110,6 @@ const Container = (props) => {
     const resultsPerPage = getConfig('collection', 'resultsPerPage');
     const onlyShowBookmarks = getConfig('bookmarks', 'leftFilterPanel.bookmarkOnlyCollection');
     const authoredFilters = getConfig('filterPanel', 'filters');
-    const categoryMappings = getConfig('filterPanel', 'categoryMappings');
     const filterLogic = getConfig('filterPanel', 'filterLogic').toLowerCase().trim();
     let totalCardLimit = getConfig('collection', 'totalCardsToShow');
     const sampleSize = getConfig('collection', 'reservoir.sample');
@@ -162,6 +161,10 @@ const Container = (props) => {
     const partialLoadWithBackgroundFetch = getConfig('collection', 'partialLoadWithBackgroundFetch.enabled');
     const partialLoadCount = getConfig('collection', 'partialLoadWithBackgroundFetch.partialLoadCount');
     const renderOverlay = getConfig('collection', 'useOverlayLinks');
+    const animationStyle = getConfig('pagination', 'animationStyle');
+    const isModernCarousel = animationStyle?.toLowerCase().includes('modern');
+    const isLightCarousel = animationStyle?.toLowerCase().includes('light');
+
 
     /**
      **** Constants ****
@@ -611,52 +614,14 @@ const Container = (props) => {
 
             return {
                 ...filter,
-                items: filter.items.map((item) => {
-                    // If it's a category, check nested items
-                    if (item.isCategory) {
-                        return {
-                            ...item,
-                            items: item.items.map(nestedItem => ({
-                                ...nestedItem,
-                                selected: nestedItem.id === itemId ? !nestedItem.selected : nestedItem.selected,
-                            })),
-                        };
-                    }
-                    // Regular flat item
-                    return {
-                        ...item,
-                        selected: item.id === itemId ? !item.selected : item.selected,
-                    };
-                }),
+                items: filter.items.map(item => ({
+                    ...item,
+                    selected: item.id === itemId ? !item.selected : item.selected,
+                })),
             };
         }));
         setCurrentPage(1);
         changeUrlState(filterId, itemId, isChecked);
-    };
-
-    /**
-     * Toggles category opened/closed state
-     *
-     * @param {String} filterId - The filter ID
-     * @param {String} categoryId - The category ID to toggle
-     */
-    const handleCategoryToggle = (filterId, categoryId) => {
-        setFilters(prevFilters => prevFilters.map((filter) => {
-            if (filter.id !== filterId) return filter;
-
-            return {
-                ...filter,
-                items: filter.items.map((item) => {
-                    if (item.id === categoryId && item.isCategory) {
-                        return {
-                            ...item,
-                            opened: !item.opened,
-                        };
-                    }
-                    return item;
-                }),
-            };
-        }));
     };
 
     /**
@@ -737,39 +702,14 @@ const Container = (props) => {
      */
 
     useEffect(() => {
-        // Transform filters with category groupings if categoryMappings exist
-        const transformedFilters = transformFiltersWithCategories(authoredFilters, categoryMappings);
-
-        const finalFilters = transformedFilters.map(filterGroup => ({
+        setFilters(authoredFilters.map(filterGroup => ({
             ...filterGroup,
             opened: DESKTOP_SCREEN_SIZE ? filterGroup.openedOnLoad : false,
             items: filterGroup.items.map(filterItem => ({
                 ...filterItem,
                 selected: false,
-                // If it's a category, preserve its nested items structure
-                ...(filterItem.isCategory && {
-                    items: filterItem.items.map(nestedItem => ({
-                        ...nestedItem,
-                        selected: false,
-                    })),
-                }),
             })),
-        }));
-
-        // DEBUG: Only log Products filter items
-        const productsFilter = finalFilters.find(f => f.id === 'caas:products');
-        if (productsFilter) {
-            console.log('[DEBUG] Products filter items after state mapping:',
-                productsFilter.items.map(item => ({
-                    id: item.id,
-                    label: item.label,
-                    isCategory: item.isCategory,
-                    hasNestedItems: item.items ? item.items.length : 0
-                }))
-            );
-        }
-
-        setFilters(finalFilters);
+        })));
     }, []);
 
     /**
@@ -788,23 +728,10 @@ const Container = (props) => {
                 ...filter,
                 opened: true,
                 /* istanbul ignore next */
-                items: items.map(item => {
-                    // If it's a category, preserve nested items structure
-                    if (item.isCategory && item.items) {
-                        return {
-                            ...item,
-                            items: item.items.map(nestedItem => ({
-                                ...nestedItem,
-                                selected: urlStateArray.includes(String(nestedItem.label)),
-                            })),
-                        };
-                    }
-                    // Flat item
-                    return {
-                        ...item,
-                        selected: urlStateArray.includes(String(item.label)),
-                    };
-                }),
+                items: items.map(item => ({
+                    ...item,
+                    selected: urlStateArray.includes(String(item.label)),
+                })),
             };
         }));
         const urlSearchValue = urlState[searchPrefix];
@@ -968,8 +895,7 @@ const Container = (props) => {
                             };
                         }));
                     } else {
-                        // Use prevFilters to preserve transformation (including categoryMappings)
-                        setFilters(prevFilters => prevFilters.map((filter) => {
+                        setFilters(() => authoredFilters.map((filter) => {
                             const { group, items } = filter;
                             const urlStateValue = urlState[filterGroupPrefix + group];
                             if (!urlStateValue) return filter;
@@ -977,22 +903,10 @@ const Container = (props) => {
                             return {
                                 ...filter,
                                 opened: true,
-                                items: items.map(item => {
-                                    // Preserve nested items for categories
-                                    if (item.isCategory && item.items) {
-                                        return {
-                                            ...item,
-                                            items: item.items.map(nestedItem => ({
-                                                ...nestedItem,
-                                                selected: urlStateArray.includes(String(nestedItem.label)),
-                                            })),
-                                        };
-                                    }
-                                    return {
-                                        ...item,
-                                        selected: urlStateArray.includes(String(item.label)),
-                                    };
-                                }),
+                                items: items.map(item => ({
+                                    ...item,
+                                    selected: urlStateArray.includes(String(item.label)),
+                                })),
                             };
                         }));
                     }
@@ -1005,6 +919,10 @@ const Container = (props) => {
                             }, transitions.dequeue().priority + ONE_SECOND_DELAY);
                         }
                     }
+
+                    // Preload first card image to improve LCP
+                    // Injects preload before React renders, saving 50-300ms
+                    preloadFirstCardImage(processedCards);
 
                     setCards(processedCards);
 
@@ -1525,6 +1443,11 @@ const Container = (props) => {
         }
     }, []);
 
+    const carouselClass = classNames({
+        'modern-carousel': isModernCarousel,
+        'modern-carousel--light': isLightCarousel,
+    });
+
     return (
         <ConfigContext.Provider value={config}>
             <ExpandableContext.Provider value={{ value: openDropdown, setValue: setOpenDropdown }} >
@@ -1580,7 +1503,6 @@ const Container = (props) => {
                                 onClearAllFilters={resetFiltersSearchAndBookmarks}
                                 onClearFilterItems={clearFilterItem}
                                 onCheckboxClick={handleCheckBoxChange}
-                                onCategoryToggle={handleCategoryToggle}
                                 onMobileFiltersToggleClick={handleMobileFiltersToggle}
                                 onSelectedFilterClick={handleCheckBoxChange}
                                 showMobileFilters={showMobileFilters}
@@ -1602,7 +1524,7 @@ const Container = (props) => {
                                 ref={filterItemRef} />
                         </div>
                         }
-                        <div className={`consonant-Wrapper-collection${isLoading ? ' is-loading' : ''}`}>
+                        <div className={`consonant-Wrapper-collection${isLoading ? ' is-loading' : ''} ${carouselClass}`}>
                             { isTopFilterPanel && isStandardContainer &&
                             <FiltersPanelTop
                                 filterPanelEnabled={filterPanelEnabled}
@@ -1611,7 +1533,6 @@ const Container = (props) => {
                                 windowWidth={windowWidth}
                                 resQty={gridCardLen}
                                 onCheckboxClick={handleCheckBoxChange}
-                                onCategoryToggle={handleCategoryToggle}
                                 onFilterClick={handleFilterGroupClick}
                                 onClearFilterItems={clearFilterItem}
                                 categories={currCategories}
@@ -1699,6 +1620,7 @@ const Container = (props) => {
                                 resQty={gridCardLen}
                                 cards={gridCards}
                                 cardStyle={cardStyle}
+                                carouselType={isModernCarousel ? 'modern' : 'default'}
                                 role="tablist"
                                 onCardBookmark={handleCardBookmarking} />
                             }

@@ -35,7 +35,6 @@ const filtersPanelTopType = {
     sortComponent: node.isRequired,
     windowWidth: number.isRequired,
     onFilterClick: func.isRequired,
-    onCategoryToggle: func,
     onShowAllClick: func.isRequired,
     searchComponent: node.isRequired,
     searchQuery: string,
@@ -81,7 +80,6 @@ const FiltersPanelTop = (props) => {
         filters,
         resQty,
         onCheckboxClick,
-        onCategoryToggle,
         onFilterClick,
         onClearAllFilters,
         onClearFilterItems,
@@ -288,7 +286,6 @@ const FiltersPanelTop = (props) => {
                                 id={filter.id}
                                 isOpened={filter.opened}
                                 onCheck={onCheckboxClick}
-                                onCategoryToggle={(categoryId) => onCategoryToggle && onCategoryToggle(filter.id, categoryId)}
                                 onClick={onFilterClick}
                                 onClearAll={onClearFilterItems}
                                 clearFilterText={clearFilterText}

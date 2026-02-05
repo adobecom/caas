@@ -23,7 +23,6 @@ const groupType = {
     clearFilterText: string,
     numItemsSelected: number,
     onCheck: func.isRequired,
-    onCategoryToggle: func,
     results: number.isRequired,
     onClearAll: func.isRequired,
     items: arrayOf(shape(filterItemType)).isRequired,
@@ -66,7 +65,6 @@ const Group = (props) => {
         items,
         numItemsSelected,
         onCheck,
-        onCategoryToggle,
         onClearAll,
         results,
         clearFilterText,
@@ -246,7 +244,6 @@ const Group = (props) => {
                                     clipWrapperItemsCount={clipWrapperItemsCount}
                                     handleCheck={handleCheck}
                                     stopPropagation={stopPropagation}
-                                    onCategoryToggle={onCategoryToggle}
                                     items={items} />
                                 {shouldClipFilters &&
                                 <aside

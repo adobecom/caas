@@ -293,10 +293,6 @@
                     width: 34px;
                     z-index: 5;
 
-                    @media @consonant-carousel-down {
-                        margin-right: 36px;
-                    }
-
                     &.consonant {
                         &-Button {
                             &--previous {
@@ -341,6 +337,129 @@
                             background-color: rgba(0, 0, 0, 1);
                         }
                     }
+                }
+            }
+        }
+    }
+
+    /* Modern Carousel styles and overrides */
+    .consonant-Wrapper-inner:has(.modern-carousel) {
+        width: 100%;
+    }
+
+    .modern-carousel {
+        display: grid;
+
+        .consonant-CarouselInfo {
+            order: 1;
+        }
+
+        .consonant-Container--carousel {
+            order: 2;
+        }
+
+        .consonant-Navigation--carousel {
+            order: 3;
+            display: flex;
+            justify-content: space-between;
+            height: 48px;
+            width: 122px;
+            margin: 4px auto;
+            background: #242424;
+            border-radius: 24px;
+            padding: 4px;
+
+            button {
+                position: relative;
+                top: 0;
+                transform: none;
+                background: #e6e6e6;
+                color: #000;
+                height: 40px;
+                width: 40px;
+            }
+
+            button:hover {
+                background: #d5d5d5;
+            }
+
+            button:active {
+                background: #b1b1b1;
+            }
+
+            button:focus {
+                background: #e6e6e6;
+            }
+
+            button.disabled {
+                background: #e6e6e6;
+                color: #b1b1b1;
+                cursor: not-allowed;
+            }
+
+            button:before {
+                content: '' !important;
+                border: none !important;
+                height: auto;
+                width: auto;
+                left: 0 !important;
+                top: 0 !important;
+                transform: none;
+                background: transparent;
+            }
+
+            button:after {
+                left: 11px;
+                top: 9px;
+                transform: none;
+                background: transparent;
+                content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21"><path d="M19.2214 10.8918C19.3516 10.5773 19.3516 10.2226 19.2214 9.90808C19.1562 9.75098 19.0621 9.60895 18.9435 9.49041L12.9241 3.47092C12.4226 2.96819 11.6076 2.96819 11.1061 3.47092C10.604 3.97239 10.604 4.78743 11.1061 5.2889L14.9312 9.11399H2.4314C1.72109 9.11399 1.146 9.69036 1.146 10.4C1.146 11.1097 1.72109 11.6861 2.4314 11.6861H14.9312L11.1061 15.5112C10.604 16.0126 10.604 16.8277 11.1061 17.3291C11.3568 17.5805 11.6863 17.7062 12.0151 17.7062C12.3439 17.7062 12.6733 17.5805 12.9241 17.3291L18.9436 11.3097C19.0622 11.1911 19.1562 11.0491 19.2214 10.8918Z"/></svg>');
+            }
+
+            button.disabled:after {
+                content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21"><path fill="%23B1B1B1" d="M19.2214 10.8918C19.3516 10.5773 19.3516 10.2226 19.2214 9.90808C19.1562 9.75098 19.0621 9.60895 18.9435 9.49041L12.9241 3.47092C12.4226 2.96819 11.6076 2.96819 11.1061 3.47092C10.604 3.97239 10.604 4.78743 11.1061 5.2889L14.9312 9.11399H2.4314C1.72109 9.11399 1.146 9.69036 1.146 10.4C1.146 11.1097 1.72109 11.6861 2.4314 11.6861H14.9312L11.1061 15.5112C10.604 16.0126 10.604 16.8277 11.1061 17.3291C11.3568 17.5805 11.6863 17.7062 12.0151 17.7062C12.3439 17.7062 12.6733 17.5805 12.9241 17.3291L18.9436 11.3097C19.0622 11.1911 19.1562 11.0491 19.2214 10.8918Z"/></svg>');
+            }
+
+            button.consonant-Button--previous {
+                transform: rotate(180deg) !important;
+            }
+        }
+
+        &--light {
+            .consonant-Navigation--carousel {
+                background: #e6e6e6;
+
+                button {
+                    background: #242424;
+                    color: #e6e6e6;
+                }
+
+                button:hover {
+                    background: #2f2f2f;
+                }
+
+                button:active {
+                    background: #373737;
+                }
+
+                button:focus {
+                    background: #242424;
+                }
+
+                button.disabled {
+                    background: transparent;
+                }
+
+                button.disabled:before,
+                button.disabled:after {
+                    background-color: transparent;
+                    content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21"><path fill="%23b1b1b1" d="M19.2214 10.8918C19.3516 10.5773 19.3516 10.2226 19.2214 9.90808C19.1562 9.75098 19.0621 9.60895 18.9435 9.49041L12.9241 3.47092C12.4226 2.96819 11.6076 2.96819 11.1061 3.47092C10.604 3.97239 10.604 4.78743 11.1061 5.2889L14.9312 9.11399H2.4314C1.72109 9.11399 1.146 9.69036 1.146 10.4C1.146 11.1097 1.72109 11.6861 2.4314 11.6861H14.9312L11.1061 15.5112C10.604 16.0126 10.604 16.8277 11.1061 17.3291C11.3568 17.5805 11.6863 17.7062 12.0151 17.7062C12.3439 17.7062 12.6733 17.5805 12.9241 17.3291L18.9436 11.3097C19.0622 11.1911 19.1562 11.0491 19.2214 10.8918Z"/></svg>');
+                }
+
+                button:before,
+                button:after {
+                    background-color: transparent;
+                    content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21"><path fill="%23ffffff" d="M19.2214 10.8918C19.3516 10.5773 19.3516 10.2226 19.2214 9.90808C19.1562 9.75098 19.0621 9.60895 18.9435 9.49041L12.9241 3.47092C12.4226 2.96819 11.6076 2.96819 11.1061 3.47092C10.604 3.97239 10.604 4.78743 11.1061 5.2889L14.9312 9.11399H2.4314C1.72109 9.11399 1.146 9.69036 1.146 10.4C1.146 11.1097 1.72109 11.6861 2.4314 11.6861H14.9312L11.1061 15.5112C10.604 16.0126 10.604 16.8277 11.1061 17.3291C11.3568 17.5805 11.6863 17.7062 12.0151 17.7062C12.3439 17.7062 12.6733 17.5805 12.9241 17.3291L18.9436 11.3097C19.0622 11.1911 19.1562 11.0491 19.2214 10.8918Z"/></svg>');
                 }
             }
         }
