@@ -203,6 +203,7 @@ const Card = (props) => {
     const bladeCard = getConfig('collection', 'bladeCard');
     const useCenterVideoPlay = getConfig('collection', 'useCenterVideoPlay');
     const searchEnabled = getConfig('search', 'enabled');
+    const editorialOpenVariant = getConfig('collection', 'editorialOpenVariant') || false;
 
     /**
      * Class name for the card:
@@ -213,6 +214,7 @@ const Card = (props) => {
         'consonant-Card': true,
         'consonant-u-noBorders': !renderBorder,
         'consonant-hide-cta': hideCTA,
+        'consonant-editorial--open': editorialOpenVariant,
     });
 
     /**
@@ -558,6 +560,7 @@ const Card = (props) => {
 
                 {showLabel &&
                 detailText &&
+                (isEditorial && editorialOpenVariant) &&
                 <span
                     data-testid="consonant-Card-label"
                     className="consonant-Card-label">
