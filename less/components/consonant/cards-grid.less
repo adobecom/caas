@@ -9,7 +9,6 @@
 - .consonant-CardsGrid--5up;
 - .consonant-CardsGrid--doubleWideCards;
 */
-
 .consonant {
     &-CardsGrid {
         display: grid !important;
@@ -17,6 +16,11 @@
         width: 100%;
         max-width: 100%;
         grid-template-columns: repeat(auto-fit, minmax(@consonantCardMinWidth, max-content));
+
+        @media (max-width: 320px) {
+            display: flex;
+            flex-direction: column;
+        }
 
         /* Cards hover grow animation */
 
@@ -137,4 +141,11 @@
 ul.consonant-CardsGrid {
     margin: 0;
     padding: 0 0 32px 0;
+}
+
+@media (max-width: 600px) {
+    div:not(.consonant-Container--carousel) > .consonant-CardsGrid {
+        display: flex !important;
+        flex-direction: column;
+    }
 }
