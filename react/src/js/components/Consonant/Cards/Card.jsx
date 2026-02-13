@@ -374,7 +374,7 @@ const Card = (props) => {
     const showBadge = (isOneHalf || isThreeFourths || isFull) && (fromDexter || showCardBadges);
     const showLogo = isOneHalf || isThreeFourths || isFull || isText
         || (isHalfHeight && showCardBadges);
-    const showLabel = !isProduct && !isText;
+    const showLabel = !isProduct && !isText && !isEditorial || (isEditorial && editorialOpenVariant);
     const showVideoButton = !isProduct && !isText && !isIcon;
     const videoButtonStyle = useCenterVideoPlay && !isHalfHeight ? "center" : "";
     const showText = !isHalfHeight && !isFull && !isNews && !isHorizontal;
@@ -560,7 +560,6 @@ const Card = (props) => {
 
                 {showLabel &&
                 detailText &&
-                (isEditorial && editorialOpenVariant) &&
                 <span
                     data-testid="consonant-Card-label"
                     className="consonant-Card-label">
