@@ -1,5 +1,12 @@
 
 
+## [0.42.7](https://github.com/adobecom/caas/compare/0.42.6...0.42.7) (2026-02-10)
+
+
+### Bug Fixes
+
+* **mwpw-177104:** fixes cropping content when zooming in ([#384](https://github.com/adobecom/caas/issues/384)) ([2ca2216](https://github.com/adobecom/caas/commit/2ca22168ae9e87de3620822722d282964c09fb57))
+
 ## [0.42.6](https://github.com/adobecom/caas/compare/0.42.5...0.42.6) (2026-02-05)
 
 
