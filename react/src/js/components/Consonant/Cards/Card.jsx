@@ -352,8 +352,8 @@ const Card = (props) => {
     const isFull = cardStyle === 'full-card';
     const isIcon = cardStyle === 'icon-card';
     const isNews = cardStyle === 'news-card';
-
     const isBlade = cardStyle === 'blade-card';
+    const isBlog = cardStyle === 'blog-card';
     const bladeVariant = isBlade
         ? [
             bladeCard.reverse ? 'reverse' : '',
@@ -375,7 +375,7 @@ const Card = (props) => {
     const showVideoButton = !isProduct && !isText && !isIcon;
     const videoButtonStyle = useCenterVideoPlay && !isHalfHeight ? "center" : "";
     const showText = !isHalfHeight && !isFull && !isNews && !isHorizontal;
-    const showFooter = isOneHalf || isProduct || isText || isNews || isBlade;
+    const showFooter = isOneHalf || isProduct || isText || isNews || isBlade || isBlog;
     const showFooterLeft = !isProduct;
     const showFooterCenter = !isProduct && !altCtaUsed;
     let hideBanner = false;
@@ -623,7 +623,7 @@ const Card = (props) => {
                     )
                 ) }
                 {showFooter &&
-                !hideCTA &&
+                (!hideCTA || isBlog) &&
                 footer.map(footerItem => (
                     <CardFooter
                         divider={renderDivider || footerItem.divider}
@@ -634,13 +634,16 @@ const Card = (props) => {
                         center={showFooterCenter ? extendFooterData(footerItem.center) : []}
                         right={extendFooterData(footerItem.right)}
                         altRight={altCtaUsed ? extendFooterData(footerItem.altCta) : []}
+                        cardDate={new Date(cardDate)}
                         startDate={startDate}
                         endDate={endDate}
                         cardStyle={cardStyle}
                         onFocus={onFocus}
                         title={title}
                         tabIndex={tabIndex}
-                        renderOverlay={renderOverlay} />
+                        renderOverlay={renderOverlay}
+                        hideCTA={hideCTA}
+                        isBlog={isBlog} />
                 ))}
                 {(isThreeFourths || isDoubleWide || isFull)
                     && !renderOverlay

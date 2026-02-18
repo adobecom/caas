@@ -13,6 +13,7 @@ const defaultProps = {
     altRight: [],
     divider: false,
     isFluid: false,
+    isBlog: false,
 };
 
 /**
@@ -38,6 +39,7 @@ const CardFooter = (props) => {
         center,
         right,
         altRight,
+        cardDate,
         startDate,
         endDate,
         isFluid,
@@ -45,6 +47,8 @@ const CardFooter = (props) => {
         title,
         tabIndex,
         renderOverlay,
+        hideCTA,
+        isBlog,
     } = props;
 
     /**
@@ -84,7 +88,7 @@ const CardFooter = (props) => {
      * Whether the left footer infobits should render
      * @type {Boolean}
      */
-    const shouldRenderLeft = left && left.length > 0;
+    const shouldRenderLeft = (left && left.length > 0) || (isBlog && cardDate);
 
     /**
      * Whether the center footer infobits should render
@@ -141,6 +145,9 @@ const CardFooter = (props) => {
                 {shouldRenderLeft &&
                 <div
                     className="consonant-CardFooter-cell consonant-CardFooter-cell--left">
+                    {isBlog && cardDate &&
+                        <span>{cardDate.toLocaleDateString().replaceAll('/', '-')}</span>
+                    }
                     <Group renderList={left} onFocus={onFocus} />
                 </div>
                 }
@@ -150,7 +157,7 @@ const CardFooter = (props) => {
                     <Group renderList={center} tabIndex={tabIndex} onFocus={onFocus} />
                 </div>
                 }
-                {shouldRenderRight &&
+                {shouldRenderRight && !hideCTA &&
                 <div
                     className="consonant-CardFooter-cell consonant-CardFooter-cell--right">
                     <Group
