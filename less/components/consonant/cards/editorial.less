@@ -1,0 +1,58 @@
+.consonant-CardsGrid {
+    .consonant-Card.editorial-card {
+        height: auto;
+        border-color: @consonantLightGrey400;
+        border-radius: 16px;
+
+        .consonant-Card-header {
+            height: 213px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .consonant-Card-content {
+            padding: 16px;
+
+            .consonant-Card-title {
+                font-size: 24px;
+                line-height: 30px;
+            }
+        }
+
+        &.consonant-CardsGrid--3up {
+            .consonant-Card.editorial-card {
+                width: 384px;
+            }
+        }
+    }
+
+    /* Editorial open variant */
+    .consonant-Card.consonant-editorial--open {
+        .consonant-Card-header {
+            border-radius: 16px;
+        }
+
+        .consonant-Card-content {
+            padding: 24px 0;
+        }
+
+        .consonant-Card-label {
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 12px;
+            line-height: 15px;
+            margin-bottom: 16px;
+        }
+
+        .consonant-Card-title {
+            margin-bottom: 16px;
+        }
+
+        .consonant-Card-text {
+            font-size: 18px;
+            line-height: 27px;
+            max-height: none;
+            -webkit-line-clamp: none;
+        }
+    }
+}
