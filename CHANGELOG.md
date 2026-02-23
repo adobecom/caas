@@ -1,5 +1,12 @@
 
 
+# [0.43.0](https://github.com/adobecom/caas/compare/0.42.13...0.43.0) (2026-02-23)
+
+
+### Features
+
+* **mwpw-185210:** adds a new editorial style card ([#395](https://github.com/adobecom/caas/issues/395)) ([ebaaf6d](https://github.com/adobecom/caas/commit/ebaaf6db982d628b6eca44ea10c6f8a86ed9f05a))
+
 ## [0.42.13](https://github.com/adobecom/caas/compare/0.42.12...0.42.13) (2026-02-19)
 
 ## [0.42.12](https://github.com/adobecom/caas/compare/0.42.11...0.42.12) (2026-02-18)
