@@ -1,5 +1,12 @@
 
 
+## [0.43.2](https://github.com/adobecom/caas/compare/0.43.1...0.43.2) (2026-02-25)
+
+
+### Bug Fixes
+
+* **mwpw-000:** prevent release notes from being wiped by asset upload ([03da5d1](https://github.com/adobecom/caas/commit/03da5d116d5482c80c37849896440cc8448751e8))
+
 ## [0.43.1](https://github.com/adobecom/caas/compare/0.43.0...0.43.1) (2026-02-25)
 
 # [0.43.0](https://github.com/adobecom/caas/compare/0.42.13...0.43.0) (2026-02-23)
