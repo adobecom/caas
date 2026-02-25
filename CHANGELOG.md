@@ -1,5 +1,145 @@
 
 
+## [0.43.1](https://github.com/adobecom/caas/compare/0.43.0...0.43.1) (2026-02-25)
+
+# [0.43.0](https://github.com/adobecom/caas/compare/0.42.13...0.43.0) (2026-02-23)
+
+
+### Features
+
+* **mwpw-185210:** adds a new editorial style card ([#395](https://github.com/adobecom/caas/issues/395)) ([ebaaf6d](https://github.com/adobecom/caas/commit/ebaaf6db982d628b6eca44ea10c6f8a86ed9f05a))
+
+## [0.42.13](https://github.com/adobecom/caas/compare/0.42.12...0.42.13) (2026-02-19)
+
+## [0.42.12](https://github.com/adobecom/caas/compare/0.42.11...0.42.12) (2026-02-18)
+
+## [0.42.11](https://github.com/adobecom/caas/compare/0.42.10...0.42.11) (2026-02-17)
+
+## [0.42.10](https://github.com/adobecom/caas/compare/0.42.9...0.42.10) (2026-02-13)
+
+## [0.42.9](https://github.com/adobecom/caas/compare/0.42.8...0.42.9) (2026-02-13)
+
+## [0.42.8](https://github.com/adobecom/caas/compare/0.42.7...0.42.8) (2026-02-13)
+
+## [0.42.7](https://github.com/adobecom/caas/compare/0.42.6...0.42.7) (2026-02-10)
+
+
+### Bug Fixes
+
+* **mwpw-177104:** fixes cropping content when zooming in ([#384](https://github.com/adobecom/caas/issues/384)) ([2ca2216](https://github.com/adobecom/caas/commit/2ca22168ae9e87de3620822722d282964c09fb57))
+
+## [0.42.6](https://github.com/adobecom/caas/compare/0.42.5...0.42.6) (2026-02-05)
+
+
+### Bug Fixes
+
+* **mwpw-187446:** make initReact constructible ([#391](https://github.com/adobecom/caas/issues/391)) ([d21c9e6](https://github.com/adobecom/caas/commit/d21c9e6492915351b26cc8dcdc9e72b56243c829))
+
+## [0.42.5](https://github.com/adobecom/caas/compare/0.42.4...0.42.5) (2026-02-04)
+
+## [0.42.4](https://github.com/adobecom/caas/compare/0.42.3...0.42.4) (2026-02-04)
+
+## [0.42.3](https://github.com/adobecom/caas/compare/0.42.2...0.42.3) (2026-01-30)
+
+
+### Bug Fixes
+
+* **mwpw-183491:** fixes modern carousel nav controls in mobile ([#388](https://github.com/adobecom/caas/issues/388)) ([c6ab4e8](https://github.com/adobecom/caas/commit/c6ab4e8eaf063b5a1d6a5b06883f758d669be7bb))
+
+## [0.42.2](https://github.com/adobecom/caas/compare/0.42.1...0.42.2) (2026-01-30)
+
+
+### Bug Fixes
+
+* stabilize lighthouse CI with dedicated test page ([#389](https://github.com/adobecom/caas/issues/389)) ([08cefe4](https://github.com/adobecom/caas/commit/08cefe406c5f87b28225f96d51daffc8d5b3f17a))
+
+## [0.42.1](https://github.com/adobecom/caas/compare/0.42.0...0.42.1) (2026-01-29)
+
+# [0.42.0](https://github.com/adobecom/caas/compare/0.41.25...0.42.0) (2026-01-21)
+
+
+### Features
+
+* **mwpw-183491:** implements modern carousel style ([#365](https://github.com/adobecom/caas/issues/365)) ([ff97956](https://github.com/adobecom/caas/commit/ff97956b2bd40e620330f4b9b77f698a357e5578))
+
+## [0.41.25](https://github.com/adobecom/caas/compare/0.41.24...0.41.25) (2026-01-21)
+
+
+### Reverts
+
+* Revert "adding proposal" ([eb72721](https://github.com/adobecom/caas/commit/eb727215fdb787df5bfb2621d399307419629063))
+
+## [0.41.24](https://github.com/adobecom/caas/compare/0.41.23...0.41.24) (2026-01-21)
+
+
+### Bug Fixes
+
+* optimize LCP with static + dynamic image preload ([1fe96ed](https://github.com/adobecom/caas/commit/1fe96edb51ba7cd970d6cfccc6f55dae5adbc30b))
+
+## [0.41.23](https://github.com/adobecom/caas/compare/0.41.22...0.41.23) (2026-01-15)
+
+
+### Bug Fixes
+
+* skip JIRA ticket check for Dependabot PRs ([d205c10](https://github.com/adobecom/caas/commit/d205c103da4f94f67e72a49885a886f3679eda8f))
+
+## [0.41.22](https://github.com/adobecom/caas/compare/0.41.21...0.41.22) (2026-01-15)
+
+## [0.41.21](https://github.com/adobecom/caas/compare/0.41.20...0.41.21) (2026-01-13)
+
+
+### Performance Improvements
+
+* remove IE 11 support and reduce bundle by 92.52 KB ([aaf4749](https://github.com/adobecom/caas/commit/aaf47491f9cabcfc22984691d9c4a08ea2b07943))
+
+## [0.41.20](https://github.com/adobecom/caas/compare/0.41.19...0.41.20) (2026-01-07)
+
+
+### Bug Fixes
+
+* **mwpw-185283:** remove test console.log from production build ([30f41b3](https://github.com/adobecom/caas/commit/30f41b3f30b724230360c8de1bb7d06e10cd3b38))
+
+## [0.41.19](https://github.com/adobecom/caas/compare/0.41.18...0.41.19) (2025-12-09)
+
+## [0.41.18](https://github.com/adobecom/caas/compare/0.41.17...0.41.18) (2025-12-01)
+
+
+### Bug Fixes
+
+* **mwpw-177245:** adds heading level to filters heading ([#362](https://github.com/adobecom/caas/issues/362)) ([5734a0b](https://github.com/adobecom/caas/commit/5734a0b7edbb3e318bc14e8399ee1e1984542e79))
+
+## [0.41.17](https://github.com/adobecom/caas/compare/0.41.16...0.41.17) (2025-11-24)
+
+
+### Bug Fixes
+
+* **mwpw-183864:** removes extra 83.3 percent css rules ([#361](https://github.com/adobecom/caas/issues/361)) ([431e802](https://github.com/adobecom/caas/commit/431e80250c782701d2750cff93b93bcb15c3d42f))
+
+## [0.41.16](https://github.com/adobecom/caas/compare/0.41.15...0.41.16) (2025-11-20)
+
+
+### Bug Fixes
+
+* **mwpw-177138:** adds focus ring to filters ([#359](https://github.com/adobecom/caas/issues/359)) ([b13ab9c](https://github.com/adobecom/caas/commit/b13ab9c4b4b29956654df3a547cec3b9b7805e74))
+
+## [0.41.15](https://github.com/adobecom/caas/compare/0.41.14...0.41.15) (2025-11-20)
+
+
+### Bug Fixes
+
+* **mwpw-177233:** status message for search and filters announced ([4598316](https://github.com/adobecom/caas/commit/4598316b87c4ecfccf0439d56ee161164ae7b2f4))
+
+## [0.41.14](https://github.com/adobecom/caas/compare/0.41.13...0.41.14) (2025-11-18)
+
+## [0.41.13](https://github.com/adobecom/caas/compare/0.41.12...0.41.13) (2025-11-18)
+
+## [0.41.12](https://github.com/adobecom/caas/compare/0.41.11...0.41.12) (2025-11-17)
+
+
+### Bug Fixes
+
+* **mwpw-79208:** fixes carousel width ([#355](https://github.com/adobecom/caas/issues/355)) ([3babdda](https://github.com/adobecom/caas/commit/3babdda8bbaf0fe2bf8a06c5dfaff6c5055402bf))
+
 ## [0.41.11](https://github.com/adobecom/caas/compare/0.41.10...0.41.11) (2025-11-13)
 
 

@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import classNames from 'classnames';
 import { shape } from 'prop-types';
-import 'whatwg-fetch';
+// import 'whatwg-fetch'; // Removed: fetch is native in modern browsers
 import { logLana } from '../Helpers/lana';
 import Popup from '../Sort/Popup';
 import Search from '../Search/Search';
@@ -20,6 +20,7 @@ import {
     sanitizeEventFilter,
     getTransitions,
     removeMarkDown,
+    preloadFirstCardImage,
 } from '../Helpers/general';
 import { configType } from '../types/config';
 import CardsCarousel from '../CardsCarousel/CardsCarousel';
@@ -160,6 +161,10 @@ const Container = (props) => {
     const partialLoadWithBackgroundFetch = getConfig('collection', 'partialLoadWithBackgroundFetch.enabled');
     const partialLoadCount = getConfig('collection', 'partialLoadWithBackgroundFetch.partialLoadCount');
     const renderOverlay = getConfig('collection', 'useOverlayLinks');
+    const animationStyle = getConfig('pagination', 'animationStyle');
+    const isModernCarousel = animationStyle?.toLowerCase().includes('modern');
+    const isLightCarousel = animationStyle?.toLowerCase().includes('light');
+
 
     /**
      **** Constants ****
@@ -915,6 +920,10 @@ const Container = (props) => {
                         }
                     }
 
+                    // Preload first card image to improve LCP
+                    // Injects preload before React renders, saving 50-300ms
+                    preloadFirstCardImage(processedCards);
+
                     setCards(processedCards);
 
                     // check if the current page is greater than the last page
@@ -1434,6 +1443,11 @@ const Container = (props) => {
         }
     }, []);
 
+    const carouselClass = classNames({
+        'modern-carousel': isModernCarousel,
+        'modern-carousel--light': isLightCarousel,
+    });
+
     return (
         <ConfigContext.Provider value={config}>
             <ExpandableContext.Provider value={{ value: openDropdown, setValue: setOpenDropdown }} >
@@ -1510,7 +1524,7 @@ const Container = (props) => {
                                 ref={filterItemRef} />
                         </div>
                         }
-                        <div className={`consonant-Wrapper-collection${isLoading ? ' is-loading' : ''}`}>
+                        <div className={`consonant-Wrapper-collection${isLoading ? ' is-loading' : ''} ${carouselClass}`}>
                             { isTopFilterPanel && isStandardContainer &&
                             <FiltersPanelTop
                                 filterPanelEnabled={filterPanelEnabled}
@@ -1606,6 +1620,7 @@ const Container = (props) => {
                                 resQty={gridCardLen}
                                 cards={gridCards}
                                 cardStyle={cardStyle}
+                                carouselType={isModernCarousel ? 'modern' : 'default'}
                                 role="tablist"
                                 onCardBookmark={handleCardBookmarking} />
                             }

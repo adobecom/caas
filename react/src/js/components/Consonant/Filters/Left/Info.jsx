@@ -175,7 +175,9 @@ const Info = forwardRef((props, ref) => {
                 {showTotalResults &&
                 <div
                     data-testid="consonant-FiltersInfo-results"
-                    className="consonant-FiltersInfo-results">
+                    className="consonant-FiltersInfo-results"
+                    role="status"
+                    aria-live="polite">
                     {totalResultsHtml}
                 </div>
                 }
