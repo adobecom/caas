@@ -212,6 +212,7 @@ const Container = (props) => {
     const [cardCount, setCardCount] = useState(0);
     const [isPartialLoad, setIsPartialLoad] = useState(false);
     const hashedRef = useRef(false);
+    const hashedCategoryMappingsRef = useRef(categoryMappings);
 
     const [, updateState] = React.useState();
     const scrollElementRef = useRef(null);
@@ -1067,8 +1068,27 @@ const Container = (props) => {
                         }
                         hideCtaTags = temp;
 
+                        // Hash categoryMappings keys and items so they match hashed filter IDs
+                        if (categoryMappings && Object.keys(categoryMappings).length > 0) {
+                            const hcm = {};
+                            Object.entries(categoryMappings).forEach(([catId, catData]) => {
+                                const [catParent, catChild] = getParentChild(catId);
+                                const hashedCatId = `${rollingHash(catParent, TAG_HASH_LENGTH)}/${rollingHash(catChild, TAG_HASH_LENGTH)}`;
+                                hcm[hashedCatId] = {
+                                    label: catData.label,
+                                    items: catData.items.map((itemId) => {
+                                        const [itemParent, itemChild] = getParentChild(itemId);
+                                        return `${rollingHash(itemParent, TAG_HASH_LENGTH)}/${rollingHash(itemChild, TAG_HASH_LENGTH)}`;
+                                    }),
+                                };
+                            });
+                            hashedCategoryMappingsRef.current = hcm;
+                        }
+
                         // Re-initialize filters with hashed IDs and apply category transformations
-                        const hashedTransformedFilters = transformFiltersWithCategories(authoredFilters, categoryMappings);
+                        const hashedTransformedFilters = transformFiltersWithCategories(
+                            authoredFilters, hashedCategoryMappingsRef.current,
+                        );
                         const hashedFinalFilters = hashedTransformedFilters.map(filterGroup => ({
                             ...filterGroup,
                             opened: DESKTOP_SCREEN_SIZE ? filterGroup.openedOnLoad : false,
@@ -1405,7 +1425,7 @@ const Container = (props) => {
      * Expand group/category filters to their child filters
      * @type {Array}
      */
-    const expandedFilterIds = expandGroupFiltersToChildren(activeFilterIds, categoryMappings);
+    const expandedFilterIds = expandGroupFiltersToChildren(activeFilterIds, hashedCategoryMappingsRef.current);
 
     /**
      * Array of filters panels (groupings) created by the author

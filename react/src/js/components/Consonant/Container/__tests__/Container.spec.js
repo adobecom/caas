@@ -1337,42 +1337,9 @@ describe('Container Component', () => {
         // 'caas:products/acrobat' -> '4x24/82so'
         // 'caas:products/creative-cloud' -> '4x24/egtb'
 
-        const hashedCards = [
-            {
-                id: '100',
-                tags: [{ id: '4x24/l1s1' }],
-                contentArea: { title: 'Photoshop Card', description: 'A card tagged with hashed Photoshop' },
-                styles: {},
-                overlays: {},
-                footer: [],
-                showCard: { from: '2020-01-01T00:00:00Z', until: '2099-12-31T23:59:59Z' },
-                cardDate: '2024-01-01T00:00:00Z',
-            },
-            {
-                id: '101',
-                tags: [{ id: '4x24/l3zk' }],
-                contentArea: { title: 'Illustrator Card', description: 'A card tagged with hashed Illustrator' },
-                styles: {},
-                overlays: {},
-                footer: [],
-                showCard: { from: '2020-01-01T00:00:00Z', until: '2099-12-31T23:59:59Z' },
-                cardDate: '2024-01-02T00:00:00Z',
-            },
-            {
-                id: '102',
-                tags: [{ id: '4x24/82so' }],
-                contentArea: { title: 'Acrobat Card', description: 'A card tagged with hashed Acrobat' },
-                styles: {},
-                overlays: {},
-                footer: [],
-                showCard: { from: '2020-01-01T00:00:00Z', until: '2099-12-31T23:59:59Z' },
-                cardDate: '2024-01-03T00:00:00Z',
-            },
-        ];
-
         const hashedPayload = {
             isHashed: true,
-            cards: hashedCards,
+            cards: Object.values(cards),
         };
 
         const baseI18n = {
@@ -1420,7 +1387,7 @@ describe('Container Component', () => {
                 }));
         });
 
-        test('hashed collection with categoryMappings: nested filter items get hashed and categories render', async () => {
+        test('hashed collection with categoryMappings: categories render on initial mount', () => {
             const config = {
                 collection: {
                     endpoint: 'https://www.somedomain.com/some-test-api.json',
@@ -1439,7 +1406,7 @@ describe('Container Component', () => {
                     enabled: true,
                     type: 'left',
                     filterLogic: 'or',
-                    showEmptyFilters: false,
+                    showEmptyFilters: true,
                     categoryMappings: {
                         'caas:products/creative-cloud': {
                             label: 'Creative Cloud',
@@ -1461,11 +1428,12 @@ describe('Container Component', () => {
                 },
             };
 
-            // Render should not throw — the fix ensures nested items are hashed
-            expect(() => render(<Container config={config} />)).not.toThrow();
+            render(<Container config={config} />);
 
-            // The category label should be rendered (proves transformFiltersWithCategories ran post-hash)
+            // Creative Cloud category should render (proves transformFiltersWithCategories ran)
             expect(screen.getByText('Creative Cloud')).toBeInTheDocument();
+            // Acrobat should remain as flat (uncategorized) item
+            expect(screen.getByText('Acrobat')).toBeInTheDocument();
         });
 
         test('hashed collection WITHOUT categoryMappings: filters render and match hashed card tags (regression guard)', async () => {

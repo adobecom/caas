@@ -737,6 +737,69 @@ describe('utils/Helpers', () => {
         });
     });
 
+    describe('transformFiltersWithCategories with hashed IDs (post-hash scenario)', () => {
+        test('should group items when both filter IDs and categoryMappings are hashed', () => {
+            // Simulates what Container does AFTER hashing:
+            // Filter item IDs are hashed AND categoryMappings keys/items are hashed
+            // Pre-computed hashes: caas:products -> 4x24, photoshop -> l1s1, illustrator -> l3zk,
+            // creative-cloud -> egtb, acrobat -> 82so
+            const hashedFilters = [
+                {
+                    group: 'Products',
+                    id: '4x24',
+                    items: [
+                        { label: 'Photoshop', id: '4x24/l1s1' },
+                        { label: 'Illustrator', id: '4x24/l3zk' },
+                        { label: 'Acrobat', id: '4x24/82so' },
+                    ],
+                },
+            ];
+            const hashedCategoryMappings = {
+                '4x24/egtb': {
+                    label: 'Creative Cloud',
+                    items: ['4x24/l1s1', '4x24/l3zk'],
+                },
+            };
+            const result = transformFiltersWithCategories(hashedFilters, hashedCategoryMappings);
+            // Creative Cloud category should be created with Photoshop and Illustrator nested
+            expect(result[0].items[0].isCategory).toBe(true);
+            expect(result[0].items[0].label).toBe('Creative Cloud');
+            expect(result[0].items[0].id).toBe('4x24/egtb');
+            expect(result[0].items[0].items).toHaveLength(2);
+            expect(result[0].items[0].items[0].label).toBe('Photoshop');
+            expect(result[0].items[0].items[1].label).toBe('Illustrator');
+            // Acrobat should remain flat
+            expect(result[0].items[1].label).toBe('Acrobat');
+            expect(result[0].items[1].isCategory).toBeUndefined();
+        });
+
+        test('should fail to group when filter IDs are hashed but categoryMappings are raw (the bug)', () => {
+            // This test documents what happens WITHOUT the fix:
+            // Filter IDs are hashed but categoryMappings remain raw → no grouping
+            const hashedFilters = [
+                {
+                    group: 'Products',
+                    id: '4x24',
+                    items: [
+                        { label: 'Photoshop', id: '4x24/l1s1' },
+                        { label: 'Illustrator', id: '4x24/l3zk' },
+                        { label: 'Acrobat', id: '4x24/82so' },
+                    ],
+                },
+            ];
+            const rawCategoryMappings = {
+                'caas:products/creative-cloud': {
+                    label: 'Creative Cloud',
+                    items: ['caas:products/photoshop', 'caas:products/illustrator'],
+                },
+            };
+            const result = transformFiltersWithCategories(hashedFilters, rawCategoryMappings);
+            // With raw mappings + hashed IDs, no items match → all remain flat (the bug)
+            expect(result[0].items.every(i => !i.isCategory)).toBe(true);
+            expect(result[0].items).toHaveLength(3);
+        });
+    });
+
     describe('getActiveFilterIds with nested category items', () => {
         test('should return category ID when category is selected (not its children)', () => {
             const filters = [
