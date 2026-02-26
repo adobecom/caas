@@ -69,6 +69,7 @@ import {
     getUpdatedCardBookmarkData,
     transformFiltersWithCategories,
     expandGroupFiltersToChildren,
+    getGroupedFilterSelections,
 } from '../Helpers/Helpers';
 
 
@@ -1428,6 +1429,13 @@ const Container = (props) => {
     const expandedFilterIds = expandGroupFiltersToChildren(activeFilterIds, hashedCategoryMappingsRef.current);
 
     /**
+     * Grouped filter selections — preserves category boundaries so that
+     * AND/XOR logic applies between user selections, not within a category expansion.
+     * @type {Array<Array<string>>}
+     */
+    const groupedFilterSelections = getGroupedFilterSelections(activeFilterIds, hashedCategoryMappingsRef.current);
+
+    /**
      * Array of filters panels (groupings) created by the author
      * @type {Array}
      */
@@ -1456,7 +1464,7 @@ const Container = (props) => {
         .sortCards(sortOption, sanitizedEventFilter, featuredCards, hideCtaIds, isFirstLoad)
         .keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks)
         .keepCardsWithinDateRange()
-        .filterCards(expandedFilterIds, activePanels, filterLogic, FILTER_TYPES, currCategories)
+        .filterCards(expandedFilterIds, activePanels, filterLogic, FILTER_TYPES, currCategories, groupedFilterSelections)
         .truncateList(totalCardLimit)
         .searchCards(removeMarkDown(searchQuery), searchFields, cardStyle)
         .removeCards(inclusionIds);

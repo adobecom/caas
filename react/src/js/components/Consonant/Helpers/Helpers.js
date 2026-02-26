@@ -149,6 +149,30 @@ export const expandGroupFiltersToChildren = (activeFilterIds, categoryMappings =
 };
 
 /**
+ * Groups active filter selections preserving category boundaries.
+ * Each user selection becomes one group: a category expands to an array of its
+ * children (matched with OR), while an individual item is a single-element array.
+ * This allows AND/XOR logic to apply *between* distinct user selections, not
+ * within a single category expansion.
+ *
+ * @param {Array} activeFilterIds - All selected filter IDs (may include group IDs)
+ * @param {Object} categoryMappings - Mapping of group IDs to their child IDs
+ * @returns {Array<Array<string>>} - Array of filter groups
+ */
+export const getGroupedFilterSelections = (activeFilterIds, categoryMappings = {}) => {
+    if (!categoryMappings || Object.keys(categoryMappings).length === 0) {
+        return activeFilterIds.map(id => [id]);
+    }
+
+    return activeFilterIds.map((filterId) => {
+        if (categoryMappings[filterId]) {
+            return [...categoryMappings[filterId].items];
+        }
+        return [filterId];
+    });
+};
+
+/**
  * Helper method to dermine whether author chose XOR or AND type filtering
  * @param {String} filterType - Filter used in collection
  * @param {Object} filterTypes - All possible filters
@@ -213,10 +237,12 @@ const checkEventTiming = (card, timing) => {
  * @param {Array} activePanels - Active filters panels selected by user
  * @param {String} filterType - Filter used in collection
  * @param {Object} filterTypes - All possible filters
+ * @param {Array} categories - Category filter prefixes
+ * @param {Array<Array<string>>} filterGroups - Grouped filter selections for AND/XOR
  * @returns {Array} - All cards that match filter options
  */
 // eslint-disable-next-line max-len
-export const getFilteredCards = (cards, activeFilters, activePanels, filterType, filterTypes, categories) => {
+export const getFilteredCards = (cards, activeFilters, activePanels, filterType, filterTypes, categories, filterGroups) => {
     const activeFiltersSet = new Set(activeFilters);
     const timingSet = intersection(activeFiltersSet, new Set([
         EVENT_TIMING_IDS.LIVE,
@@ -268,6 +294,15 @@ export const getFilteredCards = (cards, activeFilters, activePanels, filterType,
         const tagIds = new Set(card.tags.map(tag => tag.id));
 
         if (usingXorAndFilter) {
+            // When filterGroups are provided (from category expansion), check that
+            // the card matches at least one ID from each group. This ensures
+            // category expansions use OR within the group, while AND/XOR applies
+            // between distinct user selections.
+            if (filterGroups && filterGroups.length > 0) {
+                return filterGroups.every(
+                    group => group.some(id => tagIds.has(id)),
+                );
+            }
             return isSuperset(tagIds, activeFiltersSet);
         } else if (usingOrFilter && activePanels.size < 2) {
             return intersection(tagIds, activeFiltersSet).size;

@@ -31,6 +31,7 @@ import {
     sanitizeStr,
     getActivePanels,
     expandGroupFiltersToChildren,
+    getGroupedFilterSelections,
     transformFiltersWithCategories,
 } from '../Helpers';
 
@@ -894,6 +895,183 @@ describe('utils/Helpers', () => {
             ];
             const result = getActiveFilterIds(filters);
             expect(result).toEqual([]);
+        });
+    });
+    describe('getGroupedFilterSelections', () => {
+        test('should return single-element arrays when no categoryMappings', () => {
+            const activeFilterIds = ['caas:products/photoshop', 'caas:products/illustrator'];
+            const result = getGroupedFilterSelections(activeFilterIds);
+            expect(result).toEqual([
+                ['caas:products/photoshop'],
+                ['caas:products/illustrator'],
+            ]);
+        });
+
+        test('should return single-element arrays when categoryMappings is empty', () => {
+            const activeFilterIds = ['caas:products/photoshop'];
+            const result = getGroupedFilterSelections(activeFilterIds, {});
+            expect(result).toEqual([['caas:products/photoshop']]);
+        });
+
+        test('should expand category to group of children', () => {
+            const activeFilterIds = ['caas:products/creative-cloud'];
+            const categoryMappings = {
+                'caas:products/creative-cloud': {
+                    label: 'Creative Cloud',
+                    items: ['caas:products/photoshop', 'caas:products/illustrator'],
+                },
+            };
+            const result = getGroupedFilterSelections(activeFilterIds, categoryMappings);
+            expect(result).toEqual([
+                ['caas:products/photoshop', 'caas:products/illustrator'],
+            ]);
+        });
+
+        test('should keep non-category items as single-element groups', () => {
+            const activeFilterIds = ['caas:products/photoshop', 'caas:products/creative-cloud'];
+            const categoryMappings = {
+                'caas:products/creative-cloud': {
+                    label: 'Creative Cloud',
+                    items: ['caas:products/illustrator', 'caas:products/indesign'],
+                },
+            };
+            const result = getGroupedFilterSelections(activeFilterIds, categoryMappings);
+            expect(result).toEqual([
+                ['caas:products/photoshop'],
+                ['caas:products/illustrator', 'caas:products/indesign'],
+            ]);
+        });
+
+        test('should handle multiple categories', () => {
+            const activeFilterIds = ['caas:products/creative-cloud', 'caas:products/document-cloud'];
+            const categoryMappings = {
+                'caas:products/creative-cloud': {
+                    label: 'Creative Cloud',
+                    items: ['caas:products/photoshop', 'caas:products/illustrator'],
+                },
+                'caas:products/document-cloud': {
+                    label: 'Document Cloud',
+                    items: ['caas:products/acrobat', 'caas:products/sign'],
+                },
+            };
+            const result = getGroupedFilterSelections(activeFilterIds, categoryMappings);
+            expect(result).toEqual([
+                ['caas:products/photoshop', 'caas:products/illustrator'],
+                ['caas:products/acrobat', 'caas:products/sign'],
+            ]);
+        });
+    });
+    describe('getFilteredCards with filterGroups (AND + categories)', () => {
+        const FILTER_TYPES = { AND: 'and', OR: 'or', XOR: 'xor' };
+
+        test('AND + category expansion: should match cards with ANY child in the group', () => {
+            const cards = [
+                { id: 1, tags: [{ id: 'caas:products/photoshop' }] },
+                { id: 2, tags: [{ id: 'caas:products/illustrator' }] },
+                { id: 3, tags: [{ id: 'caas:products/acrobat' }] },
+            ];
+            const activeFilters = ['caas:products/photoshop', 'caas:products/illustrator'];
+            const activePanels = new Set(['caas:products']);
+            const filterGroups = [
+                ['caas:products/photoshop', 'caas:products/illustrator'],
+            ];
+
+            const result = getFilteredCards(
+                cards, activeFilters, activePanels, 'and', FILTER_TYPES, null, filterGroups,
+            );
+            // Both PS and AI cards match because the group uses OR within
+            expect(result).toEqual([
+                { id: 1, tags: [{ id: 'caas:products/photoshop' }] },
+                { id: 2, tags: [{ id: 'caas:products/illustrator' }] },
+            ]);
+        });
+
+        test('AND + category expansion: without filterGroups falls back to isSuperset', () => {
+            const cards = [
+                { id: 1, tags: [{ id: 'caas:products/photoshop' }, { id: 'caas:products/illustrator' }] },
+                { id: 2, tags: [{ id: 'caas:products/photoshop' }] },
+            ];
+            const activeFilters = ['caas:products/photoshop', 'caas:products/illustrator'];
+            const activePanels = new Set(['caas:products']);
+
+            const result = getFilteredCards(
+                cards, activeFilters, activePanels, 'and', FILTER_TYPES, null,
+            );
+            // Without filterGroups, AND requires ALL (isSuperset) - only card 1 has both
+            expect(result).toEqual([
+                { id: 1, tags: [{ id: 'caas:products/photoshop' }, { id: 'caas:products/illustrator' }] },
+            ]);
+        });
+
+        test('AND + two categories: card must match at least one from EACH group', () => {
+            const cards = [
+                { id: 1, tags: [{ id: 'caas:products/photoshop' }, { id: 'caas:products/acrobat' }] },
+                { id: 2, tags: [{ id: 'caas:products/photoshop' }] },
+                { id: 3, tags: [{ id: 'caas:products/acrobat' }] },
+            ];
+            const activeFilters = [
+                'caas:products/photoshop', 'caas:products/illustrator',
+                'caas:products/acrobat', 'caas:products/sign',
+            ];
+            const activePanels = new Set(['caas:products']);
+            // Two groups: Creative Cloud [PS, AI] and Document Cloud [Acrobat, Sign]
+            const filterGroups = [
+                ['caas:products/photoshop', 'caas:products/illustrator'],
+                ['caas:products/acrobat', 'caas:products/sign'],
+            ];
+
+            const result = getFilteredCards(
+                cards, activeFilters, activePanels, 'and', FILTER_TYPES, null, filterGroups,
+            );
+            // Only card 1 matches both groups (PS from CC, Acrobat from DC)
+            expect(result).toEqual([
+                { id: 1, tags: [{ id: 'caas:products/photoshop' }, { id: 'caas:products/acrobat' }] },
+            ]);
+        });
+
+        test('AND + category + individual: card must match group AND individual item', () => {
+            const cards = [
+                { id: 1, tags: [{ id: 'caas:products/photoshop' }, { id: 'caas:products/workfront' }] },
+                { id: 2, tags: [{ id: 'caas:products/photoshop' }] },
+                { id: 3, tags: [{ id: 'caas:products/workfront' }] },
+            ];
+            const activeFilters = [
+                'caas:products/photoshop', 'caas:products/illustrator',
+                'caas:products/workfront',
+            ];
+            const activePanels = new Set(['caas:products']);
+            // CC category group + individual Workfront selection
+            const filterGroups = [
+                ['caas:products/photoshop', 'caas:products/illustrator'],
+                ['caas:products/workfront'],
+            ];
+
+            const result = getFilteredCards(
+                cards, activeFilters, activePanels, 'and', FILTER_TYPES, null, filterGroups,
+            );
+            // Only card 1 matches CC (has PS) AND Workfront
+            expect(result).toEqual([
+                { id: 1, tags: [{ id: 'caas:products/photoshop' }, { id: 'caas:products/workfront' }] },
+            ]);
+        });
+
+        test('XOR + category expansion: should also use group-aware logic', () => {
+            const cards = [
+                { id: 1, tags: [{ id: 'caas:products/photoshop' }] },
+                { id: 2, tags: [{ id: 'caas:products/acrobat' }] },
+            ];
+            const activeFilters = ['caas:products/photoshop', 'caas:products/illustrator'];
+            const activePanels = new Set(['caas:products']);
+            const filterGroups = [
+                ['caas:products/photoshop', 'caas:products/illustrator'],
+            ];
+
+            const result = getFilteredCards(
+                cards, activeFilters, activePanels, 'xor', FILTER_TYPES, null, filterGroups,
+            );
+            expect(result).toEqual([
+                { id: 1, tags: [{ id: 'caas:products/photoshop' }] },
+            ]);
         });
     });
 });
