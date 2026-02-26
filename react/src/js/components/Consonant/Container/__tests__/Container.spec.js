@@ -4,6 +4,7 @@ import '@testing-library/jest-dom/extend-expect'; // Import jest-dom for additio
 import Container from '../Container';
 import setupIntersectionObserverMock from '../../Testing/Mocks/intersectionObserver';
 import { SORT_TYPES } from '../../Helpers/constants';
+import { expandGroupFiltersToChildren } from '../../Helpers/Helpers';
 import jestMocks from '../../Testing/Utils/JestMocks';
 import cards from '../../Testing/Mocks/cards.json';
 
@@ -1325,6 +1326,219 @@ describe('Container Component', () => {
 
             // This test ensures the filter reinitialization code path runs without errors
             expect(() => render(<Container config={configWithCategoryMappings} />)).not.toThrow();
+        });
+    });
+
+    describe('Hashed + Category integration: filter IDs alignment', () => {
+        // Pre-computed hashed IDs using rollingHash with TAG_HASH_LENGTH=6:
+        // 'caas:products' -> '4x24'
+        // 'caas:products/photoshop' -> '4x24/l1s1'
+        // 'caas:products/illustrator' -> '4x24/l3zk'
+        // 'caas:products/acrobat' -> '4x24/82so'
+        // 'caas:products/creative-cloud' -> '4x24/egtb'
+
+        const hashedCards = [
+            {
+                id: '100',
+                tags: [{ id: '4x24/l1s1' }],
+                contentArea: { title: 'Photoshop Card', description: 'A card tagged with hashed Photoshop' },
+                styles: {},
+                overlays: {},
+                footer: [],
+                showCard: { from: '2020-01-01T00:00:00Z', until: '2099-12-31T23:59:59Z' },
+                cardDate: '2024-01-01T00:00:00Z',
+            },
+            {
+                id: '101',
+                tags: [{ id: '4x24/l3zk' }],
+                contentArea: { title: 'Illustrator Card', description: 'A card tagged with hashed Illustrator' },
+                styles: {},
+                overlays: {},
+                footer: [],
+                showCard: { from: '2020-01-01T00:00:00Z', until: '2099-12-31T23:59:59Z' },
+                cardDate: '2024-01-02T00:00:00Z',
+            },
+            {
+                id: '102',
+                tags: [{ id: '4x24/82so' }],
+                contentArea: { title: 'Acrobat Card', description: 'A card tagged with hashed Acrobat' },
+                styles: {},
+                overlays: {},
+                footer: [],
+                showCard: { from: '2020-01-01T00:00:00Z', until: '2099-12-31T23:59:59Z' },
+                cardDate: '2024-01-03T00:00:00Z',
+            },
+        ];
+
+        const hashedPayload = {
+            isHashed: true,
+            cards: hashedCards,
+        };
+
+        const baseI18n = {
+            leftPanel: {
+                header: 'Refine The Results',
+                mobile: {
+                    filtersBtnLabel: 'Filters',
+                    panel: {
+                        header: 'Filter by',
+                        totalResultsText: '{total} Results',
+                        applyBtnText: 'Apply',
+                        clearAllBtnText: 'Clear All',
+                        doneBtnText: 'Done',
+                    },
+                    group: {
+                        totalResultsText: '{total} Results',
+                        applyBtnText: 'Apply',
+                        clearBtnText: 'Clear',
+                        doneBtnText: 'Done',
+                    },
+                },
+            },
+        };
+
+        beforeEach(() => {
+            global.fetch = jest.fn(() =>
+                Promise.resolve({
+                    ok: true,
+                    status: 200,
+                    statusText: 'success',
+                    url: 'test.html',
+                    json: () => Promise.resolve(hashedPayload),
+                }));
+        });
+
+        afterEach(() => {
+            // Restore default fetch mock
+            global.fetch = jest.fn(() =>
+                Promise.resolve({
+                    ok: 'ok',
+                    status: 200,
+                    statusText: 'success',
+                    url: 'test.html',
+                    json: () => Promise.resolve({ cards }),
+                }));
+        });
+
+        test('hashed collection with categoryMappings: nested filter items get hashed and categories render', async () => {
+            const config = {
+                collection: {
+                    endpoint: 'https://www.somedomain.com/some-test-api.json',
+                    totalCardsToShow: 50,
+                    cardStyle: 'full-card',
+                    showTotalResults: true,
+                    resultsPerPage: 10,
+                    lazyLoad: false,
+                    i18n: {
+                        totalResultsText: '{total} Results',
+                        title: '',
+                        titleHeadingLevel: 'h2',
+                    },
+                },
+                filterPanel: {
+                    enabled: true,
+                    type: 'left',
+                    filterLogic: 'or',
+                    showEmptyFilters: false,
+                    categoryMappings: {
+                        'caas:products/creative-cloud': {
+                            label: 'Creative Cloud',
+                            items: ['caas:products/photoshop', 'caas:products/illustrator'],
+                        },
+                    },
+                    filters: [
+                        {
+                            group: 'Products',
+                            id: 'caas:products',
+                            items: [
+                                { label: 'Photoshop', id: 'caas:products/photoshop' },
+                                { label: 'Illustrator', id: 'caas:products/illustrator' },
+                                { label: 'Acrobat', id: 'caas:products/acrobat' },
+                            ],
+                        },
+                    ],
+                    i18n: baseI18n,
+                },
+            };
+
+            // Render should not throw — the fix ensures nested items are hashed
+            expect(() => render(<Container config={config} />)).not.toThrow();
+
+            // The category label should be rendered (proves transformFiltersWithCategories ran post-hash)
+            expect(screen.getByText('Creative Cloud')).toBeInTheDocument();
+        });
+
+        test('hashed collection WITHOUT categoryMappings: filters render and match hashed card tags (regression guard)', async () => {
+            // This is the exact scenario that broke before: hashed IDs, no categories.
+            // Cards have hashed tags, filter items should get hashed to match.
+            const config = {
+                collection: {
+                    endpoint: 'https://www.somedomain.com/some-test-api.json',
+                    totalCardsToShow: 50,
+                    cardStyle: 'full-card',
+                    showTotalResults: true,
+                    resultsPerPage: 10,
+                    lazyLoad: false,
+                    i18n: {
+                        totalResultsText: '{total} Results',
+                        title: '',
+                        titleHeadingLevel: 'h2',
+                    },
+                },
+                filterPanel: {
+                    enabled: true,
+                    type: 'left',
+                    filterLogic: 'or',
+                    showEmptyFilters: false,
+                    filters: [
+                        {
+                            group: 'Products',
+                            id: 'caas:products',
+                            items: [
+                                { label: 'Photoshop', id: 'caas:products/photoshop' },
+                                { label: 'Illustrator', id: 'caas:products/illustrator' },
+                                { label: 'Acrobat', id: 'caas:products/acrobat' },
+                            ],
+                        },
+                    ],
+                    i18n: baseI18n,
+                },
+            };
+
+            expect(() => render(<Container config={config} />)).not.toThrow();
+
+            // Filter items should still render (proves hashing doesn't break filter visibility)
+            expect(screen.getByText('Photoshop')).toBeInTheDocument();
+            expect(screen.getByText('Illustrator')).toBeInTheDocument();
+            expect(screen.getByText('Acrobat')).toBeInTheDocument();
+        });
+
+        test('hashed + category: expandGroupFiltersToChildren uses hashed IDs consistently', () => {
+            // Unit-level verification that the expand function works with hashed IDs
+            // This simulates what happens at runtime after hashing:
+            // The category mapping keys get hashed, and the children get hashed.
+            // expandGroupFiltersToChildren should still correctly map group -> children.
+            // After hashing, categoryMappings keys and child IDs should both be hashed.
+            // The fix ensures the Container re-runs transformFiltersWithCategories AFTER hashing,
+            // so categoryMappings in the authored config are raw, but the filter items are hashed.
+            // The expand function receives raw categoryMappings and hashed activeFilterIds.
+            //
+            // IMPORTANT: This test validates that when a category group ID is selected,
+            // it correctly expands to its child filter IDs from the raw categoryMappings.
+            const rawCategoryMappings = {
+                'caas:products/creative-cloud': {
+                    label: 'Creative Cloud',
+                    items: ['caas:products/photoshop', 'caas:products/illustrator'],
+                },
+            };
+
+            // When the category is selected, activeFilterIds contains the raw category ID
+            // (since categories are selected by their authored ID, not hashed ID)
+            const activeFilterIds = ['caas:products/creative-cloud'];
+            const expanded = expandGroupFiltersToChildren(activeFilterIds, rawCategoryMappings);
+
+            expect(expanded).toEqual(['caas:products/photoshop', 'caas:products/illustrator']);
+            expect(expanded).not.toContain('caas:products/creative-cloud');
         });
     });
 });

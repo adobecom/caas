@@ -736,4 +736,101 @@ describe('utils/Helpers', () => {
             expect(result[0].icon).toBe('some-icon');
         });
     });
+
+    describe('getActiveFilterIds with nested category items', () => {
+        test('should return category ID when category is selected (not its children)', () => {
+            const filters = [
+                {
+                    id: 'caas:products',
+                    items: [
+                        {
+                            id: 'caas:products/creative-cloud',
+                            isCategory: true,
+                            selected: true,
+                            items: [
+                                { id: 'caas:products/photoshop', selected: false },
+                                { id: 'caas:products/illustrator', selected: false },
+                            ],
+                        },
+                    ],
+                },
+            ];
+            const result = getActiveFilterIds(filters);
+            expect(result).toEqual(['caas:products/creative-cloud']);
+        });
+
+        test('should return nested child IDs when children are selected but category is not', () => {
+            const filters = [
+                {
+                    id: 'caas:products',
+                    items: [
+                        {
+                            id: 'caas:products/creative-cloud',
+                            isCategory: true,
+                            selected: false,
+                            items: [
+                                { id: 'caas:products/photoshop', selected: true },
+                                { id: 'caas:products/illustrator', selected: false },
+                            ],
+                        },
+                    ],
+                },
+            ];
+            const result = getActiveFilterIds(filters);
+            expect(result).toEqual(['caas:products/photoshop']);
+        });
+
+        test('should return mixed results from categories and flat items', () => {
+            const filters = [
+                {
+                    id: 'caas:products',
+                    items: [
+                        {
+                            id: 'caas:products/creative-cloud',
+                            isCategory: true,
+                            selected: false,
+                            items: [
+                                { id: 'caas:products/photoshop', selected: true },
+                                { id: 'caas:products/illustrator', selected: true },
+                            ],
+                        },
+                        {
+                            id: 'caas:products/workfront',
+                            selected: true,
+                        },
+                    ],
+                },
+            ];
+            const result = getActiveFilterIds(filters);
+            expect(result).toEqual([
+                'caas:products/photoshop',
+                'caas:products/illustrator',
+                'caas:products/workfront',
+            ]);
+        });
+
+        test('should return empty array when no items are selected (nested or flat)', () => {
+            const filters = [
+                {
+                    id: 'caas:products',
+                    items: [
+                        {
+                            id: 'caas:products/creative-cloud',
+                            isCategory: true,
+                            selected: false,
+                            items: [
+                                { id: 'caas:products/photoshop', selected: false },
+                            ],
+                        },
+                        {
+                            id: 'caas:products/acrobat',
+                            selected: false,
+                        },
+                    ],
+                },
+            ];
+            const result = getActiveFilterIds(filters);
+            expect(result).toEqual([]);
+        });
+    });
 });
