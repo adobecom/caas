@@ -119,7 +119,7 @@
     "puppeteer": "^23.6.1",
     "react-axe": "^3.5.4",
     "react-test-renderer": "^16.12.0",
-    "regenerator-runtime": "^0.11.1",
+    "regenerator-runtime": "^0.14.1",
     "release-it": "^15.11.0",
     "reset-css": "^2.2.1",
     "s3-deploy": "^1.4.0",
