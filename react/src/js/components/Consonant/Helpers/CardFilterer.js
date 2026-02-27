@@ -10,6 +10,8 @@ import {
     getFeaturedSort,
     getTitleAscSort,
     getTitleDescSort,
+    getLocalFirstSort,
+    getLocalLastSort,
     getRandomSort,
     getFeaturedCards,
 } from './Helpers';
@@ -150,6 +152,12 @@ export default class CardFilterer {
                 break;
             case SORT_TYPES.TITLEDESC:
                 this.filteredCards = getTitleDescSort(this.filteredCards);
+                break;
+            case SORT_TYPES.LOCALFIRST:
+                this.filteredCards = getLocalFirstSort(this.filteredCards);
+                break;
+            case SORT_TYPES.LOCALLAST:
+                this.filteredCards = getLocalLastSort(this.filteredCards);
                 break;
             case SORT_TYPES.RANDOM:
                 this.filteredCards = getRandomSort(

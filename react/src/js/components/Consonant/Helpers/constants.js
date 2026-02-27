@@ -74,6 +74,8 @@ export const SORT_TYPES = {
     FEATURED: 'featured',
     TITLEASC: 'titleasc',
     TITLEDESC: 'titledesc',
+    LOCALFIRST: 'localfirst',
+    LOCALLAST: 'locallast',
     RANDOM: 'random',
 };
 

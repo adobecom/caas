@@ -190,6 +190,54 @@ tags: ['event1'] },
             const { filteredCards } = cardFilterer.sortCards({ sort: 'random' });
             expect(filteredCards).toHaveLength(2); // Assuming sampleSize is 2
         });
+
+        test('Local First Sort – sorts by country ascending', () => {
+            const cards = [
+                { id: 1, country: 'US' },
+                { id: 2, country: 'DE' },
+                { id: 3, country: 'FR' },
+            ];
+            const cardFilterer = new CardFilterer(cards);
+            const { filteredCards } = cardFilterer.sortCards({ sort: 'localfirst' });
+            const countryOrder = filteredCards.map(c => c.country);
+            expect(countryOrder).toEqual(['DE', 'FR', 'US']);
+        });
+
+        test('Local First Sort – all same country preserves cards', () => {
+            const cards = [
+                { id: 1, country: 'US' },
+                { id: 2, country: 'US' },
+                { id: 3, country: 'US' },
+            ];
+            const cardFilterer = new CardFilterer(cards);
+            const { filteredCards } = cardFilterer.sortCards({ sort: 'localfirst' });
+            expect(filteredCards).toHaveLength(3);
+            expect(filteredCards.map(c => c.id)).toEqual(expect.arrayContaining([1, 2, 3]));
+        });
+
+        test('Local Last Sort – sorts by country descending', () => {
+            const cards = [
+                { id: 1, country: 'US' },
+                { id: 2, country: 'DE' },
+                { id: 3, country: 'FR' },
+            ];
+            const cardFilterer = new CardFilterer(cards);
+            const { filteredCards } = cardFilterer.sortCards({ sort: 'locallast' });
+            const countryOrder = filteredCards.map(c => c.country);
+            expect(countryOrder).toEqual(['US', 'FR', 'DE']);
+        });
+
+        test('Local First / Local Last – single card unchanged', () => {
+            const cards = [{ id: 1, country: 'US' }];
+            const cardFiltererFirst = new CardFilterer([...cards]);
+            const cardFiltererLast = new CardFilterer([...cards]);
+            const { filteredCards: first } = cardFiltererFirst.sortCards({ sort: 'localfirst' });
+            const { filteredCards: last } = cardFiltererLast.sortCards({ sort: 'locallast' });
+            expect(first).toHaveLength(1);
+            expect(last).toHaveLength(1);
+            expect(first[0].id).toBe(1);
+            expect(last[0].id).toBe(1);
+        });
     });
     describe('keepCardsWithinDateRange', () => {
         PROPS.keepCardsWithinDateRange.forEach(({ cards, expectedValue }) => {

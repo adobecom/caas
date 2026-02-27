@@ -449,6 +449,18 @@ export const getModifiedDescSort = cards => cards.sort((cardOne, cardTwo) => {
 export const getModifiedAscSort = cards => getModifiedDescSort(cards).reverse();
 
 /**
+ * 
+ * @param {*} cards 
+ * @returns 
+ */
+export const getLocalFirstSort = cards => cards.sort((cardOne, cardTwo) => {
+    const cardOneLocale = getByPath(cardOne, 'country');
+    const cardTwoLocale = getByPath(cardTwo, 'country');
+    return cardOneLocale.localeCompare(cardTwoLocale);
+});
+
+export const getLocalLastSort = cards => getLocalFirstSort(cards).reverse();
+/**
  * Returns all cards Featured sorted
  * This just returns the original cards returned by Chimera IO
  * Chimera IO is responsible for handling featured sort
