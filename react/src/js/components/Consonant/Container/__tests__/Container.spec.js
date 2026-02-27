@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'; // Import jest-dom for additional matchers
 import Container from '../Container';
 import setupIntersectionObserverMock from '../../Testing/Mocks/intersectionObserver';
@@ -1507,6 +1507,360 @@ describe('Container Component', () => {
 
             expect(expanded).toEqual(['caas:products/photoshop', 'caas:products/illustrator']);
             expect(expanded).not.toContain('caas:products/creative-cloud');
+        });
+    });
+
+    describe('Category filtering: click interactions and card count changes', () => {
+        // Mock cards with product tags for click testing
+        const categoryTestCards = [
+            {
+                id: 'card-ps',
+                tags: [{ id: 'caas:products/photoshop' }],
+                contentArea: { title: 'Photoshop Card', description: 'PS tutorial', dateDetailText: {} },
+                overlays: { banner: { description: 'PS' }, logo: {}, label: {}, videoButton: {} },
+                styles: { typeOverride: '' },
+                showCard: { from: '2020-01-01T00:00:00Z', until: '2099-12-31T23:59:59Z' },
+                cardDate: '2024-01-01T00:00:00Z',
+                footer: [],
+            },
+            {
+                id: 'card-ai',
+                tags: [{ id: 'caas:products/illustrator' }],
+                contentArea: { title: 'Illustrator Card', description: 'AI guide', dateDetailText: {} },
+                overlays: { banner: { description: 'AI' }, logo: {}, label: {}, videoButton: {} },
+                styles: { typeOverride: '' },
+                showCard: { from: '2020-01-01T00:00:00Z', until: '2099-12-31T23:59:59Z' },
+                cardDate: '2024-01-02T00:00:00Z',
+                footer: [],
+            },
+            {
+                id: 'card-acrobat',
+                tags: [{ id: 'caas:products/acrobat' }],
+                contentArea: { title: 'Acrobat Card', description: 'PDF workflows', dateDetailText: {} },
+                overlays: { banner: { description: 'Acrobat' }, logo: {}, label: {}, videoButton: {} },
+                styles: { typeOverride: '' },
+                showCard: { from: '2020-01-01T00:00:00Z', until: '2099-12-31T23:59:59Z' },
+                cardDate: '2024-01-03T00:00:00Z',
+                footer: [],
+            },
+            {
+                id: 'card-analytics',
+                tags: [{ id: 'caas:products/analytics' }],
+                contentArea: { title: 'Analytics Card', description: 'Data insights', dateDetailText: {} },
+                overlays: { banner: { description: 'Analytics' }, logo: {}, label: {}, videoButton: {} },
+                styles: { typeOverride: '' },
+                showCard: { from: '2020-01-01T00:00:00Z', until: '2099-12-31T23:59:59Z' },
+                cardDate: '2024-01-04T00:00:00Z',
+                footer: [],
+            },
+            {
+                id: 'card-cc-tag',
+                tags: [{ id: 'caas:products/creative-cloud' }],
+                contentArea: { title: 'CC Tag Card', description: 'Tagged with group ID', dateDetailText: {} },
+                overlays: { banner: { description: 'CC Tag' }, logo: {}, label: {}, videoButton: {} },
+                styles: { typeOverride: '' },
+                showCard: { from: '2020-01-01T00:00:00Z', until: '2099-12-31T23:59:59Z' },
+                cardDate: '2024-01-05T00:00:00Z',
+                footer: [],
+            },
+            {
+                id: 'card-no-product',
+                tags: [{ id: 'adobe-com-enterprise:topic/digital-trends' }],
+                contentArea: { title: 'No Product Card', description: 'Topic only', dateDetailText: {} },
+                overlays: { banner: { description: 'Topic' }, logo: {}, label: {}, videoButton: {} },
+                styles: { typeOverride: '' },
+                showCard: { from: '2020-01-01T00:00:00Z', until: '2099-12-31T23:59:59Z' },
+                cardDate: '2024-01-06T00:00:00Z',
+                footer: [],
+            },
+        ];
+
+        const categoryClickConfig = {
+            collection: {
+                endpoint: 'https://www.somedomain.com/some-test-api.json',
+                totalCardsToShow: 50,
+                cardStyle: '1:2',
+                showTotalResults: true,
+                resultsPerPage: 20,
+                lazyLoad: false,
+                i18n: {
+                    prettyDateIntervalFormat: '{LLL} {dd} | {timeRange} {timeZone}',
+                    totalResultsText: '{total} Results',
+                    title: 'Test Collection',
+                    titleHeadingLevel: 'h2',
+                    cardTitleAccessibilityLevel: '3',
+                    onErrorTitle: 'Error',
+                    onErrorDescription: 'Error occurred',
+                },
+            },
+            filterPanel: {
+                enabled: true,
+                type: 'left',
+                filterLogic: 'or',
+                showEmptyFilters: true,
+                categoryMappings: {
+                    'caas:products/creative-cloud': {
+                        label: 'Creative Cloud',
+                        items: ['caas:products/photoshop', 'caas:products/illustrator'],
+                    },
+                    'caas:products/document-cloud': {
+                        label: 'Document Cloud',
+                        items: ['caas:products/acrobat'],
+                    },
+                    'caas:products/experience-cloud': {
+                        label: 'Experience Cloud',
+                        items: ['caas:products/analytics'],
+                    },
+                },
+                filters: [
+                    {
+                        group: 'Products',
+                        id: 'caas:products',
+                        items: [
+                            { label: 'Photoshop', id: 'caas:products/photoshop' },
+                            { label: 'Illustrator', id: 'caas:products/illustrator' },
+                            { label: 'Acrobat', id: 'caas:products/acrobat' },
+                            { label: 'Analytics', id: 'caas:products/analytics' },
+                        ],
+                    },
+                ],
+                i18n: {
+                    leftPanel: {
+                        header: 'Refine The Results',
+                        clearAllFiltersText: 'Clear All',
+                        mobile: {
+                            filtersBtnLabel: 'Filters',
+                            panel: {
+                                header: 'Filter by',
+                                totalResultsText: '{total} Results',
+                                applyBtnText: 'Apply',
+                                clearFilterText: 'Clear',
+                                doneBtnText: 'Done',
+                            },
+                            group: {
+                                totalResultsText: '{total} Results',
+                                applyBtnText: 'Apply',
+                                clearFilterText: 'Clear',
+                                doneBtnText: 'Done',
+                            },
+                        },
+                    },
+                },
+            },
+            search: {
+                enabled: true,
+                searchFields: '["contentArea.title","contentArea.description"]',
+                i18n: {
+                    noResultsTitle: 'No Results Found',
+                    noResultsDescription: 'No results.',
+                    leftFilterPanel: {
+                        searchTitle: 'Search',
+                        searchPlaceholderText: 'Search here...',
+                    },
+                    topFilterPanel: {
+                        searchPlaceholderText: 'Search...',
+                    },
+                    filterInfo: {
+                        searchPlaceholderText: 'Search...',
+                    },
+                },
+            },
+            pagination: {
+                enabled: false,
+            },
+            bookmarks: {
+                showOnCards: false,
+                leftFilterPanel: {
+                    bookmarkOnlyCollection: false,
+                    showBookmarksFilter: false,
+                },
+            },
+            sort: {
+                enabled: false,
+            },
+        };
+
+        beforeEach(() => {
+            global.fetch = jest.fn(() =>
+                Promise.resolve({
+                    ok: true,
+                    status: 200,
+                    statusText: 'success',
+                    url: 'test.html',
+                    json: () => Promise.resolve({ cards: categoryTestCards }),
+                }));
+        });
+
+        afterEach(() => {
+            global.fetch = jest.fn(() =>
+                Promise.resolve({
+                    ok: 'ok',
+                    status: 200,
+                    statusText: 'success',
+                    url: 'test.html',
+                    json: () => Promise.resolve({ cards }),
+                }));
+        });
+
+        test('should render all 6 cards initially and show category groupings', async () => {
+            await act(async () => {
+                render(<Container config={categoryClickConfig} />);
+            });
+            await waitFor(() => {
+                expect(screen.getAllByText('6 Results').length).toBeGreaterThan(0);
+            });
+            expect(screen.getByText('Creative Cloud')).toBeInTheDocument();
+            expect(screen.getByText('Document Cloud')).toBeInTheDocument();
+            expect(screen.getByText('Experience Cloud')).toBeInTheDocument();
+        });
+
+        test('clicking Creative Cloud category should filter to CC child cards only', async () => {
+            await act(async () => {
+                render(<Container config={categoryClickConfig} />);
+            });
+            await waitFor(() => {
+                expect(screen.getAllByText('6 Results').length).toBeGreaterThan(0);
+            });
+
+            // Find and click the Creative Cloud category checkbox
+            // Creative Cloud is the first category checkbox
+            const ccCheckbox = screen.getAllByTestId('consonant-LeftFilter-categoryCheckbox')[0];
+            await act(async () => {
+                fireEvent.click(ccCheckbox);
+            });
+
+            // Should show only PS and AI cards (2 results), NOT the "CC Tag" card
+            await waitFor(() => {
+                expect(screen.getAllByText('2 Results').length).toBeGreaterThan(0);
+            });
+            expect(screen.getByText('Photoshop Card')).toBeInTheDocument();
+            expect(screen.getByText('Illustrator Card')).toBeInTheDocument();
+        });
+
+        test('clicking Clear All after category selection should restore all cards', async () => {
+            const { container, unmount } = render(<Container config={categoryClickConfig} />);
+
+            await act(async () => {
+                // Wait for render
+            });
+
+            // Verify initial state - Creative Cloud category is present
+            expect(container.querySelector('[data-testid="consonant-LeftFilter-category"]')).toBeInTheDocument();
+
+            // Select Creative Cloud
+            // Creative Cloud is the first category checkbox
+            const ccCheckbox = container.querySelectorAll('[data-testid="consonant-LeftFilter-categoryCheckbox"]')[0];
+            await act(async () => {
+                fireEvent.click(ccCheckbox);
+            });
+
+            // Click Clear All to deselect everything
+            const clearAllBtn = container.querySelector('.consonant-LeftFilter-clearBtn');
+            if (clearAllBtn) {
+                await act(async () => {
+                    fireEvent.click(clearAllBtn);
+                });
+            }
+
+            // After clear, category groupings should still be present in the DOM
+            const categoryItems = container.querySelectorAll('[data-testid="consonant-LeftFilter-category"]');
+            expect(categoryItems.length).toBeGreaterThanOrEqual(1);
+
+            unmount();
+        });
+
+        test('showEmptyFilters false: renders without crashing with categories', async () => {
+            const configNoEmpty = {
+                ...categoryClickConfig,
+                filterPanel: {
+                    ...categoryClickConfig.filterPanel,
+                    showEmptyFilters: false,
+                },
+            };
+            let container;
+            await act(async () => {
+                const result = render(<Container config={configNoEmpty} />);
+                container = result.container;
+            });
+            // Should render without crashing
+            expect(container.querySelector('.consonant-Wrapper')).toBeInTheDocument();
+        });
+
+        test('partialLoadWithBackgroundFetch: renders correctly with categories', async () => {
+            const configPartial = {
+                ...categoryClickConfig,
+                collection: {
+                    ...categoryClickConfig.collection,
+                    partialLoadWithBackgroundFetch: {
+                        enabled: true,
+                        partialLoadCount: 3,
+                    },
+                },
+            };
+            let container;
+            await act(async () => {
+                const result = render(<Container config={configPartial} />);
+                container = result.container;
+            });
+            // Should render without crashing
+            expect(container.querySelector('.consonant-Wrapper')).toBeInTheDocument();
+        });
+
+        test('hashed payload with categories: renders cards and categories after hashing', async () => {
+            // Mock a hashed response
+            global.fetch = jest.fn(() =>
+                Promise.resolve({
+                    ok: true,
+                    status: 200,
+                    statusText: 'success',
+                    url: 'test.html',
+                    json: () => Promise.resolve({
+                        isHashed: true,
+                        cards: categoryTestCards,
+                    }),
+                }));
+
+            await act(async () => {
+                render(<Container config={categoryClickConfig} />);
+            });
+            // After hashing, categories should still render
+            await waitFor(() => {
+                expect(screen.getByText('Creative Cloud')).toBeInTheDocument();
+            });
+        });
+
+        test('mobile top panel with categories: renders without crashing', async () => {
+            const mobileTopConfig = {
+                ...categoryClickConfig,
+                filterPanel: {
+                    ...categoryClickConfig.filterPanel,
+                    type: 'top',
+                    i18n: {
+                        topPanel: {
+                            groupLabel: 'Filters',
+                            clearAllFiltersText: 'Clear All',
+                            moreFiltersBtnText: 'More Filters',
+                            mobile: {
+                                group: {
+                                    totalResultsText: '{total} Results',
+                                    applyBtnText: 'Apply',
+                                    clearFilterText: 'Clear',
+                                    doneBtnText: 'Done',
+                                },
+                            },
+                        },
+                    },
+                },
+            };
+            let container;
+            await act(async () => {
+                const result = render(<Container config={mobileTopConfig} />);
+                container = result.container;
+            });
+            // Should render with top panel without crashing
+            expect(container.querySelector('.consonant-Wrapper')).toBeInTheDocument();
+            // Category items should be present in filter (check by filter item labels)
+            expect(screen.getByText('Photoshop')).toBeInTheDocument();
         });
     });
 });

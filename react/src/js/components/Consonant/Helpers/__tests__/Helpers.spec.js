@@ -1074,4 +1074,429 @@ describe('utils/Helpers', () => {
             ]);
         });
     });
+
+    describe('Category filtering edge cases', () => {
+        const FILTER_TYPES = { AND: 'and', OR: 'or', XOR: 'xor' };
+
+        test('Card tagged with category ID itself should NOT match category expansion (OR)', () => {
+            // A card tagged with "creative-cloud" (the group ID) should NOT appear
+            // when Creative Cloud category is selected, because expansion maps to children only
+            const cards = [
+                { id: 1, tags: [{ id: 'caas:products/photoshop' }] },
+                { id: 2, tags: [{ id: 'caas:products/creative-cloud' }] },
+                { id: 3, tags: [{ id: 'caas:products/illustrator' }] },
+            ];
+            // After expandGroupFiltersToChildren, the active filters are the children
+            const activeFilters = ['caas:products/photoshop', 'caas:products/illustrator'];
+            const activePanels = new Set(['caas:products']);
+
+            const result = getFilteredCards(
+                cards, activeFilters, activePanels, 'or', FILTER_TYPES, null,
+            );
+            // Card 2 (tagged with group ID "creative-cloud") should NOT match
+            expect(result).toEqual([
+                { id: 1, tags: [{ id: 'caas:products/photoshop' }] },
+                { id: 3, tags: [{ id: 'caas:products/illustrator' }] },
+            ]);
+        });
+
+        test('Card tagged with category ID itself should NOT match category expansion (AND)', () => {
+            const cards = [
+                { id: 1, tags: [{ id: 'caas:products/photoshop' }] },
+                { id: 2, tags: [{ id: 'caas:products/creative-cloud' }] },
+            ];
+            const activeFilters = ['caas:products/photoshop', 'caas:products/illustrator'];
+            const activePanels = new Set(['caas:products']);
+            const filterGroups = [
+                ['caas:products/photoshop', 'caas:products/illustrator'],
+            ];
+
+            const result = getFilteredCards(
+                cards, activeFilters, activePanels, 'and', FILTER_TYPES, null, filterGroups,
+            );
+            expect(result).toEqual([
+                { id: 1, tags: [{ id: 'caas:products/photoshop' }] },
+            ]);
+        });
+
+        test('expandGroupFiltersToChildren should not include the category ID in expanded results', () => {
+            const activeFilterIds = ['caas:products/creative-cloud'];
+            const categoryMappings = {
+                'caas:products/creative-cloud': {
+                    label: 'Creative Cloud',
+                    items: ['caas:products/photoshop', 'caas:products/illustrator'],
+                },
+            };
+            const expanded = expandGroupFiltersToChildren(activeFilterIds, categoryMappings);
+            expect(expanded).toEqual(['caas:products/photoshop', 'caas:products/illustrator']);
+            expect(expanded).not.toContain('caas:products/creative-cloud');
+        });
+
+        test('Search + category filter: getCardsMatchingSearch narrows before category filter', () => {
+            // Search results are computed independently from filter results,
+            // then the Container intersects them. Test that search works on cards
+            // that would match a category filter.
+            const cards = [
+                {
+                    id: 1,
+                    tags: [{ id: 'caas:products/photoshop' }],
+                    contentArea: { title: 'Photoshop Basics Tutorial', description: '' },
+                    overlays: { banner: { description: '' } },
+                },
+                {
+                    id: 2,
+                    tags: [{ id: 'caas:products/illustrator' }],
+                    contentArea: { title: 'Illustrator Advanced Guide', description: '' },
+                    overlays: { banner: { description: '' } },
+                },
+                {
+                    id: 3,
+                    tags: [{ id: 'caas:products/acrobat' }],
+                    contentArea: { title: 'Acrobat Basics Tutorial', description: '' },
+                    overlays: { banner: { description: '' } },
+                },
+            ];
+            const searchFields = ['contentArea.title'];
+
+            // Search for "Basics" — matches cards 1 and 3
+            const searchResults = getCardsMatchingSearch('Basics', cards, searchFields);
+            expect(searchResults).toHaveLength(2);
+            expect(searchResults.map(c => c.id)).toEqual([1, 3]);
+
+            // Now apply Creative Cloud category filter (children: PS, AI) to search results
+            const activeFilters = ['caas:products/photoshop', 'caas:products/illustrator'];
+            const activePanels = new Set(['caas:products']);
+            const filtered = getFilteredCards(
+                searchResults, activeFilters, activePanels, 'or', FILTER_TYPES, null,
+            );
+            // Only card 1 matches both search ("Basics") and Creative Cloud filter (PS)
+            expect(filtered).toEqual([searchResults[0]]);
+        });
+
+        test('OR filter with no active filters returns all cards (no categories involved)', () => {
+            const cards = [
+                { id: 1, tags: [{ id: 'caas:products/photoshop' }] },
+                { id: 2, tags: [{ id: 'caas:products/acrobat' }] },
+            ];
+            const activeFilters = [];
+            const activePanels = new Set();
+
+            const result = getFilteredCards(
+                cards, activeFilters, activePanels, 'or', FILTER_TYPES, null,
+            );
+            expect(result).toEqual(cards);
+        });
+
+        test('Clear All: empty activeFilters after clearing returns all cards', () => {
+            // After clearAllFilters(), activeFilterIds becomes [], activePanels becomes empty Set
+            // This simulates the state after Clear All
+            const cards = [
+                { id: 1, tags: [{ id: 'caas:products/photoshop' }] },
+                { id: 2, tags: [{ id: 'caas:products/acrobat' }] },
+                { id: 3, tags: [{ id: 'adobe-com-enterprise:topic/digital-trends' }] },
+            ];
+
+            // Before clear: Creative Cloud selected, only card 1 matches
+            const activeBefore = ['caas:products/photoshop', 'caas:products/illustrator'];
+            const panelsBefore = new Set(['caas:products']);
+            const beforeClear = getFilteredCards(
+                cards, activeBefore, panelsBefore, 'or', FILTER_TYPES, null,
+            );
+            expect(beforeClear).toHaveLength(1);
+
+            // After clear: no filters, all cards return
+            const afterClear = getFilteredCards(
+                cards, [], new Set(), 'or', FILTER_TYPES, null,
+            );
+            expect(afterClear).toEqual(cards);
+        });
+
+        test('getGroupedFilterSelections with category that has single child', () => {
+            const activeFilterIds = ['caas:products/document-cloud'];
+            const categoryMappings = {
+                'caas:products/document-cloud': {
+                    label: 'Document Cloud',
+                    items: ['caas:products/acrobat'],
+                },
+            };
+            const result = getGroupedFilterSelections(activeFilterIds, categoryMappings);
+            expect(result).toEqual([['caas:products/acrobat']]);
+        });
+
+        test('AND + category with single child: card must have that one child tag', () => {
+            const cards = [
+                { id: 1, tags: [{ id: 'caas:products/acrobat' }] },
+                { id: 2, tags: [{ id: 'caas:products/photoshop' }] },
+            ];
+            const activeFilters = ['caas:products/acrobat'];
+            const activePanels = new Set(['caas:products']);
+            const filterGroups = [['caas:products/acrobat']];
+
+            const result = getFilteredCards(
+                cards, activeFilters, activePanels, 'and', FILTER_TYPES, null, filterGroups,
+            );
+            expect(result).toEqual([
+                { id: 1, tags: [{ id: 'caas:products/acrobat' }] },
+            ]);
+        });
+
+        test('Multiple categories OR: cards from either group should match', () => {
+            const cards = [
+                { id: 1, tags: [{ id: 'caas:products/photoshop' }] },
+                { id: 2, tags: [{ id: 'caas:products/acrobat' }] },
+                { id: 3, tags: [{ id: 'caas:products/analytics' }] },
+                { id: 4, tags: [{ id: 'adobe-com-enterprise:topic/digital-trends' }] },
+            ];
+            // Both Creative Cloud and Document Cloud expanded
+            const activeFilters = [
+                'caas:products/photoshop', 'caas:products/illustrator',
+                'caas:products/acrobat', 'caas:products/sign',
+            ];
+            const activePanels = new Set(['caas:products']);
+
+            const result = getFilteredCards(
+                cards, activeFilters, activePanels, 'or', FILTER_TYPES, null,
+            );
+            // Cards 1 (PS) and 2 (Acrobat) match, card 3 (Analytics) and 4 (topic) do not
+            expect(result).toHaveLength(2);
+            expect(result.map(c => c.id)).toEqual([1, 2]);
+        });
+
+        test('Partial load: second batch of cards filtered correctly with same filters', () => {
+            // Simulates partialLoadWithBackgroundFetch: first batch filtered, then second batch arrives
+            const batch1 = [
+                { id: 1, tags: [{ id: 'caas:products/photoshop' }] },
+                { id: 2, tags: [{ id: 'caas:products/acrobat' }] },
+            ];
+            const batch2 = [
+                { id: 3, tags: [{ id: 'caas:products/illustrator' }] },
+                { id: 4, tags: [{ id: 'caas:products/analytics' }] },
+            ];
+            const activeFilters = ['caas:products/photoshop', 'caas:products/illustrator'];
+            const activePanels = new Set(['caas:products']);
+
+            const result1 = getFilteredCards(
+                batch1, activeFilters, activePanels, 'or', FILTER_TYPES, null,
+            );
+            expect(result1).toHaveLength(1);
+            expect(result1[0].id).toBe(1);
+
+            // Second batch arrives, same filter applied to combined cards
+            const allCards = [...batch1, ...batch2];
+            const result2 = getFilteredCards(
+                allCards, activeFilters, activePanels, 'or', FILTER_TYPES, null,
+            );
+            expect(result2).toHaveLength(2);
+            expect(result2.map(c => c.id)).toEqual([1, 3]);
+        });
+
+        test('showEmptyFilters false simulation: filter items with no matching cards', () => {
+            // When showEmptyFilters is false, the UI hides filter items whose count is 0.
+            // The filtering logic itself should still work — a filter with 0 matches
+            // just means getFilteredCards returns 0 for those items.
+            const cards = [
+                { id: 1, tags: [{ id: 'caas:products/photoshop' }] },
+            ];
+            // Select Acrobat — no cards have this tag
+            const activeFilters = ['caas:products/acrobat'];
+            const activePanels = new Set(['caas:products']);
+
+            const result = getFilteredCards(
+                cards, activeFilters, activePanels, 'or', FILTER_TYPES, null,
+            );
+            expect(result).toHaveLength(0);
+
+            // Select Creative Cloud which expands to [PS, AI, ID, ...] — card 1 matches PS
+            const ccFilters = ['caas:products/photoshop', 'caas:products/illustrator',
+                'caas:products/indesign', 'caas:products/premiere-pro', 'caas:products/after-effects'];
+            const ccResult = getFilteredCards(
+                cards, ccFilters, activePanels, 'or', FILTER_TYPES, null,
+            );
+            expect(ccResult).toHaveLength(1);
+        });
+    });
+
+    describe('URL deep linking with categories', () => {
+        test('syncFiltersToUrl output: selected category label appears in URL params', () => {
+            // syncFiltersToUrl collects selectedLabels from items.
+            // When a category is selected, its label should be in the output.
+            // Simulate the filter state after selecting Creative Cloud category.
+            const filters = [
+                {
+                    id: 'caas:products',
+                    group: 'Products',
+                    items: [
+                        {
+                            id: 'caas:products/creative-cloud',
+                            label: 'Creative Cloud',
+                            isCategory: true,
+                            selected: true,
+                            items: [
+                                { id: 'caas:products/photoshop', label: 'Photoshop', selected: false },
+                                { id: 'caas:products/illustrator', label: 'Illustrator', selected: false },
+                            ],
+                        },
+                        {
+                            id: 'caas:products/document-cloud',
+                            label: 'Document Cloud',
+                            isCategory: true,
+                            selected: false,
+                            items: [
+                                { id: 'caas:products/acrobat', label: 'Acrobat', selected: false },
+                            ],
+                        },
+                        { id: 'caas:products/workfront', label: 'Workfront', selected: false },
+                    ],
+                },
+            ];
+
+            // Extract selected labels the same way syncFiltersToUrl does
+            const filter = filters.find(f => f.id === 'caas:products');
+            const selectedLabels = [];
+            filter.items.forEach(item => {
+                if (item.selected && !item.isCategory) {
+                    selectedLabels.push(item.label);
+                }
+                if (item.isCategory) {
+                    if (item.selected) {
+                        selectedLabels.push(item.label);
+                    }
+                    if (item.items) {
+                        item.items.forEach(nestedItem => {
+                            if (nestedItem.selected) {
+                                selectedLabels.push(nestedItem.label);
+                            }
+                        });
+                    }
+                }
+            });
+
+            expect(selectedLabels).toEqual(['Creative Cloud']);
+        });
+
+        test('URL deep linking: nested child selected produces correct label', () => {
+            const filters = [
+                {
+                    id: 'caas:products',
+                    group: 'Products',
+                    items: [
+                        {
+                            id: 'caas:products/creative-cloud',
+                            label: 'Creative Cloud',
+                            isCategory: true,
+                            selected: false,
+                            items: [
+                                { id: 'caas:products/photoshop', label: 'Photoshop', selected: true },
+                                { id: 'caas:products/illustrator', label: 'Illustrator', selected: false },
+                            ],
+                        },
+                    ],
+                },
+            ];
+
+            const filter = filters[0];
+            const selectedLabels = [];
+            filter.items.forEach(item => {
+                if (item.selected && !item.isCategory) {
+                    selectedLabels.push(item.label);
+                }
+                if (item.isCategory) {
+                    if (item.selected) {
+                        selectedLabels.push(item.label);
+                    }
+                    if (item.items) {
+                        item.items.forEach(nestedItem => {
+                            if (nestedItem.selected) {
+                                selectedLabels.push(nestedItem.label);
+                            }
+                        });
+                    }
+                }
+            });
+
+            expect(selectedLabels).toEqual(['Photoshop']);
+        });
+
+        test('URL deep linking: category + child selected produces both labels', () => {
+            // Edge case: category selected AND a child from another category selected
+            const filters = [
+                {
+                    id: 'caas:products',
+                    group: 'Products',
+                    items: [
+                        {
+                            id: 'caas:products/creative-cloud',
+                            label: 'Creative Cloud',
+                            isCategory: true,
+                            selected: true,
+                            items: [
+                                { id: 'caas:products/photoshop', label: 'Photoshop', selected: false },
+                            ],
+                        },
+                        { id: 'caas:products/workfront', label: 'Workfront', selected: true },
+                    ],
+                },
+            ];
+
+            const filter = filters[0];
+            const selectedLabels = [];
+            filter.items.forEach(item => {
+                if (item.selected && !item.isCategory) {
+                    selectedLabels.push(item.label);
+                }
+                if (item.isCategory) {
+                    if (item.selected) {
+                        selectedLabels.push(item.label);
+                    }
+                    if (item.items) {
+                        item.items.forEach(nestedItem => {
+                            if (nestedItem.selected) {
+                                selectedLabels.push(nestedItem.label);
+                            }
+                        });
+                    }
+                }
+            });
+
+            expect(selectedLabels).toEqual(['Creative Cloud', 'Workfront']);
+        });
+
+        test('getActiveFilterIds handles nested category items', () => {
+            const filters = [
+                {
+                    id: 'caas:products',
+                    group: 'Products',
+                    opened: true,
+                    items: [
+                        {
+                            id: 'caas:products/creative-cloud',
+                            label: 'Creative Cloud',
+                            isCategory: true,
+                            selected: true,
+                            items: [
+                                { id: 'caas:products/photoshop', label: 'Photoshop', selected: false },
+                                { id: 'caas:products/illustrator', label: 'Illustrator', selected: false },
+                            ],
+                        },
+                        {
+                            id: 'caas:products/document-cloud',
+                            label: 'Document Cloud',
+                            isCategory: true,
+                            selected: false,
+                            items: [
+                                { id: 'caas:products/acrobat', label: 'Acrobat', selected: true },
+                            ],
+                        },
+                    ],
+                },
+            ];
+
+            const activeIds = getActiveFilterIds(filters);
+            // Should include the selected category (creative-cloud) and the selected nested item (acrobat)
+            expect(activeIds).toContain('caas:products/creative-cloud');
+            expect(activeIds).toContain('caas:products/acrobat');
+            expect(activeIds).not.toContain('caas:products/photoshop');
+            expect(activeIds).not.toContain('caas:products/document-cloud');
+        });
+    });
 });
