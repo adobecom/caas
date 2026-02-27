@@ -1,0 +1,49 @@
+.consonant-CardsGrid {
+    .consonant-Card.blog-card {
+        .card-hover;
+        .card-hover-header;
+
+        min-height: auto;
+
+        .consonant-Card-header {
+            position: relative;
+            width: 100%;
+            height: @consonant-OneHalfCard-imgHeigh;
+            background-color: @consonantGray300;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+            background-size: cover;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            overflow: hidden;
+        }
+
+        .consonant-CardFooter {
+            padding-top: 0;
+
+            .consonant-CardFooter-cell--left {
+                font-size: 0.875rem;
+            }
+        }
+    }
+
+    &--4up {
+        .consonant-Card.blog-card {
+            height: auto;
+
+            .consonant-Card-header {
+                min-height: @consonant-CardsGrid-smallerCardImgOneHalfHeight;
+                max-height: @consonant-CardsGrid-smallerCardImgOneHalfHeight;
+            }
+        }
+    }
+
+    &--4up,
+    &--5up {
+        .consonant-Card.blog-card {
+            .consonant-Card-content {
+                padding: 16px 16px 20px;
+            }
+        }
+    }
+}
