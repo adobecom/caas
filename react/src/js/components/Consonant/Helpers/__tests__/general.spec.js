@@ -453,21 +453,21 @@ describe('utils/general', () => {
             preloadFirstCardImage(cards);
 
             const preloadLinks = document.querySelectorAll('link[rel="preload"]');
-            expect(preloadLinks.length).toBe(1);
+            expect(preloadLinks).toHaveLength(1);
         });
 
         test('should do nothing if cards array is empty', () => {
             preloadFirstCardImage([]);
 
             const preloadLinks = document.querySelectorAll('link[rel="preload"]');
-            expect(preloadLinks.length).toBe(0);
+            expect(preloadLinks).toHaveLength(0);
         });
 
         test('should do nothing if cards is null', () => {
             preloadFirstCardImage(null);
 
             const preloadLinks = document.querySelectorAll('link[rel="preload"]');
-            expect(preloadLinks.length).toBe(0);
+            expect(preloadLinks).toHaveLength(0);
         });
 
         test('should do nothing if first card has no image', () => {
@@ -478,7 +478,7 @@ describe('utils/general', () => {
             preloadFirstCardImage(cards);
 
             const preloadLinks = document.querySelectorAll('link[rel="preload"]');
-            expect(preloadLinks.length).toBe(0);
+            expect(preloadLinks).toHaveLength(0);
         });
 
         test('should do nothing if backgroundImage is not a string', () => {
@@ -491,7 +491,7 @@ describe('utils/general', () => {
             preloadFirstCardImage(cards);
 
             const preloadLinks = document.querySelectorAll('link[rel="preload"]');
-            expect(preloadLinks.length).toBe(0);
+            expect(preloadLinks).toHaveLength(0);
         });
     });
 });
