@@ -1,0 +1,314 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="robots" content="noodp" />
+
+    <meta name="template" content="" />
+    <meta name="description" content="CaaS Hashed + Categories Test" />
+
+    <!-- Load CSS asynchronously to remove render-blocking (saves ~1000ms) -->
+    <link rel="preload" href="./dist/app.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="./dependencies/typekit.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+
+    <noscript>
+        <link rel="stylesheet" href="./dist/app.css">
+        <link rel="stylesheet" href="./dependencies/typekit.css">
+    </noscript>
+    <title>CaaS Hashed + Categories Test</title>
+
+</head>
+
+<body class="page basicpage spectrum spectrum--lightest">
+
+    <div class="root responsivegrid">
+        <div class="aem-Grid aem-Grid--12 aem-Grid--default--12">
+            <div class="aem-Grid aem-Grid--12 aem-Grid--default--12 ">
+                <div class="position aem-GridColumn aem-GridColumn--default--12">
+                    <div id="root_content_position"
+                        class="dexter-Position mobile-place-static mobile-place-left mobile-place-top mobile-padding-top-0 mobile-padding-right-0 mobile-padding-bottom-0 mobile-padding-left-0 mobile-margin-top-0 mobile-margin-right-0 mobile-margin-bottom-0 mobile-margin-left-0 is-Editor-false"
+                        style="background-color: transparent; background-position: 50% 50%;">
+                        <div class="aem-Grid aem-Grid--12 aem-Grid--default--12 ">
+                            <div class="cardcollection aem-GridColumn aem-GridColumn--default--12">
+                                <section id="create-app" class="create-app consonant">
+                                    <div class="collection-Container  create-card-collection">
+                                        <div class="container create-card-collection__outer-wrapper">
+                                            <div id="someDivId">Please include the necessary clientlibs </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script type="text/javascript" src="./dist/main.min.js"></script>
+
+    <script type="text/javascript">
+        var config = {
+            collection: {
+                mode: "lightest",
+                reservoir: {
+                    sample: 10,
+                    poll: 100,
+                },
+                layout: {
+                    type: '3up',
+                    gutter: '4x',
+                    container: '1200MaxWidth',
+                },
+                lazyLoad: false,
+                button: {
+                  style: "call-to-action",
+                },
+                banner: {
+                    upcoming: { description: "Upcoming" },
+                    live: { description: "Live" },
+                    onDemand: { description: "On Demand" },
+                    register: { description: "Sign Up" }
+                },
+                resultsPerPage: '20',
+                endpoint: location.hostname === "localhost" ? "../../mock-json/test-group-filters-hashed.json" : "https://www.adobe.com/chimera-api/collection?originSelection=bacom&size=10",
+                totalCardsToShow: '55',
+                cardStyle: "1:2",
+                showTotalResults: 'true',
+                i18n: {
+                    prettyDateIntervalFormat: '{LLL} {dd} | {timeRange} {timeZone}',
+                    totalResultsText: '{total} Results',
+                    title: 'Hashed + Categories Test',
+                    titleHeadingLevel: 'h2',
+                    cardTitleAccessibilityLevel: '3',
+                    onErrorTitle: 'Sorry there was a system error.',
+                    onErrorDescription: 'Please try reloading the page or try coming back to the page another time.',
+                    lastModified: "Last modified {date}"
+                },
+                setCardBorders: "true",
+                useOverlayLinks: "false",
+                partialLoadWithBackgroundFetch: {
+                    enabled: true,
+                    partialLoadCount: 10,
+                }
+            },
+            featuredCards: [],
+            filterPanel: {
+                enabled: 'true',
+                type: 'left',
+                eventFilter: 'all',
+                showEmptyFilters: true,
+                filters: [
+                    {
+                        "group": "By Solution",
+                        "id": "adobe-com-enterprise:topic",
+                        "items": [
+                            { "label": "Business Continuity", "id": "adobe-com-enterprise:topic/business-continuity" },
+                            { "label": "Creativity and Design", "id": "adobe-com-enterprise:topic/creativity-design" },
+                            { "label": "Customer Intelligence", "id": "adobe-com-enterprise:topic/customer-intelligence" },
+                            { "label": "Data Management Platform", "id": "adobe-com-enterprise:topic/data-management-platform" },
+                            { "label": "Digital Foundation", "id": "adobe-com-enterprise:topic/digital-foundation" },
+                            { "label": "Digital Trends", "id": "adobe-com-enterprise:topic/digital-trends" },
+                            { "label": "Document Management", "id": "adobe-com-enterprise:topic/document-management" },
+                            { "label": "Marketing Automation", "id": "adobe-com-enterprise:topic/marketing-automation" },
+                            { "label": "Personalization", "id": "adobe-com-enterprise:topic/personalization" },
+                            { "label": "Stock", "id": "adobe-com-enterprise:topic/Stock" }
+                        ]
+                    },
+                    {
+                        "group": "Availability",
+                        "id": "adobe-com-enterprise:availability",
+                        "items": [
+                            { "label": "On-Demand", "id": "adobe-com-enterprise:availability/on-demand" },
+                            { "label": "Upcoming", "id": "adobe-com-enterprise:availability/upcoming" }
+                        ]
+                    },
+                    {
+                        "group": "Duration",
+                        "id": "adobe-com-enterprise:duration",
+                        "items": [
+                            { "label": "Long", "id": "adobe-com-enterprise:duration/long" },
+                            { "label": "Short", "id": "adobe-com-enterprise:duration/short" }
+                        ]
+                    },
+                    {
+                        "group": "Rating",
+                        "id": "adobe-com-enterprise:rating",
+                        "items": [
+                            { "label": "5", "id": "adobe-com-enterprise:rating/5" },
+                            { "label": "4", "id": "adobe-com-enterprise:rating/4" }
+                        ]
+                    },
+                    {
+                        "group": "Products",
+                        "id": "caas:products",
+                        "items": [
+                            { "label": "Photoshop", "id": "caas:products/photoshop" },
+                            { "label": "Illustrator", "id": "caas:products/illustrator" },
+                            { "label": "InDesign", "id": "caas:products/indesign" },
+                            { "label": "Premiere Pro", "id": "caas:products/premiere-pro" },
+                            { "label": "After Effects", "id": "caas:products/after-effects" },
+                            { "label": "Acrobat", "id": "caas:products/acrobat" },
+                            { "label": "Sign", "id": "caas:products/sign" },
+                            { "label": "Analytics", "id": "caas:products/analytics" },
+                            { "label": "Target", "id": "caas:products/target" },
+                            { "label": "Experience Manager", "id": "caas:products/experience-manager" },
+                            { "label": "Campaign", "id": "caas:products/campaign" },
+                            { "label": "Audience Manager", "id": "caas:products/audience-manager" },
+                            { "label": "Workfront", "id": "caas:products/workfront" },
+                            { "label": "Marketo", "id": "caas:products/marketo" }
+                        ]
+                    }
+                ],
+                filterLogic: 'or',
+                categoryMappings: {
+                    "caas:products/creative-cloud": {
+                        label: "Creative Cloud",
+                        items: [
+                            "caas:products/photoshop",
+                            "caas:products/illustrator",
+                            "caas:products/indesign",
+                            "caas:products/premiere-pro",
+                            "caas:products/after-effects"
+                        ]
+                    },
+                    "caas:products/document-cloud": {
+                        label: "Document Cloud",
+                        items: [
+                            "caas:products/acrobat",
+                            "caas:products/sign"
+                        ]
+                    },
+                    "caas:products/experience-cloud": {
+                        label: "Experience Cloud",
+                        items: [
+                            "caas:products/analytics",
+                            "caas:products/target",
+                            "caas:products/experience-manager",
+                            "caas:products/campaign",
+                            "caas:products/audience-manager"
+                        ]
+                    }
+                },
+                topPanel: {
+                    mobile: {
+                        blurFilters: true,
+                    }
+                },
+                i18n: {
+                    leftPanel: {
+                        header: 'My Favorites',
+                        clearAllFiltersText: 'Clear All',
+                        mobile: {
+                            filtersBtnLabel: 'Filters:',
+                            panel: {
+                                header: 'Filters',
+                                totalResultsText: '{total} Results',
+                                applyBtnText: 'Apply',
+                                clearFilterText: 'Clear',
+                                doneBtnText: 'Done',
+                            },
+                            group: {
+                                totalResultsText: '{total} Results',
+                                applyBtnText: 'Apply',
+                                clearFilterText: 'Clear Left',
+                                doneBtnText: 'Done',
+                            }
+                        }
+                    },
+                    topPanel: {
+                        groupLabel: 'Filters',
+                        clearAllFiltersText: 'Clear All Top',
+                        moreFiltersBtnText: 'More Filters: +',
+                        mobile: {
+                            group: {
+                                totalResultsText: '{total} Results',
+                                applyBtnText: 'Apply',
+                                clearFilterText: 'Clear Top',
+                                doneBtnText: 'Done',
+                            }
+                        }
+                    }
+                }
+            },
+            hideCtaIds: [''],
+            hideCtaTags: [''],
+            sort: {
+                enabled: 'true',
+                defaultSort: 'dateDesc',
+                options: '[{"label":"Title: (A-Z)","sort":"titleAsc"},{"label":"Title: (Z-A)","sort":"titleDesc"},{"label":"Date: (Oldest to newest)","sort":"dateAsc"},{"label":"Date: (Newest to oldest)","sort":"dateDesc"}]',
+            },
+            pagination: {
+                animationStyle: 'paged',
+                enabled: 'true',
+                type: 'loadMore',
+                loadMoreButton: {
+                  style: "primary",
+                  useThemeThree: "true",
+                },
+                i18n: {
+                    loadMore: {
+                        btnText: 'Load More',
+                        resultsQuantityText: 'Showing {start} of {end} cards',
+                    },
+                    paginator: {
+                        resultsQuantityText: '{start}-{end} of {total} results',
+                        prevLabel: 'Prev',
+                        nextLabel: 'Next',
+                    }
+                }
+            },
+            bookmarks: {
+                showOnCards: 'true',
+                leftFilterPanel: {
+                    bookmarkOnlyCollection: 'false',
+                    showBookmarksFilter: 'true',
+                    selectBookmarksIcon: '',
+                    unselectBookmarksIcon: '',
+                },
+                i18n: {
+                    leftFilterPanel: {
+                        filterTitle: 'My Favorites',
+                    }
+                }
+            },
+            search: {
+                enabled: 'true',
+                searchFields: '["contentArea.title","contentArea.description","overlays.banner.description"]',
+                i18n: {
+                    noResultsTitle: 'No Results Found',
+                    noResultsDescription: 'We could not find any results. {break} Try checking your spelling or broadening your search.',
+                    leftFilterPanel: {
+                        searchTitle: 'Search',
+                        searchPlaceholderText: 'Search here...',
+                    },
+                    topFilterPanel: {
+                        searchPlaceholderText: 'Search...',
+                    },
+                    filterInfo: {
+                        searchPlaceholderText: 'Search...',
+                    }
+                }
+            },
+            language: 'en-US',
+            analytics: {
+                trackImpressions: 'false',
+                collectionIdentifier: 'hashed-test',
+            },
+            onCardSaved: function(){},
+            onCardUnsaved: function(){}
+        };
+        const consonantCardCollection = new ConsonantCardCollection(config, document.getElementById("someDivId"));
+    </script>
+</body>
+
+
+<div class="modalContainer parsys">
+</div>
+
+</html>

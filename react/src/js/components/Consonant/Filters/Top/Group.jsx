@@ -23,6 +23,8 @@ const groupType = {
     clearFilterText: string,
     numItemsSelected: number,
     onCheck: func.isRequired,
+    // eslint-disable-next-line react/require-default-props
+    onCategoryToggle: func,
     results: number.isRequired,
     onClearAll: func.isRequired,
     items: arrayOf(shape(filterItemType)).isRequired,
@@ -65,6 +67,7 @@ const Group = (props) => {
         items,
         numItemsSelected,
         onCheck,
+        onCategoryToggle,
         onClearAll,
         results,
         clearFilterText,
@@ -244,6 +247,7 @@ const Group = (props) => {
                                     clipWrapperItemsCount={clipWrapperItemsCount}
                                     handleCheck={handleCheck}
                                     stopPropagation={stopPropagation}
+                                    onCategoryToggle={onCategoryToggle}
                                     items={items} />
                                 {shouldClipFilters &&
                                 <aside
