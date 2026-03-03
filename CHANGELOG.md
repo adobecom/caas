@@ -1,5 +1,12 @@
 
 
+## [0.43.5](https://github.com/adobecom/caas/compare/0.43.4...0.43.5) (2026-03-03)
+
+
+### Bug Fixes
+
+* **mwpw-188928:** include all commit types in changelog ([a0baa08](https://github.com/adobecom/caas/commit/a0baa08844f4743a0ec1bd27a808a68bd5d00b6c))
+
 ## [0.43.4](https://github.com/adobecom/caas/compare/0.43.3...0.43.4) (2026-03-02)
 
 ## [0.43.3](https://github.com/adobecom/caas/compare/0.43.2...0.43.3) (2026-02-27)

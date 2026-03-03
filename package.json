@@ -1,6 +1,6 @@
 {
   "name": "CaaS",
-  "version": "0.43.4",
+  "version": "0.43.5",
   "private": false,
   "description": "",
   "scripts": {
@@ -168,15 +168,42 @@
         "preset": {
           "name": "conventionalcommits",
           "types": [
-            { "type": "feat", "section": "Features" },
-            { "type": "fix", "section": "Bug Fixes" },
-            { "type": "perf", "section": "Performance Improvements" },
-            { "type": "build", "section": "Dependencies" },
-            { "type": "docs", "section": "Documentation" },
-            { "type": "chore", "section": "Chores" },
-            { "type": "style", "section": "Code Style" },
-            { "type": "refactor", "section": "Code Refactoring" },
-            { "type": "test", "section": "Tests" }
+            {
+              "type": "feat",
+              "section": "Features"
+            },
+            {
+              "type": "fix",
+              "section": "Bug Fixes"
+            },
+            {
+              "type": "perf",
+              "section": "Performance Improvements"
+            },
+            {
+              "type": "build",
+              "section": "Dependencies"
+            },
+            {
+              "type": "docs",
+              "section": "Documentation"
+            },
+            {
+              "type": "chore",
+              "section": "Chores"
+            },
+            {
+              "type": "style",
+              "section": "Code Style"
+            },
+            {
+              "type": "refactor",
+              "section": "Code Refactoring"
+            },
+            {
+              "type": "test",
+              "section": "Tests"
+            }
           ]
         },
         "infile": "CHANGELOG.md"
