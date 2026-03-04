@@ -135,6 +135,13 @@ const CardFooter = (props) => {
         altRightLive.push(live);
     }
 
+    // Format date for blog card
+    const formattedCardDate = cardDate
+        ? `${String(cardDate.getMonth() + 1)
+            .padStart(2, '0')}-${String(cardDate.getDate())
+            .padStart(2, '0')}-${cardDate.getFullYear()}`
+        : '';
+    
     return (
         <div
             className={footerClassName}
@@ -145,9 +152,7 @@ const CardFooter = (props) => {
                 {shouldRenderLeft &&
                 <div
                     className="consonant-CardFooter-cell consonant-CardFooter-cell--left">
-                    {isBlog && cardDate &&
-                        <span>{cardDate.toLocaleDateString().replaceAll('/', '-')}</span>
-                    }
+                    {isBlog && <span>{formattedCardDate}</span>}
                     <Group renderList={left} onFocus={onFocus} />
                 </div>
                 }
