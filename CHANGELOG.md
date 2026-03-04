@@ -1,5 +1,12 @@
 
 
+## [0.43.6](https://github.com/adobecom/caas/compare/0.43.5...0.43.6) (2026-03-04)
+
+
+### Dependencies
+
+* **deps-dev:** bump regenerator-runtime from 0.11.1 to 0.14.1 ([da14e10](https://github.com/adobecom/caas/commit/da14e10150334f6b4198a8e53e0f7f0170dc2f11))
+
 ## [0.43.5](https://github.com/adobecom/caas/compare/0.43.4...0.43.5) (2026-03-03)
 
 
