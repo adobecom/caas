@@ -1,5 +1,31 @@
 
 
+## [0.43.5](https://github.com/adobecom/caas/compare/0.43.4...0.43.5) (2026-03-03)
+
+
+### Bug Fixes
+
+* **mwpw-188928:** include all commit types in changelog ([a0baa08](https://github.com/adobecom/caas/commit/a0baa08844f4743a0ec1bd27a808a68bd5d00b6c))
+
+## [0.43.4](https://github.com/adobecom/caas/compare/0.43.3...0.43.4) (2026-03-02)
+
+## [0.43.3](https://github.com/adobecom/caas/compare/0.43.2...0.43.3) (2026-02-27)
+
+
+### Bug Fixes
+
+* **mwpw-152657:** hash categoryMappings before re-transform in hashed collections ([e7b69b1](https://github.com/adobecom/caas/commit/e7b69b10addfa6b289b26d13d578a06ae5aa4ff9))
+* **mwpw-152657:** smart category expansion uses OR within groups for AND/XOR ([4736540](https://github.com/adobecom/caas/commit/4736540758d54c2269e098b3c4a41a6dd35cf7f3))
+
+## [0.43.2](https://github.com/adobecom/caas/compare/0.43.1...0.43.2) (2026-02-25)
+
+
+### Bug Fixes
+
+* **mwpw-000:** prevent release notes from being wiped by asset upload ([03da5d1](https://github.com/adobecom/caas/commit/03da5d116d5482c80c37849896440cc8448751e8))
+
+## [0.43.1](https://github.com/adobecom/caas/compare/0.43.0...0.43.1) (2026-02-25)
+
 # [0.43.0](https://github.com/adobecom/caas/compare/0.42.13...0.43.0) (2026-02-23)
 
 

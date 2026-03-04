@@ -1,9 +1,8 @@
 name: Attach Build Artifacts to Release
 
 on:
-  push:
-    tags:
-      - '*'
+  release:
+    types: [published]
 
 permissions:
   contents: write
@@ -12,14 +11,10 @@ jobs:
   build-and-attach:
     runs-on: ubuntu-latest
     steps:
-      - name: Get tag name
-        id: tag
-        run: echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
-
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          ref: ${{ steps.tag.outputs.tag }}
+          ref: ${{ github.event.release.tag_name }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -39,6 +34,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: dist.tar.gz
-          tag_name: ${{ steps.tag.outputs.tag }}
+          tag_name: ${{ github.event.release.tag_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

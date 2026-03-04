@@ -1,6 +1,6 @@
 {
   "name": "CaaS",
-  "version": "0.43.0",
+  "version": "0.43.5",
   "private": false,
   "description": "",
   "scripts": {
@@ -27,7 +27,7 @@
     "core-js": "^2.6.11",
     "cuid": "^2.1.8",
     "element-closest": "2.0.2",
-    "focus-trap": "^7.2.0",
+    "focus-trap": "^7.8.0",
     "html-react-parser": "^1.2.7",
     "immer": "^9.0.6",
     "intersection-observer": "^0.12.2",
@@ -74,7 +74,7 @@
     "@wdio/mocha-framework": "^8.46.0",
     "@wdio/spec-reporter": "^8.43.0",
     "aemsync": "^3.0.2",
-    "axe-core": "^4.11.0",
+    "axe-core": "^4.11.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^30.0.0",
     "babel-loader": "^8.3.0",
@@ -165,7 +165,47 @@
     },
     "plugins": {
       "@release-it/conventional-changelog": {
-        "preset": "angular",
+        "preset": {
+          "name": "conventionalcommits",
+          "types": [
+            {
+              "type": "feat",
+              "section": "Features"
+            },
+            {
+              "type": "fix",
+              "section": "Bug Fixes"
+            },
+            {
+              "type": "perf",
+              "section": "Performance Improvements"
+            },
+            {
+              "type": "build",
+              "section": "Dependencies"
+            },
+            {
+              "type": "docs",
+              "section": "Documentation"
+            },
+            {
+              "type": "chore",
+              "section": "Chores"
+            },
+            {
+              "type": "style",
+              "section": "Code Style"
+            },
+            {
+              "type": "refactor",
+              "section": "Code Refactoring"
+            },
+            {
+              "type": "test",
+              "section": "Tests"
+            }
+          ]
+        },
         "infile": "CHANGELOG.md"
       }
     }
