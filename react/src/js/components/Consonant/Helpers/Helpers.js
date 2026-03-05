@@ -372,8 +372,8 @@ export const getModifiedAscSort = cards => getModifiedDescSort(cards).reverse();
  * @returns 
  */
 export const getLocalFirstSort = cards => cards.sort((cardOne, cardTwo) => {
-    const cardOneLocale = getByPath(cardOne, 'country');
-    const cardTwoLocale = getByPath(cardTwo, 'country');
+    const cardOneLocale = getByPath(cardOne, 'country', '') || '';
+    const cardTwoLocale = getByPath(cardTwo, 'country', '') || '';
     return cardOneLocale.localeCompare(cardTwoLocale);
 });
 
