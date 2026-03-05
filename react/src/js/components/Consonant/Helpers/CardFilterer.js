@@ -53,7 +53,7 @@ export default class CardFilterer {
      * @return {*} Chainable
      * @memberof CardFilterer
      */
-    filterCards(activeFilters, activePanels, filterType, filterTypes, currCategories) {
+    filterCards(activeFilters, activePanels, filterType, filterTypes, currCategories, filterGroups) {
         this.filteredCards = getFilteredCards(
             this.filteredCards,
             activeFilters,
@@ -61,6 +61,7 @@ export default class CardFilterer {
             filterType,
             filterTypes,
             currCategories,
+            filterGroups,
         );
         return this;
     }
