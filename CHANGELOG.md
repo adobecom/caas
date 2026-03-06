@@ -1,5 +1,12 @@
 
 
+## [0.44.1](https://github.com/adobecom/caas/compare/0.44.0...0.44.1) (2026-03-06)
+
+
+### Dependencies
+
+* **mwpw-187238:** merge 0.42.6.1_hotfix into main ([#411](https://github.com/adobecom/caas/issues/411)) ([00bdff9](https://github.com/adobecom/caas/commit/00bdff9e1bb6a931694895a3629fb7743123b534))
+
 ## [0.44.0](https://github.com/adobecom/caas/compare/0.43.6...0.44.0) (2026-03-06)
 
 
