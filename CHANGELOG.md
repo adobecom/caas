@@ -1,5 +1,12 @@
 
 
+## [0.44.0](https://github.com/adobecom/caas/compare/0.43.6...0.44.0) (2026-03-06)
+
+
+### Features
+
+* **mwpw-187238:** add automated point release workflow ([a63733a](https://github.com/adobecom/caas/commit/a63733ae47a0f9bae8ecaa499d459883797b6ecb))
+
 ## [0.43.6](https://github.com/adobecom/caas/compare/0.43.5...0.43.6) (2026-03-04)
 
 
