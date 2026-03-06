@@ -1,5 +1,71 @@
 
 
+## [0.44.0](https://github.com/adobecom/caas/compare/0.43.6...0.44.0) (2026-03-06)
+
+
+### Features
+
+* **mwpw-187238:** add automated point release workflow ([a63733a](https://github.com/adobecom/caas/commit/a63733ae47a0f9bae8ecaa499d459883797b6ecb))
+
+## [0.43.6](https://github.com/adobecom/caas/compare/0.43.5...0.43.6) (2026-03-04)
+
+
+### Dependencies
+
+* **deps-dev:** bump regenerator-runtime from 0.11.1 to 0.14.1 ([da14e10](https://github.com/adobecom/caas/commit/da14e10150334f6b4198a8e53e0f7f0170dc2f11))
+
+## [0.43.5](https://github.com/adobecom/caas/compare/0.43.4...0.43.5) (2026-03-03)
+
+
+### Bug Fixes
+
+* **mwpw-188928:** include all commit types in changelog ([a0baa08](https://github.com/adobecom/caas/commit/a0baa08844f4743a0ec1bd27a808a68bd5d00b6c))
+
+## [0.43.4](https://github.com/adobecom/caas/compare/0.43.3...0.43.4) (2026-03-02)
+
+## [0.43.3](https://github.com/adobecom/caas/compare/0.43.2...0.43.3) (2026-02-27)
+
+
+### Bug Fixes
+
+* **mwpw-152657:** hash categoryMappings before re-transform in hashed collections ([e7b69b1](https://github.com/adobecom/caas/commit/e7b69b10addfa6b289b26d13d578a06ae5aa4ff9))
+* **mwpw-152657:** smart category expansion uses OR within groups for AND/XOR ([4736540](https://github.com/adobecom/caas/commit/4736540758d54c2269e098b3c4a41a6dd35cf7f3))
+
+## [0.43.2](https://github.com/adobecom/caas/compare/0.43.1...0.43.2) (2026-02-25)
+
+
+### Bug Fixes
+
+* **mwpw-000:** prevent release notes from being wiped by asset upload ([03da5d1](https://github.com/adobecom/caas/commit/03da5d116d5482c80c37849896440cc8448751e8))
+
+## [0.43.1](https://github.com/adobecom/caas/compare/0.43.0...0.43.1) (2026-02-25)
+
+# [0.43.0](https://github.com/adobecom/caas/compare/0.42.13...0.43.0) (2026-02-23)
+
+
+### Features
+
+* **mwpw-185210:** adds a new editorial style card ([#395](https://github.com/adobecom/caas/issues/395)) ([ebaaf6d](https://github.com/adobecom/caas/commit/ebaaf6db982d628b6eca44ea10c6f8a86ed9f05a))
+
+## [0.42.13](https://github.com/adobecom/caas/compare/0.42.12...0.42.13) (2026-02-19)
+
+## [0.42.12](https://github.com/adobecom/caas/compare/0.42.11...0.42.12) (2026-02-18)
+
+## [0.42.11](https://github.com/adobecom/caas/compare/0.42.10...0.42.11) (2026-02-17)
+
+## [0.42.10](https://github.com/adobecom/caas/compare/0.42.9...0.42.10) (2026-02-13)
+
+## [0.42.9](https://github.com/adobecom/caas/compare/0.42.8...0.42.9) (2026-02-13)
+
+## [0.42.8](https://github.com/adobecom/caas/compare/0.42.7...0.42.8) (2026-02-13)
+
+## [0.42.7](https://github.com/adobecom/caas/compare/0.42.6...0.42.7) (2026-02-10)
+
+
+### Bug Fixes
+
+* **mwpw-177104:** fixes cropping content when zooming in ([#384](https://github.com/adobecom/caas/issues/384)) ([2ca2216](https://github.com/adobecom/caas/commit/2ca22168ae9e87de3620822722d282964c09fb57))
+
 ## [0.42.6](https://github.com/adobecom/caas/compare/0.42.5...0.42.6) (2026-02-05)
 
 

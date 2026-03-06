@@ -1,0 +1,63 @@
+name: Create Point Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch name (e.g., 0.42.6.1 or MWPW-12345)'
+        required: true
+        type: string
+      version:
+        description: 'Version number (e.g., 0.42.6.1)'
+        required: true
+        type: string
+      force:
+        description: 'Force update existing release?'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  create-point-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.branch }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Create dist tarball
+        run: tar -czf dist.tar.gz -C dist .
+
+      - name: Delete existing tag (if force)
+        if: ${{ inputs.force }}
+        run: |
+          git tag -d ${{ inputs.version }} || true
+          git push origin --delete refs/tags/${{ inputs.version }} || true
+        continue-on-error: true
+
+      - name: Create/Update Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ inputs.version }}
+          name: Release ${{ inputs.version }}
+          body: |
+            Point release ${{ inputs.version }} from branch ${{ inputs.branch }}
+
+            🤖 Generated with [Claude Code](https://claude.com/claude-code)
+          files: dist.tar.gz
+          draft: false
