@@ -203,7 +203,6 @@ const Card = (props) => {
     const bladeCard = getConfig('collection', 'bladeCard');
     const useCenterVideoPlay = getConfig('collection', 'useCenterVideoPlay');
     const searchEnabled = getConfig('search', 'enabled');
-    const editorialOpenVariant = getConfig('collection', 'editorialOpenVariant') || false;
 
     /**
      * Class name for the card:
@@ -214,7 +213,6 @@ const Card = (props) => {
         'consonant-Card': true,
         'consonant-u-noBorders': !renderBorder,
         'consonant-hide-cta': hideCTA,
-        'consonant-editorial--open': editorialOpenVariant,
     });
 
     /**
@@ -354,7 +352,6 @@ const Card = (props) => {
     const isFull = cardStyle === 'full-card';
     const isIcon = cardStyle === 'icon-card';
     const isNews = cardStyle === 'news-card';
-    const isEditorial = cardStyle === 'editorial-card';
     const isBlade = cardStyle === 'blade-card';
     const isBlog = cardStyle === 'blog-card';
     const bladeVariant = isBlade
@@ -374,11 +371,11 @@ const Card = (props) => {
     const showBadge = (isOneHalf || isThreeFourths || isFull) && (fromDexter || showCardBadges);
     const showLogo = isOneHalf || isThreeFourths || isFull || isText
         || (isHalfHeight && showCardBadges);
-    const showLabel = !isProduct && !isText && !isEditorial || (isEditorial && editorialOpenVariant);
+    const showLabel = !isProduct && !isText;
     const showVideoButton = !isProduct && !isText && !isIcon;
     const videoButtonStyle = useCenterVideoPlay && !isHalfHeight ? "center" : "";
     const showText = !isHalfHeight && !isFull && !isNews && !isHorizontal;
-    const showFooter = isOneHalf || isProduct || isText || isNews || isBlade || isEditorial || isBlog;
+    const showFooter = isOneHalf || isProduct || isText || isNews || isBlade || isBlog;
     const showFooterLeft = !isProduct;
     const showFooterCenter = !isProduct && !altCtaUsed;
     let hideBanner = false;
