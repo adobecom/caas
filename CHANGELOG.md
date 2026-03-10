@@ -1,5 +1,23 @@
 
 
+## [0.45.0](https://github.com/adobecom/caas/compare/0.44.1...0.45.0) (2026-03-10)
+
+
+### Features
+
+* **mwpw-184989:** add geo filtering ([65fa728](https://github.com/adobecom/caas/commit/65fa7285f9de34b6d0f3aed4cb4e74b66a879d7e))
+* **mwpw-184989:** add new sort function for local first sorting ([111658c](https://github.com/adobecom/caas/commit/111658c9a96dc2dab313b485a38032a6a8b4a7c5))
+
+
+### Bug Fixes
+
+* **mwpw-184989:** guard local sort against missing country ([f6f073c](https://github.com/adobecom/caas/commit/f6f073ca2b5befec95eebb43572ce411c169c565))
+
+
+### Tests
+
+* **mwpw-184989:** tests ([6c93b2e](https://github.com/adobecom/caas/commit/6c93b2efd4c47df4ad4910e211cbc8f78a5a882e))
+
 ## [0.44.1](https://github.com/adobecom/caas/compare/0.44.0...0.44.1) (2026-03-06)
 
 
