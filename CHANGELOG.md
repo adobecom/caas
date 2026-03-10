@@ -1,5 +1,12 @@
 
 
+## [0.45.3](https://github.com/adobecom/caas/compare/0.45.2...0.45.3) (2026-03-10)
+
+
+### Chores
+
+* **mwpw-189759:** split dependabot groups ([2f52cb3](https://github.com/adobecom/caas/commit/2f52cb394cac229dfaf6bf9305041c54267f24e9))
+
 ## [0.45.2](https://github.com/adobecom/caas/compare/0.45.1...0.45.2) (2026-03-10)
 
 
