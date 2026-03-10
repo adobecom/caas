@@ -13,17 +13,23 @@ updates:
     # Limit: Max 5 open PRs at once (prevents overwhelming flood)
     open-pull-requests-limit: 5
 
-    # Group everything into a single weekly PR
+    # Group minor/patch updates into a single weekly PR
     groups:
       # One PR for all version updates
       all-version-updates:
         patterns:
           - "*"
+        update-types:
+          - "minor"
+          - "patch"
       # One PR for all security updates
       all-security-updates:
         applies-to: security-updates
         patterns:
           - "*"
+        update-types:
+          - "minor"
+          - "patch"
 
     # Safety: Ignore major version bumps (too risky to auto-update)
     # We'll handle React 16→18, Webpack 3→5 manually
