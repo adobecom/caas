@@ -1,5 +1,12 @@
 
 
+## [0.45.1](https://github.com/adobecom/caas/compare/0.45.0...0.45.1) (2026-03-10)
+
+
+### Chores
+
+* **mwpw-189759:** group dependabot updates ([3046486](https://github.com/adobecom/caas/commit/30464864c2ea028f22df10a9c4703e22049d03a3))
+
 ## [0.45.0](https://github.com/adobecom/caas/compare/0.44.1...0.45.0) (2026-03-10)
 
 
