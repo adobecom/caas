@@ -13,15 +13,57 @@ updates:
     # Limit: Max 5 open PRs at once (prevents overwhelming flood)
     open-pull-requests-limit: 5
 
-    # Group minor/patch updates into a single weekly PR
+    # Group minor/patch updates into a few weekly PRs
     groups:
-      # One PR for all version updates
-      all-version-updates:
-        patterns:
-          - "*"
+      # Production/runtime deps
+      prod-version:
+        dependency-type: production
         update-types:
           - "minor"
           - "patch"
+
+      # Build toolchain deps
+      build-version:
+        dependency-type: development
+        patterns:
+          - "webpack*"
+          - "*-loader"
+          - "*-plugin"
+          - "babel*"
+          - "@babel/*"
+          - "postcss*"
+          - "less*"
+          - "style-loader"
+          - "css-loader"
+          - "copy-webpack-plugin"
+          - "uglifyjs-webpack-plugin"
+          - "webpack-bundle-analyzer"
+        update-types:
+          - "minor"
+          - "patch"
+
+      # Test, lint, QA, and other dev tooling
+      test-quality-version:
+        dependency-type: development
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "webpack*"
+          - "*-loader"
+          - "*-plugin"
+          - "babel*"
+          - "@babel/*"
+          - "postcss*"
+          - "less*"
+          - "style-loader"
+          - "css-loader"
+          - "copy-webpack-plugin"
+          - "uglifyjs-webpack-plugin"
+          - "webpack-bundle-analyzer"
+        update-types:
+          - "minor"
+          - "patch"
+
       # One PR for all security updates
       all-security-updates:
         applies-to: security-updates
