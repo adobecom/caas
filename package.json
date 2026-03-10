@@ -21,7 +21,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@datastructures-js/priority-queue": "^5.2.0",
+    "@datastructures-js/priority-queue": "^5.4.1",
     "babel-plugin-transform-es2015-spread": "^6.22.0",
     "classnames": "^2.2.6",
     "core-js": "^2.6.11",
@@ -40,7 +40,7 @@
     "react-redux": "^5.1.2",
     "react-uuid": "^1.0.2",
     "redux": "^4.0.5",
-    "shortid": "^2.2.15"
+    "shortid": "^2.2.17"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
