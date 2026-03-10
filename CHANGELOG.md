@@ -1,5 +1,12 @@
 
 
+## [0.45.2](https://github.com/adobecom/caas/compare/0.45.1...0.45.2) (2026-03-10)
+
+
+### Chores
+
+* **mwpw-189759:** limit dependabot groups to minor/patch ([56f65a1](https://github.com/adobecom/caas/commit/56f65a104ca0769798cc7dc792c2e35cadf2f954))
+
 ## [0.45.1](https://github.com/adobecom/caas/compare/0.45.0...0.45.1) (2026-03-10)
 
 
