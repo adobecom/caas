@@ -1,5 +1,65 @@
 
 
+## [0.45.4](https://github.com/adobecom/caas/compare/0.45.3...0.45.4) (2026-03-12)
+
+
+### Chores
+
+* **mwpw-189759:** remove dependabot grouping ([a048561](https://github.com/adobecom/caas/commit/a048561e0714da1392da0cd7a056465869731698))
+
+## [0.45.3](https://github.com/adobecom/caas/compare/0.45.2...0.45.3) (2026-03-10)
+
+
+### Chores
+
+* **mwpw-189759:** split dependabot groups ([2f52cb3](https://github.com/adobecom/caas/commit/2f52cb394cac229dfaf6bf9305041c54267f24e9))
+
+## [0.45.2](https://github.com/adobecom/caas/compare/0.45.1...0.45.2) (2026-03-10)
+
+
+### Chores
+
+* **mwpw-189759:** limit dependabot groups to minor/patch ([56f65a1](https://github.com/adobecom/caas/commit/56f65a104ca0769798cc7dc792c2e35cadf2f954))
+
+## [0.45.1](https://github.com/adobecom/caas/compare/0.45.0...0.45.1) (2026-03-10)
+
+
+### Chores
+
+* **mwpw-189759:** group dependabot updates ([3046486](https://github.com/adobecom/caas/commit/30464864c2ea028f22df10a9c4703e22049d03a3))
+
+## [0.45.0](https://github.com/adobecom/caas/compare/0.44.1...0.45.0) (2026-03-10)
+
+
+### Features
+
+* **mwpw-184989:** add geo filtering ([65fa728](https://github.com/adobecom/caas/commit/65fa7285f9de34b6d0f3aed4cb4e74b66a879d7e))
+* **mwpw-184989:** add new sort function for local first sorting ([111658c](https://github.com/adobecom/caas/commit/111658c9a96dc2dab313b485a38032a6a8b4a7c5))
+
+
+### Bug Fixes
+
+* **mwpw-184989:** guard local sort against missing country ([f6f073c](https://github.com/adobecom/caas/commit/f6f073ca2b5befec95eebb43572ce411c169c565))
+
+
+### Tests
+
+* **mwpw-184989:** tests ([6c93b2e](https://github.com/adobecom/caas/commit/6c93b2efd4c47df4ad4910e211cbc8f78a5a882e))
+
+## [0.44.1](https://github.com/adobecom/caas/compare/0.44.0...0.44.1) (2026-03-06)
+
+
+### Dependencies
+
+* **mwpw-187238:** merge 0.42.6.1_hotfix into main ([#411](https://github.com/adobecom/caas/issues/411)) ([00bdff9](https://github.com/adobecom/caas/commit/00bdff9e1bb6a931694895a3629fb7743123b534))
+
+## [0.44.0](https://github.com/adobecom/caas/compare/0.43.6...0.44.0) (2026-03-06)
+
+
+### Features
+
+* **mwpw-187238:** add automated point release workflow ([a63733a](https://github.com/adobecom/caas/commit/a63733ae47a0f9bae8ecaa499d459883797b6ecb))
+
 ## [0.43.6](https://github.com/adobecom/caas/compare/0.43.5...0.43.6) (2026-03-04)
 
 
