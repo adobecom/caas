@@ -1,5 +1,12 @@
 
 
+## [0.45.4](https://github.com/adobecom/caas/compare/0.45.3...0.45.4) (2026-03-12)
+
+
+### Chores
+
+* **mwpw-189759:** remove dependabot grouping ([a048561](https://github.com/adobecom/caas/commit/a048561e0714da1392da0cd7a056465869731698))
+
 ## [0.45.3](https://github.com/adobecom/caas/compare/0.45.2...0.45.3) (2026-03-10)
 
 
