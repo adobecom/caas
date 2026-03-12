@@ -1,5 +1,12 @@
 
 
+## [0.45.5](https://github.com/adobecom/caas/compare/0.45.4...0.45.5) (2026-03-12)
+
+
+### Bug Fixes
+
+* **mwpw-152657:** filter nested items in categories when showEmptyFilters is false ([7c5d9ba](https://github.com/adobecom/caas/commit/7c5d9ba7ed60c205993f5a6d3d586142253801c6))
+
 ## [0.45.4](https://github.com/adobecom/caas/compare/0.45.3...0.45.4) (2026-03-12)
 
 
