@@ -93,7 +93,7 @@
             transition: background-color @consonantTransitionTime @consonantTransitionFunc;
             outline: 0;
             overflow: hidden;
-            border: 2px solid transparent;
+            border: 2px solid transparent !important;
 
             &:focus {
                 border-color: @consonantFocusedColor;
@@ -101,6 +101,8 @@
 
             &:hover {
                 background-color: @consonantLightGrey100;
+                border-top: solid 2px #ccc !important;
+                border-bottom: solid 2px #aaa !important;
             }
 
             &.is-selected {
