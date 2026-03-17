@@ -1,5 +1,26 @@
 
 
+## [0.45.6](https://github.com/adobecom/caas/compare/0.45.5...0.45.6) (2026-03-17)
+
+
+### Bug Fixes
+
+* **mwpw-177208:** fixes for accessibility contrast issues ([#425](https://github.com/adobecom/caas/issues/425)) ([162e064](https://github.com/adobecom/caas/commit/162e064c8ddcc9c30d5b8f636ac591ce2dd4b761))
+
+## [0.45.5](https://github.com/adobecom/caas/compare/0.45.4...0.45.5) (2026-03-12)
+
+
+### Bug Fixes
+
+* **mwpw-152657:** filter nested items in categories when showEmptyFilters is false ([7c5d9ba](https://github.com/adobecom/caas/commit/7c5d9ba7ed60c205993f5a6d3d586142253801c6))
+
+## [0.45.4](https://github.com/adobecom/caas/compare/0.45.3...0.45.4) (2026-03-12)
+
+
+### Chores
+
+* **mwpw-189759:** remove dependabot grouping ([a048561](https://github.com/adobecom/caas/commit/a048561e0714da1392da0cd7a056465869731698))
+
 ## [0.45.3](https://github.com/adobecom/caas/compare/0.45.2...0.45.3) (2026-03-10)
 
 

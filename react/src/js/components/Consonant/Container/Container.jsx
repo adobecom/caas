@@ -956,11 +956,35 @@ const Container = (props) => {
             ...filter,
             opened: DESKTOP_SCREEN_SIZE ? filter.openedOnLoad : false,
             /* istanbul ignore next */
-            items: filter.items.filter(item => tags.includes(item.id)
-            || tags.includes(item.label)
-            || tags.toString().includes(`/${item.id}`)
-            || timingTags.includes(item.id)
-            || item.isCategory && item.items.some(nestedItem => tags.includes(nestedItem.id))),
+            items: filter.items.filter(item => {
+                const matchesDirectly = tags.includes(item.id)
+                    || tags.includes(item.label)
+                    || tags.toString().includes(`/${item.id}`)
+                    || timingTags.includes(item.id);
+
+                // If it's a category, filter nested items recursively
+                if (item.isCategory) {
+                    const filteredNestedItems = item.items.filter(nestedItem =>
+                        tags.includes(nestedItem.id)
+                        || tags.includes(nestedItem.label)
+                        || tags.toString().includes(`/${nestedItem.id}`),
+                    );
+                    // Keep category if it has any nested items with cards
+                    if (filteredNestedItems.length > 0) {
+                        item.items = filteredNestedItems; // Update nested items
+                        return true;
+                    }
+                    return false;
+                }
+
+                return matchesDirectly;
+            }).map(item => {
+                // Ensure nested items are preserved for categories
+                if (item.isCategory && item.items) {
+                    return { ...item };
+                }
+                return item;
+            }),
         })).filter(filter => filter.items.length > 0);
     };
 
