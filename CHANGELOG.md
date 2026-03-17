@@ -1,5 +1,12 @@
 
 
+## [0.45.6](https://github.com/adobecom/caas/compare/0.45.5...0.45.6) (2026-03-17)
+
+
+### Bug Fixes
+
+* **mwpw-177208:** fixes for accessibility contrast issues ([#425](https://github.com/adobecom/caas/issues/425)) ([162e064](https://github.com/adobecom/caas/commit/162e064c8ddcc9c30d5b8f636ac591ce2dd4b761))
+
 ## [0.45.5](https://github.com/adobecom/caas/compare/0.45.4...0.45.5) (2026-03-12)
 
 
