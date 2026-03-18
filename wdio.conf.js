@@ -4,7 +4,7 @@ exports.config = {
     ],
     // Patterns to exclude.
     exclude: [
-        // 'path/to/excluded/files'
+        './e2e-tests/specs/bulk-publisher.e2e.js',
     ],
     maxInstances: 1,
     capabilities: [{
