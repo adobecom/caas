@@ -1,5 +1,42 @@
 
 
+## [0.45.8](https://github.com/adobecom/caas/compare/0.45.7...0.45.8) (2026-03-19)
+
+
+### Tests
+
+* **mwpw-184989:** add E2E automation for Bulk Publisher → CaaS dev publish flow ([115bc13](https://github.com/adobecom/caas/commit/115bc13b6be79509420c30bd505a641bb3cf25c2))
+* **mwpw-184989:** add scheduled daily bulk publisher E2E with auto issue on failure ([e48ca7a](https://github.com/adobecom/caas/commit/e48ca7ac057b61784bb5d0f9d617d6ee63fe78d1))
+* **mwpw-184989:** remove patch file and chromedriver pinned dep ([fda2d28](https://github.com/adobecom/caas/commit/fda2d283e7f1a2bbd9f59f880eda6eeb27e13e68))
+
+## [0.45.7](https://github.com/adobecom/caas/compare/0.45.6...0.45.7) (2026-03-17)
+
+
+### Dependencies
+
+* **deps-dev:** bump jest from 30.2.0 to 30.3.0 ([7318326](https://github.com/adobecom/caas/commit/73183261b12aada4ae83201c1256fcdde75d94a0))
+
+## [0.45.6](https://github.com/adobecom/caas/compare/0.45.5...0.45.6) (2026-03-17)
+
+
+### Bug Fixes
+
+* **mwpw-177208:** fixes for accessibility contrast issues ([#425](https://github.com/adobecom/caas/issues/425)) ([162e064](https://github.com/adobecom/caas/commit/162e064c8ddcc9c30d5b8f636ac591ce2dd4b761))
+
+## [0.45.5](https://github.com/adobecom/caas/compare/0.45.4...0.45.5) (2026-03-12)
+
+
+### Bug Fixes
+
+* **mwpw-152657:** filter nested items in categories when showEmptyFilters is false ([7c5d9ba](https://github.com/adobecom/caas/commit/7c5d9ba7ed60c205993f5a6d3d586142253801c6))
+
+## [0.45.4](https://github.com/adobecom/caas/compare/0.45.3...0.45.4) (2026-03-12)
+
+
+### Chores
+
+* **mwpw-189759:** remove dependabot grouping ([a048561](https://github.com/adobecom/caas/commit/a048561e0714da1392da0cd7a056465869731698))
+
 ## [0.45.3](https://github.com/adobecom/caas/compare/0.45.2...0.45.3) (2026-03-10)
 
 

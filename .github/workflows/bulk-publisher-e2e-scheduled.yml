@@ -1,0 +1,43 @@
+name: Bulk Publisher E2E (scheduled)
+on:
+  schedule:
+    - cron: '0 8 * * 1-5'  # 8am UTC, weekdays
+  workflow_dispatch:
+
+jobs:
+  run-bulk-publisher-e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: 'stable'
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install
+        run: npm ci
+      - name: Install Matching ChromeDriver
+        run: |
+          CHROME_VERSION=$(google-chrome --version | cut -d' ' -f3 | cut -d'.' -f1)
+          npm install chromedriver@$CHROME_VERSION
+      - name: Run Bulk Publisher E2E Tests
+        run: npm run test:bulk-publisher
+        env:
+          IMS_CLIENT_SECRET: ${{ secrets.IMS_CLIENT_SECRET }}
+
+      - name: Open issue on failure
+        if: failure()
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Bulk Publisher E2E failed (${new Date().toISOString().split('T')[0]})`,
+              body: `The scheduled Bulk Publisher E2E run failed.\n\n[View run](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})`,
+              labels: ['e2e-failure'],
+            });
