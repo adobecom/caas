@@ -13,6 +13,7 @@
     "test:unit": "jest",
     "test:e2e-local": "wdio run wdio.local.conf.js env=LOCAL",
     "test:e2e-prod": "wdio run wdio.conf.js env=PROD",
+    "test:bulk-publisher": "wdio run wdio.bulk-publisher.conf.js",
     "perf": "lhci autorun",
     "serve": "serve",
     "watch": "npm run serve & webpack -w",
