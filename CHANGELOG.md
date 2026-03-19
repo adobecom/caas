@@ -1,5 +1,14 @@
 
 
+## [0.45.8](https://github.com/adobecom/caas/compare/0.45.7...0.45.8) (2026-03-19)
+
+
+### Tests
+
+* **mwpw-184989:** add E2E automation for Bulk Publisher → CaaS dev publish flow ([115bc13](https://github.com/adobecom/caas/commit/115bc13b6be79509420c30bd505a641bb3cf25c2))
+* **mwpw-184989:** add scheduled daily bulk publisher E2E with auto issue on failure ([e48ca7a](https://github.com/adobecom/caas/commit/e48ca7ac057b61784bb5d0f9d617d6ee63fe78d1))
+* **mwpw-184989:** remove patch file and chromedriver pinned dep ([fda2d28](https://github.com/adobecom/caas/commit/fda2d283e7f1a2bbd9f59f880eda6eeb27e13e68))
+
 ## [0.45.7](https://github.com/adobecom/caas/compare/0.45.6...0.45.7) (2026-03-17)
 
 
