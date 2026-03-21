@@ -17,17 +17,55 @@ const getAutomationToken = require('../helpers/getAutomationToken');
 const BULK_PUBLISHER_URL = 'https://milo.adobe.com/tools/send-to-caas/bulkpublisher.html';
 const DEV_POSTXDM_URL = 'https://14257-milocaasproxy-dev.adobeio-static.net/api/v1/web/milocaas/postXDM';
 const CLIENT_ID = 'b04b4dc3c96f4a2082f57237d84547a4';
-const TEST_PAGE_URL = 'https://milo.adobe.com/drafts/jmichnow/cards/document113';
+const pageUrls = [
+  { url: 'https://milo.adobe.com/drafts/jmichnow/cards/document113', expected: 'success' },
+  { url: 'https://milo.adobe.com/fr/drafts/gayane/bulkpublishcontent/bpcontent1', expected: 'success' },
+  { url: 'https://milo.adobe.com/fr/drafts/gayane/bulkpublishcontent/bpcontent2', expected: 'success' },
+  { url: 'https://milo.adobe.com/fr/drafts/gayane/bulkpublishcontent/bpcontent3', expected: 'success' },
+  { url: 'https://milo.adobe.com/fr/drafts/gayane/bulkpublishcontent/fake', expected: 'failure' },
+]
 
 const SEL = {
-  urlInput:      '#urls',
+  urlInput: '#urls',
   caasEnvSelect: '#caasEnv',
   publishButton: '#bulkpublish',
   progressModal: '.tingle-modal',
-  modalContent:  '.tingle-modal-box__content',
-  tingleBtn:     '.tingle-btn',
-  successRowOk:  'table.success-table td.ok',
+  modalContent: '.tingle-modal-box__content',
+  tingleBtn: '.tingle-btn',
+  successRowOk: 'table.success-table td.ok',
+  entityId: '.entityid a'
 };
+
+const publishUrlHelper = async (urls = pageUrls[0]) => {
+  const successUrlsLength = urls.filter(u => u.expected === 'success').length;
+  const failedUrlsLength = urls.filter(u => u.expected === 'failure').length;
+  if (Array.isArray(urls)) urls = urls.join('\n');
+  const urlInput = await $(SEL.urlInput);
+  await urlInput.clearValue();
+  await urlInput.setValue(urls);
+
+  await $(SEL.publishButton).click();
+
+  await $(SEL.progressModal).waitForDisplayed({ timeout: 10000 });
+
+  await browser.waitUntil(
+    () => browser.execute(() => {
+      const el = document.querySelector('.tingle-modal-box__content');
+      const text = el?.textContent || '';
+      return text.includes('Successfully published') || text.includes('Failed to publish');
+    }),
+    { timeout: 60000, timeoutMsg: 'Publish summary did not appear' },
+  );
+
+  const summaryText = await browser.execute(
+    () => document.querySelector('.tingle-modal-box__content')?.textContent || '',
+  );
+
+  const tingleBtn = await $(SEL.tingleBtn);
+  if (await tingleBtn.isDisplayed()) await tingleBtn.click();
+
+  expect(summaryText).toBe(`Successfully published ${successUrlsLength} pages. Failed to publish ${failedUrlsLength} pages.`);
+}
 
 describe('Bulk Publisher — Send to CaaS (dev)', () => {
   let accessToken;
@@ -98,34 +136,7 @@ describe('Bulk Publisher — Send to CaaS (dev)', () => {
   });
 
   it('should successfully publish a page to CaaS dev', async () => {
-    const urlInput = await $(SEL.urlInput);
-    await urlInput.clearValue();
-    await urlInput.setValue(TEST_PAGE_URL);
-
-    await $(SEL.publishButton).click();
-
-    // Wait for progress modal to appear
-    await $(SEL.progressModal).waitForDisplayed({ timeout: 10000 });
-
-    // Wait for summary text in modal (appears after publish completes)
-    await browser.waitUntil(
-      () => browser.execute(() => {
-        const el = document.querySelector('.tingle-modal-box__content');
-        const text = el?.textContent || '';
-        return text.includes('Successfully published') || text.includes('Failed to publish');
-      }),
-      { timeout: 60000, timeoutMsg: 'Publish summary did not appear' },
-    );
-
-    const summaryText = await browser.execute(
-      () => document.querySelector('.tingle-modal-box__content')?.textContent || '',
-    );
-
-    // Dismiss summary modal
-    const tingleBtn = await $(SEL.tingleBtn);
-    if (await tingleBtn.isDisplayed()) await tingleBtn.click();
-
-    expect(summaryText).toMatch(/Successfully published [1-9]/);
+    await publishUrlHelper();
   });
 
   it('should publish as draft when draftOnly is checked', async () => {
@@ -135,30 +146,43 @@ describe('Bulk Publisher — Send to CaaS (dev)', () => {
       if (!cb.checked) cb.click();
     });
 
-    const urlInput = await $(SEL.urlInput);
-    await urlInput.clearValue();
-    await urlInput.setValue(TEST_PAGE_URL);
+    await publishUrlHelper();
+  });
 
-    await $(SEL.publishButton).click();
+  it('should return correct feature card data when Language First Localization is checked', async () => {
+    // Check Language First Localization via JS (avoids any visibility issues)
+    await browser.execute(() => {
+      const cb = document.querySelector('#languageFirstLocalization');
+      if (!cb.checked) cb.click();
+    });
 
-    await $(SEL.progressModal).waitForDisplayed({ timeout: 10000 });
+    await publishUrlHelper();
 
-    await browser.waitUntil(
-      () => browser.execute(() => {
-        const el = document.querySelector('.tingle-modal-box__content');
-        const text = el?.textContent || '';
-        return text.includes('Successfully published') || text.includes('Failed to publish');
-      }),
-      { timeout: 60000, timeoutMsg: 'Publish summary did not appear' },
-    );
+    // check that the entity id a is present 
+    const entityIdLink = await $(SEL.entityId);
+    expect(await entityIdLink.isDisplayed()).toBe(true);
 
-    const summaryText = await browser.execute(
-      () => document.querySelector('.tingle-modal-box__content')?.textContent || '',
-    );
+    // check that the href contains /dev/ which indicates it was published to the dev environment
+    const href = await entityIdLink.getAttribute('href');
+    expect(href).toContain('-chimera-dev');
 
-    const tingleBtn = await $(SEL.tingleBtn);
-    if (await tingleBtn.isDisplayed()) await tingleBtn.click();
+    // call get on the href and check the response.cards[0].country == 'xx'
+    const response = await fetch(href)
+      .then(res => res.json())
+      .catch(err => {
+        throw new Error(`Failed to fetch published entity: ${err.message}`);
+      });
 
-    expect(summaryText).toMatch(/Successfully published [1-9]/);
+    expect(response.cards[0].country).toBe('xx');
+    expect(response.cards?.length).toBeGreaterThan(0);
+  });
+
+  it('should successfully publish multiple pages in one go', async () => {
+    await publishUrlHelper(pageUrls.slice(0, 2));
+  });
+
+  it('should show failures in the summary modal when an invalid URL is included', async () => {
+     // Using the fake URL from the array
+    await publishUrlHelper(pageUrls[4]);
   });
 });
