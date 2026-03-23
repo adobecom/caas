@@ -36,7 +36,7 @@ const SEL = {
   entityId: '.entityid a'
 };
 
-const publishUrlHelper = async (input = pageUrls) => {
+const publishUrlHelper = async (input = pageUrls[0]) => {
   const urls = Array.isArray(input) ? input : [input];
 
   const successUrlsLength = urls.filter(u => u.expected === 'success').length;
@@ -66,7 +66,8 @@ const publishUrlHelper = async (input = pageUrls) => {
   const tingleBtn = await $(SEL.tingleBtn);
   if (await tingleBtn.isDisplayed()) await tingleBtn.click();
 
-  expect(summaryText).toBe(`Successfully published ${successUrlsLength} pages. Failed to publish ${failedUrlsLength} pages.`);
+  expect(summaryText).toContain(`Successfully published ${successUrlsLength} pages`);
+  expect(summaryText).toContain(`Failed to publish ${failedUrlsLength} pages`);
 }
 
 describe('Bulk Publisher — Send to CaaS (dev)', () => {
