@@ -36,7 +36,7 @@ const SEL = {
   entityId: '.entityid a'
 };
 
-const publishUrlHelper = async (urls = pageUrls[0]) => {
+const publishUrlHelper = async (urls = [pageUrls[0]]) => {
   const successUrlsLength = urls.filter(u => u.expected === 'success').length;
   const failedUrlsLength = urls.filter(u => u.expected === 'failure').length;
   if (Array.isArray(urls)) urls = urls.join('\n');
