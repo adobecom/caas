@@ -36,13 +36,15 @@ const SEL = {
   entityId: '.entityid a'
 };
 
-const publishUrlHelper = async (urls = [pageUrls[0]]) => {
+const publishUrlHelper = async (input = pageUrls) => {
+  const urls = Array.isArray(input) ? input : [input];
+
   const successUrlsLength = urls.filter(u => u.expected === 'success').length;
   const failedUrlsLength = urls.filter(u => u.expected === 'failure').length;
-  if (Array.isArray(urls)) urls = urls.join('\n');
+  const urlString = urls.map(u => u.url).join('\n');
   const urlInput = await $(SEL.urlInput);
   await urlInput.clearValue();
-  await urlInput.setValue(urls);
+  await urlInput.setValue(urlString);
 
   await $(SEL.publishButton).click();
 
@@ -182,7 +184,7 @@ describe('Bulk Publisher — Send to CaaS (dev)', () => {
   });
 
   it('should show failures in the summary modal when an invalid URL is included', async () => {
-     // Using the fake URL from the array
+    // Using the fake URL from the array
     await publishUrlHelper(pageUrls[4]);
   });
 });
