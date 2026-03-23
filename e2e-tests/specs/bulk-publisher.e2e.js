@@ -169,15 +169,37 @@ describe('Bulk Publisher — Send to CaaS (dev)', () => {
     const href = await entityIdLink.getAttribute('href');
     expect(href).toContain('-chimera-dev');
 
-    // call get on the href and check the response.cards[0].country == 'xx'
-    const response = await fetch(href)
-      .then(res => res.json())
-      .catch(err => {
-        throw new Error(`Failed to fetch published entity: ${err.message}`);
-      });
 
-    expect(response.cards[0].country).toBe('xx');
-    expect(response.cards?.length).toBeGreaterThan(0);
+    async function pollForData(startTime = Date.now()) {
+      const timeout = 30000; // Total timeout of 30 seconds
+      const timePassed = Date.now() - startTime;
+
+      // Check if the overall timeout has been exceeded
+      if (timePassed >= timeout) {
+        console.error('Polling timed out.');
+        return null;
+      }
+
+      // call get on the href and check the response.cards[0].country == 'xx'
+      const response = await fetch(href)
+        .then(res => res.json())
+        .catch(err => {
+          throw new Error(`Failed to fetch published entity: ${err.message}`);
+        });
+
+      if (response.cards?.[0]?.country === 'xx') {
+        return response;
+      }
+
+      console.log(`Waiting for expected country value 'xx', current value: ${response.cards?.[0]?.country || 'N/A'}`);
+
+      // retry
+      await browser.pause(2000);
+      return pollForData(startTime);
+    }
+
+    const data = await pollForData();
+    expect(data.cards[0].country).toBe('xx');
   });
 
   it('should successfully publish multiple pages in one go', async () => {
