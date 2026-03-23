@@ -157,6 +157,8 @@ jobs:
         run: npm run test:e2e-prod
   run-bulk-publisher-e2e:
     runs-on: ubuntu-latest
+    # Skip for Dependabot PRs — secrets are withheld by GitHub for Dependabot-triggered workflows
+    if: github.event_name == 'pull_request' && github.event.pull_request.user.login != 'dependabot[bot]'
     steps:
       - name: Checkout
         uses: actions/checkout@v3
