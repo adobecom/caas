@@ -155,7 +155,7 @@ describe('Bulk Publisher — Send to CaaS (dev)', () => {
   it('should return correct feature card data when Language First Localization is checked', async () => {
     // Check Language First Localization via JS (avoids any visibility issues)
     await browser.execute(() => {
-      const cb = document.querySelector('#languageFirstLocalization');
+      const cb = document.querySelector('#languageFirst');
       if (!cb.checked) cb.click();
     });
 
