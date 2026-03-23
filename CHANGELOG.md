@@ -1,5 +1,12 @@
 
 
+## [0.47.0](https://github.com/adobecom/caas/compare/0.46.0...0.47.0) (2026-03-23)
+
+
+### Features
+
+* **mwpw-190445:** run bulk publisher e2e tests against both prod and stage ([94235c4](https://github.com/adobecom/caas/commit/94235c45f885fbdd3c729a1ecb8b8d59ac978e55))
+
 ## [0.46.0](https://github.com/adobecom/caas/compare/0.45.10...0.46.0) (2026-03-23)
 
 
