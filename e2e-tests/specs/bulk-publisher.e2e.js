@@ -179,10 +179,12 @@ describe('Bulk Publisher — Send to CaaS (dev)', () => {
         console.error('Polling timed out.');
         return null;
       }
-      const randomFourChar = Math.random().toString(36).substring(2, 6);
+
+      // remove debug=1& from href
+      const hrefNoDebug = href.replace('debug=1&', '');
 
       // call get on the href and check the response.cards[0].country == 'xx'
-      const response = await fetch(`${href}&${randomFourChar}=1`)
+      const response = await fetch(hrefNoDebug)
         .then(res => res.json())
         .catch(err => {
           throw new Error(`Failed to fetch published entity: ${err.message}`);
