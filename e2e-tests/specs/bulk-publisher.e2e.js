@@ -171,7 +171,7 @@ describe('Bulk Publisher — Send to CaaS (dev)', () => {
 
 
     async function pollForData(startTime = Date.now()) {
-      const timeout = 30000; // Total timeout of 30 seconds
+      const timeout = 120000; // Total timeout of 2 minutes
       const timePassed = Date.now() - startTime;
 
       // Check if the overall timeout has been exceeded
@@ -179,9 +179,10 @@ describe('Bulk Publisher — Send to CaaS (dev)', () => {
         console.error('Polling timed out.');
         return null;
       }
+      const randomFourChar = Math.random().toString(36).substring(2, 6);
 
       // call get on the href and check the response.cards[0].country == 'xx'
-      const response = await fetch(href)
+      const response = await fetch(`${href}&${randomFourChar}=1`)
         .then(res => res.json())
         .catch(err => {
           throw new Error(`Failed to fetch published entity: ${err.message}`);
@@ -193,8 +194,8 @@ describe('Bulk Publisher — Send to CaaS (dev)', () => {
 
       console.log(`Waiting for expected country value 'xx', current value: ${response.cards?.[0]?.country || 'N/A'}`);
 
-      // retry
-      await browser.pause(2000);
+      // retry every 5 seconds until timeout
+      await browser.pause(5000);
       return pollForData(startTime);
     }
 
