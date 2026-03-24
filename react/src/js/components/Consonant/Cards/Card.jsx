@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import {
     string,
@@ -9,6 +9,7 @@ import {
     number,
 } from 'prop-types';
 
+import CardContext from './CardContext';
 import prettyFormatDate from '../Helpers/prettyFormat';
 import { INFOBIT_TYPE } from '../Helpers/constants';
 import { hasTag } from '../Helpers/Helpers';
@@ -389,63 +390,33 @@ const Card = (props) => {
 
     const optimizedImage = optimizeImageUrl(image);
 
+    const cardData = useMemo(() => ({
+        id, lh, cardClassName, cardStyle, bladeVariant,
+        optimizedImage, altText,
+        hasBanner, disableBanners,
+        bannerBackgroundColor: bannerBackgroundColorToUse,
+        bannerFontColor: bannerFontColorToUse,
+        bannerIcon: bannerIconToUse,
+        bannerDescription: bannerDescriptionToUse,
+        badgeText, fromDexter, showCardBadges,
+        videoURL, videoURLToUse, gateVideo, useCenterVideoPlay,
+        logoSrc, logoAlt, logoBg, logoBorderBg, image,
+        cardIcon, iconAlt,
+        detailText, editorialOpenVariant,
+        highlightedTitle, title, headingAria, headingLevel,
+        highlightedDescription, description, parseMarkDown,
+        footer, renderDivider, cardDate, startDate, endDate,
+        extendFooterData, altCtaUsed, hideOnDemandDates,
+        linkBlockerTarget, overlay, ctaText,
+        onFocus, tabIndex, ariaHidden, renderOverlay, hideCTA,
+    }));
+
     const CardComponent = CARD_STYLES[cardStyle] || OneHalf;
 
     return (
-        <CardComponent
-            id={id}
-            lh={lh}
-            cardClassName={cardClassName}
-            cardStyle={cardStyle}
-            bladeVariant={bladeVariant}
-            optimizedImage={optimizedImage}
-            altText={altText}
-            hasBanner={hasBanner}
-            disableBanners={disableBanners}
-            bannerBackgroundColor={bannerBackgroundColorToUse}
-            bannerFontColor={bannerFontColorToUse}
-            bannerIcon={bannerIconToUse}
-            bannerDescription={bannerDescriptionToUse}
-            badgeText={badgeText}
-            fromDexter={fromDexter}
-            showCardBadges={showCardBadges}
-            videoURL={videoURL}
-            videoURLToUse={videoURLToUse}
-            gateVideo={gateVideo}
-            useCenterVideoPlay={useCenterVideoPlay}
-            logoSrc={logoSrc}
-            logoAlt={logoAlt}
-            logoBg={logoBg}
-            logoBorderBg={logoBorderBg}
-            image={image}
-            cardIcon={cardIcon}
-            iconAlt={iconAlt}
-            detailText={detailText}
-            editorialOpenVariant={editorialOpenVariant}
-            highlightedTitle={highlightedTitle}
-            title={title}
-            headingAria={headingAria}
-            headingLevel={headingLevel}
-            highlightedDescription={highlightedDescription}
-            description={description}
-            parseMarkDown={parseMarkDown}
-            footer={footer}
-            renderDivider={renderDivider}
-            cardDate={cardDate}
-            startDate={startDate}
-            endDate={endDate}
-            extendFooterData={extendFooterData}
-            altCtaUsed={altCtaUsed}
-            hideOnDemandDates={hideOnDemandDates}
-            linkBlockerTarget={linkBlockerTarget}
-            overlay={overlay}
-            ctaText={ctaText}
-            onFocus={onFocus}
-            tabIndex={tabIndex}
-            ariaHidden={ariaHidden}
-            renderOverlay={renderOverlay}
-            hideCTA={hideCTA}
-        />
+        <CardContext.Provider value={cardData}>
+            <CardComponent />
+        </CardContext.Provider>
     );
 };
 
