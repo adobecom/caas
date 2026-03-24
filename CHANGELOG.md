@@ -1,5 +1,19 @@
 
 
+## [0.47.0](https://github.com/adobecom/caas/compare/0.46.0...0.47.0) (2026-03-23)
+
+
+### Features
+
+* **mwpw-190445:** run bulk publisher e2e tests against both prod and stage ([94235c4](https://github.com/adobecom/caas/commit/94235c45f885fbdd3c729a1ecb8b8d59ac978e55))
+
+## [0.46.0](https://github.com/adobecom/caas/compare/0.45.10...0.46.0) (2026-03-23)
+
+
+### Features
+
+* **mwpw-190445:** add dotenv support for running bulk publisher e2e tests locally ([267d9ab](https://github.com/adobecom/caas/commit/267d9abb3fd73bb96b8c9867c742258073f0d0a6))
+
 ## [0.45.10](https://github.com/adobecom/caas/compare/0.45.9...0.45.10) (2026-03-23)
 
 ## [0.45.9](https://github.com/adobecom/caas/compare/0.45.8...0.45.9) (2026-03-20)

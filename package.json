@@ -1,6 +1,6 @@
 {
   "name": "CaaS",
-  "version": "0.45.10",
+  "version": "0.47.0",
   "private": false,
   "description": "",
   "scripts": {
@@ -87,6 +87,7 @@
     "cross-env": "^5.2.1",
     "css-loader": "^0.28.11",
     "cz-conventional-changelog": "^3.3.0",
+    "dotenv": "^17.3.1",
     "duplicate-package-checker-webpack-plugin": "^2.0.1",
     "elasticsearch": "^16.7.1",
     "enforce-branch-name": "^1.1.2",
