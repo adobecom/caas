@@ -1,5 +1,12 @@
 
 
+## [0.47.1](https://github.com/adobecom/caas/compare/0.47.0...0.47.1) (2026-03-24)
+
+
+### Dependencies
+
+* **deps-dev:** bump postcss-sass from 0.2.0 to 0.5.0 ([b59c5ae](https://github.com/adobecom/caas/commit/b59c5ae0b3c67747f92e6ecd2d4951de691fe09b))
+
 ## [0.47.0](https://github.com/adobecom/caas/compare/0.46.0...0.47.0) (2026-03-23)
 
 
