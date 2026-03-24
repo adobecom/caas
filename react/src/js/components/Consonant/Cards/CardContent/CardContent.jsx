@@ -1,4 +1,5 @@
 import React from 'react';
+import { string, bool, func, number, node } from 'prop-types';
 import { removeMarkDown } from '../../Helpers/general';
 
 const CardContent = ({
@@ -84,5 +85,37 @@ const CardContent = ({
         ) }
     </>
 );
+
+CardContent.propTypes = {
+    showLabel: bool,
+    detailText: string,
+    showIconAlt: bool,
+    iconAlt: string,
+    isTitleOnly: bool,
+    highlightedTitle: node,
+    title: string,
+    headingAria: string,
+    headingLevel: number,
+    parseMarkDown: func,
+    showText: bool,
+    highlightedDescription: node,
+    description: string,
+};
+
+CardContent.defaultProps = {
+    showLabel: false,
+    detailText: '',
+    showIconAlt: false,
+    iconAlt: '',
+    isTitleOnly: false,
+    highlightedTitle: null,
+    title: '',
+    headingAria: '',
+    headingLevel: 3,
+    parseMarkDown: undefined,
+    showText: false,
+    highlightedDescription: null,
+    description: '',
+};
 
 export default CardContent;

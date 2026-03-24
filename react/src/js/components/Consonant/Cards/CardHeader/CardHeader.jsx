@@ -1,4 +1,5 @@
 import React from 'react';
+import { string, bool, func, number } from 'prop-types';
 import VideoButton from '../../Modal/videoButton';
 
 const CardHeader = ({
@@ -99,5 +100,61 @@ const CardHeader = ({
         }
     </div>
 );
+
+CardHeader.propTypes = {
+    image: string,
+    altText: string,
+    isIcon: bool,
+    showBanner: bool,
+    bannerBackgroundColor: string,
+    bannerFontColor: string,
+    bannerIcon: string,
+    bannerDescription: string,
+    showBadge: bool,
+    badgeText: string,
+    showVideoButton: bool,
+    videoURL: string,
+    videoURLToUse: string,
+    gateVideo: bool,
+    title: string,
+    onFocus: func,
+    tabIndex: number,
+    videoButtonClassName: string,
+    showLogo: bool,
+    logoSrc: string,
+    logoAlt: string,
+    logoBg: string,
+    logoBorderBg: string,
+    showIconLogo: bool,
+    cardIcon: string,
+};
+
+CardHeader.defaultProps = {
+    image: '',
+    altText: '',
+    isIcon: false,
+    showBanner: false,
+    bannerBackgroundColor: '',
+    bannerFontColor: '',
+    bannerIcon: '',
+    bannerDescription: '',
+    showBadge: false,
+    badgeText: '',
+    showVideoButton: false,
+    videoURL: '',
+    videoURLToUse: '',
+    gateVideo: false,
+    title: '',
+    onFocus: undefined,
+    tabIndex: 0,
+    videoButtonClassName: '',
+    showLogo: false,
+    logoSrc: '',
+    logoAlt: '',
+    logoBg: '',
+    logoBorderBg: '',
+    showIconLogo: false,
+    cardIcon: '',
+};
 
 export default CardHeader;
