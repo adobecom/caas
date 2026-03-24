@@ -12,10 +12,6 @@
  *   5. Submit publish and assert success in the summary modal
  */
 
-// disalbe eslint for whole file
-/* eslint-disable */
-
-
 const getAutomationToken = require('../helpers/getAutomationToken');
 
 const DEV_POSTXDM_URL = 'https://14257-milocaasproxy-dev.adobeio-static.net/api/v1/web/milocaas/postXDM';
