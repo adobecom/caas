@@ -72,6 +72,9 @@ web_modules/
 .env
 .env.test
 
+# Local dev notes & reference (never commit)
+.notes/
+
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache

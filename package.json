@@ -1,6 +1,6 @@
 {
   "name": "CaaS",
-  "version": "0.45.9",
+  "version": "0.47.1",
   "private": false,
   "description": "",
   "scripts": {
@@ -88,6 +88,7 @@
     "cross-env": "^5.2.1",
     "css-loader": "^0.28.11",
     "cz-conventional-changelog": "^3.3.0",
+    "dotenv": "^17.3.1",
     "duplicate-package-checker-webpack-plugin": "^2.0.1",
     "elasticsearch": "^16.7.1",
     "enforce-branch-name": "^1.1.2",
@@ -117,7 +118,7 @@
     "minify": "^9.1.0",
     "msw": "^0.21.2",
     "postcss": "^8.4.31",
-    "postcss-sass": "^0.2.0",
+    "postcss-sass": "^0.5.0",
     "puppeteer": "^23.6.1",
     "react-axe": "^3.5.4",
     "react-test-renderer": "^16.12.0",

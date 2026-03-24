@@ -12,18 +12,39 @@
  *   5. Submit publish and assert success in the summary modal
  */
 
+// disalbe eslint for whole file
+/* eslint-disable */
+
+
 const getAutomationToken = require('../helpers/getAutomationToken');
 
-const BULK_PUBLISHER_URL = 'https://milo.adobe.com/tools/send-to-caas/bulkpublisher.html';
 const DEV_POSTXDM_URL = 'https://14257-milocaasproxy-dev.adobeio-static.net/api/v1/web/milocaas/postXDM';
 const CLIENT_ID = 'b04b4dc3c96f4a2082f57237d84547a4';
-const pageUrls = [
-  { url: 'https://milo.adobe.com/drafts/jmichnow/cards/document113', expected: 'success' },
-  { url: 'https://milo.adobe.com/fr/drafts/gayane/bulkpublishcontent/bpcontent1', expected: 'success' },
-  { url: 'https://milo.adobe.com/fr/drafts/gayane/bulkpublishcontent/bpcontent2', expected: 'success' },
-  { url: 'https://milo.adobe.com/fr/drafts/gayane/bulkpublishcontent/bpcontent3', expected: 'success' },
-  { url: 'https://milo.adobe.com/fr/drafts/gayane/bulkpublishcontent/fake', expected: 'failure' },
-]
+
+const ENVIRONMENTS = [
+  {
+    name: 'prod',
+    bulkPublisherUrl: 'https://milo.adobe.com/tools/send-to-caas/bulkpublisher.html',
+    pageUrls: [
+      { url: 'https://milo.adobe.com/drafts/jmichnow/cards/document113', expected: 'success' },
+      { url: 'https://milo.adobe.com/fr/drafts/gayane/bulkpublishcontent/bpcontent1', expected: 'success' },
+      { url: 'https://milo.adobe.com/fr/drafts/gayane/bulkpublishcontent/bpcontent2', expected: 'success' },
+      { url: 'https://milo.adobe.com/fr/drafts/gayane/bulkpublishcontent/bpcontent3', expected: 'success' },
+      { url: 'https://milo.adobe.com/fr/drafts/gayane/bulkpublishcontent/fake', expected: 'failure' },
+    ]
+  },
+  {
+    name: 'stage',
+    bulkPublisherUrl: 'https://stage--milo--adobecom.aem.live/tools/send-to-caas/bulkpublisher.html',
+    pageUrls: [
+      { url: 'https://stage--milo--adobecom.aem.live/drafts/jmichnow/cards/document113', expected: 'success' },
+      { url: 'https://milo.stage.adobe.com/fr/drafts/gayane/bulkpublishcontent/bpcontent1', expected: 'success' },
+      { url: 'https://milo.stage.adobe.com/fr/drafts/gayane/bulkpublishcontent/bpcontent2', expected: 'success' },
+      { url: 'https://milo.stage.adobe.com/fr/drafts/gayane/bulkpublishcontent/bpcontent3', expected: 'success' },
+      { url: 'https://milo.stage.adobe.com/fr/drafts/gayane/bulkpublishcontent/fake', expected: 'failure' },
+    ]
+  },
+];
 
 const SEL = {
   urlInput: '#urls',
@@ -47,9 +68,11 @@ const publishUrlHelper = async (input = pageUrls[0]) => {
   await urlInput.setValue(urlString);
 
   await $(SEL.publishButton).click();
-
+  
+  // Wait for progress modal to appear
   await $(SEL.progressModal).waitForDisplayed({ timeout: 10000 });
 
+  // Wait for summary text in modal (appears after publish completes)
   await browser.waitUntil(
     () => browser.execute(() => {
       const el = document.querySelector('.tingle-modal-box__content');
@@ -63,6 +86,7 @@ const publishUrlHelper = async (input = pageUrls[0]) => {
     () => document.querySelector('.tingle-modal-box__content')?.textContent || '',
   );
 
+  // Dismiss summary modal
   const tingleBtn = await $(SEL.tingleBtn);
   if (await tingleBtn.isDisplayed()) await tingleBtn.click();
 
@@ -70,147 +94,149 @@ const publishUrlHelper = async (input = pageUrls[0]) => {
   expect(summaryText).toContain(`Failed to publish ${failedUrlsLength} pages`);
 }
 
-describe('Bulk Publisher — Send to CaaS (dev)', () => {
-  let accessToken;
+ENVIRONMENTS.forEach(({ name, bulkPublisherUrl, pageUrls }) => {
+  describe(`Bulk Publisher [${name}] — Send to CaaS (dev)`, () => {
+    let accessToken;
 
-  before(async () => {
-    accessToken = await getAutomationToken();
-  });
+    before(async () => {
+      accessToken = await getAutomationToken();
+    });
 
-  beforeEach(async () => {
-    await browser.url(BULK_PUBLISHER_URL);
+    beforeEach(async () => {
+      await browser.url(bulkPublisherUrl);
 
-    // Wait for IMS library to be available
-    await browser.waitUntil(
-      () => browser.execute(() => typeof window.adobeImsFactory !== 'undefined'),
-      { timeout: 15000, timeoutMsg: 'adobeImsFactory did not load' },
-    );
+      // Wait for IMS library to be available
+      await browser.waitUntil(
+        () => browser.execute(() => typeof window.adobeImsFactory !== 'undefined'),
+        { timeout: 15000, timeoutMsg: 'adobeImsFactory did not load' },
+      );
 
-    // Create adobeIMS instance with our client_id + standalone token
-    await browser.execute((token, clientId) => {
-      const instance = window.adobeImsFactory.createIMSLib({
-        client_id: clientId,
-        scope: 'AdobeID,openid',
-        standalone: { token, expirems: 86399000 },
-        onAccessToken: () => {},
-        onReady: () => {},
-        onError: () => {},
-      }, 'adobeIMS');
-      window.adobeIMS = instance;
-      instance.initialize();
-    }, accessToken, CLIENT_ID);
+      // Create adobeIMS instance with our client_id + standalone token
+      await browser.execute((token, clientId) => {
+        const instance = window.adobeImsFactory.createIMSLib({
+          client_id: clientId,
+          scope: 'AdobeID,openid',
+          standalone: { token, expirems: 86399000 },
+          onAccessToken: () => {},
+          onReady: () => {},
+          onError: () => {},
+        }, 'adobeIMS');
+        window.adobeIMS = instance;
+        instance.initialize();
+      }, accessToken, CLIENT_ID);
 
-    // Wait for initialize to settle, then force token in via setStandAloneToken
-    await browser.pause(2000);
-    await browser.execute((token) => {
-      window.adobeIMS.setStandAloneToken({ token, expirems: 86399000 });
-    }, accessToken);
+      // Wait for initialize to settle, then force token in via setStandAloneToken
+      await browser.pause(2000);
+      await browser.execute((token) => {
+        window.adobeIMS.setStandAloneToken({ token, expirems: 86399000 });
+      }, accessToken);
 
-    // Confirm getAccessToken() has our token
-    await browser.waitUntil(
-      () => browser.execute(() => !!window.adobeIMS.getAccessToken()),
-      { timeout: 10000, timeoutMsg: 'adobeIMS.getAccessToken() did not return a token' },
-    );
+      // Confirm getAccessToken() has our token
+      await browser.waitUntil(
+        () => browser.execute(() => !!window.adobeIMS.getAccessToken()),
+        { timeout: 10000, timeoutMsg: 'adobeIMS.getAccessToken() did not return a token' },
+      );
 
-    // Intercept window.fetch: redirect any postXDM call to the dev endpoint
-    // and ensure caas-env is set to dev with our service account token
-    await browser.execute((devUrl, token) => {
-      const origFetch = window.fetch;
-      window.fetch = (url, opts = {}) => {
-        if (typeof url === 'string' && url.includes('postXDM')) {
-          const headers = { ...(opts.headers || {}), 'caas-env': 'dev', 'Authorization': `Bearer ${token}` };
-          return origFetch(devUrl, { ...opts, headers });
+      // Intercept window.fetch: redirect any postXDM call to the dev endpoint
+      // and ensure caas-env is set to dev with our service account token
+      await browser.execute((devUrl, token) => {
+        const origFetch = window.fetch;
+        window.fetch = (url, opts = {}) => {
+          if (typeof url === 'string' && url.includes('postXDM')) {
+            const headers = { ...(opts.headers || {}), 'caas-env': 'dev', 'Authorization': `Bearer ${token}` };
+            return origFetch(devUrl, { ...opts, headers });
+          }
+          return origFetch(url, opts);
+        };
+      }, DEV_POSTXDM_URL, accessToken);
+
+      // Select the "milo" preset (host=milo.adobe.com, repo=milo) to pass validation
+      await browser.execute(() => {
+        const preset = document.querySelector('#presetSelector');
+        preset.value = 'milo';
+        preset.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+      await browser.pause(500);
+      await browser.execute(() => {
+        const env = document.querySelector('#caasEnv');
+        if (env) { env.value = 'dev'; env.dispatchEvent(new Event('change', { bubbles: true })); }
+      });
+    });
+
+    it('should successfully publish a page to CaaS dev', async () => {
+      await publishUrlHelper();
+    });
+
+    it('should publish as draft when draftOnly is checked', async () => {
+      // Check draft-only via JS (avoids any visibility issues)
+      await browser.execute(() => {
+        const cb = document.querySelector('#draftOnly');
+        if (!cb.checked) cb.click();
+      });
+
+      await publishUrlHelper();
+    });
+
+    it('should return correct feature card data when Language First Localization is checked', async () => {
+      // Check Language First Localization via JS (avoids any visibility issues)
+      await browser.execute(() => {
+        const cb = document.querySelector('#languageFirst');
+        if (!cb.checked) cb.click();
+      });
+
+      await publishUrlHelper();
+
+      // check that the entity id a is present 
+      const entityIdLink = await $(SEL.entityId);
+      expect(await entityIdLink.isDisplayed()).toBe(true);
+
+      // check that the href contains /dev/ which indicates it was published to the dev environment
+      const href = await entityIdLink.getAttribute('href');
+      expect(href).toContain('-chimera-dev');
+
+
+      async function pollForData(startTime = Date.now()) {
+        const timeout = 120000; // Total timeout of 2 minutes
+        const timePassed = Date.now() - startTime;
+
+        // Check if the overall timeout has been exceeded
+        if (timePassed >= timeout) {
+          console.error('Polling timed out.');
+          return null;
         }
-        return origFetch(url, opts);
-      };
-    }, DEV_POSTXDM_URL, accessToken);
 
-    // Select the "milo" preset (host=milo.adobe.com, repo=milo) to pass validation
-    await browser.execute(() => {
-      const preset = document.querySelector('#presetSelector');
-      preset.value = 'milo';
-      preset.dispatchEvent(new Event('change', { bubbles: true }));
-    });
-    await browser.pause(500);
-    await browser.execute(() => {
-      const env = document.querySelector('#caasEnv');
-      if (env) { env.value = 'dev'; env.dispatchEvent(new Event('change', { bubbles: true })); }
-    });
-  });
+        // remove debug=1& from href
+        const hrefNoDebug = href.replace('debug=1&', '');
 
-  it('should successfully publish a page to CaaS dev', async () => {
-    await publishUrlHelper();
-  });
+        // call get on the href and check the response.cards[0].country == 'xx'
+        const response = await fetch(hrefNoDebug)
+          .then(res => res.json())
+          .catch(err => {
+            throw new Error(`Failed to fetch published entity: ${err.message}`);
+          });
 
-  it('should publish as draft when draftOnly is checked', async () => {
-    // Check draft-only via JS (avoids any visibility issues)
-    await browser.execute(() => {
-      const cb = document.querySelector('#draftOnly');
-      if (!cb.checked) cb.click();
-    });
+        if (response.cards?.[0]?.country === 'xx') {
+          return response;
+        }
 
-    await publishUrlHelper();
-  });
+        console.log(`Waiting for expected country value 'xx', current value: ${response.cards?.[0]?.country || 'N/A'}`);
 
-  it('should return correct feature card data when Language First Localization is checked', async () => {
-    // Check Language First Localization via JS (avoids any visibility issues)
-    await browser.execute(() => {
-      const cb = document.querySelector('#languageFirst');
-      if (!cb.checked) cb.click();
-    });
-
-    await publishUrlHelper();
-
-    // check that the entity id a is present 
-    const entityIdLink = await $(SEL.entityId);
-    expect(await entityIdLink.isDisplayed()).toBe(true);
-
-    // check that the href contains /dev/ which indicates it was published to the dev environment
-    const href = await entityIdLink.getAttribute('href');
-    expect(href).toContain('-chimera-dev');
-
-
-    async function pollForData(startTime = Date.now()) {
-      const timeout = 120000; // Total timeout of 2 minutes
-      const timePassed = Date.now() - startTime;
-
-      // Check if the overall timeout has been exceeded
-      if (timePassed >= timeout) {
-        console.error('Polling timed out.');
-        return null;
+        // retry every 5 seconds until timeout
+        await browser.pause(5000);
+        return pollForData(startTime);
       }
 
-      // remove debug=1& from href
-      const hrefNoDebug = href.replace('debug=1&', '');
+      const data = await pollForData();
+      expect(data.cards[0].country).toBe('xx');
+    });
 
-      // call get on the href and check the response.cards[0].country == 'xx'
-      const response = await fetch(hrefNoDebug)
-        .then(res => res.json())
-        .catch(err => {
-          throw new Error(`Failed to fetch published entity: ${err.message}`);
-        });
+    it('should successfully publish multiple pages in one go', async () => {
+      await publishUrlHelper(pageUrls.slice(0, 2));
+    });
 
-      if (response.cards?.[0]?.country === 'xx') {
-        return response;
-      }
-
-      console.log(`Waiting for expected country value 'xx', current value: ${response.cards?.[0]?.country || 'N/A'}`);
-
-      // retry every 5 seconds until timeout
-      await browser.pause(5000);
-      return pollForData(startTime);
-    }
-
-    const data = await pollForData();
-    expect(data.cards[0].country).toBe('xx');
-  });
-
-  it('should successfully publish multiple pages in one go', async () => {
-    await publishUrlHelper(pageUrls.slice(0, 2));
-  });
-
-  it('should show failures in the summary modal when an invalid URL is included', async () => {
-    // Using the fake URL from the array
-    await publishUrlHelper(pageUrls[4]);
+    it('should show failures in the summary modal when an invalid URL is included', async () => {
+      // Using the fake URL from the array
+      await publishUrlHelper(pageUrls[4]);
+    });
   });
 });
