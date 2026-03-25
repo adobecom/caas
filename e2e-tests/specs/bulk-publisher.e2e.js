@@ -51,11 +51,36 @@ ENVIRONMENTS.forEach(({ name, bulkPublisherUrl, testPageUrl }) => {
     beforeEach(async () => {
       await browser.url(bulkPublisherUrl);
 
-      // Wait for IMS library to be available
+      // Wait for page to fully load first
       await browser.waitUntil(
-        () => browser.execute(() => typeof window.adobeImsFactory !== 'undefined'),
-        { timeout: 15000, timeoutMsg: 'adobeImsFactory did not load' },
+        () => browser.execute(() => document.readyState === 'complete'),
+        { timeout: 30000, timeoutMsg: 'Page did not finish loading' },
       );
+
+      // Wait for IMS library to be available (increased timeout for CI network variability)
+      try {
+        await browser.waitUntil(
+          () => browser.execute(() => typeof window.adobeImsFactory !== 'undefined'),
+          {
+            timeout: 30000,
+            timeoutMsg: 'adobeImsFactory did not load after 30s. Check network/CDN availability.',
+            interval: 500,
+          },
+        );
+      } catch (error) {
+        // Capture diagnostic info on failure
+        const diagnostics = await browser.execute(() => {
+          const scripts = Array.from(document.querySelectorAll('script')).map(s => s.src);
+          return {
+            readyState: document.readyState,
+            scriptsLoaded: scripts,
+            imsFactory: typeof window.adobeImsFactory,
+            locationHref: window.location.href,
+          };
+        });
+        console.error('IMS load failure diagnostics:', JSON.stringify(diagnostics, null, 2));
+        throw error;
+      }
 
       // Create adobeIMS instance with our client_id + standalone token
       await browser.execute((token, clientId) => {
