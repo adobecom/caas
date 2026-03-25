@@ -1,5 +1,12 @@
 
 
+## [0.47.2](https://github.com/adobecom/caas/compare/0.47.1...0.47.2) (2026-03-25)
+
+
+### Bug Fixes
+
+* increase timeout and add diagnostics for intermittent bulk publisher e2e failures ([ce0d1c1](https://github.com/adobecom/caas/commit/ce0d1c127ce584a8f48c2353e823683aa00c041b))
+
 ## [0.47.1](https://github.com/adobecom/caas/compare/0.47.0...0.47.1) (2026-03-24)
 
 
