@@ -1,5 +1,12 @@
 
 
+## [0.47.3](https://github.com/adobecom/caas/compare/0.47.2...0.47.3) (2026-03-26)
+
+
+### Bug Fixes
+
+* **MWPW-177209:** adds aria-current ([#438](https://github.com/adobecom/caas/issues/438)) ([3e300f5](https://github.com/adobecom/caas/commit/3e300f57f9557e0dacaaa5503d319907a43f44f3))
+
 ## [0.47.2](https://github.com/adobecom/caas/compare/0.47.1...0.47.2) (2026-03-25)
 
 
