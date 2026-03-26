@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 exports.config = {
     specs: [
         './e2e-tests/specs/bulk-publisher.e2e.js',

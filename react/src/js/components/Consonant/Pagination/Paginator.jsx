@@ -178,7 +178,8 @@ const Paginator = (props) => {
                                 onClick={handleClick}
                                 type="button"
                                 className="consonant-Pagination-itemBtn"
-                                tabIndex="0">
+                                tabIndex="0"
+                                aria-current={currentPageNumber === item ? 'true' : 'false'}>
                                 {item}
                             </button>
                         </li>
