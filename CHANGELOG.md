@@ -1,5 +1,12 @@
 
 
+## [0.47.4](https://github.com/adobecom/caas/compare/0.47.3...0.47.4) (2026-03-26)
+
+
+### Bug Fixes
+
+* **mwpw-189897:** adds aria-label to search field ([#439](https://github.com/adobecom/caas/issues/439)) ([3372cd0](https://github.com/adobecom/caas/commit/3372cd0fc2cd006b273b2efd13b0fddbd91060f6))
+
 ## [0.47.3](https://github.com/adobecom/caas/compare/0.47.2...0.47.3) (2026-03-26)
 
 
