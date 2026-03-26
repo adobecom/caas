@@ -131,6 +131,7 @@ const Search = ({
                         value={value}
                         onChange={handleSearch}
                         ref={textInput}
+                        aria-label="Search Here"
                         className="consonant-Search-input" />
                     <button
                         data-testid="consonant-Search-inputClear"
