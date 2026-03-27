@@ -21,26 +21,76 @@ const ENVIRONMENTS = [
   {
     name: 'prod',
     bulkPublisherUrl: 'https://milo.adobe.com/tools/send-to-caas/bulkpublisher.html',
-    testPageUrl: 'https://milo.adobe.com/drafts/jmichnow/cards/document113',
+    pageUrls: [
+      { url: 'https://milo.adobe.com/drafts/jmichnow/cards/document113', expected: 'success' },
+      { url: 'https://milo.adobe.com/fr/drafts/gayane/bulkpublishcontent/bpcontent1', expected: 'success' },
+      { url: 'https://milo.adobe.com/fr/drafts/gayane/bulkpublishcontent/bpcontent2', expected: 'success' },
+      { url: 'https://milo.adobe.com/fr/drafts/gayane/bulkpublishcontent/bpcontent3', expected: 'success' },
+      { url: 'https://milo.adobe.com/fr/drafts/gayane/bulkpublishcontent/fake', expected: 'failure' },
+    ]
   },
   {
     name: 'stage',
     bulkPublisherUrl: 'https://stage--milo--adobecom.aem.live/tools/send-to-caas/bulkpublisher.html',
-    testPageUrl: 'https://stage--milo--adobecom.aem.live/drafts/jmichnow/cards/document113',
+    pageUrls: [
+      { url: 'https://stage--milo--adobecom.aem.live/drafts/jmichnow/cards/document113', expected: 'success' },
+      { url: 'https://milo.stage.adobe.com/fr/drafts/gayane/bulkpublishcontent/bpcontent1', expected: 'success' },
+      { url: 'https://milo.stage.adobe.com/fr/drafts/gayane/bulkpublishcontent/bpcontent2', expected: 'success' },
+      { url: 'https://milo.stage.adobe.com/fr/drafts/gayane/bulkpublishcontent/bpcontent3', expected: 'success' },
+      { url: 'https://milo.stage.adobe.com/fr/drafts/gayane/bulkpublishcontent/fake', expected: 'failure' },
+    ]
   },
 ];
 
 const SEL = {
-  urlInput:      '#urls',
+  urlInput: '#urls',
   caasEnvSelect: '#caasEnv',
   publishButton: '#bulkpublish',
   progressModal: '.tingle-modal',
-  modalContent:  '.tingle-modal-box__content',
-  tingleBtn:     '.tingle-btn',
-  successRowOk:  'table.success-table td.ok',
+  modalContent: '.tingle-modal-box__content',
+  tingleBtn: '.tingle-btn',
+  successRowOk: 'table.success-table td.ok',
+  entityId: '.entityid a'
 };
 
-ENVIRONMENTS.forEach(({ name, bulkPublisherUrl, testPageUrl }) => {
+const publishUrlHelper = async (input) => {
+  const urls = Array.isArray(input) ? input : [input];
+
+  const successUrlsLength = urls.filter(u => u.expected === 'success').length;
+  const failedUrlsLength = urls.filter(u => u.expected === 'failure').length;
+  const urlString = urls.map(u => u.url).join('\n');
+  const urlInput = await $(SEL.urlInput);
+  await urlInput.clearValue();
+  await urlInput.setValue(urlString);
+
+  await $(SEL.publishButton).click();
+  
+  // Wait for progress modal to appear
+  await $(SEL.progressModal).waitForDisplayed({ timeout: 10000 });
+
+  // Wait for summary text in modal (appears after publish completes)
+  await browser.waitUntil(
+    () => browser.execute(() => {
+      const el = document.querySelector('.tingle-modal-box__content');
+      const text = el?.textContent || '';
+      return text.includes('Successfully published') || text.includes('Failed to publish');
+    }),
+    { timeout: 60000, timeoutMsg: 'Publish summary did not appear' },
+  );
+
+  const summaryText = await browser.execute(
+    () => document.querySelector('.tingle-modal-box__content')?.textContent || '',
+  );
+
+  // Dismiss summary modal
+  const tingleBtn = await $(SEL.tingleBtn);
+  if (await tingleBtn.isDisplayed()) await tingleBtn.click();
+
+  expect(summaryText).toContain(`Successfully published ${successUrlsLength} pages`);
+  expect(summaryText).toContain(`Failed to publish ${failedUrlsLength} pages`);
+}
+
+ENVIRONMENTS.forEach(({ name, bulkPublisherUrl, pageUrls }) => {
   describe(`Bulk Publisher [${name}] — Send to CaaS (dev)`, () => {
     let accessToken;
 
@@ -135,34 +185,7 @@ ENVIRONMENTS.forEach(({ name, bulkPublisherUrl, testPageUrl }) => {
     });
 
     it('should successfully publish a page to CaaS dev', async () => {
-      const urlInput = await $(SEL.urlInput);
-      await urlInput.clearValue();
-      await urlInput.setValue(testPageUrl);
-
-      await $(SEL.publishButton).click();
-
-      // Wait for progress modal to appear
-      await $(SEL.progressModal).waitForDisplayed({ timeout: 10000 });
-
-      // Wait for summary text in modal (appears after publish completes)
-      await browser.waitUntil(
-        () => browser.execute(() => {
-          const el = document.querySelector('.tingle-modal-box__content');
-          const text = el?.textContent || '';
-          return text.includes('Successfully published') || text.includes('Failed to publish');
-        }),
-        { timeout: 60000, timeoutMsg: 'Publish summary did not appear' },
-      );
-
-      const summaryText = await browser.execute(
-        () => document.querySelector('.tingle-modal-box__content')?.textContent || '',
-      );
-
-      // Dismiss summary modal
-      const tingleBtn = await $(SEL.tingleBtn);
-      if (await tingleBtn.isDisplayed()) await tingleBtn.click();
-
-      expect(summaryText).toMatch(/Successfully published [1-9]/);
+      await publishUrlHelper(pageUrls[0]);
     });
 
     it('should publish as draft when draftOnly is checked', async () => {
@@ -172,31 +195,54 @@ ENVIRONMENTS.forEach(({ name, bulkPublisherUrl, testPageUrl }) => {
         if (!cb.checked) cb.click();
       });
 
-      const urlInput = await $(SEL.urlInput);
-      await urlInput.clearValue();
-      await urlInput.setValue(testPageUrl);
+      await publishUrlHelper(pageUrls[0]);
+    });
 
-      await $(SEL.publishButton).click();
+    // TODO look into why lingo doesn't work
+    it.skip('should return correct feature card data when Language First Localization is checked', async () => {
+      // Check Language First Localization via JS (avoids any visibility issues)
+      await browser.execute(() => {
+        const cb = document.querySelector('#languageFirst');
+        if (!cb.checked) cb.click();
+      });
 
-      await $(SEL.progressModal).waitForDisplayed({ timeout: 10000 });
+      await publishUrlHelper(pageUrls[0]);
 
-      await browser.waitUntil(
-        () => browser.execute(() => {
-          const el = document.querySelector('.tingle-modal-box__content');
-          const text = el?.textContent || '';
-          return text.includes('Successfully published') || text.includes('Failed to publish');
-        }),
-        { timeout: 60000, timeoutMsg: 'Publish summary did not appear' },
-      );
+      // check that the entity id a is present 
+      const entityIdLink = await $(SEL.entityId);
+      expect(await entityIdLink.isDisplayed()).toBe(true);
 
-      const summaryText = await browser.execute(
-        () => document.querySelector('.tingle-modal-box__content')?.textContent || '',
-      );
+      // check that the href contains /dev/ which indicates it was published to the dev environment
+      const href = await entityIdLink.getAttribute('href');
+      expect(href).toContain('-chimera-dev');
+      let data = null;
+      // remove debug=1& from href
+      const hrefNoDebug = href.replace('debug=1&', '');
 
-      const tingleBtn = await $(SEL.tingleBtn);
-      if (await tingleBtn.isDisplayed()) await tingleBtn.click();
+      while (Date.now() - startTime < 30000) {
+        try {
+          const response = await fetch(hrefNoDebug);
+          const json = await response.json();
+          lastCountry = json.cards?.[0]?.country || 'N/A';
+          if (lastCountry === 'xx') {
+            data = json;
+            break;
+          }
+        } catch (err) {
+          // Transient errors -- retry
+        }
+      }
+      if (!data) throw new Error(`Polling timed out. Last country: '${lastCountry}', expected: 'xx'`);
+      expect(data.cards[0].country).toBe('xx');
+    });
 
-      expect(summaryText).toMatch(/Successfully published [1-9]/);
+    it('should successfully publish multiple pages in one go', async () => {
+      await publishUrlHelper(pageUrls.slice(0, 2));
+    });
+
+    it('should show failures in the summary modal when an invalid URL is included', async () => {
+      // Using the fake URL from the array
+      await publishUrlHelper(pageUrls[4]);
     });
   });
 });
