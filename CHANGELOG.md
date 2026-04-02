@@ -1,5 +1,19 @@
 
 
+## [0.48.0](https://github.com/adobecom/caas/compare/0.47.5...0.48.0) (2026-03-30)
+
+
+### Features
+
+* **mwpw-190735:** splits Card.jsx into different files for each card style ([#432](https://github.com/adobecom/caas/issues/432)) ([8ac8cd0](https://github.com/adobecom/caas/commit/8ac8cd0d7ab9cb1736b34264a5272fc13549086b))
+
+## [0.47.5](https://github.com/adobecom/caas/compare/0.47.4...0.47.5) (2026-03-27)
+
+
+### Tests
+
+* **mwpw-190668:** add more test in bulk publisher test suite ([#429](https://github.com/adobecom/caas/issues/429)) ([3ea2961](https://github.com/adobecom/caas/commit/3ea29617edd079ffdb45c644c349fe54e771aec9))
+
 ## [0.47.4](https://github.com/adobecom/caas/compare/0.47.3...0.47.4) (2026-03-26)
 
 
