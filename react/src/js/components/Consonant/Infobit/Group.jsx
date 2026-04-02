@@ -124,6 +124,7 @@ const Group = (props) => {
                         );
 
                     case INFOBIT_TYPE.LINK:
+                        if (infobit.style === "hidden") return '';
                         return (
                             <TextLink
                                 {...infobit}
