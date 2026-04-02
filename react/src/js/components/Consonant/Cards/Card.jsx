@@ -399,11 +399,7 @@ const Card = (props) => {
 
     const cardData = useMemo(() => ({
         id, lh, cardClassName, cardStyle, bladeVariant,
-<<<<<<< HEAD
         optimizedImage, altText, cta2Text,
-=======
-        optimizedImage, altText,
->>>>>>> main
         hasBanner, disableBanners,
         bannerBackgroundColor: bannerBackgroundColorToUse,
         bannerFontColor: bannerFontColorToUse,
