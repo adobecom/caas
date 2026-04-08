@@ -1,5 +1,12 @@
 
 
+## [0.48.1](https://github.com/adobecom/caas/compare/0.48.0...0.48.1) (2026-04-08)
+
+
+### Bug Fixes
+
+* **MWPW-190007:** increases contrast on carousel nav focus ring ([#441](https://github.com/adobecom/caas/issues/441)) ([b3fb3e3](https://github.com/adobecom/caas/commit/b3fb3e35c8c3e34d5f72c10ac17c9edee44a0146))
+
 ## [0.48.0](https://github.com/adobecom/caas/compare/0.47.5...0.48.0) (2026-03-30)
 
 
