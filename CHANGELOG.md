@@ -1,5 +1,12 @@
 
 
+## [0.48.2](https://github.com/adobecom/caas/compare/0.48.1...0.48.2) (2026-04-09)
+
+
+### Bug Fixes
+
+* **MWPW-190906:** updates focus color on dark background ([#442](https://github.com/adobecom/caas/issues/442)) ([c8db5e5](https://github.com/adobecom/caas/commit/c8db5e552e792b5e7f22174966f3f2b8b5cd0658))
+
 ## [0.48.1](https://github.com/adobecom/caas/compare/0.48.0...0.48.1) (2026-04-08)
 
 
