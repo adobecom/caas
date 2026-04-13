@@ -15,7 +15,7 @@ const TOTAL_CARDS = 7;
 
 const filterOverrides = {
     collection: {
-        endpoint: '../../mock-json/test-group-filters.json',
+        endpoint: '../../caas/mock-json/test-group-filters.json',
         totalCardsToShow: '-1',
         resultsPerPage: '20',
     },
