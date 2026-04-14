@@ -212,7 +212,7 @@ const Card = (props) => {
     const useCenterVideoPlay = getConfig('collection', 'useCenterVideoPlay');
     const searchEnabled = getConfig('search', 'enabled');
     const editorialOpenVariant = getConfig('collection', 'editorialOpenVariant') || false;
-    const useRoundedCorners = getConfig('collection', 'oneHalfRoundedCorners') || false;
+    const useRoundedCorners = getConfig('collection', 'useRoundedCorners') || false;
 
     const cardClassName = classNames({
         'consonant-Card': true,
