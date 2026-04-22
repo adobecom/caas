@@ -143,16 +143,15 @@ jobs:
       - name: Setup Chrome
         uses: browser-actions/setup-chrome@v1
         with:
-          chrome-version: 'stable'
+          # Pinned to 146 to match chromedriver@^146.0.5 from package.json.
+          # chromedriver@147+ requires Node >=20 (ESM-only proxy-agent@8),
+          # which breaks on this job's Node 16.13.1 runner.
+          chrome-version: '146'
       - uses: actions/setup-node@v3
         with:
           node-version: 16.13.1
       - name: Install
         run: npm ci
-      - name: Install Matching ChromeDriver
-        run: | 
-          CHROME_VERSION=$(google-chrome --version | cut -d' ' -f3 | cut -d'.' -f1) 
-          npm install chromedriver@$CHROME_VERSION
       - name: E2E
         run: npm run test:e2e-prod
   run-bulk-publisher-e2e:
@@ -165,16 +164,15 @@ jobs:
       - name: Setup Chrome
         uses: browser-actions/setup-chrome@v1
         with:
-          chrome-version: 'stable'
+          # Pinned to 146 to match chromedriver@^146.0.5 from package.json.
+          # chromedriver@147+ requires Node >=20 (ESM-only proxy-agent@8),
+          # which breaks on this job's Node 18 runner.
+          chrome-version: '146'
       - uses: actions/setup-node@v3
         with:
           node-version: 18
       - name: Install
         run: npm ci
-      - name: Install Matching ChromeDriver
-        run: |
-          CHROME_VERSION=$(google-chrome --version | cut -d' ' -f3 | cut -d'.' -f1)
-          npm install chromedriver@$CHROME_VERSION
       - name: Run Bulk Publisher E2E Tests
         run: npm run test:bulk-publisher
         env:

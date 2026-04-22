@@ -13,16 +13,17 @@ jobs:
       - name: Setup Chrome
         uses: browser-actions/setup-chrome@v1
         with:
-          chrome-version: 'stable'
+          # Pinned to Chrome 146 to match the chromedriver@^146.0.5 version in
+          # package.json. This avoids the failure mode where Chrome auto-updates
+          # past the chromedriver npm wrapper's Node-version support window:
+          # chromedriver@147+ requires Node >=20 (via ESM-only proxy-agent@8),
+          # which breaks on the Node 18 runner.
+          chrome-version: '146'
       - uses: actions/setup-node@v3
         with:
           node-version: 18
       - name: Install
         run: npm ci
-      - name: Install Matching ChromeDriver
-        run: |
-          CHROME_VERSION=$(google-chrome --version | cut -d' ' -f3 | cut -d'.' -f1)
-          npm install chromedriver@$CHROME_VERSION
       - name: Run Bulk Publisher E2E Tests
         run: npm run test:bulk-publisher
         env:
