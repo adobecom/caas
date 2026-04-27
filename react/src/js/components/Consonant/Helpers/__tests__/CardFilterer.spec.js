@@ -238,6 +238,91 @@ tags: ['event1'] },
             expect(first[0].id).toBe(1);
             expect(last[0].id).toBe(1);
         });
+
+        describe('Local First Sort – with recency threshold', () => {
+            const monthsAgo = (n) => {
+                const d = new Date();
+                d.setMonth(d.getMonth() - n);
+                return d.toISOString();
+            };
+
+            test('no recencyThreshold falls back to alphabetical sort', () => {
+                const cards = [
+                    { id: 1, country: 'US', modifiedDate: monthsAgo(1) },
+                    { id: 2, country: 'DE', modifiedDate: monthsAgo(6) },
+                    { id: 3, country: 'FR', modifiedDate: monthsAgo(2) },
+                ];
+                const cardFilterer = new CardFilterer(cards);
+                const { filteredCards } = cardFilterer.sortCards({ sort: 'localfirst' });
+                expect(filteredCards.map(c => c.country)).toEqual(['DE', 'FR', 'US']);
+            });
+
+            test('fresh regional cards appear before stale regional cards', () => {
+                const cards = [
+                    { id: 1, country: 'SG', modifiedDate: monthsAgo(6) },
+                    { id: 2, country: 'US', modifiedDate: monthsAgo(1) },
+                ];
+                const cardFilterer = new CardFilterer(cards);
+                const { filteredCards } = cardFilterer.sortCards({ sort: 'localfirst', recencyThreshold: 3 });
+                expect(filteredCards.map(c => c.id)).toEqual([2, 1]);
+            });
+
+            test('fresh regional cards appear before global cards', () => {
+                const cards = [
+                    { id: 1, country: '', modifiedDate: monthsAgo(1) },
+                    { id: 2, country: 'US', modifiedDate: monthsAgo(1) },
+                ];
+                const cardFilterer = new CardFilterer(cards);
+                const { filteredCards } = cardFilterer.sortCards({ sort: 'localfirst', recencyThreshold: 3 });
+                expect(filteredCards.map(c => c.id)).toEqual([2, 1]);
+            });
+
+            test('stale regional and global cards are sorted together by modifiedDate descending', () => {
+                const cards = [
+                    { id: 1, country: 'SG', modifiedDate: monthsAgo(6) },
+                    { id: 2, country: '', modifiedDate: monthsAgo(2) },
+                    { id: 3, country: 'DE', modifiedDate: monthsAgo(8) },
+                ];
+                const cardFilterer = new CardFilterer(cards);
+                const { filteredCards } = cardFilterer.sortCards({ sort: 'localfirst', recencyThreshold: 3 });
+                expect(filteredCards.map(c => c.id)).toEqual([2, 1, 3]);
+            });
+
+            test('regional card just before threshold boundary is treated as stale', () => {
+                const cutoff = new Date();
+                cutoff.setMonth(cutoff.getMonth() - 3);
+                const justBeforeCutoff = new Date(cutoff.getTime() - 1).toISOString();
+                const cards = [
+                    { id: 1, country: 'US', modifiedDate: justBeforeCutoff },
+                    { id: 2, country: '', modifiedDate: monthsAgo(6) },
+                ];
+                const cardFilterer = new CardFilterer(cards);
+                const { filteredCards } = cardFilterer.sortCards({ sort: 'localfirst', recencyThreshold: 3 });
+                expect(filteredCards.map(c => c.id)).toEqual([1, 2]);
+            });
+
+            test('regional card with no modifiedDate is treated as stale', () => {
+                const cards = [
+                    { id: 1, country: 'US' },
+                    { id: 2, country: 'DE', modifiedDate: monthsAgo(1) },
+                ];
+                const cardFilterer = new CardFilterer(cards);
+                const { filteredCards } = cardFilterer.sortCards({ sort: 'localfirst', recencyThreshold: 3 });
+                expect(filteredCards[0].id).toBe(2);
+                expect(filteredCards[1].id).toBe(1);
+            });
+
+            test('all fresh regional cards are sorted newest-first by modifiedDate', () => {
+                const cards = [
+                    { id: 1, country: 'US', modifiedDate: monthsAgo(2) },
+                    { id: 2, country: 'DE', modifiedDate: monthsAgo(1) },
+                    { id: 3, country: 'FR', modifiedDate: monthsAgo(0) },
+                ];
+                const cardFilterer = new CardFilterer(cards);
+                const { filteredCards } = cardFilterer.sortCards({ sort: 'localfirst', recencyThreshold: 3 });
+                expect(filteredCards.map(c => c.id)).toEqual([3, 2, 1]);
+            });
+        });
     });
     describe('keepCardsWithinDateRange', () => {
         PROPS.keepCardsWithinDateRange.forEach(({ cards, expectedValue }) => {

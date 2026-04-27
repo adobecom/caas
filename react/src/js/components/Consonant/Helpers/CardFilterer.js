@@ -154,7 +154,10 @@ export default class CardFilterer {
                 this.filteredCards = getTitleDescSort(this.filteredCards);
                 break;
             case SORT_TYPES.LOCALFIRST:
-                this.filteredCards = getLocalFirstSort(this.filteredCards);
+                this.filteredCards = getLocalFirstSort(
+                    this.filteredCards,
+                    sortOption.recencyThreshold ?? null,
+                );
                 break;
             case SORT_TYPES.LOCALLAST:
                 this.filteredCards = getLocalLastSort(this.filteredCards);

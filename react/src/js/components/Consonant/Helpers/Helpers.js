@@ -453,11 +453,41 @@ export const getModifiedAscSort = cards => getModifiedDescSort(cards).reverse();
  * @param {*} cards 
  * @returns 
  */
-export const getLocalFirstSort = cards => cards.sort((cardOne, cardTwo) => {
-    const cardOneLocale = getByPath(cardOne, 'country', '') || '';
-    const cardTwoLocale = getByPath(cardTwo, 'country', '') || '';
-    return cardOneLocale.localeCompare(cardTwoLocale);
-});
+export const getLocalFirstSort = (cards, recencyThresholdMonths = null) => {
+    if (recencyThresholdMonths === null) {
+        return cards.sort((cardOne, cardTwo) => {
+            const cardOneLocale = getByPath(cardOne, 'country', '') || '';
+            const cardTwoLocale = getByPath(cardTwo, 'country', '') || '';
+            return cardOneLocale.localeCompare(cardTwoLocale);
+        });
+    }
+
+    const cutoff = new Date();
+    cutoff.setMonth(cutoff.getMonth() - recencyThresholdMonths);
+
+    const byModifiedDateDesc = (a, b) => {
+        const aDate = getByPath(a, 'modifiedDate', '') || '';
+        const bDate = getByPath(b, 'modifiedDate', '') || '';
+        return bDate.localeCompare(aDate);
+    };
+
+    const freshRegional = [];
+    const stale = [];
+
+    cards.forEach((card) => {
+        const country = getByPath(card, 'country', '') || '';
+        const modifiedDate = getByPath(card, 'modifiedDate', null);
+        const isFresh = modifiedDate && new Date(modifiedDate) >= cutoff;
+
+        if (country && isFresh) {
+            freshRegional.push(card);
+        } else {
+            stale.push(card);
+        }
+    });
+
+    return [...freshRegional.sort(byModifiedDateDesc), ...stale.sort(byModifiedDateDesc)];
+};
 
 export const getLocalLastSort = cards => getLocalFirstSort(cards).reverse();
 /**
