@@ -86,3 +86,27 @@ export const DEFAULT_PROPS_ICON = {
     onClick: jest.fn(),
     onFocus: jest.fn(),
 };
+
+export const DEFAULT_PROPS_BLOG = {
+    ...CARD_PROPS,
+    bannerMap: {},
+    footer,
+    onClick: jest.fn(),
+    onFocus: jest.fn(),
+};
+
+export const DEFAULT_PROPS_BUTTON = {
+    ...CARD_PROPS,
+    footer: [{
+        left: [],
+        center: [{
+            type: 'link',
+            href: 'https://milo.adobe.com',
+            text: 'Learn more',
+        }],
+        right: [],
+    }],
+    overlayLink: 'https://www.some-url.com',
+    onClick: jest.fn(),
+    onFocus: jest.fn(),
+};

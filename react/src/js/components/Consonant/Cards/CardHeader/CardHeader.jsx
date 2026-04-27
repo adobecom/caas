@@ -1,3 +1,14 @@
+/**
+ * Card Header
+ * Generates the header section of the card. it may include any combination of these elements:
+ * - Image
+ * - Banner
+ * - Badge
+ * - Video Button
+ * - Logo
+ * - Icon Logo
+ */
+
 import React from 'react';
 import { string, bool, func, number } from 'prop-types';
 import VideoButton from '../../Modal/videoButton';
