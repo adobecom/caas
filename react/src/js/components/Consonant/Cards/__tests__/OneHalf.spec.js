@@ -253,6 +253,28 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         expect(videoButton).toHaveClass('center');
     });
 
+    test('should not apply rounded corners by default', () => {
+        renderCard({
+            cardStyle,
+        });
+
+        const cardElement = screen.getByTestId('consonant-Card');
+        expect(cardElement).not.toHaveClass('rounded-corners');
+    });
+
+    test('should apply rounded corners when enabled in config', () => {
+        renderCard({
+            cardStyle,
+        }, {
+            collection: {
+                useRoundedCorners: true,
+            },
+        });
+
+        const cardElement = screen.getByTestId('consonant-Card');
+        expect(cardElement).toHaveClass('rounded-corners');
+    });
+
     // Accessibility tests with jest-axe
     testA11yForConfigs(renderCard, [
         { 
