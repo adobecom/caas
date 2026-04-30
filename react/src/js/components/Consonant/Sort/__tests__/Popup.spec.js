@@ -9,6 +9,14 @@ import { testAccessibility } from '../../Testing/Utils/a11yTest';
 const renderSortPopup = setup(Popup, DEFAULT_PROPS);
 
 describe('Consonant/Sort/Popup', () => {
+    test('Should show sort by label', async () => {
+        renderSortPopup();
+        const sortPopLabel = screen.getByTestId('consonant-Select-label');
+
+        expect(sortPopLabel).toHaveTextContent('Sort by:');
+        expect(sortPopLabel).not.toHaveAttribute('aria-label');
+    });
+
     test('Should show all sort options', async () => {
         const { props: { values } } = renderSortPopup();
         const sortPopup = screen.getByTestId('consonant-Select-btn');
