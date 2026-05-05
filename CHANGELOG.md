@@ -1,5 +1,12 @@
 
 
+## [0.49.0](https://github.com/adobecom/caas/compare/0.48.4...0.49.0) (2026-05-05)
+
+
+### Features
+
+* **mwpw-189783:** new card styles button and rounded corners ([#444](https://github.com/adobecom/caas/issues/444)) ([9986cdb](https://github.com/adobecom/caas/commit/9986cdbc9092bb7a2ee278a66809d8e31287f830))
+
 ## [0.48.4](https://github.com/adobecom/caas/compare/0.48.3...0.48.4) (2026-05-05)
 
 
