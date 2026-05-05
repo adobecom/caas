@@ -1,3 +1,10 @@
+/**
+ * Card Content
+ * Generates the content section of the card. it may include any combination of these elements:
+ * - DetailsText
+ * - Title
+ * - Description
+ */
 import React from 'react';
 import { string, bool, func, number, node } from 'prop-types';
 import { removeMarkDown } from '../../Helpers/general';
