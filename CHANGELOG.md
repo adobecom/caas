@@ -1,5 +1,12 @@
 
 
+## [0.48.4](https://github.com/adobecom/caas/compare/0.48.3...0.48.4) (2026-05-05)
+
+
+### Bug Fixes
+
+* **mwpw-189715:** adds screen reader announcement to filter result ([#452](https://github.com/adobecom/caas/issues/452)) ([9c0667d](https://github.com/adobecom/caas/commit/9c0667dcc3148938db1fab1d2fad0229272de2a9))
+
 ## [0.48.3](https://github.com/adobecom/caas/compare/0.48.2...0.48.3) (2026-04-22)
 
 ## [0.48.2](https://github.com/adobecom/caas/compare/0.48.1...0.48.2) (2026-04-09)
