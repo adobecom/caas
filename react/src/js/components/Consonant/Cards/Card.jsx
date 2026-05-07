@@ -93,6 +93,8 @@ const CardType = {
     origin: string,
     ariaHidden: bool,
     tabIndex: number,
+    country: string,
+    reference: string,
 };
 
 const defaultProps = {
@@ -119,11 +121,15 @@ const defaultProps = {
     origin: '',
     ariaHidden: false,
     tabIndex: 0,
+    country: '',
+    reference: '',
 };
 
 const Card = (props) => {
     const {
         id,
+        country,
+        reference,
         footer,
         lh,
         tags,
@@ -398,7 +404,7 @@ const Card = (props) => {
     const optimizedImage = optimizeImageUrl(image);
 
     const cardData = useMemo(() => ({
-        id, lh, cardClassName, cardStyle, bladeVariant,
+        id, country, reference, lh, cardClassName, cardStyle, bladeVariant,
         optimizedImage, altText, cta2Text,
         hasBanner, disableBanners,
         bannerBackgroundColor: bannerBackgroundColorToUse,

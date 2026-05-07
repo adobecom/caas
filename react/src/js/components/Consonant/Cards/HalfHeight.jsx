@@ -7,7 +7,7 @@ import LinkBlocker from './LinkBlocker/LinkBlocker';
 
 const HalfHeight = () => {
     const {
-        id, lh, cardClassName,
+        id, country, reference, lh, cardClassName,
         optimizedImage, altText,
         hasBanner, disableBanners,
         bannerBackgroundColor, bannerFontColor, bannerIcon, bannerDescription,
@@ -26,7 +26,9 @@ const HalfHeight = () => {
             daa-lh={lh}
             className={`half-height ${cardClassName}`}
             data-testid="consonant-Card"
-            id={id}>
+            id={id}
+            {...(country && { 'data-country': country })}
+            {...(reference && { 'data-card-url': reference })}>
             <CardHeader
                 image={optimizedImage}
                 altText={altText}

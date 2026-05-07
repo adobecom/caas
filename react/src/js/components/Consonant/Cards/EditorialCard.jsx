@@ -8,7 +8,7 @@ import LinkBlocker from './LinkBlocker/LinkBlocker';
 
 const EditorialCard = () => {
     const {
-        id, lh, cardClassName,
+        id, country, reference, lh, cardClassName,
         optimizedImage, altText,
         hasBanner, disableBanners,
         bannerBackgroundColor, bannerFontColor, bannerIcon, bannerDescription,
@@ -29,7 +29,9 @@ const EditorialCard = () => {
             daa-lh={lh}
             className={`editorial-card ${cardClassName}`}
             data-testid="consonant-Card"
-            id={id}>
+            id={id}
+            {...(country && { 'data-country': country })}
+            {...(reference && { 'data-card-url': reference })}>
             <CardHeader
                 image={optimizedImage}
                 altText={altText}

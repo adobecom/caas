@@ -7,7 +7,7 @@ import LinkBlocker from './LinkBlocker/LinkBlocker';
 
 const Product = () => {
     const {
-        id, lh, cardClassName,
+        id, country, reference, lh, cardClassName,
         highlightedTitle, title, headingAria, headingLevel,
         highlightedDescription, description,
         parseMarkDown,
@@ -23,7 +23,9 @@ const Product = () => {
             daa-lh={lh}
             className={`product ${cardClassName}`}
             data-testid="consonant-Card"
-            id={id}>
+            id={id}
+            {...(country && { 'data-country': country })}
+            {...(reference && { 'data-card-url': reference })}>
             <div className="consonant-Card-content">
                 <CardContent
                     showLabel={false}

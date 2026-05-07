@@ -6,7 +6,7 @@ import LinkBlocker from './LinkBlocker/LinkBlocker';
 
 const IconCard = () => {
     const {
-        id, lh, cardClassName,
+        id, country, reference, lh, cardClassName,
         optimizedImage, altText,
         cardIcon, iconAlt,
         detailText,
@@ -21,7 +21,9 @@ const IconCard = () => {
             daa-lh={lh}
             className={`icon-card ${cardClassName}`}
             data-testid="consonant-Card"
-            id={id}>
+            id={id}
+            {...(country && { 'data-country': country })}
+            {...(reference && { 'data-card-url': reference })}>
             <CardHeader
                 image={optimizedImage}
                 altText={altText}
