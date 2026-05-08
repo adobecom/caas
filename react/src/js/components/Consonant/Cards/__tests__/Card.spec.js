@@ -144,7 +144,7 @@ describe('Card Component - Specific Conditions', () => {
     });
 });
 
-describe('MEP debug attributes for Hightlight CaaS feature', () => {
+describe('MEP debug attributes for Highlight CaaS feature', () => {
     const cardStyles = [
         'one-half', 'three-fourths', 'double-wide', 'half-height',
         'product', 'text-card', 'full-card', 'icon-card', 'news-card',
