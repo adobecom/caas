@@ -6,7 +6,7 @@ import LinkBlocker from './LinkBlocker/LinkBlocker';
 
 const HorizontalCard = () => {
     const {
-        id, lh, cardClassName,
+        id, country, reference, lh, cardClassName,
         optimizedImage, altText,
         hasBanner, disableBanners,
         bannerBackgroundColor, bannerFontColor, bannerIcon, bannerDescription,
@@ -23,7 +23,9 @@ const HorizontalCard = () => {
             daa-lh={lh}
             className={`horizontal-card ${cardClassName}`}
             data-testid="consonant-Card"
-            id={id}>
+            id={id}
+            {...(country && { 'data-country': country })}
+            {...(reference && { 'data-card-url': reference })}>
             <CardHeader
                 image={optimizedImage}
                 altText={altText}

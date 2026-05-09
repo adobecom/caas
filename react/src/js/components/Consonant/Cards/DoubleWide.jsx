@@ -6,7 +6,7 @@ import LinkBlocker from './LinkBlocker/LinkBlocker';
 
 const DoubleWide = () => {
     const {
-        id, lh, cardClassName,
+        id, country, reference, lh, cardClassName,
         optimizedImage, altText,
         hasBanner, disableBanners,
         bannerBackgroundColor, bannerFontColor, bannerIcon, bannerDescription,
@@ -25,7 +25,9 @@ const DoubleWide = () => {
             daa-lh={lh}
             className={`double-wide ${cardClassName}`}
             data-testid="consonant-Card"
-            id={id}>
+            id={id}
+            {...(country && { 'data-country': country })}
+            {...(reference && { 'data-card-url': reference })}>
             <CardHeader
                 image={optimizedImage}
                 altText={altText}

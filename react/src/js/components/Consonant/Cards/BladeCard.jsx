@@ -8,7 +8,7 @@ import LinkBlocker from './LinkBlocker/LinkBlocker';
 
 const BladeCard = () => {
     const {
-        id, lh, cardClassName, bladeVariant,
+        id, country, reference, lh, cardClassName, bladeVariant,
         optimizedImage, altText,
         hasBanner, disableBanners,
         bannerBackgroundColor, bannerFontColor, bannerIcon, bannerDescription,
@@ -29,7 +29,9 @@ const BladeCard = () => {
             daa-lh={lh}
             className={`blade-card ${cardClassName} ${bladeVariant}`}
             data-testid="consonant-Card"
-            id={id}>
+            id={id}
+            {...(country && { 'data-country': country })}
+            {...(reference && { 'data-card-url': reference })}>
             <CardHeader
                 image={optimizedImage}
                 altText={altText}

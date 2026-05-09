@@ -5,6 +5,8 @@ import LinkBlocker from './LinkBlocker/LinkBlocker';
 const ButtonCard = () => {
     const {
         id,
+        country,
+        reference,
         lh,
         cardClassName,
         title,
@@ -19,7 +21,9 @@ const ButtonCard = () => {
             daa-lh={lh}
             className={`button-card ${cardClassName}`}
             data-testid="consonant-Card"
-            id={id}>
+            id={id}
+            {...(country && { 'data-country': country })}
+            {...(reference && { 'data-card-url': reference })}>
             <div className="consonant-Card-content">
                 <a href={overlay} className="consonant-ButtonCard-link">{cta2Text}</a>
             </div>
