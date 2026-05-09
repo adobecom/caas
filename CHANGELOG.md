@@ -1,5 +1,12 @@
 
 
+## [0.50.0](https://github.com/adobecom/caas/compare/0.49.0...0.50.0) (2026-05-09)
+
+
+### Features
+
+* **mwpw-194203:** add data-country/data-card-url to card variants with parameterized unit tests ([d921a02](https://github.com/adobecom/caas/commit/d921a02980a163da51a187114856fa683a206f1d))
+
 ## [0.49.0](https://github.com/adobecom/caas/compare/0.48.4...0.49.0) (2026-05-05)
 
 
