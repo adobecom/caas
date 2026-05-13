@@ -1,3 +1,4 @@
+// AI Review Test - triggering workflow
 // Left filter panel: selecting, deselecting, and clearing filters
 const generateUrl = require('../helpers/generateUrl');
 
