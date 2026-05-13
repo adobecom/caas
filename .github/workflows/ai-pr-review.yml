@@ -19,20 +19,25 @@ jobs:
 
       - name: Get PR diff
         run: |
-          git diff origin/${{ github.base_ref }}...origin/${{ github.head_ref }} > pr_diff.txt
+          git fetch origin ${{ github.base_ref }}
+          git diff origin/${{ github.base_ref }}...HEAD > pr_diff.txt
+          wc -c pr_diff.txt
 
-      - name: AI Code Review
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          REPO: ${{ github.repository }}
+      - name: Write review script
         run: |
-          python3 << 'EOF'
-          import os, json, urllib.request, subprocess
+          cat > review.py << 'PYEOF'
+          import os, json, sys
+          import urllib.request
 
-          with open("pr_diff.txt", "r") as f:
-              diff = f.read()[:12000]
+          diff_file = "pr_diff.txt"
+          with open(diff_file, "r", errors="replace") as f:
+              diff = f.read(12000)
+
+          if not diff.strip():
+              print("No diff found, skipping review.")
+              with open("comment.txt", "w") as f:
+                  f.write("## AI Code Review\n\nNo code changes detected in this PR.")
+              sys.exit(0)
 
           payload = {
               "model": "gpt-4o",
@@ -40,36 +45,47 @@ jobs:
               "messages": [
                   {
                       "role": "system",
-                      "content": "You are an expert code reviewer. Review the following PR diff and provide concise, constructive feedback. Focus on: bugs, security issues, performance, code style, and best practices. Format your response in markdown with clear sections."
+                      "content": "You are an expert code reviewer. Review the PR diff and give concise, constructive feedback covering: bugs, security issues, performance, code style, and best practices. Use markdown with clear sections."
                   },
                   {
                       "role": "user",
-                      "content": f"Please review this PR diff:\n\n{diff}"
+                      "content": "Please review this PR diff:\n\n" + diff
                   }
               ]
           }
 
           req = urllib.request.Request(
               "https://api.openai.com/v1/chat/completions",
-              data=json.dumps(payload).encode(),
+              data=json.dumps(payload).encode("utf-8"),
               headers={
                   "Content-Type": "application/json",
-                  "Authorization": f"Bearer {os.environ['OPENAI_API_KEY']}"
+                  "Authorization": "Bearer " + os.environ["OPENAI_API_KEY"]
               }
           )
 
-          with urllib.request.urlopen(req) as res:
-              result = json.loads(res.read())
+          with urllib.request.urlopen(req, timeout=60) as res:
+              result = json.loads(res.read().decode("utf-8"))
 
           review = result["choices"][0]["message"]["content"]
-
-          body = f"## U0001f916 AI Code Review\n\n{review}\n\n---\n*This PR was automatically reviewed by an AI assistant.*"
+          body = "## \U0001F916 AI Code Review\n\n" + review + "\n\n---\n*This PR was automatically reviewed by an AI assistant.*"
 
           with open("comment.txt", "w") as f:
               f.write(body)
 
-          EOF
+          print("Review written successfully.")
+          PYEOF
 
+      - name: Run AI review
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python3 review.py
+
+      - name: Post comment
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
           gh pr comment $PR_NUMBER \
             --repo $REPO \
             --body-file comment.txt
