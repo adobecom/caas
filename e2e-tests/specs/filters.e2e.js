@@ -1,4 +1,4 @@
-// AI Review Test v2 - fixed workflow
+// AI Review Test v3
 // Left filter panel: selecting, deselecting, and clearing filters
 const generateUrl = require('../helpers/generateUrl');
 
