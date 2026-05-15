@@ -1,5 +1,12 @@
 
 
+## [0.50.6](https://github.com/adobecom/caas/compare/0.50.5...0.50.6) (2026-05-15)
+
+
+### Bug Fixes
+
+* **mwpw-00000:** pin Chrome binary path in wdio configs to unblock E2E ([eab90fa](https://github.com/adobecom/caas/commit/eab90faf81e4dad5749d3c772e2eba75dd017d02)), closes [#458](https://github.com/adobecom/caas/issues/458)
+
 ## [0.50.5](https://github.com/adobecom/caas/compare/0.50.4...0.50.5) (2026-05-13)
 
 ## [0.50.4](https://github.com/adobecom/caas/compare/0.50.3...0.50.4) (2026-05-13)
