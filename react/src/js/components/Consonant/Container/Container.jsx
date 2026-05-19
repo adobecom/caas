@@ -145,7 +145,7 @@ const Container = (props) => {
     const topPanelSearchPlaceholder = getConfig('search', 'i18n.topFilterPanel.searchPlaceholderText');
     const searchPlaceholderText = getConfig('search', 'i18n.filterInfo.searchPlaceholderText');
     const noResultsTitle = getConfig('search', 'i18n.noResultsTitle');
-    const noResultsDescription = getConfig('search', 'i18n.noResultsDescription');
+    const authoredNoResultsDescription = getConfig('search', 'i18n.noResultsDescription');
     const apiFailureTitle = getConfig('collection', 'i18n.onErrorTitle');
     const apiFailureDescription = getConfig('collection', 'i18n.onErrorDescription');
     const isLazy = getConfig('collection', 'lazyload');
@@ -217,6 +217,7 @@ const Container = (props) => {
 
     const [, updateState] = React.useState();
     const scrollElementRef = useRef(null);
+    const box = useRef();
     const nextTransition = React.useCallback(() => updateState({}), []);
     /**
      * @typedef {Object} urlState
@@ -381,6 +382,7 @@ const Container = (props) => {
      * @type {[Boolean, Function]} ApiFailure
      */
     const [isApiFailure, setApiFailure] = useState(false);
+    const [noResultsDescription, setNoResultsDescription] = useState(authoredNoResultsDescription);
     const [randomSortId, setRandomSortId] = useState(null);
     const [isFirstLoad, setIsFirstLoad] = useState(true);
     const [visibleStamp, setVisibleStamp] = useState();
@@ -401,6 +403,19 @@ const Container = (props) => {
     /**
      **** Helper Methods ****
      */
+
+    function removeCollectionFromPage() {
+        if (!box.current) return;
+        const collectionRoot = box.current.closest('div#caas.caas-preview');
+        const isConfigurator = collectionRoot && collectionRoot.closest('div.caas-config');
+        if (collectionRoot && collectionRoot.parentNode) {
+            if (isConfigurator) {
+                setNoResultsDescription('The server returned no results for this configuaration.');
+            } else {
+                collectionRoot.parentNode.removeChild(collectionRoot);
+            }
+        }
+    }
 
     function getParentChild(id) {
         let i = id.length;
@@ -1064,6 +1079,7 @@ const Container = (props) => {
                     setIsFirstLoad(true);
                     if (!getByPath(payload, 'cards.length')) {
                         logLana({ message: `no cards return by query to this endpoint: ${endPoint}`, tags: 'collection' });
+                        removeCollectionFromPage();
                         return;
                     }
                     if (payload.isHashed && !hashedRef.current) {
@@ -1421,8 +1437,6 @@ const Container = (props) => {
             document.removeEventListener('keydown', handleMobileFilterEscape);
         };
     }, [showMobileFilters]);
-
-    const box = useRef();
 
     useEffect(() => {
         /* istanbul ignore if */
