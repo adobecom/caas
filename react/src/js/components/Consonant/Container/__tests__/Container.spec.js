@@ -1863,4 +1863,108 @@ describe('Container Component', () => {
             expect(screen.getByText('Photoshop')).toBeInTheDocument();
         });
     });
+
+    describe('removeCollectionFromPage (mwpw-186583)', () => {
+        // Minimal config used across all removeCollectionFromPage tests
+        const emptyCardsConfig = {
+            collection: {
+                totalCardsToShow: 50,
+                lazyLoad: false,
+                resultsPerPage: 10,
+                endpoint: 'https://www.somedomain.com/some-test-api.json',
+                cardStyle: 'none',
+                showTotalResults: false,
+                i18n: {
+                    prettyDateIntervalFormat: '{LLL} {dd} | {timeRange} {timeZone}',
+                    totalResultsText: '{total} Results',
+                    title: 'Test Collection',
+                    titleHeadingLevel: 'h2',
+                },
+            },
+            search: {
+                i18n: {
+                    noResultsTitle: 'No Results Found',
+                    noResultsDescription: 'Authored description.',
+                },
+            },
+        };
+
+        beforeEach(() => {
+            // Return an empty cards array to trigger removeCollectionFromPage
+            global.fetch = jest.fn(() =>
+                Promise.resolve({
+                    ok: true,
+                    status: 200,
+                    statusText: 'success',
+                    url: 'test.html',
+                    json: () => Promise.resolve({ cards: [] }),
+                }));
+        });
+
+        afterEach(() => {
+            // Restore the default cards mock used by the rest of the suite
+            global.fetch = jest.fn(() =>
+                Promise.resolve({
+                    ok: 'ok',
+                    status: 200,
+                    statusText: 'success',
+                    url: 'test.html',
+                    json: () => Promise.resolve({ cards }),
+                }));
+        });
+
+        test('does nothing when no div#caas.caas-preview ancestor exists', async () => {
+            // Render without any special wrapper — box.current.closest('div#caas.caas-preview')
+            // returns null, so the collection stays in the DOM.
+            let container;
+            await act(async () => {
+                const result = render(<Container config={emptyCardsConfig} />);
+                container = result.container;
+            });
+
+            expect(container.querySelector('.consonant-Wrapper')).toBeInTheDocument();
+        });
+
+        test('removes the collection from DOM on a published page when API returns no cards', async () => {
+            // Simulate a published page: the component lives inside div#caas.caas-preview
+            const caasPreview = document.createElement('div');
+            caasPreview.id = 'caas';
+            caasPreview.className = 'caas-preview';
+            document.body.appendChild(caasPreview);
+
+            await act(async () => {
+                render(<Container config={emptyCardsConfig} />, { container: caasPreview });
+            });
+
+            // removeCollectionFromPage should have called parentNode.removeChild(caasPreview)
+            expect(document.body.contains(caasPreview)).toBe(false);
+        });
+
+        test('shows a configurator message instead of removing when inside .caas-config', async () => {
+            // Simulate the configurator: div.caas-config > div#caas.caas-preview
+            const configWrapper = document.createElement('div');
+            configWrapper.className = 'caas-config';
+            const caasPreview = document.createElement('div');
+            caasPreview.id = 'caas';
+            caasPreview.className = 'caas-preview';
+            configWrapper.appendChild(caasPreview);
+            document.body.appendChild(configWrapper);
+
+            await act(async () => {
+                render(<Container config={emptyCardsConfig} />, { container: caasPreview });
+            });
+
+            // Collection wrapper must remain in the DOM (not removed)
+            expect(document.body.contains(configWrapper)).toBe(true);
+
+            // setNoResultsDescription should surface the configurator-specific message
+            // via the NoResultsView (shown when no cards loaded and not loading)
+            await waitFor(() => {
+                expect(screen.getByText('The server returned no results for this configuration.')).toBeInTheDocument();
+            });
+
+            // Cleanup manually-appended wrapper
+            document.body.removeChild(configWrapper);
+        });
+    });
 });

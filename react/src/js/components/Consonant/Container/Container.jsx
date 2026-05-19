@@ -410,7 +410,7 @@ const Container = (props) => {
         const isConfigurator = collectionRoot && collectionRoot.closest('div.caas-config');
         if (collectionRoot && collectionRoot.parentNode) {
             if (isConfigurator) {
-                setNoResultsDescription('The server returned no results for this configuaration.');
+                setNoResultsDescription('The server returned no results for this configuration.');
             } else {
                 collectionRoot.parentNode.removeChild(collectionRoot);
             }
