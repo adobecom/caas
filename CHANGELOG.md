@@ -1,5 +1,12 @@
 
 
+## [0.50.7](https://github.com/adobecom/caas/compare/0.50.6...0.50.7) (2026-05-19)
+
+
+### Chores
+
+* **mwpw-00000:** update gitignore ([2e7c9d2](https://github.com/adobecom/caas/commit/2e7c9d21a23b4f489c5b9cbc268b81679b843d72))
+
 ## [0.50.6](https://github.com/adobecom/caas/compare/0.50.5...0.50.6) (2026-05-15)
 
 
