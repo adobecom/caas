@@ -1,5 +1,12 @@
 
 
+## [0.50.8](https://github.com/adobecom/caas/compare/0.50.7...0.50.8) (2026-05-19)
+
+
+### Bug Fixes
+
+* **mwpw-00000:** pin Chrome binary in scheduled bulk-publisher e2e ([e68faba](https://github.com/adobecom/caas/commit/e68faba119be5364015f55851251c1cab0c8400a)), closes [#461](https://github.com/adobecom/caas/issues/461) [#466](https://github.com/adobecom/caas/issues/466)
+
 ## [0.50.7](https://github.com/adobecom/caas/compare/0.50.6...0.50.7) (2026-05-19)
 
 
