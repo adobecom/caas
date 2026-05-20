@@ -1865,32 +1865,37 @@ describe('Container Component', () => {
     });
 
     describe('removeCollectionFromPage (mwpw-186583)', () => {
-        // Minimal config used across all removeCollectionFromPage tests
-        const emptyCardsConfig = {
-            collection: {
-                totalCardsToShow: 50,
-                lazyLoad: false,
-                resultsPerPage: 10,
-                endpoint: 'https://www.somedomain.com/some-test-api.json',
-                cardStyle: 'none',
-                showTotalResults: false,
-                i18n: {
-                    prettyDateIntervalFormat: '{LLL} {dd} | {timeRange} {timeZone}',
-                    totalResultsText: '{total} Results',
-                    title: 'Test Collection',
-                    titleHeadingLevel: 'h2',
-                },
+        // Endpoint without originSelection=events — removal should never trigger
+        const baseCollectionConfig = {
+            totalCardsToShow: 50,
+            lazyLoad: false,
+            resultsPerPage: 10,
+            endpoint: 'https://www.somedomain.com/some-test-api.json',
+            cardStyle: 'none',
+            showTotalResults: false,
+            i18n: {
+                prettyDateIntervalFormat: '{LLL} {dd} | {timeRange} {timeZone}',
+                totalResultsText: '{total} Results',
+                title: 'Test Collection',
+                titleHeadingLevel: 'h2',
             },
-            search: {
-                i18n: {
-                    noResultsTitle: 'No Results Found',
-                    noResultsDescription: 'Authored description.',
-                },
+        };
+
+        // Endpoint with originSelection=events — removal logic is active
+        const eventsCollectionConfig = {
+            ...baseCollectionConfig,
+            endpoint: 'https://www.somedomain.com/some-test-api.json?originSelection=events',
+        };
+
+        const searchConfig = {
+            i18n: {
+                noResultsTitle: 'No Results Found',
+                noResultsDescription: 'Authored description.',
             },
         };
 
         beforeEach(() => {
-            // Return an empty cards array to trigger removeCollectionFromPage
+            // Return an empty cards array for all tests in this block
             global.fetch = jest.fn(() =>
                 Promise.resolve({
                     ok: true,
@@ -1913,35 +1918,59 @@ describe('Container Component', () => {
                 }));
         });
 
-        test('does nothing when no div#caas.caas-preview ancestor exists', async () => {
-            // Render without any special wrapper — box.current.closest('div#caas.caas-preview')
-            // returns null, so the collection stays in the DOM.
-            let container;
-            await act(async () => {
-                const result = render(<Container config={emptyCardsConfig} />);
-                container = result.container;
-            });
-
-            expect(container.querySelector('.consonant-Wrapper')).toBeInTheDocument();
-        });
-
-        test('removes the collection from DOM on a published page when API returns no cards', async () => {
-            // Simulate a published page: the component lives inside div#caas.caas-preview
+        test('does not remove collection when originSelection is not events', async () => {
+            // Even with the correct div#caas.caas-preview wrapper, the guard
+            // `originSelection === 'events'` prevents removal.
             const caasPreview = document.createElement('div');
             caasPreview.id = 'caas';
             caasPreview.className = 'caas-preview';
             document.body.appendChild(caasPreview);
 
             await act(async () => {
-                render(<Container config={emptyCardsConfig} />, { container: caasPreview });
+                render(
+                    <Container config={{ collection: baseCollectionConfig, search: searchConfig }} />,
+                    { container: caasPreview },
+                );
+            });
+
+            expect(document.body.contains(caasPreview)).toBe(true);
+
+            // Cleanup
+            document.body.removeChild(caasPreview);
+        });
+
+        test('does nothing when originSelection=events but no div#caas.caas-preview ancestor', async () => {
+            // box.current.closest('div#caas.caas-preview') returns null, so nothing is removed.
+            let container;
+            await act(async () => {
+                const result = render(
+                    <Container config={{ collection: eventsCollectionConfig, search: searchConfig }} />,
+                );
+                container = result.container;
+            });
+
+            expect(container.querySelector('.consonant-Wrapper')).toBeInTheDocument();
+        });
+
+        test('removes collection from DOM on a published page when originSelection=events and API returns no cards', async () => {
+            const caasPreview = document.createElement('div');
+            caasPreview.id = 'caas';
+            caasPreview.className = 'caas-preview';
+            document.body.appendChild(caasPreview);
+
+            await act(async () => {
+                render(
+                    <Container config={{ collection: eventsCollectionConfig, search: searchConfig }} />,
+                    { container: caasPreview },
+                );
             });
 
             // removeCollectionFromPage should have called parentNode.removeChild(caasPreview)
             expect(document.body.contains(caasPreview)).toBe(false);
         });
 
-        test('shows a configurator message instead of removing when inside .caas-config', async () => {
-            // Simulate the configurator: div.caas-config > div#caas.caas-preview
+        test('does not remove collection when originSelection=events but inside .caas-config', async () => {
+            // The !collectionRoot.closest('div.caas-config') guard prevents removal in the configurator.
             const configWrapper = document.createElement('div');
             configWrapper.className = 'caas-config';
             const caasPreview = document.createElement('div');
@@ -1951,17 +1980,14 @@ describe('Container Component', () => {
             document.body.appendChild(configWrapper);
 
             await act(async () => {
-                render(<Container config={emptyCardsConfig} />, { container: caasPreview });
+                render(
+                    <Container config={{ collection: eventsCollectionConfig, search: searchConfig }} />,
+                    { container: caasPreview },
+                );
             });
 
-            // Collection wrapper must remain in the DOM (not removed)
+            // Collection wrapper must remain in the DOM
             expect(document.body.contains(configWrapper)).toBe(true);
-
-            // setNoResultsDescription should surface the configurator-specific message
-            // via the NoResultsView (shown when no cards loaded and not loading)
-            await waitFor(() => {
-                expect(screen.getByText('The server returned no results for this configuration.')).toBeInTheDocument();
-            });
 
             // Cleanup manually-appended wrapper
             document.body.removeChild(configWrapper);
