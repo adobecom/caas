@@ -405,15 +405,9 @@ const Container = (props) => {
      */
 
     function removeCollectionFromPage() {
-        if (!box.current) return;
         const collectionRoot = box.current.closest('div#caas.caas-preview');
-        const isConfigurator = collectionRoot && collectionRoot.closest('div.caas-config');
-        if (collectionRoot && collectionRoot.parentNode) {
-            if (isConfigurator) {
-                setNoResultsDescription('The server returned no results for this configuration.');
-            } else {
-                collectionRoot.parentNode.removeChild(collectionRoot);
-            }
+        if (collectionRoot && collectionRoot.parentNode && !collectionRoot.closest('div.caas-config')) {
+            collectionRoot.parentNode.removeChild(collectionRoot);
         }
     }
 
@@ -1036,6 +1030,8 @@ const Container = (props) => {
             collectionEndpoint = collectionEndpointURI.toString();
         }
 
+        const originSelection = collectionEndpointURI.searchParams.get('originSelection');
+
         setLoading(true);
 
         /**
@@ -1079,7 +1075,9 @@ const Container = (props) => {
                     setIsFirstLoad(true);
                     if (!getByPath(payload, 'cards.length')) {
                         logLana({ message: `no cards return by query to this endpoint: ${endPoint}`, tags: 'collection' });
-                        removeCollectionFromPage();
+                        if (originSelection === 'events' && box.current) {
+                            removeCollectionFromPage();
+                        }
                         return;
                     }
                     if (payload.isHashed && !hashedRef.current) {
