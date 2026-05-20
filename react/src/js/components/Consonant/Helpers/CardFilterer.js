@@ -154,9 +154,10 @@ export default class CardFilterer {
                 this.filteredCards = getTitleDescSort(this.filteredCards);
                 break;
             case SORT_TYPES.LOCALFIRST: {
-                if (localFirstRecencyThreshold) {
+                const recencyThreshold = parseInt(localFirstRecencyThreshold, 10);
+                if (recencyThreshold) {
                     const cutoffDate = new Date();
-                    cutoffDate.setMonth(cutoffDate.getMonth() - localFirstRecencyThreshold);
+                    cutoffDate.setMonth(cutoffDate.getMonth() - recencyThreshold);
                     const cutoffMs = cutoffDate.getTime();
 
                     const recentRegional = [];
