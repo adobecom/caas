@@ -145,7 +145,7 @@ const Container = (props) => {
     const topPanelSearchPlaceholder = getConfig('search', 'i18n.topFilterPanel.searchPlaceholderText');
     const searchPlaceholderText = getConfig('search', 'i18n.filterInfo.searchPlaceholderText');
     const noResultsTitle = getConfig('search', 'i18n.noResultsTitle');
-    const authoredNoResultsDescription = getConfig('search', 'i18n.noResultsDescription');
+    const noResultsDescription = getConfig('search', 'i18n.noResultsDescription');
     const apiFailureTitle = getConfig('collection', 'i18n.onErrorTitle');
     const apiFailureDescription = getConfig('collection', 'i18n.onErrorDescription');
     const isLazy = getConfig('collection', 'lazyload');
@@ -382,7 +382,6 @@ const Container = (props) => {
      * @type {[Boolean, Function]} ApiFailure
      */
     const [isApiFailure, setApiFailure] = useState(false);
-    const [noResultsDescription, setNoResultsDescription] = useState(authoredNoResultsDescription);
     const [randomSortId, setRandomSortId] = useState(null);
     const [isFirstLoad, setIsFirstLoad] = useState(true);
     const [visibleStamp, setVisibleStamp] = useState();
