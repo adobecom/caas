@@ -1,5 +1,12 @@
 
 
+## [0.51.0](https://github.com/adobecom/caas/compare/0.50.8...0.51.0) (2026-05-21)
+
+
+### Features
+
+* **mwpw-186583:** removes empty collection from published page ([#465](https://github.com/adobecom/caas/issues/465)) ([5934e3a](https://github.com/adobecom/caas/commit/5934e3a54a52f52a209936de33b56a9f03d1cc18))
+
 ## [0.50.8](https://github.com/adobecom/caas/compare/0.50.7...0.50.8) (2026-05-19)
 
 
