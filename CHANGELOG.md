@@ -1,5 +1,12 @@
 
 
+## [0.51.1](https://github.com/adobecom/caas/compare/0.51.0...0.51.1) (2026-05-21)
+
+
+### Bug Fixes
+
+* **mwpw-177207:** adds visible Sort by: label to sort dropdown ([#451](https://github.com/adobecom/caas/issues/451)) ([6473e96](https://github.com/adobecom/caas/commit/6473e96a4520e386068b2c4350c9a06f17d98e25))
+
 ## [0.51.0](https://github.com/adobecom/caas/compare/0.50.8...0.51.0) (2026-05-21)
 
 
