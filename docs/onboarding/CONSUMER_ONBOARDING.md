@@ -24,7 +24,7 @@ These three steps gate publishing. Without all three, the consumer cannot push c
 
 **What:** a canonical taxonomy entry of the form `caas:source/<consumer-name>` so the chimera tags API recognizes the new source.
 
-**Where:** submit via the team's Javelin process. Coordinate with the team lead in `#javelin-friends` Slack. Tag requests are batched on a weekly cycle (Thursdays at time of writing); allow ~24 hours from acceptance for the new tag to land in production.
+**Where:** submit via the team's Javelin process. Coordinate with the team lead in `#javelin-friends` Slack. Tag requests are batched on a weekly cycle (Mondays at time of writing); allow ~24 hours from acceptance for the new tag to land in production.
 
 **Fields the request needs:**
 - `tagID`: `caas:source/<consumer-name>` (lowercase)
