@@ -1,5 +1,12 @@
 
 
+## [0.51.3](https://github.com/adobecom/caas/compare/0.51.2...0.51.3) (2026-05-28)
+
+
+### Chores
+
+* trigger IMS validation via dispatch from local cron ([484b693](https://github.com/adobecom/caas/commit/484b693b0df311285aaf34b7e1907489fe7b7edc))
+
 ## [0.51.2](https://github.com/adobecom/caas/compare/0.51.1...0.51.2) (2026-05-28)
 
 
