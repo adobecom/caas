@@ -2,10 +2,6 @@ name: Validate IMS Token
 
 on:
   workflow_dispatch:
-  schedule:
-    # 17:00 UTC = ~10am Pacific, weekdays. Runs after the local Mac cron
-    # (09:00 Pacific) has refreshed the IMS_ACCESS_TOKEN secret.
-    - cron: '0 17 * * 1-5'
 
 permissions:
   issues: write
@@ -60,7 +56,8 @@ jobs:
                 '```',
                 '',
                 status === 'failed'
-                  ? '> ⚠️ Token may have expired or the Mac cron did not run. Re-run `node ~/token-refresh/refresh-token.mjs --visible` to re-login.'
+                  ? '> ⚠️ Token may have expired or the Mac cron did not run. Re-run `node refresh-token.mjs --visible` to re-login.'
                   : '> Token is valid and the proxy is reachable.',
               ].join('\n'),
+              labels: [],
             });
