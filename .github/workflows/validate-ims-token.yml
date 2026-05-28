@@ -1,0 +1,62 @@
+name: Validate IMS Token
+
+on:
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Adobe LLM Proxy
+        id: call
+        run: |
+          RESPONSE=$(curl -s -X POST https://adobe-llm-proxy.paolo-moz.workers.dev/v1/messages \
+            -H "Authorization: Bearer ${{ secrets.IMS_ACCESS_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -H "anthropic-version: 2023-06-01" \
+            -d '{"model":"claude-sonnet-4-6","max_tokens":30,"messages":[{"role":"user","content":"Reply with only: token validated."}]}')
+
+          echo "response<<EOF" >> $GITHUB_OUTPUT
+          echo "$RESPONSE" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          if echo "$RESPONSE" | grep -q '"type":"message"'; then
+            echo "status=success" >> $GITHUB_OUTPUT
+          else
+            echo "status=failed" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create GitHub issue with result
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const status = '${{ steps.call.outputs.status }}';
+            const response = `${{ steps.call.outputs.response }}`;
+            const emoji = status === 'success' ? '✅' : '❌';
+            const date = new Date().toISOString().split('T')[0];
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `${emoji} IMS Token Check — ${date}`,
+              body: [
+                `## ${emoji} IMS Token is ${status === 'success' ? 'working' : 'BROKEN'}`,
+                '',
+                `Automated daily check against \`adobe-llm-proxy.paolo-moz.workers.dev\`.`,
+                '',
+                `**Date:** ${new Date().toISOString()}`,
+                `**Model:** claude-sonnet-4-6`,
+                '',
+                '### Proxy Response',
+                '```json',
+                response,
+                '```',
+                '',
+                status === 'failed'
+                  ? '> ⚠️ Token may have expired or the Mac cron did not run. Re-run `node ~/token-refresh/refresh-token.mjs --visible` to re-login.'
+                  : '> Token is valid and the proxy is reachable.',
+              ].join('\n'),
+            });
