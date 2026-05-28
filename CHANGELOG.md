@@ -1,5 +1,13 @@
 
 
+## [0.51.2](https://github.com/adobecom/caas/compare/0.51.1...0.51.2) (2026-05-28)
+
+
+### Documentation
+
+* correct Javelin tag cycle day from Thursdays to Mondays ([6954a9f](https://github.com/adobecom/caas/commit/6954a9fb2af3cd32b857edab503df663a67fdfc9))
+* MWPW-193054 add consumer onboarding runbook and agents entry point ([3f7d1f9](https://github.com/adobecom/caas/commit/3f7d1f96db3672b474741f41aae52660e4e05dfb))
+
 ## [0.51.1](https://github.com/adobecom/caas/compare/0.51.0...0.51.1) (2026-05-21)
 
 
