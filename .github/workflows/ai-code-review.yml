@@ -1,0 +1,27 @@
+name: AI Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    env:
+      ANTHROPIC_BASE_URL: https://adobe-llm-proxy.paolo-moz.workers.dev
+    steps:
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.IMS_ACCESS_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          claude_args: "--model claude-sonnet-4-6"
+          prompt: |
+            Review this pull request. Focus only on critical, high-confidence issues:
+            correctness bugs, security vulnerabilities, data loss, broken logic,
+            race conditions. Do not comment on style, formatting, or minor nits.
+            Post each finding as an inline comment on the specific changed line.
+            If there are no critical issues, post one short summary comment saying the PR looks clean.
