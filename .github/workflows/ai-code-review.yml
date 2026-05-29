@@ -47,7 +47,6 @@ jobs:
         run: |
           python3 << 'EOF'
           import json, os, sys, subprocess
-          import urllib.request, urllib.error
 
           with open('pr.diff') as f:
               diff = f.read()[:8000]
@@ -72,24 +71,23 @@ jobs:
                       f"Diff:\n{diff}"
                   )
               }]
-          }).encode()
+          })
 
-          req = urllib.request.Request(
+          # Use curl — uses macOS system certs, already proven to work with this proxy
+          result = subprocess.run([
+              'curl', '-s', '-X', 'POST',
               'https://adobe-llm-proxy.paolo-moz.workers.dev/v1/messages',
-              data=payload,
-              headers={
-                  'Authorization': f'Bearer {token}',
-                  'Content-Type': 'application/json',
-                  'anthropic-version': '2023-06-01'
-              }
-          )
+              '-H', f'Authorization: Bearer {token}',
+              '-H', 'Content-Type: application/json',
+              '-H', 'anthropic-version: 2023-06-01',
+              '-d', payload
+          ], capture_output=True, text=True)
 
           try:
-              with urllib.request.urlopen(req) as resp:
-                  result = json.loads(resp.read())
-              review = result['content'][0]['text']
-          except urllib.error.HTTPError as e:
-              review = f"Review failed: HTTP {e.code}"
+              data = json.loads(result.stdout)
+              review = data['content'][0]['text']
+          except Exception:
+              review = f"Review failed: {result.stdout[:500]}"
 
           comment = f"## AI Code Review\n\n{review}"
           subprocess.run(
