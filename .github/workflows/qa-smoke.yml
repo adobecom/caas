@@ -1,0 +1,89 @@
+name: QA Smoke Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'Page to test'
+        default: 'https://business.adobe.com/customer-success-stories.html'
+        required: false
+
+jobs:
+  smoke:
+    name: Smoke Tests
+    runs-on: self-hosted
+    timeout-minutes: 15
+
+    steps:
+      # Ensure Chrome is available with CDP for reliable navigation
+      - name: Start Chrome with CDP
+        run: |
+          if curl -s http://127.0.0.1:53647/json >/dev/null 2>&1; then
+            echo "Chrome CDP already available on :53647"
+          else
+            echo "Starting Chrome with remote debugging..."
+            open -a "Google Chrome" --args \
+              --remote-debugging-port=53647 \
+              --no-first-run \
+              --no-default-browser-check
+            sleep 4
+            curl -s http://127.0.0.1:53647/json >/dev/null && echo "Chrome ready" || echo "Chrome may not have started — tests will fall back to headless"
+          fi
+
+      # ── Test 1: Deep Link ───────────────────────────────────────────────────
+      # Navigate to a pre-filtered URL and confirm filter state is restored.
+      - name: Deep Link Test
+        if: always()
+        env:
+          IMS_ACCESS_TOKEN: ${{ secrets.IMS_ACCESS_TOKEN }}
+        run: |
+          node /Users/sanrai/token-refresh/qa-runner.mjs \
+            "Navigate to ${{ inputs.base_url }}?ch_Products=Acrobat
+
+          Run this exact evaluate_js code:
+          (function(){ var cards = document.querySelectorAll('.consonant-Card'); var acrobatChecked = 'not found'; document.querySelectorAll('input[type=checkbox]').forEach(function(inp){ var lbl = document.querySelector('label[for=\"' + inp.id + '\"]'); if(lbl && /Acrobat/i.test(lbl.textContent)) acrobatChecked = inp.checked; }); return {cardCount: cards.length, acrobatChecked: acrobatChecked, url: location.search}; })()
+
+          Call done() immediately with the result and verdict: PASS if cardCount > 0 AND acrobatChecked is true, FAIL otherwise. Do not navigate anywhere else."
+
+      # ── Test 2: Filter Click + URL Update ──────────────────────────────────
+      # Click the Products > Acrobat filter, verify URL gains query param and card count changes.
+      - name: Filter + URL Update Test
+        if: always()
+        env:
+          IMS_ACCESS_TOKEN: ${{ secrets.IMS_ACCESS_TOKEN }}
+        run: |
+          node /Users/sanrai/token-refresh/qa-runner.mjs \
+            "Navigate to ${{ inputs.base_url }}
+
+          Step 1 — baseline: evaluate_js: document.querySelectorAll('.consonant-Card').length
+
+          Step 2 — expand Products filter (avoid nav): evaluate_js:
+          (function(){ var btns = Array.from(document.querySelectorAll('button')).filter(function(b){ return b.textContent.trim()==='Products' && !b.closest('nav') && !b.closest('header'); }); if(!btns[0]) return 'no filter button'; btns[0].click(); return 'expanded'; })()
+
+          Step 3 — click Acrobat: evaluate_js:
+          (function(){ var found = null; document.querySelectorAll('input[type=checkbox]').forEach(function(inp){ var lbl = document.querySelector('label[for=\"' + inp.id + '\"]'); if(lbl && lbl.textContent.trim()==='Acrobat') found = lbl; }); if(!found) return 'Acrobat not found'; found.click(); return 'clicked'; })()
+
+          Step 4 — verify: evaluate_js: ({cardCount: document.querySelectorAll('.consonant-Card').length, url: location.search})
+
+          Call done() with before/after card count and URL param. PASS if URL contains 'Acrobat' and cardCount is different from baseline, FAIL otherwise."
+
+      # ── Test 3: Search ──────────────────────────────────────────────────────
+      # Type into the search box and verify results change.
+      - name: Search Test
+        if: always()
+        env:
+          IMS_ACCESS_TOKEN: ${{ secrets.IMS_ACCESS_TOKEN }}
+        run: |
+          node /Users/sanrai/token-refresh/qa-runner.mjs \
+            "Navigate to ${{ inputs.base_url }}
+
+          Step 1 — baseline: evaluate_js: document.querySelectorAll('.consonant-Card').length
+
+          Step 2 — find search selector: evaluate_js:
+          (function(){ var inp = document.querySelector('input[type=search]') || document.querySelector('input[placeholder]'); return inp ? inp.className + ' | ' + inp.getAttribute('placeholder') : 'not found'; })()
+
+          Step 3 — type into search: use type_text with selector 'input[type=search]' and text 'Creative Cloud'. If that fails, try 'input[placeholder]'.
+
+          Step 4 — wait then count: evaluate_js: document.querySelectorAll('.consonant-Card').length
+
+          Call done() with baseline count and result count. PASS if result count is less than baseline, FAIL if unchanged or search input not found."
