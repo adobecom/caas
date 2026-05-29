@@ -110,5 +110,5 @@ jobs:
               ['gh', 'pr', 'comment', pr_number, '--body', comment],
               check=True
           )
-          print(\"Review posted.\")
+          print("Review posted.")
           EOF
