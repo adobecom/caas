@@ -3,59 +3,52 @@ name: AI Code Review
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-  issue_comment:
-    types: [created]
-  pull_request_review_comment:
-    types: [created]
 
-permissions:
-  contents: read
-  pull-requests: write
-  issues: write
+# Cancel any in-flight review on the same PR when a new push lands,
+# so we do not spam the PR with a new comment for every commit.
+concurrency:
+  group: ai-code-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 jobs:
   review:
     runs-on: self-hosted
-    if: |
-      github.event_name == 'pull_request' ||
-      (github.event_name == 'issue_comment' && github.event.issue.pull_request != null && contains(github.event.comment.body, '@claude')) ||
-      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude'))
+    # Only run on PRs from the same repository. This is a public repo and the
+    # job runs on a self-hosted runner; fork PRs would otherwise check out
+    # untrusted code onto our machine.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Determine PR number
-        id: pr
-        run: |
-          if [ "${{ github.event_name }}" = "issue_comment" ]; then
-            echo "number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
-          else
-            echo "number=${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
-          fi
-
       - name: Get PR diff
-        run: gh pr diff ${{ steps.pr.outputs.number }} > pr.diff
+        run: gh pr diff ${{ github.event.pull_request.number }} > pr.diff
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run AI Code Review
         env:
           IMS_ACCESS_TOKEN: ${{ secrets.IMS_ACCESS_TOKEN }}
+          LLM_PROXY_ENDPOINT: ${{ secrets.LLM_PROXY_ENDPOINT }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ steps.pr.outputs.number }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           python3 << 'EOF'
-          import json, os, sys, subprocess
+          import json, os, sys, subprocess, tempfile
 
           with open('pr.diff') as f:
               diff = f.read()[:8000]
 
           if not diff.strip():
-              print("Empty diff — skipping review")
+              print("Empty diff, skipping review")
               sys.exit(0)
 
           token = os.environ['IMS_ACCESS_TOKEN']
+          endpoint = os.environ['LLM_PROXY_ENDPOINT']
           pr_number = os.environ['PR_NUMBER']
 
           payload = json.dumps({
@@ -73,21 +66,44 @@ jobs:
               }]
           })
 
-          # Use curl — uses macOS system certs, already proven to work with this proxy
-          result = subprocess.run([
-              'curl', '-s', '-X', 'POST',
-              'https://adobe-llm-proxy.paolo-moz.workers.dev/v1/messages',
-              '-H', f'Authorization: Bearer {token}',
-              '-H', 'Content-Type: application/json',
-              '-H', 'anthropic-version: 2023-06-01',
-              '-d', payload
-          ], capture_output=True, text=True)
+          # Write headers to a temp config file so the Bearer token never
+          # appears in process argv (which would be visible via `ps aux` on
+          # the self-hosted runner). NamedTemporaryFile is mode 0600 by default.
+          with tempfile.NamedTemporaryFile('w', delete=False, suffix='.conf') as cf:
+              cf.write(f'header = "Authorization: Bearer {token}"\n')
+              cf.write('header = "Content-Type: application/json"\n')
+              cf.write('header = "anthropic-version: 2023-06-01"\n')
+              config_file = cf.name
 
           try:
-              data = json.loads(result.stdout)
-              review = data['content'][0]['text']
-          except Exception:
-              review = f"Review failed: {result.stdout[:500]}"
+              result = subprocess.run([
+                  'curl', '-sS', '-X', 'POST',
+                  '--config', config_file,
+                  '--write-out', '\n%{http_code}',
+                  endpoint,
+                  '-d', payload
+              ], capture_output=True, text=True)
+          finally:
+              os.unlink(config_file)
+
+          # --write-out appended the HTTP status as the last line of stdout.
+          body, _, status = result.stdout.rpartition('\n')
+
+          if status.strip() != '200':
+              # Do NOT post raw proxy output to a public PR comment; it can
+              # contain echoed request data or verbose error detail. Surface
+              # the failure in the Actions logs only.
+              print(f"Proxy returned HTTP {status}", file=sys.stderr)
+              print(body[:2000], file=sys.stderr)
+              review = "AI review unavailable (upstream error). See Actions logs."
+          else:
+              try:
+                  data = json.loads(body)
+                  review = data['content'][0]['text']
+              except Exception as e:
+                  print(f"Parse error: {e}", file=sys.stderr)
+                  print(body[:2000], file=sys.stderr)
+                  review = "AI review unavailable (response parse error). See Actions logs."
 
           comment = f"## AI Code Review\n\n{review}"
           subprocess.run(
