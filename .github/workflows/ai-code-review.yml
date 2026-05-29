@@ -1,0 +1,98 @@
+name: AI Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  review:
+    runs-on: self-hosted
+    if: |
+      github.event_name == 'pull_request' ||
+      (github.event_name == 'issue_comment' && github.event.issue.pull_request != null && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude'))
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine PR number
+        id: pr
+        run: |
+          if [ "${{ github.event_name }}" = "issue_comment" ]; then
+            echo "number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+          else
+            echo "number=${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Get PR diff
+        run: gh pr diff ${{ steps.pr.outputs.number }} > pr.diff
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run AI Code Review
+        env:
+          IMS_ACCESS_TOKEN: ${{ secrets.IMS_ACCESS_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+        run: |
+          python3 << 'EOF'
+          import json, os, sys, subprocess
+
+          with open('pr.diff') as f:
+              diff = f.read()[:8000]
+
+          if not diff.strip():
+              print("Empty diff — skipping review")
+              sys.exit(0)
+
+          token = os.environ['IMS_ACCESS_TOKEN']
+          pr_number = os.environ['PR_NUMBER']
+
+          payload = json.dumps({
+              "model": "claude-sonnet-4-6",
+              "max_tokens": 2048,
+              "messages": [{
+                  "role": "user",
+                  "content": (
+                      "Review this pull request diff. Focus ONLY on critical, "
+                      "high-confidence issues: correctness bugs, security vulnerabilities, "
+                      "data loss, broken logic, race conditions. "
+                      "Skip style, formatting, and nits. Be concise and actionable.\n\n"
+                      f"Diff:\n{diff}"
+                  )
+              }]
+          })
+
+          # Use curl — uses macOS system certs, already proven to work with this proxy
+          result = subprocess.run([
+              'curl', '-s', '-X', 'POST',
+              'https://adobe-llm-proxy.paolo-moz.workers.dev/v1/messages',
+              '-H', f'Authorization: Bearer {token}',
+              '-H', 'Content-Type: application/json',
+              '-H', 'anthropic-version: 2023-06-01',
+              '-d', payload
+          ], capture_output=True, text=True)
+
+          try:
+              data = json.loads(result.stdout)
+              review = data['content'][0]['text']
+          except Exception:
+              review = f"Review failed: {result.stdout[:500]}"
+
+          comment = f"## AI Code Review\n\n{review}"
+          subprocess.run(
+              ['gh', 'pr', 'comment', pr_number, '--body', comment],
+              check=True
+          )
+          print("Review posted.")
+          EOF
