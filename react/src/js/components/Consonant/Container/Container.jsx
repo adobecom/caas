@@ -159,6 +159,7 @@ const Container = (props) => {
     const eventFilter = getConfig('filterPanel', 'eventFilter');
     const searchEnabled = getConfig('search', 'enabled');
     const sortEnabled = getConfig('sort', 'enabled');
+    const localFirstRecencyThreshold = getConfig('sort', 'localFirstRecencyThreshold');
     const cardStyle = getConfig('collection', 'cardStyle');
     const title = getConfig('collection', 'i18n.title');
     const headers = getConfig('headers', '');
@@ -1496,7 +1497,7 @@ const Container = (props) => {
      * @returns {Object}
      * */
     const getFilteredCollection = () => cardFilterer
-        .sortCards(sortOption, sanitizedEventFilter, featuredCards, hideCtaIds, isFirstLoad)
+        .sortCards(sortOption, sanitizedEventFilter, featuredCards, hideCtaIds, isFirstLoad, localFirstRecencyThreshold)
         .keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks)
         .keepCardsWithinDateRange()
         .filterCards(expandedFilterIds, activePanels, filterLogic, FILTER_TYPES, currCategories, groupedFilterSelections)

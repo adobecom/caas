@@ -238,6 +238,76 @@ tags: ['event1'] },
             expect(first[0].id).toBe(1);
             expect(last[0].id).toBe(1);
         });
+
+        test('Local First with recency threshold – recent regional cards appear before old regional and global', () => {
+            const recentDate = new Date();
+            recentDate.setMonth(recentDate.getMonth() - 1);
+            const oldDate = new Date();
+            oldDate.setMonth(oldDate.getMonth() - 6);
+
+            const cards = [
+                { id: 1, country: '', modifiedDate: recentDate.toISOString() },
+                { id: 2, country: 'DE', modifiedDate: oldDate.toISOString() },
+                { id: 3, country: 'US', modifiedDate: recentDate.toISOString() },
+                { id: 4, country: 'FR', modifiedDate: recentDate.toISOString() },
+            ];
+            const cardFilterer = new CardFilterer([...cards]);
+            const { filteredCards } = cardFilterer.sortCards({ sort: 'localfirst' }, [], [], [], false, 3);
+
+            const ids = filteredCards.map(c => c.id);
+            expect(ids.indexOf(3)).toBeLessThan(ids.indexOf(1));
+            expect(ids.indexOf(4)).toBeLessThan(ids.indexOf(1));
+            expect(ids.indexOf(3)).toBeLessThan(ids.indexOf(2));
+            expect(ids.indexOf(4)).toBeLessThan(ids.indexOf(2));
+        });
+
+        test('Local First with recency threshold – recent regional cards sorted by country', () => {
+            const recentDate = new Date();
+            recentDate.setMonth(recentDate.getMonth() - 1);
+
+            const cards = [
+                { id: 1, country: 'US', modifiedDate: recentDate.toISOString() },
+                { id: 2, country: 'DE', modifiedDate: recentDate.toISOString() },
+                { id: 3, country: 'FR', modifiedDate: recentDate.toISOString() },
+            ];
+            const cardFilterer = new CardFilterer([...cards]);
+            const { filteredCards } = cardFilterer.sortCards({ sort: 'localfirst' }, [], [], [], false, 3);
+
+            expect(filteredCards.map(c => c.country)).toEqual(['DE', 'FR', 'US']);
+        });
+
+        test('Local First with recency threshold – fallback group sorted newest-to-oldest', () => {
+            const oldDate1 = new Date();
+            oldDate1.setMonth(oldDate1.getMonth() - 4);
+            const oldDate2 = new Date();
+            oldDate2.setMonth(oldDate2.getMonth() - 5);
+            const oldDate3 = new Date();
+            oldDate3.setMonth(oldDate3.getMonth() - 8);
+
+            const cards = [
+                { id: 1, country: '', modifiedDate: oldDate3.toISOString(), cardDate: oldDate3.toISOString() },
+                { id: 2, country: 'DE', modifiedDate: oldDate1.toISOString(), cardDate: oldDate1.toISOString() },
+                { id: 3, country: '', modifiedDate: oldDate2.toISOString(), cardDate: oldDate2.toISOString() },
+            ];
+            const cardFilterer = new CardFilterer([...cards]);
+            const { filteredCards } = cardFilterer.sortCards({ sort: 'localfirst' }, [], [], [], false, 3);
+
+            const ids = filteredCards.map(c => c.id);
+            expect(ids.indexOf(2)).toBeLessThan(ids.indexOf(3));
+            expect(ids.indexOf(3)).toBeLessThan(ids.indexOf(1));
+        });
+
+        test('Local First with recency threshold – no threshold falls back to original behavior', () => {
+            const cards = [
+                { id: 1, country: 'US' },
+                { id: 2, country: 'DE' },
+                { id: 3, country: 'FR' },
+            ];
+            const cardFilterer = new CardFilterer([...cards]);
+            const { filteredCards } = cardFilterer.sortCards({ sort: 'localfirst' }, [], [], [], false, 0);
+
+            expect(filteredCards.map(c => c.country)).toEqual(['DE', 'FR', 'US']);
+        });
     });
     describe('keepCardsWithinDateRange', () => {
         PROPS.keepCardsWithinDateRange.forEach(({ cards, expectedValue }) => {
