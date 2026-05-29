@@ -1,5 +1,15 @@
 
 
+## [0.51.4](https://github.com/adobecom/caas/compare/0.51.3...0.51.4) (2026-05-29)
+
+
+### Bug Fixes
+
+* add checkout step required by claude-code-action ([ae49b42](https://github.com/adobecom/caas/commit/ae49b42909e59e34c1e829ef10adcddce1d8f2f1))
+* call proxy directly instead of claude-code-action (beta flag incompatibility) ([096969b](https://github.com/adobecom/caas/commit/096969ba41511e5da6cad813fdbd038ac75127a0))
+* run on self-hosted Mac runner to bypass Cloudflare IP block ([4969238](https://github.com/adobecom/caas/commit/496923877ada79f7fff04d40921dc54b8922e5b6))
+* use curl instead of urllib to avoid macOS SSL cert issue ([1cc5279](https://github.com/adobecom/caas/commit/1cc5279cc06adef47a8591aedf33e16ef68280d5))
+
 ## [0.51.3](https://github.com/adobecom/caas/compare/0.51.2...0.51.3) (2026-05-28)
 
 
