@@ -1,5 +1,17 @@
 
 
+## [0.51.5](https://github.com/adobecom/caas/compare/0.51.4...0.51.5) (2026-05-29)
+
+
+### Bug Fixes
+
+* remove stray escape in print statement ([c7352f8](https://github.com/adobecom/caas/commit/c7352f8bc013ec47854d12cb6aee34856657d6cd))
+
+
+### Chores
+
+* harden AI code review workflow ([ef66453](https://github.com/adobecom/caas/commit/ef6645393811ba0a63140e621809178d162c2dc5))
+
 ## [0.51.4](https://github.com/adobecom/caas/compare/0.51.3...0.51.4) (2026-05-29)
 
 
