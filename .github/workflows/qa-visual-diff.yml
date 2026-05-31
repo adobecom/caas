@@ -31,7 +31,7 @@ on:
       max_turns:
         description: 'Max agent turns. 8 is generous for the 6-step scenario.'
         required: false
-        default: '8'
+        default: '12'
         type: string
 
 concurrency:
@@ -70,7 +70,7 @@ jobs:
           PROXY_URL: ${{ secrets.LLM_PROXY_ENDPOINT }}
           MODEL: ${{ secrets.LLM_MODEL }}
           MAX_TURNS: ${{ inputs.max_turns }}
-          USER_DATA_DIR: /tmp/chrome-vd-profile
+          USER_DATA_DIR: /tmp/chrome-qa-profile
           URL_A: '${{ inputs.base_url }}?caasver=${{ inputs.version_a }}'
           URL_B: '${{ inputs.base_url }}?caasver=${{ inputs.version_b }}'
           SCROLL_Y: ${{ inputs.scroll_y }}
