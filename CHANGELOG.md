@@ -1,5 +1,22 @@
 
 
+## [0.53.0](https://github.com/adobecom/caas/compare/0.52.1...0.53.0) (2026-05-31)
+
+
+### Features
+
+* **qa-audit:** rewrite issue body as developer-friendly narrative via Claude ([8f462e9](https://github.com/adobecom/caas/commit/8f462e95613c28a414c462908520da54ae359a71))
+
+
+### Chores
+
+* **ai-code-review:** source model name from secrets.LLM_MODEL instead of hardcode ([49bf280](https://github.com/adobecom/caas/commit/49bf280c8064802a628a69cb54ef32e627bede78))
+
+
+### Code Refactoring
+
+* **qa-audit:** remove hardcoded LLM proxy URL + model name from public code ([3968869](https://github.com/adobecom/caas/commit/396886933b3aaf247658d5cb2808df92d6d4d6b8))
+
 ## [0.52.1](https://github.com/adobecom/caas/compare/0.52.0...0.52.1) (2026-05-31)
 
 
