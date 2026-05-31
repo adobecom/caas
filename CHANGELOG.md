@@ -1,5 +1,12 @@
 
 
+## [0.52.1](https://github.com/adobecom/caas/compare/0.52.0...0.52.1) (2026-05-31)
+
+
+### Bug Fixes
+
+* **qa-audit:** install playwright + treat NO_VERDICT as fail ([ebd9a87](https://github.com/adobecom/caas/commit/ebd9a87e7505f0bc56778690f4016beb83c0b6a7)), closes [#480](https://github.com/adobecom/caas/issues/480)
+
 ## [0.52.0](https://github.com/adobecom/caas/compare/0.51.5...0.52.0) (2026-05-31)
 
 
