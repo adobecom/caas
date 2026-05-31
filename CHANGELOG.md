@@ -1,5 +1,18 @@
 
 
+## [0.52.0](https://github.com/adobecom/caas/compare/0.51.5...0.52.0) (2026-05-31)
+
+
+### Features
+
+* **qa-audit:** manual-trigger workflow for AI-driven a11y + visual audits ([87cccc1](https://github.com/adobecom/caas/commit/87cccc17b92efdd46f3a08007b2e8f7611a31fd1))
+
+
+### Chores
+
+* **ci:** pin ai-code-review to X64 self-hosted runner ([c93d36a](https://github.com/adobecom/caas/commit/c93d36a36893775f5a86789c778677f5f4fa0085))
+* **qa-audit:** pin workflow to sanrai-mba runner via qa-audit label ([9143bc6](https://github.com/adobecom/caas/commit/9143bc680c82d5ca2fe43ee968facc184fe6833e))
+
 ## [0.51.5](https://github.com/adobecom/caas/compare/0.51.4...0.51.5) (2026-05-29)
 
 
