@@ -34,6 +34,7 @@ jobs:
         env:
           IMS_ACCESS_TOKEN: ${{ secrets.IMS_ACCESS_TOKEN }}
           LLM_PROXY_ENDPOINT: ${{ secrets.LLM_PROXY_ENDPOINT }}
+          LLM_MODEL: ${{ secrets.LLM_MODEL }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
@@ -49,10 +50,14 @@ jobs:
 
           token = os.environ['IMS_ACCESS_TOKEN']
           endpoint = os.environ['LLM_PROXY_ENDPOINT']
+          model = os.environ.get('LLM_MODEL', '').strip()
+          if not model:
+              print("ERROR: LLM_MODEL env var (from secrets.LLM_MODEL) is required", file=sys.stderr)
+              sys.exit(2)
           pr_number = os.environ['PR_NUMBER']
 
           payload = json.dumps({
-              "model": "claude-sonnet-4-6",
+              "model": model,
               "max_tokens": 2048,
               "messages": [{
                   "role": "user",
