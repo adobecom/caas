@@ -13,6 +13,22 @@ on:
         required: true
         default: '0.51.5'
         type: string
+      suite:
+        description: 'Which scenario suite to run. Each maps to qa-prompts/<suite>/.'
+        required: false
+        default: 'a11y'
+        type: choice
+        options:
+          - smoke
+          - a11y
+          - functional
+          - regression
+          - all
+      workers:
+        description: 'Parallel worker count. 4 fits comfortably on the dedicated runner; raise for big suites if memory allows.'
+        required: false
+        default: '4'
+        type: string
       base_url:
         description: 'Page to load CaaS into via ?caasver=<version>.'
         required: false
@@ -28,7 +44,7 @@ on:
 # can trigger workflow_dispatch, so external visitors cannot execute code
 # on the runner. The existing AI Code Review workflow uses the same posture.
 concurrency:
-  group: qa-audit-${{ inputs.caasver }}
+  group: qa-audit-${{ inputs.caasver }}-${{ inputs.suite }}
   cancel-in-progress: false
 
 jobs:
@@ -69,7 +85,8 @@ jobs:
           CAASVER: ${{ inputs.caasver }}
           BASE_URL: ${{ inputs.base_url }}
           MAX_TURNS: ${{ inputs.max_turns }}
-          USER_DATA_DIR: /tmp/chrome-qa-profile
+          SUITE: ${{ inputs.suite }}
+          WORKERS: ${{ inputs.workers }}
         run: |
           chmod +x .github/qa/run-all-audits.sh
           .github/qa/run-all-audits.sh
@@ -110,7 +127,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: qa-audit-${{ inputs.caasver }}-${{ github.run_id }}
+          name: qa-audit-${{ inputs.suite }}-${{ inputs.caasver }}-${{ github.run_id }}
           path: |
             .github/qa/results-*/
             .github/qa/qa-artifacts/
@@ -137,7 +154,7 @@ jobs:
             echo "**Triggered by:** @${{ github.actor }}"
           } > /tmp/qa-issue-body.md
           gh issue create \
-            --title "QA Audit: caasver=${{ inputs.caasver }} ($DATE) - ${{ steps.aggregate.outputs.verdict }}" \
+            --title "QA Audit [${{ inputs.suite }}]: caasver=${{ inputs.caasver }} ($DATE) - ${{ steps.aggregate.outputs.verdict }}" \
             --label "qa-audit,$LABEL_VERDICT" \
             --body-file /tmp/qa-issue-body.md
 
