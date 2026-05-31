@@ -64,6 +64,8 @@ jobs:
         id: run
         env:
           IMS_ACCESS_TOKEN: ${{ secrets.IMS_ACCESS_TOKEN }}
+          PROXY_URL: ${{ secrets.LLM_PROXY_ENDPOINT }}
+          MODEL: ${{ secrets.LLM_MODEL }}
           CAASVER: ${{ inputs.caasver }}
           BASE_URL: ${{ inputs.base_url }}
           MAX_TURNS: ${{ inputs.max_turns }}
@@ -74,6 +76,14 @@ jobs:
 
       - name: Aggregate report
         id: aggregate
+        env:
+          # Credentials let aggregate-report.mjs rewrite the raw agent
+          # transcript into a developer-friendly narrative. If any are
+          # missing or the call fails the script falls back to a structured
+          # raw format.
+          IMS_ACCESS_TOKEN: ${{ secrets.IMS_ACCESS_TOKEN }}
+          PROXY_URL: ${{ secrets.LLM_PROXY_ENDPOINT }}
+          MODEL: ${{ secrets.LLM_MODEL }}
         run: |
           RESULTS_DIR=$(grep -E '^RESULTS_DIR=' /tmp/qa-audit-output.txt 2>/dev/null | tail -1 | sed 's/^RESULTS_DIR=//' || true)
           # Fallback: find the most recent results-* dir under .github/qa/
@@ -85,15 +95,14 @@ jobs:
             exit 1
           fi
           echo "Aggregating from: $RESULTS_DIR"
-          node .github/qa/aggregate-report.mjs "$RESULTS_DIR" > /tmp/qa-audit-report.md
-          # Any non-PASS verdict per row (FAIL / INCOMPLETE / NO_VERDICT) flips
-          # the overall to FAIL. Also catch the per-row pipe-separated tags from
-          # the aggregator's summary table.
-          if grep -qE '\| (FAIL|INCOMPLETE|NO_VERDICT) \|' /tmp/qa-audit-report.md; then
-            echo "verdict=FAIL" >> "$GITHUB_OUTPUT"
-          else
-            echo "verdict=PASS" >> "$GITHUB_OUTPUT"
-          fi
+          # aggregate-report.mjs writes structured verdict to a sidecar file
+          # so the workflow does not have to grep a (possibly LLM-rewritten)
+          # narrative for verdict signal.
+          node .github/qa/aggregate-report.mjs "$RESULTS_DIR" \
+            > /tmp/qa-audit-report.md \
+            2> >(tee /tmp/qa-audit-stderr.log >&2)
+          VERDICT=$(cat /tmp/qa-audit-verdict.txt 2>/dev/null || echo "FAIL")
+          echo "verdict=$VERDICT" >> "$GITHUB_OUTPUT"
           echo "results_dir=$RESULTS_DIR" >> "$GITHUB_OUTPUT"
           head -40 /tmp/qa-audit-report.md
 

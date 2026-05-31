@@ -2,15 +2,15 @@
 /**
  * AI QA Runner v2
  *
- * Drives a real browser via Playwright; gives Claude a tool-use loop to
- * navigate, inspect, click, type, and report. v2 changes vs the original
- * portable runner:
+ * Drives a real browser via Playwright; gives an LLM agent a tool-use
+ * loop to navigate, inspect, click, type, and report. v2 changes vs the
+ * original portable runner:
  *
  *   1. Numbered-ref interactives.  get_interactives() walks the DOM
  *      (including shadow roots), tags every clickable/typable element with
  *      a stable __qaRef integer, and returns a compact list to the model.
- *      click({ref}) and type({ref,text}) resolve refs server-side; Claude
- *      never authors selectors.
+ *      click({ref}) and type({ref,text}) resolve refs server-side; the
+ *      model never authors selectors.
  *
  *   2. Instrumented fast-path.  If the loaded page exposes window.caas
  *      (the QA hooks shipped in this build of CaaS), the runner calls
@@ -35,12 +35,17 @@
  * Usage:
  *   IMS_ACCESS_TOKEN=... node qa-runner-v2.mjs "verify that filter panel + search work on http://localhost:5151/index-qa.html"
  *
+ * Required env:
+ *   IMS_ACCESS_TOKEN  Bearer token for the LLM proxy.
+ *   PROXY_URL         LLM proxy endpoint URL (no default; never hardcoded).
+ *   MODEL             Model name to request from the proxy.
+ *
  * Optional env:
- *   CDP_URL    Connect to a running Chrome (e.g. http://127.0.0.1:53647).
- *              Otherwise launches headless Chromium.
- *   MODEL      Override (default claude-sonnet-4-6).
- *   MAX_TURNS  Default 10.
- *   PROXY_URL  Default Adobe LLM proxy.
+ *   CDP_URL           Connect to a running Chrome (e.g. http://127.0.0.1:53647).
+ *                     Otherwise launches headless Chromium.
+ *   MAX_TURNS         Default 10.
+ *   USER_DATA_DIR     Persistent Chrome profile dir; switches to launchPersistentContext.
+ *   RECORD_VIDEO      1 to record webm video of the run.
  */
 
 import { chromium } from 'playwright';
@@ -48,12 +53,18 @@ import { spawnSync } from 'child_process';
 import { mkdirSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 
-const PROXY_URL  = process.env.PROXY_URL || 'https://adobe-llm-proxy.paolo-moz.workers.dev/v1/messages';
-const MODEL      = process.env.MODEL || 'claude-sonnet-4-6';
+const PROXY_URL  = process.env.PROXY_URL || '';
+const MODEL      = process.env.MODEL || '';
 const MAX_TURNS  = Number(process.env.MAX_TURNS || 10);
 const MAX_TOKENS = 4096;
 const ARTIFACTS  = resolve(process.cwd(), 'qa-artifacts');
 const RUN_ID     = new Date().toISOString().replace(/[:.]/g, '-');
+
+if (!PROXY_URL || !MODEL) {
+    const missing = [!PROXY_URL && 'PROXY_URL', !MODEL && 'MODEL'].filter(Boolean).join(', ');
+    console.error(`ERROR: required env vars not set: ${missing}`);
+    process.exit(2);
+}
 
 const instruction = process.argv.slice(2).join(' ').trim();
 if (!instruction) {
@@ -216,7 +227,7 @@ const QA_DOM_IDLE_SRC = `
 `;
 
 // ---------------------------------------------------------------------------
-// Tool definitions for Claude
+// Tool definitions exposed to the LLM agent
 // ---------------------------------------------------------------------------
 
 const TOOLS = [
@@ -332,12 +343,12 @@ const TOOLS = [
 ];
 
 // ---------------------------------------------------------------------------
-// Claude call (sync curl, same shape as v1)
+// LLM call (sync curl)
 // ---------------------------------------------------------------------------
 
-function callClaude(messages) {
+function callLLM(messages) {
     const payload = JSON.stringify({ model: MODEL, max_tokens: MAX_TOKENS, tools: TOOLS, messages });
-    process.stdout.write(`  [claude] ${messages.length} msgs ${payload.length}b ... `);
+    process.stdout.write(`  [llm] ${messages.length} msgs ${payload.length}b ... `);
     // Retry up to 3 times on transient proxy errors (ETIMEDOUT, 5xx, empty body).
     let lastErr = null;
     for (let attempt = 1; attempt <= 3; attempt++) {
@@ -364,7 +375,7 @@ function callClaude(messages) {
                 continue;
             }
             if (parsed.error) {
-                lastErr = new Error('Claude error: ' + JSON.stringify(parsed.error));
+                lastErr = new Error('LLM error: ' + JSON.stringify(parsed.error));
                 // Don't retry on 4xx auth errors etc.
                 if (JSON.stringify(parsed.error).match(/401|403|invalid_api_key/i)) throw lastErr;
                 process.stdout.write(`(retry ${attempt}: ${JSON.stringify(parsed.error).slice(0,80)}) `);
@@ -380,7 +391,7 @@ function callClaude(messages) {
             while (Date.now() < until) { /* busy wait, spawnSync is sync */ }
         }
     }
-    throw lastErr || new Error('Claude call failed after 3 attempts');
+    throw lastErr || new Error('LLM call failed after 3 attempts');
 }
 
 // ---------------------------------------------------------------------------
@@ -734,7 +745,7 @@ async function main() {
     try {
         for (let turn = startTurn; turn <= MAX_TURNS; turn++) {
             // Turn-budget warning: when 2 turns remain, append a high-priority
-            // reminder to the last user message so Claude sees it on this turn.
+            // reminder to the last user message so the agent sees it on this turn.
             // This forces the agent to wrap up before the cap rather than
             // exploring indefinitely.
             if (turn === MAX_TURNS - 1 && !report) {
@@ -749,7 +760,7 @@ async function main() {
                 }
             }
             process.stdout.write(`Turn ${turn}/${MAX_TURNS} `);
-            const response = callClaude(messages);
+            const response = callLLM(messages);
             messages.push({ role: 'assistant', content: response.content });
 
             const toolCalls = response.content.filter((c) => c.type === 'tool_use');
@@ -852,7 +863,7 @@ async function main() {
 
             messages.push({ role: 'user', content: results });
 
-            // Checkpoint after every successful turn. If callClaude or any
+            // Checkpoint after every successful turn. If callLLM or any
             // tool throws on the NEXT turn, RESUME=1 can pick up here.
             saveCheckpoint(turn, report, verdict);
         }
