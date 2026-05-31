@@ -51,6 +51,15 @@ jobs:
           node --version
           which magick || echo "ImageMagick not installed - diff_screenshots will skip"
 
+      - name: Install Playwright (isolated from main package.json)
+        # The CaaS project uses WebdriverIO for e2e; Playwright is QA-audit-specific
+        # and lives in its own package.json under .github/qa/ to avoid polluting
+        # the React build dependency tree.
+        working-directory: .github/qa
+        run: |
+          npm ci --no-audit --no-fund
+          npx playwright install chromium --with-deps 2>&1 | tail -5 || true
+
       - name: Run audit suite
         id: run
         env:
@@ -77,8 +86,10 @@ jobs:
           fi
           echo "Aggregating from: $RESULTS_DIR"
           node .github/qa/aggregate-report.mjs "$RESULTS_DIR" > /tmp/qa-audit-report.md
-          # Strip "FAIL_INCOMPLETE" from grep target since aggregate treats them as fail.
-          if grep -qE '\| (FAIL|INCOMPLETE) \|' /tmp/qa-audit-report.md; then
+          # Any non-PASS verdict per row (FAIL / INCOMPLETE / NO_VERDICT) flips
+          # the overall to FAIL. Also catch the per-row pipe-separated tags from
+          # the aggregator's summary table.
+          if grep -qE '\| (FAIL|INCOMPLETE|NO_VERDICT) \|' /tmp/qa-audit-report.md; then
             echo "verdict=FAIL" >> "$GITHUB_OUTPUT"
           else
             echo "verdict=PASS" >> "$GITHUB_OUTPUT"
