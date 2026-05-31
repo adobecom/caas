@@ -19,7 +19,7 @@
 set -u
 
 SUITE="${SUITE:-a11y}"
-WORKERS="${WORKERS:-4}"
+WORKERS="${WORKERS:-1}"
 CAASVER="${CAASVER:-0.51.5}"
 BASE_URL="${BASE_URL:-https://business.adobe.com/resources/main.html}"
 MAX_TURNS="${MAX_TURNS:-10}"
