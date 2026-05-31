@@ -64,6 +64,8 @@ jobs:
         id: run
         env:
           IMS_ACCESS_TOKEN: ${{ secrets.IMS_ACCESS_TOKEN }}
+          PROXY_URL: ${{ secrets.LLM_PROXY_ENDPOINT }}
+          MODEL: ${{ secrets.LLM_MODEL }}
           CAASVER: ${{ inputs.caasver }}
           BASE_URL: ${{ inputs.base_url }}
           MAX_TURNS: ${{ inputs.max_turns }}
@@ -75,10 +77,13 @@ jobs:
       - name: Aggregate report
         id: aggregate
         env:
-          # IMS token lets aggregate-report.mjs call Claude to rewrite the
-          # raw agent transcript into a developer-friendly narrative. If the
-          # call fails the script falls back to the structured raw format.
+          # Credentials let aggregate-report.mjs rewrite the raw agent
+          # transcript into a developer-friendly narrative. If any are
+          # missing or the call fails the script falls back to a structured
+          # raw format.
           IMS_ACCESS_TOKEN: ${{ secrets.IMS_ACCESS_TOKEN }}
+          PROXY_URL: ${{ secrets.LLM_PROXY_ENDPOINT }}
+          MODEL: ${{ secrets.LLM_MODEL }}
         run: |
           RESULTS_DIR=$(grep -E '^RESULTS_DIR=' /tmp/qa-audit-output.txt 2>/dev/null | tail -1 | sed 's/^RESULTS_DIR=//' || true)
           # Fallback: find the most recent results-* dir under .github/qa/

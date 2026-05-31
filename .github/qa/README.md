@@ -30,7 +30,7 @@ Each scenario runs the agent loop in `qa-runner-v2.mjs`, which drives Chrome via
 
 ## Files
 
-- `qa-runner-v2.mjs` - the agent loop. Spawns Playwright Chrome (via `USER_DATA_DIR` for persistent profile + bot-detection bypass), runs a tool-use loop with Claude via Adobe LLM proxy, supports retry + checkpoint + auto-done safety net.
+- `qa-runner-v2.mjs` - the agent loop. Spawns Playwright Chrome (via `USER_DATA_DIR` for persistent profile + bot-detection bypass), runs a tool-use loop with an LLM via a configured proxy (PROXY_URL + MODEL env vars), supports retry + checkpoint + auto-done safety net.
 - `run-all-audits.sh` - iterates every `qa-prompts/audit-*.txt`, runs the runner against each, writes per-scenario logs to `results-<timestamp>-<version>/`.
 - `aggregate-report.mjs` - walks the results dir and produces the markdown report that ends up as the Issue body.
 - `qa-prompts/` - the scenario prompts. To add a new scenario: drop a new `audit-<name>.txt` file in here following the existing format (visual + ARIA hybrid pattern, short turn budget, explicit PASS/FAIL criteria). It'll be picked up automatically on the next run.

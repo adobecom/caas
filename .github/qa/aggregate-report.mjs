@@ -5,7 +5,7 @@
  *
  * Two-stage pipeline:
  *   1. Parse per-scenario logs into a structured findings JSON.
- *   2. Send findings to Claude (via Adobe LLM proxy) for narrative rewrite
+ *   2. Send findings to an LLM proxy for narrative rewrite
  *      so the issue reads like a senior QA wrote it, not like a robot
  *      dumped its tool-call trace.
  *
@@ -15,18 +15,19 @@
  *
  * Usage:  node aggregate-report.mjs <results-dir> > report.md
  *
- * Env:
- *   IMS_ACCESS_TOKEN  - required for narrative rewrite (else falls back)
- *   PROXY_URL         - defaults to the Adobe LLM proxy
- *   MODEL             - defaults to claude-sonnet-4-6
+ * Env (all required for narrative rewrite; absence triggers fallback):
+ *   IMS_ACCESS_TOKEN  - bearer token for the LLM proxy
+ *   PROXY_URL         - LLM proxy endpoint URL (no default; never hardcoded)
+ *   MODEL             - model name to request from the proxy
+ *   VERDICT_SIDECAR   - optional; default /tmp/qa-audit-verdict.txt
  */
 
 import { readFileSync, readdirSync, existsSync, writeFileSync } from 'fs';
 import { join, basename } from 'path';
 import { spawnSync } from 'child_process';
 
-const PROXY_URL = process.env.PROXY_URL || 'https://adobe-llm-proxy.paolo-moz.workers.dev/v1/messages';
-const MODEL = process.env.MODEL || 'claude-sonnet-4-6';
+const PROXY_URL = process.env.PROXY_URL || '';
+const MODEL = process.env.MODEL || '';
 const TOKEN = process.env.IMS_ACCESS_TOKEN || '';
 const VERDICT_SIDECAR = process.env.VERDICT_SIDECAR || '/tmp/qa-audit-verdict.txt';
 
@@ -94,12 +95,17 @@ try {
 }
 
 // ---------------------------------------------------------------------------
-// Stage 2: Claude narrative rewrite (with fallback)
+// Stage 2: LLM narrative rewrite (with fallback)
 // ---------------------------------------------------------------------------
 
-function rewriteWithClaude() {
-    if (!TOKEN) {
-        process.stderr.write('[aggregate] IMS_ACCESS_TOKEN not set; using fallback format\n');
+function rewriteWithLLM() {
+    if (!TOKEN || !PROXY_URL || !MODEL) {
+        const missing = [
+            !TOKEN && 'IMS_ACCESS_TOKEN',
+            !PROXY_URL && 'PROXY_URL',
+            !MODEL && 'MODEL',
+        ].filter(Boolean).join(', ');
+        process.stderr.write(`[aggregate] env vars not set (${missing}); using fallback format\n`);
         return null;
     }
 
@@ -158,7 +164,7 @@ function rewriteWithClaude() {
         messages: [{ role: 'user', content: prompt }],
     });
 
-    process.stderr.write(`[aggregate] sending ${payload.length} bytes to Claude for narrative rewrite...\n`);
+    process.stderr.write(`[aggregate] sending ${payload.length} bytes to LLM proxy for narrative rewrite...\n`);
 
     const result = spawnSync(
         'curl',
@@ -211,7 +217,7 @@ const verdictTag = (v) =>
     v === 'FAIL_INCOMPLETE' ? 'INCOMPLETE' :
     'NO_VERDICT';
 
-const narrative = rewriteWithClaude();
+const narrative = rewriteWithLLM();
 
 const lines = [];
 
