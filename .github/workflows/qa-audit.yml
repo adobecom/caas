@@ -24,11 +24,6 @@ on:
           - functional
           - regression
           - all
-      workers:
-        description: 'Parallel worker count. Default 1 (sequential). Current MacBook Air runner cannot reliably support multiple concurrent Playwright Chrome trees - parallel runs trigger MAX_TURNS exhaustion and false FAILs. Bump to 2-4 only on beefier hardware.'
-        required: false
-        default: '1'
-        type: string
       base_url:
         description: 'Page to load CaaS into via ?caasver=<version>.'
         required: false
@@ -86,7 +81,6 @@ jobs:
           BASE_URL: ${{ inputs.base_url }}
           MAX_TURNS: ${{ inputs.max_turns }}
           SUITE: ${{ inputs.suite }}
-          WORKERS: ${{ inputs.workers }}
         run: |
           chmod +x .github/qa/run-all-audits.sh
           .github/qa/run-all-audits.sh
