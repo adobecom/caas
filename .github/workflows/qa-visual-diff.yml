@@ -1,0 +1,162 @@
+name: QA Visual Diff
+
+# Compares two CaaS bundle versions visually for rendering / styling
+# regressions. Different shape from QA Audit: two version inputs, a single
+# scenario, scoped to "what changed in the CaaS region between A and B".
+#
+# Manual trigger only. Same self-hosted runner posture as QA Audit.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_a:
+        description: 'Baseline CaaS version (typically previous stable release, e.g. 0.51.4)'
+        required: true
+        type: string
+      version_b:
+        description: 'Candidate CaaS version to compare against baseline (e.g. 0.51.5)'
+        required: true
+        default: '0.51.5'
+        type: string
+      base_url:
+        description: 'Page to load CaaS into via ?caasver=<version>.'
+        required: false
+        default: 'https://business.adobe.com/resources/main.html'
+        type: string
+      scroll_y:
+        description: 'Pixels to scroll down so the card-collection region is in view.'
+        required: false
+        default: '1800'
+        type: string
+      max_turns:
+        description: 'Max agent turns. 8 is generous for the 6-step scenario.'
+        required: false
+        default: '12'
+        type: string
+
+concurrency:
+  group: qa-visual-diff-${{ inputs.version_a }}-vs-${{ inputs.version_b }}
+  cancel-in-progress: false
+
+jobs:
+  diff:
+    runs-on: [self-hosted, qa-audit]
+    timeout-minutes: 10
+    permissions:
+      issues: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show inputs
+        run: |
+          echo "version_a: ${{ inputs.version_a }}"
+          echo "version_b: ${{ inputs.version_b }}"
+          echo "base_url:  ${{ inputs.base_url }}"
+          echo "scroll_y:  ${{ inputs.scroll_y }}"
+          which magick || echo "ImageMagick not installed - diff_screenshots will degrade"
+
+      - name: Install Playwright (isolated from main package.json)
+        working-directory: .github/qa
+        run: |
+          npm ci --no-audit --no-fund
+          npx playwright install chromium --with-deps 2>&1 | tail -5 || true
+
+      - name: Run visual diff scenario
+        id: run
+        env:
+          IMS_ACCESS_TOKEN: ${{ secrets.IMS_ACCESS_TOKEN }}
+          PROXY_URL: ${{ secrets.LLM_PROXY_ENDPOINT }}
+          MODEL: ${{ secrets.LLM_MODEL }}
+          MAX_TURNS: ${{ inputs.max_turns }}
+          USER_DATA_DIR: /tmp/chrome-qa-profile
+          URL_A: '${{ inputs.base_url }}?caasver=${{ inputs.version_a }}'
+          URL_B: '${{ inputs.base_url }}?caasver=${{ inputs.version_b }}'
+          SCROLL_Y: ${{ inputs.scroll_y }}
+        run: |
+          mkdir -p .github/qa/results-vd
+          # Substitute placeholders into the prompt and feed it to the runner.
+          PROMPT=$(cat .github/qa/qa-prompts/visual-diff/version-diff.txt \
+            | sed "s|{URL_A}|$URL_A|g" \
+            | sed "s|{URL_B}|$URL_B|g" \
+            | sed "s|{SCROLL_Y}|$SCROLL_Y|g")
+          pkill -f "$USER_DATA_DIR" 2>/dev/null || true
+          sleep 2
+          node .github/qa/qa-runner-v2.mjs "$PROMPT" \
+            > .github/qa/results-vd/version-diff.log 2>&1 || true
+          # Verdict signal: same convention as audit suite.
+          VERDICT=$(grep -oE '\[PASS\]|\[FAIL\]|FAIL_INCOMPLETE' .github/qa/results-vd/version-diff.log | head -1 | tr -d '[]')
+          [ -z "$VERDICT" ] && VERDICT="NO_VERDICT"
+          # Map agent verdict to PASS/FAIL.
+          if [ "$VERDICT" = "PASS" ]; then
+            echo "verdict=PASS" >> "$GITHUB_OUTPUT"
+          else
+            echo "verdict=FAIL" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Extract narrative report
+        id: report
+        env:
+          IMS_ACCESS_TOKEN: ${{ secrets.IMS_ACCESS_TOKEN }}
+          PROXY_URL: ${{ secrets.LLM_PROXY_ENDPOINT }}
+          MODEL: ${{ secrets.LLM_MODEL }}
+        run: |
+          # The agent's final report is between the last two ====== separator
+          # lines in the log. Extract it directly; no aggregation needed for
+          # a single-scenario workflow.
+          LOG=.github/qa/results-vd/version-diff.log
+          SEP="============================================================"
+          # Pick the longest chunk between separators - that's the agent's
+          # report. Same parsing logic as aggregate-report.mjs uses.
+          awk -v sep="$SEP" '
+            BEGIN { longest = ""; current = "" }
+            $0 == sep { if (length(current) > length(longest)) longest = current; current = ""; next }
+            { current = current $0 "\n" }
+            END { if (length(current) > length(longest)) longest = current; print longest }
+          ' "$LOG" > /tmp/visual-diff-report.md
+
+      - name: Upload artifacts (logs, screenshots, diff overlay)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-visual-diff-${{ inputs.version_a }}-vs-${{ inputs.version_b }}-${{ github.run_id }}
+          path: |
+            .github/qa/results-vd/
+            .github/qa/qa-artifacts/
+          retention-days: 30
+
+      - name: Post GitHub Issue with report
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          ARTIFACT_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          LABEL_VERDICT=qa-${{ steps.run.outputs.verdict }}
+          gh label create qa-visual-diff --color D4C5F9 --description "Generated by .github/workflows/qa-visual-diff.yml" 2>/dev/null || true
+          gh label create qa-PASS        --color 0E8A16 2>/dev/null || true
+          gh label create qa-FAIL        --color B60205 2>/dev/null || true
+          {
+            cat /tmp/visual-diff-report.md
+            echo ""
+            echo "---"
+            echo ""
+            echo "**Diff:** \`${{ inputs.version_a }}\` (baseline) vs \`${{ inputs.version_b }}\` (candidate)"
+            echo "**Page:** \`${{ inputs.base_url }}\`"
+            echo "**Artifacts:** [screenshots + diff overlay]($ARTIFACT_URL)"
+            echo "**Triggered by:** @${{ github.actor }}"
+          } > /tmp/visual-diff-issue-body.md
+          gh issue create \
+            --title "Visual Diff: ${{ inputs.version_a }} vs ${{ inputs.version_b }} ($DATE) - ${{ steps.run.outputs.verdict }}" \
+            --label "qa-visual-diff,$LABEL_VERDICT" \
+            --body-file /tmp/visual-diff-issue-body.md
+
+      - name: Set workflow conclusion based on verdict
+        if: always()
+        run: |
+          if [ "${{ steps.run.outputs.verdict }}" = "FAIL" ]; then
+            echo "Visual regressions detected. See the posted Issue."
+            exit 1
+          fi
+          echo "No visual regressions."
