@@ -93,6 +93,11 @@ const Grid = (props) => {
     const paginationType = getConfig('pagination', 'type');
     const collectionButtonStyle = getConfig('collection', 'collectionButtonStyle');
     const cardHoverEffect = getConfig('collection', 'cardHoverEffect');
+    const detailsTextOption = getConfig('collection', 'detailsTextOption');
+    let products = [];
+    if (detailsTextOption === 'productName') {
+        products = Object.values(getConfig('products', '') || {});
+    }
 
     let customCard;
     try {
@@ -272,7 +277,8 @@ const Grid = (props) => {
                                 ariaHidden={ariaHidden}
                                 tabIndex={ariaHidden ? -1 : 0}
                                 /* istanbul ignore next */
-                                onFocus={() => scrollCardIntoView(card.id)} />
+                                onFocus={() => scrollCardIntoView(card.id)}
+                                products={products}/>
                         );
                 }
             })}

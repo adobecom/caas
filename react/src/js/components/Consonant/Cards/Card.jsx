@@ -48,6 +48,7 @@ import EditorialCard from './EditorialCard';
 import BlogCard from './BlogCard';
 import HorizontalCard from './HorizontalCard';
 import ButtonCard from './ButtonCard';
+import FlexCard from './FlexCard';
 
 const CARD_STYLES = {
     'one-half': OneHalf,
@@ -64,6 +65,7 @@ const CARD_STYLES = {
     'blog-card': BlogCard,
     'horizontal-card': HorizontalCard,
     'button-card': ButtonCard,
+    'flex-card': FlexCard,
 };
 
 const CardType = {
@@ -190,6 +192,7 @@ const Card = (props) => {
         origin,
         ariaHidden,
         tabIndex,
+        products,
     } = props;
 
     let bannerBackgroundColorToUse = bannerBackgroundColor;
@@ -219,6 +222,7 @@ const Card = (props) => {
     const searchEnabled = getConfig('search', 'enabled');
     const editorialOpenVariant = getConfig('collection', 'editorialOpenVariant') || false;
     const useRoundedCorners = getConfig('collection', 'useRoundedCorners') || false;
+    const flexCardOptions = getConfig('collection', 'flexCard');
 
     const cardClassName = classNames({
         'consonant-Card': true,
@@ -405,7 +409,7 @@ const Card = (props) => {
 
     const cardData = useMemo(() => ({
         id, country, reference, lh, cardClassName, cardStyle, bladeVariant,
-        optimizedImage, altText, cta2Text,
+        optimizedImage, altText, cta2Text, flexCardOptions,
         hasBanner, disableBanners,
         bannerBackgroundColor: bannerBackgroundColorToUse,
         bannerFontColor: bannerFontColorToUse,
@@ -422,6 +426,7 @@ const Card = (props) => {
         extendFooterData, altCtaUsed, hideOnDemandDates,
         linkBlockerTarget, overlay, ctaText,
         onFocus, tabIndex, ariaHidden, renderOverlay, hideCTA,
+        products,
     }));
 
     const CardComponent = CARD_STYLES[cardStyle] || OneHalf;
