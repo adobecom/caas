@@ -41,12 +41,16 @@ const FlexCard = () => {
     const detailsTextOption = getConfig('collection', 'detailsTextOption');
  
     let showProductName = false;
-    let productName = '';
+    let productInfo = {};
     if (detailsTextOption === 'productName' && products.length > 0) {
         const productData = products.find(product => product.tagID === (detailText || 'caas:mnemonics/acrobat'));
         if (productData) {
             showProductName = true;
-            productName = productData.title;
+            productInfo = {
+                tagID: productData.tagID,
+                title: productData.title,
+                icon: productData.tagImage,
+            }
         }
     }
 
@@ -88,7 +92,9 @@ const FlexCard = () => {
             <div className="consonant-Card-content">
                 <CardContent
                     showLabel
-                    detailText={showDetails ? (showProductName ? productName : detailText) : ''}
+                    // detailText={showDetails ? (showProductName ? productName : detailText) : ''}
+                    detailText={showDetails && !showProductName ? detailText : ''}
+                    productInfo={productInfo.tagID && productInfo.title ? productInfo : null}
                     showIconAlt={false}
                     isTitleOnly={false}
                     highlightedTitle={highlightedTitle}

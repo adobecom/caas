@@ -12,6 +12,7 @@ import { removeMarkDown } from '../../Helpers/general';
 const CardContent = ({
     showLabel,
     detailText,
+    productInfo,
     showIconAlt,
     iconAlt,
     isTitleOnly,
@@ -25,6 +26,7 @@ const CardContent = ({
     description,
 }) => (
     <>
+        {productInfo && console.log('[CardContent] productInfo', productInfo)}
         {showLabel && detailText &&
         <span
             data-testid="consonant-Card-label"
@@ -32,6 +34,14 @@ const CardContent = ({
             {detailText}
         </span>
         }
+        {productInfo && (
+            <span
+                data-testid="consonant-Card-label"
+                className="consonant-Card-label product-info">
+                <img className="product-info-icon" src={productInfo.icon} alt={productInfo.title} />
+                <span className="product-info-title">{productInfo.title}</span>
+            </span>
+        )}
         {showIconAlt && (detailText === '') &&
         <span
             data-testid="consonant-Card-label"
