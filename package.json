@@ -137,6 +137,12 @@
     "webpack": "^3.9.1",
     "webpack-bundle-analyzer": "^4.10.2"
   },
+  "husky": {
+    "hooks": {
+      "prepare-commit-msg": "test -z \"$2\" && exec < /dev/tty && npx cz --hook || true",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
