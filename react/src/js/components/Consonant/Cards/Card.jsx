@@ -97,6 +97,13 @@ const CardType = {
     tabIndex: number,
     country: string,
     reference: string,
+    products: arrayOf(shape(productType)),
+};
+
+const productType = {
+    tagID: string,
+    title: string,
+    icon: string,
 };
 
 const defaultProps = {
@@ -125,6 +132,7 @@ const defaultProps = {
     tabIndex: 0,
     country: '',
     reference: '',
+    products: [],
 };
 
 const Card = (props) => {
