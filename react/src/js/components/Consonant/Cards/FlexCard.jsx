@@ -50,7 +50,7 @@ const FlexCard = () => {
                 tagID: productData.tagID,
                 title: productData.title,
                 icon: productData.tagImage,
-            }
+            };
         }
     }
 
@@ -94,7 +94,7 @@ const FlexCard = () => {
                     showLabel
                     // detailText={showDetails ? (showProductName ? productName : detailText) : ''}
                     detailText={showDetails && !showProductName ? detailText : ''}
-                    productInfo={productInfo.tagID && productInfo.title ? productInfo : null}
+                    productInfo={showDetails && productInfo.tagID && productInfo.title ? productInfo : null}
                     showIconAlt={false}
                     isTitleOnly={false}
                     highlightedTitle={highlightedTitle}

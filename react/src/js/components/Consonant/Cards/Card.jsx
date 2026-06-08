@@ -68,6 +68,12 @@ const CARD_STYLES = {
     'flex-card': FlexCard,
 };
 
+const productType = {
+    tagID: string,
+    title: string,
+    icon: string,
+};
+
 const CardType = {
     cardStyle: string,
     isBookmarked: bool,
@@ -98,12 +104,6 @@ const CardType = {
     country: string,
     reference: string,
     products: arrayOf(shape(productType)),
-};
-
-const productType = {
-    tagID: string,
-    title: string,
-    icon: string,
 };
 
 const defaultProps = {

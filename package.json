@@ -1,6 +1,6 @@
 {
   "name": "CaaS",
-  "version": "0.51.1",
+  "version": "0.53.0",
   "private": false,
   "description": "",
   "scripts": {
@@ -15,7 +15,7 @@
     "test:e2e-prod": "wdio run wdio.conf.js env=PROD",
     "test:bulk-publisher": "wdio run wdio.bulk-publisher.conf.js",
     "perf": "lhci autorun",
-    "serve": "serve",
+    "serve": "serve -p 5000",
     "watch": "npm run serve & webpack -w",
     "start": "npm run serve"
   },
