@@ -1,0 +1,119 @@
+name: AI Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+# Cancel any in-flight review on the same PR when a new push lands,
+# so we do not spam the PR with a new comment for every commit.
+concurrency:
+  group: ai-code-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    runs-on: [self-hosted, X64]
+    # Only run on PRs from the same repository. This is a public repo and the
+    # job runs on a self-hosted runner; fork PRs would otherwise check out
+    # untrusted code onto our machine.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get PR diff
+        run: gh pr diff ${{ github.event.pull_request.number }} > pr.diff
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run AI Code Review
+        env:
+          IMS_ACCESS_TOKEN: ${{ secrets.IMS_ACCESS_TOKEN }}
+          LLM_PROXY_ENDPOINT: ${{ secrets.LLM_PROXY_ENDPOINT }}
+          LLM_MODEL: ${{ secrets.LLM_MODEL }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          python3 << 'EOF'
+          import json, os, sys, subprocess, tempfile
+
+          with open('pr.diff') as f:
+              diff = f.read()[:8000]
+
+          if not diff.strip():
+              print("Empty diff, skipping review")
+              sys.exit(0)
+
+          token = os.environ['IMS_ACCESS_TOKEN']
+          endpoint = os.environ['LLM_PROXY_ENDPOINT']
+          model = os.environ.get('LLM_MODEL', '').strip()
+          if not model:
+              print("ERROR: LLM_MODEL env var (from secrets.LLM_MODEL) is required", file=sys.stderr)
+              sys.exit(2)
+          pr_number = os.environ['PR_NUMBER']
+
+          payload = json.dumps({
+              "model": model,
+              "max_tokens": 2048,
+              "messages": [{
+                  "role": "user",
+                  "content": (
+                      "Review this pull request diff. Focus ONLY on critical, "
+                      "high-confidence issues: correctness bugs, security vulnerabilities, "
+                      "data loss, broken logic, race conditions. "
+                      "Skip style, formatting, and nits. Be concise and actionable.\n\n"
+                      f"Diff:\n{diff}"
+                  )
+              }]
+          })
+
+          # Write headers to a temp config file so the Bearer token never
+          # appears in process argv (which would be visible via `ps aux` on
+          # the self-hosted runner). NamedTemporaryFile is mode 0600 by default.
+          with tempfile.NamedTemporaryFile('w', delete=False, suffix='.conf') as cf:
+              cf.write(f'header = "Authorization: Bearer {token}"\n')
+              cf.write('header = "Content-Type: application/json"\n')
+              cf.write('header = "anthropic-version: 2023-06-01"\n')
+              config_file = cf.name
+
+          try:
+              result = subprocess.run([
+                  'curl', '-sS', '-X', 'POST',
+                  '--config', config_file,
+                  '--write-out', '\n%{http_code}',
+                  endpoint,
+                  '-d', payload
+              ], capture_output=True, text=True)
+          finally:
+              os.unlink(config_file)
+
+          # --write-out appended the HTTP status as the last line of stdout.
+          body, _, status = result.stdout.rpartition('\n')
+
+          if status.strip() != '200':
+              # Do NOT post raw proxy output to a public PR comment; it can
+              # contain echoed request data or verbose error detail. Surface
+              # the failure in the Actions logs only.
+              print(f"Proxy returned HTTP {status}", file=sys.stderr)
+              print(body[:2000], file=sys.stderr)
+              review = "AI review unavailable (upstream error). See Actions logs."
+          else:
+              try:
+                  data = json.loads(body)
+                  review = data['content'][0]['text']
+              except Exception as e:
+                  print(f"Parse error: {e}", file=sys.stderr)
+                  print(body[:2000], file=sys.stderr)
+                  review = "AI review unavailable (response parse error). See Actions logs."
+
+          comment = f"## AI Code Review\n\n{review}"
+          subprocess.run(
+              ['gh', 'pr', 'comment', pr_number, '--body', comment],
+              check=True
+          )
+          print("Review posted.")
+          EOF
