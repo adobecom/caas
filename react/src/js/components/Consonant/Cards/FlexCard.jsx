@@ -5,7 +5,6 @@ import CardHeader from './CardHeader/CardHeader';
 import CardContent from './CardContent/CardContent';
 import CardFooter from './CardFooter/CardFooter';
 import LinkBlocker from './LinkBlocker/LinkBlocker';
-import { useConfig } from '../Helpers/hooks';
 
 const FlexCard = () => {
     const {
@@ -25,10 +24,9 @@ const FlexCard = () => {
         linkBlockerTarget, overlay, ctaText,
         onFocus, tabIndex, ariaHidden,
         renderOverlay, hideCTA,
-        // products,
     } = useCardData();
 
-    const imageOption = flexCardOptions?.imageOption || 'default';
+    const imageOption = flexCardOptions?.imageOption || '';
     const textAlign = flexCardOptions?.textAlign || 'text-left';
     const showDetails = !(flexCardOptions?.hideDetails === true);
     const showTitle = !(flexCardOptions?.hideTitle === true);
@@ -36,23 +34,6 @@ const FlexCard = () => {
     const showFooter = !(flexCardOptions?.hideFooter === true);
     const textSize = flexCardOptions?.textSize || '';
     const textSizeClass = textSize === 'text-large' ? 'text-large' : '';
-
-    const getConfig = useConfig();
-    const detailsTextOption = getConfig('collection', 'detailsTextOption');
- 
-    // let showProductName = false;
-    // let productInfo = {};
-    // if (detailsTextOption === 'productName' && products.length > 0) {
-    //     const productData = products.find(product => product.tagID === (detailText || 'caas:mnemonics/acrobat'));
-    //     if (productData) {
-    //         showProductName = true;
-    //         productInfo = {
-    //             tagID: productData.tagID,
-    //             title: productData.title,
-    //             icon: productData.tagImage,
-    //         }
-    //     }
-    // }
 
     return (
         <li
@@ -93,8 +74,6 @@ const FlexCard = () => {
                 <CardContent
                     showLabel
                     detailText={showDetails ? detailText : ''}
-                    // detailText={showDetails && !showProductName ? detailText : ''}
-                    // productInfo={productInfo.tagID && productInfo.title ? productInfo : null}
                     showIconAlt={false}
                     isTitleOnly={false}
                     highlightedTitle={highlightedTitle}

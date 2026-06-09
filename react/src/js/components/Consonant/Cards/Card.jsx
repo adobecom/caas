@@ -192,7 +192,6 @@ const Card = (props) => {
         origin,
         ariaHidden,
         tabIndex,
-        // products,
     } = props;
 
     let bannerBackgroundColorToUse = bannerBackgroundColor;
@@ -426,7 +425,6 @@ const Card = (props) => {
         extendFooterData, altCtaUsed, hideOnDemandDates,
         linkBlockerTarget, overlay, ctaText,
         onFocus, tabIndex, ariaHidden, renderOverlay, hideCTA,
-        // products,
     }));
 
     const CardComponent = CARD_STYLES[cardStyle] || OneHalf;
