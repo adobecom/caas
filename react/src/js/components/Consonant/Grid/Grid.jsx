@@ -272,7 +272,7 @@ const Grid = (props) => {
                                 ariaHidden={ariaHidden}
                                 tabIndex={ariaHidden ? -1 : 0}
                                 /* istanbul ignore next */
-                                onFocus={() => scrollCardIntoView(card.id)}/>
+                                onFocus={() => scrollCardIntoView(card.id)} />
                         );
                 }
             })}

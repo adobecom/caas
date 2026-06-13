@@ -76,6 +76,7 @@ const FlexCard = () => {
                     detailText={showDetails ? detailText : ''}
                     showIconAlt={false}
                     isTitleOnly={false}
+                    showTitle={showTitle}
                     highlightedTitle={highlightedTitle}
                     title={showTitle ? title : ''}
                     headingAria={headingAria}
