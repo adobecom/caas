@@ -1,0 +1,240 @@
+.consonant-CardsGrid {
+    .consonant-Card.flex-card {
+        .card-hover;
+
+        &:not([class *= "image-small-"]) {
+            .card-hover-header;
+        }
+
+        .consonant-Card-header {
+            position: relative;
+            width: 100%;
+            height: @consonant-OneHalfCard-imgHeigh;
+            background-color: @consonantGray300;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+            background-size: cover;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            overflow: hidden;
+
+            .consonant-Card-banner {
+                position: absolute;
+                display: flex;
+                justify-content: flex-start;
+                max-width: 56%;
+                max-height: 70%;
+                top: 24px;
+                right: 0;
+                padding: 8px 13px;
+
+                .font(0.75rem, 1.0625rem, 700, @consonantBaseColor);
+
+                letter-spacing: 0.72px;
+                text-transform: uppercase;
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+                z-index: 1;
+                background-color: @consonantBlue600;
+                user-select: none;
+                overflow-y: auto;
+
+                &IconWrapper {
+                    margin-right: 4px;
+
+                    img {
+                        width: 8px;
+                        height: 8px;
+                    }
+                }
+            }
+
+            .consonant-Card-badge {
+                position: absolute;
+                display: block;
+                max-width: 36%;
+                max-height: 50%;
+                top: 24px;
+                left: 24px;
+                padding: 4px 11px;
+
+                .font(0.75rem, 1rem, 400, @consonantGray700);
+
+                border: 1px solid @consonantGray600;
+                border-radius: 4px;
+                background-color: @consonantBaseColor;
+                overflow-y: auto;
+                z-index: 1;
+            }
+
+            .consonant-Card-logo {
+                position: absolute;
+                display: block;
+                bottom: 16px;
+                left: 0;
+                padding: 7px 24px;
+                border: 1px solid transparent;
+                border-top-right-radius: 4px;
+                border-bottom-right-radius: 4px;
+                background-color: @consonantWhite;
+                z-index: 1;
+
+                .no-font;
+
+                img {
+                    width: auto;
+                    height: auto;
+                    max-width: @consonantCardLogoImgMaxWidth;
+                    max-height: @consonant-cardLogoImgMaxHeight;
+                    object-fit: contain;
+                    user-select: none;
+                }
+            }
+
+            .consonant-Card-videoButton-wrapper {
+                .consonant-Card-videoIco {
+                    .video-button-styles;
+                }
+            }
+        }
+
+        .consonant-Card-label {
+            display: block;
+            max-width: 100%;
+            margin-bottom: 4px;
+
+            .font(@color: @consonantGray800);
+
+            text-decoration: none;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        &.rounded-corners {
+            border-radius: 20px;
+
+            .consonant-Card-header {
+                width: 95%;
+                margin: 8px auto;
+                border-radius: 12px;
+            }
+        }
+
+        /* Small Center and Small Left image options */
+
+        &[class *= "image-small-"] {
+            .consonant-Card-banner,
+            .consonant-Card-badge,
+            .consonant-Card-logo,
+            .consonant-Card-videoButton-wrapper {
+                display: none;
+            }
+
+            .consonant-Card-content {
+                padding: 0 24px 12px;
+            }
+
+            .consonant-CardFooter {
+                padding-top: 12px;
+            }
+        }
+
+        &.image-small-center {
+            .consonant-Card-header {
+                background-position: center center;
+                background-size: auto 48px;
+                background-color: transparent;
+                height: 80px;
+            }
+        }
+
+        &.image-small-left {
+            .consonant-Card-header {
+                background-position: 25px center;
+                background-size: auto 48px;
+                background-color: transparent;
+                height: 80px;
+            }
+        }
+
+        &.text-center {
+            .consonant-Card-content * {
+                text-align: center;
+            }
+
+            .consonant-CardFooter-cell--left,
+            .consonant-CardFooter-cell--center {
+                display: none;
+            }
+
+            .consonant-CardFooter-cell--right {
+                justify-content: center;
+            }
+        }
+
+        &.text-right {
+            .consonant-Card-content * {
+                text-align: right;
+            }
+
+            .consonant-CardFooter-cell--left,
+            .consonant-CardFooter-cell--center {
+                display: none;
+            }
+
+            .consonant-CardFooter-cell--right {
+                justify-content: flex-end;
+            }
+        }
+
+        &.text-justify {
+            .consonant-Card-content * {
+                text-align: justify;
+            }
+
+            .consonant-CardFooter-cell--left,
+            .consonant-CardFooter-cell--center {
+                display: none;
+            }
+
+            .consonant-CardFooter-cell--right {
+                justify-content: center;
+            }
+        }
+
+        &.text-large {
+            .consonant-Card-title {
+                font-size: 28px;
+                line-height: 35px;
+
+                & + p {
+                    max-height: 1.875rem * 4;
+                }
+            }
+
+            .consonant-Card-text {
+                font-size: 18px;
+                line-height: 27px;
+            }
+        }
+    }
+
+    &--2up,
+    &--3up,
+    &--4up,
+    &--5up {
+        .consonant-Card.flex-card {
+            height: auto;
+        }
+    }
+
+    &--4up,
+    &--5up {
+        .consonant-Card.flex-card {
+            .consonant-Card-header {
+                height: 192px;
+            }
+        }
+    }
+}
