@@ -8,7 +8,7 @@
  *   -> screenshot PR build vs current stable -> pixel diff
  *   -> hand (PR screenshot, stable screenshot, diff image, PR code diff, PR
  *      title+description) to a Claude judge via the Adobe LLM proxy
- *   -> post the findings as a PR comment. Only ever comments.
+ *   -> create-or-update a single PR comment. Only ever comments.
  *
  * Required env: PR_NUMBER, IMS_ACCESS_TOKEN, PROXY_URL, GH_TOKEN
  * Optional: GH_REPO, DIST_DIR, CDP_URL, BASE_URL, CAASVER, MODEL, OUT_DIR, RUN_URL
@@ -18,6 +18,7 @@ import pixelmatch from 'pixelmatch';
 import { PNG } from 'pngjs';
 import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { isAbsolute, resolve } from 'node:path';
 
 const env = (k, d) => process.env[k] ?? d;
 const PR = env('PR_NUMBER');
@@ -32,11 +33,17 @@ const MODEL = env('MODEL', 'claude-sonnet-4-6');
 const OUT = env('OUT_DIR', 'agent-review-out');
 const RUN_URL = env('RUN_URL', '');
 
-// Strict validation — these flow into subprocess calls.
+// Strict validation — these flow into subprocess calls / the filesystem / the network.
 if (!/^\d+$/.test(PR || '')) { console.error('PR_NUMBER must be a positive integer'); process.exit(1); }
 if (!/^[\w.-]+\/[\w.-]+$/.test(REPO)) { console.error('GH_REPO must be owner/repo'); process.exit(1); }
 if (!TOKEN || !PROXY) { console.error('Missing IMS_ACCESS_TOKEN / PROXY_URL'); process.exit(1); }
+if (!PROXY.startsWith('https://')) { console.error('PROXY_URL must be an https URL'); process.exit(1); }
+if (isAbsolute(OUT) || OUT.includes('..')) { console.error('OUT_DIR must be a relative path'); process.exit(1); }
 mkdirSync(OUT, { recursive: true });
+
+// Only ever serve these exact bundle files, resolved strictly inside the dist dir.
+const ALLOWED = new Set(['main.min.js', 'app.css', 'react.umd.js', 'react.dom.umd.js']);
+const DIST_ROOT = resolve(DIST);
 
 // No shell: execFileSync with an explicit args array (no injection surface).
 const gh = (args) => execFileSync('gh', args, { encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 });
@@ -48,11 +55,11 @@ const redact = (s) => (s || '').replace(
   '[REDACTED]',
 );
 
-// 1) PR context
+// 1) PR context — redact BEFORE truncating so a token can't be split past the regex.
 const meta = JSON.parse(gh(['pr', 'view', PR, '-R', REPO, '--json', 'title,body,files']));
 let codeDiff = '';
 try { codeDiff = gh(['pr', 'diff', PR, '-R', REPO]); } catch { /* optional */ }
-codeDiff = redact(codeDiff.slice(0, 12000));
+codeDiff = redact(codeDiff).slice(0, 12000);
 const changedFiles = (meta.files || []).map((f) => f.path).join('\n').slice(0, 1500);
 
 // 2) screenshots: PR build injected vs current stable, on the same real page
@@ -65,7 +72,9 @@ async function shot(injectPrBuild, outFile) {
   if (injectPrBuild) {
     await page.route('**/caas-libs/**', async (route) => {
       const file = route.request().url().split('?')[0].split('/').pop();
-      try { await route.fulfill({ path: `${DIST}/${file}`, contentType: ct(file) }); }
+      const full = resolve(DIST_ROOT, file);
+      if (!ALLOWED.has(file) || !full.startsWith(DIST_ROOT + '/')) return route.continue();
+      try { await route.fulfill({ path: full, contentType: ct(file) }); }
       catch { await route.continue(); }
     });
   }
@@ -137,8 +146,11 @@ try {
   else { findings = `(agent judge unavailable: HTTP ${res.status})`; }
 } catch (e) { findings = `(agent judge error: ${String(e).slice(0, 200)})`; }
 
-// 5) post advisory PR comment (no shell)
+// 5) create-or-update a SINGLE comment (found by a hidden marker) so re-runs don't spam,
+//    and so we never clobber another bot's comment.
+const MARKER = '<!-- agent-qa-review -->';
 const comment = [
+  MARKER,
   '## 🤖 Agent QA review — visual + perceptual (advisory, non-blocking)',
   '',
   `Reviewed this PR's build on the live business.adobe.com collection page. **${pct}%** of pixels changed vs the stable build.`,
@@ -147,7 +159,20 @@ const comment = [
   '',
   RUN_URL ? `_Screenshots and the pixel diff are in the [workflow artifacts](${RUN_URL})._` : '',
 ].join('\n');
-writeFileSync(`${OUT}/comment.md`, comment);
-gh(['pr', 'comment', PR, '-R', REPO, '--body-file', `${OUT}/comment.md`]);
-console.log(`agent-review: posted comment on PR #${PR} (pct changed ${pct})`);
+
+let existingId = '';
+try {
+  const list = JSON.parse(gh(['pr', 'view', PR, '-R', REPO, '--json', 'comments']));
+  const mine = (list.comments || []).filter((c) => (c.body || '').includes(MARKER)).pop();
+  if (mine && mine.url) existingId = mine.url.split('issuecomment-').pop();
+} catch { /* fall through to create */ }
+
+if (existingId) {
+  gh(['api', '-X', 'PATCH', `repos/${REPO}/issues/comments/${existingId}`, '-f', `body=${comment}`]);
+  console.log(`agent-review: updated comment ${existingId} on PR #${PR} (pct ${pct})`);
+} else {
+  writeFileSync(`${OUT}/comment.md`, comment);
+  gh(['pr', 'comment', PR, '-R', REPO, '--body-file', `${OUT}/comment.md`]);
+  console.log(`agent-review: posted comment on PR #${PR} (pct ${pct})`);
+}
 process.exit(0);
