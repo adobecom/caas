@@ -60,6 +60,10 @@ try {
   };
   await shot(true, `${OUT}/pr.png`);
   await shot(false, `${OUT}/stable.png`);
+  // Disconnect THIS CDP client (does not kill the persistent Chrome) so the
+  // qa-runner subprocess is the sole Playwright client — two concurrent clients
+  // on one browser cause navigation timeouts and hangs.
+  await browser.close();
   const a = PNG.sync.read(readFileSync(`${OUT}/pr.png`)), b = PNG.sync.read(readFileSync(`${OUT}/stable.png`));
   const w = Math.min(a.width, b.width), h = Math.min(a.height, b.height);
   const ca = new PNG({ width: w, height: h }); PNG.bitblt(a, ca, 0, 0, w, h, 0, 0);
@@ -75,7 +79,7 @@ const instruction = [
   `Target URL: ${url}`,
   '',
   `You are QA-reviewing pull request #${PR}. The PR's CaaS build is already injected into this live page, so you are testing the PR's code on the real business.adobe.com collection.`,
-  `A visual diff of the PR build vs the current stable build has been captured; ${pct}% of pixels changed. FIRST call load_screenshots(["${OUT}/diff.png","${OUT}/pr.png","${OUT}/stable.png"]) to SEE what changed, then go interact with the areas that changed.`,
+  `A pixel diff of the PR build vs the current stable build was captured; ${pct}% of pixels changed. Magenta/colored regions in the diff mark where the PR changed the rendering. Call load_screenshots(["${OUT}/diff.png"]) ONCE to see those regions, then go interact with the areas that changed. (Do NOT load pr.png/stable.png — the diff alone is your guide.)`,
   `PR title: ${meta.title}`,
   `PR description: ${redact(meta.body || '(none)').slice(0, 1500)}`,
   `Changed files: ${(meta.files || []).map((f) => f.path).join(', ').slice(0, 800)}`,
@@ -86,12 +90,18 @@ const instruction = [
 
 const REPORT_OUT = '/tmp/pr-review-report.json';
 try { unlinkSync(REPORT_OUT); } catch {}
-spawnSync('node', ['qa-runner-v2.mjs', instruction], {
+const AGENT_TIMEOUT_MS = Number(env('AGENT_TIMEOUT_MS', '600000')); // hard cap: a hung browser can never block the runner
+const run = spawnSync('node', ['qa-runner-v2.mjs', instruction], {
   stdio: 'inherit',
-  env: { ...process.env, DIST_DIR: DIST, REPORT_OUT, MAX_TURNS: env('MAX_TURNS', '16') },
+  timeout: AGENT_TIMEOUT_MS,
+  killSignal: 'SIGKILL',
+  env: { ...process.env, DIST_DIR: DIST, REPORT_OUT, MAX_TURNS: env('MAX_TURNS', '14') },
 });
+const timedOut = run.signal === 'SIGKILL' || run.error?.code === 'ETIMEDOUT';
 
-let verdict = 'UNKNOWN', report = '(agent produced no report)';
+let verdict = 'UNKNOWN', report = timedOut
+  ? `Agent run exceeded the ${Math.round(AGENT_TIMEOUT_MS / 60000)}-minute cap and was stopped; partial exploration only. (${pct}% of pixels changed vs stable.)`
+  : '(agent produced no report)';
 if (existsSync(REPORT_OUT)) {
   try { const j = JSON.parse(readFileSync(REPORT_OUT, 'utf8')); verdict = j.verdict || verdict; report = j.report || report; } catch {}
 }
@@ -120,5 +130,5 @@ if (id) {
   writeFileSync(`${OUT}/comment.md`, comment);
   gh(['pr', 'comment', PR, '-R', REPO, '--body-file', `${OUT}/comment.md`]);
 }
-console.log(`agent-review: interactive+diff review posted on PR #${PR} (verdict ${verdict}, diff ${pct}%)`);
+console.log(`agent-review: review posted on PR #${PR} (verdict ${verdict}, diff ${pct}%, timedOut=${timedOut})`);
 process.exit(0);
