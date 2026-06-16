@@ -48,7 +48,7 @@ export const shouldDisplayPaginator = (enabled, totalCardLimit, totalResults) =>
  * @returns {Number} - Number of cards to show
  */
 export const getNumCardsToShow = (resultsPerPage, currentPage, totalResults) =>
-    Math.min(resultsPerPage * currentPage, totalResults);
+    Math.min(resultsPerPage * currentPage - 1, totalResults);
 
 /**
  * Gets Total Page Count (For Paginator Component)
