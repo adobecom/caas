@@ -645,6 +645,17 @@ async function main() {
         console.log('[browser] headless chromium with bot-evasion args\n');
     }
 
+    if (process.env.DIST_DIR) {
+        const __distRoot = process.env.DIST_DIR;
+        const __allow = new Set(['main.min.js', 'app.css', 'react.umd.js', 'react.dom.umd.js']);
+        await context.route('**/caas-libs/**', async (route) => {
+            const f = route.request().url().split('?')[0].split('/').pop();
+            if (!__allow.has(f)) return route.continue();
+            try { await route.fulfill({ path: __distRoot + '/' + f }); } catch { await route.continue(); }
+        });
+        console.log('[browser] injecting PR dist for caas-libs from ' + __distRoot + '\n');
+    }
+
     const consoleErrors = [];
     page.on('console', (m) => { if (m.type() === 'error') consoleErrors.push(m.text()); });
     page.on('pageerror', (e) => consoleErrors.push('[pageerror] ' + e.message));
@@ -944,6 +955,9 @@ async function main() {
     if (process.env.GITHUB_STEP_SUMMARY) {
         writeFileSync(process.env.GITHUB_STEP_SUMMARY,
             `## ${verdict} ${instruction.slice(0, 80)}\n\n\`\`\`\n${report}\n\`\`\`\n`, { flag: 'a' });
+    }
+    if (process.env.REPORT_OUT) {
+        try { writeFileSync(process.env.REPORT_OUT, JSON.stringify({ verdict, report })); } catch (e) {}
     }
     process.exit(verdict === 'PASS' ? 0 : 1);
 }
