@@ -1,5 +1,12 @@
 
 
+## [0.54.1](https://github.com/adobecom/caas/compare/0.54.0...0.54.1) (2026-06-16)
+
+
+### Bug Fixes
+
+* **mwpw-184989:** drop hardcoded caasver, test the bare prod url ([b7708b1](https://github.com/adobecom/caas/commit/b7708b179293c972d88c6452c5d7f333f96eedc1))
+
 ## [0.54.0](https://github.com/adobecom/caas/compare/0.53.0...0.54.0) (2026-06-16)
 
 
