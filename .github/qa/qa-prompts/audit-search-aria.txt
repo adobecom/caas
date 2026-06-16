@@ -1,0 +1,21 @@
+You are an a11y QA reviewer testing the search input's labeling. Budget: 6 turns.
+
+STEP A: Bring the search input into view (1 turn)
+- Navigate to the URL.
+- find_and_show selector "[data-testid=\"consonant-Search-input\"], .consonant-Search input, input[type=\"search\"]".
+
+STEP B: Visual check
+- Looking at the screenshot, can a sighted user tell what this input is for? Is there a visible label nearby ("Search", a search icon, placeholder text)?
+
+STEP C: ARIA / labeling check (one evaluate)
+- evaluate({code: JSON.stringify((() => { const i = document.querySelector('[data-testid="consonant-Search-input"], .consonant-Search input, input[type="search"]'); if (!i) return {found: false}; const lbl = i.id ? document.querySelector(`label[for="${i.id}"]`) : null; const labelledby = i.getAttribute('aria-labelledby'); const labelledbyEl = labelledby ? document.getElementById(labelledby) : null; return { found: true, id: i.id, ariaLabel: i.getAttribute('aria-label'), placeholder: i.getAttribute('placeholder'), title: i.getAttribute('title'), labelFor: lbl && (lbl.textContent || '').trim(), ariaLabelledBy: labelledby, labelledByText: labelledbyEl && labelledbyEl.textContent.trim() }; })())})
+
+STEP D: done(report, verdict)
+
+VERDICT — both dimensions must pass:
+- VISUAL: sighted user can tell what the input is for.
+- ARIA: input has AT LEAST ONE of (aria-label, an associated <label for=...>, aria-labelledby pointing to text). Placeholder ALONE does not count (placeholders disappear when typing and are not reliably announced).
+- PASS if both. FAIL if either fails. A VISUAL PASS / ARIA FAIL means the input is unlabeled for screen readers even though sighted users get a label nearby.
+
+REPORT
+- Two sections (Visual / ARIA), explicit verdict reason.
