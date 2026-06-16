@@ -1,0 +1,35 @@
+name: Mini Runner Smoke Test
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: [self-hosted, ARM64]
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - name: Runner environment
+        run: |
+          echo "host: $(hostname)"
+          echo "arch: $(uname -m)"
+          echo "user: $(whoami)"
+          echo "--- tools ---"
+          python3 --version
+          gh --version | head -1
+          curl --version | head -1
+      - name: Proxy token check
+        env:
+          IMS_ACCESS_TOKEN: ${{ secrets.IMS_ACCESS_TOKEN }}
+        run: |
+          if [ -z "$IMS_ACCESS_TOKEN" ]; then echo "IMS_ACCESS_TOKEN secret is EMPTY"; exit 1; fi
+          code=$(curl -sS -o /tmp/smoke_resp.json -w '%{http_code}' \
+            -X POST 'https://adobe-llm-proxy.paolo-moz.workers.dev/v1/messages' \
+            -H "Authorization: Bearer $IMS_ACCESS_TOKEN" \
+            -H 'Content-Type: application/json' \
+            -H 'anthropic-version: 2023-06-01' \
+            -d '{"model":"claude-sonnet-4-6","max_tokens":16,"messages":[{"role":"user","content":"reply with the single word ok"}]}')
+          echo "proxy HTTP status: $code"
+          echo "--- response (first 300 chars) ---"; head -c 300 /tmp/smoke_resp.json; echo
+          if [ "$code" != "200" ]; then echo "Proxy did NOT return 200"; exit 1; fi
+          echo "Proxy OK"
