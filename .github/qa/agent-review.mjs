@@ -17,7 +17,7 @@ const REPO = env('GH_REPO', 'adobecom/caas');
 const DIST = env('DIST_DIR');
 const CDP = env('CDP_URL', 'http://127.0.0.1:9222');
 const BASE = env('BASE_URL', 'https://business.adobe.com/resources/main.html');
-const CAASVER = env('CAASVER', '0.53.0');
+const CAASVER = env('CAASVER', ''); // optional version pin; default = bare URL, no query param
 const RUN_URL = env('RUN_URL', '');
 const OUT = resolve(env('OUT_DIR', 'agent-review-out'));
 if (!/^\d+$/.test(PR || '')) { console.error('PR_NUMBER must be a positive integer'); process.exit(1); }
@@ -35,7 +35,7 @@ let diff = '';
 try { diff = gh(['pr', 'diff', PR, '-R', REPO]); } catch {}
 
 // 1) capture PR-vs-stable visual diff (the guide)
-const url = `${BASE}?caasver=${CAASVER}`;
+const url = CAASVER ? `${BASE}?caasver=${CAASVER}` : BASE;
 let pct = 'n/a';
 try {
   const browser = await chromium.connectOverCDP(CDP);
