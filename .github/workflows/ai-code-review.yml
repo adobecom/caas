@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   review:
-    runs-on: [self-hosted, X64]
+    runs-on: [self-hosted, ARM64]
     # Only run on PRs from the same repository. This is a public repo and the
     # job runs on a self-hosted runner; fork PRs would otherwise check out
     # untrusted code onto our machine.
