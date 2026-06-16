@@ -1,178 +1,75 @@
 #!/usr/bin/env node
-/**
- * Agent QA review (advisory, non-gating).
- *
- * Builds-aware perceptual review of a PR's CaaS build on the REAL
- * business.adobe.com collection page:
- *   inject the PR's local dist into the live page via CDP request interception
- *   -> screenshot PR build vs current stable -> pixel diff
- *   -> hand (PR screenshot, stable screenshot, diff image, PR code diff, PR
- *      title+description) to a Claude judge via the Adobe LLM proxy
- *   -> create-or-update a single PR comment. Only ever comments.
- *
- * Required env: PR_NUMBER, IMS_ACCESS_TOKEN, PROXY_URL, GH_TOKEN
- * Optional: GH_REPO, DIST_DIR, CDP_URL, BASE_URL, CAASVER, MODEL, OUT_DIR, RUN_URL
- */
-import { chromium } from 'playwright';
-import pixelmatch from 'pixelmatch';
-import { PNG } from 'pngjs';
-import { execFileSync } from 'node:child_process';
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
-import { isAbsolute, resolve } from 'node:path';
+/** Interactive agent QA review (advisory, non-blocking).
+ *  Drives qa-runner-v2.mjs (the interactive tool-use agent) against the PR
+ *  build injected on the live business.adobe.com page, then posts findings as
+ *  a single PR comment. Never gates. */
+import { execFileSync, spawnSync } from 'node:child_process';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, unlinkSync } from 'node:fs';
 
 const env = (k, d) => process.env[k] ?? d;
 const PR = env('PR_NUMBER');
 const REPO = env('GH_REPO', 'adobecom/caas');
-const DIST = env('DIST_DIR', '../../dist');
-const CDP = env('CDP_URL', 'http://127.0.0.1:9222');
+const DIST = env('DIST_DIR');
 const BASE = env('BASE_URL', 'https://business.adobe.com/resources/main.html');
 const CAASVER = env('CAASVER', '0.53.0');
-const TOKEN = env('IMS_ACCESS_TOKEN');
-const PROXY = env('PROXY_URL');
-const MODEL = env('MODEL', 'claude-sonnet-4-6');
-const OUT = env('OUT_DIR', 'agent-review-out');
 const RUN_URL = env('RUN_URL', '');
-
-// Strict validation — these flow into subprocess calls / the filesystem / the network.
 if (!/^\d+$/.test(PR || '')) { console.error('PR_NUMBER must be a positive integer'); process.exit(1); }
-if (!/^[\w.-]+\/[\w.-]+$/.test(REPO)) { console.error('GH_REPO must be owner/repo'); process.exit(1); }
-if (!TOKEN || !PROXY) { console.error('Missing IMS_ACCESS_TOKEN / PROXY_URL'); process.exit(1); }
-if (!PROXY.startsWith('https://')) { console.error('PROXY_URL must be an https URL'); process.exit(1); }
-if (isAbsolute(OUT) || OUT.includes('..')) { console.error('OUT_DIR must be a relative path'); process.exit(1); }
-mkdirSync(OUT, { recursive: true });
 
-// Only ever serve these exact bundle files, resolved strictly inside the dist dir.
-const ALLOWED = new Set(['main.min.js', 'app.css', 'react.umd.js', 'react.dom.umd.js']);
-const DIST_ROOT = resolve(DIST);
-
-// No shell: execFileSync with an explicit args array (no injection surface).
 const gh = (args) => execFileSync('gh', args, { encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 });
-const ct = (f) => (f.endsWith('.css') ? 'text/css' : 'application/javascript');
-const b64 = (p) => readFileSync(p).toString('base64');
-// Strip token-shaped strings before sending PR text to the external proxy.
-const redact = (s) => (s || '').replace(
-  /\b(gh[pousr]_[A-Za-z0-9]{20,}|eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}|AKIA[0-9A-Z]{16})\b/g,
-  '[REDACTED]',
-);
+const redact = (s) => (s || '').replace(/\b(gh[pousr]_[A-Za-z0-9]{20,}|eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}|AKIA[0-9A-Z]{16})\b/g, '[REDACTED]');
 
-// 1) PR context — redact BEFORE truncating so a token can't be split past the regex.
 const meta = JSON.parse(gh(['pr', 'view', PR, '-R', REPO, '--json', 'title,body,files']));
-let codeDiff = '';
-try { codeDiff = gh(['pr', 'diff', PR, '-R', REPO]); } catch { /* optional */ }
-codeDiff = redact(codeDiff).slice(0, 12000);
-const changedFiles = (meta.files || []).map((f) => f.path).join('\n').slice(0, 1500);
+let diff = '';
+try { diff = gh(['pr', 'diff', PR, '-R', REPO]); } catch {}
 
-// 2) screenshots: PR build injected vs current stable, on the same real page
-const url = `${BASE}?caasver=${CAASVER}`;
-const browser = await chromium.connectOverCDP(CDP);
-const ctx = browser.contexts()[0] || (await browser.newContext());
-async function shot(injectPrBuild, outFile) {
-  const page = await ctx.newPage();
-  await page.setViewportSize({ width: 1280, height: 1800 });
-  if (injectPrBuild) {
-    await page.route('**/caas-libs/**', async (route) => {
-      const file = route.request().url().split('?')[0].split('/').pop();
-      const full = resolve(DIST_ROOT, file);
-      if (!ALLOWED.has(file) || !full.startsWith(DIST_ROOT + '/')) return route.continue();
-      try { await route.fulfill({ path: full, contentType: ct(file) }); }
-      catch { await route.continue(); }
-    });
-  }
-  await page.goto(url, { waitUntil: 'load', timeout: 45000 }).catch(() => {});
-  await page.waitForTimeout(15000); // CaaS grid loads async from the collection API
-  const card = await page.$('.consonant-Card');
-  if (card) await card.scrollIntoViewIfNeeded().catch(() => {});
-  await page.waitForTimeout(1500);
-  await page.screenshot({ path: outFile });
-  await page.close();
-}
-await shot(true, `${OUT}/pr.png`);
-await shot(false, `${OUT}/stable.png`);
-await browser.close();
-
-// 3) pixel diff — crop both to the common rectangle so buffers match exactly
-const a = PNG.sync.read(readFileSync(`${OUT}/pr.png`));
-const b = PNG.sync.read(readFileSync(`${OUT}/stable.png`));
-const w = Math.min(a.width, b.width), h = Math.min(a.height, b.height);
-const ca = new PNG({ width: w, height: h }); PNG.bitblt(a, ca, 0, 0, w, h, 0, 0);
-const cb = new PNG({ width: w, height: h }); PNG.bitblt(b, cb, 0, 0, w, h, 0, 0);
-const diff = new PNG({ width: w, height: h });
-const changed = pixelmatch(ca.data, cb.data, diff.data, w, h, { threshold: 0.12, includeAA: false });
-writeFileSync(`${OUT}/diff.png`, PNG.sync.write(diff));
-const pct = (100 * changed / (w * h)).toFixed(2);
-
-// 4) Claude judge (multimodal) via the Adobe LLM proxy
-const prompt = [
-  'You are doing visual + perceptual QA on a pull request to the Adobe CaaS card collection,',
-  'rendered on the REAL business.adobe.com page.',
+const instruction = [
+  `Target URL: ${BASE}?caasver=${CAASVER}`,
   '',
+  `You are QA-reviewing pull request #${PR}. The PR's CaaS build is already injected into this live page, so you are testing the PR's code on the real business.adobe.com collection.`,
   `PR title: ${meta.title}`,
-  `PR description:\n${redact(meta.body || '(none)').slice(0, 2000)}`,
-  `Changed files:\n${changedFiles}`,
+  `PR description: ${redact(meta.body || '(none)').slice(0, 1500)}`,
+  `Changed files: ${(meta.files || []).map((f) => f.path).join(', ').slice(0, 800)}`,
+  `Code diff (truncated, secrets redacted): ${redact(diff).slice(0, 6000)}`,
   '',
-  'Code diff (truncated, secrets redacted):',
-  codeDiff || '(unavailable)',
-  '',
-  `You are given three images: (1) the page with THIS PR's build injected, (2) the current stable build, (3) a pixel-diff highlighting changes. ${pct}% of pixels differ.`,
-  'Some diff is just different cards loading (content noise) — ignore that; focus on layout/styling/readability/a11y.',
-  'Report ONLY things that look off, broken, or regressed, and tie each to the change when you can.',
-  'If nothing looks wrong, say so in one line. Be concise and specific.',
+  'Interact like a real user: load the collection, apply a filter, run a search, paginate, and open/inspect a few cards. Screenshot after each action and actually look. Run run_axe and get_console_errors at least once. Focus on what this PR could have affected. Report anything broken, truncated, misaligned, low-contrast, or behaving incorrectly; if nothing is wrong, say so. End with done(report, verdict).',
 ].join('\n');
 
-const payload = {
-  model: MODEL,
-  max_tokens: 1200,
-  messages: [{
-    role: 'user',
-    content: [
-      { type: 'text', text: prompt },
-      { type: 'text', text: 'Image 1 — PR build:' },
-      { type: 'image', source: { type: 'base64', media_type: 'image/png', data: b64(`${OUT}/pr.png`) } },
-      { type: 'text', text: 'Image 2 — stable build:' },
-      { type: 'image', source: { type: 'base64', media_type: 'image/png', data: b64(`${OUT}/stable.png`) } },
-      { type: 'text', text: 'Image 3 — pixel diff (changes highlighted):' },
-      { type: 'image', source: { type: 'base64', media_type: 'image/png', data: b64(`${OUT}/diff.png`) } },
-    ],
-  }],
-};
-let findings = '(agent judge unavailable)';
-try {
-  const res = await fetch(PROXY, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${TOKEN}`, 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01' },
-    body: JSON.stringify(payload),
-  });
-  if (res.ok) { const data = await res.json(); findings = data?.content?.[0]?.text || findings; }
-  else { findings = `(agent judge unavailable: HTTP ${res.status})`; }
-} catch (e) { findings = `(agent judge error: ${String(e).slice(0, 200)})`; }
+const REPORT_OUT = '/tmp/pr-review-report.json';
+try { unlinkSync(REPORT_OUT); } catch {}
+spawnSync('node', ['qa-runner-v2.mjs', instruction], {
+  stdio: 'inherit',
+  env: { ...process.env, DIST_DIR: DIST || '', REPORT_OUT, MAX_TURNS: env('MAX_TURNS', '14') },
+});
 
-// 5) create-or-update a SINGLE comment (found by a hidden marker) so re-runs don't spam,
-//    and so we never clobber another bot's comment.
+let verdict = 'UNKNOWN', report = '(agent produced no report)';
+if (existsSync(REPORT_OUT)) {
+  try { const j = JSON.parse(readFileSync(REPORT_OUT, 'utf8')); verdict = j.verdict || verdict; report = j.report || report; } catch {}
+}
+
 const MARKER = '<!-- agent-qa-review -->';
 const comment = [
   MARKER,
-  '## 🤖 Agent QA review — visual + perceptual (advisory, non-blocking)',
+  '## 🤖 Agent QA review — interactive (advisory, non-blocking)',
   '',
-  `Reviewed this PR's build on the live business.adobe.com collection page. **${pct}%** of pixels changed vs the stable build.`,
+  `The agent drove the PR build on the live business.adobe.com collection page — filtering, searching, paginating, inspecting cards. Verdict: **${verdict}**.`,
   '',
-  findings,
+  report,
   '',
-  RUN_URL ? `_Screenshots and the pixel diff are in the [workflow artifacts](${RUN_URL})._` : '',
+  RUN_URL ? `_Screenshots / console / axe artifacts are in the [workflow run](${RUN_URL})._` : '',
 ].join('\n');
 
-let existingId = '';
+let id = '';
 try {
   const list = JSON.parse(gh(['pr', 'view', PR, '-R', REPO, '--json', 'comments']));
   const mine = (list.comments || []).filter((c) => (c.body || '').includes(MARKER)).pop();
-  if (mine && mine.url) existingId = mine.url.split('issuecomment-').pop();
-} catch { /* fall through to create */ }
-
-if (existingId) {
-  gh(['api', '-X', 'PATCH', `repos/${REPO}/issues/comments/${existingId}`, '-f', `body=${comment}`]);
-  console.log(`agent-review: updated comment ${existingId} on PR #${PR} (pct ${pct})`);
+  if (mine && mine.url) id = mine.url.split('issuecomment-').pop();
+} catch {}
+if (id) {
+  gh(['api', '-X', 'PATCH', `repos/${REPO}/issues/comments/${id}`, '-f', `body=${comment}`]);
 } else {
-  writeFileSync(`${OUT}/comment.md`, comment);
-  gh(['pr', 'comment', PR, '-R', REPO, '--body-file', `${OUT}/comment.md`]);
-  console.log(`agent-review: posted comment on PR #${PR} (pct ${pct})`);
+  mkdirSync('agent-review-out', { recursive: true });
+  writeFileSync('agent-review-out/comment.md', comment);
+  gh(['pr', 'comment', PR, '-R', REPO, '--body-file', 'agent-review-out/comment.md']);
 }
+console.log(`agent-review: posted interactive review on PR #${PR} (verdict ${verdict})`);
 process.exit(0);
