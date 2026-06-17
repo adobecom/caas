@@ -1570,7 +1570,7 @@ const Container = (props) => {
      * Whether at lease one card was returned by Card Filterer
      * @type {Boolean}
      */
-    const atLeastOneCard = gridCardLen > 0;
+    const atLeastOneCard = !activeFilterIds.length && gridCardLen > 0;
 
     /**
      * Where to place the Sort Popup (either left or right)
