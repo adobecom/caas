@@ -76,7 +76,8 @@ const Search = ({
      * @listens InputChangeEvent
      */
     const handleSearch = (e) => {
-        onSearch(e.target.value);
+        const query = e.target.value.sanitize();
+        onSearch(query);
     };
 
     /**
