@@ -1,5 +1,12 @@
 
 
+## [0.54.2](https://github.com/adobecom/caas/compare/0.54.1...0.54.2) (2026-06-18)
+
+
+### Bug Fixes
+
+* **mwpw-182553:** for accessibilty increases card-text line-clamp to 5 ([#469](https://github.com/adobecom/caas/issues/469)) ([5fc97a4](https://github.com/adobecom/caas/commit/5fc97a4fcca75d51af49cf4ac00e6e060a683b86))
+
 ## [0.54.1](https://github.com/adobecom/caas/compare/0.54.0...0.54.1) (2026-06-16)
 
 
