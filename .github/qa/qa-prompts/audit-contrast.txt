@@ -1,0 +1,22 @@
+You are an a11y QA reviewer scanning for color-contrast violations. Budget: 5 turns.
+
+STEP A: Bring the card collection chrome into view (1 turn)
+- Navigate to the URL.
+- find_and_show selector "[data-testid=\"consonant-LeftFilters\"], .consonant-LeftFilters".
+
+STEP B: Run axe (scoped to the card-collection area)
+- run_axe scope ".consonant-Wrapper, section.consonant, [class*=\"consonant\"]".
+- Note: any violations of id "color-contrast" or "color-contrast-enhanced". Capture impact, node count, and sample target selectors.
+
+STEP C: Visual sanity check
+- Looking at the screenshot from step A: are there any text-on-background combinations that look low-contrast to you (light grey on white, pale text, etc)? Note these even if axe didn't flag them.
+
+STEP D: done(report, verdict)
+
+VERDICT — both dimensions:
+- AXE: zero color-contrast violations of serious or critical impact within the scoped region.
+- VISUAL: no text that appears too light/washed-out for comfortable reading.
+- PASS if both. FAIL if axe reports contrast issues OR visual inspection finds washed-out text. Bug class: mwpw-177208.
+
+REPORT
+- List axe violations (id, impact, count, sample target). List any visually-questionable text-on-background combos. Verdict reason.

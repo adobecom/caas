@@ -1,0 +1,29 @@
+You are an a11y QA reviewer testing keyboard focus visibility on filters, sort, and pagination. Budget: 9 turns.
+
+STEP A: Bring the card-collection chrome into view (1 turn)
+- Navigate to the URL.
+- find_and_show selector "[data-testid=\"consonant-LeftFilters\"], .consonant-LeftFilters".
+
+STEP B: Tab into the interactive region and observe focus
+- keyboard_tab count 6 to move focus deep into the filter sidebar.
+- take_screenshot labeled "focus_in_filters".
+- Looking at the screenshot: can you see a focus indicator (outline ring, color change, underline) on ANY element? Can you tell WHICH element is focused?
+
+STEP C: Read the focused element's computed styling (one evaluate)
+- evaluate({code: JSON.stringify((() => { const el = document.activeElement; if (!el) return {none: true}; const s = getComputedStyle(el); return { tag: el.tagName, testId: el.getAttribute('data-testid'), label: (el.getAttribute('aria-label') || el.textContent || '').trim().slice(0,60), outlineStyle: s.outlineStyle, outlineColor: s.outlineColor, outlineWidth: s.outlineWidth, outlineOffset: s.outlineOffset, boxShadow: s.boxShadow.slice(0, 100), backgroundColor: s.backgroundColor }; })())})
+- Note: outline values. `outlineStyle: "none"` AND no `boxShadow` indicates there's no native focus indicator at all.
+
+STEP D: Sample a second focus position
+- keyboard_tab count 4 more.
+- take_screenshot labeled "focus_position_2".
+- evaluate same getComputedStyle code as STEP C.
+
+STEP E: done(report, verdict)
+
+VERDICT — both must pass:
+- VISUAL: at each tab position you sampled, the focused element is visually distinguishable (you can see where focus is).
+- COMPUTED STYLE: the focused element has SOME focus indicator: either outlineStyle != "none" with non-transparent outlineColor AND outlineWidth >= 1px, OR a boxShadow that visually surrounds it.
+- PASS if both at both positions. FAIL if any focused element has no visible indicator. A VISUAL FAIL with COMPUTED STYLE FAIL means focus is invisible (mwpw-190906 / mwpw-190007 / mwpw-177138 class). A VISUAL FAIL with COMPUTED STYLE PASS often means low contrast (focus indicator exists but is the same color as background).
+
+REPORT
+- For each of the 2 focus positions: which element was focused, what you saw visually, what the computed outline / box-shadow values were, whether focus was distinguishable.

@@ -1,5 +1,109 @@
 
 
+## [0.54.2](https://github.com/adobecom/caas/compare/0.54.1...0.54.2) (2026-06-18)
+
+
+### Bug Fixes
+
+* **mwpw-182553:** for accessibilty increases card-text line-clamp to 5 ([#469](https://github.com/adobecom/caas/issues/469)) ([5fc97a4](https://github.com/adobecom/caas/commit/5fc97a4fcca75d51af49cf4ac00e6e060a683b86))
+
+## [0.54.1](https://github.com/adobecom/caas/compare/0.54.0...0.54.1) (2026-06-16)
+
+
+### Bug Fixes
+
+* **mwpw-184989:** drop hardcoded caasver, test the bare prod url ([b7708b1](https://github.com/adobecom/caas/commit/b7708b179293c972d88c6452c5d7f333f96eedc1))
+
+## [0.54.0](https://github.com/adobecom/caas/compare/0.53.0...0.54.0) (2026-06-16)
+
+
+### Features
+
+* **mwpw-184989:** add agent-driven visual + perceptual QA review on PRs ([5afe047](https://github.com/adobecom/caas/commit/5afe0474f96f101945403dbfb0608ef1eefd33c4))
+* **mwpw-184989:** agent review = interactive + PR-vs-stable visual-diff guide ([a4ed68c](https://github.com/adobecom/caas/commit/a4ed68cce8d92334c24ad324b389fe7378791429))
+* **mwpw-184989:** make agent QA interactive (drive qa-runner on PR build) ([807c601](https://github.com/adobecom/caas/commit/807c6016c2662b35e35ad1f3f2764ff48b985979))
+
+
+### Bug Fixes
+
+* **mwpw-184989:** disconnect capture client + cap agent runtime to unblock runner ([aba1843](https://github.com/adobecom/caas/commit/aba18436f737538c85319d9fa0e35f8bfe8855d3))
+* **mwpw-184989:** harden agent-review + pin to qa-audit runner ([0bd78c1](https://github.com/adobecom/caas/commit/0bd78c12e5db792cea328e9ac1213e6716feff6d))
+* **mwpw-184989:** harden agent-review per review (dedup, redact, allowlist) ([56c739a](https://github.com/adobecom/caas/commit/56c739a93e5e5906f8401d749f3becc1a1c42525))
+
+## [0.53.0](https://github.com/adobecom/caas/compare/0.52.1...0.53.0) (2026-05-31)
+
+
+### Features
+
+* **qa-audit:** rewrite issue body as developer-friendly narrative via Claude ([8f462e9](https://github.com/adobecom/caas/commit/8f462e95613c28a414c462908520da54ae359a71))
+
+
+### Chores
+
+* **ai-code-review:** source model name from secrets.LLM_MODEL instead of hardcode ([49bf280](https://github.com/adobecom/caas/commit/49bf280c8064802a628a69cb54ef32e627bede78))
+
+
+### Code Refactoring
+
+* **qa-audit:** remove hardcoded LLM proxy URL + model name from public code ([3968869](https://github.com/adobecom/caas/commit/396886933b3aaf247658d5cb2808df92d6d4d6b8))
+
+## [0.52.1](https://github.com/adobecom/caas/compare/0.52.0...0.52.1) (2026-05-31)
+
+
+### Bug Fixes
+
+* **qa-audit:** install playwright + treat NO_VERDICT as fail ([ebd9a87](https://github.com/adobecom/caas/commit/ebd9a87e7505f0bc56778690f4016beb83c0b6a7)), closes [#480](https://github.com/adobecom/caas/issues/480)
+
+## [0.52.0](https://github.com/adobecom/caas/compare/0.51.5...0.52.0) (2026-05-31)
+
+
+### Features
+
+* **qa-audit:** manual-trigger workflow for AI-driven a11y + visual audits ([87cccc1](https://github.com/adobecom/caas/commit/87cccc17b92efdd46f3a08007b2e8f7611a31fd1))
+
+
+### Chores
+
+* **ci:** pin ai-code-review to X64 self-hosted runner ([c93d36a](https://github.com/adobecom/caas/commit/c93d36a36893775f5a86789c778677f5f4fa0085))
+* **qa-audit:** pin workflow to sanrai-mba runner via qa-audit label ([9143bc6](https://github.com/adobecom/caas/commit/9143bc680c82d5ca2fe43ee968facc184fe6833e))
+
+## [0.51.5](https://github.com/adobecom/caas/compare/0.51.4...0.51.5) (2026-05-29)
+
+
+### Bug Fixes
+
+* remove stray escape in print statement ([c7352f8](https://github.com/adobecom/caas/commit/c7352f8bc013ec47854d12cb6aee34856657d6cd))
+
+
+### Chores
+
+* harden AI code review workflow ([ef66453](https://github.com/adobecom/caas/commit/ef6645393811ba0a63140e621809178d162c2dc5))
+
+## [0.51.4](https://github.com/adobecom/caas/compare/0.51.3...0.51.4) (2026-05-29)
+
+
+### Bug Fixes
+
+* add checkout step required by claude-code-action ([ae49b42](https://github.com/adobecom/caas/commit/ae49b42909e59e34c1e829ef10adcddce1d8f2f1))
+* call proxy directly instead of claude-code-action (beta flag incompatibility) ([096969b](https://github.com/adobecom/caas/commit/096969ba41511e5da6cad813fdbd038ac75127a0))
+* run on self-hosted Mac runner to bypass Cloudflare IP block ([4969238](https://github.com/adobecom/caas/commit/496923877ada79f7fff04d40921dc54b8922e5b6))
+* use curl instead of urllib to avoid macOS SSL cert issue ([1cc5279](https://github.com/adobecom/caas/commit/1cc5279cc06adef47a8591aedf33e16ef68280d5))
+
+## [0.51.3](https://github.com/adobecom/caas/compare/0.51.2...0.51.3) (2026-05-28)
+
+
+### Chores
+
+* trigger IMS validation via dispatch from local cron ([484b693](https://github.com/adobecom/caas/commit/484b693b0df311285aaf34b7e1907489fe7b7edc))
+
+## [0.51.2](https://github.com/adobecom/caas/compare/0.51.1...0.51.2) (2026-05-28)
+
+
+### Documentation
+
+* correct Javelin tag cycle day from Thursdays to Mondays ([6954a9f](https://github.com/adobecom/caas/commit/6954a9fb2af3cd32b857edab503df663a67fdfc9))
+* MWPW-193054 add consumer onboarding runbook and agents entry point ([3f7d1f9](https://github.com/adobecom/caas/commit/3f7d1f96db3672b474741f41aae52660e4e05dfb))
+
 ## [0.51.1](https://github.com/adobecom/caas/compare/0.51.0...0.51.1) (2026-05-21)
 
 
