@@ -24,6 +24,7 @@ const CardContent = ({
     showText,
     highlightedDescription,
     description,
+    showTitle,
 }) => (
     <>
         {showLabel && detailText &&
@@ -48,21 +49,21 @@ const CardContent = ({
             {iconAlt}
         </span>
         }
-        { (isTitleOnly && highlightedTitle) &&
+        { (showTitle && isTitleOnly && highlightedTitle) &&
             <p
                 data-testid="consonant-Card-title"
                 className="consonant-Card-title">
                 {highlightedTitle}
             </p>
         }
-        { (isTitleOnly && !highlightedTitle) &&
+        { (showTitle && isTitleOnly && !highlightedTitle) &&
             <p
                 data-testid="consonant-Card-title"
                 className="consonant-Card-title"
                 title={removeMarkDown(title)}
                 dangerouslySetInnerHTML={{ __html: parseMarkDown(title) }} />
         }
-        { (!isTitleOnly && highlightedTitle) &&
+        { (showTitle && !isTitleOnly && highlightedTitle) &&
             <p
                 role="heading"
                 {...(headingAria && { 'aria-label': headingAria })}
@@ -73,7 +74,7 @@ const CardContent = ({
                 {highlightedTitle}
             </p>
         }
-        { (!isTitleOnly && !highlightedTitle) &&
+        { (showTitle && !isTitleOnly && !highlightedTitle) &&
             <p
                 role="heading"
                 {...(headingAria && { 'aria-label': headingAria })}
@@ -123,6 +124,7 @@ CardContent.propTypes = {
     highlightedDescription: node,
     description: string,
     productInfo: shape(productInfoType),
+    showTitle: bool,
 };
 
 CardContent.defaultProps = {
@@ -140,6 +142,7 @@ CardContent.defaultProps = {
     highlightedDescription: null,
     description: '',
     productInfo: null,
+    showTitle: true,
 };
 
 export default CardContent;
