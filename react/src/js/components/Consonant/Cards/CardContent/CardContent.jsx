@@ -6,7 +6,7 @@
  * - Description
  */
 import React from 'react';
-import { string, bool, func, number, node, object } from 'prop-types';
+import { string, bool, func, number, node, shape } from 'prop-types';
 import { removeMarkDown } from '../../Helpers/general';
 
 const CardContent = ({
@@ -102,6 +102,12 @@ const CardContent = ({
     </>
 );
 
+const productInfoType = {
+    tagID: string,
+    title: string,
+    icon: string,
+};
+
 CardContent.propTypes = {
     showLabel: bool,
     detailText: string,
@@ -116,7 +122,7 @@ CardContent.propTypes = {
     showText: bool,
     highlightedDescription: node,
     description: string,
-    productInfo: object,
+    productInfo: shape(productInfoType),
 };
 
 CardContent.defaultProps = {

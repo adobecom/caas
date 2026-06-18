@@ -29,7 +29,7 @@ import {
     stylesType,
     contentAreaType,
     overlaysType,
-    footerType, 
+    footerType,
     tagsType,
     bannerMapType,
 } from '../types/card';
@@ -68,7 +68,7 @@ const CARD_STYLES = {
     'flex-card': FlexCard,
 };
 
-const productType = {
+export const productInfoType = {
     tagID: string,
     title: string,
     icon: string,
@@ -103,7 +103,7 @@ const CardType = {
     tabIndex: number,
     country: string,
     reference: string,
-    products: arrayOf(shape(productType)),
+    products: arrayOf(shape(productInfoType)),
 };
 
 const defaultProps = {
@@ -328,7 +328,7 @@ const Card = (props) => {
             }
         }
         return '';
-    }   
+    }
 
     const isHalfHeight = cardStyle === 'half-height';
     const isProduct = cardStyle === 'product';
