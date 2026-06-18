@@ -131,3 +131,8 @@ lighthouse-reports/
 
 # AssistivTunnel
 AssistivTunnel
+
+# Local editor and Claude config
+.claude/
+.vscode/
+CLAUDE.md

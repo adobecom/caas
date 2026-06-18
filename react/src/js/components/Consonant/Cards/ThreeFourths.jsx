@@ -6,7 +6,7 @@ import LinkBlocker from './LinkBlocker/LinkBlocker';
 
 const ThreeFourths = () => {
     const {
-        id, lh, cardClassName,
+        id, country, reference, lh, cardClassName,
         optimizedImage, altText,
         hasBanner, disableBanners,
         bannerBackgroundColor, bannerFontColor, bannerIcon, bannerDescription,
@@ -27,7 +27,9 @@ const ThreeFourths = () => {
             daa-lh={lh}
             className={`three-fourths ${cardClassName}`}
             data-testid="consonant-Card"
-            id={id}>
+            id={id}
+            {...(country && { 'data-country': country })}
+            {...(reference && { 'data-card-url': reference })}>
             <CardHeader
                 image={optimizedImage}
                 altText={altText}

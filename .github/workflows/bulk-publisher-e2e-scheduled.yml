@@ -11,6 +11,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Chrome
+        id: setup-chrome
         uses: browser-actions/setup-chrome@v1
         with:
           # Pinned to Chrome 146 to match the chromedriver@^146.0.5 version in
@@ -28,6 +29,12 @@ jobs:
         run: npm run test:bulk-publisher
         env:
           IMS_CLIENT_SECRET: ${{ secrets.IMS_CLIENT_SECRET }}
+          # Pin the Chrome binary path to the version installed above.
+          # The ubuntu-latest runner ships a newer system Chrome at
+          # /opt/google/chrome/chrome that chromedriver@146 cannot drive.
+          # Mirrors the pin already in place for the PR-triggered workflow
+          # (see .github/workflows/pull-request.yaml, PR #461 / MWPW-195429).
+          CHROME_BIN: ${{ steps.setup-chrome.outputs.chrome-path }}
 
       - name: Open issue on failure
         if: failure()

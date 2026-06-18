@@ -8,7 +8,7 @@ import LinkBlocker from './LinkBlocker/LinkBlocker';
 
 const OneHalf = () => {
     const {
-        id, lh, cardClassName,
+        id, country, reference, lh, cardClassName,
         optimizedImage, altText,
         hasBanner, disableBanners,
         bannerBackgroundColor, bannerFontColor, bannerIcon, bannerDescription,
@@ -31,7 +31,9 @@ const OneHalf = () => {
             daa-lh={lh}
             className={`one-half ${cardClassName}`}
             data-testid="consonant-Card"
-            id={id}>
+            id={id}
+            {...(country && { 'data-country': country })}
+            {...(reference && { 'data-card-url': reference })}>
             <CardHeader
                 image={optimizedImage}
                 altText={altText}

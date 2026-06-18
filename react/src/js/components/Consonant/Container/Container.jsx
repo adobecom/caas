@@ -224,6 +224,7 @@ const Container = (props) => {
 
     const [, updateState] = React.useState();
     const scrollElementRef = useRef(null);
+    const box = useRef();
     const nextTransition = React.useCallback(() => updateState({}), []);
     /**
      * @typedef {Object} urlState
@@ -408,6 +409,13 @@ const Container = (props) => {
     /**
      **** Helper Methods ****
      */
+
+    function removeCollectionFromPage() {
+        const collectionRoot = box.current.closest('div#caas.caas-preview');
+        if (collectionRoot && collectionRoot.parentNode && !collectionRoot.closest('div.caas-config')) {
+            collectionRoot.parentNode.removeChild(collectionRoot);
+        }
+    }
 
     function getParentChild(id) {
         let i = id.length;
@@ -1028,6 +1036,8 @@ const Container = (props) => {
             collectionEndpoint = collectionEndpointURI.toString();
         }
 
+        const originSelection = collectionEndpointURI.searchParams.get('originSelection');
+
         setLoading(true);
 
         /**
@@ -1080,6 +1090,9 @@ const Container = (props) => {
                     if (!getByPath(payload, 'cards.length')) {
                         logLana({ message: `no cards return by query to this endpoint: ${endPoint}`, tags: 'collection' });
                         beaconTargetMissing({ reason: 'no_cards_returned', endpointUsed: endPoint });
+                        if (originSelection === 'events' && box.current) {
+                            removeCollectionFromPage();
+                        }
                         return;
                     }
                     if (payload.isHashed && !hashedRef.current) {
@@ -1465,8 +1478,6 @@ const Container = (props) => {
             document.removeEventListener('keydown', handleMobileFilterEscape);
         };
     }, [showMobileFilters]);
-
-    const box = useRef();
 
     useEffect(() => {
         /* istanbul ignore if */

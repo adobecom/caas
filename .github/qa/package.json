@@ -1,0 +1,12 @@
+{
+  "name": "caas-qa-audit-runner",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright + tooling for the AI-driven QA audit workflow. Isolated from the main CaaS package.json so adding/upgrading Playwright doesn't touch the React build.",
+  "type": "module",
+  "dependencies": {
+    "pixelmatch": "^6.0.0",
+    "playwright": "^1.48.0",
+    "pngjs": "^7.0.0"
+  }
+}

@@ -1,9 +1,21 @@
+/**
+ * Card Header
+ * Generates the header section of the card. it may include any combination of these elements:
+ * - Image
+ * - Banner
+ * - Badge
+ * - Video Button
+ * - Logo
+ * - Icon Logo
+ */
+
 import React from 'react';
 import { string, bool, func, number } from 'prop-types';
 import VideoButton from '../../Modal/videoButton';
 
 const CardHeader = ({
     image,
+    imageOption = '',
     altText,
     isIcon,
     showBanner,
@@ -31,7 +43,7 @@ const CardHeader = ({
 }) => (
     <div
         data-testid="consonant-Card-header"
-        className="consonant-Card-header"
+        className={`consonant-Card-header ${imageOption}`}
         style={{ backgroundImage: `url("${image}")` }}
         role={(!isIcon && altText) ? 'img' : ''}
         aria-label={!isIcon ? altText : ''}>
@@ -103,6 +115,7 @@ const CardHeader = ({
 
 CardHeader.propTypes = {
     image: string,
+    imageOption: string,
     altText: string,
     isIcon: bool,
     showBanner: bool,
@@ -131,6 +144,7 @@ CardHeader.propTypes = {
 
 CardHeader.defaultProps = {
     image: '',
+    imageOption: '',
     altText: '',
     isIcon: false,
     showBanner: false,

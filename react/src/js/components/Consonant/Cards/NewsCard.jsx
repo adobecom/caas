@@ -8,7 +8,7 @@ import LinkBlocker from './LinkBlocker/LinkBlocker';
 
 const NewsCard = () => {
     const {
-        id, lh, cardClassName,
+        id, country, reference, lh, cardClassName,
         optimizedImage, altText,
         videoURL, videoURLToUse, gateVideo, useCenterVideoPlay,
         detailText,
@@ -26,7 +26,9 @@ const NewsCard = () => {
             daa-lh={lh}
             className={`news-card ${cardClassName}`}
             data-testid="consonant-Card"
-            id={id}>
+            id={id}
+            {...(country && { 'data-country': country })}
+            {...(reference && { 'data-card-url': reference })}>
             <CardHeader
                 image={optimizedImage}
                 altText={altText}

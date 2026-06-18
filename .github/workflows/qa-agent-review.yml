@@ -1,0 +1,80 @@
+name: Agent QA Review
+
+# Advisory, non-blocking. Builds the PR's CaaS bundle, injects it into the live
+# business.adobe.com collection page on a self-hosted runner with a persistent
+# real Chrome (CDP), screenshots PR vs stable, pixel-diffs, and has a Claude
+# judge post a perceptual-review comment. Deterministic gates (unit/WDIO/pa11y)
+# live in the existing Pull Request workflow; this only ever comments.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to review (leave blank to backfill ALL open PRs)'
+        required: false
+        type: string
+
+concurrency:
+  group: agent-qa-${{ github.event.pull_request.number || inputs.pr_number || 'all' }}
+  cancel-in-progress: true
+
+jobs:
+  agent-review:
+    runs-on: [self-hosted, qa-audit]   # the Mini — only runner with the persistent Chrome/CDP
+    timeout-minutes: 20
+    # Same-repo PRs only (public repo + self-hosted runner); manual dispatch always allowed.
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Build the PR's CaaS dist
+        run: |
+          npm ci
+          NODE_OPTIONS=--openssl-legacy-provider npm run build
+
+      - name: Install agent-review deps
+        working-directory: .github/qa
+        run: npm ci
+
+      - name: Run agent QA review
+        working-directory: .github/qa
+        env:
+          GH_REPO: ${{ github.repository }}
+          DIST_DIR: ${{ github.workspace }}/dist
+          CDP_URL: http://127.0.0.1:9222
+          IMS_ACCESS_TOKEN: ${{ secrets.IMS_ACCESS_TOKEN }}
+          PROXY_URL: ${{ secrets.LLM_PROXY_ENDPOINT }}
+          MODEL: ${{ secrets.LLM_MODEL }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          EVENT_PR: ${{ github.event.pull_request.number }}
+          INPUT_PR: ${{ inputs.pr_number }}
+        run: |
+          PRS="${EVENT_PR:-$INPUT_PR}"
+          # workflow_dispatch with no number => backfill every open PR
+          if [ -z "$PRS" ]; then
+            PRS=$(gh pr list -R "$GH_REPO" --state open --json number --jq '.[].number')
+          fi
+          echo "Reviewing PR(s): $PRS"
+          for n in $PRS; do
+            echo "::group::PR #$n"
+            PR_NUMBER="$n" OUT_DIR="agent-review-out/pr-$n" node agent-review.mjs || echo "PR #$n review failed (non-blocking)"
+            echo "::endgroup::"
+          done
+
+      - name: Upload screenshots + diffs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-review-${{ github.run_id }}
+          path: .github/qa/agent-review-out/
+          retention-days: 14

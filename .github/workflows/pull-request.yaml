@@ -141,6 +141,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Chrome
+        id: setup-chrome
         uses: browser-actions/setup-chrome@v1
         with:
           # Pinned to 146 to match chromedriver@^146.0.5 from package.json.
@@ -154,6 +155,11 @@ jobs:
         run: npm ci
       - name: E2E
         run: npm run test:e2e-prod
+        env:
+          # Pin the Chrome binary path to the version installed above.
+          # The ubuntu-latest runner ships a newer system Chrome at
+          # /opt/google/chrome/chrome that chromedriver@146 cannot drive.
+          CHROME_BIN: ${{ steps.setup-chrome.outputs.chrome-path }}
   run-bulk-publisher-e2e:
     runs-on: ubuntu-latest
     # Skip for Dependabot PRs — secrets are withheld by GitHub for Dependabot-triggered workflows
@@ -162,6 +168,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Chrome
+        id: setup-chrome
         uses: browser-actions/setup-chrome@v1
         with:
           # Pinned to 146 to match chromedriver@^146.0.5 from package.json.
@@ -177,6 +184,10 @@ jobs:
         run: npm run test:bulk-publisher
         env:
           IMS_CLIENT_SECRET: ${{ secrets.IMS_CLIENT_SECRET }}
+          # Pin the Chrome binary path to the version installed above.
+          # The ubuntu-latest runner ships a newer system Chrome at
+          # /opt/google/chrome/chrome that chromedriver@146 cannot drive.
+          CHROME_BIN: ${{ steps.setup-chrome.outputs.chrome-path }}
 
   run-accessibility-checks:
     runs-on: ubuntu-latest

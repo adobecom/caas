@@ -29,7 +29,7 @@ import {
     stylesType,
     contentAreaType,
     overlaysType,
-    footerType,
+    footerType, 
     tagsType,
     bannerMapType,
 } from '../types/card';
@@ -47,6 +47,8 @@ import BladeCard from './BladeCard';
 import EditorialCard from './EditorialCard';
 import BlogCard from './BlogCard';
 import HorizontalCard from './HorizontalCard';
+import ButtonCard from './ButtonCard';
+import FlexCard from './FlexCard';
 
 const CARD_STYLES = {
     'one-half': OneHalf,
@@ -62,6 +64,8 @@ const CARD_STYLES = {
     'editorial-card': EditorialCard,
     'blog-card': BlogCard,
     'horizontal-card': HorizontalCard,
+    'button-card': ButtonCard,
+    'flex-card': FlexCard,
 };
 
 const CardType = {
@@ -91,6 +95,8 @@ const CardType = {
     origin: string,
     ariaHidden: bool,
     tabIndex: number,
+    country: string,
+    reference: string,
 };
 
 const defaultProps = {
@@ -117,11 +123,15 @@ const defaultProps = {
     origin: '',
     ariaHidden: false,
     tabIndex: 0,
+    country: '',
+    reference: '',
 };
 
 const Card = (props) => {
     const {
         id,
+        country,
+        reference,
         footer,
         lh,
         tags,
@@ -210,12 +220,15 @@ const Card = (props) => {
     const useCenterVideoPlay = getConfig('collection', 'useCenterVideoPlay');
     const searchEnabled = getConfig('search', 'enabled');
     const editorialOpenVariant = getConfig('collection', 'editorialOpenVariant') || false;
+    const useRoundedCorners = getConfig('collection', 'useRoundedCorners') || false;
+    const flexCardOptions = getConfig('collection', 'flexCard');
 
     const cardClassName = classNames({
         'consonant-Card': true,
         'consonant-u-noBorders': !renderBorder,
         'consonant-hide-cta': hideCTA,
         'consonant-editorial--open': editorialOpenVariant,
+        'rounded-corners': useRoundedCorners,
     });
 
     const prettyDate = startTime ? prettyFormatDate(startTime, endTime, locale, i18nFormat) : '';
@@ -295,16 +308,18 @@ const Card = (props) => {
             const {
                 altCta = [],
                 right = [],
+                center = [],
             } = footerData[0];
             if (ctaUsed === 'right' && right.length === 1) {
                 return right[0].text;
+            } else if (ctaUsed === 'center' && center.length === 1) {
+                return center[0].text;
             } else if (ctaUsed === 'alt' && altCta.length === 1) {
                 return altCta[0].text;
             }
-            return '';
         }
         return '';
-    }
+    }   
 
     const isHalfHeight = cardStyle === 'half-height';
     const isProduct = cardStyle === 'product';
@@ -369,6 +384,7 @@ const Card = (props) => {
     const isUpcoming = isDateBeforeInterval(getCurrentDate(), startDate);
     const altCtaLink = getAltCtaLink(footer);
     const ctaText = (altCtaUsed && isUpcoming && altCtaLink !== '') ? getCtaText(footer, 'alt') : getCtaText(footer, 'right');
+    const cta2Text = getCtaText(footer, 'center');
     const overlay = (altCtaUsed && isLive && altCtaLink !== '') ? altCtaLink : overlayParams;
 
     const parseMarkDown = (md = '') => {
@@ -391,8 +407,8 @@ const Card = (props) => {
     const optimizedImage = optimizeImageUrl(image);
 
     const cardData = useMemo(() => ({
-        id, lh, cardClassName, cardStyle, bladeVariant,
-        optimizedImage, altText,
+        id, country, reference, lh, cardClassName, cardStyle, bladeVariant,
+        optimizedImage, altText, cta2Text, flexCardOptions,
         hasBanner, disableBanners,
         bannerBackgroundColor: bannerBackgroundColorToUse,
         bannerFontColor: bannerFontColorToUse,
