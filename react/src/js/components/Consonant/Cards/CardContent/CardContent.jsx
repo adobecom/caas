@@ -6,7 +6,7 @@
  * - Description
  */
 import React from 'react';
-import { string, bool, func, number, node } from 'prop-types';
+import { string, bool, func, number, node, object } from 'prop-types';
 import { removeMarkDown } from '../../Helpers/general';
 
 const CardContent = ({
@@ -26,7 +26,6 @@ const CardContent = ({
     description,
 }) => (
     <>
-        {productInfo && console.log('[CardContent] productInfo', productInfo)}
         {showLabel && detailText &&
         <span
             data-testid="consonant-Card-label"
@@ -36,7 +35,7 @@ const CardContent = ({
         }
         {productInfo && (
             <span
-                data-testid="consonant-Card-label"
+                data-testid="consonant-Card-label-product-info"
                 className="consonant-Card-label product-info">
                 <img className="product-info-icon" src={productInfo.icon} alt={productInfo.title} />
                 <span className="product-info-title">{productInfo.title}</span>
@@ -44,7 +43,7 @@ const CardContent = ({
         )}
         {showIconAlt && (detailText === '') &&
         <span
-            data-testid="consonant-Card-label"
+            data-testid="consonant-Card-label-icon-alt"
             className="consonant-Card-label">
             {iconAlt}
         </span>
@@ -117,6 +116,7 @@ CardContent.propTypes = {
     showText: bool,
     highlightedDescription: node,
     description: string,
+    productInfo: object,
 };
 
 CardContent.defaultProps = {
@@ -133,6 +133,7 @@ CardContent.defaultProps = {
     showText: false,
     highlightedDescription: null,
     description: '',
+    productInfo: null,
 };
 
 export default CardContent;

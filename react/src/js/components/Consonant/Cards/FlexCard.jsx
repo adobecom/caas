@@ -28,7 +28,7 @@ const FlexCard = () => {
         products,
     } = useCardData();
 
-    const imageOption = flexCardOptions?.imageOption || 'default';
+    const imageOption = flexCardOptions?.imageOption || '';
     const textAlign = flexCardOptions?.textAlign || 'text-left';
     const showDetails = !(flexCardOptions?.hideDetails === true);
     const showTitle = !(flexCardOptions?.hideTitle === true);
@@ -39,11 +39,11 @@ const FlexCard = () => {
 
     const getConfig = useConfig();
     const detailsTextOption = getConfig('collection', 'detailsTextOption');
- 
+
     let showProductName = false;
     let productInfo = {};
     if (detailsTextOption === 'productName' && products.length > 0) {
-        const productData = products.find(product => product.tagID === (detailText || 'caas:mnemonics/acrobat'));
+        const productData = products.find(product => product.tagID === (detailText));
         if (productData) {
             showProductName = true;
             productInfo = {
@@ -92,7 +92,6 @@ const FlexCard = () => {
             <div className="consonant-Card-content">
                 <CardContent
                     showLabel
-                    // detailText={showDetails ? (showProductName ? productName : detailText) : ''}
                     detailText={showDetails && !showProductName ? detailText : ''}
                     productInfo={showDetails && productInfo.tagID && productInfo.title ? productInfo : null}
                     showIconAlt={false}
