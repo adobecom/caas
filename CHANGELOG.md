@@ -1,5 +1,12 @@
 
 
+## [0.55.0](https://github.com/adobecom/caas/compare/0.54.2...0.55.0) (2026-06-18)
+
+
+### Features
+
+* **mwpw-173596:** adds new flex card code ([#490](https://github.com/adobecom/caas/issues/490)) ([3c4139e](https://github.com/adobecom/caas/commit/3c4139e723a46ac996c244f6f60f5cca34e0b98c))
+
 ## [0.54.2](https://github.com/adobecom/caas/compare/0.54.1...0.54.2) (2026-06-18)
 
 
