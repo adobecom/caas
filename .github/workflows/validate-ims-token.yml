@@ -19,45 +19,49 @@ jobs:
             -H "anthropic-version: 2023-06-01" \
             -d '{"model":"claude-sonnet-4-6","max_tokens":30,"messages":[{"role":"user","content":"Reply with only: token validated."}]}')
 
-          echo "response<<EOF" >> $GITHUB_OUTPUT
-          echo "$RESPONSE" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-
           if echo "$RESPONSE" | grep -q '"type":"message"'; then
             echo "status=success" >> $GITHUB_OUTPUT
           else
             echo "status=failed" >> $GITHUB_OUTPUT
           fi
 
-      - name: Create GitHub issue with result
+      - name: Comment on monitor issue
         uses: actions/github-script@v7
         with:
           script: |
             const status = '${{ steps.call.outputs.status }}';
-            const response = `${{ steps.call.outputs.response }}`;
             const emoji = status === 'success' ? '✅' : '❌';
-            const date = new Date().toISOString().split('T')[0];
+            const timestamp = new Date().toISOString();
 
-            await github.rest.issues.create({
+            const { data: issues } = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: `${emoji} IMS Token Check — ${date}`,
-              body: [
-                `## ${emoji} IMS Token is ${status === 'success' ? 'working' : 'BROKEN'}`,
-                '',
-                `Automated daily check against \`adobe-llm-proxy.paolo-moz.workers.dev\`.`,
-                '',
-                `**Date:** ${new Date().toISOString()}`,
-                `**Model:** claude-sonnet-4-6`,
-                '',
-                '### Proxy Response',
-                '```json',
-                response,
-                '```',
-                '',
-                status === 'failed'
-                  ? '> ⚠️ Token may have expired or the Mac cron did not run. Re-run `node refresh-token.mjs --visible` to re-login.'
-                  : '> Token is valid and the proxy is reachable.',
-              ].join('\n'),
-              labels: [],
+              state: 'open',
+              per_page: 100,
+            });
+
+            const existing = issues.find(i => i.title === 'IMS Token Monitor');
+
+            let issueNumber;
+            if (existing) {
+              issueNumber = existing.number;
+            } else {
+              const { data: newIssue } = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: 'IMS Token Monitor',
+                body: 'Automated IMS token health checks. Each comment is one run.',
+              });
+              issueNumber = newIssue.number;
+            }
+
+            const body = status === 'success'
+              ? `${emoji} Token valid — ${timestamp}`
+              : `${emoji} Token FAILED — ${timestamp}\n\n> Re-run \`node refresh-token.mjs --visible\` to re-login.`;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              body,
             });
