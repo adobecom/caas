@@ -1,5 +1,13 @@
 
 
+## [0.55.1](https://github.com/adobecom/caas/compare/0.55.0...0.55.1) (2026-06-18)
+
+
+### Bug Fixes
+
+* **mwpw-196902:** harden workflow against script injection ([30e7900](https://github.com/adobecom/caas/commit/30e79009c7d427cfda65392e362414b109d4eaf3))
+* **mwpw-196902:** reduce ims token monitor noise ([e880ba3](https://github.com/adobecom/caas/commit/e880ba3fba1888d93e231c8adc01213a8878e8f1))
+
 ## [0.55.0](https://github.com/adobecom/caas/compare/0.54.2...0.55.0) (2026-06-18)
 
 
