@@ -1,5 +1,35 @@
 
 
+## [0.54.2](https://github.com/adobecom/caas/compare/0.54.1...0.54.2) (2026-06-18)
+
+
+### Bug Fixes
+
+* **mwpw-182553:** for accessibilty increases card-text line-clamp to 5 ([#469](https://github.com/adobecom/caas/issues/469)) ([5fc97a4](https://github.com/adobecom/caas/commit/5fc97a4fcca75d51af49cf4ac00e6e060a683b86))
+
+## [0.54.1](https://github.com/adobecom/caas/compare/0.54.0...0.54.1) (2026-06-16)
+
+
+### Bug Fixes
+
+* **mwpw-184989:** drop hardcoded caasver, test the bare prod url ([b7708b1](https://github.com/adobecom/caas/commit/b7708b179293c972d88c6452c5d7f333f96eedc1))
+
+## [0.54.0](https://github.com/adobecom/caas/compare/0.53.0...0.54.0) (2026-06-16)
+
+
+### Features
+
+* **mwpw-184989:** add agent-driven visual + perceptual QA review on PRs ([5afe047](https://github.com/adobecom/caas/commit/5afe0474f96f101945403dbfb0608ef1eefd33c4))
+* **mwpw-184989:** agent review = interactive + PR-vs-stable visual-diff guide ([a4ed68c](https://github.com/adobecom/caas/commit/a4ed68cce8d92334c24ad324b389fe7378791429))
+* **mwpw-184989:** make agent QA interactive (drive qa-runner on PR build) ([807c601](https://github.com/adobecom/caas/commit/807c6016c2662b35e35ad1f3f2764ff48b985979))
+
+
+### Bug Fixes
+
+* **mwpw-184989:** disconnect capture client + cap agent runtime to unblock runner ([aba1843](https://github.com/adobecom/caas/commit/aba18436f737538c85319d9fa0e35f8bfe8855d3))
+* **mwpw-184989:** harden agent-review + pin to qa-audit runner ([0bd78c1](https://github.com/adobecom/caas/commit/0bd78c12e5db792cea328e9ac1213e6716feff6d))
+* **mwpw-184989:** harden agent-review per review (dedup, redact, allowlist) ([56c739a](https://github.com/adobecom/caas/commit/56c739a93e5e5906f8401d749f3becc1a1c42525))
+
 ## [0.53.0](https://github.com/adobecom/caas/compare/0.52.1...0.53.0) (2026-05-31)
 
 
