@@ -5,6 +5,8 @@ import ReactDOM, { render } from 'react-dom';
 import { DOMRegistry } from 'react-dom-components';
 import { parseToPrimitive } from './components/Consonant/Helpers/general';
 import { loadLana } from './components/Consonant/Helpers/lana';
+import { initBeacon, beaconPageLoad } from './components/Consonant/Helpers/beacon';
+import { initQaHooks } from './components/Consonant/Helpers/qa-hooks';
 import Container from './components/Consonant/Container/Container';
 import consonantPageRDC from './components/Consonant/Page/ConsonantPageDOM';
 
@@ -36,6 +38,17 @@ try {
     }
 }
 
+// Initialize canary telemetry (consent-gated; idempotent).
+try {
+    initBeacon();
+} catch (e) { /* never block boot on telemetry init */ }
+
+// QA introspection API for headless agents. No side effects, idempotent.
+// Exposes window.caas.{version, dump, waitForReady} and the caas:ready event.
+try {
+    initQaHooks();
+} catch (e) { /* never block boot on QA hooks init */ }
+
 // Must be constructible: Northstar uses bind/apply + new on this callback.
 function initReact(element, registry) {
     if (registry === undefined) {
@@ -45,6 +58,11 @@ function initReact(element, registry) {
 }
 
 initReact(document);
+
+// Fire the page_load beacon after React is mounted.
+try {
+    beaconPageLoad();
+} catch (e) { /* swallow */ }
 
 function collectionLoadedThroughXf(el) {
     if (!el) return false; // Ensure el is not null or undefined

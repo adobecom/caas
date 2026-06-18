@@ -9,6 +9,13 @@ import classNames from 'classnames';
 import { shape } from 'prop-types';
 // import 'whatwg-fetch'; // Removed: fetch is native in modern browsers
 import { logLana } from '../Helpers/lana';
+import {
+    beaconCardsRendered,
+    beaconTargetMissing,
+    beaconFetchFail,
+    scheduleAssertions,
+} from '../Helpers/beacon';
+import { markCaasReady } from '../Helpers/qa-hooks';
 import Popup from '../Sort/Popup';
 import Search from '../Search/Search';
 import Loader from '../Loader/Loader';
@@ -1051,11 +1058,19 @@ const Container = (props) => {
                             if (validData) return json;
 
                             logLana({ message: `no valid response data from ${endPoint}`, tags: 'collection' });
+                            beaconTargetMissing({ reason: 'empty_collection', endpointUsed: endPoint });
                             /* istanbul ignore next */
                             return Promise.reject(new Error('no valid reponse data'));
                         });
                     }
                     logLana({ message: `failure for call to ${url}`, tags: 'collection', errorMessage: `${status}: ${statusText}` });
+                    beaconFetchFail({
+                        url,
+                        method: 'GET',
+                        httpStatus: status,
+                        responseTimeMs: Date.now() - start,
+                        errorMessage: statusText,
+                    });
                     return Promise.reject(new Error(`${status}: ${statusText}, failure for call to ${url}`));
                 })
                 .then((payload) => {
@@ -1064,6 +1079,7 @@ const Container = (props) => {
                     setIsFirstLoad(true);
                     if (!getByPath(payload, 'cards.length')) {
                         logLana({ message: `no cards return by query to this endpoint: ${endPoint}`, tags: 'collection' });
+                        beaconTargetMissing({ reason: 'no_cards_returned', endpointUsed: endPoint });
                         return;
                     }
                     if (payload.isHashed && !hashedRef.current) {
@@ -1201,6 +1217,33 @@ const Container = (props) => {
 
                     setCards(processedCards);
 
+                    // Canary telemetry: cards rendered successfully.
+                    try {
+                        beaconCardsRendered({
+                            cardCount: processedCards.length,
+                            totalCountFromApi: payload.totalCount,
+                            fetchDurationMs: Date.now() - start,
+                            endpointUsed: endPoint,
+                        });
+                    } catch (e) { /* never block render on telemetry */ }
+
+                    // QA ready signal: fires window.__caasReady + caas:ready event.
+                    // Headless agents wait on this instead of guessing on networkidle.
+                    try {
+                        markCaasReady({
+                            cardCount: processedCards.length,
+                            totalCountFromApi: payload.totalCount,
+                            fetchDurationMs: Date.now() - start,
+                            endpointUsed: endPoint,
+                        });
+                    } catch (e) { /* never block render on QA hooks */ }
+
+                    // Schedule the assertions beacon. Debounced: if multiple fetches
+                    // (partial + full load) each call this, only the last one fires.
+                    try {
+                        scheduleAssertions(800);
+                    } catch (e) { /* swallow */ }
+
                     // check if the current page is greater than the last page
                     const lastPage = Math.ceil(processedCards.length / resultsPerPage);
                     if (currentPage > lastPage) {
@@ -1227,6 +1270,7 @@ const Container = (props) => {
                         return;
                     }
                     logLana({ message: 'failed to return processed cards', tags: 'collection' });
+                    beaconTargetMissing({ reason: 'processed_cards_empty', endpointUsed: endPoint });
                     setLoading(false);
                     setApiFailure(true);
                 });
