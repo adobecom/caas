@@ -47,9 +47,9 @@ const FlexCard = () => {
         if (productData) {
             showProductName = true;
             productInfo = {
-                tagID: productData.tagID,
-                title: productData.title,
-                icon: productData.tagImage,
+                tagID: productData.tagID || '',
+                title: productData.title || '',
+                icon: productData.tagImage || '',
             };
         }
     }
@@ -96,6 +96,7 @@ const FlexCard = () => {
                     productInfo={showDetails && productInfo.tagID && productInfo.title ? productInfo : null}
                     showIconAlt={false}
                     isTitleOnly={false}
+                    showTitle={showTitle}
                     highlightedTitle={highlightedTitle}
                     title={showTitle ? title : ''}
                     headingAria={headingAria}

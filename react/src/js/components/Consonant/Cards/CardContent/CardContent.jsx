@@ -8,6 +8,7 @@
 import React from 'react';
 import { string, bool, func, number, node, shape } from 'prop-types';
 import { removeMarkDown } from '../../Helpers/general';
+import { productInfoType } from '../../types/card';
 
 const CardContent = ({
     showLabel,
@@ -102,12 +103,6 @@ const CardContent = ({
         ) }
     </>
 );
-
-const productInfoType = {
-    tagID: string,
-    title: string,
-    icon: string,
-};
 
 CardContent.propTypes = {
     showLabel: bool,
