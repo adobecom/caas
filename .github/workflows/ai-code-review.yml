@@ -42,7 +42,28 @@ jobs:
           import json, os, sys, subprocess, tempfile
 
           with open('pr.diff') as f:
-              diff = f.read()[:8000]
+              full_diff = f.read()
+
+          # Cap the diff to stay within the model's context window. 256000
+          # chars is roughly 64k tokens, comfortably inside Sonnet's 200k
+          # context. (Replaces the old fixed 8000-char cap, which chopped diffs
+          # mid-line and made the model misread truncation as a syntax error.)
+          MAX_CHARS = 256000
+
+          if len(full_diff) > MAX_CHARS:
+              diff = full_diff[:MAX_CHARS]
+              nl = diff.rfind('\n')
+              if nl > 0:
+                  diff = diff[:nl]
+              shown = len(diff)
+              diff += (
+                  "\n\n[NOTE TO REVIEWER: this diff was truncated by the CI tool for "
+                  "length (showing %d of %d characters). The code is NOT incomplete or "
+                  "malformed; do NOT report the cut-off as a syntax error or missing code.]"
+                  % (shown, len(full_diff))
+              )
+          else:
+              diff = full_diff
 
           if not diff.strip():
               print("Empty diff, skipping review")
