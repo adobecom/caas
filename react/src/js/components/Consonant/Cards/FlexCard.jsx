@@ -93,7 +93,7 @@ const FlexCard = () => {
                 <CardContent
                     showLabel
                     detailText={showDetails && !showProductName ? detailText : ''}
-                    productInfo={showDetails && productInfo.tagID && productInfo.title ? productInfo : null}
+                    productInfo={showDetails && productInfo && productInfo.tagID && productInfo.title ? productInfo : null}
                     showIconAlt={false}
                     isTitleOnly={false}
                     showTitle={showTitle}
