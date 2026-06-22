@@ -42,7 +42,31 @@ jobs:
           import json, os, sys, subprocess, tempfile
 
           with open('pr.diff') as f:
-              diff = f.read()[:8000]
+              full_diff = f.read()
+
+          # Adaptive budget: start at 16000 chars and double until the whole
+          # diff fits (or we hit the ceiling). Replaces the old fixed 8000-char
+          # cap, which chopped diffs mid-line and made the model misread the
+          # truncation as a syntax error / incomplete code.
+          limit = 16000
+          MAX_CHARS = 256000
+          while len(full_diff) > limit and limit < MAX_CHARS:
+              limit *= 2
+          limit = min(limit, MAX_CHARS)
+
+          if len(full_diff) > limit:
+              diff = full_diff[:limit]
+              nl = diff.rfind('\n')
+              if nl > 0:
+                  diff = diff[:nl]
+              diff += (
+                  "\n\n[NOTE TO REVIEWER: this diff was truncated by the CI tool for "
+                  "length (showing %d of %d characters). The code is NOT incomplete or "
+                  "malformed; do NOT report the cut-off as a syntax error or missing code.]"
+                  % (len(diff), len(full_diff))
+              )
+          else:
+              diff = full_diff
 
           if not diff.strip():
               print("Empty diff, skipping review")
