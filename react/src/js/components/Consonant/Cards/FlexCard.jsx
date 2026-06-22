@@ -41,9 +41,9 @@ const FlexCard = () => {
     const detailsTextOption = getConfig('collection', 'detailsTextOption');
 
     let showProductName = false;
-    let productInfo = {};
+    let productInfo = null;
     if (detailsTextOption === 'productName' && products.length > 0) {
-        const productData = products.find(product => product.tagID === (detailText));
+        const productData = products.find(product => product.tagID === detailText);
         if (productData) {
             showProductName = true;
             productInfo = {
