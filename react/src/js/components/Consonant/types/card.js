@@ -11,7 +11,7 @@ import {
 export const productInfoType = {
     tagID: string,
     title: string,
-    icon: string,
+    tagImage: string,
 };
 
 const appliesToType = {

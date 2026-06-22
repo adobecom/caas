@@ -49,7 +49,7 @@ const FlexCard = () => {
             productInfo = {
                 tagID: productData.tagID || '',
                 title: productData.title || '',
-                icon: productData.tagImage || '',
+                tagImage: productData.tagImage || '',
             };
         }
     }
