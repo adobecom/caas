@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import {
     arrayOf,
@@ -94,11 +94,16 @@ const Grid = (props) => {
     const collectionButtonStyle = getConfig('collection', 'collectionButtonStyle');
     const cardHoverEffect = getConfig('collection', 'cardHoverEffect');
     const detailsTextOption = getConfig('collection', 'detailsTextOption');
-    let products = [];
-    if (detailsTextOption === 'productName') {
-        products = Object.values(getConfig('products', '') || {});
-    }
-
+    // let products = [];
+    // if (detailsTextOption === 'productName') {
+    //     products = Object.values(getConfig('products', '') || {});
+    // }
+    const products = useMemo(() => (
+        detailsTextOption === 'productName'
+            ? Object.values(getConfig('products', '') || {})
+            : []
+    ), [detailsTextOption]);
+    
     let customCard;
     try {
         /* eslint-disable-next-line no-new-func */

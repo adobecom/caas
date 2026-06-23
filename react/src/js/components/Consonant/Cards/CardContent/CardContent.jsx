@@ -47,7 +47,7 @@ const CardContent = ({
         )}
         {showIconAlt && (detailText === '') &&
         <span
-            data-testid="consonant-Card-label-icon-alt"
+            data-testid="consonant-Card-label"
             className="consonant-Card-label">
             {iconAlt}
         </span>
