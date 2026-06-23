@@ -39,7 +39,9 @@ const CardContent = ({
             <span
                 data-testid="consonant-Card-label-product-info"
                 className="consonant-Card-label product-info">
-                <img className="product-info-icon" src={productInfo.tagImage || ''} alt={productInfo.title || ''} />
+                {productInfo.tagImage && (
+                    <img className="product-info-icon" src={productInfo.tagImage} alt={productInfo.title || ''} />
+                )}
                 <span className="product-info-title">{productInfo.title || ''}</span>
             </span>
         )}
