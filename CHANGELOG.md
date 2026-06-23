@@ -1,5 +1,13 @@
 
 
+## [0.55.2](https://github.com/adobecom/caas/compare/0.55.1...0.55.2) (2026-06-22)
+
+
+### Bug Fixes
+
+* **mwpw-184989:** raise ai-code-review diff cap to 16000 and mark truncation ([4918c6c](https://github.com/adobecom/caas/commit/4918c6cf66a67ac4c41a2dddb9c8af9fc35890ea))
+* **mwpw-184989:** simplify ai-review diff cap to single MAX_CHARS ([24f0294](https://github.com/adobecom/caas/commit/24f0294316038ac64a52d860fa6718e8db6e37e6))
+
 ## [0.55.1](https://github.com/adobecom/caas/compare/0.55.0...0.55.1) (2026-06-18)
 
 
