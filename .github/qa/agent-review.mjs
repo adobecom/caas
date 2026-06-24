@@ -34,7 +34,15 @@ const OR = 'This collection uses OR filtering: selecting one filter narrows the 
 const PAGES = [
   { id: 'A-left-hub', url: 'https://business.adobe.com/customer-success-stories.html',
     triggers: /Filters\/Left|CardFilterer|getFilteredCards|Helpers|Search|Sort|Pagination|Bookmark|Container|Card\.jsx/i,
-    instr: `Left-filter collection. ${OR} Open the left filter panel, select a filter -> results narrow, the count updates, a selected-filter chip appears. Add a second filter in the same group -> results WIDEN (OR). Clear All -> back to full. Pick a filter combination yielding nothing -> a no-results empty state shows (not a blank/broken grid). Search a query -> results filter and the matched term is highlighted. Change the Sort dropdown -> the visible order changes. Go to page 2 -> the URL gains page=2 and different cards show; navigate to that page-2 URL fresh -> it should restore page 2. Bookmark a card -> the icon toggles; open the saved view -> only saved cards show. Click a card -> opens the expected link/modal.` },
+    kind: 'interactive',
+    instr: `OR-filter assertion. Budget: 8 turns, then call done IMMEDIATELY. This is a left-filter collection that uses OR within a group.
+STEP A (1 turn): navigate to the URL. evaluate({code: JSON.stringify({count: document.querySelector('.consonant-FiltersInfo-results')?.textContent || null, cards: document.querySelectorAll('.consonant-Card').length})}). Record the baseline (e.g. "344 results", 12 cards).
+STEP B (2 turns): find_and_show ".consonant-LeftFilters-header" to reveal the filter panel. get_interactives scope ".consonant-Filters" (a small list). click the FIRST filter checkbox; note its label.
+STEP C (1 turn): re-run the STEP A evaluate. A correct build NARROWS to a NON-ZERO count (fewer than baseline, greater than 0) and re-renders cards. Zero or "No results" after one normal filter is THE BUG.
+STEP D (2 turns): get_interactives scope ".consonant-Filters"; click a SECOND checkbox in the same group. re-run the evaluate. With OR within a group the result should WIDEN (union, at least the single-filter count) -- treat an increase as CORRECT, not a bug.
+STEP E (1 turn): done(report, verdict).
+VERDICT: PASS only if one filter yields a NON-ZERO narrowed count AND the second filter widens it. FAIL if one filter yields ZERO / "No results" (filtering broken) or the count never changes when filters are applied.
+REPORT: state the baseline count, the count after one filter, and after two filters, then the explicit reason for the verdict.` },
   { id: 'B-top-panel', url: 'https://news.adobe.com/news?ch_News+articles=Experience%2520Cloud',
     triggers: /Filters\/Top|Container|CardFilterer|getFilteredCards|Helpers|Card\.jsx/i,
     instr: `Top-filter collection (a filter is pre-applied via the URL). Confirm the page loads already filtered to that selection. Open the top filter bar, change/add a filter -> results and count update. ${OR} Run a search -> results update.` },
@@ -115,15 +123,22 @@ for (const page of selected) {
                  : 'No count element here; measure result size by counting "' + (sel.cards || '.consonant-Card') + '" via evaluate(document.querySelectorAll(...).length).',
       ].join('\n')
     : '';
-  const instruction = [
-    `Target URL: ${page.url}`, '',
-    `You are QA-reviewing pull request #${PR}. The PR's CaaS build is injected into this live page, so you are testing the PR's code on the real page.`,
-    diffHint,
-    `PR title: ${meta.title}`,
-    `Code diff (truncated, secrets redacted): ${redact(diff).slice(0, 5000)}`,
-    '', selHint, '', page.instr, '',
-    'Report anything broken/truncated/misaligned/wrong; if clean, say so. End with done(report, verdict).',
-  ].join('\n');
+  const instruction = (page.kind === 'interactive'
+    ? [
+        `Target URL: ${page.url}`, '',
+        `You are QA-reviewing pull request #${PR}. The PR's CaaS build is injected into this live page, so you are testing the PR's real code.`,
+        '', page.instr, '',
+        'Base your verdict ONLY on what you observe by following the steps -- do NOT infer it from any code change. End with done(report, verdict).',
+      ]
+    : [
+        `Target URL: ${page.url}`, '',
+        `You are QA-reviewing pull request #${PR}. The PR's CaaS build is injected into this live page, so you are testing the PR's code on the real page.`,
+        diffHint,
+        `PR title: ${meta.title}`,
+        `Code diff (truncated, secrets redacted): ${redact(diff).slice(0, 5000)}`,
+        '', selHint, '', page.instr, '',
+        'Report anything broken/truncated/misaligned/wrong; if clean, say so. End with done(report, verdict).',
+      ]).join('\n');
   const REPORT_OUT = `/tmp/pr-review-${page.id}.json`; try { unlinkSync(REPORT_OUT); } catch {}
   const run = spawnSync('node', ['qa-runner-v2.mjs', instruction], {
     stdio: 'inherit', timeout: Number(env('AGENT_TIMEOUT_MS', '120000')), killSignal: 'SIGKILL',
