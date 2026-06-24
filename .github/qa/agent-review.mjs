@@ -46,8 +46,8 @@ const PAGES = [
     triggers: /Carousel|Grid|Card\.jsx/i,
     instr: `Carousel collection. Cards render in a horizontal carousel. Click next/prev (or scroll) -> the carousel advances and shows new cards. Verify the arrows/affordances render and nothing is clipped or overlapping.` },
   { id: 'E-gallery', url: 'https://milo.adobe.com/drafts/caas/card-styles',
-    triggers: /Cards\/|Card\.jsx|CardContent|CardHeader|CardFooter/i,
-    instr: `Card-style gallery: every card style is rendered on one page. VISUAL review -- scan all styles for rendering regressions: truncated/clipped text, broken or missing images, misaligned/overlapping elements, wrong spacing, a style that fails to render. Use the visual diff to focus where the PR changed rendering.` },
+    triggers: /Cards\/|Card\.jsx|CardContent|CardHeader|CardFooter/i, fullPage: true, wait: 22000,
+    instr: `Card-style gallery: a TALL page rendering every card style. VISUAL review only -- you do NOT need to interact. A full-page PR-vs-stable pixel diff was captured. Load the diff, find the magenta regions (where rendering changed), and report each card style that looks broken: truncated/clipped text, broken/missing image, misaligned or overlapping elements, wrong spacing, or a style that fails to render. If the diff is essentially empty, say all styles render cleanly. End with done(report, verdict) promptly.` },
 ];
 
 // Shared change (Card.jsx / Container / Helpers / app / any LESS) -> review all pages.
@@ -57,7 +57,7 @@ let selected = isShared ? PAGES : PAGES.filter((p) => p.triggers.test(changed));
 if (selected.length === 0) selected = [PAGES[0]]; // smoke
 console.log(`Selected ${selected.length} page(s): ${selected.map((p) => p.id).join(', ')}`);
 
-async function captureDiff(url, tag) {
+async function captureDiff(url, tag, opts = {}) {
   let pct = 'n/a';
   try {
     const browser = await chromium.connectOverCDP(CDP);
@@ -72,9 +72,9 @@ async function captureDiff(url, tag) {
         });
       }
       await p.goto(url, { waitUntil: 'load', timeout: 45000 }).catch(() => {});
-      await p.waitForTimeout(15000);
+      await p.waitForTimeout(opts.wait || 15000);
       const card = await p.$('.consonant-Card'); if (card) await card.scrollIntoViewIfNeeded().catch(() => {});
-      await p.waitForTimeout(1500); await p.screenshot({ path: out }); await p.close();
+      await p.waitForTimeout(1500); await p.screenshot({ path: out, fullPage: !!opts.fullPage }); await p.close();
     };
     await shot(true, `${OUT}/${tag}-pr.png`);
     await shot(false, `${OUT}/${tag}-stable.png`);
@@ -93,7 +93,7 @@ async function captureDiff(url, tag) {
 const sections = [];
 for (const page of selected) {
   console.log(`\n===== ${page.id} :: ${page.url} =====`);
-  const pct = await captureDiff(page.url, page.id);
+  const pct = await captureDiff(page.url, page.id, { fullPage: page.fullPage, wait: page.wait });
   const instruction = [
     `Target URL: ${page.url}`, '',
     `You are QA-reviewing pull request #${PR}. The PR's CaaS build is injected into this live page, so you are testing the PR's code on the real page.`,
@@ -106,7 +106,7 @@ for (const page of selected) {
   const REPORT_OUT = `/tmp/pr-review-${page.id}.json`; try { unlinkSync(REPORT_OUT); } catch {}
   const run = spawnSync('node', ['qa-runner-v2.mjs', instruction], {
     stdio: 'inherit', timeout: Number(env('AGENT_TIMEOUT_MS', '180000')), killSignal: 'SIGKILL',
-    env: { ...process.env, DIST_DIR: DIST, REPORT_OUT, MAX_TURNS: env('MAX_TURNS', '12') },
+    env: { ...process.env, DIST_DIR: DIST, REPORT_OUT, MAX_TURNS: env('MAX_TURNS', '18') },
   });
   const timedOut = run.signal === 'SIGKILL' || run.error?.code === 'ETIMEDOUT';
   let verdict = 'UNKNOWN', report = timedOut ? `Agent run exceeded the per-page time cap; partial only. (${pct}% pixels changed.)` : '(no report produced)';
