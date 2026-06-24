@@ -94,15 +94,11 @@ const Grid = (props) => {
     const collectionButtonStyle = getConfig('collection', 'collectionButtonStyle');
     const cardHoverEffect = getConfig('collection', 'cardHoverEffect');
     const detailsTextOption = getConfig('collection', 'detailsTextOption');
-    // let products = [];
-    // if (detailsTextOption === 'productName') {
-    //     products = Object.values(getConfig('products', '') || {});
-    // }
     const products = useMemo(() => (
         detailsTextOption === 'productName'
             ? Object.values(getConfig('products', '') || {})
             : []
-    ), [detailsTextOption]);
+    ), [detailsTextOption, getConfig]);
     
     let customCard;
     try {
