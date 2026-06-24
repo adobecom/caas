@@ -1,5 +1,12 @@
 
 
+## [0.56.0](https://github.com/adobecom/caas/compare/0.55.2...0.56.0) (2026-06-24)
+
+
+### Features
+
+* **mwpw-199538:** add caas-endpoint query param to override API base URL ([37567e0](https://github.com/adobecom/caas/commit/37567e0ca6b58b8f414396e2ab279c68caa55f4c))
+
 ## [0.55.2](https://github.com/adobecom/caas/compare/0.55.1...0.55.2) (2026-06-22)
 
 
