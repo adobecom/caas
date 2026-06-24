@@ -4,6 +4,13 @@
  */
 export const DESKTOP_MIN_WIDTH = 1200;
 
+export const CAAS_ENDPOINT_MAP = {
+    smoketest: {
+        from: 'https://www.adobe.com/chimera-api/',
+        to: 'https://14257-chimera-smoketest.adobeioruntime.net/api/v1/web/chimera-0.0.1/',
+    },
+};
+
 /**
  * Minimal viewport width to fit tablets
  * @type {Number}

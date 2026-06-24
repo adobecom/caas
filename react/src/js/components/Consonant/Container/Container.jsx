@@ -49,6 +49,7 @@ import {
     ONE_SECOND_DELAY,
     SORT_TYPES,
     EVENT_TIMING_IDS,
+    CAAS_ENDPOINT_MAP,
 } from '../Helpers/constants';
 import {
     ConfigContext,
@@ -1015,6 +1016,12 @@ const Container = (props) => {
 
         let collectionEndpoint = getConfig('collection', 'endpoint');
         const fallbackEndpoint = getConfig('collection', 'fallbackEndpoint');
+
+        const caasEndpointKey = new URLSearchParams(window.location.search).get('caas-endpoint');
+        const endpointOverride = CAAS_ENDPOINT_MAP[caasEndpointKey];
+        if (endpointOverride && collectionEndpoint.startsWith(endpointOverride.from)) {
+            collectionEndpoint = endpointOverride.to + collectionEndpoint.slice(endpointOverride.from.length);
+        }
 
         const r = new RegExp('^(?:[a-z]+:)?//', 'i');
         let collectionEndpointURI;
