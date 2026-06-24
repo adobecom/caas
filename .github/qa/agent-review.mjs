@@ -35,14 +35,15 @@ const PAGES = [
   { id: 'A-left-hub', url: 'https://business.adobe.com/customer-success-stories.html',
     triggers: /Filters\/Left|CardFilterer|getFilteredCards|Helpers|Search|Sort|Pagination|Bookmark|Container|Card\.jsx/i,
     kind: 'interactive',
-    instr: `OR-filter assertion. Budget: 8 turns, then call done IMMEDIATELY. This is a left-filter collection that uses OR within a group.
-STEP A (1 turn): navigate to the URL. evaluate({code: JSON.stringify({count: document.querySelector('.consonant-FiltersInfo-results')?.textContent || null, cards: document.querySelectorAll('.consonant-Card').length})}). Record the baseline (e.g. "344 results", 12 cards).
-STEP B (2 turns): find_and_show ".consonant-LeftFilters-header" to reveal the filter panel. get_interactives scope ".consonant-Filters" (a small list). click the FIRST filter checkbox; note its label.
-STEP C (1 turn): re-run the STEP A evaluate. A correct build NARROWS to a NON-ZERO count (fewer than baseline, greater than 0) and re-renders cards. Zero or "No results" after one normal filter is THE BUG.
-STEP D (2 turns): get_interactives scope ".consonant-Filters"; click a SECOND checkbox in the same group. re-run the evaluate. With OR within a group the result should WIDEN (union, at least the single-filter count) -- treat an increase as CORRECT, not a bug.
-STEP E (1 turn): done(report, verdict).
-VERDICT: PASS only if one filter yields a NON-ZERO narrowed count AND the second filter widens it. FAIL if one filter yields ZERO / "No results" (filtering broken) or the count never changes when filters are applied.
-REPORT: state the baseline count, the count after one filter, and after two filters, then the explicit reason for the verdict.` },
+    instr: `OR-filter assertion. Budget: 10 turns, then call done IMMEDIATELY. This is a DOM/count assertion -- NEVER call take_screenshot or find_and_show; drive it only with get_interactives, click, and evaluate. The left filter is TWO-LEVEL: filter checkboxes are hidden until you expand a group (Products / Content Type / Industry), so you must expand a group first.
+STEP A: navigate to the URL. evaluate({code: JSON.stringify({count: document.querySelector('.consonant-FiltersInfo-results')?.textContent || null})}). Record the baseline (e.g. "344 results").
+STEP B: get_interactives scope ".consonant-LeftFilter". click the FIRST group header (e.g. "Products" or "Industry") to expand it.
+STEP C: get_interactives scope ".consonant-LeftFilter" again (checkboxes are now listed). click the FIRST checkbox; note its label.
+STEP D: evaluate the same count expression. A correct build NARROWS to a NON-ZERO number (less than baseline, greater than 0). Zero or "No results" after one normal filter is THE BUG.
+STEP E: click a SECOND checkbox in the same group (already in the list). evaluate the count again. With OR the result should WIDEN (union, at least the single-filter count) -- an increase is CORRECT.
+STEP F: done(report, verdict).
+VERDICT: PASS only if one filter yields a NON-ZERO narrowed count AND the second widens it. FAIL if one filter yields ZERO / "No results" (filtering broken) or the count never changes.
+REPORT: state the baseline count, the count after one filter, and after two filters, then the explicit reason.` },
   { id: 'B-top-panel', url: 'https://news.adobe.com/news?ch_News+articles=Experience%2520Cloud',
     triggers: /Filters\/Top|Container|CardFilterer|getFilteredCards|Helpers|Card\.jsx/i,
     instr: `Top-filter collection (a filter is pre-applied via the URL). Confirm the page loads already filtered to that selection. Open the top filter bar, change/add a filter -> results and count update. ${OR} Run a search -> results update.` },
@@ -68,7 +69,7 @@ const SEL = {
 const SHARED = /Card\.jsx|Container\.jsx|Helpers\/|app\.jsx|\.less/i;
 const isShared = SHARED.test(changed);
 let selected = isShared ? PAGES : PAGES.filter((p) => p.triggers.test(changed));
-if (selected.length === 0) selected = [PAGES[0]];
+selected = [PAGES[0]]; // TEMP: single-page validation (revert before scaling)
 console.log(`Selected ${selected.length} page(s): ${selected.map((p) => p.id).join(', ')}`);
 
 async function captureDiff(url, tag, opts = {}) {
