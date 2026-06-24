@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /** Multi-page interactive agent QA review (advisory, non-blocking).
  *  For each PR-relevant page: capture a PR-build-vs-stable visual diff
- *  (segmented into bands for very tall pages), drive the interactive
+ *  drive the interactive
  *  qa-runner with a page-specific instruction, post ONE combined comment. */
 import { execFileSync, spawnSync } from 'node:child_process';
 import { readFileSync, writeFileSync, existsSync, mkdirSync, unlinkSync } from 'node:fs';
@@ -45,9 +45,17 @@ const PAGES = [
     triggers: /Carousel|Grid|Card\.jsx/i,
     instr: `Carousel collection. Cards render in a horizontal carousel. Click next/prev (or scroll) -> the carousel advances and shows new cards. Verify the arrows/affordances render and nothing is clipped or overlapping.` },
   { id: 'E-gallery', url: 'https://milo.adobe.com/drafts/caas/card-styles',
-    triggers: /Cards\/|Card\.jsx|CardContent|CardHeader|CardFooter/i, fullPage: true, segment: true, bandHeight: 1500, wait: 22000,
-    instr: `Card-style gallery: a TALL page rendering every card style. VISUAL review only -- you do NOT need to interact. The full-page diff is split into vertical bands; load the changed bands and report each card style that looks broken: truncated/clipped text, broken/missing image, misaligned or overlapping elements, wrong spacing, or a style that fails to render. If no bands changed, say all styles render cleanly. End with done(report, verdict) promptly.` },
+    triggers: /Cards\/|Card\.jsx|CardContent|CardHeader|CardFooter/i, fullPage: true, wait: 16000,
+    instr: `Card-style gallery: a TALL page rendering every card style. VISUAL review only -- you do NOT need to interact. Load the diff image once (load_screenshots), then report each card style that looks broken: truncated/clipped text, broken/missing image, misaligned or overlapping elements, wrong spacing, or a style that fails to render. If nothing changed, say all styles render cleanly. End with done(report, verdict) promptly.` },
 ];
+
+const SEL = {
+  'A-left-hub':  { cards: '.consonant-Card', count: '.consonant-FiltersInfo-results', filterGroup: '.consonant-LeftFilters-header', filterScope: '.consonant-Filters', filterCheckbox: '.consonant-Filters input[type=checkbox]', clearAll: '.consonant-LeftFilters-clearLink', search: '.consonant-Search-input', sort: '.consonant-Select-btn', pagination: '.consonant-Pagination' },
+  'B-top-panel': { cards: '.consonant-Card', filterOpen: '.consonant-TopFilter-link', filterScope: '.consonant-TopFilter', filterCheckbox: '.consonant-TopFilter input[type=checkbox]', sort: '.consonant-Select-btn', pagination: '.consonant-Pagination' },
+  'C-events':    { cards: '.consonant-Card', filterOpen: '.consonant-TopFilter-link', filterScope: '.consonant-TopFilter', filterCheckbox: '.consonant-TopFilter input[type=checkbox]', pagination: '.consonant-Pagination.lightText' },
+  'D-carousel':  { cards: '.consonant-Card', cardLink: '.consonant-LinkBlocker' },
+  'E-gallery':   { cards: '.consonant-Card' },
+};
 
 const SHARED = /Card\.jsx|Container\.jsx|Helpers\/|app\.jsx|\.less/i;
 const isShared = SHARED.test(changed);
@@ -56,7 +64,7 @@ if (selected.length === 0) selected = [PAGES[0]];
 console.log(`Selected ${selected.length} page(s): ${selected.map((p) => p.id).join(', ')}`);
 
 async function captureDiff(url, tag, opts = {}) {
-  let pct = 'n/a'; const bands = [];
+  let pct = 'n/a';
   try {
     const browser = await chromium.connectOverCDP(CDP);
     const c = browser.contexts()[0] || (await browser.newContext());
@@ -85,50 +93,41 @@ async function captureDiff(url, tag, opts = {}) {
     await browser.close();
     const a = PNG.sync.read(readFileSync(`${OUT}/${tag}-pr.png`)), b = PNG.sync.read(readFileSync(`${OUT}/${tag}-stable.png`));
     const w = Math.min(a.width, b.width), Ht = Math.min(a.height, b.height);
-    if (opts.segment) {
-      const BH = opts.bandHeight || 1500; let changed2 = 0;
-      for (let y = 0, i = 0; y < Ht; y += BH, i++) {
-        const bh = Math.min(BH, Ht - y);
-        const pa = new PNG({ width: w, height: bh }); PNG.bitblt(a, pa, 0, y, w, bh, 0, 0);
-        const pb = new PNG({ width: w, height: bh }); PNG.bitblt(b, pb, 0, y, w, bh, 0, 0);
-        const pd = new PNG({ width: w, height: bh });
-        const n = pixelmatch(pa.data, pb.data, pd.data, w, bh, { threshold: 0.12, includeAA: false });
-        changed2 += n;
-        const bp = 100 * n / (w * bh);
-        if (bp > 0.3) { const fp = `${OUT}/${tag}-band${i}-diff.png`; writeFileSync(fp, PNG.sync.write(pd)); bands.push({ i, pct: bp.toFixed(2), path: fp }); }
-      }
-      pct = (100 * changed2 / (w * Ht)).toFixed(2);
-    } else {
-      const ca = new PNG({ width: w, height: Ht }); PNG.bitblt(a, ca, 0, 0, w, Ht, 0, 0);
-      const cb = new PNG({ width: w, height: Ht }); PNG.bitblt(b, cb, 0, 0, w, Ht, 0, 0);
-      const d = new PNG({ width: w, height: Ht });
-      const n = pixelmatch(ca.data, cb.data, d.data, w, Ht, { threshold: 0.12, includeAA: false });
-      writeFileSync(`${OUT}/${tag}-diff.png`, PNG.sync.write(d)); pct = (100 * n / (w * Ht)).toFixed(2);
-    }
+    const ca = new PNG({ width: w, height: Ht }); PNG.bitblt(a, ca, 0, 0, w, Ht, 0, 0);
+    const cb = new PNG({ width: w, height: Ht }); PNG.bitblt(b, cb, 0, 0, w, Ht, 0, 0);
+    const d = new PNG({ width: w, height: Ht });
+    const n = pixelmatch(ca.data, cb.data, d.data, w, Ht, { threshold: 0.12, includeAA: false });
+    writeFileSync(`${OUT}/${tag}-diff.png`, PNG.sync.write(d)); pct = (100 * n / (w * Ht)).toFixed(2);
   } catch (e) { console.log(`[${tag}] diff capture failed: ${String(e).slice(0, 120)}`); }
-  return { pct, bands };
+  return { pct };
 }
 
 const sections = [];
 for (const page of selected) {
   console.log(`\n===== ${page.id} :: ${page.url} =====`);
-  const { pct, bands } = await captureDiff(page.url, page.id, { fullPage: page.fullPage, wait: page.wait, segment: page.segment, bandHeight: page.bandHeight });
-  const diffHint = bands.length
-    ? `The full-page pixel diff was split into vertical bands (this page is very tall); overall ${pct}% changed, ${bands.length} band(s) changed. Load them: load_screenshots([${bands.map((bb) => `"${bb.path}"`).join(', ')}]). NOTE: a change to a card's height (e.g. a truncated title) shifts every card BELOW it upward, so several changed bands can be ONE root cause -- report the root cause(s), not each shifted band.`
-    : `A pixel diff of the PR build vs current stable was captured; ${pct}% of pixels changed. Magenta regions mark where the PR changed rendering. Call load_screenshots(["${OUT}/${page.id}-diff.png"]) once to see them, then interact.`;
+  const { pct } = await captureDiff(page.url, page.id, { fullPage: page.fullPage, wait: page.wait });
+  const diffHint = `A pixel diff of the PR build vs current stable was captured; ${pct}% of pixels changed. Magenta regions mark where the PR changed rendering. Call load_screenshots(["${OUT}/${page.id}-diff.png"]) once to see them, then interact.`;
+  const sel = SEL[page.id] || {};
+  const selHint = Object.keys(sel).length
+    ? ['Selectors for THIS page. To interact efficiently: call get_interactives(scope) SCOPED to the container below (returns a SMALL numbered list), then click the ref -- do NOT call get_interactives unscoped, which dumps the whole page and wastes turns. Use find_and_show(selector) to bring a region into view first.',
+       ...Object.entries(sel).map(([k, v]) => '  - ' + k + ': ' + v),
+       sel.count ? 'Read the live result count from "' + sel.count + '" via evaluate after each interaction.'
+                 : 'No count element here; measure result size by counting "' + (sel.cards || '.consonant-Card') + '" via evaluate(document.querySelectorAll(...).length).',
+      ].join('\n')
+    : '';
   const instruction = [
     `Target URL: ${page.url}`, '',
     `You are QA-reviewing pull request #${PR}. The PR's CaaS build is injected into this live page, so you are testing the PR's code on the real page.`,
     diffHint,
     `PR title: ${meta.title}`,
     `Code diff (truncated, secrets redacted): ${redact(diff).slice(0, 5000)}`,
-    '', page.instr, '',
+    '', selHint, '', page.instr, '',
     'Report anything broken/truncated/misaligned/wrong; if clean, say so. End with done(report, verdict).',
   ].join('\n');
   const REPORT_OUT = `/tmp/pr-review-${page.id}.json`; try { unlinkSync(REPORT_OUT); } catch {}
   const run = spawnSync('node', ['qa-runner-v2.mjs', instruction], {
-    stdio: 'inherit', timeout: Number(env('AGENT_TIMEOUT_MS', '180000')), killSignal: 'SIGKILL',
-    env: { ...process.env, DIST_DIR: DIST, REPORT_OUT, MAX_TURNS: env('MAX_TURNS', '16') },
+    stdio: 'inherit', timeout: Number(env('AGENT_TIMEOUT_MS', '120000')), killSignal: 'SIGKILL',
+    env: { ...process.env, DIST_DIR: DIST, REPORT_OUT, MAX_TURNS: env('MAX_TURNS', '10') },
   });
   const timedOut = run.signal === 'SIGKILL' || run.error?.code === 'ETIMEDOUT';
   let verdict = 'UNKNOWN', report = timedOut ? `Agent run exceeded the per-page time cap; partial only. (${pct}% pixels changed.)` : '(no report produced)';
