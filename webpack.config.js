@@ -42,7 +42,10 @@ const plugins = [
     }),
     // Inject environment variable for conditional code removal
     new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+        // Bake the release version into the bundle so window.caas.version
+        // reports the same string the canary beacon and the banner use.
+        'process.env.CAAS_VERSION': JSON.stringify(version),
     }),
 ];
 
