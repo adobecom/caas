@@ -53,9 +53,11 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ "${{ github.event_name }}" = "issue_comment" ]; then
-            fork=$(gh pr view ${{ steps.pr.outputs.number }} --repo ${{ github.repository }} --json isCrossRepository --jq .isCrossRepository)
-            if [ "$fork" = "true" ]; then
-              echo "PR is from a fork; AI review does not run on fork code (self-hosted runner safety)."
+            fork=$(gh pr view ${{ steps.pr.outputs.number }} --repo ${{ github.repository }} --json isCrossRepository --jq .isCrossRepository) || fork="error"
+            # Fail closed: proceed ONLY when positively confirmed same-repo
+            # (isCrossRepository == false). Any error, empty, or other value skips.
+            if [ "$fork" != "false" ]; then
+              echo "Not confirmed same-repo (isCrossRepository=$fork); skipping AI review on self-hosted runner."
               echo "skip=true" >> "$GITHUB_OUTPUT"
             fi
           fi
