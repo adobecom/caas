@@ -44,7 +44,24 @@ jobs:
         id: pr
         run: echo "number=${{ github.event.pull_request.number || github.event.issue.number }}" >> "$GITHUB_OUTPUT"
 
+      - name: Guard against fork code
+        id: guard
+        # pull_request is already same-repo-gated by the job-level if. For the
+        # issue_comment (@ai-bot) path we must check via API, since the comment
+        # event payload omits the PR head repo. Forks never get checked out.
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${{ github.event_name }}" = "issue_comment" ]; then
+            fork=$(gh pr view ${{ steps.pr.outputs.number }} --repo ${{ github.repository }} --json isCrossRepository --jq .isCrossRepository)
+            if [ "$fork" = "true" ]; then
+              echo "PR is from a fork; AI review does not run on fork code (self-hosted runner safety)."
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+            fi
+          fi
+
       - name: Check out PR head
+        if: steps.guard.outputs.skip != 'true'
         # Normalise the working tree to the PR's actual code for BOTH triggers
         # (on issue_comment the default checkout is the base branch, not the PR).
         # This is what makes the "code context" step read the PR's files.
@@ -53,16 +70,19 @@ jobs:
         run: gh pr checkout ${{ steps.pr.outputs.number }}
 
       - name: Get PR diff
+        if: steps.guard.outputs.skip != 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh pr diff ${{ steps.pr.outputs.number }} > pr.diff
 
       - name: Get changed file list
+        if: steps.guard.outputs.skip != 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh pr view ${{ steps.pr.outputs.number }} --json files --jq '.files[].path' > pr_files.txt || true
 
       - name: Get prior review discussion
+        if: steps.guard.outputs.skip != 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -76,6 +96,7 @@ jobs:
             >> pr_comments.txt 2>/dev/null || true
 
       - name: Run AI Code Review
+        if: steps.guard.outputs.skip != 'true'
         env:
           IMS_ACCESS_TOKEN: ${{ secrets.IMS_ACCESS_TOKEN }}
           LLM_PROXY_ENDPOINT: ${{ secrets.LLM_PROXY_ENDPOINT }}
@@ -128,7 +149,12 @@ jobs:
           included = {}   # path -> content
           order = []
 
+          repo_root = os.path.abspath('.')
+
           def add_file(path):
+              ap = os.path.abspath(path)
+              if ap != repo_root and not ap.startswith(repo_root + os.sep):
+                  return
               if path in included or not path.endswith(SRC_EXT) or not os.path.isfile(path):
                   return
               try:
