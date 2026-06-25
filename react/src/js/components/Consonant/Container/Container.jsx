@@ -1018,7 +1018,12 @@ const Container = (props) => {
         const fallbackEndpoint = getConfig('collection', 'fallbackEndpoint');
 
         const caasEndpointKey = new URLSearchParams(window.location.search).get('caas-endpoint');
-        const endpointOverride = CAAS_ENDPOINT_MAP[caasEndpointKey];
+        const endpointOverride = Object.prototype.hasOwnProperty.call(
+            CAAS_ENDPOINT_MAP,
+            caasEndpointKey,
+        )
+            ? CAAS_ENDPOINT_MAP[caasEndpointKey]
+            : undefined;
         if (endpointOverride && collectionEndpoint.startsWith(endpointOverride.from)) {
             collectionEndpoint = endpointOverride.to + collectionEndpoint.slice(endpointOverride.from.length);
         }
