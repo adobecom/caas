@@ -29,7 +29,7 @@ import {
     stylesType,
     contentAreaType,
     overlaysType,
-    footerType, 
+    footerType,
     tagsType,
     bannerMapType,
 } from '../types/card';
@@ -245,6 +245,8 @@ const Card = (props) => {
     } else if (detailsTextOption === 'staticDate' && cardDate) {
         const staticDate = new Date(cardDate.replace(/Z$/, ''));
         detailText = staticDate.toLocaleDateString();
+    } else if (detailsTextOption === 'productName' && cardStyle !== 'flex-card') {
+        detailText = '';
     }
 
     const isGated = hasTag(/caas:gated/, tags)
@@ -319,7 +321,7 @@ const Card = (props) => {
             }
         }
         return '';
-    }   
+    }
 
     const isHalfHeight = cardStyle === 'half-height';
     const isProduct = cardStyle === 'product';
@@ -407,13 +409,68 @@ const Card = (props) => {
     const optimizedImage = optimizeImageUrl(image);
 
     const cardData = useMemo(() => ({
-        id, country, reference, lh, cardClassName, cardStyle, bladeVariant,
-        optimizedImage, altText, cta2Text, flexCardOptions,
-        hasBanner, disableBanners,
+        id,
+        country,
+        reference,
+        lh,
+        cardClassName,
+        cardStyle,
+        bladeVariant,
+        optimizedImage,
+        altText,
+        cta2Text,
+        flexCardOptions,
+        hasBanner,
+        disableBanners,
         bannerBackgroundColor: bannerBackgroundColorToUse,
         bannerFontColor: bannerFontColorToUse,
         bannerIcon: bannerIconToUse,
         bannerDescription: bannerDescriptionToUse,
+        badgeText,
+        fromDexter,
+        showCardBadges,
+        videoURL,
+        videoURLToUse,
+        gateVideo,
+        useCenterVideoPlay,
+        logoSrc,
+        logoAlt,
+        logoBg,
+        logoBorderBg,
+        image,
+        cardIcon,
+        iconAlt,
+        detailText,
+        editorialOpenVariant,
+        highlightedTitle,
+        title,
+        headingAria,
+        headingLevel,
+        highlightedDescription,
+        description,
+        parseMarkDown,
+        footer,
+        renderDivider,
+        cardDate,
+        startDate,
+        endDate,
+        extendFooterData,
+        altCtaUsed,
+        hideOnDemandDates,
+        linkBlockerTarget,
+        overlay,
+        ctaText,
+        onFocus,
+        tabIndex,
+        ariaHidden,
+        renderOverlay,
+        hideCTA,
+    }), [
+        id, country, reference, lh, cardClassName, cardStyle, bladeVariant,
+        optimizedImage, altText, cta2Text, flexCardOptions,
+        hasBanner, disableBanners,
+        bannerBackgroundColorToUse, bannerFontColorToUse,
+        bannerIconToUse, bannerDescriptionToUse,
         badgeText, fromDexter, showCardBadges,
         videoURL, videoURLToUse, gateVideo, useCenterVideoPlay,
         logoSrc, logoAlt, logoBg, logoBorderBg, image,
@@ -425,7 +482,7 @@ const Card = (props) => {
         extendFooterData, altCtaUsed, hideOnDemandDates,
         linkBlockerTarget, overlay, ctaText,
         onFocus, tabIndex, ariaHidden, renderOverlay, hideCTA,
-    }));
+    ]);
 
     const CardComponent = CARD_STYLES[cardStyle] || OneHalf;
 

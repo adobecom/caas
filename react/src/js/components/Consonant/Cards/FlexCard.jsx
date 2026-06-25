@@ -5,6 +5,7 @@ import CardHeader from './CardHeader/CardHeader';
 import CardContent from './CardContent/CardContent';
 import CardFooter from './CardFooter/CardFooter';
 import LinkBlocker from './LinkBlocker/LinkBlocker';
+import { useConfig } from '../Helpers/hooks';
 
 const FlexCard = () => {
     const {
@@ -34,6 +35,26 @@ const FlexCard = () => {
     const showFooter = !(flexCardOptions?.hideFooter === true);
     const textSize = flexCardOptions?.textSize || '';
     const textSizeClass = textSize === 'text-large' ? 'text-large' : '';
+
+    const getConfig = useConfig();
+    const detailsTextOption = getConfig('collection', 'detailsTextOption');
+    const products = detailsTextOption === 'productName'
+        ? Object.values(getConfig('products', '')).filter((product) => product && product.tagID)
+        : [];
+
+    let showProductName = false;
+    let productInfo = null;
+    if (products.length > 0) {
+        const productData = products.find(product => product.tagID === detailText);
+        if (productData) {
+            showProductName = true;
+            productInfo = {
+                tagID: productData.tagID || '',
+                title: productData.title || '',
+                tagImage: productData.tagImage || '',
+            };
+        }
+    }
 
     return (
         <li
@@ -73,7 +94,8 @@ const FlexCard = () => {
             <div className="consonant-Card-content">
                 <CardContent
                     showLabel
-                    detailText={showDetails ? detailText : ''}
+                    detailText={showDetails && !showProductName ? detailText : ''}
+                    productInfo={showDetails && productInfo && productInfo.tagID && productInfo.title ? productInfo : null}
                     showIconAlt={false}
                     isTitleOnly={false}
                     showTitle={showTitle}
