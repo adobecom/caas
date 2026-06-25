@@ -5,6 +5,7 @@ import CardHeader from './CardHeader/CardHeader';
 import CardContent from './CardContent/CardContent';
 import CardFooter from './CardFooter/CardFooter';
 import LinkBlocker from './LinkBlocker/LinkBlocker';
+import { useConfig } from '../Helpers/hooks';
 
 const FlexCard = () => {
     const {
@@ -35,6 +36,13 @@ const FlexCard = () => {
     const textSize = flexCardOptions?.textSize || '';
     const textSizeClass = textSize === 'text-large' ? 'text-large' : '';
 
+    const getConfig = useConfig();
+    const detailsTextOption = getConfig('collection', 'detailsTextOption');
+    const products = detailsTextOption === 'productName'
+        ? Object.values(getConfig('products', '') || {})
+        : [];
+    const productMatch = products.find(product => product.tagID === detailText) || null;
+
     return (
         <li
             daa-lh={lh}
@@ -42,7 +50,8 @@ const FlexCard = () => {
             data-testid="consonant-Card"
             id={id}
             {...(country && { 'data-country': country })}
-            {...(reference && { 'data-card-url': reference })}>
+            {...(reference && { 'data-card-url': reference })}
+            {...(productMatch && { 'data-product': productMatch.tagID })}>
             {imageOption !== 'hidden' && <CardHeader
                 image={optimizedImage}
                 imageOption={imageOption}
