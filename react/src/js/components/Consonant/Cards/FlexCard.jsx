@@ -39,7 +39,7 @@ const FlexCard = () => {
     const getConfig = useConfig();
     const detailsTextOption = getConfig('collection', 'detailsTextOption');
     const products = detailsTextOption === 'productName'
-        ? Object.values(getConfig('products', '') || {})
+        ? Object.values(getConfig('products', '')).filter((product) => product && product.tagID)
         : [];
 
     let showProductName = false;
