@@ -1,5 +1,19 @@
 
 
+## [0.57.0](https://github.com/adobecom/caas/compare/0.56.1...0.57.0) (2026-06-25)
+
+
+### Features
+
+* **mwpw-184989:** ground AI review in source context + PR thread with evidence rules ([e0a8e58](https://github.com/adobecom/caas/commit/e0a8e5882597ff6503acf10efadc579ba4f6bb53))
+* **mwpw-184989:** use [@ai-bot](https://github.com/ai-bot) marker, curate context to [@ai-bot](https://github.com/ai-bot) comments, rerun on edit ([393f685](https://github.com/adobecom/caas/commit/393f685d0de9e12fbeca5a3d2139bfa5ded691b8))
+
+
+### Bug Fixes
+
+* **mwpw-184989:** make fork guard fail closed ([8e57f0e](https://github.com/adobecom/caas/commit/8e57f0e8f915a5ef702292b8b6c4fc12d31c6bbc))
+* **mwpw-184989:** never run AI review on fork code; bound file reads to repo ([8c59ff7](https://github.com/adobecom/caas/commit/8c59ff783451555df2fd9af7903e6ed57366d2d8))
+
 ## [0.56.1](https://github.com/adobecom/caas/compare/0.56.0...0.56.1) (2026-06-25)
 
 
