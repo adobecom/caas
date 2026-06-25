@@ -1,5 +1,12 @@
 
 
+## [0.56.1](https://github.com/adobecom/caas/compare/0.56.0...0.56.1) (2026-06-25)
+
+
+### Bug Fixes
+
+* **mwpw-199538:** guard caas-endpoint lookup against prototype chain ([7b65e27](https://github.com/adobecom/caas/commit/7b65e271f4df698cba1f78255bcfeaa7dfe48a72)), closes [#537](https://github.com/adobecom/caas/issues/537)
+
 ## [0.56.0](https://github.com/adobecom/caas/compare/0.55.2...0.56.0) (2026-06-24)
 
 
