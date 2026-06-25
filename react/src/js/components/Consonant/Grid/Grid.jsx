@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import {
     arrayOf,
@@ -93,13 +93,6 @@ const Grid = (props) => {
     const paginationType = getConfig('pagination', 'type');
     const collectionButtonStyle = getConfig('collection', 'collectionButtonStyle');
     const cardHoverEffect = getConfig('collection', 'cardHoverEffect');
-    const detailsTextOption = getConfig('collection', 'detailsTextOption');
-    const products = useMemo(() => (
-        detailsTextOption === 'productName'
-            ? Object.values(getConfig('products', '') || {})
-            : []
-    ), [detailsTextOption, getConfig]);
-    
     let customCard;
     try {
         /* eslint-disable-next-line no-new-func */
@@ -278,8 +271,7 @@ const Grid = (props) => {
                                 ariaHidden={ariaHidden}
                                 tabIndex={ariaHidden ? -1 : 0}
                                 /* istanbul ignore next */
-                                onFocus={() => scrollCardIntoView(card.id)}
-                                products={products}/>
+                                onFocus={() => scrollCardIntoView(card.id)} />
                         );
                 }
             })}

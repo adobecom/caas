@@ -129,14 +129,16 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         renderCard({
             cardStyle,
             contentArea: { detailText: 'some details' },
-            products: [{
-                tagID: 'some details',
-                title: 'Acrobat',
-                tagImage: 'https://example.com/acrobat-icon.svg',
-            }],
         }, {
             collection: {
                 detailsTextOption: 'productName',
+            },
+            products: {
+                acrobat: {
+                    tagID: 'some details',
+                    title: 'Acrobat',
+                    tagImage: 'https://example.com/acrobat-icon.svg',
+                },
             },
         });
 
@@ -147,17 +149,19 @@ describe(`Consonant/Card/${cardStyle}`, () => {
     test('should not render the detail text when product info is shown', () => {
         renderCard({
             cardStyle,
-            products: [{
-                tagID: 'some details',
-                title: 'Acrobat',
-                tagImage: 'https://example.com/acrobat-icon.svg',
-            }],
             contentArea: {
                 detailText: 'some details',
             },
         }, {
             collection: {
                 detailsTextOption: 'productName',
+            },
+            products: {
+                acrobat: {
+                    tagID: 'some details',
+                    title: 'Acrobat',
+                    tagImage: 'https://example.com/acrobat-icon.svg',
+                },
             },
         });
 

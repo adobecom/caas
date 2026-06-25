@@ -32,7 +32,6 @@ import {
     footerType,
     tagsType,
     bannerMapType,
-    productInfoType,
 } from '../types/card';
 
 import OneHalf from './OneHalf';
@@ -98,7 +97,6 @@ const CardType = {
     tabIndex: number,
     country: string,
     reference: string,
-    products: arrayOf(shape(productInfoType)),
 };
 
 const defaultProps = {
@@ -127,7 +125,6 @@ const defaultProps = {
     tabIndex: 0,
     country: '',
     reference: '',
-    products: [],
 };
 
 const Card = (props) => {
@@ -195,7 +192,6 @@ const Card = (props) => {
         origin,
         ariaHidden,
         tabIndex,
-        products,
     } = props;
 
     let bannerBackgroundColorToUse = bannerBackgroundColor;
@@ -249,6 +245,8 @@ const Card = (props) => {
     } else if (detailsTextOption === 'staticDate' && cardDate) {
         const staticDate = new Date(cardDate.replace(/Z$/, ''));
         detailText = staticDate.toLocaleDateString();
+    } else if (detailsTextOption === 'productName' && cardStyle !== 'flex-card') {
+        detailText = '';
     }
 
     const isGated = hasTag(/caas:gated/, tags)
@@ -467,7 +465,6 @@ const Card = (props) => {
         ariaHidden,
         renderOverlay,
         hideCTA,
-        products,
     }), [
         id, country, reference, lh, cardClassName, cardStyle, bladeVariant,
         optimizedImage, altText, cta2Text, flexCardOptions,
@@ -485,7 +482,6 @@ const Card = (props) => {
         extendFooterData, altCtaUsed, hideOnDemandDates,
         linkBlockerTarget, overlay, ctaText,
         onFocus, tabIndex, ariaHidden, renderOverlay, hideCTA,
-        products,
     ]);
 
     const CardComponent = CARD_STYLES[cardStyle] || OneHalf;

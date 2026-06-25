@@ -25,7 +25,6 @@ const FlexCard = () => {
         linkBlockerTarget, overlay, ctaText,
         onFocus, tabIndex, ariaHidden,
         renderOverlay, hideCTA,
-        products,
     } = useCardData();
 
     const imageOption = flexCardOptions?.imageOption || '';
@@ -39,10 +38,13 @@ const FlexCard = () => {
 
     const getConfig = useConfig();
     const detailsTextOption = getConfig('collection', 'detailsTextOption');
+    const products = detailsTextOption === 'productName'
+        ? Object.values(getConfig('products', '') || {})
+        : [];
 
     let showProductName = false;
     let productInfo = null;
-    if (detailsTextOption === 'productName' && products.length > 0) {
+    if (products.length > 0) {
         const productData = products.find(product => product.tagID === detailText);
         if (productData) {
             showProductName = true;
