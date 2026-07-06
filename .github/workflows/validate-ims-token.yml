@@ -17,7 +17,7 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.IMS_ACCESS_TOKEN }}" \
             -H "Content-Type: application/json" \
             -H "anthropic-version: 2023-06-01" \
-            -d '{"model":"claude-sonnet-4-6","max_tokens":30,"messages":[{"role":"user","content":"Reply with only: token validated."}]}')
+            -d '{"model":"claude-sonnet-5","max_tokens":30,"messages":[{"role":"user","content":"Reply with only: token validated."}]}')
 
           if echo "$RESPONSE" | grep -q '"type":"message"'; then
             echo "status=success" >> $GITHUB_OUTPUT
