@@ -1,5 +1,12 @@
 
 
+## [0.57.1](https://github.com/adobecom/caas/compare/0.57.0...0.57.1) (2026-07-06)
+
+
+### Bug Fixes
+
+* **mwpw-196902:** switch proxy validation model to claude-sonnet-5 ([a216398](https://github.com/adobecom/caas/commit/a2163989751185d4040b6ad9139fd4ae01086420))
+
 ## [0.57.0](https://github.com/adobecom/caas/compare/0.56.1...0.57.0) (2026-06-25)
 
 
