@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import cuid from 'cuid';
 import { useCardData } from './CardContext';
 import CardHeader from './CardHeader/CardHeader';
@@ -38,9 +38,9 @@ const FlexCard = () => {
 
     const getConfig = useConfig();
     const detailsTextOption = getConfig('collection', 'detailsTextOption');
-    const products = detailsTextOption === 'productName'
+    const products = useMemo(() => (detailsTextOption === 'productName'
         ? Object.values(getConfig('products') || {}).filter((product) => product && product.tagID)
-        : [];
+        : []), [detailsTextOption, getConfig]);
 
     let showProductName = false;
     let productInfo = null;
