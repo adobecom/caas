@@ -52,6 +52,7 @@ import { chromium } from 'playwright';
 import { spawnSync } from 'child_process';
 import { mkdirSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
+import { ensureBrowserTab } from './cdp-keepalive.mjs';
 
 const PROXY_URL  = process.env.PROXY_URL || '';
 const MODEL      = process.env.MODEL || '';
@@ -597,6 +598,7 @@ async function runTool(page, consoleErrors, name, input) {
 // Main loop
 // ---------------------------------------------------------------------------
 
+
 async function main() {
     console.log('\nAI QA Runner v2');
     console.log('-'.repeat(60));
@@ -625,6 +627,7 @@ async function main() {
         attached = false; // we own this browser; close it at the end
         console.log(`[browser] real Chrome with persistent profile at ${userDataDir}` + (recordVideo ? ' (recording video)' : '') + '\n');
     } else if (process.env.CDP_URL) {
+        await ensureBrowserTab(process.env.CDP_URL);
         browser = await chromium.connectOverCDP(process.env.CDP_URL);
         context = browser.contexts()[0] ?? await browser.newContext();
         page = await context.newPage();
@@ -928,8 +931,13 @@ async function main() {
         if (recordVideo && page.video) {
             try { videoPath = await page.video().path(); } catch (e) {}
         }
-        await page.close();
-        if (!attached) {
+        if (attached) {
+            // Close only THIS run's own page so tabs don't accumulate across runs.
+            // ensureBrowserTab() guarantees a persistent keep-alive tab exists before
+            // the next connect, so Chrome stays alive and the next run can still attach.
+            await page.close().catch(() => {});
+        } else {
+            await page.close();
             if (browser) { await browser.close(); }
             else { await context.close(); }
         }

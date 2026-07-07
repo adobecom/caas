@@ -10,12 +10,15 @@ import { resolve } from 'node:path';
 import { chromium } from 'playwright';
 import pixelmatch from 'pixelmatch';
 import { PNG } from 'pngjs';
+import { ensureBrowserTab } from './cdp-keepalive.mjs';
 
 const env = (k, d) => process.env[k] ?? d;
 const PR = env('PR_NUMBER');
 const REPO = env('GH_REPO', 'adobecom/caas');
 const DIST = env('DIST_DIR');
 const CDP = env('CDP_URL', 'http://127.0.0.1:9222');
+
+
 const BASE = env('BASE_URL', 'https://business.adobe.com/resources/main.html');
 const CAASVER = env('CAASVER', ''); // optional version pin; default = bare URL, no query param
 const RUN_URL = env('RUN_URL', '');
@@ -38,6 +41,7 @@ try { diff = gh(['pr', 'diff', PR, '-R', REPO]); } catch {}
 const url = CAASVER ? `${BASE}?caasver=${CAASVER}` : BASE;
 let pct = 'n/a';
 try {
+  await ensureBrowserTab(CDP);
   const browser = await chromium.connectOverCDP(CDP);
   const c = browser.contexts()[0] || (await browser.newContext());
   const shot = async (inject, out) => {
