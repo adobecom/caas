@@ -1,5 +1,15 @@
 
 
+## [0.57.3](https://github.com/adobecom/caas/compare/0.57.2...0.57.3) (2026-07-07)
+
+
+### Bug Fixes
+
+* **mwpw-200160:** cap prior comments at 12k chars to reduce prompt size ([7d50b0b](https://github.com/adobecom/caas/commit/7d50b0b47a659338bcb2786935b37e8397b6fa62))
+* **mwpw-200160:** raise AI review max_tokens to 16k for thinking models ([5766d66](https://github.com/adobecom/caas/commit/5766d66b746b4d91296489d14728580b43f1a1e1))
+* **mwpw-200160:** raise max_tokens to 32k for large PR reviews ([1ad6eb7](https://github.com/adobecom/caas/commit/1ad6eb72563738c43c566ac9caf88fbbcb12914b))
+* **mwpw-200160:** revert comment cap, keep max_tokens at 32k ([b18f237](https://github.com/adobecom/caas/commit/b18f2371d763909fdf7180583b17b13313cb2ef4))
+
 ## [0.57.2](https://github.com/adobecom/caas/compare/0.57.1...0.57.2) (2026-07-07)
 
 
