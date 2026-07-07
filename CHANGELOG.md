@@ -1,5 +1,29 @@
 
 
+## [0.58.0](https://github.com/adobecom/caas/compare/0.57.3...0.58.0) (2026-07-07)
+
+
+### Features
+
+* **mwpw-200160:** email maintainer privately on review tool failure instead of a pr comment ([2f7687c](https://github.com/adobecom/caas/commit/2f7687ccddb08a7d1d66b06e22a99bd566a4449f))
+* **mwpw-200160:** log review tool failures to a monitor issue and cc maintainer, keep check green ([256ac70](https://github.com/adobecom/caas/commit/256ac70b80dd2ec7a27aa11d0fe51bc6395feea8))
+
+
+### Bug Fixes
+
+* **mwpw-200160:** keep cdp chrome tab alive with pre-connect guard and stale-tab reaping ([3759b59](https://github.com/adobecom/caas/commit/3759b59c328469748c03a60ed09a3e26dece2505))
+* **mwpw-200160:** mention maintainer on every failure comment so each failure notifies ([852d79f](https://github.com/adobecom/caas/commit/852d79f79ce452243941e58c929db1389833289e))
+* **mwpw-200160:** one monitor issue reused open-or-closed, mention only when a failure streak starts ([0cb6b63](https://github.com/adobecom/caas/commit/0cb6b6320cbc4f4320c20aa878ed6a499fb7e95d))
+* **mwpw-200160:** post agent qa review as a new comment each run instead of updating in place ([e089d2e](https://github.com/adobecom/caas/commit/e089d2e7798094467ba51112dfc3e73de3e2b843))
+* **mwpw-200160:** quote label in monitor-issue log step to fix github-script syntax error ([8052f8f](https://github.com/adobecom/caas/commit/8052f8fe00aeef6ce6277a9372afd5eb0c5784f0))
+* **mwpw-200160:** retry ai review on mid-stream errors, not just http status failures ([dde2242](https://github.com/adobecom/caas/commit/dde2242b182d157231226a0dc13b2ae59349f9d1))
+* **mwpw-200160:** stream ai review over sse to end gateway timeouts, guard truncated streams ([0c1c2c9](https://github.com/adobecom/caas/commit/0c1c2c973a7654210f5c303698fc57e912540c31))
+
+
+### Chores
+
+* **mwpw-200160:** remove dead notify code and stale wording from review-failure log ([8f17d12](https://github.com/adobecom/caas/commit/8f17d12f17646c21d9dbcc6e7aeed17c5a3186f8))
+
 ## [0.57.3](https://github.com/adobecom/caas/compare/0.57.2...0.57.3) (2026-07-07)
 
 
