@@ -10,12 +10,15 @@ import { resolve } from 'node:path';
 import { chromium } from 'playwright';
 import pixelmatch from 'pixelmatch';
 import { PNG } from 'pngjs';
+import { ensureBrowserTab } from './cdp-keepalive.mjs';
 
 const env = (k, d) => process.env[k] ?? d;
 const PR = env('PR_NUMBER');
 const REPO = env('GH_REPO', 'adobecom/caas');
 const DIST = env('DIST_DIR');
 const CDP = env('CDP_URL', 'http://127.0.0.1:9222');
+
+
 const BASE = env('BASE_URL', 'https://business.adobe.com/resources/main.html');
 const CAASVER = env('CAASVER', ''); // optional version pin; default = bare URL, no query param
 const RUN_URL = env('RUN_URL', '');
@@ -38,6 +41,7 @@ try { diff = gh(['pr', 'diff', PR, '-R', REPO]); } catch {}
 const url = CAASVER ? `${BASE}?caasver=${CAASVER}` : BASE;
 let pct = 'n/a';
 try {
+  await ensureBrowserTab(CDP);
   const browser = await chromium.connectOverCDP(CDP);
   const c = browser.contexts()[0] || (await browser.newContext());
   const shot = async (inject, out) => {
@@ -118,17 +122,18 @@ const comment = [
   RUN_URL ? `_PR / stable / diff screenshots + console + axe artifacts in the [workflow run](${RUN_URL})._` : '',
 ].join('\n');
 
-let id = '';
-try {
-  const list = JSON.parse(gh(['pr', 'view', PR, '-R', REPO, '--json', 'comments']));
-  const mine = (list.comments || []).filter((cm) => (cm.body || '').includes(MARKER)).pop();
-  if (mine && mine.url) id = mine.url.split('issuecomment-').pop();
-} catch {}
-if (id) {
-  gh(['api', '-X', 'PATCH', `repos/${REPO}/issues/comments/${id}`, '-f', `body=${comment}`]);
-} else {
-  writeFileSync(`${OUT}/comment.md`, comment);
-  gh(['pr', 'comment', PR, '-R', REPO, '--body-file', `${OUT}/comment.md`]);
+// A tool failure (CDP/connect error, no report, or timeout) yields UNKNOWN or a
+// timeout -- do NOT post a comment for that. Append a flag file so the workflow can
+// privately email the maintainer instead of broadcasting a failure on the PR.
+const toolFailed = verdict === 'UNKNOWN' || timedOut;
+if (toolFailed) {
+  const flag = `${process.env.GITHUB_WORKSPACE || '.'}/AGENT_REVIEW_FAILED`;
+  try { writeFileSync(flag, `PR #${PR}: verdict ${verdict}${timedOut ? ' (timed out)' : ''}, diff ${pct}%\n`, { flag: 'a' }); } catch {}
+  console.error(`agent-review: tool failure on PR #${PR} (verdict ${verdict}, timedOut=${timedOut}); no comment posted (email step will fire).`);
+  process.exit(0);
 }
+// Real result (PASS/FAIL): post a fresh comment per run (do not edit one in place).
+writeFileSync(`${OUT}/comment.md`, comment);
+gh(['pr', 'comment', PR, '-R', REPO, '--body-file', `${OUT}/comment.md`]);
 console.log(`agent-review: review posted on PR #${PR} (verdict ${verdict}, diff ${pct}%, timedOut=${timedOut})`);
 process.exit(0);
