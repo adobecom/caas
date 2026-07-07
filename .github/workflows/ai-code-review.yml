@@ -124,7 +124,7 @@ jobs:
           # ---- budgets (chars; ~4 chars/token, model window ~200k tokens) ----
           MAX_DIFF_CHARS = 180000
           MAX_CODE_CHARS = 150000
-          MAX_COMMENT_CHARS = 12000
+          MAX_COMMENT_CHARS = 50000
           IMPORT_HOPS = 2          # changed files + 2 levels of their imports
           MAX_CONTEXT_FILES = 40   # guard against hub-file fan-out
 
