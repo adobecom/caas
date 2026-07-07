@@ -46,7 +46,7 @@ const FlexCard = () => {
     let productInfo = null;
     if (products.length > 0) {
         const productData = products.find(product => product.tagID === detailText);
-        if (productData?.tagImage && productData?.title) {
+        if (productData?.title) {
             showProductName = true;
             productInfo = {
                 tagImage: productData.tagImage,
