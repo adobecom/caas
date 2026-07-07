@@ -380,7 +380,7 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            if (!fs.existsSync('REVIEW_FAILED')) { core.info(AI Code Review + ' OK; nothing to log.'); return; }
+            if (!fs.existsSync('REVIEW_FAILED')) { core.info('AI Code Review OK; nothing to log.'); return; }
             const reason = fs.readFileSync('REVIEW_FAILED', 'utf8').trim();
             const { owner, repo } = context.repo;
             const title = 'CI: AI / Agent review tool failures';
