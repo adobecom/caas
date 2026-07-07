@@ -395,7 +395,7 @@ jobs:
               await github.rest.issues.update({ owner, repo, issue_number: issue.number, state: 'open' });
               notify = true;                              // failures resumed after you closed it -> mention
             }                                             // already open -> log silently, no new email
-            const cc = notify ? '\n\ncc @sanrai — failures have started; close this issue once handled to silence follow-ups until they resume.' : '';
+            const cc = '\n\ncc @sanrai';   // mention on every failure -> a notification each time
             const body = ['❌ **AI Code Review** could not run — ' + new Date().toISOString(), '', reason.startsWith('PR') ? reason : '- ' + reason, '- Run: ' + process.env.RUN_URL, cc].join('\n');
             await github.rest.issues.createComment({ owner, repo, issue_number: issue.number, body });
-            core.info((notify ? 'Logged + notified' : 'Logged (no mention)') + ' AI Code Review failure on issue #' + issue.number);
+            core.info('Logged' + ' AI Code Review failure on issue #' + issue.number);
