@@ -71,6 +71,32 @@ jobs:
             echo "::endgroup::"
           done
 
+      - name: Email maintainer if the agent review could not run
+        if: always()
+        env:
+          NOTIFY_SMTP_USER: ${{ secrets.NOTIFY_SMTP_USER }}
+          NOTIFY_SMTP_PASS: ${{ secrets.NOTIFY_SMTP_PASS }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [ ! -f AGENT_REVIEW_FAILED ]; then echo "agent review OK; no email."; exit 0; fi
+          if [ -z "$NOTIFY_SMTP_USER" ] || [ -z "$NOTIFY_SMTP_PASS" ]; then
+            echo "AGENT_REVIEW_FAILED present but NOTIFY_SMTP_* secrets are not set; skipping email."; exit 0
+          fi
+          reason=$(cat AGENT_REVIEW_FAILED)
+          {
+            printf 'From: %s\r\n' "$NOTIFY_SMTP_USER"
+            printf 'To: %s\r\n' "$NOTIFY_SMTP_USER"
+            printf 'Subject: [caas CI] Agent QA Review could not run\r\n'
+            printf '\r\n'
+            printf 'The agent QA review could not produce a verdict, so no PR comment was posted.\r\n\r\n'
+            printf '%s\r\n' "$reason"
+            printf 'Run: %s\r\n' "$RUN_URL"
+          } > agent_mail.txt
+          curl -sS --url 'smtps://smtp.gmail.com:465' --ssl-reqd \
+            --mail-from "$NOTIFY_SMTP_USER" --mail-rcpt "$NOTIFY_SMTP_USER" \
+            --user "$NOTIFY_SMTP_USER:$NOTIFY_SMTP_PASS" --upload-file agent_mail.txt \
+            && echo "failure email sent to $NOTIFY_SMTP_USER" || echo "email send failed (check secret / Gmail app password)"
+
       - name: Upload screenshots + diffs
         if: always()
         uses: actions/upload-artifact@v4

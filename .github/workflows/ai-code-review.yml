@@ -323,6 +323,7 @@ jobs:
               return text, None
 
           review = None
+          fail_reason = None
           try:
               for attempt in range(3):
                   result = subprocess.run([
@@ -337,6 +338,7 @@ jobs:
                   if status != '200':
                       print(f"Proxy returned HTTP {status} (attempt {attempt + 1}/3)", file=sys.stderr)
                       print(body[:2000], file=sys.stderr)
+                      fail_reason = 'proxy HTTP %s' % status
                       if attempt < 2 and (status[:1] == '5' or status in ('000', '')):
                           time.sleep(8 * (attempt + 1))
                           continue
@@ -349,6 +351,7 @@ jobs:
                       break
                   print(f"Stream failed after HTTP 200 (attempt {attempt + 1}/3): {reason}", file=sys.stderr)
                   print(body[:2000], file=sys.stderr)
+                  fail_reason = reason
                   if attempt < 2:
                       time.sleep(8 * (attempt + 1))
                       continue
@@ -357,8 +360,40 @@ jobs:
               os.unlink(config_file)
 
           if review is None:
-              review = "AI review unavailable (upstream error after retries). See Actions logs."
-
-          subprocess.run(['gh', 'pr', 'comment', pr_number, '--body', f"## AI Code Review\n\n{review}"], check=True)
-          print("Review posted. Context files included:", len(order))
+              # Do NOT post a failure comment on the PR. Write a flag file so a later
+              # step can privately email the maintainer, and exit cleanly (green check).
+              with open('REVIEW_FAILED', 'w') as fh:
+                  fh.write((fail_reason or 'upstream/stream error')[:300])
+              print("AI review failed after retries; no PR comment posted (failure email step will fire).", file=sys.stderr)
+          else:
+              subprocess.run(['gh', 'pr', 'comment', pr_number, '--body', f"## AI Code Review\n\n{review}"], check=True)
+              print("Review posted. Context files included:", len(order))
           EOF
+
+      - name: Email maintainer if the AI review could not run
+        if: steps.guard.outputs.skip != 'true'
+        env:
+          NOTIFY_SMTP_USER: ${{ secrets.NOTIFY_SMTP_USER }}
+          NOTIFY_SMTP_PASS: ${{ secrets.NOTIFY_SMTP_PASS }}
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [ ! -f REVIEW_FAILED ]; then echo "AI review OK; no email."; exit 0; fi
+          if [ -z "$NOTIFY_SMTP_USER" ] || [ -z "$NOTIFY_SMTP_PASS" ]; then
+            echo "REVIEW_FAILED present but NOTIFY_SMTP_* secrets are not set; skipping email."; exit 0
+          fi
+          reason=$(cat REVIEW_FAILED)
+          {
+            printf 'From: %s\r\n' "$NOTIFY_SMTP_USER"
+            printf 'To: %s\r\n' "$NOTIFY_SMTP_USER"
+            printf 'Subject: [caas CI] AI Code Review could not run on PR #%s\r\n' "$PR_NUMBER"
+            printf '\r\n'
+            printf 'The AI code review failed to produce a review, so no PR comment was posted.\r\n\r\n'
+            printf 'Reason: %s\r\n' "$reason"
+            printf 'PR:  %s/%s/pull/%s\r\n' "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$PR_NUMBER"
+            printf 'Run: %s\r\n' "$RUN_URL"
+          } > mail.txt
+          curl -sS --url 'smtps://smtp.gmail.com:465' --ssl-reqd \
+            --mail-from "$NOTIFY_SMTP_USER" --mail-rcpt "$NOTIFY_SMTP_USER" \
+            --user "$NOTIFY_SMTP_USER:$NOTIFY_SMTP_PASS" --upload-file mail.txt \
+            && echo "failure email sent to $NOTIFY_SMTP_USER" || echo "email send failed (check secret / Gmail app password)"

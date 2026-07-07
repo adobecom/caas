@@ -122,8 +122,17 @@ const comment = [
   RUN_URL ? `_PR / stable / diff screenshots + console + axe artifacts in the [workflow run](${RUN_URL})._` : '',
 ].join('\n');
 
-// Always post a fresh comment per run (do not edit a prior one in place), so each
-// review is visible as a new entry rather than a silent in-place update.
+// A tool failure (CDP/connect error, no report, or timeout) yields UNKNOWN or a
+// timeout -- do NOT post a comment for that. Append a flag file so the workflow can
+// privately email the maintainer instead of broadcasting a failure on the PR.
+const toolFailed = verdict === 'UNKNOWN' || timedOut;
+if (toolFailed) {
+  const flag = `${process.env.GITHUB_WORKSPACE || '.'}/AGENT_REVIEW_FAILED`;
+  try { writeFileSync(flag, `PR #${PR}: verdict ${verdict}${timedOut ? ' (timed out)' : ''}, diff ${pct}%\n`, { flag: 'a' }); } catch {}
+  console.error(`agent-review: tool failure on PR #${PR} (verdict ${verdict}, timedOut=${timedOut}); no comment posted (email step will fire).`);
+  process.exit(0);
+}
+// Real result (PASS/FAIL): post a fresh comment per run (do not edit one in place).
 writeFileSync(`${OUT}/comment.md`, comment);
 gh(['pr', 'comment', PR, '-R', REPO, '--body-file', `${OUT}/comment.md`]);
 console.log(`agent-review: review posted on PR #${PR} (verdict ${verdict}, diff ${pct}%, timedOut=${timedOut})`);
