@@ -23,7 +23,7 @@ concurrency:
 jobs:
   agent-review:
     runs-on: [self-hosted, qa-audit]   # the Mini — only runner with the persistent Chrome/CDP
-    timeout-minutes: 20
+    timeout-minutes: 30
     # Same-repo PRs only (public repo + self-hosted runner); manual dispatch always allowed.
     if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
     permissions:
