@@ -35,6 +35,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
+      issues: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -370,30 +371,24 @@ jobs:
               print("Review posted. Context files included:", len(order))
           EOF
 
-      - name: Email maintainer if the AI review could not run
+      - name: Log AI review failure to the monitor issue
         if: steps.guard.outputs.skip != 'true'
+        uses: actions/github-script@v7
         env:
-          NOTIFY_SMTP_USER: ${{ secrets.NOTIFY_SMTP_USER }}
-          NOTIFY_SMTP_PASS: ${{ secrets.NOTIFY_SMTP_PASS }}
           PR_NUMBER: ${{ steps.pr.outputs.number }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: |
-          if [ ! -f REVIEW_FAILED ]; then echo "AI review OK; no email."; exit 0; fi
-          if [ -z "$NOTIFY_SMTP_USER" ] || [ -z "$NOTIFY_SMTP_PASS" ]; then
-            echo "REVIEW_FAILED present but NOTIFY_SMTP_* secrets are not set; skipping email."; exit 0
-          fi
-          reason=$(cat REVIEW_FAILED)
-          {
-            printf 'From: %s\r\n' "$NOTIFY_SMTP_USER"
-            printf 'To: %s\r\n' "$NOTIFY_SMTP_USER"
-            printf 'Subject: [caas CI] AI Code Review could not run on PR #%s\r\n' "$PR_NUMBER"
-            printf '\r\n'
-            printf 'The AI code review failed to produce a review, so no PR comment was posted.\r\n\r\n'
-            printf 'Reason: %s\r\n' "$reason"
-            printf 'PR:  %s/%s/pull/%s\r\n' "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$PR_NUMBER"
-            printf 'Run: %s\r\n' "$RUN_URL"
-          } > mail.txt
-          curl -sS --url 'smtps://smtp.gmail.com:465' --ssl-reqd \
-            --mail-from "$NOTIFY_SMTP_USER" --mail-rcpt "$NOTIFY_SMTP_USER" \
-            --user "$NOTIFY_SMTP_USER:$NOTIFY_SMTP_PASS" --upload-file mail.txt \
-            && echo "failure email sent to $NOTIFY_SMTP_USER" || echo "email send failed (check secret / Gmail app password)"
+        with:
+          script: |
+            const fs = require('fs');
+            if (!fs.existsSync('REVIEW_FAILED')) { core.info('AI review OK; nothing to log.'); return; }
+            const reason = fs.readFileSync('REVIEW_FAILED', 'utf8').trim();
+            const title = 'CI: AI / Agent review tool failures';
+            const { data: issues } = await github.rest.issues.listForRepo({ owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100 });
+            let issue = issues.find(i => i.title === title);
+            if (!issue) {
+              const res = await github.rest.issues.create({ owner: context.repo.owner, repo: context.repo.repo, title, body: 'Automated log of AI Code Review / Agent QA Review TOOL failures (upstream / CDP / stream errors, not code regressions). Each comment is one failed run; the PR check stays green.' });
+              issue = res.data;
+            }
+            const body = ['❌ **AI Code Review** could not run — ' + new Date().toISOString(), '', '- PR: #' + process.env.PR_NUMBER, '- Reason: ' + reason, '- Run: ' + process.env.RUN_URL, '', 'cc @sanrai'].join('\n');
+            await github.rest.issues.createComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number: issue.number, body });
+            core.info('Logged AI review failure to issue #' + issue.number);
