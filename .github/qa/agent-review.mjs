@@ -122,17 +122,9 @@ const comment = [
   RUN_URL ? `_PR / stable / diff screenshots + console + axe artifacts in the [workflow run](${RUN_URL})._` : '',
 ].join('\n');
 
-let id = '';
-try {
-  const list = JSON.parse(gh(['pr', 'view', PR, '-R', REPO, '--json', 'comments']));
-  const mine = (list.comments || []).filter((cm) => (cm.body || '').includes(MARKER)).pop();
-  if (mine && mine.url) id = mine.url.split('issuecomment-').pop();
-} catch {}
-if (id) {
-  gh(['api', '-X', 'PATCH', `repos/${REPO}/issues/comments/${id}`, '-f', `body=${comment}`]);
-} else {
-  writeFileSync(`${OUT}/comment.md`, comment);
-  gh(['pr', 'comment', PR, '-R', REPO, '--body-file', `${OUT}/comment.md`]);
-}
+// Always post a fresh comment per run (do not edit a prior one in place), so each
+// review is visible as a new entry rather than a silent in-place update.
+writeFileSync(`${OUT}/comment.md`, comment);
+gh(['pr', 'comment', PR, '-R', REPO, '--body-file', `${OUT}/comment.md`]);
 console.log(`agent-review: review posted on PR #${PR} (verdict ${verdict}, diff ${pct}%, timedOut=${timedOut})`);
 process.exit(0);
