@@ -296,7 +296,11 @@ jobs:
               review = "AI review unavailable (upstream error). See Actions logs."
           else:
               try:
-                  review = json.loads(body)['content'][0]['text']
+                  blocks = json.loads(body)['content']
+                  text_block = next((b for b in blocks if b.get('type') == 'text'), None)
+                  if text_block is None:
+                      raise ValueError('no text block in response')
+                  review = text_block['text']
               except Exception as e:
                   print(f"Parse error: {e}", file=sys.stderr)
                   print(body[:2000], file=sys.stderr)
