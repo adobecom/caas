@@ -1,5 +1,12 @@
 
 
+## [0.57.2](https://github.com/adobecom/caas/compare/0.57.1...0.57.2) (2026-07-07)
+
+
+### Bug Fixes
+
+* **mwpw-200160:** handle extended thinking blocks in AI review response parser ([a10313f](https://github.com/adobecom/caas/commit/a10313f1dd44f3ca42f95716de6d940a41cdf5e7))
+
 ## [0.57.1](https://github.com/adobecom/caas/compare/0.57.0...0.57.1) (2026-07-06)
 
 
