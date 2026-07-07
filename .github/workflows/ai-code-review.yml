@@ -286,7 +286,43 @@ jobs:
               config_file = cf.name
 
           import time
-          body, status = '', ''
+
+          def parse_sse(raw):
+              """Return (review_text, None) on a complete stream, or (None, reason)
+              on a mid-stream error / truncated stream so the caller can retry."""
+              text_parts, stream_error, saw_stop, stop_reason = [], None, False, None
+              for line in raw.splitlines():
+                  line = line.strip()
+                  if not line.startswith('data:'):
+                      continue
+                  data = line[5:].strip()
+                  if not data or data == '[DONE]':
+                      continue
+                  try:
+                      evt = json.loads(data)
+                  except Exception:
+                      continue
+                  etype = evt.get('type')
+                  if etype == 'content_block_delta' and evt.get('delta', {}).get('type') == 'text_delta':
+                      text_parts.append(evt['delta'].get('text', ''))
+                  elif etype == 'message_delta':
+                      stop_reason = evt.get('delta', {}).get('stop_reason') or stop_reason
+                  elif etype == 'message_stop':
+                      saw_stop = True
+                  elif etype == 'error':
+                      stream_error = evt.get('error', evt)
+              if stream_error:
+                  return None, 'stream error event: %s' % stream_error
+              if not saw_stop:
+                  return None, 'incomplete stream: no message_stop (connection dropped?)'
+              text = ''.join(text_parts).strip()
+              if not text:
+                  return None, 'no text_delta content in stream'
+              if stop_reason == 'max_tokens':
+                  text += "\n\n_(Note: review hit the max_tokens cap and may be truncated.)_"
+              return text, None
+
+          review = None
           try:
               for attempt in range(3):
                   result = subprocess.run([
@@ -298,62 +334,30 @@ jobs:
                   ], capture_output=True, text=True)
                   body, _, status = result.stdout.rpartition('\n')
                   status = status.strip()
-                  if status == '200':
+                  if status != '200':
+                      print(f"Proxy returned HTTP {status} (attempt {attempt + 1}/3)", file=sys.stderr)
+                      print(body[:2000], file=sys.stderr)
+                      if attempt < 2 and (status[:1] == '5' or status in ('000', '')):
+                          time.sleep(8 * (attempt + 1))
+                          continue
                       break
-                  print(f"Proxy returned HTTP {status} (attempt {attempt + 1}/3)", file=sys.stderr)
+                  # HTTP 200 does not guarantee a complete stream: it can still die
+                  # mid-flight ("Network connection lost"). Parse now and retry a
+                  # broken/partial stream instead of posting a failure.
+                  review, reason = parse_sse(body)
+                  if review is not None:
+                      break
+                  print(f"Stream failed after HTTP 200 (attempt {attempt + 1}/3): {reason}", file=sys.stderr)
                   print(body[:2000], file=sys.stderr)
-                  if attempt < 2 and (status[:1] == '5' or status in ('000', '')):
+                  if attempt < 2:
                       time.sleep(8 * (attempt + 1))
                       continue
                   break
           finally:
               os.unlink(config_file)
 
-          if status != '200':
-              review = "AI review unavailable (upstream error). See Actions logs."
-          else:
-              # Streaming (SSE) response: accumulate the text_delta chunks. The proxy
-              # returns Anthropic events (message_start / content_block_delta / ...);
-              # keep only text deltas (thinking deltas are ignored) and surface any
-              # mid-stream error event.
-              try:
-                  text_parts, stream_error, saw_stop, stop_reason = [], None, False, None
-                  for line in body.splitlines():
-                      line = line.strip()
-                      if not line.startswith('data:'):
-                          continue
-                      data = line[5:].strip()
-                      if not data or data == '[DONE]':
-                          continue
-                      try:
-                          evt = json.loads(data)
-                      except Exception:
-                          continue
-                      etype = evt.get('type')
-                      if etype == 'content_block_delta' and evt.get('delta', {}).get('type') == 'text_delta':
-                          text_parts.append(evt['delta'].get('text', ''))
-                      elif etype == 'message_delta':
-                          stop_reason = evt.get('delta', {}).get('stop_reason') or stop_reason
-                      elif etype == 'message_stop':
-                          saw_stop = True
-                      elif etype == 'error':
-                          stream_error = evt.get('error', evt)
-                  if stream_error:
-                      raise ValueError('stream error event: %s' % stream_error)
-                  # Guard: only trust a stream that actually finished. A gateway that
-                  # returns 200 then drops the connection mid-stream would otherwise be
-                  # posted as a silently-truncated review.
-                  if not saw_stop:
-                      raise ValueError('incomplete stream: no message_stop event (connection dropped?)')
-                  review = ''.join(text_parts).strip()
-                  if not review:
-                      raise ValueError('no text_delta content in stream')
-                  if stop_reason == 'max_tokens':
-                      review += "\n\n_(Note: review hit the max_tokens cap and may be truncated.)_"
-              except Exception as e:
-                  print(f"Parse error: {e}", file=sys.stderr)
-                  print(body[:2000], file=sys.stderr)
-                  review = "AI review unavailable (response parse error). See Actions logs."
+          if review is None:
+              review = "AI review unavailable (upstream error after retries). See Actions logs."
 
           subprocess.run(['gh', 'pr', 'comment', pr_number, '--body', f"## AI Code Review\n\n{review}"], check=True)
           print("Review posted. Context files included:", len(order))
