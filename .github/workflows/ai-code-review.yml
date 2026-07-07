@@ -268,7 +268,13 @@ jobs:
 
           payload = json.dumps({
               "model": model,
-              "max_tokens": 32000,
+              # Stream the response so the proxy's ~100s gateway timeout no longer
+              # applies: with SSE the connection sends bytes continuously, so a long
+              # adaptive-thinking generation completes instead of 524'ing. This removes
+              # the clip-vs-timeout dilemma -- max_tokens can be generous because the
+              # model stops at end_turn well before it, nothing lost to the gateway.
+              "stream": True,
+              "max_tokens": 16000,
               "messages": [{"role": "user", "content": content}]
           })
 
@@ -279,28 +285,71 @@ jobs:
               cf.write('header = "anthropic-version: 2023-06-01"\n')
               config_file = cf.name
 
+          import time
+          body, status = '', ''
           try:
-              result = subprocess.run([
-                  'curl', '-sS', '-X', 'POST',
-                  '--config', config_file,
-                  '--write-out', '\n%{http_code}',
-                  endpoint, '-d', payload
-              ], capture_output=True, text=True)
+              for attempt in range(3):
+                  result = subprocess.run([
+                      'curl', '-sS', '-N', '-X', 'POST',
+                      '--config', config_file,
+                      '--max-time', '300',
+                      '--write-out', '\n%{http_code}',
+                      endpoint, '-d', payload
+                  ], capture_output=True, text=True)
+                  body, _, status = result.stdout.rpartition('\n')
+                  status = status.strip()
+                  if status == '200':
+                      break
+                  print(f"Proxy returned HTTP {status} (attempt {attempt + 1}/3)", file=sys.stderr)
+                  print(body[:2000], file=sys.stderr)
+                  if attempt < 2 and (status[:1] == '5' or status in ('000', '')):
+                      time.sleep(8 * (attempt + 1))
+                      continue
+                  break
           finally:
               os.unlink(config_file)
 
-          body, _, status = result.stdout.rpartition('\n')
-          if status.strip() != '200':
-              print(f"Proxy returned HTTP {status}", file=sys.stderr)
-              print(body[:2000], file=sys.stderr)
+          if status != '200':
               review = "AI review unavailable (upstream error). See Actions logs."
           else:
+              # Streaming (SSE) response: accumulate the text_delta chunks. The proxy
+              # returns Anthropic events (message_start / content_block_delta / ...);
+              # keep only text deltas (thinking deltas are ignored) and surface any
+              # mid-stream error event.
               try:
-                  blocks = json.loads(body)['content']
-                  text_block = next((b for b in blocks if b.get('type') == 'text'), None)
-                  if text_block is None:
-                      raise ValueError('no text block in response')
-                  review = text_block['text']
+                  text_parts, stream_error, saw_stop, stop_reason = [], None, False, None
+                  for line in body.splitlines():
+                      line = line.strip()
+                      if not line.startswith('data:'):
+                          continue
+                      data = line[5:].strip()
+                      if not data or data == '[DONE]':
+                          continue
+                      try:
+                          evt = json.loads(data)
+                      except Exception:
+                          continue
+                      etype = evt.get('type')
+                      if etype == 'content_block_delta' and evt.get('delta', {}).get('type') == 'text_delta':
+                          text_parts.append(evt['delta'].get('text', ''))
+                      elif etype == 'message_delta':
+                          stop_reason = evt.get('delta', {}).get('stop_reason') or stop_reason
+                      elif etype == 'message_stop':
+                          saw_stop = True
+                      elif etype == 'error':
+                          stream_error = evt.get('error', evt)
+                  if stream_error:
+                      raise ValueError('stream error event: %s' % stream_error)
+                  # Guard: only trust a stream that actually finished. A gateway that
+                  # returns 200 then drops the connection mid-stream would otherwise be
+                  # posted as a silently-truncated review.
+                  if not saw_stop:
+                      raise ValueError('incomplete stream: no message_stop event (connection dropped?)')
+                  review = ''.join(text_parts).strip()
+                  if not review:
+                      raise ValueError('no text_delta content in stream')
+                  if stop_reason == 'max_tokens':
+                      review += "\n\n_(Note: review hit the max_tokens cap and may be truncated.)_"
               except Exception as e:
                   print(f"Parse error: {e}", file=sys.stderr)
                   print(body[:2000], file=sys.stderr)
