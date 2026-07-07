@@ -29,7 +29,7 @@ const FlexCard = () => {
 
     const imageOption = flexCardOptions?.imageOption || '';
     const textAlign = flexCardOptions?.textAlign || 'text-left';
-    const showDetails = !(flexCardOptions?.hideDetails === true);
+    let showDetails = !(flexCardOptions?.hideDetails === true);
     const showTitle = !(flexCardOptions?.hideTitle === true);
     const showDescription = !(flexCardOptions?.hideDescription === true);
     const showFooter = !(flexCardOptions?.hideFooter === true);
@@ -39,20 +39,21 @@ const FlexCard = () => {
     const getConfig = useConfig();
     const detailsTextOption = getConfig('collection', 'detailsTextOption');
     const products = detailsTextOption === 'productName'
-        ? Object.values(getConfig('products', '')).filter((product) => product && product.tagID)
+        ? Object.values(getConfig('products') || {}).filter((product) => product && product.tagID)
         : [];
 
     let showProductName = false;
     let productInfo = null;
     if (products.length > 0) {
         const productData = products.find(product => product.tagID === detailText);
-        if (productData) {
+        if (productData?.tagImage && productData?.title) {
             showProductName = true;
             productInfo = {
-                tagID: productData.tagID || '',
-                title: productData.title || '',
-                tagImage: productData.tagImage || '',
+                tagImage: productData.tagImage,
+                title: productData.title
             };
+        } else {
+            showDetails = false;
         }
     }
 
@@ -95,7 +96,7 @@ const FlexCard = () => {
                 <CardContent
                     showLabel
                     detailText={showDetails && !showProductName ? detailText : ''}
-                    productInfo={showDetails && productInfo && productInfo.tagID && productInfo.title ? productInfo : null}
+                    productInfo={showDetails && showProductName ? productInfo : null}
                     showIconAlt={false}
                     isTitleOnly={false}
                     showTitle={showTitle}
