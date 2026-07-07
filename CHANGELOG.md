@@ -1,5 +1,47 @@
 
 
+## [0.57.2](https://github.com/adobecom/caas/compare/0.57.1...0.57.2) (2026-07-07)
+
+
+### Bug Fixes
+
+* **mwpw-200160:** handle extended thinking blocks in AI review response parser ([a10313f](https://github.com/adobecom/caas/commit/a10313f1dd44f3ca42f95716de6d940a41cdf5e7))
+
+## [0.57.1](https://github.com/adobecom/caas/compare/0.57.0...0.57.1) (2026-07-06)
+
+
+### Bug Fixes
+
+* **mwpw-196902:** switch proxy validation model to claude-sonnet-5 ([a216398](https://github.com/adobecom/caas/commit/a2163989751185d4040b6ad9139fd4ae01086420))
+
+## [0.57.0](https://github.com/adobecom/caas/compare/0.56.1...0.57.0) (2026-06-25)
+
+
+### Features
+
+* **mwpw-184989:** ground AI review in source context + PR thread with evidence rules ([e0a8e58](https://github.com/adobecom/caas/commit/e0a8e5882597ff6503acf10efadc579ba4f6bb53))
+* **mwpw-184989:** use [@ai-bot](https://github.com/ai-bot) marker, curate context to [@ai-bot](https://github.com/ai-bot) comments, rerun on edit ([393f685](https://github.com/adobecom/caas/commit/393f685d0de9e12fbeca5a3d2139bfa5ded691b8))
+
+
+### Bug Fixes
+
+* **mwpw-184989:** make fork guard fail closed ([8e57f0e](https://github.com/adobecom/caas/commit/8e57f0e8f915a5ef702292b8b6c4fc12d31c6bbc))
+* **mwpw-184989:** never run AI review on fork code; bound file reads to repo ([8c59ff7](https://github.com/adobecom/caas/commit/8c59ff783451555df2fd9af7903e6ed57366d2d8))
+
+## [0.56.1](https://github.com/adobecom/caas/compare/0.56.0...0.56.1) (2026-06-25)
+
+
+### Bug Fixes
+
+* **mwpw-199538:** guard caas-endpoint lookup against prototype chain ([7b65e27](https://github.com/adobecom/caas/commit/7b65e271f4df698cba1f78255bcfeaa7dfe48a72)), closes [#537](https://github.com/adobecom/caas/issues/537)
+
+## [0.56.0](https://github.com/adobecom/caas/compare/0.55.2...0.56.0) (2026-06-24)
+
+
+### Features
+
+* **mwpw-199538:** add caas-endpoint query param to override API base URL ([37567e0](https://github.com/adobecom/caas/commit/37567e0ca6b58b8f414396e2ab279c68caa55f4c))
+
 ## [0.55.2](https://github.com/adobecom/caas/compare/0.55.1...0.55.2) (2026-06-22)
 
 
