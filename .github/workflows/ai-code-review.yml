@@ -364,7 +364,7 @@ jobs:
               # Do NOT post a failure comment on the PR. Write a flag file so a later
               # step can privately email the maintainer, and exit cleanly (green check).
               with open('REVIEW_FAILED', 'w') as fh:
-                  fh.write((fail_reason or 'upstream/stream error')[:300])
+                  fh.write(('PR #%s: %s' % (pr_number, fail_reason or 'upstream/stream error'))[:300])
               print("AI review failed after retries; no PR comment posted (failure email step will fire).", file=sys.stderr)
           else:
               subprocess.run(['gh', 'pr', 'comment', pr_number, '--body', f"## AI Code Review\n\n{review}"], check=True)
@@ -380,15 +380,22 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            if (!fs.existsSync('REVIEW_FAILED')) { core.info('AI review OK; nothing to log.'); return; }
+            if (!fs.existsSync('REVIEW_FAILED')) { core.info(AI Code Review + ' OK; nothing to log.'); return; }
             const reason = fs.readFileSync('REVIEW_FAILED', 'utf8').trim();
+            const { owner, repo } = context.repo;
             const title = 'CI: AI / Agent review tool failures';
-            const { data: issues } = await github.rest.issues.listForRepo({ owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100 });
-            let issue = issues.find(i => i.title === title);
+            // Find the ONE monitor issue whether open OR closed, so we never create duplicates.
+            const sr = await github.rest.search.issuesAndPullRequests({ q: `repo:${owner}/${repo} is:issue in:title "${title}"`, per_page: 10 });
+            let issue = (sr.data.items || []).find(i => i.title === title);
+            let notify = false;
             if (!issue) {
-              const res = await github.rest.issues.create({ owner: context.repo.owner, repo: context.repo.repo, title, body: 'Automated log of AI Code Review / Agent QA Review TOOL failures (upstream / CDP / stream errors, not code regressions). Each comment is one failed run; the PR check stays green.' });
-              issue = res.data;
-            }
-            const body = ['❌ **AI Code Review** could not run — ' + new Date().toISOString(), '', '- PR: #' + process.env.PR_NUMBER, '- Reason: ' + reason, '- Run: ' + process.env.RUN_URL, '', 'cc @sanrai'].join('\n');
-            await github.rest.issues.createComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number: issue.number, body });
-            core.info('Logged AI review failure to issue #' + issue.number);
+              const res = await github.rest.issues.create({ owner, repo, title, body: 'Automated log of AI Code Review / Agent QA Review TOOL failures (upstream / CDP / stream errors, not code regressions). Each comment is one failed run; the PR check stays green. You are @-mentioned only when a new failure streak begins; CLOSE this issue once handled to re-arm the alert.' });
+              issue = res.data; notify = true;            // first failure ever -> mention
+            } else if (issue.state === 'closed') {
+              await github.rest.issues.update({ owner, repo, issue_number: issue.number, state: 'open' });
+              notify = true;                              // failures resumed after you closed it -> mention
+            }                                             // already open -> log silently, no new email
+            const cc = notify ? '\n\ncc @sanrai — failures have started; close this issue once handled to silence follow-ups until they resume.' : '';
+            const body = ['❌ **AI Code Review** could not run — ' + new Date().toISOString(), '', reason.startsWith('PR') ? reason : '- ' + reason, '- Run: ' + process.env.RUN_URL, cc].join('\n');
+            await github.rest.issues.createComment({ owner, repo, issue_number: issue.number, body });
+            core.info((notify ? 'Logged + notified' : 'Logged (no mention)') + ' AI Code Review failure on issue #' + issue.number);
