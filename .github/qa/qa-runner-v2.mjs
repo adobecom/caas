@@ -625,11 +625,26 @@ async function main() {
         attached = false; // we own this browser; close it at the end
         console.log(`[browser] real Chrome with persistent profile at ${userDataDir}` + (recordVideo ? ' (recording video)' : '') + '\n');
     } else if (process.env.CDP_URL) {
-        browser = await chromium.connectOverCDP(process.env.CDP_URL);
-        context = browser.contexts()[0] ?? await browser.newContext();
-        page = await context.newPage();
-        attached = true;
-        console.log(`[browser] attached to ${process.env.CDP_URL}\n`);
+        try {
+            browser = await chromium.connectOverCDP(process.env.CDP_URL);
+            context = browser.contexts()[0] ?? await browser.newContext();
+            page = await context.newPage();
+            attached = true;
+            console.log(`[browser] attached to ${process.env.CDP_URL}\n`);
+        } catch (cdpErr) {
+            console.warn(`[browser] CDP attach failed (${cdpErr.message}), falling back to headless\n`);
+            browser = await chromium.launch({
+                headless: true,
+                args: ['--disable-http2', '--no-sandbox', '--disable-blink-features=AutomationControlled'],
+            });
+            context = await browser.newContext({
+                userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+                viewport: { width: 1456, height: 900 },
+            });
+            page = await context.newPage();
+            attached = false;
+            console.log('[browser] headless chromium fallback\n');
+        }
     } else {
         // adobe.com bot detection rejects headless Playwright over HTTP/2.
         // Mirror the args the original portable runner used.
