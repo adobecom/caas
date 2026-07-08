@@ -1,5 +1,12 @@
 
 
+## [0.59.0](https://github.com/adobecom/caas/compare/0.58.0...0.59.0) (2026-07-08)
+
+
+### Features
+
+* **mwpw-195996:** adds new icon and product name option  ([#532](https://github.com/adobecom/caas/issues/532)) ([3285b51](https://github.com/adobecom/caas/commit/3285b51867ea9335957568587cde11443a3d39fa))
+
 ## [0.58.0](https://github.com/adobecom/caas/compare/0.57.3...0.58.0) (2026-07-07)
 
 
