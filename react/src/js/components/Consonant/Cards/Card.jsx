@@ -29,7 +29,7 @@ import {
     stylesType,
     contentAreaType,
     overlaysType,
-    footerType, 
+    footerType,
     tagsType,
     bannerMapType,
 } from '../types/card';
@@ -245,6 +245,8 @@ const Card = (props) => {
     } else if (detailsTextOption === 'staticDate' && cardDate) {
         const staticDate = new Date(cardDate.replace(/Z$/, ''));
         detailText = staticDate.toLocaleDateString();
+    } else if (detailsTextOption === 'productName' && cardStyle !== 'flex-card') {
+        detailText = '';
     }
 
     const isGated = hasTag(/caas:gated/, tags)
@@ -319,7 +321,7 @@ const Card = (props) => {
             }
         }
         return '';
-    }   
+    }
 
     const isHalfHeight = cardStyle === 'half-height';
     const isProduct = cardStyle === 'product';

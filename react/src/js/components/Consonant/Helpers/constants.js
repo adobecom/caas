@@ -236,6 +236,7 @@ export const DEFAULT_CONFIG = {
     },
     language: 'en',
     headers: [],
+    products: {},
 };
 
 /**

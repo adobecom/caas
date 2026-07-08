@@ -125,6 +125,72 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         expect(cardElement).toHaveClass('text-large');
     });
 
+    test('should render product info when detailsTextOption is productName and a matching product exists', () => {
+        renderCard({
+            cardStyle,
+            contentArea: { detailText: 'some details' },
+        }, {
+            collection: {
+                detailsTextOption: 'productName',
+            },
+            products: {
+                acrobat: {
+                    tagID: 'some details',
+                    title: 'Acrobat',
+                    tagImage: 'https://example.com/acrobat-icon.svg',
+                },
+            },
+        });
+
+        const productTitle = screen.getByText('Acrobat');
+        expect(productTitle).toBeInTheDocument();
+    });
+
+    test('should not render the detail text when product info is shown', () => {
+        renderCard({
+            cardStyle,
+            contentArea: {
+                detailText: 'some details',
+            },
+        }, {
+            collection: {
+                detailsTextOption: 'productName',
+            },
+            products: {
+                acrobat: {
+                    tagID: 'some details',
+                    title: 'Acrobat',
+                    tagImage: 'https://example.com/acrobat-icon.svg',
+                },
+            },
+        });
+
+        const detailText = screen.queryByText('some details');
+        expect(detailText).toBeNull();
+    });
+
+    test('should hide the detail text when detailsTextOption is productName but no product matches', () => {
+        renderCard({
+            cardStyle,
+            contentArea: { detailText: 'some details' },
+        }, {
+            collection: {
+                detailsTextOption: 'productName',
+            },
+            products: {
+                acrobat: {
+                    tagID: 'unrelated-tag',
+                    title: 'Acrobat',
+                    tagImage: 'https://example.com/acrobat-icon.svg',
+                },
+            },
+        });
+
+        expect(screen.queryByText('some details')).toBeNull();
+        expect(screen.queryByTestId('consonant-Card-label')).toBeNull();
+        expect(screen.queryByTestId('consonant-Card-label-product-info')).toBeNull();
+    });
+
     test('should render a link blocker when hideCTA is true', () => {
         const { wrapper } = renderCard({
             cardStyle,

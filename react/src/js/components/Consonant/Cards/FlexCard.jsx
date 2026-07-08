@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import cuid from 'cuid';
 import { useCardData } from './CardContext';
 import CardHeader from './CardHeader/CardHeader';
 import CardContent from './CardContent/CardContent';
 import CardFooter from './CardFooter/CardFooter';
 import LinkBlocker from './LinkBlocker/LinkBlocker';
+import { useConfig } from '../Helpers/hooks';
 
 const FlexCard = () => {
     const {
@@ -28,12 +29,33 @@ const FlexCard = () => {
 
     const imageOption = flexCardOptions?.imageOption || '';
     const textAlign = flexCardOptions?.textAlign || 'text-left';
-    const showDetails = !(flexCardOptions?.hideDetails === true);
+    let showDetails = !(flexCardOptions?.hideDetails === true);
     const showTitle = !(flexCardOptions?.hideTitle === true);
     const showDescription = !(flexCardOptions?.hideDescription === true);
     const showFooter = !(flexCardOptions?.hideFooter === true);
     const textSize = flexCardOptions?.textSize || '';
     const textSizeClass = textSize === 'text-large' ? 'text-large' : '';
+
+    const getConfig = useConfig();
+    const detailsTextOption = getConfig('collection', 'detailsTextOption');
+    const products = useMemo(() => (detailsTextOption === 'productName'
+        ? Object.values(getConfig('products') || {}).filter((product) => product && product.tagID)
+        : []), [detailsTextOption, getConfig]);
+
+    let showProductName = false;
+    let productInfo = null;
+    if (products.length > 0) {
+        const productData = products.find(product => product.tagID === detailText);
+        if (productData?.title) {
+            showProductName = true;
+            productInfo = {
+                tagImage: productData.tagImage,
+                title: productData.title
+            };
+        } else {
+            showDetails = false;
+        }
+    }
 
     return (
         <li
@@ -73,7 +95,8 @@ const FlexCard = () => {
             <div className="consonant-Card-content">
                 <CardContent
                     showLabel
-                    detailText={showDetails ? detailText : ''}
+                    detailText={showDetails && !showProductName ? detailText : ''}
+                    productInfo={showDetails && showProductName ? productInfo : null}
                     showIconAlt={false}
                     isTitleOnly={false}
                     showTitle={showTitle}
