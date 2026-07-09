@@ -32,7 +32,7 @@ const changed = (meta.files || []).map((f) => f.path).join('\n');
 
 const OR = 'This collection uses OR filtering: selecting one filter narrows the full set, but selecting a SECOND filter in the same group WIDENS the results (union) -- treat that increase as CORRECT, not a bug.';
 const VISUAL = `Loose VISUAL review. Budget: 4 turns, then call done(). Automated e2e tests already cover exact counts, filtering and sort order -- your ONLY job is to catch things that LOOK broken on the rendered page. Do NOT navigate or interact; the captured diff is all you need.
-STEP 1: load_screenshots on the diff path given above. Magenta marks where the PR changed rendering. BOTH screenshots are the SAME page captured seconds apart, so the underlying content is IDENTICAL -- every magenta region is caused by the PR's code, NOT by content rotation or feed churn. Do NOT explain a diff away as 'different articles' or 'content churn'; that is not possible here. Use the "files the PR touched" hint to know which components to scrutinise, then judge whether the change is a REGRESSION -- truncated/clipped text, a broken/missing/distorted image, overlapping or misaligned cards, wrong spacing, low contrast, or a changed/empty result set.
+STEP 1: load_screenshots on the diff path given above. Magenta marks where the PR changed rendering. BOTH screenshots are the SAME page captured seconds apart, so the underlying content is IDENTICAL -- every magenta region is caused by the PR's code, NOT by content rotation or feed churn. Do NOT explain a diff away as 'different articles' or 'content churn'; that is not possible here. Use the PR code diff above to know which components to scrutinise and to name the likely cause, then judge whether the change is a REGRESSION -- truncated/clipped text, a broken/missing/distorted image, overlapping or misaligned cards, wrong spacing, low contrast, or a changed/empty result set.
 STEP 2: get_console_errors -- note any crash.
 STEP 3: done(report, verdict). PASS only if the touched components render correctly. FAIL if you see any visible change in them -- say exactly what and where. Judge ONLY by what you SEE.`;
 
@@ -124,7 +124,7 @@ for (const page of selected) {
     ? [
         `Target URL: ${page.url}`, '',
         `You are QA-reviewing pull request #${PR}. The PR's CaaS build is injected into this live page.`,
-        `Files the PR touched (use ONLY to decide which components to look at closely -- your verdict must rest on what you actually SEE broken, NOT on the filenames):\n${changed}`,
+        `PR code diff (you canNOT navigate -- use this only to INTERPRET the captured diff image and name the likely cause of anything you SEE broken; a Helpers/filter change can EMPTY the grid, a card .less change can truncate/reflow):\n${redact(diff).slice(0, 6000)}`,
         diffHint,
         '', page.instr, '',
       ]
@@ -147,7 +147,7 @@ for (const page of selected) {
   const REPORT_OUT = `/tmp/pr-review-${page.id}.json`; try { unlinkSync(REPORT_OUT); } catch {}
   const run = spawnSync('node', ['qa-runner-v2.mjs', instruction], {
     stdio: 'inherit', timeout: Number(env('AGENT_TIMEOUT_MS', '150000')), killSignal: 'SIGKILL',
-    env: { ...process.env, DIST_DIR: DIST, REPORT_OUT, MAX_TURNS: env('MAX_TURNS', '10') },
+    env: { ...process.env, DIST_DIR: DIST, REPORT_OUT, MAX_TURNS: env('MAX_TURNS', '10'), ...(page.kind === 'visual' ? { TOOLS_ALLOW: 'load_screenshots,get_console_errors,done' } : {}) },
   });
   const timedOut = run.signal === 'SIGKILL' || run.error?.code === 'ETIMEDOUT';
   let verdict = 'UNKNOWN', report = timedOut ? `Agent run exceeded the per-page time cap; partial only. (${pct}% pixels changed.)` : '(no report produced)';

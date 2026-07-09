@@ -346,8 +346,12 @@ const TOOLS = [
 // LLM call (sync curl)
 // ---------------------------------------------------------------------------
 
+const ACTIVE_TOOLS = process.env.TOOLS_ALLOW
+    ? TOOLS.filter((t) => process.env.TOOLS_ALLOW.split(',').map((x) => x.trim()).includes(t.name))
+    : TOOLS;
+
 function callLLM(messages) {
-    const payload = JSON.stringify({ model: MODEL, max_tokens: MAX_TOKENS, tools: TOOLS, messages });
+    const payload = JSON.stringify({ model: MODEL, max_tokens: MAX_TOKENS, tools: ACTIVE_TOOLS, messages });
     process.stdout.write(`  [llm] ${messages.length} msgs ${payload.length}b ... `);
     // Retry up to 3 times on transient proxy errors (ETIMEDOUT, 5xx, empty body).
     let lastErr = null;
