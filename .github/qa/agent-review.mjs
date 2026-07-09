@@ -31,11 +31,10 @@ let diff = ''; try { diff = gh(['pr', 'diff', PR, '-R', REPO]); } catch {}
 const changed = (meta.files || []).map((f) => f.path).join('\n');
 
 const OR = 'This collection uses OR filtering: selecting one filter narrows the full set, but selecting a SECOND filter in the same group WIDENS the results (union) -- treat that increase as CORRECT, not a bug.';
-const VISUAL = `Loose VISUAL review. Budget: 6 turns, then call done(). Automated e2e tests already cover exact counts, filtering and sort order -- your ONLY job is to catch things that LOOK broken on the rendered page.
-STEP 1: Load the captured PR-vs-stable diff (load_screenshots on the path given above). Magenta marks where the PR changed rendering. Judge whether any change looks like a REGRESSION -- truncated/clipped text, a broken/missing/distorted image, overlapping or misaligned cards, wrong spacing, or low contrast -- versus a benign or intended change.
-STEP 2 (optional, 1-2 turns): if a region looks worth checking in an interacted state, open the filter panel or apply one filter (get_interactives scoped to the filter, then click) and take_screenshot -- does the result render cleanly or fall apart? Do NOT verify counts, just look.
-STEP 3: get_console_errors -- note any crash.
-STEP 4: done(report, verdict). PASS = nothing looks broken. FAIL = say exactly what looks broken and where. Judge ONLY by what you SEE, not by the code.`;
+const VISUAL = `Loose VISUAL review. Budget: 4 turns, then call done(). Automated e2e tests already cover exact counts, filtering and sort order -- your ONLY job is to catch things that LOOK broken on the rendered page. Do NOT navigate or interact; the captured diff is all you need.
+STEP 1: load_screenshots on the diff path given above. Magenta marks where the PR changed rendering. Use the "files the PR touched" hint to know WHICH components to scrutinise, then judge whether any change is a REGRESSION -- truncated/clipped text, a broken/missing/distorted image, overlapping or misaligned cards, wrong spacing, or low contrast. IMPORTANT: a live feed (e.g. news) rotates its articles/dates between the two screenshots, so a large diff can be mostly harmless CONTENT churn -- look specifically at the components the PR touched to separate a real style regression from that churn.
+STEP 2: get_console_errors -- note any crash.
+STEP 3: done(report, verdict). PASS = nothing looks broken. FAIL = say exactly what looks broken and where. Judge ONLY by what you SEE.`;
 
 const PAGES = [
   { id: 'A-left-hub', url: 'https://business.adobe.com/customer-success-stories.html',
@@ -147,7 +146,7 @@ for (const page of selected) {
       ]).join('\n');
   const REPORT_OUT = `/tmp/pr-review-${page.id}.json`; try { unlinkSync(REPORT_OUT); } catch {}
   const run = spawnSync('node', ['qa-runner-v2.mjs', instruction], {
-    stdio: 'inherit', timeout: Number(env('AGENT_TIMEOUT_MS', '120000')), killSignal: 'SIGKILL',
+    stdio: 'inherit', timeout: Number(env('AGENT_TIMEOUT_MS', '150000')), killSignal: 'SIGKILL',
     env: { ...process.env, DIST_DIR: DIST, REPORT_OUT, MAX_TURNS: env('MAX_TURNS', '10') },
   });
   const timedOut = run.signal === 'SIGKILL' || run.error?.code === 'ETIMEDOUT';
