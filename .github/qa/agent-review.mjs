@@ -31,10 +31,11 @@ let diff = ''; try { diff = gh(['pr', 'diff', PR, '-R', REPO]); } catch {}
 const changed = (meta.files || []).map((f) => f.path).join('\n');
 
 const OR = 'This collection uses OR filtering: selecting one filter narrows the full set, but selecting a SECOND filter in the same group WIDENS the results (union) -- treat that increase as CORRECT, not a bug.';
-const VISUAL = `Loose VISUAL review. Budget: 4 turns, then call done(). Automated e2e tests already cover exact counts, filtering and sort order -- your ONLY job is to catch things that LOOK broken on the rendered page. Do NOT navigate or interact; the captured diff is all you need.
-STEP 1: load_screenshots on the diff path given above. Magenta marks where the PR changed rendering. BOTH screenshots are the SAME page captured seconds apart, so the underlying content is IDENTICAL -- every magenta region is caused by the PR's code, NOT by content rotation or feed churn. Do NOT explain a diff away as 'different articles' or 'content churn'; that is not possible here. Use the PR code diff above to know which components to scrutinise and to name the likely cause, then judge whether the change is a REGRESSION -- truncated/clipped text, a broken/missing/distorted image, overlapping or misaligned cards, wrong spacing, low contrast, or a changed/empty result set.
-STEP 2: get_console_errors -- note any crash.
-STEP 3: done(report, verdict). PASS only if the touched components render correctly. FAIL if you see any visible change in them -- say exactly what and where. Judge ONLY by what you SEE.`;
+const VISUAL = `Loose VISUAL review. Budget: 8 turns, then call done(). Automated e2e tests already cover exact counts/filtering/sort -- your job is to catch things that LOOK broken.
+STEP 1: load_screenshots on the captured PR-vs-stable diff (path above). Magenta = where the PR changed the render. BOTH shots are the SAME page seconds apart, so any diff is from the PR's code, NOT content churn. Use the PR code diff above to know which components to scrutinise and to name the likely cause.
+STEP 2: navigate to the page and SCROLL through it top-to-bottom (take_screenshot / find_and_show) to inspect the components the diff flagged. CRITICAL: CaaS cards LAZY-LOAD -- after navigating, WAIT for the card grid to finish rendering before judging. If the grid looks blank or half-painted, wait and re-screenshot; do NOT report content as missing/broken until the page has clearly finished loading (a blank first paint is normal, not a bug).
+STEP 3: get_console_errors -- note any crash.
+STEP 4: done(report, verdict). PASS if the touched components render correctly once loaded. FAIL only if you SEE a real defect (truncated/clipped text, broken/missing/distorted image, overlapping or misaligned cards, wrong spacing, low contrast, or an empty/broken grid that persists after load). Judge by what you SEE.`;
 
 const PAGES = [
   { id: 'A-left-hub', url: 'https://business.adobe.com/customer-success-stories.html',
@@ -147,7 +148,7 @@ for (const page of selected) {
   const REPORT_OUT = `/tmp/pr-review-${page.id}.json`; try { unlinkSync(REPORT_OUT); } catch {}
   const run = spawnSync('node', ['qa-runner-v2.mjs', instruction], {
     stdio: 'inherit', timeout: Number(env('AGENT_TIMEOUT_MS', '150000')), killSignal: 'SIGKILL',
-    env: { ...process.env, DIST_DIR: DIST, REPORT_OUT, MAX_TURNS: env('MAX_TURNS', '10'), ...(page.kind === 'visual' ? { TOOLS_ALLOW: 'load_screenshots,get_console_errors,done' } : {}) },
+    env: { ...process.env, DIST_DIR: DIST, REPORT_OUT, MAX_TURNS: env('MAX_TURNS', '10') },
   });
   const timedOut = run.signal === 'SIGKILL' || run.error?.code === 'ETIMEDOUT';
   let verdict = 'UNKNOWN', report = timedOut ? `Agent run exceeded the per-page time cap; partial only. (${pct}% pixels changed.)` : '(no report produced)';
