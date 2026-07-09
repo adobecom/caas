@@ -31,22 +31,19 @@ let diff = ''; try { diff = gh(['pr', 'diff', PR, '-R', REPO]); } catch {}
 const changed = (meta.files || []).map((f) => f.path).join('\n');
 
 const OR = 'This collection uses OR filtering: selecting one filter narrows the full set, but selecting a SECOND filter in the same group WIDENS the results (union) -- treat that increase as CORRECT, not a bug.';
+const VISUAL = `Loose VISUAL review. Budget: 6 turns, then call done(). Automated e2e tests already cover exact counts, filtering and sort order -- your ONLY job is to catch things that LOOK broken on the rendered page.
+STEP 1: Load the captured PR-vs-stable diff (load_screenshots on the path given above). Magenta marks where the PR changed rendering. Judge whether any change looks like a REGRESSION -- truncated/clipped text, a broken/missing/distorted image, overlapping or misaligned cards, wrong spacing, or low contrast -- versus a benign or intended change.
+STEP 2 (optional, 1-2 turns): if a region looks worth checking in an interacted state, open the filter panel or apply one filter (get_interactives scoped to the filter, then click) and take_screenshot -- does the result render cleanly or fall apart? Do NOT verify counts, just look.
+STEP 3: get_console_errors -- note any crash.
+STEP 4: done(report, verdict). PASS = nothing looks broken. FAIL = say exactly what looks broken and where. Judge ONLY by what you SEE, not by the code.`;
+
 const PAGES = [
   { id: 'A-left-hub', url: 'https://business.adobe.com/customer-success-stories.html',
     triggers: /Filters\/Left|CardFilterer|getFilteredCards|Helpers|Search|Sort|Pagination|Bookmark|Container|Card\.jsx/i,
-    kind: 'interactive',
-    instr: `OR-filter assertion. Budget: 10 turns, then call done IMMEDIATELY. This is a DOM/count assertion -- NEVER call take_screenshot or find_and_show; drive it only with get_interactives, click, and evaluate. The left filter is TWO-LEVEL: filter checkboxes are hidden until you expand a group (Products / Content Type / Industry), so you must expand a group first.
-STEP A: navigate to the URL. evaluate({code: JSON.stringify({count: document.querySelector('.consonant-FiltersInfo-results')?.textContent || null})}). Record the baseline (e.g. "344 results").
-STEP B: get_interactives scope ".consonant-LeftFilter". click the FIRST group header (e.g. "Products" or "Industry") to expand it.
-STEP C: get_interactives scope ".consonant-LeftFilter" again (checkboxes are now listed). click the FIRST checkbox; note its label.
-STEP D: evaluate the same count expression. A correct build NARROWS to a NON-ZERO number (less than baseline, greater than 0). Zero or "No results" after one normal filter is THE BUG.
-STEP E: click a SECOND checkbox in the same group (already in the list). evaluate the count again. With OR the result should WIDEN (union, at least the single-filter count) -- an increase is CORRECT.
-STEP F: done(report, verdict).
-VERDICT: PASS only if one filter yields a NON-ZERO narrowed count AND the second widens it. FAIL if one filter yields ZERO / "No results" (filtering broken) or the count never changes.
-REPORT: state the baseline count, the count after one filter, and after two filters, then the explicit reason.` },
+    kind: 'visual', instr: VISUAL },
   { id: 'B-top-panel', url: 'https://news.adobe.com/news?ch_News+articles=Experience%2520Cloud',
     triggers: /Filters\/Top|Container|CardFilterer|getFilteredCards|Helpers|Card\.jsx/i,
-    instr: `Top-filter collection (a filter is pre-applied via the URL). Confirm the page loads already filtered to that selection. Open the top filter bar, change/add a filter -> results and count update. ${OR} Run a search -> results update.` },
+    kind: 'visual', instr: VISUAL },
   { id: 'C-events', url: 'https://www.adobe.com/events.html',
     triggers: /eventSort|Sort|timing|event|Container|Helpers|Card\.jsx/i,
     instr: `Event collection (cards have dates). Verify the ordering looks right for events (upcoming first / dates ascending, not past-first). Check a register / save-your-spot banner card -> its CTA renders and is clickable. Apply a filter if present -> results update.` },
@@ -69,7 +66,7 @@ const SEL = {
 const SHARED = /Card\.jsx|Container\.jsx|Helpers\/|app\.jsx|\.less/i;
 const isShared = SHARED.test(changed);
 let selected = isShared ? PAGES : PAGES.filter((p) => p.triggers.test(changed));
-selected = [PAGES[0]]; // TEMP: single-page validation (revert before scaling)
+selected = PAGES.filter((p) => p.id === 'A-left-hub' || p.id === 'B-top-panel'); // TEMP: validate A+B loose-visual
 console.log(`Selected ${selected.length} page(s): ${selected.map((p) => p.id).join(', ')}`);
 
 async function captureDiff(url, tag, opts = {}) {
@@ -124,7 +121,14 @@ for (const page of selected) {
                  : 'No count element here; measure result size by counting "' + (sel.cards || '.consonant-Card') + '" via evaluate(document.querySelectorAll(...).length).',
       ].join('\n')
     : '';
-  const instruction = (page.kind === 'interactive'
+  const instruction = (page.kind === 'visual'
+    ? [
+        `Target URL: ${page.url}`, '',
+        `You are QA-reviewing pull request #${PR}. The PR's CaaS build is injected into this live page.`,
+        diffHint,
+        '', page.instr, '',
+      ]
+    : page.kind === 'interactive'
     ? [
         `Target URL: ${page.url}`, '',
         `You are QA-reviewing pull request #${PR}. The PR's CaaS build is injected into this live page, so you are testing the PR's real code.`,
