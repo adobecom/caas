@@ -124,7 +124,7 @@ for (const page of selected) {
     ? [
         `Target URL: ${page.url}`, '',
         `You are QA-reviewing pull request #${PR}. The PR's CaaS build is injected into this live page.`,
-        `PR code diff (CONTEXT ONLY -- use it to know which components to scrutinise and to EXPLAIN the cause of anything you SEE broken. Do NOT fail a page merely because code changed; only FAIL if you actually SEE a defect in the render):\n${redact(diff).slice(0, 6000)}`,
+        `Files the PR touched (use ONLY to decide which components to look at closely -- your verdict must rest on what you actually SEE broken, NOT on the filenames):\n${changed}`,
         diffHint,
         '', page.instr, '',
       ]
