@@ -32,9 +32,9 @@ const changed = (meta.files || []).map((f) => f.path).join('\n');
 
 const OR = 'This collection uses OR filtering: selecting one filter narrows the full set, but selecting a SECOND filter in the same group WIDENS the results (union) -- treat that increase as CORRECT, not a bug.';
 const VISUAL = `Loose VISUAL review. Budget: 4 turns, then call done(). Automated e2e tests already cover exact counts, filtering and sort order -- your ONLY job is to catch things that LOOK broken on the rendered page. Do NOT navigate or interact; the captured diff is all you need.
-STEP 1: load_screenshots on the diff path given above. Magenta marks where the PR changed rendering. Use the "files the PR touched" hint to know WHICH components to scrutinise, then judge whether any change is a REGRESSION -- truncated/clipped text, a broken/missing/distorted image, overlapping or misaligned cards, wrong spacing, or low contrast. IMPORTANT: a live feed (e.g. news) rotates its articles/dates between the two screenshots, so a large diff can be mostly harmless CONTENT churn -- look specifically at the components the PR touched to separate a real style regression from that churn.
+STEP 1: load_screenshots on the diff path given above. Magenta marks where the PR changed rendering. BOTH screenshots are the SAME page captured seconds apart, so the underlying content is IDENTICAL -- every magenta region is caused by the PR's code, NOT by content rotation or feed churn. Do NOT explain a diff away as 'different articles' or 'content churn'; that is not possible here. Use the "files the PR touched" hint to know which components to scrutinise, then judge whether the change is a REGRESSION -- truncated/clipped text, a broken/missing/distorted image, overlapping or misaligned cards, wrong spacing, low contrast, or a changed/empty result set.
 STEP 2: get_console_errors -- note any crash.
-STEP 3: done(report, verdict). PASS = nothing looks broken. FAIL = say exactly what looks broken and where. Judge ONLY by what you SEE.`;
+STEP 3: done(report, verdict). PASS only if the touched components render correctly. FAIL if you see any visible change in them -- say exactly what and where. Judge ONLY by what you SEE.`;
 
 const PAGES = [
   { id: 'A-left-hub', url: 'https://business.adobe.com/customer-success-stories.html',
