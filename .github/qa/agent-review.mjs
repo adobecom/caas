@@ -125,6 +125,7 @@ for (const page of selected) {
     ? [
         `Target URL: ${page.url}`, '',
         `You are QA-reviewing pull request #${PR}. The PR's CaaS build is injected into this live page.`,
+        `Files the PR touched (use ONLY to decide which components to look at closely -- your verdict must rest on what you actually SEE broken, NOT on the filenames):\n${changed}`,
         diffHint,
         '', page.instr, '',
       ]
