@@ -31,13 +31,19 @@ let diff = ''; try { diff = gh(['pr', 'diff', PR, '-R', REPO]); } catch {}
 const changed = (meta.files || []).map((f) => f.path).join('\n');
 
 const OR = 'This collection uses OR filtering: selecting one filter narrows the full set, but selecting a SECOND filter in the same group WIDENS the results (union) -- treat that increase as CORRECT, not a bug.';
+const VISUAL = `Loose VISUAL review. Budget: 8 turns, then call done(). Automated e2e tests already cover exact counts/filtering/sort -- your job is to catch things that LOOK broken.
+STEP 1: load_screenshots on the captured PR-vs-stable diff (path above). Magenta = where the PR changed the render. BOTH shots are the SAME page seconds apart, so any diff is from the PR's code, NOT content churn. Use the PR code diff above to know which components to scrutinise and to name the likely cause.
+STEP 2: navigate to the page and SCROLL through it top-to-bottom (take_screenshot / find_and_show) to inspect the components the diff flagged. CRITICAL: CaaS cards LAZY-LOAD -- after navigating, WAIT for the card grid to finish rendering before judging. If the grid looks blank or half-painted, wait and re-screenshot; do NOT report content as missing/broken until the page has clearly finished loading (a blank first paint is normal, not a bug).
+STEP 3: get_console_errors -- note any crash.
+STEP 4: done(report, verdict). PASS if the touched components render correctly once loaded. FAIL only if you SEE a real defect (truncated/clipped text, broken/missing/distorted image, overlapping or misaligned cards, wrong spacing, low contrast, or an empty/broken grid that persists after load). Judge by what you SEE.`;
+
 const PAGES = [
   { id: 'A-left-hub', url: 'https://business.adobe.com/customer-success-stories.html',
     triggers: /Filters\/Left|CardFilterer|getFilteredCards|Helpers|Search|Sort|Pagination|Bookmark|Container|Card\.jsx/i,
-    instr: `Left-filter collection. ${OR} Open the left filter panel, select a filter -> results narrow, the count updates, a selected-filter chip appears. Add a second filter in the same group -> results WIDEN (OR). Clear All -> back to full. Pick a filter combination yielding nothing -> a no-results empty state shows (not a blank/broken grid). Search a query -> results filter and the matched term is highlighted. Change the Sort dropdown -> the visible order changes. Go to page 2 -> the URL gains page=2 and different cards show; navigate to that page-2 URL fresh -> it should restore page 2. Bookmark a card -> the icon toggles; open the saved view -> only saved cards show. Click a card -> opens the expected link/modal.` },
+    kind: 'visual', instr: VISUAL },
   { id: 'B-top-panel', url: 'https://news.adobe.com/news?ch_News+articles=Experience%2520Cloud',
     triggers: /Filters\/Top|Container|CardFilterer|getFilteredCards|Helpers|Card\.jsx/i,
-    instr: `Top-filter collection (a filter is pre-applied via the URL). Confirm the page loads already filtered to that selection. Open the top filter bar, change/add a filter -> results and count update. ${OR} Run a search -> results update.` },
+    kind: 'visual', instr: VISUAL },
   { id: 'C-events', url: 'https://www.adobe.com/events.html',
     triggers: /eventSort|Sort|timing|event|Container|Helpers|Card\.jsx/i,
     instr: `Event collection (cards have dates). Verify the ordering looks right for events (upcoming first / dates ascending, not past-first). Check a register / save-your-spot banner card -> its CTA renders and is clickable. Apply a filter if present -> results update.` },
@@ -60,7 +66,7 @@ const SEL = {
 const SHARED = /Card\.jsx|Container\.jsx|Helpers\/|app\.jsx|\.less/i;
 const isShared = SHARED.test(changed);
 let selected = isShared ? PAGES : PAGES.filter((p) => p.triggers.test(changed));
-if (selected.length === 0) selected = [PAGES[0]];
+selected = PAGES.filter((p) => p.id === 'A-left-hub' || p.id === 'B-top-panel'); // TEMP: validate A+B loose-visual
 console.log(`Selected ${selected.length} page(s): ${selected.map((p) => p.id).join(', ')}`);
 
 async function captureDiff(url, tag, opts = {}) {
@@ -115,18 +121,33 @@ for (const page of selected) {
                  : 'No count element here; measure result size by counting "' + (sel.cards || '.consonant-Card') + '" via evaluate(document.querySelectorAll(...).length).',
       ].join('\n')
     : '';
-  const instruction = [
-    `Target URL: ${page.url}`, '',
-    `You are QA-reviewing pull request #${PR}. The PR's CaaS build is injected into this live page, so you are testing the PR's code on the real page.`,
-    diffHint,
-    `PR title: ${meta.title}`,
-    `Code diff (truncated, secrets redacted): ${redact(diff).slice(0, 5000)}`,
-    '', selHint, '', page.instr, '',
-    'Report anything broken/truncated/misaligned/wrong; if clean, say so. End with done(report, verdict).',
-  ].join('\n');
+  const instruction = (page.kind === 'visual'
+    ? [
+        `Target URL: ${page.url}`, '',
+        `You are QA-reviewing pull request #${PR}. The PR's CaaS build is injected into this live page.`,
+        `PR code diff (you canNOT navigate -- use this only to INTERPRET the captured diff image and name the likely cause of anything you SEE broken; a Helpers/filter change can EMPTY the grid, a card .less change can truncate/reflow):\n${redact(diff).slice(0, 6000)}`,
+        diffHint,
+        '', page.instr, '',
+      ]
+    : page.kind === 'interactive'
+    ? [
+        `Target URL: ${page.url}`, '',
+        `You are QA-reviewing pull request #${PR}. The PR's CaaS build is injected into this live page, so you are testing the PR's real code.`,
+        '', page.instr, '',
+        'Base your verdict ONLY on what you observe by following the steps -- do NOT infer it from any code change. End with done(report, verdict).',
+      ]
+    : [
+        `Target URL: ${page.url}`, '',
+        `You are QA-reviewing pull request #${PR}. The PR's CaaS build is injected into this live page, so you are testing the PR's code on the real page.`,
+        diffHint,
+        `PR title: ${meta.title}`,
+        `Code diff (truncated, secrets redacted): ${redact(diff).slice(0, 5000)}`,
+        '', selHint, '', page.instr, '',
+        'Report anything broken/truncated/misaligned/wrong; if clean, say so. End with done(report, verdict).',
+      ]).join('\n');
   const REPORT_OUT = `/tmp/pr-review-${page.id}.json`; try { unlinkSync(REPORT_OUT); } catch {}
   const run = spawnSync('node', ['qa-runner-v2.mjs', instruction], {
-    stdio: 'inherit', timeout: Number(env('AGENT_TIMEOUT_MS', '120000')), killSignal: 'SIGKILL',
+    stdio: 'inherit', timeout: Number(env('AGENT_TIMEOUT_MS', '150000')), killSignal: 'SIGKILL',
     env: { ...process.env, DIST_DIR: DIST, REPORT_OUT, MAX_TURNS: env('MAX_TURNS', '10') },
   });
   const timedOut = run.signal === 'SIGKILL' || run.error?.code === 'ETIMEDOUT';

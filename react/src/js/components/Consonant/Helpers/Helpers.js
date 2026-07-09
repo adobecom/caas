@@ -291,7 +291,7 @@ export const getFilteredCards = (cards, activeFilters, activePanels, filterType,
             return true;
         }
         // you proceed to check the other tags in the cards after the time filter checks
-        const tagIds = new Set(card.tags.map(tag => tag.id));
+        const tagIds = new Set(card.tags.map(tag => tag.name));
 
         if (usingXorAndFilter) {
             // When filterGroups are provided (from category expansion), check that
