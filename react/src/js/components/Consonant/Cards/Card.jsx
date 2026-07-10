@@ -323,6 +323,25 @@ const Card = (props) => {
         return '';
     }
 
+    function getCtaLink(footerData, ctaUsed) {
+        if (!footerData) return '';
+        if (footerData.length === 1) {
+            const {
+                altCta = [],
+                right = [],
+                center = [],
+            } = footerData[0];
+            if (ctaUsed === 'right' && right.length === 1) {
+                return right[0].href;
+            } else if (ctaUsed === 'center' && center.length === 1) {
+                return center[0].href;
+            } else if (ctaUsed === 'alt' && altCta.length === 1) {
+                return altCta[0].href;
+            }
+        }
+        return '';
+    }
+
     const isHalfHeight = cardStyle === 'half-height';
     const isProduct = cardStyle === 'product';
     const isBlade = cardStyle === 'blade-card';
@@ -402,31 +421,84 @@ const Card = (props) => {
             .replaceAll('{**', '<b>')
             .replaceAll('**}', '</b>')
             .replaceAll('{*', '<i>')
-            .replaceAll('*}', '</i>');
+            .replaceAll('*}', '</i>')
+            .replaceAll('\n', '<p>');
+
+        if (markup.includes('{link:')) {
+            return parseLinks(markup);
+        }
+
         return markup;
+    };
+
+    const parseLinks = (markup) => {
+        const cta1Url = getCtaLink(footer, 'right');
+        const cta1Text = getCtaText(footer, 'right');
+        const cta2Url = getCtaLink(footer, 'center');
+        return markup
+            .replaceAll('{link:cta1}', `<a href="${cta1Url}">${cta1Text}</a>`)
+            .replaceAll('{link:cta2}', `<a href="${cta2Url}">${cta2Text}</a>`);
     };
 
     const optimizedImage = optimizeImageUrl(image);
 
     const cardData = useMemo(() => ({
-        id, country, reference, lh, cardClassName, cardStyle, bladeVariant,
-        optimizedImage, altText, cta2Text, flexCardOptions,
-        hasBanner, disableBanners,
+        id,
+country,
+reference,
+lh,
+cardClassName,
+cardStyle,
+bladeVariant,
+        optimizedImage,
+altText,
+cta2Text,
+flexCardOptions,
+        hasBanner,
+disableBanners,
         bannerBackgroundColor: bannerBackgroundColorToUse,
         bannerFontColor: bannerFontColorToUse,
         bannerIcon: bannerIconToUse,
         bannerDescription: bannerDescriptionToUse,
-        badgeText, fromDexter, showCardBadges,
-        videoURL, videoURLToUse, gateVideo, useCenterVideoPlay,
-        logoSrc, logoAlt, logoBg, logoBorderBg, image,
-        cardIcon, iconAlt,
-        detailText, editorialOpenVariant,
-        highlightedTitle, title, headingAria, headingLevel,
-        highlightedDescription, description, parseMarkDown,
-        footer, renderDivider, cardDate, startDate, endDate,
-        extendFooterData, altCtaUsed, hideOnDemandDates,
-        linkBlockerTarget, overlay, ctaText,
-        onFocus, tabIndex, ariaHidden, renderOverlay, hideCTA,
+        badgeText,
+fromDexter,
+showCardBadges,
+        videoURL,
+videoURLToUse,
+gateVideo,
+useCenterVideoPlay,
+        logoSrc,
+logoAlt,
+logoBg,
+logoBorderBg,
+image,
+        cardIcon,
+iconAlt,
+        detailText,
+editorialOpenVariant,
+        highlightedTitle,
+title,
+headingAria,
+headingLevel,
+        highlightedDescription,
+description,
+parseMarkDown,
+        footer,
+renderDivider,
+cardDate,
+startDate,
+endDate,
+        extendFooterData,
+altCtaUsed,
+hideOnDemandDates,
+        linkBlockerTarget,
+overlay,
+ctaText,
+        onFocus,
+tabIndex,
+ariaHidden,
+renderOverlay,
+hideCTA,
     }));
 
     const CardComponent = CARD_STYLES[cardStyle] || OneHalf;
