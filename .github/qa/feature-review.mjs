@@ -173,6 +173,8 @@ ${diff}
 Card fixture shape you must follow:
 ${CARD_SHAPE}
 
+IMPORTANT -- dates are evaluated against the REAL clock. Today is ${new Date().toISOString().slice(0, 10)}. If the feature depends on dates, recency, or time windows, set each card's modifiedDate/cardDate RELATIVE to today (recent = a few days before today; old = several months before today, safely outside any threshold), and derive the expected order using today as the reference. Never hardcode past-year dates -- they read as stale and defeat the test.
+
 Respond with ONLY a JSON object:
 {
   "config": { ...the COMPLETE CaaS config to render that activates the feature and lets all cards show... },
