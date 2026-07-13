@@ -1,5 +1,12 @@
 
 
+## [0.59.1](https://github.com/adobecom/caas/compare/0.59.0...0.59.1) (2026-07-13)
+
+
+### Bug Fixes
+
+* allows styling for secondary links ([#545](https://github.com/adobecom/caas/issues/545)) ([71e8d90](https://github.com/adobecom/caas/commit/71e8d90e85e7e7a3a909977269af9baffa85520b))
+
 ## [0.59.0](https://github.com/adobecom/caas/compare/0.58.0...0.59.0) (2026-07-08)
 
 
