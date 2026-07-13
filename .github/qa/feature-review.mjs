@@ -58,7 +58,12 @@ async function llm(prompt, maxTokens = 4000) {
   }
   throw new Error('llm failed after retries');
 }
-const extractJson = (s) => { const m = s.match(/\{[\s\S]*\}/); if (!m) throw new Error('no JSON in LLM output'); return JSON.parse(m[0]); };
+const extractJson = (s) => {
+  let t = String(s).replace(/```(?:json)?/gi, '').trim();
+  const a = t.indexOf('{'), b = t.lastIndexOf('}');
+  if (a === -1 || b === -1 || b <= a) throw new Error('no JSON in LLM output');
+  return JSON.parse(t.slice(a, b + 1));
+};
 
 function postComment(verdict, bodyMd) {
   const comment = [MARKER, `## 🧪 Feature QA review — injected feature test (advisory, non-blocking)`, '',
@@ -103,8 +108,9 @@ Respond with ONLY a JSON object:
   "cards": [ ...4-8 renderable cards (full shape above) crafted so the feature's effect is VISIBLE in the rendered order/content... ],
   "expected": "a precise, checkable description of what the rendered card order/content should be if the feature works (derive from the unit tests)"
 }
-If testable is false, omit config/cards/expected.`, 6000);
+If testable is false, omit config/cards/expected. Output ONLY the JSON object, no prose, no code fences.`, 16000);
 
+  console.error('[detect raw first 800]:', String(detect).slice(0, 800));
   const plan = extractJson(detect);
   console.log(`[detect] testable=${plan.testable} reason=${plan.reason}`);
 
