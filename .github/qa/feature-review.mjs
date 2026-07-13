@@ -152,11 +152,21 @@ IMPORTANT: your ENTIRE reply must be a single valid JSON object and NOTHING else
 
   const url = PAGE + (PAGE.includes('?') ? '&' : '?') + 'caasqa=1';
   await page.goto(url, { waitUntil: 'load', timeout: 45000 }).catch(() => {});
-  await page.waitForSelector('.consonant-Card', { timeout: 15000 }).catch(() => {});
+  await page.waitForSelector('.consonant-CardsGrid .consonant-Card', { timeout: 15000 }).catch(() => {});
   await page.waitForTimeout(2500);
-  const observed = await page.evaluate(() => [...document.querySelectorAll('.consonant-Card')].slice(0, 12).map((c, i) => {
-    const t = c.querySelector('[class*="-title"]'); return `${i + 1}. ${(t ? t.textContent : c.textContent).trim().slice(0, 60)}`;
-  }));
+  // Scope the read to the FIRST card collection on the page. Multi-collection
+  // pages (e.g. a Featured row + a main grid) otherwise mix cards across grids,
+  // producing duplicates and interleaved order. One grid == one config target.
+  const observed = await page.evaluate(() => {
+    const grid = document.querySelector('.consonant-CardsGrid');
+    const cards = grid
+      ? [...grid.querySelectorAll('.consonant-Card')]
+      : [...document.querySelectorAll('.consonant-Card')];
+    return cards.slice(0, 12).map((c, i) => {
+      const t = c.querySelector('[class*="-title"]');
+      return `${i + 1}. ${(t ? t.textContent : c.textContent).trim().slice(0, 60)}`;
+    });
+  });
   await page.screenshot({ path: '/tmp/feature-render.png' }).catch(() => {});
   await browser.close();
 
