@@ -184,6 +184,12 @@ Your ENTIRE reply must be a single valid JSON object and nothing else -- no pros
   plan.config = plan2.config || {};
   plan.cards = plan2.cards || [];
   plan.expected = plan2.expected || '';
+  // DEBUG: dump the exact fixture + active sort so a failure can be traced to
+  // the injected data / config vs the PR's sort logic.
+  console.log('[cards] ' + JSON.stringify((plan.cards || []).map((c) => ({
+    id: c.id, country: c.country, modifiedDate: c.modifiedDate, cardDate: c.cardDate,
+  }))));
+  console.log('[sortcfg] ' + JSON.stringify(plan.config && plan.config.sort));
 
   // ---- Step 4: inject config + mocked collection, render the PR build (second pass) ----
   const injected = canReplace ? { ...plan.config, _caasQaReplace: true } : plan.config;
@@ -206,6 +212,7 @@ Your ENTIRE reply must be a single valid JSON object and nothing else -- no pros
       return `${i + 1}. ${(t ? t.textContent : c.textContent).trim().slice(0, 60)}`;
     });
   });
+  console.log('[observed] ' + JSON.stringify(observed));
   await page.screenshot({ path: '/tmp/feature-render.png' }).catch(() => {});
   await browser.close();
 
