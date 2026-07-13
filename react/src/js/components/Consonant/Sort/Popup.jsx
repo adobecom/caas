@@ -57,6 +57,7 @@ const Popup = ({
      **** Authored Configs ****
      */
     const getConfig = useConfig();
+    const sortBy = getConfig('collection', 'i18n.sortBy');
     const sortByAria = getConfig('collection', 'i18n.sortByAria');
 
     /**
@@ -99,9 +100,11 @@ const Popup = ({
 
     return (
         <div
-            className={shouldAutoWidthSortClass}>
+            className={`${shouldAutoWidthSortClass} sort-by-Select`}>
+            <label htmlFor="consonant-Select-btn" data-testid="consonant-Select-label">{sortBy}</label>
             <button
                 data-testid="consonant-Select-btn"
+                id="consonant-Select-btn"
                 type="button"
                 onClick={handleToggle}
                 className={openButtonClass}

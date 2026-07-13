@@ -8,6 +8,11 @@ import {
     array,
 } from 'prop-types';
 
+export const productInfoType = {
+    title: string,
+    tagImage: string,
+};
+
 const appliesToType = {
     id: string,
 };

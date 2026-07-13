@@ -29,7 +29,7 @@ import {
     stylesType,
     contentAreaType,
     overlaysType,
-    footerType, 
+    footerType,
     tagsType,
     bannerMapType,
 } from '../types/card';
@@ -48,6 +48,7 @@ import EditorialCard from './EditorialCard';
 import BlogCard from './BlogCard';
 import HorizontalCard from './HorizontalCard';
 import ButtonCard from './ButtonCard';
+import FlexCard from './FlexCard';
 
 const CARD_STYLES = {
     'one-half': OneHalf,
@@ -64,6 +65,7 @@ const CARD_STYLES = {
     'blog-card': BlogCard,
     'horizontal-card': HorizontalCard,
     'button-card': ButtonCard,
+    'flex-card': FlexCard,
 };
 
 const CardType = {
@@ -219,6 +221,7 @@ const Card = (props) => {
     const searchEnabled = getConfig('search', 'enabled');
     const editorialOpenVariant = getConfig('collection', 'editorialOpenVariant') || false;
     const useRoundedCorners = getConfig('collection', 'useRoundedCorners') || false;
+    const flexCardOptions = getConfig('collection', 'flexCard');
 
     const cardClassName = classNames({
         'consonant-Card': true,
@@ -242,6 +245,8 @@ const Card = (props) => {
     } else if (detailsTextOption === 'staticDate' && cardDate) {
         const staticDate = new Date(cardDate.replace(/Z$/, ''));
         detailText = staticDate.toLocaleDateString();
+    } else if (detailsTextOption === 'productName' && cardStyle !== 'flex-card') {
+        detailText = '';
     }
 
     const isGated = hasTag(/caas:gated/, tags)
@@ -316,7 +321,7 @@ const Card = (props) => {
             }
         }
         return '';
-    }   
+    }
 
     const isHalfHeight = cardStyle === 'half-height';
     const isProduct = cardStyle === 'product';
@@ -405,7 +410,7 @@ const Card = (props) => {
 
     const cardData = useMemo(() => ({
         id, country, reference, lh, cardClassName, cardStyle, bladeVariant,
-        optimizedImage, altText, cta2Text,
+        optimizedImage, altText, cta2Text, flexCardOptions,
         hasBanner, disableBanners,
         bannerBackgroundColor: bannerBackgroundColorToUse,
         bannerFontColor: bannerFontColorToUse,

@@ -49,6 +49,7 @@ import {
     ONE_SECOND_DELAY,
     SORT_TYPES,
     EVENT_TIMING_IDS,
+    CAAS_ENDPOINT_MAP,
 } from '../Helpers/constants';
 import {
     ConfigContext,
@@ -218,6 +219,7 @@ const Container = (props) => {
 
     const [, updateState] = React.useState();
     const scrollElementRef = useRef(null);
+    const box = useRef();
     const nextTransition = React.useCallback(() => updateState({}), []);
     /**
      * @typedef {Object} urlState
@@ -402,6 +404,13 @@ const Container = (props) => {
     /**
      **** Helper Methods ****
      */
+
+    function removeCollectionFromPage() {
+        const collectionRoot = box.current.closest('div#caas.caas-preview');
+        if (collectionRoot && collectionRoot.parentNode && !collectionRoot.closest('div.caas-config')) {
+            collectionRoot.parentNode.removeChild(collectionRoot);
+        }
+    }
 
     function getParentChild(id) {
         let i = id.length;
@@ -1009,6 +1018,17 @@ const Container = (props) => {
         let collectionEndpoint = getConfig('collection', 'endpoint');
         const fallbackEndpoint = getConfig('collection', 'fallbackEndpoint');
 
+        const caasEndpointKey = new URLSearchParams(window.location.search).get('caas-endpoint');
+        const endpointOverride = Object.prototype.hasOwnProperty.call(
+            CAAS_ENDPOINT_MAP,
+            caasEndpointKey,
+        )
+            ? CAAS_ENDPOINT_MAP[caasEndpointKey]
+            : undefined;
+        if (endpointOverride && collectionEndpoint.startsWith(endpointOverride.from)) {
+            collectionEndpoint = endpointOverride.to + collectionEndpoint.slice(endpointOverride.from.length);
+        }
+
         const r = new RegExp('^(?:[a-z]+:)?//', 'i');
         let collectionEndpointURI;
         if (r.test(collectionEndpoint)) {
@@ -1021,6 +1041,8 @@ const Container = (props) => {
             collectionEndpointURI.searchParams.set('flatFile', false);
             collectionEndpoint = collectionEndpointURI.toString();
         }
+
+        const originSelection = collectionEndpointURI.searchParams.get('originSelection');
 
         setLoading(true);
 
@@ -1065,6 +1087,9 @@ const Container = (props) => {
                     setIsFirstLoad(true);
                     if (!getByPath(payload, 'cards.length')) {
                         logLana({ message: `no cards return by query to this endpoint: ${endPoint}`, tags: 'collection' });
+                        if (originSelection === 'events' && box.current) {
+                            removeCollectionFromPage();
+                        }
                         return;
                     }
                     if (payload.isHashed && !hashedRef.current) {
@@ -1422,8 +1447,6 @@ const Container = (props) => {
             document.removeEventListener('keydown', handleMobileFilterEscape);
         };
     }, [showMobileFilters]);
-
-    const box = useRef();
 
     useEffect(() => {
         /* istanbul ignore if */

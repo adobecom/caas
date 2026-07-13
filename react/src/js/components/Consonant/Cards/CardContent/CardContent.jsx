@@ -6,12 +6,14 @@
  * - Description
  */
 import React from 'react';
-import { string, bool, func, number, node } from 'prop-types';
+import { string, bool, func, number, node, shape } from 'prop-types';
 import { removeMarkDown } from '../../Helpers/general';
+import { productInfoType } from '../../types/card';
 
 const CardContent = ({
     showLabel,
     detailText,
+    productInfo,
     showIconAlt,
     iconAlt,
     isTitleOnly,
@@ -23,6 +25,7 @@ const CardContent = ({
     showText,
     highlightedDescription,
     description,
+    showTitle,
 }) => (
     <>
         {showLabel && detailText &&
@@ -32,6 +35,16 @@ const CardContent = ({
             {detailText}
         </span>
         }
+        {productInfo && (
+            <span
+                data-testid="consonant-Card-label-product-info"
+                className="consonant-Card-label product-info">
+                {productInfo.tagImage && (
+                    <img className="product-info-icon" src={productInfo.tagImage} alt={productInfo.title || ''} />
+                )}
+                <span className="product-info-title">{productInfo.title || ''}</span>
+            </span>
+        )}
         {showIconAlt && (detailText === '') &&
         <span
             data-testid="consonant-Card-label"
@@ -39,21 +52,21 @@ const CardContent = ({
             {iconAlt}
         </span>
         }
-        { (isTitleOnly && highlightedTitle) &&
+        { (showTitle && isTitleOnly && highlightedTitle) &&
             <p
                 data-testid="consonant-Card-title"
                 className="consonant-Card-title">
                 {highlightedTitle}
             </p>
         }
-        { (isTitleOnly && !highlightedTitle) &&
+        { (showTitle && isTitleOnly && !highlightedTitle) &&
             <p
                 data-testid="consonant-Card-title"
                 className="consonant-Card-title"
                 title={removeMarkDown(title)}
                 dangerouslySetInnerHTML={{ __html: parseMarkDown(title) }} />
         }
-        { (!isTitleOnly && highlightedTitle) &&
+        { (showTitle && !isTitleOnly && highlightedTitle) &&
             <p
                 role="heading"
                 {...(headingAria && { 'aria-label': headingAria })}
@@ -64,7 +77,7 @@ const CardContent = ({
                 {highlightedTitle}
             </p>
         }
-        { (!isTitleOnly && !highlightedTitle) &&
+        { (showTitle && !isTitleOnly && !highlightedTitle) &&
             <p
                 role="heading"
                 {...(headingAria && { 'aria-label': headingAria })}
@@ -107,6 +120,8 @@ CardContent.propTypes = {
     showText: bool,
     highlightedDescription: node,
     description: string,
+    productInfo: shape(productInfoType),
+    showTitle: bool,
 };
 
 CardContent.defaultProps = {
@@ -123,6 +138,8 @@ CardContent.defaultProps = {
     showText: false,
     highlightedDescription: null,
     description: '',
+    productInfo: null,
+    showTitle: true,
 };
 
 export default CardContent;
