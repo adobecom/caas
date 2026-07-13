@@ -1,5 +1,12 @@
 
 
+## [0.60.0](https://github.com/adobecom/caas/compare/0.59.1...0.60.0) (2026-07-13)
+
+
+### Features
+
+* **mwpw-184989:** add ?caasqa-gated localStorage config override for automated QA ([a7b2555](https://github.com/adobecom/caas/commit/a7b255565191166e4bf429345043cc262a6f785c))
+
 ## [0.59.1](https://github.com/adobecom/caas/compare/0.59.0...0.59.1) (2026-07-13)
 
 
