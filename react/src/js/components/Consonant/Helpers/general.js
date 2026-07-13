@@ -423,6 +423,43 @@ export const mergeDeep = (target, ...sources) => {
     return mergeDeep(target, ...sources);
 };
 
+/**
+ * QA-only config override. Prod-safe: a no-op unless the page URL carries the
+ * `?caasqa` gate param. When gated, it deep-merges a JSON config override read from
+ * localStorage['caasQaConfig'] over the real config -- letting automated QA force a
+ * feature's config (e.g. sort.localFirstRecencyThreshold) that no live page authors.
+ * Client-side only: it changes nothing but the current browser tab's own render.
+ */
+export const applyQaConfigOverride = (config) => {
+    try {
+        if (typeof window === 'undefined' || !window.location || !window.localStorage) return config;
+        const params = new URLSearchParams(window.location.search || '');
+        if (!params.has('caasqa')) return config;
+        // Record each collection's ORIGINAL (pre-override) config so QA tooling can read
+        // the real live config for every collection on the page and reason about what to
+        // override. A page can host multiple collections, hence an array.
+        try {
+            window.__caasQaConfigs = window.__caasQaConfigs || [];
+            window.__caasQaConfigs.push(JSON.parse(JSON.stringify(config)));
+        } catch (e) { /* capture is best-effort */ }
+        const raw = window.localStorage.getItem('caasQaConfig');
+        if (!raw) return config;
+        const override = JSON.parse(raw);
+        if (!isObject(override)) return config;
+        // Full-replace mode: let QA tooling swap the entire config rather than deep-merge,
+        // so it can neutralise page-authored behaviour (featured pinning, card limits, etc.)
+        // that a merge cannot remove. Gated behind the same caasqa param.
+        if (override._caasQaReplace === true) {
+            const replacement = { ...override };
+            delete replacement._caasQaReplace;
+            return replacement;
+        }
+        return mergeDeep(config, override);
+    } catch (e) {
+        return config;
+    }
+};
+
 const isCaasGroup = group => group.indexOf('ch_') === 0;
 
 /**

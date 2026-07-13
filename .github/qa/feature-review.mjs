@@ -83,45 +83,31 @@ function postComment(verdict, bodyMd) {
   const specPaths = (meta.files || []).map((f) => f.path).filter((p) => /\.spec\.(jsx?|tsx?)$/.test(p));
   const specText = specPaths.map((p) => { try { return `\n// FILE ${p}\n${readFileSync(p, 'utf8')}`; } catch { return ''; } }).join('\n').slice(0, 14000);
 
-  // ---- Step 1: decide + build a test plan ----
+  // ---- Step 1: decide whether the PR's feature can be exercised at all ----
   const detect = await llm(
 `You are triaging an Adobe CaaS (Consonant card collection) pull request to decide if its feature can be EXERCISED by an automated harness.
 
-The harness can force exactly two things: (1) the CaaS CONFIG (any field, deep-merged, via a ?caasqa localStorage override), and (2) the COLLECTION DATA (the chimera-api/collection JSON response can be replaced with crafted cards). It then renders the real build on a live page and reads the resulting DOM.
+The harness renders the REAL PR build on a live page and can force exactly two things: (1) the CaaS CONFIG for a collection (it reads the page's real config and can replace it wholesale), and (2) the COLLECTION DATA (the chimera-api/collection JSON, replaced with crafted cards). It then reads the resulting DOM.
 
-A PR is TESTABLE only if its behaviour is driven by config and/or card data — e.g. a new sort mode, filter behaviour, a card field rendering, a config-gated layout. It is NOT testable (skip) if it is: a pure refactor, build/CI/tooling/deps, test-only, backend/service-only, a11y-only, or needs auth / multi-step user interaction / real network you can't mock.
+TESTABLE only if the behaviour is driven by config and/or card data (a new sort mode, filter behaviour, a card field rendering, a config-gated layout). NOT testable (skip) if it is a pure refactor, build/CI/tooling/deps, test-only, backend/service-only, a11y-only, or needs auth / multi-step interaction / real network you cannot mock.
 
 PR title: ${meta.title}
 PR body:
 ${(meta.body || '').slice(0, 1500)}
 
-Unit tests changed (these often ENCODE the config, the input cards, and the expected result — use them):
+Unit tests changed (they often ENCODE the config, input cards, and expected result):
 ${specText}
 
 Diff (truncated):
 ${diff}
 
-Card fixture shape you must follow when building cards:
-${CARD_SHAPE}
+Respond with ONLY a JSON object: {"testable": true|false, "reason": "one sentence"}.
+Your ENTIRE reply must be a single valid JSON object and nothing else -- no "SKIP", no prose, no code fences.`, 4000);
 
-Respond with ONLY a JSON object:
-{
-  "testable": true | false,
-  "reason": "one sentence",
-  "config": { ...deep-merge config override that activates the feature, e.g. {"sort":{"sortType":"localFirst","localFirstRecencyThreshold":6}} ... },
-  "cards": [ ...4-8 renderable cards (full shape above) crafted so the feature's effect is VISIBLE in the rendered order/content... ],
-  "expected": "a precise, checkable description of what the rendered card order/content should be if the feature works (derive from the unit tests)"
-}
-If testable is false, omit config/cards/expected.
-IMPORTANT: your ENTIRE reply must be a single valid JSON object and NOTHING else -- no "SKIP", no explanation before or after, no code fences. Example when not testable: {"testable": false, "reason": "pure CI/tooling change, nothing config- or data-driven to exercise"}.`, 16000);
-
-  console.error('[detect raw first 800]:', String(detect).slice(0, 800));
+  console.error('[detect raw first 400]:', String(detect).slice(0, 400));
   let plan;
-  try {
-    plan = extractJson(detect);
-  } catch (e) {
-    // The model sometimes replies with prose (e.g. "SKIP ...") for the not-testable
-    // case. Treat a clear skip/refactor/infra signal as a skip rather than erroring.
+  try { plan = extractJson(detect); }
+  catch (e) {
     if (/\b(skip|not testable|not a feature|refactor|tooling|infrastructure|cannot|no runtime)\b/i.test(detect)) {
       postComment('SKIPPED', `**Not an injectable feature** -- skipped.\n\n> ${String(detect).slice(0, 500)}`);
       console.log('skipped (prose): not testable'); process.exit(0);
@@ -129,46 +115,92 @@ IMPORTANT: your ENTIRE reply must be a single valid JSON object and NOTHING else
     throw e;
   }
   console.log(`[detect] testable=${plan.testable} reason=${plan.reason}`);
-
   if (!plan.testable) {
-    postComment('SKIPPED', `**Not an injectable feature** — skipped.\n\n> ${plan.reason}\n\nThis PR's change isn't driven by config/collection data that the harness can force, so a feature test wouldn't be meaningful. (The visual/smoke review still applies.)`);
+    postComment('SKIPPED', `**Not an injectable feature** -- skipped.\n\n> ${plan.reason}\n\nThis PR's change isn't driven by config/collection data the harness can force, so a feature test wouldn't be meaningful. (The visual/smoke review still applies.)`);
     console.log('skipped: not testable'); process.exit(0);
   }
 
-  // Force the target grid to show the whole crafted fixture. Authored pages cap
-  // cards via collection.totalCardsToShow / resultsPerPage (e.g. a 3-card Featured
-  // row), which would truncate the fixture and hide ordering differences. We read
-  // the FIRST collection, so bust its limit while leaving the tested field alone.
-  plan.config = plan.config || {};
-  plan.config.collection = { ...(plan.config.collection || {}), totalCardsToShow: 50, resultsPerPage: 50 };
-
-  // ---- Step 2: inject config + mocked collection, render the PR build ----
+  // ---- Step 2: capture the page's REAL live config(s) (first pass, no override) ----
+  // Load with the ?caasqa gate but no override so the build records every collection's
+  // original config into window.__caasQaConfigs. This is what lets the planner reason
+  // about the actual page (featured rows, card limits, sort defaults) instead of guessing.
   const browser = await chromium.connectOverCDP(CDP);
   const ctx = browser.contexts()[0] || (await browser.newContext());
-  const page = await ctx.newPage();
-  await page.setViewportSize({ width: 1280, height: 1800 });
-  await page.addInitScript((cfg) => { try { window.localStorage.setItem('caasQaConfig', cfg); } catch (e) {} },
-    JSON.stringify(plan.config || {}));
-  await page.route('**/caas-libs/**', async (r) => {
+  const routeLibs = async (r) => {
     const f = r.request().url().split('?')[0].split('/').pop();
     if (ALLOW.has(f)) { try { return r.fulfill({ path: `${DIST}/${f}` }); } catch (e) {} }
     return r.continue();
-  });
+  };
+  const gateUrl = PAGE + (PAGE.includes('?') ? '&' : '?') + 'caasqa=1';
+  const capPage = await ctx.newPage();
+  await capPage.setViewportSize({ width: 1280, height: 1800 });
+  await capPage.route('**/caas-libs/**', routeLibs);
+  await capPage.goto(gateUrl, { waitUntil: 'load', timeout: 45000 }).catch(() => {});
+  await capPage.waitForSelector('.consonant-CardsGrid', { timeout: 15000 }).catch(() => {});
+  await capPage.waitForTimeout(2500);
+  const liveConfigs = await capPage.evaluate(() => window.__caasQaConfigs || []);
+  await capPage.close();
+  const canReplace = Array.isArray(liveConfigs) && liveConfigs.length > 0;
+  console.log(`[capture] ${canReplace ? liveConfigs.length : 0} live collection config(s) captured`);
+
+  // ---- Step 3: plan the injection FROM the real config(s) ----
+  const planHead = canReplace
+    ? `The page hosts ${liveConfigs.length} card collection(s). Here is each collection's REAL live config, exactly as the page builds it:
+
+${JSON.stringify(liveConfigs).slice(0, 16000)}
+
+The harness renders and reads the FIRST collection on the page, and will REPLACE its config wholesale with the config you return (and replace its data with your cards). So:
+- Start FROM whichever live config above is the sortable/main card grid (NOT a small "featured"/pinned row).
+- Modify it to turn the PR's feature ON and make its effect VISIBLE: set the feature's config fields, and remove anything that would hide the effect -- drop featuredCards pinning, and raise totalCardsToShow / resultsPerPage so ALL your crafted cards render.
+- Return the COMPLETE config object (not a patch).`
+    : `The page's live config could not be captured, so build a minimal complete CaaS config from scratch that activates the feature and lets all cards render.`;
+
+  const planRaw = await llm(
+`You are building an automated feature test for an Adobe CaaS (Consonant) pull request.
+
+${planHead}
+
+PR title: ${meta.title}
+PR body:
+${(meta.body || '').slice(0, 1200)}
+
+Unit tests changed (they ENCODE the config, the input cards, and the expected result -- use them):
+${specText}
+
+Diff (truncated):
+${diff}
+
+Card fixture shape you must follow:
+${CARD_SHAPE}
+
+Respond with ONLY a JSON object:
+{
+  "config": { ...the COMPLETE CaaS config to render that activates the feature and lets all cards show... },
+  "cards": [ ...4-8 renderable cards (full shape above) crafted so the feature's effect is VISIBLE in the rendered order/content... ],
+  "expected": "a precise, checkable description of the rendered card order/content if the feature works (derive from the unit tests)"
+}
+Your ENTIRE reply must be a single valid JSON object and nothing else -- no prose, no code fences.`, 16000);
+  const plan2 = extractJson(planRaw);
+  plan.config = plan2.config || {};
+  plan.cards = plan2.cards || [];
+  plan.expected = plan2.expected || '';
+
+  // ---- Step 4: inject config + mocked collection, render the PR build (second pass) ----
+  const injected = canReplace ? { ...plan.config, _caasQaReplace: true } : plan.config;
+  const page = await ctx.newPage();
+  await page.setViewportSize({ width: 1280, height: 1800 });
+  await page.addInitScript((cfg) => { try { window.localStorage.setItem('caasQaConfig', cfg); } catch (e) {} },
+    JSON.stringify(injected));
+  await page.route('**/caas-libs/**', routeLibs);
   await page.route('**/chimera-api/collection**', async (r) =>
     r.fulfill({ contentType: 'application/json', body: JSON.stringify({ cards: plan.cards || [], filters: [], isHashed: false }) }));
-
-  const url = PAGE + (PAGE.includes('?') ? '&' : '?') + 'caasqa=1';
-  await page.goto(url, { waitUntil: 'load', timeout: 45000 }).catch(() => {});
+  await page.goto(gateUrl, { waitUntil: 'load', timeout: 45000 }).catch(() => {});
   await page.waitForSelector('.consonant-CardsGrid .consonant-Card', { timeout: 15000 }).catch(() => {});
   await page.waitForTimeout(2500);
-  // Scope the read to the FIRST card collection on the page. Multi-collection
-  // pages (e.g. a Featured row + a main grid) otherwise mix cards across grids,
-  // producing duplicates and interleaved order. One grid == one config target.
+  // Read the FIRST collection only -- the one we replaced and fed data to.
   const observed = await page.evaluate(() => {
     const grid = document.querySelector('.consonant-CardsGrid');
-    const cards = grid
-      ? [...grid.querySelectorAll('.consonant-Card')]
-      : [...document.querySelectorAll('.consonant-Card')];
+    const cards = grid ? [...grid.querySelectorAll('.consonant-Card')] : [...document.querySelectorAll('.consonant-Card')];
     return cards.slice(0, 12).map((c, i) => {
       const t = c.querySelector('[class*="-title"]');
       return `${i + 1}. ${(t ? t.textContent : c.textContent).trim().slice(0, 60)}`;
