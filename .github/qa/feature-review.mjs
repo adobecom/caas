@@ -75,7 +75,11 @@ function postComment(verdict, bodyMd) {
 
 (async () => {
   const meta = JSON.parse(gh(['pr', 'view', PR, '-R', REPO, '--json', 'title,body,files']));
-  const diff = gh(['pr', 'diff', PR, '-R', REPO]).slice(0, 24000);
+  const rawDiff = gh(['pr', 'diff', PR, '-R', REPO]);
+  // Drop this tool's OWN infra from the diff so it judges the PR's real change.
+  const diff = rawDiff.split(/(?=^diff --git )/m)
+    .filter((h) => !/feature-review\.mjs|qa-feature-review\.yml/.test((h.split('\n')[0] || '')))
+    .join('').slice(0, 24000);
   const specPaths = (meta.files || []).map((f) => f.path).filter((p) => /\.spec\.(jsx?|tsx?)$/.test(p));
   const specText = specPaths.map((p) => { try { return `\n// FILE ${p}\n${readFileSync(p, 'utf8')}`; } catch { return ''; } }).join('\n').slice(0, 14000);
 

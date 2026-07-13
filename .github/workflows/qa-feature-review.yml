@@ -33,6 +33,11 @@ jobs:
         with:
           node-version: 18
 
+      - name: Check out the PR's head so we build its actual code
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr checkout ${{ github.event.pull_request.number || inputs.pr_number }}
+
       - name: Build the PR's CaaS dist
         run: |
           npm ci
