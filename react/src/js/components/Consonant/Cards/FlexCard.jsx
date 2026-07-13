@@ -108,7 +108,7 @@ const FlexCard = () => {
                     showText
                     highlightedDescription={highlightedDescription}
                     description={showDescription ? description : ''} />
-                {!hideCTA && showFooter &&
+                {showFooter &&
                 footer.map(footerItem => (
                     <CardFooter
                         divider={renderDivider || footerItem.divider}
@@ -130,7 +130,7 @@ const FlexCard = () => {
                         isBlog={false} />
                 ))}
             </div>
-            {(renderOverlay || hideCTA) &&
+            {(renderOverlay) &&
             <LinkBlocker
                 target={linkBlockerTarget}
                 link={overlay}
