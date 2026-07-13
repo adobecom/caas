@@ -135,6 +135,13 @@ IMPORTANT: your ENTIRE reply must be a single valid JSON object and NOTHING else
     console.log('skipped: not testable'); process.exit(0);
   }
 
+  // Force the target grid to show the whole crafted fixture. Authored pages cap
+  // cards via collection.totalCardsToShow / resultsPerPage (e.g. a 3-card Featured
+  // row), which would truncate the fixture and hide ordering differences. We read
+  // the FIRST collection, so bust its limit while leaving the tested field alone.
+  plan.config = plan.config || {};
+  plan.config.collection = { ...(plan.config.collection || {}), totalCardsToShow: 50, resultsPerPage: 50 };
+
   // ---- Step 2: inject config + mocked collection, render the PR build ----
   const browser = await chromium.connectOverCDP(CDP);
   const ctx = browser.contexts()[0] || (await browser.newContext());
