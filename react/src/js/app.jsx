@@ -3,7 +3,7 @@ import "./polyfills";
 import React from 'react';
 import ReactDOM, { render } from 'react-dom';
 import { DOMRegistry } from 'react-dom-components';
-import { parseToPrimitive } from './components/Consonant/Helpers/general';
+import { parseToPrimitive, applyQaConfigOverride } from './components/Consonant/Helpers/general';
 import { loadLana } from './components/Consonant/Helpers/lana';
 import Container from './components/Consonant/Container/Container';
 import consonantPageRDC from './components/Consonant/Page/ConsonantPageDOM';
@@ -77,7 +77,7 @@ export class ConsonantCardCollecton {
     constructor(config, element) {
         ReactDOM.render((
             <React.Fragment>
-                <Container config={parseToPrimitive(config)} />
+                <Container config={applyQaConfigOverride(parseToPrimitive(config))} />
             </React.Fragment>), element);
     }
 }
