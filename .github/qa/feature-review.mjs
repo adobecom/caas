@@ -108,10 +108,22 @@ Respond with ONLY a JSON object:
   "cards": [ ...4-8 renderable cards (full shape above) crafted so the feature's effect is VISIBLE in the rendered order/content... ],
   "expected": "a precise, checkable description of what the rendered card order/content should be if the feature works (derive from the unit tests)"
 }
-If testable is false, omit config/cards/expected. Output ONLY the JSON object, no prose, no code fences.`, 16000);
+If testable is false, omit config/cards/expected.
+IMPORTANT: your ENTIRE reply must be a single valid JSON object and NOTHING else -- no "SKIP", no explanation before or after, no code fences. Example when not testable: {"testable": false, "reason": "pure CI/tooling change, nothing config- or data-driven to exercise"}.`, 16000);
 
   console.error('[detect raw first 800]:', String(detect).slice(0, 800));
-  const plan = extractJson(detect);
+  let plan;
+  try {
+    plan = extractJson(detect);
+  } catch (e) {
+    // The model sometimes replies with prose (e.g. "SKIP ...") for the not-testable
+    // case. Treat a clear skip/refactor/infra signal as a skip rather than erroring.
+    if (/\b(skip|not testable|not a feature|refactor|tooling|infrastructure|cannot|no runtime)\b/i.test(detect)) {
+      postComment('SKIPPED', `**Not an injectable feature** -- skipped.\n\n> ${String(detect).slice(0, 500)}`);
+      console.log('skipped (prose): not testable'); process.exit(0);
+    }
+    throw e;
+  }
   console.log(`[detect] testable=${plan.testable} reason=${plan.reason}`);
 
   if (!plan.testable) {
