@@ -72,7 +72,9 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
-        run: node feature-review.mjs
+        run: |
+          rm -f /tmp/feature-render.png
+          node feature-review.mjs
 
       - name: Upload render screenshot
         if: always()
