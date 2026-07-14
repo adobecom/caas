@@ -156,42 +156,44 @@ The harness renders and reads the FIRST collection on the page, and will REPLACE
     : `The page's live config could not be captured, so build a minimal complete CaaS config from scratch that activates the feature and lets all cards render.`;
 
   const planRaw = await llm(
-`You are building an automated feature test for an Adobe CaaS (Consonant) pull request.
+`You are verifying an Adobe CaaS (Consonant) feature on a real page by REPRODUCING one of its unit tests. The unit tests are the specification -- do NOT invent new behaviour; lift a real test.
 
 ${planHead}
 
-PR title: ${meta.title}
-PR body:
-${(meta.body || '').slice(0, 1200)}
-
-Unit tests changed (they ENCODE the config, the input cards, and the expected result -- use them):
+Changed unit test(s) -- each sets up input data, the config/props that activate the behaviour, and asserts an expected result:
 ${specText}
 
-Diff (truncated):
-${diff}
+PR title: ${meta.title}
+PR body:
+${(meta.body || '').slice(0, 1000)}
 
-Card fixture shape you must follow:
+Diff (truncated):
+${diff.slice(0, 8000)}
+
+Card fixture shape (chimera-api/collection cards[]):
 ${CARD_SHAPE}
 
-IMPORTANT -- dates are evaluated against the REAL clock. Today is ${new Date().toISOString().slice(0, 10)}. If the feature depends on dates, recency, or time windows, set each card's modifiedDate/cardDate RELATIVE to today (recent = a few days before today; old = several months before today, safely outside any threshold), and derive the expected order using today as the reference. Never hardcode past-year dates -- they read as stale and defeat the test.
+Pick ONE unit test whose effect is OBSERVABLE in the rendered card DOM (card order, card text/label/content, or a link/button attribute). Reproduce it as a live render:
+- config: the COMPLETE CaaS config that recreates the test's conditions -- start from the live config above, set the exact fields/options the test relies on (e.g. detailsTextOption + products map, sort options + thresholds, infobit style), and raise totalCardsToShow/resultsPerPage + drop featuredCards so everything renders.
+- cards: the test's input rows expressed as renderable cards (full shape above; give each a visible title/contentArea so it shows). Preserve the fields the feature reads (tags, country, modifiedDate, footer links, etc.).
+- expected: the test's assertion(s), restated as a precise checkable statement about the rendered DOM.
+- observe: a short hint on WHERE to look (e.g. "card order by title", "the text Acrobat inside a card label", "a button with href X in the card footer").
+
+Dates use the REAL clock -- today is ${new Date().toISOString().slice(0, 10)}. If the test uses relative dates (new Date() minus N months), reproduce them relative to today; never hardcode past-year dates.
 
 Respond with ONLY a JSON object:
-{
-  "config": { ...the COMPLETE CaaS config to render that activates the feature and lets all cards show... },
-  "cards": [ ...4-8 renderable cards (full shape above) crafted so the feature's effect is VISIBLE in the rendered order/content... ],
-  "expected": "a precise, checkable description of the rendered card order/content if the feature works (derive from the unit tests)"
-}
-Your ENTIRE reply must be a single valid JSON object and nothing else -- no prose, no code fences.`, 16000);
+{"sourceTest":"<the test you reproduced>","config":{...},"cards":[...],"expected":"...","observe":"..."}
+Your ENTIRE reply must be a single valid JSON object -- no prose, no code fences.`, 16000);
   const plan2 = extractJson(planRaw);
   plan.config = plan2.config || {};
   plan.cards = plan2.cards || [];
   plan.expected = plan2.expected || '';
-  // DEBUG: dump the exact fixture + active sort so a failure can be traced to
-  // the injected data / config vs the PR's sort logic.
+  plan.observe = plan2.observe || '';
+  plan.sourceTest = plan2.sourceTest || '';
+  console.log('[plan] sourceTest=' + plan.sourceTest + ' | observe=' + plan.observe);
   console.log('[cards] ' + JSON.stringify((plan.cards || []).map((c) => ({
-    id: c.id, country: c.country, modifiedDate: c.modifiedDate, cardDate: c.cardDate,
+    id: c.id, country: c.country, modifiedDate: c.modifiedDate, tags: c.tags,
   }))));
-  console.log('[sortcfg] ' + JSON.stringify(plan.config && plan.config.sort));
 
   // ---- Step 4: inject config + mocked collection, render the PR build (second pass) ----
   const injected = canReplace ? { ...plan.config, _caasQaReplace: true } : plan.config;
@@ -210,8 +212,19 @@ Your ENTIRE reply must be a single valid JSON object and nothing else -- no pros
     const grid = document.querySelector('.consonant-CardsGrid');
     const cards = grid ? [...grid.querySelectorAll('.consonant-Card')] : [...document.querySelectorAll('.consonant-Card')];
     return cards.slice(0, 12).map((c, i) => {
-      const t = c.querySelector('[class*="-title"]');
-      return `${i + 1}. ${(t ? t.textContent : c.textContent).trim().slice(0, 60)}`;
+      const title = c.querySelector('[class*="-title"]');
+      const links = [...c.querySelectorAll('a,button')].slice(0, 4).map((a) => ({
+        tag: a.tagName.toLowerCase(),
+        text: (a.textContent || '').trim().slice(0, 30),
+        href: a.getAttribute('href') || undefined,
+        cls: (a.className || '').toString().slice(0, 60) || undefined,
+      }));
+      return {
+        n: i + 1,
+        title: title ? title.textContent.trim().slice(0, 60) : '',
+        text: (c.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 160),
+        links,
+      };
     });
   });
   console.log('[observed] ' + JSON.stringify(observed));
@@ -220,24 +233,28 @@ Your ENTIRE reply must be a single valid JSON object and nothing else -- no pros
 
   // ---- Step 3: validate rendered vs expected ----
   const check = await llm(
-`A CaaS feature was force-tested by injecting a config and a crafted collection, then rendering the real build.
+`A CaaS feature was verified by reproducing its unit test on a live render: we injected a config + crafted collection and rendered the real build.
 
-Config injected: ${JSON.stringify(plan.config)}
-Expected (what a correct build should render): ${plan.expected}
-Actually rendered card order:
-${observed.join('\n') || '(no cards rendered)'}
+Source unit test: ${plan.sourceTest}
+Where to look: ${plan.observe}
+Expected (the test's assertion, restated): ${plan.expected}
 
-Does the rendered result match the expected behaviour? Respond with ONLY JSON: {"verdict":"PASS"|"FAIL","reason":"one or two sentences citing the observed vs expected order"}`, 1500);
+Rendered first-collection cards (n, title, text, links/buttons):
+${JSON.stringify(observed).slice(0, 4000) || '(no cards rendered)'}
+
+Does the rendered DOM satisfy the test's expected assertion? Judge ONLY what expected/observe describe (order, or presence of text, or a link/button attribute); ignore unrelated differences. Respond with ONLY JSON: {"verdict":"PASS"|"FAIL","reason":"one or two sentences citing observed vs expected"}`, 1500);
   const res = extractJson(check);
   console.log(`[validate] ${res.verdict}: ${res.reason}`);
 
   postComment(res.verdict,
 `Injected the PR build with a forced config + a crafted collection to exercise the feature.
 
-**Config:** \`${JSON.stringify(plan.config)}\`
+**Source test:** \`${plan.sourceTest || '(n/a)'}\`
+**Config (truncated):** \`${JSON.stringify(plan.config).slice(0, 500)}${JSON.stringify(plan.config).length > 500 ? ' ...' : ''}\`
+**Fixture cards injected:** ${(plan.cards || []).length}
 **Expected:** ${plan.expected}
-**Rendered order:**
-${observed.map((o) => `- ${o}`).join('\n') || '_(no cards rendered)_'}
+**Rendered (first collection):**
+${observed.map((o) => `- ${o.n}. ${o.title || (o.text || '').slice(0, 50)}${(o.links || []).length ? '  [' + o.links.map((l) => l.tag + (l.href ? ' ' + l.href : '')).join(', ') + ']' : ''}`).join('\n') || '_(no cards rendered)_'}
 
 **Verdict:** ${res.reason}`);
   process.exit(0);
