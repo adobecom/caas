@@ -19,14 +19,19 @@ export function mergeScenarioConfig(base, patch) {
 }
 
 /** Preserve live transport/defaults while isolating the crafted fixture cards. */
-export function buildScenarioConfig(liveConfig, featurePatch, cardCount) {
+export function buildScenarioConfig(liveConfig, featurePatch, cardsOrCount) {
   const config = mergeScenarioConfig(liveConfig, featurePatch);
   const patch = isPlainObject(featurePatch) ? featurePatch : {};
+  const cards = Array.isArray(cardsOrCount) ? cardsOrCount : [];
   if (!Object.hasOwn(patch, 'featuredCards')) config.featuredCards = [];
   if (!Object.hasOwn(patch, 'hideCtaIds')) config.hideCtaIds = [];
   if (!Object.hasOwn(patch, 'hideCtaTags')) config.hideCtaTags = [];
   config.collection = isPlainObject(config.collection) ? config.collection : {};
-  const minimum = Math.max(1, Number(cardCount) || 0);
+  const collectionPatch = isPlainObject(patch.collection) ? patch.collection : {};
+  if (!Object.hasOwn(collectionPatch, 'cardStyle') && cards.some((card) => card?.styles?.typeOverride)) {
+    config.collection.cardStyle = '';
+  }
+  const minimum = Math.max(1, Number(Array.isArray(cardsOrCount) ? cards.length : cardsOrCount) || 0);
   config.collection.resultsPerPage = Math.max(Number(config.collection.resultsPerPage) || 0, minimum);
   config.collection.totalCardsToShow = Math.max(Number(config.collection.totalCardsToShow) || 0, minimum);
   return config;

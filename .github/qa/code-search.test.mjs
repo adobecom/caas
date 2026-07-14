@@ -41,6 +41,15 @@ test('opens a tracked source file when the model searches by filename', () => {
   assert.match(result.matches[0].snippet, /const CardFooter/);
 });
 
+test('opens an explicitly targeted file when the requested symbol is absent', () => {
+  const result = searchCode({ repoRoot, query: '<OriginalCard',
+    searchPath: 'react/src/js/components/Consonant/Grid/Grid.jsx' });
+  assert.equal(result.matches.length, 1);
+  assert.equal(result.matches[0].file, 'react/src/js/components/Consonant/Grid/Grid.jsx');
+  assert.equal(result.matches[0].matchType, 'path');
+  assert.match(result.matches[0].snippet, /TransformedCard/);
+});
+
 test('broad symbol searches prioritize different files and include definitions', () => {
   const result = searchCode({
     repoRoot,

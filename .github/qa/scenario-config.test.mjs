@@ -23,6 +23,13 @@ test('deep-merges feature keys while preserving live collection transport', () =
   assert.equal(config.products.acrobat.title, 'Acrobat');
 });
 
+test('a fixture card style wins unless the feature patch explicitly tests the collection override', () => {
+  const card = { styles: { typeOverride: 'flex-card' } };
+  assert.equal(buildScenarioConfig({ collection: { cardStyle: '1:2' } }, {}, [card]).collection.cardStyle, '');
+  assert.equal(buildScenarioConfig({ collection: { cardStyle: '1:2' } },
+    { collection: { cardStyle: 'product' } }, [card]).collection.cardStyle, 'product');
+});
+
 test('arrays in an explicit feature patch replace live arrays', () => {
   assert.deepEqual(mergeScenarioConfig({ featuredCards: ['old'] }, { featuredCards: ['new'] }),
     { featuredCards: ['new'] });

@@ -298,7 +298,7 @@ or {"sourceTest":"...","skipReason":"precise unsupported capability or missing m
       throw new Error('agent returned an incomplete scenario plan');
     }
     plan.configPatch = plan.config;
-    plan.config = buildScenarioConfig(liveConfigs[0], plan.configPatch, plan.cards.length);
+    plan.config = buildScenarioConfig(liveConfigs[0], plan.configPatch, plan.cards);
     plan.probes = cleanProbes(plan.probes);
     bundle = { pr: Number(PR), meta: evidence.meta, plan, researchCount: research.searches.length,
       researchSummary: research.summary, researchSearches: research.searches };

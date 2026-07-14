@@ -121,8 +121,14 @@ export function searchCode({
       throw new Error(`git ls-files failed: ${(filesResult.stderr || '').trim() || `exit ${filesResult.status}`}`);
     }
     const lowerNeedle = needle.toLowerCase();
-    const files = String(filesResult.stdout || '').split('\n')
-      .filter((filePath) => filePath && !isExcluded(filePath) && filePath.toLowerCase().includes(lowerNeedle))
+    const trackedPaths = String(filesResult.stdout || '').split('\n').filter(Boolean);
+    const exactTarget = trackedPaths.length === 1 && trackedPaths[0] === relativePath;
+    const files = trackedPaths
+      // A model often names the right file but searches for a wrapper's original
+      // component name. Opening that explicitly targeted file lets it discover
+      // aliases such as TransformedCard instead of burning the search budget.
+      .filter((filePath) => filePath && !isExcluded(filePath) &&
+        (exactTarget || filePath.toLowerCase().includes(lowerNeedle)))
       .sort((left, right) => {
         const leftExact = path.posix.basename(left).toLowerCase() === lowerNeedle ? 0 : 1;
         const rightExact = path.posix.basename(right).toLowerCase() === lowerNeedle ? 0 : 1;
