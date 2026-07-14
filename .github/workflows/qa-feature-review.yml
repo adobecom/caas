@@ -33,6 +33,19 @@ jobs:
         with:
           node-version: 18
 
+      # Keep the reviewer that belongs to this workflow revision. A manual replay
+      # checks out an older PR below; without this copy it also rolls the reviewer
+      # back to that PR's older implementation and does not test the new search.
+      - name: Preserve and test the feature reviewer
+        run: |
+          node --test .github/qa/code-search.test.mjs
+          mkdir -p "$RUNNER_TEMP/feature-review"
+          cp .github/qa/feature-review.mjs \
+             .github/qa/code-search.mjs \
+             .github/qa/package.json \
+             .github/qa/package-lock.json \
+             "$RUNNER_TEMP/feature-review/"
+
       - name: Check out the PR's head so we build its actual code
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -44,11 +57,11 @@ jobs:
           NODE_OPTIONS=--openssl-legacy-provider npm run build
 
       - name: Install feature-review deps
-        working-directory: .github/qa
+        working-directory: ${{ runner.temp }}/feature-review
         run: npm ci
 
       - name: Run feature QA review
-        working-directory: .github/qa
+        working-directory: ${{ runner.temp }}/feature-review
         env:
           GH_REPO: ${{ github.repository }}
           DIST_DIR: ${{ github.workspace }}/dist
@@ -69,5 +82,5 @@ jobs:
         if: always()
         with:
           name: feature-review-${{ github.run_id }}
-          path: .github/qa/feature-out/
+          path: feature-out/
           retention-days: 14
