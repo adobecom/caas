@@ -423,6 +423,28 @@ export const mergeDeep = (target, ...sources) => {
     return mergeDeep(target, ...sources);
 };
 
+/**
+ * QA-only config override. Prod-safe: a no-op unless the page URL carries the
+ * `?caasqa` gate param. When gated, it deep-merges a JSON config override read from
+ * localStorage['caasQaConfig'] over the real config -- letting automated QA force a
+ * feature's config (e.g. sort.localFirstRecencyThreshold) that no live page authors.
+ * Client-side only: it changes nothing but the current browser tab's own render.
+ */
+export const applyQaConfigOverride = (config) => {
+    try {
+        if (typeof window === 'undefined' || !window.location || !window.localStorage) return config;
+        const params = new URLSearchParams(window.location.search || '');
+        if (!params.has('caasqa')) return config;
+        const raw = window.localStorage.getItem('caasQaConfig');
+        if (!raw) return config;
+        const override = JSON.parse(raw);
+        if (!isObject(override)) return config;
+        return mergeDeep(config, override);
+    } catch (e) {
+        return config;
+    }
+};
+
 const isCaasGroup = group => group.indexOf('ch_') === 0;
 
 /**
