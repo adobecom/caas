@@ -6,6 +6,12 @@ import { chromium } from 'playwright';
 import { researchCode } from './code-search.mjs';
 import { applySpecCardStyle, buildScenarioConfig } from './scenario-config.mjs';
 import { buildValidationView } from './observation-view.mjs';
+import {
+  applyScenarioRepair,
+  findMissingRequiredInitial,
+  prioritizeRenderabilityProbes,
+  requireRenderability,
+} from './renderability.mjs';
 
 const env = (name, fallback = '') => process.env[name] ?? fallback;
 const PR = env('PR_NUMBER');
@@ -132,6 +138,57 @@ function cleanProbes(probes) {
   });
 }
 
+function finalizePlan(rawPlan, { evidence, liveConfig }) {
+  const plan = rawPlan;
+  if (plan.skipReason) return plan;
+  if (!plan.sourceTest || !plan.expected || !plan.config || typeof plan.config !== 'object' ||
+    !Array.isArray(plan.cards) || !Array.isArray(plan.filters)) {
+    throw new Error('agent returned an incomplete scenario plan');
+  }
+  const styleNormalization = applySpecCardStyle(plan.cards, evidence.specText);
+  plan.cards = styleNormalization.cards;
+  plan.normalizations = styleNormalization.style
+    ? [`Copied unambiguous changed-spec cardStyle '${styleNormalization.style}' into fixture cards.`] : [];
+  plan.configPatch = plan.config;
+  plan.config = buildScenarioConfig(liveConfig, plan.configPatch, plan.cards);
+  plan.probes = cleanProbes(plan.probes);
+  plan.renderability = requireRenderability(plan.renderability);
+  plan.probes = cleanProbes(prioritizeRenderabilityProbes(plan.probes, plan.renderability));
+  return plan;
+}
+
+function persistBundle(bundle) {
+  mkdirSync(path.dirname(PLAN_PATH), { recursive: true });
+  writeFileSync(PLAN_PATH, `${JSON.stringify(bundle, null, 2)}\n`);
+}
+
+function requiredProbeSummary(observed, renderability) {
+  const required = renderability?.requiredInitial || [];
+  const probes = new Map((Array.isArray(observed?.probes) ? observed.probes : [])
+    .map((probe) => [probe?.selector, (Array.isArray(probe?.matches) ? probe.matches : [])
+      .filter((match) => !match?.selectorError).length]));
+  return required.map(({ selector }) => ({ selector, matches: probes.get(selector) || 0 }));
+}
+
+async function validateScenario(bundle, observed) {
+  const validationView = buildValidationView(observed, 18000);
+  console.log(`[validate] payload chars=${validationView.length}`);
+  const validationRaw = await llm(
+`Judge only this ${VARIANT === 'pre' ? 'frozen PRE-PR' : 'candidate POST-PR'} scenario's exact assertion against the historical build render.
+
+Source test/requirement: ${bundle.plan.sourceTest}
+Expected: ${bundle.plan.expected}
+Where to observe: ${bundle.plan.observe}
+Mapping evidence: ${JSON.stringify(bundle.plan.mappingEvidence || [])}
+DOM observations and requested probes (probes+diagnostics bounded first, then generic context):\n${validationView}
+
+Reply ONLY JSON: {"verdict":"PASS"|"FAIL","reason":"cite concrete observed evidence"}.`, 2000);
+  const validation = extractJson(validationRaw);
+  const verdict = validation.verdict === 'PASS' ? 'PASS' : 'FAIL';
+  console.log(`[validate] ${verdict}: ${validation.reason}`);
+  return { verdict, reason: validation.reason, validationPayloadChars: validationView.length };
+}
+
 async function browserSession() {
   const browser = await chromium.connectOverCDP(CDP);
   const context = browser.contexts()[0] || await browser.newContext();
@@ -230,11 +287,14 @@ async function renderScenario(context, routeLibraries, plan) {
 
 (async () => {
   let bundle;
+  let postEvidence;
+  let postLiveConfig;
   if (VARIANT === 'pre') {
     bundle = JSON.parse(readFileSync(PLAN_PATH, 'utf8'));
     console.log(`[plan] reusing post-PR scenario: ${bundle.plan.sourceTest}`);
   } else {
     const evidence = productEvidence();
+    postEvidence = evidence;
     const detectRaw = await llm(
 `Decide whether this historical Adobe CaaS PR contains a product behavior that can be reproduced on a live page by replacing collection config and collection JSON, then observing the DOM.
 
@@ -271,6 +331,7 @@ Reply ONLY JSON: {"testable":true|false,"reason":"one sentence"}.`, 3000);
     if (!Array.isArray(liveConfigs) || liveConfigs.length === 0) {
       throw new Error('QA overlay did not capture a live collection config from the historical build');
     }
+    postLiveConfig = liveConfigs[0];
     console.log(`[capture] ${liveConfigs.length} live config(s)`);
     const planRaw = await llm(
 `Reproduce exactly ONE human-authored test/requirement from this historical Adobe CaaS PR on a real page. Do not invent expected behavior.
@@ -293,56 +354,119 @@ Return a minimal feature config patch, crafted cards and filters, the exact expe
 
 RENDER-OR-SKIP: your config MUST actually render the exact component your assertion observes. If the assertion targets a carousel control, set the collection layout/style to the carousel variant so CardsCarousel renders; if it targets nested filter items, the filter panel and its nested filter data must render those items directly. If the target element would only appear after an interaction the harness cannot perform (expanding/collapsing a filter category, advancing/scrolling a carousel, hovering, clicking, typing, resizing the viewport), that is an UNSUPPORTED interaction: return a precise skipReason naming the required interaction instead of a scenario whose target never appears. Never select an assertion you cannot make observable in the initial render.
 
+INITIAL-RENDER CONTRACT: return renderability.requiredInitial with up to three positive DOM prerequisites that must exist in the initial POST render before the assertion can be judged. Include the exact input/button/card/label whose property you assert, not just a wrapper. For a genuine absence assertion, require a stable rendered parent/card/root instead of the element expected to be absent. Each selector must also be a probe; code prioritizes these probes and will make one bounded scenario-only repair attempt if a prerequisite is missing. Before choosing a click-gated caller, search for another supported config/layout caller that renders the same target initially. An enabled config flag is not proof that a local user-state gate has been satisfied.
+
 CRITICAL: copy the selected test's exact cardStyle literal into every crafted card's styles.typeOverride. For example, if the spec says const cardStyle = 'flex-card', typeOverride MUST be 'flex-card'. The angle-bracket value in the shape above is a placeholder, never a default.
 
 Reply ONLY JSON:
-{"sourceTest":"...","config":{},"cards":[],"filters":[],"isHashed":false,"expected":"exact assertion","observe":"...","probes":[],"mappingEvidence":[{"file":"...","line":1,"fact":"..."}],"skipReason":""}
+{"sourceTest":"...","config":{},"cards":[],"filters":[],"isHashed":false,"expected":"exact assertion","observe":"...","probes":[],"renderability":{"requiredInitial":[{"selector":"...","minMatches":1,"why":"..."}]},"mappingEvidence":[{"file":"...","line":1,"fact":"..."}],"skipReason":""}
 or {"sourceTest":"...","skipReason":"precise unsupported capability or missing mapping"}.`, 16000);
-    const plan = extractJson(planRaw);
+    const plan = finalizePlan(extractJson(planRaw), { evidence, liveConfig: postLiveConfig });
     if (plan.skipReason) {
       saveResult({ status: 'SKIPPED', stage: 'plan', reason: plan.skipReason,
         researchCount: research.searches.length, sourceTest: plan.sourceTest || '' });
       return;
     }
-    if (!plan.sourceTest || !plan.expected || !plan.config || typeof plan.config !== 'object' ||
-      !Array.isArray(plan.cards) || !Array.isArray(plan.filters)) {
-      throw new Error('agent returned an incomplete scenario plan');
-    }
-    const styleNormalization = applySpecCardStyle(plan.cards, evidence.specText);
-    plan.cards = styleNormalization.cards;
-    plan.normalizations = styleNormalization.style
-      ? [`Copied unambiguous changed-spec cardStyle '${styleNormalization.style}' into fixture cards.`] : [];
-    plan.configPatch = plan.config;
-    plan.config = buildScenarioConfig(liveConfigs[0], plan.configPatch, plan.cards);
-    plan.probes = cleanProbes(plan.probes);
     bundle = { pr: Number(PR), meta: evidence.meta, plan, researchCount: research.searches.length,
       researchSummary: research.summary, researchSearches: research.searches };
-    mkdirSync(path.dirname(PLAN_PATH), { recursive: true });
-    writeFileSync(PLAN_PATH, `${JSON.stringify(bundle, null, 2)}\n`);
-    console.log(`[plan] ${plan.sourceTest} cards=${plan.cards?.length || 0} probes=${plan.probes.length}`);
+    console.log(`[plan] ${plan.sourceTest} cards=${plan.cards?.length || 0} probes=${plan.probes.length} initial=${plan.renderability.requiredInitial.length}`);
   }
 
   const { context, routeLibraries } = await browserSession();
-  const observed = await renderScenario(context, routeLibraries, bundle.plan);
+  let observed = await renderScenario(context, routeLibraries, bundle.plan);
   console.log(`[observed] ${JSON.stringify(observed).slice(0, 8000)}`);
-  const validationView = buildValidationView(observed, 18000);
-  console.log(`[validate] payload chars=${validationView.length}`);
-  const validationRaw = await llm(
-`Judge only the frozen post-PR scenario's exact assertion against this ${VARIANT === 'pre' ? 'PRE-PR historical build' : 'POST-PR historical build'} render.
+  let missingInitial = VARIANT === 'post'
+    ? findMissingRequiredInitial(observed, bundle.plan.renderability) : [];
+  let validation = missingInitial.length ? null : await validateScenario(bundle, observed);
 
-Source test/requirement: ${bundle.plan.sourceTest}
-Expected: ${bundle.plan.expected}
+  // A missing post prerequisite means the planner chose a scenario that did not
+  // actually mount its target. Repair before semantic validation so a model can
+  // never accidentally PASS an unrendered assertion. Never do this on PRE:
+  // that historical build may correctly lack the new target.
+  if (VARIANT === 'post' && missingInitial.length) {
+      console.log(`[renderability] missing initial prerequisites: ${JSON.stringify(missingInitial)}`);
+      const repairResearch = await researchCode({
+        ask: llm,
+        repoRoot: ROOT,
+        maxSearches: 4,
+        taskContext: `Repair a failed initial-render scenario for this historical Adobe CaaS feature test. The changed requirement is immutable; do not seek a different/easier assertion. Find whether another production caller, config/layout, or fixture-data shape can render the exact required selector without a browser interaction. If no static path exists, say so precisely.\n\nPR: ${postEvidence.meta.title}\nChanged test diff:\n${postEvidence.specDiff}\nProduct diff:\n${postEvidence.diff.slice(0, 10000)}\n\nImmutable source test: ${bundle.plan.sourceTest}\nImmutable expected assertion: ${bundle.plan.expected}\nInitial config patch: ${JSON.stringify(bundle.plan.configPatch)}\nRequired initial selectors: ${JSON.stringify(bundle.plan.renderability.requiredInitial)}\nMissing evidence: ${JSON.stringify(missingInitial)}\nInitial requested probe results: ${JSON.stringify(observed.probes).slice(0, 12000)}`,
+      });
+      console.log(`[renderability research] searches=${repairResearch.searches.length} summary=${repairResearch.summary.slice(0, 800)}`);
+      const repairRaw = await llm(
+`The initial POST render for a historical Adobe CaaS feature test failed because required DOM prerequisites were missing. Repair the SCENARIO only, not the test's meaning.
+
+Immutable test intent (do not change any of these):
+Source test: ${bundle.plan.sourceTest}
+Expected assertion: ${bundle.plan.expected}
 Where to observe: ${bundle.plan.observe}
 Mapping evidence: ${JSON.stringify(bundle.plan.mappingEvidence || [])}
-DOM observations and requested probes (probes+diagnostics bounded first, then generic context):\n${validationView}
+Probes: ${JSON.stringify(bundle.plan.probes)}
+Initial-render contract: ${JSON.stringify(bundle.plan.renderability)}
 
-Reply ONLY JSON: {"verdict":"PASS"|"FAIL","reason":"cite concrete observed evidence"}.`, 2000);
-  const validation = extractJson(validationRaw);
-  const verdict = validation.verdict === 'PASS' ? 'PASS' : 'FAIL';
-  console.log(`[validate] ${verdict}: ${validation.reason}`);
-  saveResult({ status: verdict, reason: validation.reason, sourceTest: bundle.plan.sourceTest,
+Initial scenario config patch: ${JSON.stringify(bundle.plan.configPatch)}
+Initial cards: ${JSON.stringify(bundle.plan.cards).slice(0, 12000)}
+Initial filters: ${JSON.stringify(bundle.plan.filters).slice(0, 8000)}
+Missing prerequisite evidence: ${JSON.stringify(missingInitial)}
+Observed requested probes: ${JSON.stringify(observed.probes).slice(0, 12000)}
+
+Fresh bounded source research:\n${repairResearch.report}
+
+The harness supports only initial render from injected config, cards, and filters. It cannot click, type, expand, scroll, hover, resize, or alter URL state. Return a COMPLETE replacement feature config patch (not a delta from the initial patch), plus the complete replacement cards and filters. If the same exact component has another static config/layout caller, use it. If no static injected scenario can mount the exact target, return a precise skipReason naming the unsupported interaction/state. Do not weaken the assertion, substitute a wrapper, or change probes/renderability.
+
+Reply ONLY JSON:
+{"config":{},"cards":[],"filters":[],"isHashed":false}
+or {"skipReason":"precise unsupported interaction or state"}.`, 12000);
+      const repair = applyScenarioRepair(bundle.plan, extractJson(repairRaw));
+      const repairMetadata = {
+        initialValidationReason: 'not judged because required initial DOM was absent',
+        initialValidationPayloadChars: null,
+        initialRequiredMatches: requiredProbeSummary(observed, bundle.plan.renderability),
+        initialScenario: {
+          configPatch: bundle.plan.configPatch,
+          cards: bundle.plan.cards,
+          filters: bundle.plan.filters,
+          isHashed: Boolean(bundle.plan.isHashed),
+        },
+        initialRequiredProbes: (Array.isArray(observed.probes) ? observed.probes : [])
+          .filter((probe) => bundle.plan.renderability.requiredInitial
+            .some((requirement) => requirement.selector === probe.selector)),
+        missingInitial,
+        researchCount: repairResearch.searches.length,
+      };
+      if (repair.skipReason) {
+        bundle.renderabilityRepair = { ...repairMetadata, outcome: 'SKIPPED', reason: repair.skipReason };
+        persistBundle(bundle);
+        saveResult({ status: 'SKIPPED', stage: 'renderability', reason: repair.skipReason,
+          sourceTest: bundle.plan.sourceTest, expected: bundle.plan.expected, probes: bundle.plan.probes,
+          renderability: bundle.plan.renderability, renderabilityRepair: bundle.renderabilityRepair, observed,
+          screenshot: SCREENSHOT_PATH });
+        return;
+      }
+      bundle.plan = finalizePlan(repair, { evidence: postEvidence, liveConfig: postLiveConfig });
+      bundle.renderabilityRepair = { ...repairMetadata, outcome: 'REPAIRED' };
+      console.log(`[renderability] rerendering repaired scenario; initial=${bundle.plan.renderability.requiredInitial.length}`);
+      observed = await renderScenario(context, routeLibraries, bundle.plan);
+      console.log(`[observed repaired] ${JSON.stringify(observed).slice(0, 8000)}`);
+      validation = await validateScenario(bundle, observed);
+      const remaining = findMissingRequiredInitial(observed, bundle.plan.renderability);
+      if (remaining.length) {
+        bundle.renderabilityRepair = { ...bundle.renderabilityRepair, outcome: 'UNRESOLVED', remaining };
+        persistBundle(bundle);
+        saveResult({ status: 'FAIL', stage: 'renderability',
+          reason: `repaired post scenario still lacks required initial DOM: ${JSON.stringify(remaining)}`,
+          sourceTest: bundle.plan.sourceTest, expected: bundle.plan.expected, probes: bundle.plan.probes,
+          renderability: bundle.plan.renderability, renderabilityRepair: bundle.renderabilityRepair, observed,
+          screenshot: SCREENSHOT_PATH });
+        return;
+      }
+  }
+
+  if (VARIANT === 'post') persistBundle(bundle);
+  saveResult({ status: validation.verdict, reason: validation.reason, sourceTest: bundle.plan.sourceTest,
     expected: bundle.plan.expected, researchCount: bundle.researchCount, mappingEvidence: bundle.plan.mappingEvidence,
-    probes: bundle.plan.probes, validationPayloadChars: validationView.length, observed, screenshot: SCREENSHOT_PATH });
+    probes: bundle.plan.probes, renderability: bundle.plan.renderability,
+    renderabilityRepair: bundle.renderabilityRepair, validationPayloadChars: validation.validationPayloadChars,
+    observed, screenshot: SCREENSHOT_PATH });
 })().then(() => {
   // connectOverCDP keeps a transport referenced even after every test page is
   // closed. This process owns no browser, so exit without closing the Mini's

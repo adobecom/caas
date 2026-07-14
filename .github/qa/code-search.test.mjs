@@ -97,6 +97,9 @@ test('runs a bounded model-directed search and returns raw source evidence', asy
   assert.equal(result.searches.length, 1);
   assert.match(result.summary, /CardFooter passes/);
   assert.match(result.report, /CardFooter\.jsx/);
+  assert.match(prompts[0], /initial render/);
+  assert.match(prompts[0], /alternative production caller/);
+  assert.match(prompts[0], /local user state/);
   assert.match(prompts[1], /RAW|SEARCH 1/);
 });
 

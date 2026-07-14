@@ -179,7 +179,7 @@ export async function researchCode({ ask, repoRoot, taskContext, maxSearches = 8
     const raw = await ask(
 `You are researching the CURRENT checked-out Adobe CaaS PR source before planning a browser feature test.
 
-Goal: trace the selected/changed unit-test inputs from the tested function or component BACKWARD through its production callers until you reach fields the harness can inject: collection config and/or the chimera-api card JSON. Also identify card styles and config/state conditions that can prevent the target component from rendering.
+Goal: trace the selected/changed unit-test inputs from the tested function or component BACKWARD through its production callers until you reach fields the harness can inject: collection config and/or the chimera-api card JSON. Also identify card styles and config/state conditions that can prevent the target component from rendering. For every condition controlled by local user state (click/expand/hover/type/scroll/viewport), distinguish it from a static config/data condition: search for an alternative production caller or layout that can mount the exact target on the initial render. State explicitly whether the target can be made visible without browser interaction; never assume that an enabled config flag alone mounts it.
 
 PR context, changed test/source, and diff:
 ${String(taskContext || '').slice(0, 22000)}
