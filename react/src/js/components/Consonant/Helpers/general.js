@@ -427,18 +427,34 @@ export const mergeDeep = (target, ...sources) => {
  * QA-only config override. Prod-safe: a no-op unless the page URL carries the
  * `?caasqa` gate param. When gated, it deep-merges a JSON config override read from
  * localStorage['caasQaConfig'] over the real config -- letting automated QA force a
- * feature's config (e.g. sort.localFirstRecencyThreshold) that no live page authors.
+ * feature's config (e.g. sort.localFirstRecencyThreshold) on a live page.
  * Client-side only: it changes nothing but the current browser tab's own render.
  */
+const QA_CONFIGS_PROPERTY = '__caasQaConfigs';
+const QA_REPLACE_PROPERTY = '_caasQaReplace';
+
 export const applyQaConfigOverride = (config) => {
     try {
         if (typeof window === 'undefined' || !window.location || !window.localStorage) return config;
         const params = new URLSearchParams(window.location.search || '');
         if (!params.has('caasqa')) return config;
+        // Capture each collection's untouched config for the QA planner. A page may
+        // host several collections, so preserve all of them as independent snapshots.
+        try {
+            window[QA_CONFIGS_PROPERTY] = window[QA_CONFIGS_PROPERTY] || [];
+            window[QA_CONFIGS_PROPERTY].push(JSON.parse(JSON.stringify(config)));
+        } catch (e) { /* capture is best-effort */ }
         const raw = window.localStorage.getItem('caasQaConfig');
         if (!raw) return config;
         const override = JSON.parse(raw);
         if (!isObject(override)) return config;
+        // A full replacement lets the harness remove page-authored constraints such
+        // as featured pinning and card limits. It remains behind the ?caasqa gate.
+        if (override[QA_REPLACE_PROPERTY] === true) {
+            const replacement = { ...override };
+            delete replacement[QA_REPLACE_PROPERTY];
+            return replacement;
+        }
         return mergeDeep(config, override);
     } catch (e) {
         return config;
