@@ -4,7 +4,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { chromium } from 'playwright';
 import { researchCode } from './code-search.mjs';
-import { buildScenarioConfig } from './scenario-config.mjs';
+import { applySpecCardStyle, buildScenarioConfig } from './scenario-config.mjs';
 
 const env = (name, fallback = '') => process.env[name] ?? fallback;
 const PR = env('PR_NUMBER');
@@ -35,7 +35,7 @@ const ALLOW = new Set(['app.css', 'main.min.js', 'react.umd.js', 'react.dom.umd.
 const gh = (args) => execFileSync('gh', args, { encoding: 'utf8', maxBuffer: 20 * 1024 * 1024 });
 
 const CARD_SHAPE = `A minimal collection card is:
-{ "id":"unique", "styles":{"typeOverride":"one-half","backgroundImage":"https://business.adobe.com/content/dam/dx/us/en/images/cards/default/media_1.jpg","icon":""},
+{ "id":"unique", "styles":{"typeOverride":"<copy exact cardStyle from selected test>","backgroundImage":"https://business.adobe.com/content/dam/dx/us/en/images/cards/default/media_1.jpg","icon":""},
   "contentArea":{"title":"visible title","detailText":"eyebrow","url":"https://business.adobe.com/"},
   "overlays":{"banner":{},"logo":{"src":""},"label":{},"videoButton":{"url":""}},
   "footer":[{"left":[],"center":[],"right":[]}], "tags":[{"id":"caas:country/us"}],
@@ -284,6 +284,8 @@ Harness contract: return only the config keys needed for the selected feature/te
 
 Return a minimal feature config patch, crafted cards and filters, the exact expected assertion, and up to six read-only CSS probes that expose the relevant DOM. A probe is {"selector":"CSS selector","attributes":["attribute"],"why":"..."}. Follow the production caller chain from test props to config/card/filter JSON and cite it. Return skipReason only if the relevant input cannot be expressed in the replaced config/card/filter JSON, or the assertion fundamentally requires unsupported interaction or visual judgment.
 
+CRITICAL: copy the selected test's exact cardStyle literal into every crafted card's styles.typeOverride. For example, if the spec says const cardStyle = 'flex-card', typeOverride MUST be 'flex-card'. The angle-bracket value in the shape above is a placeholder, never a default.
+
 Reply ONLY JSON:
 {"sourceTest":"...","config":{},"cards":[],"filters":[],"isHashed":false,"expected":"exact assertion","observe":"...","probes":[],"mappingEvidence":[{"file":"...","line":1,"fact":"..."}],"skipReason":""}
 or {"sourceTest":"...","skipReason":"precise unsupported capability or missing mapping"}.`, 16000);
@@ -297,6 +299,10 @@ or {"sourceTest":"...","skipReason":"precise unsupported capability or missing m
       !Array.isArray(plan.cards) || !Array.isArray(plan.filters)) {
       throw new Error('agent returned an incomplete scenario plan');
     }
+    const styleNormalization = applySpecCardStyle(plan.cards, evidence.specText);
+    plan.cards = styleNormalization.cards;
+    plan.normalizations = styleNormalization.style
+      ? [`Copied unambiguous changed-spec cardStyle '${styleNormalization.style}' into fixture cards.`] : [];
     plan.configPatch = plan.config;
     plan.config = buildScenarioConfig(liveConfigs[0], plan.configPatch, plan.cards);
     plan.probes = cleanProbes(plan.probes);

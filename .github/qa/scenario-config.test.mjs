@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { buildScenarioConfig, mergeScenarioConfig } from './scenario-config.mjs';
+import { applySpecCardStyle, buildScenarioConfig, mergeScenarioConfig } from './scenario-config.mjs';
 
 test('deep-merges feature keys while preserving live collection transport', () => {
   const base = {
@@ -35,4 +35,13 @@ test('arrays in an explicit feature patch replace live arrays', () => {
     { featuredCards: ['new'] });
   assert.deepEqual(buildScenarioConfig({ featuredCards: ['old'] }, { featuredCards: ['feature-card'] }, 1)
     .featuredCards, ['feature-card']);
+});
+
+test('copies a single explicit cardStyle from the changed spec into fixture cards', () => {
+  const fixture = [{ styles: { typeOverride: 'one-half', icon: '' } }];
+  const normalized = applySpecCardStyle(fixture, "const cardStyle = 'flex-card';");
+  assert.equal(normalized.style, 'flex-card');
+  assert.equal(normalized.cards[0].styles.typeOverride, 'flex-card');
+  assert.equal(normalized.cards[0].styles.icon, '');
+  assert.equal(applySpecCardStyle(fixture, "cardStyle: 'one-half'; cardStyle: 'product'").style, null);
 });

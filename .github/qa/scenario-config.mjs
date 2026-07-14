@@ -36,3 +36,15 @@ export function buildScenarioConfig(liveConfig, featurePatch, cardsOrCount) {
   config.collection.totalCardsToShow = Math.max(Number(config.collection.totalCardsToShow) || 0, minimum);
   return config;
 }
+
+/** Copy one unambiguous cardStyle literal from the changed spec into fixtures. */
+export function applySpecCardStyle(cards, specText) {
+  const styles = new Set([...String(specText || '').matchAll(/\bcardStyle\s*(?:=|:)\s*['"]([^'"]+)['"]/g)]
+    .map((match) => match[1]));
+  if (styles.size !== 1 || !Array.isArray(cards)) return { cards: clone(cards), style: null };
+  const [style] = styles;
+  return {
+    style,
+    cards: clone(cards).map((card) => ({ ...card, styles: { ...(card?.styles || {}), typeOverride: style } })),
+  };
+}
