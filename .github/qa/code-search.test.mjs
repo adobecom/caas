@@ -41,6 +41,17 @@ test('opens a tracked source file when the model searches by filename', () => {
   assert.match(result.matches[0].snippet, /const CardFooter/);
 });
 
+test('broad symbol searches prioritize different files and include definitions', () => {
+  const result = searchCode({
+    repoRoot,
+    query: 'extendFooterData',
+    searchPath: 'react/src/js/components/Consonant/Cards',
+    gitBin: process.env.GIT_BIN || 'git',
+  });
+  assert.equal(new Set(result.matches.map(({ file }) => file)).size, result.matches.length);
+  assert.ok(result.matches.some(({ file, snippet }) => file.endsWith('/Card.jsx') && /function extendFooterData/.test(snippet)));
+});
+
 test('rejects paths outside the checkout', () => {
   assert.throws(() => searchCode({
     repoRoot,

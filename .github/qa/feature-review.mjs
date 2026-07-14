@@ -79,11 +79,18 @@ function postComment(verdict, bodyMd) {
 (async () => {
   const meta = JSON.parse(gh(['pr', 'view', PR, '-R', REPO, '--json', 'title,body,files']));
   const rawDiff = gh(['pr', 'diff', PR, '-R', REPO]);
-  // Drop this tool's OWN infra from the diff so it judges the PR's real change.
-  const diff = rawDiff.split(/(?=^diff --git )/m)
-    .filter((h) => !/feature-review\.mjs|code-search\.mjs|qa-feature-review\.yml/.test((h.split('\n')[0] || '')))
-    .join('').slice(0, 24000);
-  const changedPaths = (meta.files || []).map((f) => f.path);
+  const diffSections = rawDiff.split(/(?=^diff --git )/m).filter(Boolean);
+  const qaHookPattern = /applyQaConfigOverride|caasQaConfig|__caasQaConfigs|_caasQaReplace/;
+  const sectionPath = (section) => section.match(/^diff --git a\/(.+?) b\/(.+)$/m)?.[2] || '';
+  const qaHookPaths = new Set(diffSections
+    .filter((section) => /react\/src\/js\/components\/Consonant\/Helpers\/(?:general\.js|__tests__\/general\.spec\.js)$/.test(sectionPath(section)) && qaHookPattern.test(section))
+    .map(sectionPath));
+  const isReviewerInfra = (filePath) => filePath.startsWith('.github/qa/') ||
+    filePath === '.github/workflows/qa-feature-review.yml' || qaHookPaths.has(filePath);
+  // Drop this reviewer's own implementation and gated QA hook so it judges only
+  // the product feature. This matters when replaying older self-test PRs.
+  const diff = diffSections.filter((section) => !isReviewerInfra(sectionPath(section))).join('').slice(0, 24000);
+  const changedPaths = (meta.files || []).map((f) => f.path).filter((filePath) => !isReviewerInfra(filePath));
   const specPaths = changedPaths.filter((p) => /\.(spec|test)\.(jsx?|tsx?)$/.test(p));
   const specText = specPaths.map((p) => {
     try { return `\n// FILE ${p}\n${readFileSync(path.resolve(ROOT, p), 'utf8')}`; } catch { return ''; }
@@ -96,6 +103,8 @@ function postComment(verdict, bodyMd) {
 The harness renders the REAL PR build on a live page and can force exactly two things: (1) the CaaS CONFIG for a collection (it reads the page's real config and can replace it wholesale), and (2) the COLLECTION DATA (the chimera-api/collection JSON, replaced with crafted cards). It then reads the resulting DOM.
 
 TESTABLE only if the behaviour is driven by config and/or card data (a new sort mode, filter behaviour, a card field rendering, a config-gated layout). NOT testable if it is a pure refactor, build/CI/tooling/deps, test-only, backend/service-only, or needs unsupported auth / interaction / external state.
+
+The changed-file list and diff below already exclude this reviewer's own workflow, search implementation, and gated applyQaConfigOverride hook. Never select those QA mechanics as the product feature. For a self-test PR whose title/body names an earlier product behavior, test that named behavior from the included product spec.
 
 PR title: ${meta.title}
 PR body:
@@ -187,6 +196,8 @@ Card fixture shape:
 ${CARD_SHAPE}
 
 Pick ONE changed unit test whose effect is observable in the DOM.
+- Ignore applyQaConfigOverride, caasQaConfig, __caasQaConfigs, and _caasQaReplace; those are this harness's transport, not the product behavior under test.
+- If the PR title/body calls out a self-test target, select that named product behavior from the changed spec.
 - If it directly tests a subcomponent, use the searched caller chain to embed its exact props at the correct card JSON path. Do not guess a path.
 - Set an explicitly registered card style that actually renders that component, and neutralize searched config conditions that suppress it.
 - Preserve the test's exact feature inputs and assertions. Add only nonessential baseline fields needed to make the card render.

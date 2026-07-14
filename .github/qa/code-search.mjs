@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 
 const DEFAULT_SEARCH_PATH = 'react/src/js';
-const DEFAULT_MAX_MATCHES = 6;
+const DEFAULT_MAX_MATCHES = 8;
 const DEFAULT_CONTEXT_LINES = 6;
 const MAX_QUERY_LENGTH = 160;
 const MAX_TRANSCRIPT_CHARS = 24000;
@@ -73,16 +73,26 @@ export function searchCode({
   }
 
   const matches = [];
-  const seen = new Set();
-  for (const line of String(result.stdout || '').split('\n')) {
+  const firstByFile = [];
+  const additionalByFile = [];
+  const seenFiles = new Set();
+  for (const rawLine of String(result.stdout || '').split('\n')) {
+    const line = rawLine.replace(/\r$/, '');
     const match = line.match(/^(.+?):(\d+):(.*)$/);
     if (!match) continue;
     const [, filePath, lineNumberText] = match;
     if (isExcluded(filePath)) continue;
-    const key = `${filePath}:${lineNumberText}`;
-    if (seen.has(key)) continue;
-    seen.add(key);
+    const candidate = { filePath, lineNumberText };
+    if (seenFiles.has(filePath)) additionalByFile.push(candidate);
+    else {
+      seenFiles.add(filePath);
+      firstByFile.push(candidate);
+    }
+  }
 
+  // Show different callers/definitions before repeated uses from the first file.
+  // This makes broad symbol searches useful without increasing the context size.
+  for (const { filePath, lineNumberText } of [...firstByFile, ...additionalByFile]) {
     const absolutePath = path.resolve(repoRoot, filePath);
     if (!absolutePath.startsWith(`${path.resolve(repoRoot)}${path.sep}`)) continue;
     let lines;
