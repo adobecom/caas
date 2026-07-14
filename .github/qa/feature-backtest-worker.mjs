@@ -6,6 +6,7 @@ import { chromium } from 'playwright';
 import { researchCode } from './code-search.mjs';
 import { applySpecCardStyle, buildScenarioConfig } from './scenario-config.mjs';
 import { buildValidationView } from './observation-view.mjs';
+import { requestBoundedJson } from './llm-json.mjs';
 import {
   applyScenarioRepair,
   findMissingRequiredInitial,
@@ -56,7 +57,7 @@ function extractJson(source) {
   return JSON.parse(text.slice(start, end + 1));
 }
 
-async function llm(prompt, maxTokens = 4000) {
+async function llmResponse(prompt, maxTokens = 4000) {
   const body = JSON.stringify({ model: MODEL, max_tokens: maxTokens, stream: true,
     messages: [{ role: 'user', content: prompt }] });
   for (let attempt = 0; attempt < 3; attempt += 1) {
@@ -85,6 +86,7 @@ async function llm(prompt, maxTokens = 4000) {
     }
     let text = '';
     let stopped = false;
+    let stopReason = '';
     let apiError = null;
     for (const line of raw.split('\n')) {
       const trimmed = line.trim();
@@ -94,14 +96,24 @@ async function llm(prompt, maxTokens = 4000) {
       let event;
       try { event = JSON.parse(data); } catch { continue; }
       if (event.type === 'content_block_delta' && event.delta?.type === 'text_delta') text += event.delta.text || '';
-      else if (event.type === 'message_stop') stopped = true;
+      else if (event.type === 'message_delta') stopReason = event.delta?.stop_reason || stopReason;
+      else if (event.type === 'message_stop') {
+        stopped = true;
+        stopReason = event.message?.stop_reason || stopReason;
+      }
       else if (event.type === 'error') apiError = event.error;
     }
-    if (!apiError && stopped && text.trim()) return text.trim();
+    if (!apiError && stopped && text.trim()) {
+      return { text: text.trim(), stopReason: stopReason || 'end_turn' };
+    }
     console.error(`[llm] response attempt ${attempt + 1} failed (${apiError ? JSON.stringify(apiError) : 'incomplete'})`);
     if (attempt < 2) await new Promise((resolve) => setTimeout(resolve, 10000 * (attempt + 1)));
   }
   throw new Error('LLM proxy failed after three attempts');
+}
+
+async function llm(prompt, maxTokens = 4000) {
+  return (await llmResponse(prompt, maxTokens)).text;
 }
 
 function saveResult(result) {
@@ -300,6 +312,8 @@ async function renderScenario(context, routeLibraries, plan) {
 
 Testable examples: newly introduced card rendering, sorting, filtering, config-gated layout, or semantic DOM output. Not testable with this worker: pure refactor, build/tooling, backend-only, performance-only, or behavior requiring user interaction before observation.
 
+STATIC-BOUNDARY CHECK: before calling a behavior interaction-only, inspect every changed comparison, visibility predicate, and mount effect. Trace its initial state and ask whether fixture-controlled config, card count, or filter data can put it exactly on the old/new boundary at first render. A ticket may describe a click/navigation symptom while the changed predicate is already evaluated on mount; that is testable without interaction. Only call it interaction-only after ruling out this bounded initial-state case from the changed source.
+
 The full changed spec files below are context only and contain many old tests. A test is evidence of new behavior only when its assertion/requirement is actually added or modified in CHANGED TEST DIFF, or the product diff/body explicitly introduces that observable behavior. Never classify a component split/file move as a feature merely because existing regression tests still pass or a spec's import paths changed.
 
 PR: ${evidence.meta.title}
@@ -333,8 +347,7 @@ Reply ONLY JSON: {"testable":true|false,"reason":"one sentence"}.`, 3000);
     }
     postLiveConfig = liveConfigs[0];
     console.log(`[capture] ${liveConfigs.length} live config(s)`);
-    const planRaw = await llm(
-`Reproduce exactly ONE human-authored test/requirement from this historical Adobe CaaS PR on a real page. Do not invent expected behavior.
+    const planRaw = `Reproduce exactly ONE human-authored test/requirement from this historical Adobe CaaS PR on a real page. Do not invent expected behavior.
 
 PR: ${evidence.meta.title}
 Body: ${(evidence.meta.body || '').slice(0, 1800)}
@@ -352,16 +365,32 @@ Harness contract: return only the config keys needed for the selected feature/te
 
 Return a minimal feature config patch, crafted cards and filters, the exact expected assertion, and up to six read-only CSS probes that expose the relevant DOM. A probe is {"selector":"CSS selector","attributes":["attribute"],"why":"..."}. The selected assertion must come from the changed test diff or a new observable product requirement explicitly introduced by the PR diff/body; never borrow an old unchanged regression test from the full spec. Follow the production caller chain from test props to config/card/filter JSON and cite it. Return skipReason only if the relevant input cannot be expressed in the replaced config/card/filter JSON, or the assertion fundamentally requires unsupported interaction or visual judgment.
 
+BOUNDARY CASES: when the changed source adjusts a comparison or visibility condition, trace its initial values and mount effects. Prefer a minimal fixture whose injected card/filter/config values land exactly at the changed boundary on the initial render (for example, cards.length = cardsPerPage + 1) over assuming a click is necessary from the ticket wording.
+
 RENDER-OR-SKIP: your config MUST actually render the exact component your assertion observes. If the assertion targets a carousel control, set the collection layout/style to the carousel variant so CardsCarousel renders; if it targets nested filter items, the filter panel and its nested filter data must render those items directly. If the target element would only appear after an interaction the harness cannot perform (expanding/collapsing a filter category, advancing/scrolling a carousel, hovering, clicking, typing, resizing the viewport), that is an UNSUPPORTED interaction: return a precise skipReason naming the required interaction instead of a scenario whose target never appears. Never select an assertion you cannot make observable in the initial render.
 
 INITIAL-RENDER CONTRACT: return renderability.requiredInitial with up to three positive DOM prerequisites that must exist in the initial POST render before the assertion can be judged. Include the exact input/button/card/label whose property you assert, not just a wrapper. For a genuine absence assertion, require a stable rendered parent/card/root instead of the element expected to be absent. Each selector must also be a probe; code prioritizes these probes and will make one bounded scenario-only repair attempt if a prerequisite is missing. Before choosing a click-gated caller, search for another supported config/layout caller that renders the same target initially. An enabled config flag is not proof that a local user-state gate has been satisfied.
 
 CRITICAL: copy the selected test's exact cardStyle literal into every crafted card's styles.typeOverride. For example, if the spec says const cardStyle = 'flex-card', typeOverride MUST be 'flex-card'. The angle-bracket value in the shape above is a placeholder, never a default.
 
+RESPONSE SIZE: keep the complete JSON below 24,000 characters. Use no more than eight cards, four filter groups with sixteen total leaf items, four probes, and three mappingEvidence entries. Omit non-rendering card fields and keep explanations concise; the fixture need only prove the exact changed behavior.
+
 Reply ONLY JSON:
 {"sourceTest":"...","config":{},"cards":[],"filters":[],"isHashed":false,"expected":"exact assertion","observe":"...","probes":[],"renderability":{"requiredInitial":[{"selector":"...","minMatches":1,"why":"..."}]},"mappingEvidence":[{"file":"...","line":1,"fact":"..."}],"skipReason":""}
-or {"sourceTest":"...","skipReason":"precise unsupported capability or missing mapping"}.`, 16000);
-    const plan = finalizePlan(extractJson(planRaw), { evidence, liveConfig: postLiveConfig });
+or {"sourceTest":"...","skipReason":"precise unsupported capability or missing mapping"}.`;
+    const planResponse = await requestBoundedJson({
+      ask: llmResponse,
+      prompt: planRaw,
+      label: 'plan',
+      maxTokens: 16000,
+      retryMaxTokens: 8000,
+      maxChars: 24000,
+      retrySuffix: `Return the entire replacement JSON object again, with no prose or fences. The prior response was unusable. Keep it below 24,000 characters: use at most eight cards, four filter groups with sixteen total leaf items, four probes, and three concise mappingEvidence entries. Omit non-rendering card fields. If the exact changed behavior requires an unsupported interaction, return the precise skipReason instead of a partial plan.`,
+      parseAndValidate: (rawPlan) => finalizePlan(rawPlan, { evidence, liveConfig: postLiveConfig }),
+    });
+    const plan = planResponse.value;
+    console.log(`[plan json] ${planResponse.attempts.map(({ attempt, kind, stopReason, chars }) =>
+      `attempt=${attempt} kind=${kind} stop=${stopReason} chars=${chars}`).join('; ')}`);
     if (plan.skipReason) {
       saveResult({ status: 'SKIPPED', stage: 'plan', reason: plan.skipReason,
         researchCount: research.searches.length, sourceTest: plan.sourceTest || '' });
