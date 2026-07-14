@@ -23,7 +23,7 @@ jobs:
   feature-review:
     runs-on: [self-hosted, qa-audit]   # the Mini — only runner with the persistent Chrome/CDP
     timeout-minutes: 20
-    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
+    if: ${{ (github.event_name == 'workflow_dispatch' && !startsWith(inputs.pr_number, 'backtest:')) || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) }}
     permissions:
       contents: read
       pull-requests: write
@@ -86,3 +86,53 @@ jobs:
           name: feature-review-${{ github.run_id }}
           path: feature-out/
           retention-days: 14
+
+  # A temporary carrier for historical runs while qa-feature-backtest.yml is
+  # still new on this feature branch and cannot yet be dispatched by filename.
+  # Example manual input: backtest:532,490
+  historical-backtest:
+    if: ${{ github.event_name == 'workflow_dispatch' && startsWith(inputs.pr_number, 'backtest:') }}
+    runs-on: [self-hosted, qa-audit]
+    timeout-minutes: 180
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install back-test browser tools
+        working-directory: .github/qa
+        run: npm ci
+
+      - name: Verify back-test harness
+        working-directory: .github/qa
+        run: npm run test:backtest
+
+      - name: Run historical PRs sequentially
+        env:
+          BACKTEST_REQUEST: ${{ inputs.pr_number }}
+          BACKTEST_OUTPUT_DIR: ${{ github.workspace }}/backtest-out
+          GH_REPO: ${{ github.repository }}
+          PAGE_URL: https://business.adobe.com/customer-success-stories.html
+          CDP_URL: http://127.0.0.1:9222
+          IMS_ACCESS_TOKEN: ${{ secrets.IMS_ACCESS_TOKEN }}
+          PROXY_URL: ${{ secrets.LLM_PROXY_ENDPOINT }}
+          MODEL: ${{ secrets.LLM_MODEL }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          export BACKTEST_PRS="${BACKTEST_REQUEST#backtest:}"
+          node .github/qa/feature-backtest-batch.mjs
+
+      - name: Upload plans, results, and screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: historical-feature-backtest-${{ github.run_id }}
+          path: backtest-out/
+          if-no-files-found: warn
+          retention-days: 30
