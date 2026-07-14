@@ -1,0 +1,73 @@
+name: Feature QA Review
+
+# Advisory, non-blocking. Reasons about whether a PR is a config/data-gated CaaS
+# feature; if so, injects the PR build + a forced config (?caasqa hook) + a mocked
+# chimera-api/collection, renders it on a live page, and validates the result
+# against the PR's own unit tests. If the PR isn't an injectable feature, it skips.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to feature-test'
+        required: true
+        type: string
+
+concurrency:
+  group: qa-feature-${{ github.event.pull_request.number || inputs.pr_number }}
+  cancel-in-progress: true
+
+jobs:
+  feature-review:
+    runs-on: [self-hosted, qa-audit]   # the Mini — only runner with the persistent Chrome/CDP
+    timeout-minutes: 20
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Check out the PR's head so we build its actual code
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr checkout ${{ github.event.pull_request.number || inputs.pr_number }}
+
+      - name: Build the PR's CaaS dist
+        run: |
+          npm ci
+          NODE_OPTIONS=--openssl-legacy-provider npm run build
+
+      - name: Install feature-review deps
+        working-directory: .github/qa
+        run: npm ci
+
+      - name: Run feature QA review
+        working-directory: .github/qa
+        env:
+          GH_REPO: ${{ github.repository }}
+          DIST_DIR: ${{ github.workspace }}/dist
+          CDP_URL: http://127.0.0.1:9222
+          IMS_ACCESS_TOKEN: ${{ secrets.IMS_ACCESS_TOKEN }}
+          PROXY_URL: ${{ secrets.LLM_PROXY_ENDPOINT }}
+          MODEL: ${{ secrets.LLM_MODEL }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
+        run: node feature-review.mjs
+
+      - name: Upload render screenshot
+        if: always()
+        run: |
+          mkdir -p feature-out && cp /tmp/feature-render.png feature-out/ 2>/dev/null || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: feature-review-${{ github.run_id }}
+          path: .github/qa/feature-out/
+          retention-days: 14

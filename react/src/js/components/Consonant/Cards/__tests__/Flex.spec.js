@@ -224,3 +224,4 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         },
     ]);
 });
+// feature-test target: 532
