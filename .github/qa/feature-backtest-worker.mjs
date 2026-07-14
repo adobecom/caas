@@ -5,6 +5,7 @@ import path from 'node:path';
 import { chromium } from 'playwright';
 import { researchCode } from './code-search.mjs';
 import { applySpecCardStyle, buildScenarioConfig } from './scenario-config.mjs';
+import { buildValidationView } from './observation-view.mjs';
 
 const env = (name, fallback = '') => process.env[name] ?? fallback;
 const PR = env('PR_NUMBER');
@@ -329,7 +330,7 @@ Source test/requirement: ${bundle.plan.sourceTest}
 Expected: ${bundle.plan.expected}
 Where to observe: ${bundle.plan.observe}
 Mapping evidence: ${JSON.stringify(bundle.plan.mappingEvidence || [])}
-DOM observations and requested probes:\n${JSON.stringify(observed).slice(0, 18000)}
+DOM observations and requested probes:\n${buildValidationView(observed, 18000)}
 
 Reply ONLY JSON: {"verdict":"PASS"|"FAIL","reason":"cite concrete observed evidence"}.`, 2000);
   const validation = extractJson(validationRaw);
