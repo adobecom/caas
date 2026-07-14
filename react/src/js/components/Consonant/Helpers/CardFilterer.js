@@ -17,7 +17,7 @@ import {
 } from './Helpers';
 import { SORT_TYPES } from './constants';
 import { filterCardsByDateRange } from './cards';
-import { removeDuplicatesByKey, truncateList } from './general';
+import { removeDuplicatesByKey, truncateList, getByPath } from './general';
 
 /**
  * Class that will constrain result set based on current state of the component
@@ -104,7 +104,7 @@ export default class CardFilterer {
      * @return {*} Chainable
      * @memberof CardFilterer
      */
-    sortCards(sortOption, eventFilter = [], featuredCardIds, hideCtaIds, isFirstLoad) {
+    sortCards(sortOption, eventFilter = [], featuredCardIds, hideCtaIds, isFirstLoad, localFirstRecencyThreshold) {
         if (!this.filteredCards.length) return this;
 
         const sortType = sortOption ? sortOption.sort.toLowerCase() : null;
@@ -153,9 +153,35 @@ export default class CardFilterer {
             case SORT_TYPES.TITLEDESC:
                 this.filteredCards = getTitleDescSort(this.filteredCards);
                 break;
-            case SORT_TYPES.LOCALFIRST:
-                this.filteredCards = getLocalFirstSort(this.filteredCards);
+            case SORT_TYPES.LOCALFIRST: {
+                const recencyThreshold = parseInt(localFirstRecencyThreshold, 10);
+                if (recencyThreshold) {
+                    const cutoffDate = new Date();
+                    cutoffDate.setMonth(cutoffDate.getMonth() - recencyThreshold);
+                    const cutoffMs = cutoffDate.getTime();
+
+                    const recentRegional = [];
+                    const fallback = [];
+
+                    this.filteredCards.forEach((card) => {
+                        const country = getByPath(card, 'country', '') || '';
+                        const cardDateMs = new Date(getByPath(card, 'modifiedDate', '') || '').getTime();
+                        if (country && !Number.isNaN(cardDateMs) && cardDateMs >= cutoffMs) {
+                            recentRegional.push(card);
+                        } else {
+                            fallback.push(card);
+                        }
+                    });
+
+                    this.filteredCards = [
+                        ...getLocalFirstSort(recentRegional),
+                        ...getDateDescSort(fallback),
+                    ];
+                } else {
+                    this.filteredCards = getLocalFirstSort(this.filteredCards);
+                }
                 break;
+            }
             case SORT_TYPES.LOCALLAST:
                 this.filteredCards = getLocalLastSort(this.filteredCards);
                 break;
