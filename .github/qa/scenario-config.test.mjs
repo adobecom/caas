@@ -42,6 +42,14 @@ test('never replaces captured collection transport with a unit-test endpoint', (
   assert.equal(config.collection.cardStyle, 'none');
 });
 
+test('preserves a non-dummy endpoint change for endpoint-specific features', () => {
+  const base = { collection: { endpoint: 'https://example.test/chimera-api/collection?live=true' } };
+  const config = buildScenarioConfig(base, {
+    collection: { endpoint: 'https://api.adobe.io/chimera-api/collection?version=next' },
+  }, 1);
+  assert.equal(config.collection.endpoint, 'https://api.adobe.io/chimera-api/collection?version=next');
+});
+
 test('a fixture card style wins unless the feature patch explicitly tests the collection override', () => {
   const card = { styles: { typeOverride: 'flex-card' } };
   assert.equal(buildScenarioConfig({ collection: { cardStyle: '1:2' } }, {}, [card]).collection.cardStyle, '');

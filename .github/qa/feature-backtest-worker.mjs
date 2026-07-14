@@ -7,7 +7,7 @@ import { researchCode } from './code-search.mjs';
 import { applySpecCardStyle, buildScenarioConfig } from './scenario-config.mjs';
 import { buildValidationView } from './observation-view.mjs';
 import { requestBoundedJson } from './llm-json.mjs';
-import { needsConfigEchoChallenge } from './plan-discrimination.mjs';
+import { configEchoContract, enforceConfigEchoContract, needsConfigEchoChallenge } from './plan-discrimination.mjs';
 import { shouldChallengeSkip } from './skip-challenge.mjs';
 import {
   applyScenarioRepair,
@@ -502,15 +502,17 @@ or {"sourceTest":"...","skipReason":"precise unsupported capability or missing m
     // (or explicitly call the change visual-only) before accepting that plan.
     let planConfigEchoChallenge;
     if (!plan.skipReason && needsConfigEchoChallenge(plan)) {
+      const contract = configEchoContract(plan);
       const replanResponse = await requestBoundedJson({
         ask: llmResponse,
-        prompt: `${planRaw}\n\nCONFIG-ECHO DISCRIMINATION CHALLENGE: The previous plan only proves that the injected cardStyle literal is echoed into a generic class/data attribute. That generic plumbing can already exist in the historical base, so it is not discriminating evidence of this PR. Re-plan from the changed runtime source. Prefer a post-only semantic DOM consequence introduced by this PR (for example a conditional footer, CTA/button, modifier, or accessible attribute) and craft fixture data that renders it on initial load. If the change is only visual geometry/color/styling and no post-only semantic DOM output can be observed, return a precise visual-judgment skipReason. Do not claim that the configured style name's own class/data echo proves the feature.`,
+        prompt: `${planRaw}\n\nCONFIG-ECHO DISCRIMINATION CHALLENGE: The previous plan only proves that the injected cardStyle literal is echoed into a generic class/data attribute. That generic plumbing can already exist in the historical base, so it is not discriminating evidence of this PR. The replan is bound to this immutable feature contract: ${JSON.stringify(contract)}. Do not switch to another changed test or cardStyle. Re-plan from that same changed runtime source. Prefer a post-only semantic DOM consequence introduced by this PR (for example a conditional footer, CTA/button, modifier, or accessible attribute) and craft fixture data that renders it on initial load. If the change is only visual geometry/color/styling and no post-only semantic DOM output can be observed, return a precise visual-judgment skipReason. Do not claim that the configured style name's own class/data echo proves the feature.`,
         label: 'config-echo replan',
         maxTokens: 16000,
         retryMaxTokens: 8000,
         maxChars: 24000,
         retrySuffix: `Return the entire replacement JSON object again, with no prose or fences. Either provide a complete plan whose assertion uses post-only semantic DOM evidence, or a precise visual-judgment skipReason. Do not use the configured style literal's generic class/data echo as evidence. Keep it below 24,000 characters.`,
-        parseAndValidate: (rawPlan) => finalizePlan(rawPlan, { evidence, liveConfig: postLiveConfig }),
+        parseAndValidate: (rawPlan) => enforceConfigEchoContract(contract,
+          finalizePlan(rawPlan, { evidence, liveConfig: postLiveConfig })),
       });
       plan = replanResponse.value;
       planConfigEchoChallenge = {

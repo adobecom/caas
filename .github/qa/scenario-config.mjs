@@ -6,6 +6,14 @@ function clone(value) {
   return value;
 }
 
+function isKnownDummyTransport(value) {
+  // Do not silently erase a real endpoint/fallback feature. This only filters
+  // obvious dummy URLs copied verbatim from unit tests (such as #223's
+  // somedomain.com fixture), which cannot be reached by the browser harness.
+  return /(?:^|[./_-])(?:somedomain|example|mocks?|fixtures?|fake|dummy)(?:$|[./_-])/i
+    .test(String(value || ''));
+}
+
 /** Deep-merge a feature patch over a captured live config. Arrays are replaced. */
 export function mergeScenarioConfig(base, patch) {
   if (!isPlainObject(base)) return clone(patch);
@@ -21,12 +29,13 @@ export function mergeScenarioConfig(base, patch) {
 /** Preserve live transport/defaults while isolating the crafted fixture cards. */
 export function buildScenarioConfig(liveConfig, featurePatch, cardsOrCount) {
   const patch = clone(isPlainObject(featurePatch) ? featurePatch : {});
-  // Historical unit tests commonly use a dummy endpoint. The browser harness
-  // deliberately intercepts the captured live Chimera transport, so scenario
-  // behavior must never replace that route with an unreachable test URL.
+  // Preserve real endpoint/fallback changes. Only discard obvious unit-test
+  // dummies: the browser harness deliberately intercepts the captured live
+  // Chimera transport and cannot reach a copied fake URL.
   if (isPlainObject(patch.collection)) {
-    delete patch.collection.endpoint;
-    delete patch.collection.fallbackEndpoint;
+    for (const key of ['endpoint', 'fallbackEndpoint']) {
+      if (isKnownDummyTransport(patch.collection[key])) delete patch.collection[key];
+    }
   }
   const config = mergeScenarioConfig(liveConfig, patch);
   const cards = Array.isArray(cardsOrCount) ? cardsOrCount : [];

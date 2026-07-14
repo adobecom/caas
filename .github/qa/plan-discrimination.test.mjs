@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { needsConfigEchoChallenge } from './plan-discrimination.mjs';
+import { configEchoContract, enforceConfigEchoContract, needsConfigEchoChallenge } from './plan-discrimination.mjs';
 
 test('challenges a style plan that only proves a config literal was echoed', () => {
   assert.equal(needsConfigEchoChallenge({
@@ -17,4 +17,27 @@ test('does not challenge a post-only semantic style effect or unrelated plan', (
     probes: [{ selector: '[data-testid="consonant-Card-footer"]', attributes: [], why: 'new footer' }],
   }), false);
   assert.equal(needsConfigEchoChallenge({ expected: 'two event cards remain visible', probes: [] }), false);
+});
+
+test('binds a config-echo replan to the same source test and style', () => {
+  const original = {
+    sourceTest: 'Grid.spec.js > applies blade cards',
+    configPatch: { collection: { cardStyle: 'blade-card' } },
+  };
+  const contract = configEchoContract(original);
+  assert.deepEqual(contract, { sourceTest: 'Grid.spec.js > applies blade cards', cardStyle: 'blade-card' });
+  assert.equal(enforceConfigEchoContract(contract, {
+    sourceTest: original.sourceTest,
+    configPatch: { collection: { cardStyle: 'blade-card' } },
+  }).sourceTest, original.sourceTest);
+  assert.throws(() => enforceConfigEchoContract(contract, {
+    sourceTest: 'Card.spec.js > renders markdown',
+    configPatch: { collection: { cardStyle: 'blade-card' } },
+  }), /changed the selected source test/);
+  assert.throws(() => enforceConfigEchoContract(contract, {
+    sourceTest: original.sourceTest,
+    configPatch: { collection: { cardStyle: 'product' } },
+  }), /changed the selected cardStyle/);
+  assert.equal(enforceConfigEchoContract(contract, { skipReason: 'visual judgment required' }).sourceTest,
+    original.sourceTest);
 });
