@@ -60,6 +60,28 @@ export function buildScenarioConfig(liveConfig, featurePatch, cardsOrCount) {
   return config;
 }
 
+/**
+ * Event sorting reads both dateDetailText and footer[0].left[1] without
+ * optional chaining in historical CaaS builds. Keep an agent-crafted event
+ * fixture structurally safe even when its assertion only needs a not-timed
+ * card and therefore does not supply event dates itself.
+ */
+export function normalizeEventFixtureCards(cards, featurePatch) {
+  const eventFilter = featurePatch?.filterPanel?.eventFilter;
+  if (!eventFilter || !Array.isArray(cards)) return clone(cards);
+  return cards.map((card) => {
+    const contentArea = isPlainObject(card?.contentArea) ? clone(card.contentArea) : {};
+    if (!isPlainObject(contentArea.dateDetailText)) contentArea.dateDetailText = {};
+    const footer = Array.isArray(card?.footer) ? clone(card.footer) : [];
+    const firstFooter = isPlainObject(footer[0]) ? footer[0] : {};
+    const left = Array.isArray(firstFooter.left) ? firstFooter.left : [];
+    while (left.length < 2) left.push({});
+    if (!isPlainObject(left[1])) left[1] = {};
+    footer[0] = { ...firstFooter, left };
+    return { ...clone(card), contentArea, footer };
+  });
+}
+
 /** Copy one unambiguous cardStyle literal from the changed spec into fixtures. */
 export function applySpecCardStyle(cards, specText) {
   const styles = new Set([...String(specText || '').matchAll(/\bcardStyle\s*(?:=|:)\s*['"]([^'"]+)['"]/g)]

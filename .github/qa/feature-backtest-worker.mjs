@@ -4,7 +4,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { chromium } from 'playwright';
 import { researchCode } from './code-search.mjs';
-import { applySpecCardStyle, buildScenarioConfig } from './scenario-config.mjs';
+import { applySpecCardStyle, buildScenarioConfig, normalizeEventFixtureCards } from './scenario-config.mjs';
 import { buildValidationView } from './observation-view.mjs';
 import { requestBoundedJson } from './llm-json.mjs';
 import { configEchoContract, enforceConfigEchoContract, needsConfigEchoChallenge } from './plan-discrimination.mjs';
@@ -152,9 +152,13 @@ function finalizePlan(rawPlan, { evidence, liveConfig }) {
     throw new Error('agent returned an incomplete scenario plan');
   }
   const styleNormalization = applySpecCardStyle(plan.cards, evidence.specText);
-  plan.cards = styleNormalization.cards;
-  plan.normalizations = styleNormalization.style
-    ? [`Copied unambiguous changed-spec cardStyle '${styleNormalization.style}' into fixture cards.`] : [];
+  plan.cards = normalizeEventFixtureCards(styleNormalization.cards, plan.config);
+  plan.normalizations = [
+    ...(styleNormalization.style
+      ? [`Copied unambiguous changed-spec cardStyle '${styleNormalization.style}' into fixture cards.`] : []),
+    ...(plan.config?.filterPanel?.eventFilter
+      ? ['Added safe empty event timing fields/secondary footer entry for historical event sorting.'] : []),
+  ];
   plan.configPatch = plan.config;
   plan.config = buildScenarioConfig(liveConfig, plan.configPatch, plan.cards);
   plan.probes = cleanProbes(plan.probes);

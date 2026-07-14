@@ -1,6 +1,11 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { applySpecCardStyle, buildScenarioConfig, mergeScenarioConfig } from './scenario-config.mjs';
+import {
+  applySpecCardStyle,
+  buildScenarioConfig,
+  mergeScenarioConfig,
+  normalizeEventFixtureCards,
+} from './scenario-config.mjs';
 
 test('deep-merges feature keys while preserving live collection transport', () => {
   const base = {
@@ -48,6 +53,15 @@ test('preserves a non-dummy endpoint change for endpoint-specific features', () 
     collection: { endpoint: 'https://api.adobe.io/chimera-api/collection?version=next' },
   }, 1);
   assert.equal(config.collection.endpoint, 'https://api.adobe.io/chimera-api/collection?version=next');
+});
+
+test('makes event-filter fixture cards safe for historical event sorting', () => {
+  const cards = [{ id: 'event-card', contentArea: { title: 'Event' }, footer: [{ left: [{}, null] }] }];
+  const normalized = normalizeEventFixtureCards(cards, { filterPanel: { eventFilter: 'not-timed' } });
+  assert.deepEqual(normalized[0].contentArea.dateDetailText, {});
+  assert.deepEqual(normalized[0].footer[0].left, [{}, {}]);
+  assert.equal(cards[0].contentArea.dateDetailText, undefined, 'does not mutate the planned card');
+  assert.deepEqual(normalizeEventFixtureCards(cards, {}), cards, 'ordinary cards are unchanged');
 });
 
 test('a fixture card style wins unless the feature patch explicitly tests the collection override', () => {
