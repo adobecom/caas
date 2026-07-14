@@ -42,10 +42,29 @@ async function llm(prompt, maxTokens = 4000) {
   const body = JSON.stringify({ model: MODEL, max_tokens: maxTokens, stream: true,
     messages: [{ role: 'user', content: prompt }] });
   for (let attempt = 0; attempt < 3; attempt++) {
-    const r = execFileSync('curl', ['-sS', '-N', '-X', 'POST', PROXY,
-      '-H', `Authorization: Bearer ${TOKEN}`, '-H', 'Content-Type: application/json',
-      '-H', 'anthropic-version: 2023-06-01', '--max-time', '150', '-d', body],
-      { encoding: 'utf8', maxBuffer: 20 * 1024 * 1024 });
+    let r = '';
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 150000);
+    try {
+      const response = await fetch(PROXY, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+          'Content-Type': 'application/json',
+          'anthropic-version': '2023-06-01',
+        },
+        body,
+        signal: controller.signal,
+      });
+      r = await response.text();
+      if (!response.ok) throw new Error(`HTTP ${response.status}: ${r.slice(0, 500)}`);
+    } catch (error) {
+      console.error(`[llm] transport attempt ${attempt + 1} failed: ${error.message}`);
+      if (attempt < 2) await new Promise((resolve) => setTimeout(resolve, 8000 * (attempt + 1)));
+      continue;
+    } finally {
+      clearTimeout(timeout);
+    }
     let text = '', stop = false, err = null;
     for (const line of r.split('\n')) {
       const t = line.trim(); if (!t.startsWith('data:')) continue;
