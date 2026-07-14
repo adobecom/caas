@@ -53,15 +53,27 @@ async function llm(prompt, maxTokens = 4000) {
     messages: [{ role: 'user', content: prompt }] });
   for (let attempt = 0; attempt < 3; attempt += 1) {
     let raw = '';
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 180000);
     try {
-      raw = execFileSync('curl', ['-sS', '-N', '-X', 'POST', PROXY,
-        '-H', `Authorization: Bearer ${TOKEN}`, '-H', 'Content-Type: application/json',
-        '-H', 'anthropic-version: 2023-06-01', '--max-time', '180', '-d', body],
-      { encoding: 'utf8', maxBuffer: 20 * 1024 * 1024 });
+      const response = await fetch(PROXY, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+          'Content-Type': 'application/json',
+          'anthropic-version': '2023-06-01',
+        },
+        body,
+        signal: controller.signal,
+      });
+      raw = await response.text();
+      if (!response.ok) throw new Error(`HTTP ${response.status}: ${raw.slice(0, 500)}`);
     } catch (error) {
       console.error(`[llm] transport attempt ${attempt + 1} failed: ${error.message}`);
       if (attempt < 2) await new Promise((resolve) => setTimeout(resolve, 10000 * (attempt + 1)));
       continue;
+    } finally {
+      clearTimeout(timeout);
     }
     let text = '';
     let stopped = false;
@@ -252,7 +264,9 @@ Live collection configs:\n${JSON.stringify(liveConfigs).slice(0, 18000)}
 
 ${CARD_SHAPE}
 
-Return a complete replacement config based on the main live collection, crafted cards and filters, the exact expected assertion, and up to six read-only CSS probes that expose the relevant DOM. A probe is {"selector":"CSS selector","attributes":["attribute"],"why":"..."}. Follow the production caller chain from test props to config/card/filter JSON and cite it. If the scenario needs unsupported interaction, visual judgment alone, or an unproven injection path, return skipReason.
+Harness contract: the config you return fully replaces the captured live config before React receives it. You MAY and SHOULD add config keys introduced by this PR even when they do not exist on the current live page. A field read through ConfigContext/useConfig/getConfig and supplied by the changed unit test is a proven injectable config path. Absence from today's live config is expected for a historical new feature and is NEVER, by itself, a reason to skip. Do not require an authoring-UI, metadata, or currently deployed production path; this back-test deliberately swaps the parsed config and collection response to exercise the PR build.
+
+Return a complete replacement config based on the main live collection, crafted cards and filters, the exact expected assertion, and up to six read-only CSS probes that expose the relevant DOM. A probe is {"selector":"CSS selector","attributes":["attribute"],"why":"..."}. Follow the production caller chain from test props to config/card/filter JSON and cite it. Return skipReason only if the relevant input cannot be expressed in the replaced config/card/filter JSON, or the assertion fundamentally requires unsupported interaction or visual judgment.
 
 Reply ONLY JSON:
 {"sourceTest":"...","config":{},"cards":[],"filters":[],"isHashed":false,"expected":"exact assertion","observe":"...","probes":[],"mappingEvidence":[{"file":"...","line":1,"fact":"..."}],"skipReason":""}
@@ -294,8 +308,13 @@ Reply ONLY JSON: {"verdict":"PASS"|"FAIL","reason":"cite concrete observed evide
   saveResult({ status: verdict, reason: validation.reason, sourceTest: bundle.plan.sourceTest,
     expected: bundle.plan.expected, researchCount: bundle.researchCount, mappingEvidence: bundle.plan.mappingEvidence,
     probes: bundle.plan.probes, observed, screenshot: SCREENSHOT_PATH });
-})().catch((error) => {
+})().then(() => {
+  // connectOverCDP keeps a transport referenced even after every test page is
+  // closed. This process owns no browser, so exit without closing the Mini's
+  // persistent Chrome instance.
+  process.exit(0);
+}).catch((error) => {
   console.error('[backtest-worker] error:', error.stack || error.message);
   saveResult({ status: 'ERROR', reason: error.message });
-  process.exitCode = 1;
+  process.exit(1);
 });
