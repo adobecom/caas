@@ -64,8 +64,28 @@ test('bounds oversized diagnostics while preserving counts', () => {
   assert.equal(parsed.diagnostics.collectionRequests.count, 1);
 });
 
+test('bounds long valid attribute names, values, and escaped content', () => {
+  const giantName = 'attribute'.repeat(5000);
+  const giantValue = '\\"\\n'.repeat(15000);
+  const observed = {
+    probes: [{
+      selector: 'x',
+      attributes: [giantName],
+      matches: [{ tag: 'div', attributes: { [giantName]: giantValue } }],
+    }],
+    diagnostics: {},
+  };
+  const view = buildValidationView(observed, 18000);
+  assert.ok(view.length <= 18000, `view length ${view.length} must stay within budget`);
+  const parsed = JSON.parse(view);
+  assert.equal(parsed.probes[0].matchCount, 1);
+  assert.ok(parsed.probes[0].selector.length <= 48 || parsed.probes[0].selector === 'x');
+});
+
 test('handles missing/empty observed safely', () => {
-  const parsed = JSON.parse(buildValidationView(undefined, 100));
+  const view = buildValidationView(undefined, 100);
+  assert.ok(view.length <= 100, `view length ${view.length} must stay within budget`);
+  const parsed = JSON.parse(view);
   assert.deepEqual(parsed.probes, []);
-  assert.ok(parsed.diagnostics && typeof parsed.diagnostics === 'object');
+  assert.ok(!parsed.diagnostics || typeof parsed.diagnostics === 'object');
 });

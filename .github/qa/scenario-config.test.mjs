@@ -55,6 +55,15 @@ test('respects an explicit resultsPerPage so pagination features can produce mul
   assert.equal(config.collection.totalCardsToShow, 4, 'totalCardsToShow still defaults up so all cards show across pages');
 });
 
+test('respects an explicit totalCardsToShow when the feature intentionally limits visible cards', () => {
+  const base = { collection: { endpoint: 'https://example.test/c', resultsPerPage: 4, totalCardsToShow: 4 } };
+  const patch = { collection: { totalCardsToShow: 2 } };
+  const cards = [{ id: 'a' }, { id: 'b' }, { id: 'c' }, { id: 'd' }];
+  const config = buildScenarioConfig(base, patch, cards);
+  assert.equal(config.collection.resultsPerPage, 4, 'resultsPerPage still defaults to show all cards per page');
+  assert.equal(config.collection.totalCardsToShow, 2, 'explicit totalCardsToShow must not be raised to card count');
+});
+
 test('still defaults resultsPerPage up to the card count when the patch does not set it', () => {
   const base = { collection: { endpoint: 'https://example.test/c', resultsPerPage: 1 } };
   const config = buildScenarioConfig(base, { collection: { detailsTextOption: 'productName' } }, 5);
