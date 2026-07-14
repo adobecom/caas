@@ -313,6 +313,7 @@ describe('utils/general', () => {
         };
         afterEach(() => {
             window.localStorage.removeItem('caasQaConfig');
+            delete window.__caasQaConfigs;
             setSearch('');
         });
 
@@ -341,6 +342,44 @@ describe('utils/general', () => {
             window.localStorage.setItem('caasQaConfig', '{not valid json');
             expect(applyQaConfigOverride({ sort: { enabled: true } }))
                 .toEqual({ sort: { enabled: true } });
+        });
+
+        test('captures each original config to window.__caasQaConfigs when gated', () => {
+            setSearch('?caasqa=1');
+            applyQaConfigOverride({ collection: { endpoint: 'a', size: 3 } });
+            applyQaConfigOverride({ collection: { endpoint: 'b', size: 9 } });
+            expect(window.__caasQaConfigs).toEqual([
+                { collection: { endpoint: 'a', size: 3 } },
+                { collection: { endpoint: 'b', size: 9 } },
+            ]);
+        });
+
+        test('does not capture configs without the ?caasqa gate', () => {
+            setSearch('');
+            applyQaConfigOverride({ collection: { endpoint: 'a' } });
+            expect(window.__caasQaConfigs).toBeUndefined();
+        });
+
+        test('captured snapshot is a clone, not a live reference', () => {
+            setSearch('?caasqa=1');
+            const original = { collection: { size: 3 } };
+            applyQaConfigOverride(original);
+            original.collection.size = 999;
+            expect(window.__caasQaConfigs[0]).toEqual({ collection: { size: 3 } });
+        });
+
+        test('_caasQaReplace swaps the entire config instead of merging', () => {
+            setSearch('?caasqa=1');
+            window.localStorage.setItem('caasQaConfig', JSON.stringify({
+                _caasQaReplace: true,
+                collection: { endpoint: 'z', size: 50 },
+                sort: { enabled: true, defaultSort: 'localFirst' },
+            }));
+            expect(applyQaConfigOverride({ collection: { endpoint: 'orig', size: 3, featuredCards: ['x'] } }))
+                .toEqual({
+                    collection: { endpoint: 'z', size: 50 },
+                    sort: { enabled: true, defaultSort: 'localFirst' },
+                });
         });
     });
     describe('template', () => {
