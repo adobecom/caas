@@ -112,10 +112,12 @@ function productEvidence() {
   const diff = sections.filter((section) => !isInfra(sectionPath(section))).join('').slice(0, 30000);
   const changedPaths = (meta.files || []).map(({ path: filePath }) => filePath).filter((filePath) => !isInfra(filePath));
   const specPaths = changedPaths.filter((filePath) => /\.(spec|test)\.(jsx?|tsx?)$/.test(filePath));
+  const specPathSet = new Set(specPaths);
   const specText = specPaths.map((filePath) => {
     try { return `\n// FILE ${filePath}\n${readFileSync(path.resolve(ROOT, filePath), 'utf8')}`; } catch { return ''; }
   }).join('\n').slice(0, 18000);
-  return { meta, diff, changedPaths, specText };
+  const specDiff = sections.filter((section) => specPathSet.has(sectionPath(section))).join('').slice(0, 14000);
+  return { meta, diff, changedPaths, specText, specDiff };
 }
 
 function cleanProbes(probes) {
@@ -235,12 +237,15 @@ async function renderScenario(context, routeLibraries, plan) {
     const detectRaw = await llm(
 `Decide whether this historical Adobe CaaS PR contains a product behavior that can be reproduced on a live page by replacing collection config and collection JSON, then observing the DOM.
 
-Testable examples: card rendering, sorting, filtering, config-gated layout, semantic DOM output. Not testable with this worker: pure refactor, build/tooling, backend-only, performance-only, or behavior requiring user interaction before observation.
+Testable examples: newly introduced card rendering, sorting, filtering, config-gated layout, or semantic DOM output. Not testable with this worker: pure refactor, build/tooling, backend-only, performance-only, or behavior requiring user interaction before observation.
+
+The full changed spec files below are context only and contain many old tests. A test is evidence of new behavior only when its assertion/requirement is actually added or modified in CHANGED TEST DIFF, or the product diff/body explicitly introduces that observable behavior. Never classify a component split/file move as a feature merely because existing regression tests still pass or a spec's import paths changed.
 
 PR: ${evidence.meta.title}
 Body: ${(evidence.meta.body || '').slice(0, 1800)}
 Changed files:\n${evidence.changedPaths.join('\n')}
-Changed tests:\n${evidence.specText}
+Changed test diff:\n${evidence.specDiff}
+Full changed spec context:\n${evidence.specText}
 Diff:\n${evidence.diff}
 
 Reply ONLY JSON: {"testable":true|false,"reason":"one sentence"}.`, 3000);
@@ -254,7 +259,7 @@ Reply ONLY JSON: {"testable":true|false,"reason":"one sentence"}.`, 3000);
     const research = await researchCode({
       ask: llm,
       repoRoot: ROOT,
-      taskContext: `PR: ${evidence.meta.title}\nBody: ${(evidence.meta.body || '').slice(0, 1500)}\nChanged files:\n${evidence.changedPaths.join('\n')}\nChanged tests:\n${evidence.specText}\nDiff:\n${evidence.diff.slice(0, 12000)}`,
+      taskContext: `PR: ${evidence.meta.title}\nBody: ${(evidence.meta.body || '').slice(0, 1500)}\nChanged files:\n${evidence.changedPaths.join('\n')}\nChanged test diff:\n${evidence.specDiff}\nFull changed spec context:\n${evidence.specText}\nDiff:\n${evidence.diff.slice(0, 12000)}`,
     });
     console.log(`[research] searches=${research.searches.length} summary=${research.summary.slice(0, 800)}`);
     research.searches.forEach((entry, index) => console.log(
@@ -271,7 +276,8 @@ Reply ONLY JSON: {"testable":true|false,"reason":"one sentence"}.`, 3000);
 
 PR: ${evidence.meta.title}
 Body: ${(evidence.meta.body || '').slice(0, 1800)}
-Changed tests:\n${evidence.specText}
+Changed test diff (authoritative for which tests changed):\n${evidence.specDiff}
+Full changed spec context (do not select an old unchanged test):\n${evidence.specText}
 Diff:\n${evidence.diff.slice(0, 12000)}
 
 Current-checkout source research:\n${research.report}
@@ -282,7 +288,7 @@ ${CARD_SHAPE}
 
 Harness contract: return only the config keys needed for the selected feature/test. Code deep-merges that feature patch into the captured live config before React receives it, preserving required transport fields such as collection.endpoint and i18n defaults. You MAY and SHOULD add config keys introduced by this PR even when they do not exist on the current live page. A field read through ConfigContext/useConfig/getConfig and supplied by the changed unit test is a proven injectable config path. Absence from today's live config is expected for a historical new feature and is NEVER, by itself, a reason to skip. Do not require an authoring-UI, metadata, or currently deployed production path; this back-test deliberately swaps the parsed config and collection response to exercise the PR build.
 
-Return a minimal feature config patch, crafted cards and filters, the exact expected assertion, and up to six read-only CSS probes that expose the relevant DOM. A probe is {"selector":"CSS selector","attributes":["attribute"],"why":"..."}. Follow the production caller chain from test props to config/card/filter JSON and cite it. Return skipReason only if the relevant input cannot be expressed in the replaced config/card/filter JSON, or the assertion fundamentally requires unsupported interaction or visual judgment.
+Return a minimal feature config patch, crafted cards and filters, the exact expected assertion, and up to six read-only CSS probes that expose the relevant DOM. A probe is {"selector":"CSS selector","attributes":["attribute"],"why":"..."}. The selected assertion must come from the changed test diff or a new observable product requirement explicitly introduced by the PR diff/body; never borrow an old unchanged regression test from the full spec. Follow the production caller chain from test props to config/card/filter JSON and cite it. Return skipReason only if the relevant input cannot be expressed in the replaced config/card/filter JSON, or the assertion fundamentally requires unsupported interaction or visual judgment.
 
 CRITICAL: copy the selected test's exact cardStyle literal into every crafted card's styles.typeOverride. For example, if the spec says const cardStyle = 'flex-card', typeOverride MUST be 'flex-card'. The angle-bracket value in the shape above is a placeholder, never a default.
 
