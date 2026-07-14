@@ -323,6 +323,8 @@ or {"sourceTest":"...","skipReason":"precise unsupported capability or missing m
   const { context, routeLibraries } = await browserSession();
   const observed = await renderScenario(context, routeLibraries, bundle.plan);
   console.log(`[observed] ${JSON.stringify(observed).slice(0, 8000)}`);
+  const validationView = buildValidationView(observed, 18000);
+  console.log(`[validate] payload chars=${validationView.length}`);
   const validationRaw = await llm(
 `Judge only the frozen post-PR scenario's exact assertion against this ${VARIANT === 'pre' ? 'PRE-PR historical build' : 'POST-PR historical build'} render.
 
@@ -330,7 +332,7 @@ Source test/requirement: ${bundle.plan.sourceTest}
 Expected: ${bundle.plan.expected}
 Where to observe: ${bundle.plan.observe}
 Mapping evidence: ${JSON.stringify(bundle.plan.mappingEvidence || [])}
-DOM observations and requested probes:\n${buildValidationView(observed, 18000)}
+DOM observations and requested probes (probes+diagnostics bounded first, then generic context):\n${validationView}
 
 Reply ONLY JSON: {"verdict":"PASS"|"FAIL","reason":"cite concrete observed evidence"}.`, 2000);
   const validation = extractJson(validationRaw);
@@ -338,7 +340,7 @@ Reply ONLY JSON: {"verdict":"PASS"|"FAIL","reason":"cite concrete observed evide
   console.log(`[validate] ${verdict}: ${validation.reason}`);
   saveResult({ status: verdict, reason: validation.reason, sourceTest: bundle.plan.sourceTest,
     expected: bundle.plan.expected, researchCount: bundle.researchCount, mappingEvidence: bundle.plan.mappingEvidence,
-    probes: bundle.plan.probes, observed, screenshot: SCREENSHOT_PATH });
+    probes: bundle.plan.probes, validationPayloadChars: validationView.length, observed, screenshot: SCREENSHOT_PATH });
 })().then(() => {
   // connectOverCDP keeps a transport referenced even after every test page is
   // closed. This process owns no browser, so exit without closing the Mini's
