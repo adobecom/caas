@@ -4,6 +4,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { chromium } from 'playwright';
 import { researchCode } from './code-search.mjs';
+import { buildScenarioConfig } from './scenario-config.mjs';
 
 const env = (name, fallback = '') => process.env[name] ?? fallback;
 const PR = env('PR_NUMBER');
@@ -158,16 +159,30 @@ async function captureLiveConfigs(context, routeLibraries) {
 async function renderScenario(context, routeLibraries, plan) {
   const gateUrl = PAGE + (PAGE.includes('?') ? '&' : '?') + 'caasqa=1';
   const page = await context.newPage();
+  const diagnostics = { collectionRequests: [], pageErrors: [], consoleErrors: [], requestFailures: [] };
+  page.on('pageerror', (error) => diagnostics.pageErrors.push(String(error.message || error).slice(0, 1000)));
+  page.on('console', (message) => {
+    if (message.type() === 'error') diagnostics.consoleErrors.push(message.text().slice(0, 1000));
+  });
+  page.on('requestfailed', (request) => {
+    if (request.url().includes('chimera-api') || request.url().includes('caas-libs')) {
+      diagnostics.requestFailures.push({ url: request.url().slice(0, 500),
+        error: String(request.failure()?.errorText || '').slice(0, 500) });
+    }
+  });
   await page.setViewportSize({ width: 1280, height: 1800 });
   const injected = { ...(plan.config || {}), _caasQaReplace: true };
   await page.addInitScript((config) => {
     try { window.localStorage.setItem('caasQaConfig', config); } catch { /* noop */ }
   }, JSON.stringify(injected));
   await page.route('**/caas-libs/**', routeLibraries);
-  await page.route('**/chimera-api/collection**', async (route) => route.fulfill({
-    contentType: 'application/json',
-    body: JSON.stringify({ cards: plan.cards || [], filters: plan.filters || [], isHashed: Boolean(plan.isHashed) }),
-  }));
+  await page.route('**/chimera-api/collection**', async (route) => {
+    diagnostics.collectionRequests.push(route.request().url().slice(0, 1000));
+    return route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({ cards: plan.cards || [], filters: plan.filters || [], isHashed: Boolean(plan.isHashed) }),
+    });
+  });
   await page.goto(gateUrl, { waitUntil: 'load', timeout: 45000 }).catch(() => {});
   await page.waitForSelector('.consonant-CardsGrid, .consonant-Card', { timeout: 15000 }).catch(() => {});
   await page.waitForTimeout(2500);
@@ -203,6 +218,7 @@ async function renderScenario(context, routeLibraries, plan) {
       probes: probeSpecs.map((probe) => ({ ...probe, matches: take(probe.selector, 20, probe.attributes) })),
     };
   }, cleanProbes(plan.probes));
+  observed.diagnostics = diagnostics;
   mkdirSync(path.dirname(SCREENSHOT_PATH), { recursive: true });
   await page.screenshot({ path: SCREENSHOT_PATH, fullPage: true }).catch(() => {});
   await page.close();
@@ -264,9 +280,9 @@ Live collection configs:\n${JSON.stringify(liveConfigs).slice(0, 18000)}
 
 ${CARD_SHAPE}
 
-Harness contract: the config you return fully replaces the captured live config before React receives it. You MAY and SHOULD add config keys introduced by this PR even when they do not exist on the current live page. A field read through ConfigContext/useConfig/getConfig and supplied by the changed unit test is a proven injectable config path. Absence from today's live config is expected for a historical new feature and is NEVER, by itself, a reason to skip. Do not require an authoring-UI, metadata, or currently deployed production path; this back-test deliberately swaps the parsed config and collection response to exercise the PR build.
+Harness contract: return only the config keys needed for the selected feature/test. Code deep-merges that feature patch into the captured live config before React receives it, preserving required transport fields such as collection.endpoint and i18n defaults. You MAY and SHOULD add config keys introduced by this PR even when they do not exist on the current live page. A field read through ConfigContext/useConfig/getConfig and supplied by the changed unit test is a proven injectable config path. Absence from today's live config is expected for a historical new feature and is NEVER, by itself, a reason to skip. Do not require an authoring-UI, metadata, or currently deployed production path; this back-test deliberately swaps the parsed config and collection response to exercise the PR build.
 
-Return a complete replacement config based on the main live collection, crafted cards and filters, the exact expected assertion, and up to six read-only CSS probes that expose the relevant DOM. A probe is {"selector":"CSS selector","attributes":["attribute"],"why":"..."}. Follow the production caller chain from test props to config/card/filter JSON and cite it. Return skipReason only if the relevant input cannot be expressed in the replaced config/card/filter JSON, or the assertion fundamentally requires unsupported interaction or visual judgment.
+Return a minimal feature config patch, crafted cards and filters, the exact expected assertion, and up to six read-only CSS probes that expose the relevant DOM. A probe is {"selector":"CSS selector","attributes":["attribute"],"why":"..."}. Follow the production caller chain from test props to config/card/filter JSON and cite it. Return skipReason only if the relevant input cannot be expressed in the replaced config/card/filter JSON, or the assertion fundamentally requires unsupported interaction or visual judgment.
 
 Reply ONLY JSON:
 {"sourceTest":"...","config":{},"cards":[],"filters":[],"isHashed":false,"expected":"exact assertion","observe":"...","probes":[],"mappingEvidence":[{"file":"...","line":1,"fact":"..."}],"skipReason":""}
@@ -281,6 +297,8 @@ or {"sourceTest":"...","skipReason":"precise unsupported capability or missing m
       !Array.isArray(plan.cards) || !Array.isArray(plan.filters)) {
       throw new Error('agent returned an incomplete scenario plan');
     }
+    plan.configPatch = plan.config;
+    plan.config = buildScenarioConfig(liveConfigs[0], plan.configPatch, plan.cards.length);
     plan.probes = cleanProbes(plan.probes);
     bundle = { pr: Number(PR), meta: evidence.meta, plan, researchCount: research.searches.length,
       researchSummary: research.summary, researchSearches: research.searches };
