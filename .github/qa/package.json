@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test:code-search": "node --test code-search.test.mjs",
-    "test:backtest": "node --test code-search.test.mjs apply-qa-overlay.test.mjs scenario-config.test.mjs feature-backtest-batch.test.mjs observation-view.test.mjs renderability.test.mjs llm-json.test.mjs"
+    "test:backtest": "node --test code-search.test.mjs apply-qa-overlay.test.mjs scenario-config.test.mjs feature-backtest-batch.test.mjs observation-view.test.mjs renderability.test.mjs llm-json.test.mjs skip-challenge.test.mjs"
   },
   "dependencies": {
     "pixelmatch": "^6.0.0",

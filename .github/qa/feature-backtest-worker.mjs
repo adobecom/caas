@@ -7,6 +7,7 @@ import { researchCode } from './code-search.mjs';
 import { applySpecCardStyle, buildScenarioConfig } from './scenario-config.mjs';
 import { buildValidationView } from './observation-view.mjs';
 import { requestBoundedJson } from './llm-json.mjs';
+import { shouldChallengeSkip } from './skip-challenge.mjs';
 import {
   applyScenarioRepair,
   findMissingRequiredInitial,
@@ -201,6 +202,22 @@ Reply ONLY JSON: {"verdict":"PASS"|"FAIL","reason":"cite concrete observed evide
   return { verdict, reason: validation.reason, validationPayloadChars: validationView.length };
 }
 
+async function rootRenderDetectChallenge(evidence) {
+  const raw = await llm(
+`A historical Adobe CaaS PR is about to be skipped as non-browser-testable. Audit one narrow possibility: a changed DOM/custom-element/config bridge may prevent parsed config from reaching the React root, which is testable by preserving a captured live config and injecting uniquely identifiable cards.
+
+Do not call a change internal-only merely because the changed test asserts model.props or a constructor field. Trace whether that value is passed through a production wrapper/decorator into a mounted component. This challenge applies only to initial render; do not claim click, type, viewport, visual, or accessibility behavior is supported.
+
+PR: ${evidence.meta.title}
+Body: ${(evidence.meta.body || '').slice(0, 1800)}
+Changed test diff:\n${evidence.specDiff}
+Product diff:\n${evidence.diff.slice(0, 12000)}
+
+Reply ONLY JSON: {"testable":true|false,"reason":"one concise source-flow reason"}.`, 2500);
+  const result = extractJson(raw);
+  return { testable: result.testable === true, reason: String(result.reason || '').slice(0, 800) };
+}
+
 async function browserSession() {
   const browser = await chromium.connectOverCDP(CDP);
   const context = browser.contexts()[0] || await browser.newContext();
@@ -307,6 +324,7 @@ async function renderScenario(context, routeLibraries, plan) {
   } else {
     const evidence = productEvidence();
     postEvidence = evidence;
+    let rootRenderChallengeAttempted = false;
     const detectRaw = await llm(
 `Decide whether this historical Adobe CaaS PR contains a product behavior that can be reproduced on a live page by replacing collection config and collection JSON, then observing the DOM.
 
@@ -324,10 +342,22 @@ Full changed spec context:\n${evidence.specText}
 Diff:\n${evidence.diff}
 
 Reply ONLY JSON: {"testable":true|false,"reason":"one sentence"}.`, 3000);
-    const detect = extractJson(detectRaw);
+    let detect = extractJson(detectRaw);
     console.log(`[detect] testable=${detect.testable} reason=${detect.reason}`);
+    let detectSkipChallenge;
+    if (!detect.testable && shouldChallengeSkip({ stage: 'detect', evidence })) {
+      rootRenderChallengeAttempted = true;
+      const challenge = await rootRenderDetectChallenge(evidence);
+      detectSkipChallenge = {
+        triggered: true,
+        outcome: challenge.testable ? 'CONTINUE' : 'SKIPPED',
+        reason: challenge.reason,
+      };
+      console.log(`[detect root-render challenge] testable=${challenge.testable} reason=${challenge.reason}`);
+      if (challenge.testable) detect = { ...detect, testable: true, reason: challenge.reason };
+    }
     if (!detect.testable) {
-      saveResult({ status: 'SKIPPED', stage: 'detect', reason: detect.reason });
+      saveResult({ status: 'SKIPPED', stage: 'detect', reason: detect.reason, skipChallenge: detectSkipChallenge });
       return;
     }
 
@@ -363,6 +393,8 @@ ${CARD_SHAPE}
 
 Harness contract: return only the config keys needed for the selected feature/test. Code deep-merges that feature patch into the captured live config before React receives it, preserving required transport fields such as collection.endpoint and i18n defaults. You MAY and SHOULD add config keys introduced by this PR even when they do not exist on the current live page. A field read through ConfigContext/useConfig/getConfig and supplied by the changed unit test is a proven injectable config path. Absence from today's live config is expected for a historical new feature and is NEVER, by itself, a reason to skip. Do not require an authoring-UI, metadata, or currently deployed production path; this back-test deliberately swaps the parsed config and collection response to exercise the PR build.
 
+BOOTSTRAP DATA-FLOW CHECK: a changed DOM model/custom-element constructor or getAttribute implementation is not automatically internal-only. If a changed property is passed through model.props, createRDC, a decorator, or another wrapper into a mounted React component, test whether preserving the captured live config plus sentinel cards makes the collection mount. For that root-render case, require a real collection/root selector and unique sentinel-card selectors under that same root; generic .consonant-Card evidence or a screenshot alone is not proof.
+
 Return a minimal feature config patch, crafted cards and filters, the exact expected assertion, and up to six read-only CSS probes that expose the relevant DOM. A probe is {"selector":"CSS selector","attributes":["attribute"],"why":"..."}. The selected assertion must come from the changed test diff or a new observable product requirement explicitly introduced by the PR diff/body; never borrow an old unchanged regression test from the full spec. Follow the production caller chain from test props to config/card/filter JSON and cite it. Return skipReason only if the relevant input cannot be expressed in the replaced config/card/filter JSON, or the assertion fundamentally requires unsupported interaction or visual judgment.
 
 BOUNDARY CASES: when the changed source adjusts a comparison or visibility condition, trace its initial values and mount effects. Prefer a minimal fixture whose injected card/filter/config values land exactly at the changed boundary on the initial render (for example, cards.length = cardsPerPage + 1) over assuming a click is necessary from the ticket wording.
@@ -388,16 +420,40 @@ or {"sourceTest":"...","skipReason":"precise unsupported capability or missing m
       retrySuffix: `Return the entire replacement JSON object again, with no prose or fences. The prior response was unusable. Keep it below 24,000 characters: use at most eight cards, four filter groups with sixteen total leaf items, four probes, and three concise mappingEvidence entries. Omit non-rendering card fields. If the exact changed behavior requires an unsupported interaction, return the precise skipReason instead of a partial plan.`,
       parseAndValidate: (rawPlan) => finalizePlan(rawPlan, { evidence, liveConfig: postLiveConfig }),
     });
-    const plan = planResponse.value;
+    let plan = planResponse.value;
     console.log(`[plan json] ${planResponse.attempts.map(({ attempt, kind, stopReason, chars }) =>
       `attempt=${attempt} kind=${kind} stop=${stopReason} chars=${chars}`).join('; ')}`);
+    let planSkipChallenge;
+    if (plan.skipReason && shouldChallengeSkip({
+      stage: 'plan', evidence, challengeAttempted: rootRenderChallengeAttempted,
+    })) {
+      const replanResponse = await requestBoundedJson({
+        ask: llmResponse,
+        prompt: `${planRaw}\n\nROOT-RENDER SKIP CHALLENGE: This PR changed a DOM/config-to-React bridge and its changed test proves a config/props handoff. A previous planner proposed a skip. Re-plan adversarially before accepting that conclusion. Trace the production caller chain into the mounted component. If a captured live config plus controlled sentinel cards can prove collection mount, return a complete normal scenario plan. Require the sentinel cards to be observed under the actual CaaS/custom-element root, not as generic cards elsewhere. Return skipReason only after proving that this handoff cannot affect initial mount through injected config/cards.`,
+        label: 'root-render replan',
+        maxTokens: 16000,
+        retryMaxTokens: 8000,
+        maxChars: 24000,
+        retrySuffix: `Return the entire replacement JSON object again, with no prose or fences. The prior response was unusable. Keep it below 24,000 characters and either provide the complete root-render scenario or a precise unsupported reason.`,
+        parseAndValidate: (rawPlan) => finalizePlan(rawPlan, { evidence, liveConfig: postLiveConfig }),
+      });
+      plan = replanResponse.value;
+      planSkipChallenge = {
+        triggered: true,
+        outcome: plan.skipReason ? 'SKIPPED' : 'REPLANNED',
+        attempts: replanResponse.attempts,
+      };
+      console.log(`[plan root-render challenge] ${planSkipChallenge.outcome}; ${replanResponse.attempts.map(({ attempt, kind, stopReason, chars }) =>
+        `attempt=${attempt} kind=${kind} stop=${stopReason} chars=${chars}`).join('; ')}`);
+    }
     if (plan.skipReason) {
       saveResult({ status: 'SKIPPED', stage: 'plan', reason: plan.skipReason,
-        researchCount: research.searches.length, sourceTest: plan.sourceTest || '' });
+        researchCount: research.searches.length, sourceTest: plan.sourceTest || '', skipChallenge: planSkipChallenge });
       return;
     }
     bundle = { pr: Number(PR), meta: evidence.meta, plan, researchCount: research.searches.length,
       researchSummary: research.summary, researchSearches: research.searches };
+    if (planSkipChallenge) bundle.skipChallenge = planSkipChallenge;
     console.log(`[plan] ${plan.sourceTest} cards=${plan.cards?.length || 0} probes=${plan.probes.length} initial=${plan.renderability.requiredInitial.length}`);
   }
 
