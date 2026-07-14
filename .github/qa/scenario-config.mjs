@@ -20,8 +20,15 @@ export function mergeScenarioConfig(base, patch) {
 
 /** Preserve live transport/defaults while isolating the crafted fixture cards. */
 export function buildScenarioConfig(liveConfig, featurePatch, cardsOrCount) {
-  const config = mergeScenarioConfig(liveConfig, featurePatch);
-  const patch = isPlainObject(featurePatch) ? featurePatch : {};
+  const patch = clone(isPlainObject(featurePatch) ? featurePatch : {});
+  // Historical unit tests commonly use a dummy endpoint. The browser harness
+  // deliberately intercepts the captured live Chimera transport, so scenario
+  // behavior must never replace that route with an unreachable test URL.
+  if (isPlainObject(patch.collection)) {
+    delete patch.collection.endpoint;
+    delete patch.collection.fallbackEndpoint;
+  }
+  const config = mergeScenarioConfig(liveConfig, patch);
   const cards = Array.isArray(cardsOrCount) ? cardsOrCount : [];
   if (!Object.hasOwn(patch, 'featuredCards')) config.featuredCards = [];
   if (!Object.hasOwn(patch, 'hideCtaIds')) config.hideCtaIds = [];

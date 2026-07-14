@@ -23,6 +23,25 @@ test('deep-merges feature keys while preserving live collection transport', () =
   assert.equal(config.products.acrobat.title, 'Acrobat');
 });
 
+test('never replaces captured collection transport with a unit-test endpoint', () => {
+  const base = {
+    collection: {
+      endpoint: 'https://example.test/chimera-api/collection?live=true',
+      fallbackEndpoint: 'https://example.test/chimera-api/fallback?live=true',
+    },
+  };
+  const config = buildScenarioConfig(base, {
+    collection: {
+      endpoint: 'https://www.somedomain.com/some-test-api.json',
+      fallbackEndpoint: 'https://www.somedomain.com/fallback.json',
+      cardStyle: 'none',
+    },
+  }, 1);
+  assert.equal(config.collection.endpoint, base.collection.endpoint);
+  assert.equal(config.collection.fallbackEndpoint, base.collection.fallbackEndpoint);
+  assert.equal(config.collection.cardStyle, 'none');
+});
+
 test('a fixture card style wins unless the feature patch explicitly tests the collection override', () => {
   const card = { styles: { typeOverride: 'flex-card' } };
   assert.equal(buildScenarioConfig({ collection: { cardStyle: '1:2' } }, {}, [card]).collection.cardStyle, '');
