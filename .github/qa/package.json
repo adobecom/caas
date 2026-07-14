@@ -5,7 +5,8 @@
   "description": "Playwright + tooling for the AI-driven QA audit workflow. Isolated from the main CaaS package.json so adding/upgrading Playwright doesn't touch the React build.",
   "type": "module",
   "scripts": {
-    "test:code-search": "node --test code-search.test.mjs"
+    "test:code-search": "node --test code-search.test.mjs",
+    "test:backtest": "node --test code-search.test.mjs apply-qa-overlay.test.mjs feature-backtest-batch.test.mjs"
   },
   "dependencies": {
     "pixelmatch": "^6.0.0",

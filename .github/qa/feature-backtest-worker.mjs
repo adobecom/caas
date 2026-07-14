@@ -1,0 +1,301 @@
+#!/usr/bin/env node
+import { execFileSync } from 'node:child_process';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import path from 'node:path';
+import { chromium } from 'playwright';
+import { researchCode } from './code-search.mjs';
+
+const env = (name, fallback = '') => process.env[name] ?? fallback;
+const PR = env('PR_NUMBER');
+const REPO = env('GH_REPO', 'adobecom/caas');
+const ROOT_INPUT = env('TARGET_REPO_ROOT');
+const DIST_INPUT = env('DIST_DIR');
+const CDP = env('CDP_URL', 'http://127.0.0.1:9222');
+const PROXY = env('PROXY_URL');
+const MODEL = env('MODEL');
+const TOKEN = env('IMS_ACCESS_TOKEN');
+const PAGE = env('PAGE_URL', 'https://business.adobe.com/customer-success-stories.html');
+const VARIANT = env('BACKTEST_VARIANT', 'post');
+const PLAN_INPUT = env('BACKTEST_PLAN_PATH');
+const RESULT_INPUT = env('BACKTEST_RESULT_PATH');
+
+for (const [name, value] of Object.entries({ PR_NUMBER: PR, TARGET_REPO_ROOT: ROOT_INPUT,
+  DIST_DIR: DIST_INPUT, PROXY_URL: PROXY, MODEL, IMS_ACCESS_TOKEN: TOKEN,
+  BACKTEST_PLAN_PATH: PLAN_INPUT, BACKTEST_RESULT_PATH: RESULT_INPUT })) {
+  if (!value) throw new Error(`${name} is required`);
+}
+
+const ROOT = path.resolve(ROOT_INPUT);
+const DIST = path.resolve(DIST_INPUT);
+const PLAN_PATH = path.resolve(PLAN_INPUT);
+const RESULT_PATH = path.resolve(RESULT_INPUT);
+const SCREENSHOT_PATH = path.resolve(env('BACKTEST_SCREENSHOT_PATH', path.join(path.dirname(RESULT_PATH), `${VARIANT}.png`)));
+const ALLOW = new Set(['app.css', 'main.min.js', 'react.umd.js', 'react.dom.umd.js']);
+const gh = (args) => execFileSync('gh', args, { encoding: 'utf8', maxBuffer: 20 * 1024 * 1024 });
+
+const CARD_SHAPE = `A minimal collection card is:
+{ "id":"unique", "styles":{"typeOverride":"one-half","backgroundImage":"https://business.adobe.com/content/dam/dx/us/en/images/cards/default/media_1.jpg","icon":""},
+  "contentArea":{"title":"visible title","detailText":"eyebrow","url":"https://business.adobe.com/"},
+  "overlays":{"banner":{},"logo":{"src":""},"label":{},"videoButton":{"url":""}},
+  "footer":[{"left":[],"center":[],"right":[]}], "tags":[{"id":"caas:country/us"}],
+  "cardDate":"ISO","modifiedDate":"ISO","createdDate":"ISO","country":"US","origin":"hawks" }`;
+
+function extractJson(source) {
+  const text = String(source).replace(/```(?:json)?/gi, '').trim();
+  const start = text.indexOf('{');
+  const end = text.lastIndexOf('}');
+  if (start === -1 || end <= start) throw new Error('no JSON object in LLM output');
+  return JSON.parse(text.slice(start, end + 1));
+}
+
+async function llm(prompt, maxTokens = 4000) {
+  const body = JSON.stringify({ model: MODEL, max_tokens: maxTokens, stream: true,
+    messages: [{ role: 'user', content: prompt }] });
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    let raw = '';
+    try {
+      raw = execFileSync('curl', ['-sS', '-N', '-X', 'POST', PROXY,
+        '-H', `Authorization: Bearer ${TOKEN}`, '-H', 'Content-Type: application/json',
+        '-H', 'anthropic-version: 2023-06-01', '--max-time', '180', '-d', body],
+      { encoding: 'utf8', maxBuffer: 20 * 1024 * 1024 });
+    } catch (error) {
+      console.error(`[llm] transport attempt ${attempt + 1} failed: ${error.message}`);
+      if (attempt < 2) await new Promise((resolve) => setTimeout(resolve, 10000 * (attempt + 1)));
+      continue;
+    }
+    let text = '';
+    let stopped = false;
+    let apiError = null;
+    for (const line of raw.split('\n')) {
+      const trimmed = line.trim();
+      if (!trimmed.startsWith('data:')) continue;
+      const data = trimmed.slice(5).trim();
+      if (!data || data === '[DONE]') continue;
+      let event;
+      try { event = JSON.parse(data); } catch { continue; }
+      if (event.type === 'content_block_delta' && event.delta?.type === 'text_delta') text += event.delta.text || '';
+      else if (event.type === 'message_stop') stopped = true;
+      else if (event.type === 'error') apiError = event.error;
+    }
+    if (!apiError && stopped && text.trim()) return text.trim();
+    console.error(`[llm] response attempt ${attempt + 1} failed (${apiError ? JSON.stringify(apiError) : 'incomplete'})`);
+    if (attempt < 2) await new Promise((resolve) => setTimeout(resolve, 10000 * (attempt + 1)));
+  }
+  throw new Error('LLM proxy failed after three attempts');
+}
+
+function saveResult(result) {
+  mkdirSync(path.dirname(RESULT_PATH), { recursive: true });
+  writeFileSync(RESULT_PATH, `${JSON.stringify({ pr: Number(PR), variant: VARIANT, ...result }, null, 2)}\n`);
+  console.log(`[result] ${result.status}${result.reason ? `: ${result.reason}` : ''}`);
+}
+
+function productEvidence() {
+  const meta = JSON.parse(gh(['pr', 'view', PR, '-R', REPO, '--json', 'title,body,files']));
+  const rawDiff = gh(['pr', 'diff', PR, '-R', REPO]);
+  const sections = rawDiff.split(/(?=^diff --git )/m).filter(Boolean);
+  const sectionPath = (section) => section.match(/^diff --git a\/(.+?) b\/(.+)$/m)?.[2] || '';
+  const isInfra = (filePath) => filePath.startsWith('.github/') || filePath === 'package-lock.json';
+  const diff = sections.filter((section) => !isInfra(sectionPath(section))).join('').slice(0, 30000);
+  const changedPaths = (meta.files || []).map(({ path: filePath }) => filePath).filter((filePath) => !isInfra(filePath));
+  const specPaths = changedPaths.filter((filePath) => /\.(spec|test)\.(jsx?|tsx?)$/.test(filePath));
+  const specText = specPaths.map((filePath) => {
+    try { return `\n// FILE ${filePath}\n${readFileSync(path.resolve(ROOT, filePath), 'utf8')}`; } catch { return ''; }
+  }).join('\n').slice(0, 18000);
+  return { meta, diff, changedPaths, specText };
+}
+
+function cleanProbes(probes) {
+  if (!Array.isArray(probes)) return [];
+  return probes.slice(0, 6).flatMap((probe) => {
+    const selector = String(probe?.selector || '').trim();
+    if (!selector || selector.length > 200) return [];
+    const attributes = Array.isArray(probe.attributes)
+      ? probe.attributes.map(String).filter((name) => /^[a-zA-Z_:][-a-zA-Z0-9_:.]*$/.test(name)).slice(0, 12) : [];
+    return [{ selector, attributes, why: String(probe.why || '').slice(0, 300) }];
+  });
+}
+
+async function browserSession() {
+  const browser = await chromium.connectOverCDP(CDP);
+  const context = browser.contexts()[0] || await browser.newContext();
+  const routeLibraries = async (route) => {
+    const file = route.request().url().split('?')[0].split('/').pop();
+    if (ALLOW.has(file)) {
+      try { return await route.fulfill({ path: path.join(DIST, file) }); } catch { /* use network fallback */ }
+    }
+    return route.continue();
+  };
+  return { context, routeLibraries };
+}
+
+async function captureLiveConfigs(context, routeLibraries) {
+  const gateUrl = PAGE + (PAGE.includes('?') ? '&' : '?') + 'caasqa=1';
+  const page = await context.newPage();
+  await page.setViewportSize({ width: 1280, height: 1800 });
+  await page.addInitScript(() => { try { window.localStorage.removeItem('caasQaConfig'); } catch { /* noop */ } });
+  await page.route('**/caas-libs/**', routeLibraries);
+  await page.goto(gateUrl, { waitUntil: 'load', timeout: 45000 }).catch(() => {});
+  await page.waitForSelector('.consonant-CardsGrid', { timeout: 15000 }).catch(() => {});
+  await page.waitForTimeout(2500);
+  const configs = await page.evaluate(() => window.__caasQaConfigs || []);
+  await page.close();
+  return configs;
+}
+
+async function renderScenario(context, routeLibraries, plan) {
+  const gateUrl = PAGE + (PAGE.includes('?') ? '&' : '?') + 'caasqa=1';
+  const page = await context.newPage();
+  await page.setViewportSize({ width: 1280, height: 1800 });
+  const injected = { ...(plan.config || {}), _caasQaReplace: true };
+  await page.addInitScript((config) => {
+    try { window.localStorage.setItem('caasQaConfig', config); } catch { /* noop */ }
+  }, JSON.stringify(injected));
+  await page.route('**/caas-libs/**', routeLibraries);
+  await page.route('**/chimera-api/collection**', async (route) => route.fulfill({
+    contentType: 'application/json',
+    body: JSON.stringify({ cards: plan.cards || [], filters: plan.filters || [], isHashed: Boolean(plan.isHashed) }),
+  }));
+  await page.goto(gateUrl, { waitUntil: 'load', timeout: 45000 }).catch(() => {});
+  await page.waitForSelector('.consonant-CardsGrid, .consonant-Card', { timeout: 15000 }).catch(() => {});
+  await page.waitForTimeout(2500);
+  const observed = await page.evaluate((probeSpecs) => {
+    const defaultAttributes = ['role', 'aria-label', 'aria-current', 'aria-live', 'data-testid',
+      'data-country', 'data-card-url', 'href', 'src', 'alt', 'type', 'value'];
+    const snapshot = (element, requested = []) => {
+      const attributes = {};
+      [...new Set([...defaultAttributes, ...requested])].forEach((name) => {
+        const value = element.getAttribute?.(name);
+        if (value !== null && value !== undefined) attributes[name] = value;
+      });
+      return {
+        tag: element.tagName?.toLowerCase(),
+        id: element.id || undefined,
+        cls: String(element.className || '').slice(0, 180) || undefined,
+        text: String(element.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 300),
+        attributes,
+        html: String(element.outerHTML || '').replace(/\s+/g, ' ').slice(0, 700),
+      };
+    };
+    const take = (selector, limit, attributes = []) => {
+      try { return [...document.querySelectorAll(selector)].slice(0, limit).map((element) => snapshot(element, attributes)); }
+      catch (error) { return [{ selectorError: error.message }]; }
+    };
+    return {
+      cards: take('.consonant-Card', 15),
+      headings: take('h1,h2,h3,h4,h5,h6,[role="heading"]', 30),
+      controls: take('label,button,input,select,[role="button"],[role="searchbox"]', 40),
+      filters: take('[class*="Filter"],[class*="filter"]', 40),
+      liveRegions: take('[aria-live],[role="status"],[role="alert"]', 20),
+      collectionRoots: take('.consonant-CardsGrid,.caas-preview,.caas-config,[class*="consonant-Container"]', 20),
+      probes: probeSpecs.map((probe) => ({ ...probe, matches: take(probe.selector, 20, probe.attributes) })),
+    };
+  }, cleanProbes(plan.probes));
+  mkdirSync(path.dirname(SCREENSHOT_PATH), { recursive: true });
+  await page.screenshot({ path: SCREENSHOT_PATH, fullPage: true }).catch(() => {});
+  await page.close();
+  return observed;
+}
+
+(async () => {
+  let bundle;
+  if (VARIANT === 'pre') {
+    bundle = JSON.parse(readFileSync(PLAN_PATH, 'utf8'));
+    console.log(`[plan] reusing post-PR scenario: ${bundle.plan.sourceTest}`);
+  } else {
+    const evidence = productEvidence();
+    const detectRaw = await llm(
+`Decide whether this historical Adobe CaaS PR contains a product behavior that can be reproduced on a live page by replacing collection config and collection JSON, then observing the DOM.
+
+Testable examples: card rendering, sorting, filtering, config-gated layout, semantic DOM output. Not testable with this worker: pure refactor, build/tooling, backend-only, performance-only, or behavior requiring user interaction before observation.
+
+PR: ${evidence.meta.title}
+Body: ${(evidence.meta.body || '').slice(0, 1800)}
+Changed files:\n${evidence.changedPaths.join('\n')}
+Changed tests:\n${evidence.specText}
+Diff:\n${evidence.diff}
+
+Reply ONLY JSON: {"testable":true|false,"reason":"one sentence"}.`, 3000);
+    const detect = extractJson(detectRaw);
+    console.log(`[detect] testable=${detect.testable} reason=${detect.reason}`);
+    if (!detect.testable) {
+      saveResult({ status: 'SKIPPED', stage: 'detect', reason: detect.reason });
+      return;
+    }
+
+    const research = await researchCode({
+      ask: llm,
+      repoRoot: ROOT,
+      taskContext: `PR: ${evidence.meta.title}\nBody: ${(evidence.meta.body || '').slice(0, 1500)}\nChanged files:\n${evidence.changedPaths.join('\n')}\nChanged tests:\n${evidence.specText}\nDiff:\n${evidence.diff.slice(0, 12000)}`,
+    });
+    console.log(`[research] searches=${research.searches.length} summary=${research.summary.slice(0, 800)}`);
+    research.searches.forEach((entry, index) => console.log(
+      `[research ${index + 1}] ${entry.query} in ${entry.searchPath} -> ${entry.result.matches.length} block(s)`));
+
+    const { context, routeLibraries } = await browserSession();
+    const liveConfigs = await captureLiveConfigs(context, routeLibraries);
+    if (!Array.isArray(liveConfigs) || liveConfigs.length === 0) {
+      throw new Error('QA overlay did not capture a live collection config from the historical build');
+    }
+    console.log(`[capture] ${liveConfigs.length} live config(s)`);
+    const planRaw = await llm(
+`Reproduce exactly ONE human-authored test/requirement from this historical Adobe CaaS PR on a real page. Do not invent expected behavior.
+
+PR: ${evidence.meta.title}
+Body: ${(evidence.meta.body || '').slice(0, 1800)}
+Changed tests:\n${evidence.specText}
+Diff:\n${evidence.diff.slice(0, 12000)}
+
+Current-checkout source research:\n${research.report}
+
+Live collection configs:\n${JSON.stringify(liveConfigs).slice(0, 18000)}
+
+${CARD_SHAPE}
+
+Return a complete replacement config based on the main live collection, crafted cards and filters, the exact expected assertion, and up to six read-only CSS probes that expose the relevant DOM. A probe is {"selector":"CSS selector","attributes":["attribute"],"why":"..."}. Follow the production caller chain from test props to config/card/filter JSON and cite it. If the scenario needs unsupported interaction, visual judgment alone, or an unproven injection path, return skipReason.
+
+Reply ONLY JSON:
+{"sourceTest":"...","config":{},"cards":[],"filters":[],"isHashed":false,"expected":"exact assertion","observe":"...","probes":[],"mappingEvidence":[{"file":"...","line":1,"fact":"..."}],"skipReason":""}
+or {"sourceTest":"...","skipReason":"precise unsupported capability or missing mapping"}.`, 16000);
+    const plan = extractJson(planRaw);
+    if (plan.skipReason) {
+      saveResult({ status: 'SKIPPED', stage: 'plan', reason: plan.skipReason,
+        researchCount: research.searches.length, sourceTest: plan.sourceTest || '' });
+      return;
+    }
+    if (!plan.sourceTest || !plan.expected || !plan.config || typeof plan.config !== 'object' ||
+      !Array.isArray(plan.cards) || !Array.isArray(plan.filters)) {
+      throw new Error('agent returned an incomplete scenario plan');
+    }
+    plan.probes = cleanProbes(plan.probes);
+    bundle = { pr: Number(PR), meta: evidence.meta, plan, researchCount: research.searches.length,
+      researchSummary: research.summary, researchSearches: research.searches };
+    mkdirSync(path.dirname(PLAN_PATH), { recursive: true });
+    writeFileSync(PLAN_PATH, `${JSON.stringify(bundle, null, 2)}\n`);
+    console.log(`[plan] ${plan.sourceTest} cards=${plan.cards?.length || 0} probes=${plan.probes.length}`);
+  }
+
+  const { context, routeLibraries } = await browserSession();
+  const observed = await renderScenario(context, routeLibraries, bundle.plan);
+  console.log(`[observed] ${JSON.stringify(observed).slice(0, 8000)}`);
+  const validationRaw = await llm(
+`Judge only the frozen post-PR scenario's exact assertion against this ${VARIANT === 'pre' ? 'PRE-PR historical build' : 'POST-PR historical build'} render.
+
+Source test/requirement: ${bundle.plan.sourceTest}
+Expected: ${bundle.plan.expected}
+Where to observe: ${bundle.plan.observe}
+Mapping evidence: ${JSON.stringify(bundle.plan.mappingEvidence || [])}
+DOM observations and requested probes:\n${JSON.stringify(observed).slice(0, 18000)}
+
+Reply ONLY JSON: {"verdict":"PASS"|"FAIL","reason":"cite concrete observed evidence"}.`, 2000);
+  const validation = extractJson(validationRaw);
+  const verdict = validation.verdict === 'PASS' ? 'PASS' : 'FAIL';
+  console.log(`[validate] ${verdict}: ${validation.reason}`);
+  saveResult({ status: verdict, reason: validation.reason, sourceTest: bundle.plan.sourceTest,
+    expected: bundle.plan.expected, researchCount: bundle.researchCount, mappingEvidence: bundle.plan.mappingEvidence,
+    probes: bundle.plan.probes, observed, screenshot: SCREENSHOT_PATH });
+})().catch((error) => {
+  console.error('[backtest-worker] error:', error.stack || error.message);
+  saveResult({ status: 'ERROR', reason: error.message });
+  process.exitCode = 1;
+});
