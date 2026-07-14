@@ -45,3 +45,19 @@ test('copies a single explicit cardStyle from the changed spec into fixture card
   assert.equal(normalized.cards[0].styles.icon, '');
   assert.equal(applySpecCardStyle(fixture, "cardStyle: 'one-half'; cardStyle: 'product'").style, null);
 });
+
+test('respects an explicit resultsPerPage so pagination features can produce multiple pages', () => {
+  const base = { collection: { endpoint: 'https://example.test/c', resultsPerPage: 3, totalCardsToShow: 3 } };
+  const patch = { collection: { resultsPerPage: 2 } };
+  const cards = [{ id: 'a' }, { id: 'b' }, { id: 'c' }, { id: 'd' }];
+  const config = buildScenarioConfig(base, patch, cards);
+  assert.equal(config.collection.resultsPerPage, 2, 'explicit resultsPerPage must be respected, not raised to card count');
+  assert.equal(config.collection.totalCardsToShow, 4, 'totalCardsToShow still defaults up so all cards show across pages');
+});
+
+test('still defaults resultsPerPage up to the card count when the patch does not set it', () => {
+  const base = { collection: { endpoint: 'https://example.test/c', resultsPerPage: 1 } };
+  const config = buildScenarioConfig(base, { collection: { detailsTextOption: 'productName' } }, 5);
+  assert.equal(config.collection.resultsPerPage, 5);
+  assert.equal(config.collection.totalCardsToShow, 5);
+});

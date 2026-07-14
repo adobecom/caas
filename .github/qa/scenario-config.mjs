@@ -32,8 +32,15 @@ export function buildScenarioConfig(liveConfig, featurePatch, cardsOrCount) {
     config.collection.cardStyle = '';
   }
   const minimum = Math.max(1, Number(Array.isArray(cardsOrCount) ? cards.length : cardsOrCount) || 0);
-  config.collection.resultsPerPage = Math.max(Number(config.collection.resultsPerPage) || 0, minimum);
-  config.collection.totalCardsToShow = Math.max(Number(config.collection.totalCardsToShow) || 0, minimum);
+  // Respect an explicit per-feature paging value (e.g. a pagination test that needs
+  // resultsPerPage < card count to produce multiple pages); otherwise default to showing
+  // every crafted card so nothing is truncated.
+  if (!Object.hasOwn(collectionPatch, 'resultsPerPage')) {
+    config.collection.resultsPerPage = Math.max(Number(config.collection.resultsPerPage) || 0, minimum);
+  }
+  if (!Object.hasOwn(collectionPatch, 'totalCardsToShow')) {
+    config.collection.totalCardsToShow = Math.max(Number(config.collection.totalCardsToShow) || 0, minimum);
+  }
   return config;
 }
 
