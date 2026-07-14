@@ -7,6 +7,8 @@ const DEFAULT_MAX_MATCHES = 6;
 const DEFAULT_CONTEXT_LINES = 6;
 const MAX_QUERY_LENGTH = 160;
 const MAX_TRANSCRIPT_CHARS = 24000;
+const MAX_FILE_SNIPPET_LINES = 220;
+const MAX_FILE_SNIPPET_CHARS = 14000;
 const EXCLUDED_PATHS = [
   '.git/',
   'node_modules/',
@@ -91,8 +93,45 @@ export function searchCode({
     const snippet = lines.slice(startLine - 1, endLine)
       .map((sourceLine, index) => `${startLine + index}: ${sourceLine}`)
       .join('\n');
-    matches.push({ file: filePath, line: lineNumber, startLine, endLine, snippet });
+    matches.push({ file: filePath, line: lineNumber, startLine, endLine, snippet, matchType: 'content' });
     if (matches.length >= limit) break;
+  }
+
+  // Models naturally ask to open a filename while tracing imports. If an exact
+  // content search found nothing, treat the same query as a tracked-path search
+  // and return the matching file's source. This is still read-only repo search.
+  if (matches.length === 0) {
+    const filesResult = spawnSync(gitBin, ['ls-files', '--', relativePath], {
+      cwd: repoRoot,
+      encoding: 'utf8',
+      maxBuffer: 2 * 1024 * 1024,
+    });
+    if (filesResult.error) throw filesResult.error;
+    if (filesResult.status !== 0) {
+      throw new Error(`git ls-files failed: ${(filesResult.stderr || '').trim() || `exit ${filesResult.status}`}`);
+    }
+    const lowerNeedle = needle.toLowerCase();
+    const files = String(filesResult.stdout || '').split('\n')
+      .filter((filePath) => filePath && !isExcluded(filePath) && filePath.toLowerCase().includes(lowerNeedle))
+      .sort((left, right) => {
+        const leftExact = path.posix.basename(left).toLowerCase() === lowerNeedle ? 0 : 1;
+        const rightExact = path.posix.basename(right).toLowerCase() === lowerNeedle ? 0 : 1;
+        return leftExact - rightExact || left.length - right.length || left.localeCompare(right);
+      })
+      .slice(0, Math.min(limit, 3));
+
+    for (const filePath of files) {
+      const absolutePath = path.resolve(repoRoot, filePath);
+      if (!absolutePath.startsWith(`${path.resolve(repoRoot)}${path.sep}`)) continue;
+      let sourceLines;
+      try { sourceLines = readFileSync(absolutePath, 'utf8').split('\n'); } catch { continue; }
+      const endLine = Math.min(sourceLines.length, MAX_FILE_SNIPPET_LINES);
+      const snippet = sourceLines.slice(0, endLine)
+        .map((sourceLine, index) => `${index + 1}: ${sourceLine}`)
+        .join('\n')
+        .slice(0, MAX_FILE_SNIPPET_CHARS);
+      matches.push({ file: filePath, line: 1, startLine: 1, endLine, snippet, matchType: 'path' });
+    }
   }
 
   return { query: needle, searchPath: relativePath, matches };
@@ -113,11 +152,11 @@ function formatTranscript(entries) {
  * existing proxy call. Each response is either another safe search request or a
  * final evidence-backed summary; raw search blocks are returned for the planner.
  */
-export async function researchCode({ ask, repoRoot, taskContext, maxSearches = 6 }) {
+export async function researchCode({ ask, repoRoot, taskContext, maxSearches = 8 }) {
   if (typeof ask !== 'function') throw new Error('ask is required');
   const transcript = [];
   let summary = '';
-  const searchLimit = Math.max(1, Math.min(Number(maxSearches) || 6, 8));
+  const searchLimit = Math.max(1, Math.min(Number(maxSearches) || 8, 10));
 
   for (let turn = 0; turn <= searchLimit; turn += 1) {
     const priorResearch = formatTranscript(transcript);
@@ -132,7 +171,7 @@ ${String(taskContext || '').slice(0, 22000)}
 Research already performed:
 ${priorResearch || '(none yet)'}
 
-You have one tool: SEARCH_CODE. It performs exact fixed-string search in the current PR checkout and returns source blocks around matches. Search exact component names, JSX tags, prop names, config keys, and callers. Follow the data path; do not guess from naming alone. You must perform at least one search before finishing.
+You have one tool: SEARCH_CODE. It performs exact fixed-string search in the current PR checkout and returns source blocks around matches. If there is no content match and the query looks like part of a tracked filename, it opens matching files instead. Search exact component names, JSX tags, prop names, config keys, and callers. After opening component X, search the JSX tag <X to find its production callers, then trace the prop expression backward. Follow the data path all the way to config or card JSON; do not guess from naming alone. You must perform at least one search before finishing.
 
 Reply with ONLY one JSON object in one of these forms:
 {"action":"search","query":"exact text","path":"react/src/js","why":"what this will establish"}

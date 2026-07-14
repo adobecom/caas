@@ -29,6 +29,18 @@ test('returns an empty result for an unknown exact identifier', () => {
   assert.deepEqual(result.matches, []);
 });
 
+test('opens a tracked source file when the model searches by filename', () => {
+  const result = searchCode({
+    repoRoot,
+    query: 'CardFooter.jsx',
+    searchPath: 'react/src/js/components/Consonant/Cards/CardFooter',
+    gitBin: process.env.GIT_BIN || 'git',
+  });
+  assert.equal(result.matches[0].matchType, 'path');
+  assert.ok(result.matches[0].file.endsWith('CardFooter.jsx'));
+  assert.match(result.matches[0].snippet, /const CardFooter/);
+});
+
 test('rejects paths outside the checkout', () => {
   assert.throws(() => searchCode({
     repoRoot,
