@@ -261,9 +261,21 @@ async function captureLiveConfigs(context, routeLibraries) {
   await page.goto(gateUrl, { waitUntil: 'load', timeout: 45000 }).catch(() => {});
   await page.waitForSelector('.consonant-CardsGrid', { timeout: 15000 }).catch(() => {});
   await page.waitForTimeout(2500);
-  const configs = await page.evaluate(() => window.__caasQaConfigs || []);
+  const capture = await page.evaluate(() => {
+    const candidates = [
+      '.caas-preview[data-caas-block]',
+      '[data-caas-block]',
+      '.caas-preview',
+      '[data-testid="consonant-CardsGrid"]',
+    ];
+    const rootHints = candidates.map((selector) => {
+      try { return { selector, matches: document.querySelectorAll(selector).length }; }
+      catch { return { selector, matches: 0 }; }
+    }).filter(({ matches }) => matches > 0).slice(0, 4);
+    return { configs: window.__caasQaConfigs || [], rootHints };
+  });
   await page.close();
-  return configs;
+  return capture;
 }
 
 async function renderScenario(context, routeLibraries, plan) {
@@ -404,12 +416,14 @@ Reply ONLY JSON: {"testable":true|false,"reason":"one sentence"}.`,
       `[research ${index + 1}] ${entry.query} in ${entry.searchPath} -> ${entry.result.matches.length} block(s)`));
 
     const { context, routeLibraries } = await browserSession();
-    const liveConfigs = await captureLiveConfigs(context, routeLibraries);
+    const liveCapture = await captureLiveConfigs(context, routeLibraries);
+    const liveConfigs = Array.isArray(liveCapture?.configs) ? liveCapture.configs : [];
+    const rootHints = Array.isArray(liveCapture?.rootHints) ? liveCapture.rootHints : [];
     if (!Array.isArray(liveConfigs) || liveConfigs.length === 0) {
       throw new Error('QA overlay did not capture a live collection config from the historical build');
     }
     postLiveConfig = liveConfigs[0];
-    console.log(`[capture] ${liveConfigs.length} live config(s)`);
+    console.log(`[capture] ${liveConfigs.length} live config(s); root hints=${JSON.stringify(rootHints)}`);
     const planRaw = `Reproduce exactly ONE human-authored test/requirement from this historical Adobe CaaS PR on a real page. Do not invent expected behavior.
 
 PR: ${evidence.meta.title}
@@ -422,11 +436,13 @@ Current-checkout source research:\n${research.report}
 
 Live collection configs:\n${JSON.stringify(liveConfigs).slice(0, 18000)}
 
+Live DOM root hints captured before injection (use these for scoped probes if a custom element is replaced during React mount):\n${JSON.stringify(rootHints)}
+
 ${CARD_SHAPE}
 
 Harness contract: return only the config keys needed for the selected feature/test. Code deep-merges that feature patch into the captured live config before React receives it, preserving required transport fields such as collection.endpoint and i18n defaults. You MAY and SHOULD add config keys introduced by this PR even when they do not exist on the current live page. A field read through ConfigContext/useConfig/getConfig and supplied by the changed unit test is a proven injectable config path. Absence from today's live config is expected for a historical new feature and is NEVER, by itself, a reason to skip. Do not require an authoring-UI, metadata, or currently deployed production path; this back-test deliberately swaps the parsed config and collection response to exercise the PR build.
 
-BOOTSTRAP DATA-FLOW CHECK: a changed DOM model/custom-element constructor or getAttribute implementation is not automatically internal-only. If a changed property is passed through model.props, createRDC, a decorator, or another wrapper into a mounted React component, test whether preserving the custom element's existing data-config bridge plus sentinel cards makes the collection mount. The local replacement config is only usable after that bridge reaches the mounted component; do not assume it bypasses the changed constructor. For a root-render case, require one single scoped selector that proves a unique sentinel card is a descendant of the actual custom-element/collection root, not separate generic root/card selectors or a screenshot. This page captured ${liveConfigs.length} collection config(s): require the scoped selector's minMatches to cover every equivalent captured root, and probe the root data-config attribute as supporting evidence.
+BOOTSTRAP DATA-FLOW CHECK: a changed DOM model/custom-element constructor or getAttribute implementation is not automatically internal-only. If a changed property is passed through model.props, createRDC, a decorator, or another wrapper into a mounted React component, test whether preserving the custom element's existing data-config bridge plus sentinel cards makes the collection mount. The local replacement config is only usable after that bridge reaches the mounted component; do not assume it bypasses the changed constructor. React may replace the original custom-element tag during mount, so use a surviving root from the captured Live DOM root hints for one scoped selector that includes the sentinel's unique id/title and proves it is inside each rendered collection; do not require the original tag/data-config attribute to remain in the final DOM. This page captured ${liveConfigs.length} collection config(s): require the scoped selector's minMatches to cover every equivalent captured root, not separate generic root/card selectors or a screenshot.
 
 PRIMARY + DISCRIMINATING ASSERTION: choose the PR's primary new visitor-visible behavior, not an easier added legacy/backward-compatibility regression test when the diff also introduces a new capability. The assertion must be able to differ between the historical base and head because it exercises a runtime branch or DOM output added/changed by this PR. Compare added and removed source before selecting it: a newly added unit test is not enough if it only checks a generic string/class/config pass-through that the base already performed. For a new card style, prefer post-only semantic markup or variant classes from the changed runtime branch; if the change is otherwise visual geometry/color only, return a visual-judgment skip rather than claiming a shallow DOM class proves the design.
 
@@ -462,7 +478,7 @@ or {"sourceTest":"...","skipReason":"precise unsupported capability or missing m
     if (plan.skipReason && shouldChallengeSkip({ stage: 'plan', evidence })) {
       const replanResponse = await requestBoundedJson({
         ask: llmResponse,
-        prompt: `${planRaw}\n\nROOT-RENDER SKIP CHALLENGE: This PR changed a DOM/config-to-React bridge and its changed test proves a config/props handoff. A previous planner proposed a skip. Re-plan adversarially before accepting that conclusion. Trace the production caller chain into the mounted component. Preserve the live custom element's data-config as the bridge input; the injected replacement only takes effect after the bridge reaches React. If controlled sentinel cards can prove collection mount, return a complete normal scenario plan. Require one scoped sentinel-card descendant selector under the actual CaaS/custom-element root with minMatches covering every equivalent captured root, not separate generic cards elsewhere. Return skipReason only after proving that this handoff cannot affect initial mount through injected config/cards.`,
+        prompt: `${planRaw}\n\nROOT-RENDER SKIP CHALLENGE: This PR changed a DOM/config-to-React bridge and its changed test proves a config/props handoff. A previous planner proposed a skip. Re-plan adversarially before accepting that conclusion. Trace the production caller chain into the mounted component. Preserve the live custom element's data-config as the bridge input; the injected replacement only takes effect after the bridge reaches React. If controlled sentinel cards can prove collection mount, return a complete normal scenario plan. Use a surviving root from the captured Live DOM root hints—React may replace the original custom-element tag—and require one scoped selector containing the sentinel's unique id/title with minMatches covering every equivalent captured root, not separate generic cards elsewhere. Return skipReason only after proving that this handoff cannot affect initial mount through injected config/cards.`,
         label: 'root-render replan',
         maxTokens: 16000,
         retryMaxTokens: 8000,
