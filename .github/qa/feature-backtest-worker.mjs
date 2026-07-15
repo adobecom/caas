@@ -5,6 +5,7 @@ import path from 'node:path';
 import { chromium } from 'playwright';
 import { researchCode } from './code-search.mjs';
 import { applySpecCardStyle, buildScenarioConfig } from './scenario-config.mjs';
+import { validateScenario as checkPayloadSchema } from './schema-validate.mjs';
 import { buildValidationView } from './observation-view.mjs';
 import { requestBoundedJson } from './llm-json.mjs';
 import { shouldChallengeSkip } from './skip-challenge.mjs';
@@ -49,6 +50,15 @@ const CARD_SHAPE = `A minimal collection card is:
   "overlays":{"banner":{},"logo":{"src":""},"label":{},"videoButton":{"url":""}},
   "footer":[{"left":[],"center":[],"right":[]}], "tags":[{"id":"caas:country/us"}],
   "cardDate":"ISO","modifiedDate":"ISO","createdDate":"ISO","country":"US","origin":"hawks" }`;
+
+const SCHEMA_HINT = `VALID VALUES (your config patch and cards are schema-checked; use only these):
+- collection.cardStyle / card.styles.typeOverride (agent-set style): one-half three-fourths double-wide half-height product text-card full-card icon-card news-card blade-card editorial-card blog-card horizontal-card button-card flex-card
+- collection.layout.type: 2up 3up 4up 5up | layout.gutter: 1x 2x 3x 4x | layout.container: 83Percent 1200MaxWidth 1600MaxWidth 32Margin carousel categories
+- sort.defaultSort / sort.options[].sort: dateasc datedesc modifieddesc modifiedasc eventsort featured titleasc titledesc localfirst locallast random
+- filterPanel.type: left top events | filterPanel.filterLogic: and or xor | pagination.type: loadMore paginator
+- footer infobit.type: price button icon-with-text link-with-icon text icon link progress-bar rating bookmark date-interval gated
+- valid top-level config sections ONLY: collection featuredCards hideCtaIds hideCtaTags header filterPanel sort pagination bookmarks search language country headers products analytics target customCard linkTransformer reservoir
+Do NOT invent config keys or use values outside these enums.`;
 
 function extractJson(source) {
   const text = String(source).replace(/```(?:json)?/gi, '').trim();
@@ -164,6 +174,10 @@ function finalizePlan(rawPlan, { evidence, liveConfig }) {
     ? [`Copied unambiguous changed-spec cardStyle '${styleNormalization.style}' into fixture cards.`] : [];
   plan.configPatch = plan.config;
   plan.config = buildScenarioConfig(liveConfig, plan.configPatch, plan.cards);
+  const schemaCheck = checkPayloadSchema({ configPatch: plan.configPatch, cards: plan.cards });
+  plan.schemaValid = schemaCheck.valid;
+  if (!schemaCheck.valid) { plan.schemaErrors = schemaCheck.errors; console.warn(`[schema] emitted patch/cards invalid: ${schemaCheck.errors}`); }
+  else { console.log('[schema] emitted patch/cards valid'); }
   plan.probes = cleanProbes(plan.probes);
   plan.renderability = requireRenderability(plan.renderability);
   plan.probes = cleanProbes(prioritizeRenderabilityProbes(plan.probes, plan.renderability));
@@ -389,7 +403,7 @@ Current-checkout source research:\n${research.report}
 
 Live collection configs:\n${JSON.stringify(liveConfigs).slice(0, 18000)}
 
-${CARD_SHAPE}
+${CARD_SHAPE}\n\n${SCHEMA_HINT}
 
 Harness contract: return only the config keys needed for the selected feature/test. Code deep-merges that feature patch into the captured live config before React receives it, preserving required transport fields such as collection.endpoint and i18n defaults. You MAY and SHOULD add config keys introduced by this PR even when they do not exist on the current live page. A field read through ConfigContext/useConfig/getConfig and supplied by the changed unit test is a proven injectable config path. Absence from today's live config is expected for a historical new feature and is NEVER, by itself, a reason to skip. Do not require an authoring-UI, metadata, or currently deployed production path; this back-test deliberately swaps the parsed config and collection response to exercise the PR build.
 
