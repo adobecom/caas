@@ -174,10 +174,16 @@ function persistBundle(bundle) {
 
 function requiredProbeSummary(observed, renderability) {
   const required = renderability?.requiredInitial || [];
-  const probes = new Map((Array.isArray(observed?.probes) ? observed.probes : [])
+  const probeMatches = (probes) => new Map((Array.isArray(probes) ? probes : [])
     .map((probe) => [probe?.selector, (Array.isArray(probe?.matches) ? probe.matches : [])
       .filter((match) => !match?.selectorError).length]));
-  return required.map(({ selector }) => ({ selector, matches: probes.get(selector) || 0 }));
+  const finalMatches = probeMatches(observed?.probes);
+  const beforeFixtureMatches = probeMatches(observed?.beforeFixture?.probes);
+  return required.map(({ selector }) => ({
+    selector,
+    matches: finalMatches.get(selector) || 0,
+    beforeFixtureMatches: beforeFixtureMatches.get(selector) || 0,
+  }));
 }
 
 async function validateScenario(bundle, observed) {
@@ -204,6 +210,8 @@ Expected: ${bundle.plan.expected}
 Where to observe: ${bundle.plan.observe}
 Mapping evidence: ${JSON.stringify(bundle.plan.mappingEvidence || [])}
 DOM observations and requested probes (probes+diagnostics bounded first, then generic context):\n${validationView}
+
+If present, beforeFixture.probes was captured after the real collection request was intercepted but before the controlled fixture response was released. It can prove that a real collection host existed before an intentional remove/hide-after-response behavior. Judge ordinary assertions from the final probes/DOM; never PASS an ordinary final-state assertion merely because it existed in beforeFixture. For a remove/hide assertion, require both a positive beforeFixture anchor and the expected final absence.
 
 Reply ONLY JSON: {"verdict":"PASS"|"FAIL","reason":"cite concrete observed evidence"}.`,
   });
@@ -283,37 +291,8 @@ async function captureLiveConfigs(context, routeLibraries) {
   return capture;
 }
 
-async function renderScenario(context, routeLibraries, plan) {
-  const gateUrl = PAGE + (PAGE.includes('?') ? '&' : '?') + 'caasqa=1';
-  const page = await context.newPage();
-  const diagnostics = { collectionRequests: [], pageErrors: [], consoleErrors: [], requestFailures: [] };
-  page.on('pageerror', (error) => diagnostics.pageErrors.push(String(error.message || error).slice(0, 1000)));
-  page.on('console', (message) => {
-    if (message.type() === 'error') diagnostics.consoleErrors.push(message.text().slice(0, 1000));
-  });
-  page.on('requestfailed', (request) => {
-    if (request.url().includes('chimera-api') || request.url().includes('caas-libs')) {
-      diagnostics.requestFailures.push({ url: request.url().slice(0, 500),
-        error: String(request.failure()?.errorText || '').slice(0, 500) });
-    }
-  });
-  await page.setViewportSize({ width: 1280, height: 1800 });
-  const injected = { ...(plan.config || {}), _caasQaReplace: true };
-  await page.addInitScript((config) => {
-    try { window.localStorage.setItem('caasQaConfig', config); } catch { /* noop */ }
-  }, JSON.stringify(injected));
-  await page.route('**/caas-libs/**', routeLibraries);
-  await page.route('**/chimera-api/collection**', async (route) => {
-    diagnostics.collectionRequests.push(route.request().url().slice(0, 1000));
-    return route.fulfill({
-      contentType: 'application/json',
-      body: JSON.stringify({ cards: plan.cards || [], filters: plan.filters || [], isHashed: Boolean(plan.isHashed) }),
-    });
-  });
-  await page.goto(gateUrl, { waitUntil: 'load', timeout: 45000 }).catch(() => {});
-  await page.waitForSelector('.consonant-CardsGrid, .consonant-Card', { timeout: 15000 }).catch(() => {});
-  await page.waitForTimeout(2500);
-  const observed = await page.evaluate((probeSpecs) => {
+async function observePage(page, probes, { generic = true } = {}) {
+  return page.evaluate(({ probeSpecs, includeGeneric }) => {
     const defaultAttributes = ['role', 'aria-label', 'aria-current', 'aria-live', 'data-testid',
       'data-country', 'data-card-url', 'href', 'src', 'alt', 'type', 'value'];
     const snapshot = (element, requested = []) => {
@@ -335,6 +314,8 @@ async function renderScenario(context, routeLibraries, plan) {
       try { return [...document.querySelectorAll(selector)].slice(0, limit).map((element) => snapshot(element, attributes)); }
       catch (error) { return [{ selectorError: error.message }]; }
     };
+    const targeted = { probes: probeSpecs.map((probe) => ({ ...probe, matches: take(probe.selector, 20, probe.attributes) })) };
+    if (!includeGeneric) return targeted;
     return {
       cards: take('.consonant-Card', 15),
       headings: take('h1,h2,h3,h4,h5,h6,[role="heading"]', 30),
@@ -342,9 +323,63 @@ async function renderScenario(context, routeLibraries, plan) {
       filters: take('[class*="Filter"],[class*="filter"]', 40),
       liveRegions: take('[aria-live],[role="status"],[role="alert"]', 20),
       collectionRoots: take('.consonant-CardsGrid,.caas-preview,.caas-config,[class*="consonant-Container"]', 20),
-      probes: probeSpecs.map((probe) => ({ ...probe, matches: take(probe.selector, 20, probe.attributes) })),
+      ...targeted,
     };
-  }, cleanProbes(plan.probes));
+  }, { probeSpecs: cleanProbes(probes), includeGeneric: generic });
+}
+
+async function renderScenario(context, routeLibraries, plan) {
+  const gateUrl = PAGE + (PAGE.includes('?') ? '&' : '?') + 'caasqa=1';
+  const page = await context.newPage();
+  const diagnostics = { collectionRequests: [], pageErrors: [], consoleErrors: [], requestFailures: [] };
+  page.on('pageerror', (error) => diagnostics.pageErrors.push(String(error.message || error).slice(0, 1000)));
+  page.on('console', (message) => {
+    if (message.type() === 'error') diagnostics.consoleErrors.push(message.text().slice(0, 1000));
+  });
+  page.on('requestfailed', (request) => {
+    if (request.url().includes('chimera-api') || request.url().includes('caas-libs')) {
+      diagnostics.requestFailures.push({ url: request.url().slice(0, 500),
+        error: String(request.failure()?.errorText || '').slice(0, 500) });
+    }
+  });
+  await page.setViewportSize({ width: 1280, height: 1800 });
+  const injected = { ...(plan.config || {}), _caasQaReplace: true };
+  await page.addInitScript((config) => {
+    try { window.localStorage.setItem('caasQaConfig', config); } catch { /* noop */ }
+  }, JSON.stringify(injected));
+  await page.route('**/caas-libs/**', routeLibraries);
+  let beforeFixture;
+  let beforeFixtureCapture;
+  const captureBeforeFixture = () => {
+    if (!beforeFixtureCapture) {
+      beforeFixtureCapture = observePage(page, plan.probes, { generic: false })
+        .then((snapshot) => {
+          beforeFixture = snapshot;
+          return snapshot;
+        })
+        .catch((error) => {
+          console.warn(`[before-fixture] probe capture failed: ${String(error.message || error).slice(0, 300)}`);
+          return null;
+        });
+    }
+    return beforeFixtureCapture;
+  };
+  await page.route('**/chimera-api/collection**', async (route) => {
+    diagnostics.collectionRequests.push(route.request().url().slice(0, 1000));
+    // Freeze this narrow probe snapshot while the first real collection
+    // response is paused. It gives removal/hide tests a real pre-response
+    // anchor without adding an interaction capability to the harness.
+    await captureBeforeFixture();
+    return route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({ cards: plan.cards || [], filters: plan.filters || [], isHashed: Boolean(plan.isHashed) }),
+    });
+  });
+  await page.goto(gateUrl, { waitUntil: 'load', timeout: 45000 }).catch(() => {});
+  await page.waitForSelector('.consonant-CardsGrid, .consonant-Card', { timeout: 15000 }).catch(() => {});
+  await page.waitForTimeout(2500);
+  const observed = await observePage(page, plan.probes);
+  if (beforeFixture) observed.beforeFixture = beforeFixture;
   observed.diagnostics = diagnostics;
   mkdirSync(path.dirname(SCREENSHOT_PATH), { recursive: true });
   await page.screenshot({ path: SCREENSHOT_PATH, fullPage: true }).catch(() => {});
@@ -445,6 +480,8 @@ Live DOM root hints captured before injection (use these for scoped probes if a 
 
 ${CARD_SHAPE}
 
+RAW CARD CONTRACT: CARD_SHAPE is illustrative, not a universal schema. Trace the selected renderer's raw card reads and preserve both field location and value shape exactly. Keep top-level fields it reads (for example overlayLink, reference, country) at top level; do not assume contentArea.url supplies every CTA/link. Preserve footer entry type/style/text/href exactly (for example {type:"link", style:"button", ...}) rather than inventing a generic button object.
+
 Harness contract: return only the config keys needed for the selected feature/test. Code deep-merges that feature patch into the captured live config before React receives it, preserving required transport fields such as collection.endpoint and i18n defaults. You MAY and SHOULD add config keys introduced by this PR even when they do not exist on the current live page. A field read through ConfigContext/useConfig/getConfig and supplied by the changed unit test is a proven injectable config path. Absence from today's live config is expected for a historical new feature and is NEVER, by itself, a reason to skip. Do not require an authoring-UI, metadata, or currently deployed production path; this back-test deliberately swaps the parsed config and collection response to exercise the PR build.
 
 BOOTSTRAP DATA-FLOW CHECK: a changed DOM model/custom-element constructor or getAttribute implementation is not automatically internal-only. If a changed property is passed through model.props, createRDC, a decorator, or another wrapper into a mounted React component, test whether preserving the custom element's existing data-config bridge plus sentinel cards makes the collection mount. The local replacement config is only usable after that bridge reaches the mounted component; do not assume it bypasses the changed constructor. React may replace the original custom-element tag during mount, so use a surviving root from the captured Live DOM root hints for one scoped selector that includes the sentinel's unique id/title and proves it is inside each rendered collection; do not require the original tag/data-config attribute to remain in the final DOM. This page captured ${liveConfigs.length} collection config(s): require the scoped selector's minMatches to cover every equivalent captured root, not separate generic root/card selectors or a screenshot.
@@ -455,7 +492,11 @@ Return a minimal feature config patch, crafted cards and filters, the exact expe
 
 BOUNDARY CASES: when the changed source adjusts a comparison or visibility condition, trace its initial values and mount effects. Prefer a minimal fixture whose injected card/filter/config values land exactly at the changed boundary on the initial render (for example, cards.length = cardsPerPage + 1) over assuming a click is necessary from the ticket wording.
 
-RENDER-OR-SKIP: your config MUST actually render the exact component your assertion observes. If the assertion targets a carousel control, set the collection layout/style to the carousel variant so CardsCarousel renders; if it targets nested filter items, the filter panel and its nested filter data must render those items directly. If the target element would only appear after an interaction the harness cannot perform (expanding/collapsing a filter category, advancing/scrolling a carousel, hovering, clicking, typing, resizing the viewport), that is an UNSUPPORTED interaction: return a precise skipReason naming the required interaction instead of a scenario whose target never appears. Never select an assertion you cannot make observable in the initial render.
+ASYNC REMOVAL/HIDE: existing collection hosts in the live DOM root hints are real page DOM, not elements you need to create. The harness records targeted probes after the first collection request is intercepted and before it releases the controlled fixture response, then again after rendering. When the changed behavior removes/hides an existing host after data resolves (for example an empty response), use a stable host/root probe and assert both its positive pre-response anchor and its expected final absence. Do not call that unsupported merely because the final DOM no longer contains the host.
+
+RENDER-OR-SKIP: your config MUST actually render the exact component your assertion observes. If the assertion targets a carousel control, set the collection layout/style to the carousel variant so CardsCarousel renders; if it targets nested filter items, the filter panel and its nested filter data must render those items directly. If the target element would only appear after an interaction the harness cannot perform (advancing/scrolling a carousel, hovering, clicking, typing, resizing the viewport), that is an UNSUPPORTED interaction: return a precise skipReason naming the required interaction instead of a scenario whose target never appears. Never select an assertion you cannot make observable in the initial render.
+
+NESTED FILTER INITIAL STATE: distinguish mapping-derived categories from directly supplied filter state. A categoryMappings transform may force a category closed, so it cannot prove a no-click scenario. Before skipping, trace whether the initial filter data can directly seed an open outer group and an {isCategory:true, opened:true, items:[...]} category. That is valid only for the changed initial data/predicate—not proof that expand/click wiring works. Probe the stable filter list plus a positive and an excluded leaf; nested leaves may be sibling list items, not descendants.
 
 INITIAL-RENDER CONTRACT: return renderability.requiredInitial with up to three positive DOM prerequisites that must exist in the initial POST render before the assertion can be judged. Include the exact input/button/card/label whose property you assert, not just a wrapper. For a genuine absence assertion, require a stable rendered parent/card/root instead of the element expected to be absent. Each selector must also be a probe; code prioritizes these probes and will make one bounded scenario-only repair attempt if a prerequisite is missing. Before choosing a click-gated caller, search for another supported config/layout caller that renders the same target initially. An enabled config flag is not proof that a local user-state gate has been satisfied.
 
@@ -507,25 +548,37 @@ or {"sourceTest":"...","skipReason":"precise unsupported capability or missing m
     let planConfigEchoChallenge;
     if (!plan.skipReason && needsConfigEchoChallenge(plan)) {
       const contract = configEchoContract(plan);
-      const replanResponse = await requestBoundedJson({
-        ask: llmResponse,
-        prompt: `${planRaw}\n\nCONFIG-ECHO DISCRIMINATION CHALLENGE: The previous plan only proves that the injected cardStyle literal is echoed into a generic class/data attribute. That generic plumbing can already exist in the historical base, so it is not discriminating evidence of this PR. The replan is bound to this immutable feature contract: ${JSON.stringify(contract)}. Do not switch to another changed test or cardStyle. Re-plan from that same changed runtime source. Prefer a post-only semantic DOM consequence introduced by this PR (for example a conditional footer, CTA/button, modifier, or accessible attribute) and craft fixture data that renders it on initial load. If the change is only visual geometry/color/styling and no post-only semantic DOM output can be observed, return a precise visual-judgment skipReason. Do not claim that the configured style name's own class/data echo proves the feature.`,
-        label: 'config-echo replan',
-        maxTokens: 16000,
-        retryMaxTokens: 8000,
-        maxChars: 24000,
-        retrySuffix: `Return the entire replacement JSON object again, with no prose or fences. Either provide a complete plan whose assertion uses post-only semantic DOM evidence, or a precise visual-judgment skipReason. Do not use the configured style literal's generic class/data echo as evidence. Keep it below 24,000 characters.`,
-        parseAndValidate: (rawPlan) => enforceConfigEchoContract(contract,
-          finalizePlan(rawPlan, { evidence, liveConfig: postLiveConfig })),
-      });
-      plan = replanResponse.value;
-      planConfigEchoChallenge = {
-        triggered: true,
-        outcome: plan.skipReason ? 'SKIPPED' : 'REPLANNED',
-        attempts: replanResponse.attempts,
-      };
-      console.log(`[plan config-echo challenge] ${planConfigEchoChallenge.outcome}; ${replanResponse.attempts.map(({ attempt, kind, stopReason, chars }) =>
-        `attempt=${attempt} kind=${kind} stop=${stopReason} chars=${chars}`).join('; ')}`);
+      try {
+        const replanResponse = await requestBoundedJson({
+          ask: llmResponse,
+          prompt: `${planRaw}\n\nCONFIG-ECHO DISCRIMINATION CHALLENGE: The previous plan only proves that the injected cardStyle literal is echoed into a generic class/data attribute. That generic plumbing can already exist in the historical base, so it is not discriminating evidence of this PR. The replan is bound to this immutable feature contract: ${JSON.stringify(contract)}. Do not switch to another changed test or cardStyle. Re-plan from that same changed runtime source. Prefer a post-only semantic DOM consequence introduced by this PR (for example a conditional footer, CTA/button, modifier, or accessible attribute) and craft fixture data that renders it on initial load. If the change is only visual geometry/color/styling and no post-only semantic DOM output can be observed, return a precise visual-judgment skipReason. Do not claim that the configured style name's own class/data echo proves the feature.`,
+          label: 'config-echo replan',
+          maxTokens: 16000,
+          retryMaxTokens: 8000,
+          maxChars: 24000,
+          retrySuffix: `Return the entire replacement JSON object again, with no prose or fences. Either provide a complete plan whose assertion uses post-only semantic DOM evidence, or a precise visual-judgment skipReason. Do not use the configured style literal's generic class/data echo as evidence. Keep it below 24,000 characters.`,
+          parseAndValidate: (rawPlan) => enforceConfigEchoContract(contract,
+            finalizePlan(rawPlan, { evidence, liveConfig: postLiveConfig })),
+        });
+        plan = replanResponse.value;
+        planConfigEchoChallenge = {
+          triggered: true,
+          outcome: plan.skipReason ? 'SKIPPED' : 'REPLANNED',
+          attempts: replanResponse.attempts,
+        };
+        console.log(`[plan config-echo challenge] ${planConfigEchoChallenge.outcome}; ${replanResponse.attempts.map(({ attempt, kind, stopReason, chars }) =>
+          `attempt=${attempt} kind=${kind} stop=${stopReason} chars=${chars}`).join('; ')}`);
+      } catch (error) {
+        // This is a discrimination hardening attempt, not the primary plan.
+        // A malformed optional replan must not turn a runnable feature test
+        // into an infrastructure ERROR; retain the original constrained plan.
+        planConfigEchoChallenge = {
+          triggered: true,
+          outcome: 'UNRESOLVED',
+          reason: String(error.message || error).slice(0, 1000),
+        };
+        console.warn(`[plan config-echo challenge] UNRESOLVED: ${planConfigEchoChallenge.reason}`);
+      }
     }
     if (plan.skipReason) {
       saveResult({ status: 'SKIPPED', stage: 'plan', reason: plan.skipReason,
@@ -557,7 +610,7 @@ or {"sourceTest":"...","skipReason":"precise unsupported capability or missing m
         ask: llm,
         repoRoot: ROOT,
         maxSearches: 4,
-        taskContext: `Repair a failed initial-render scenario for this historical Adobe CaaS feature test. The changed requirement is immutable; do not seek a different/easier assertion. Find whether another production caller, config/layout, or fixture-data shape can render the exact required selector without a browser interaction. If no static path exists, say so precisely.\n\nPR: ${postEvidence.meta.title}\nChanged test diff:\n${postEvidence.specDiff}\nProduct diff:\n${postEvidence.diff.slice(0, 10000)}\n\nImmutable source test: ${bundle.plan.sourceTest}\nImmutable expected assertion: ${bundle.plan.expected}\nInitial config patch: ${JSON.stringify(bundle.plan.configPatch)}\nRequired initial selectors: ${JSON.stringify(bundle.plan.renderability.requiredInitial)}\nMissing evidence: ${JSON.stringify(missingInitial)}\nInitial requested probe results: ${JSON.stringify(observed.probes).slice(0, 12000)}`,
+        taskContext: `Repair a failed initial-render scenario for this historical Adobe CaaS feature test. The changed requirement is immutable; do not seek a different/easier assertion. Find whether another production caller, config/layout, or fixture-data shape can render the exact required selector without a browser interaction. If no static path exists, say so precisely.\n\nPR: ${postEvidence.meta.title}\nChanged test diff:\n${postEvidence.specDiff}\nProduct diff:\n${postEvidence.diff.slice(0, 10000)}\n\nImmutable source test: ${bundle.plan.sourceTest}\nImmutable expected assertion: ${bundle.plan.expected}\nInitial config patch: ${JSON.stringify(bundle.plan.configPatch)}\nRequired initial selectors: ${JSON.stringify(bundle.plan.renderability.requiredInitial)}\nMissing evidence: ${JSON.stringify(missingInitial)}\nInitial requested probe results: ${JSON.stringify(observed.probes).slice(0, 12000)}\nPre-fixture probe results (when present, captured before the controlled collection response): ${JSON.stringify(observed.beforeFixture?.probes || []).slice(0, 12000)}`,
       });
       console.log(`[renderability research] searches=${repairResearch.searches.length} summary=${repairResearch.summary.slice(0, 800)}`);
       const repairResponse = await requestBoundedJson({
@@ -584,10 +637,11 @@ Initial cards: ${JSON.stringify(bundle.plan.cards).slice(0, 12000)}
 Initial filters: ${JSON.stringify(bundle.plan.filters).slice(0, 8000)}
 Missing prerequisite evidence: ${JSON.stringify(missingInitial)}
 Observed requested probes: ${JSON.stringify(observed.probes).slice(0, 12000)}
+Pre-fixture requested probes (captured before controlled response): ${JSON.stringify(observed.beforeFixture?.probes || []).slice(0, 12000)}
 
 Fresh bounded source research:\n${repairResearch.report}
 
-The harness supports only initial render from injected config, cards, and filters. It cannot click, type, expand, scroll, hover, resize, or alter URL state. Return a COMPLETE replacement feature config patch (not a delta from the initial patch), plus the complete replacement cards and filters. If the same exact component has another static config/layout caller, use it. If no static injected scenario can mount the exact target, return a precise skipReason naming the unsupported interaction/state. Do not weaken the assertion, substitute a wrapper, or change probes/renderability.
+The harness supports initial render from injected config, cards, and filters, plus a targeted pre-response snapshot for intentional removal/hide behavior. It cannot click, type, expand, scroll, hover, resize, or alter URL state. Return a COMPLETE replacement feature config patch (not a delta from the initial patch), plus the complete replacement cards and filters. Preserve raw card field locations and exact footer entry shapes read by the selected renderer; contentArea.url is not a universal CTA/overlay field. For nested filters, do not rely on a categoryMappings transform that forces a category closed when direct initial filter data can seed openedOnLoad and {isCategory:true, opened:true, items:[...]}. If the same exact component has another static config/layout caller, use it. If no static injected scenario can mount the exact target, return a precise skipReason naming the unsupported interaction/state. Do not weaken the assertion, substitute a wrapper, or change probes/renderability.
 
 Reply ONLY JSON:
 {"config":{},"cards":[],"filters":[],"isHashed":false}
@@ -607,6 +661,9 @@ or {"skipReason":"precise unsupported interaction or state"}.`,
           isHashed: Boolean(bundle.plan.isHashed),
         },
         initialRequiredProbes: (Array.isArray(observed.probes) ? observed.probes : [])
+          .filter((probe) => bundle.plan.renderability.requiredInitial
+            .some((requirement) => requirement.selector === probe.selector)),
+        initialBeforeFixtureRequiredProbes: (Array.isArray(observed.beforeFixture?.probes) ? observed.beforeFixture.probes : [])
           .filter((probe) => bundle.plan.renderability.requiredInitial
             .some((requirement) => requirement.selector === probe.selector)),
         missingInitial,

@@ -64,6 +64,23 @@ test('bounds oversized diagnostics while preserving counts', () => {
   assert.equal(parsed.diagnostics.collectionRequests.count, 1);
 });
 
+test('preserves a before-fixture anchor when the payload is tightly bounded', () => {
+  const observed = {
+    probes: [{ selector: '.caas-preview', matches: bigList(40, 'section') }],
+    beforeFixture: { probes: [{
+      selector: '.caas-preview',
+      attributes: ['data-caas-block'],
+      matches: [{ tag: 'section', text: 'Collection before empty response', attributes: { 'data-caas-block': 'cards' } }],
+    }] },
+    diagnostics: { consoleErrors: Array.from({ length: 100 }, () => 'x'.repeat(1000)) },
+  };
+  const view = buildValidationView(observed, 700);
+  assert.ok(view.length <= 700, `view length ${view.length} must stay within budget`);
+  const parsed = JSON.parse(view);
+  assert.equal(parsed.beforeFixture.probes[0].selector, '.caas-preview');
+  assert.equal(parsed.beforeFixture.probes[0].matchCount, 1);
+});
+
 test('bounds long valid attribute names, values, and escaped content', () => {
   const giantName = 'attribute'.repeat(5000);
   const giantValue = '\\"\\n'.repeat(15000);

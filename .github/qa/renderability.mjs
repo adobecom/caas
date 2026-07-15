@@ -64,20 +64,40 @@ export function prioritizeRenderabilityProbes(probes, renderability, maxProbes =
   return out.slice(0, limit);
 }
 
-/** Return only prerequisites that did not appear in the initial DOM render. */
+/**
+ * Return only prerequisites that did not appear either in the final DOM or in
+ * the targeted snapshot taken immediately before the controlled collection
+ * response. The latter establishes a real host for an intentional
+ * remove/hide-after-response assertion; semantic validation still judges the
+ * final DOM separately.
+ */
 export function findMissingRequiredInitial(observed, renderability) {
   const probes = Array.isArray(observed?.probes) ? observed.probes : [];
+  const beforeFixtureProbes = Array.isArray(observed?.beforeFixture?.probes)
+    ? observed.beforeFixture.probes : [];
   const bySelector = new Map(probes.map((probe) => [asText(probe?.selector).trim(), probe]));
+  const beforeFixtureBySelector = new Map(beforeFixtureProbes
+    .map((probe) => [asText(probe?.selector).trim(), probe]));
   return normalizeRenderability(renderability).requiredInitial.flatMap((requirement) => {
     const probe = bySelector.get(requirement.selector);
+    const beforeFixtureProbe = beforeFixtureBySelector.get(requirement.selector);
     const matches = Array.isArray(probe?.matches) ? probe.matches : [];
+    const beforeFixtureMatches = Array.isArray(beforeFixtureProbe?.matches) ? beforeFixtureProbe.matches : [];
     const selectorError = matches.find((match) => match?.selectorError)?.selectorError;
-    if (!selectorError && matches.length >= requirement.minMatches) return [];
-    return [{
+    const beforeFixtureSelectorError = beforeFixtureMatches.find((match) => match?.selectorError)?.selectorError;
+    if ((!selectorError && matches.length >= requirement.minMatches)
+      || (!beforeFixtureSelectorError && beforeFixtureMatches.length >= requirement.minMatches)) return [];
+    const missing = {
       ...requirement,
       actualMatches: matches.length,
       selectorError: selectorError ? asText(selectorError).slice(0, 300) : '',
-    }];
+    };
+    if (beforeFixtureProbe) {
+      missing.beforeFixtureMatches = beforeFixtureMatches.length;
+      missing.beforeFixtureSelectorError = beforeFixtureSelectorError
+        ? asText(beforeFixtureSelectorError).slice(0, 300) : '';
+    }
+    return [missing];
   });
 }
 

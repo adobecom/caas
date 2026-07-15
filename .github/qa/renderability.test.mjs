@@ -31,6 +31,31 @@ test('absence assertions can require a stable parent instead of the intentionall
   assert.deepEqual(findMissingRequiredInitial(observed, contract), []);
 });
 
+test('a pre-fixture anchor can establish an intentional remove-after-response scenario', () => {
+  const contract = normalizeRenderability({ requiredInitial: [
+    { selector: '.caas-preview', minMatches: 1, why: 'the collection exists before its empty response removes it' },
+  ] });
+  const observed = {
+    probes: [{ selector: '.caas-preview', matches: [] }],
+    beforeFixture: { probes: [{ selector: '.caas-preview', matches: [{ tag: 'section' }] }] },
+  };
+  assert.deepEqual(findMissingRequiredInitial(observed, contract), []);
+});
+
+test('missing prerequisites report both final and pre-fixture evidence when available', () => {
+  const contract = normalizeRenderability({ requiredInitial: [
+    { selector: '.caas-preview', minMatches: 1, why: 'the collection exists before its empty response removes it' },
+  ] });
+  const observed = {
+    probes: [{ selector: '.caas-preview', matches: [] }],
+    beforeFixture: { probes: [{ selector: '.caas-preview', matches: [] }] },
+  };
+  assert.deepEqual(findMissingRequiredInitial(observed, contract), [{
+    selector: '.caas-preview', minMatches: 1, why: 'the collection exists before its empty response removes it',
+    actualMatches: 0, selectorError: '', beforeFixtureMatches: 0, beforeFixtureSelectorError: '',
+  }]);
+});
+
 test('requirements are bounded, deduplicated, and prioritized into probes', () => {
   const contract = normalizeRenderability({ requiredInitial: [
     { selector: '.target', minMatches: 0, why: 'first' },

@@ -83,28 +83,44 @@ const LEVELS = [
   { maxMatches: 1, htmlLen: 0, textLen: 90, sampleLen: 80, maxSamples: 1 },
 ];
 
-function compactPriority(probes, diagnostics) {
+function compactProbeSummaries(probes) {
+  return probes.map((probe) => {
+    const p = asObject(probe);
+    return {
+      selector: trim(p.selector, 48),
+      matchCount: Array.isArray(p.matches) ? p.matches.length : 0,
+    };
+  });
+}
+
+function compactPriority(probes, diagnostics, beforeFixtureProbes) {
   const d = asObject(diagnostics);
-  return {
-    probes: probes.map((probe) => {
-      const p = asObject(probe);
-      return {
-        selector: trim(p.selector, 48),
-        matchCount: Array.isArray(p.matches) ? p.matches.length : 0,
-      };
-    }),
+  const priority = {
+    probes: compactProbeSummaries(probes),
     diagnostics: Object.fromEntries(['collectionRequests', 'pageErrors', 'consoleErrors', 'requestFailures']
       .map((key) => [key, Array.isArray(d[key]) ? d[key].length : 0])),
   };
+  if (beforeFixtureProbes.length) {
+    priority.beforeFixture = { probes: compactProbeSummaries(beforeFixtureProbes) };
+  }
+  return priority;
 }
 
-function smallestPriority(probes) {
+function smallestPriority(probes, beforeFixtureProbes) {
+  const priority = { probes: [] };
   const first = probes[0];
-  if (!first) return { probes: [] };
-  const p = asObject(first);
-  return {
-    probes: [{ selector: trim(p.selector, 16), matchCount: Array.isArray(p.matches) ? p.matches.length : 0 }],
-  };
+  if (first) {
+    const p = asObject(first);
+    priority.probes = [{ selector: trim(p.selector, 16), matchCount: Array.isArray(p.matches) ? p.matches.length : 0 }];
+  }
+  const beforeFixtureFirst = beforeFixtureProbes[0];
+  if (beforeFixtureFirst) {
+    const p = asObject(beforeFixtureFirst);
+    priority.beforeFixture = {
+      probes: [{ selector: trim(p.selector, 16), matchCount: Array.isArray(p.matches) ? p.matches.length : 0 }],
+    };
+  }
+  return priority;
 }
 
 export function buildValidationView(observed, budget = 18000) {
@@ -112,19 +128,24 @@ export function buildValidationView(observed, budget = 18000) {
   const limit = Number.isFinite(numericBudget) ? Math.max(2, Math.floor(numericBudget)) : 18000;
   const o = asObject(observed);
   const probes = (Array.isArray(o.probes) ? o.probes : []).slice(0, MAX_PROBES);
+  const beforeFixtureProbes = (Array.isArray(o.beforeFixture?.probes) ? o.beforeFixture.probes : [])
+    .slice(0, MAX_PROBES);
   let priority = null;
   for (const level of LEVELS) {
     priority = {
       probes: probes.map((probe) => boundProbe(probe, level)),
       diagnostics: boundDiagnostics(o.diagnostics, level),
     };
+    if (beforeFixtureProbes.length) {
+      priority.beforeFixture = { probes: beforeFixtureProbes.map((probe) => boundProbe(probe, level)) };
+    }
     if (fits(priority, limit)) break;
   }
   // If the bounded evidence is still too large (for example because every character
   // needs JSON escaping), degrade through valid, deterministic JSON views. Never slice
   // JSON text: raw observations remain in the artifact, while this payload must fit.
-  if (!fits(priority, limit)) priority = compactPriority(probes, o.diagnostics);
-  if (!fits(priority, limit)) priority = smallestPriority(probes);
+  if (!fits(priority, limit)) priority = compactPriority(probes, o.diagnostics, beforeFixtureProbes);
+  if (!fits(priority, limit)) priority = smallestPriority(probes, beforeFixtureProbes);
   if (!fits(priority, limit)) priority = { probes: [] };
   if (!fits(priority, limit)) priority = {};
   const view = { ...priority };
