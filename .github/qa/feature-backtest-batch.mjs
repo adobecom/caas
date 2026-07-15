@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { existsSync, mkdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readFileSync, renameSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { applyQaOverlay } from './apply-qa-overlay.mjs';
@@ -12,6 +12,7 @@ const SOURCE_REPO = path.resolve(env('GITHUB_WORKSPACE', process.cwd()));
 const TEMP_ROOT = path.resolve(env('RUNNER_TEMP', path.join(SOURCE_REPO, '.backtest-tmp')), 'caas-feature-backtest');
 const OUTPUT_ROOT = path.resolve(env('BACKTEST_OUTPUT_DIR', path.join(SOURCE_REPO, 'backtest-out')));
 const WORKER = path.join(path.dirname(fileURLToPath(import.meta.url)), 'feature-backtest-worker.mjs');
+const CACHE_ROOT = path.resolve(env('CAAS_QA_CACHE', path.join(process.env.HOME || TEMP_ROOT, '.caas-qa-cache')));
 
 export function parsePrNumbers(value) {
   const numbers = String(value || '').split(/[\s,]+/).filter(Boolean).map(Number);
@@ -69,17 +70,38 @@ function prepareWorktree(commit, destination) {
   applyQaOverlay(destination);
 }
 
+function ensureDeps(root) {
+  const lockHash = fileHash(path.join(root, 'package-lock.json'));
+  const cached = path.join(CACHE_ROOT, 'nm', lockHash);
+  const nm = path.join(root, 'node_modules');
+  if (existsSync(cached)) { symlinkSync(cached, nm, 'dir'); console.log(`[deps] cache hit ${lockHash.slice(0, 8)}`); return lockHash; }
+  run('npm', ['ci', '--no-audit', '--no-fund'], { cwd: root });
+  try { mkdirSync(path.dirname(cached), { recursive: true }); renameSync(nm, cached); symlinkSync(cached, nm, 'dir'); console.log(`[deps] cached ${lockHash.slice(0, 8)}`); }
+  catch (error) { console.warn(`[deps] cache store failed: ${error.message}`); }
+  return lockHash;
+}
+
+function buildOrRestore(root, buildEnv) {
+  const sha = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
+  const overlayHash = fileHash(path.join(root, 'react/src/js/app.jsx')).slice(0, 8)
+    + fileHash(path.join(root, 'react/src/js/components/Consonant/Helpers/general.js')).slice(0, 8);
+  const key = `${sha}-${overlayHash}`;
+  const cached = path.join(CACHE_ROOT, 'dist', key);
+  const dist = path.join(root, 'dist');
+  if (existsSync(cached)) { cpSync(cached, dist, { recursive: true }); console.log(`[build] cache hit ${key.slice(0, 14)}`); return; }
+  run('npm', ['run', 'build'], { cwd: root, env: buildEnv });
+  try { mkdirSync(path.dirname(cached), { recursive: true }); cpSync(dist, cached, { recursive: true }); console.log(`[build] cached ${key.slice(0, 14)}`); }
+  catch (error) { console.warn(`[build] cache store failed: ${error.message}`); }
+}
+
 function installAndBuild(postRoot, preRoot) {
-  run('npm', ['ci', '--no-audit', '--no-fund'], { cwd: postRoot });
-  const postLock = path.join(postRoot, 'package-lock.json');
-  const preLock = path.join(preRoot, 'package-lock.json');
-  if (fileHash(postLock) === fileHash(preLock)) {
-    symlinkSync(path.join(postRoot, 'node_modules'), path.join(preRoot, 'node_modules'), 'dir');
-    console.log('[deps] pre/post lockfiles match; sharing installed dependencies');
-  } else run('npm', ['ci', '--no-audit', '--no-fund'], { cwd: preRoot });
+  const postLock = ensureDeps(postRoot);
+  const preLock = fileHash(path.join(preRoot, 'package-lock.json'));
+  if (postLock === preLock) { symlinkSync(path.join(CACHE_ROOT, 'nm', postLock), path.join(preRoot, 'node_modules'), 'dir'); console.log('[deps] pre==post lockfile; shared'); }
+  else ensureDeps(preRoot);
   const buildEnv = { ...process.env, NODE_OPTIONS: '--openssl-legacy-provider' };
-  run('npm', ['run', 'build'], { cwd: postRoot, env: buildEnv });
-  run('npm', ['run', 'build'], { cwd: preRoot, env: buildEnv });
+  buildOrRestore(postRoot, buildEnv);
+  buildOrRestore(preRoot, buildEnv);
 }
 
 function runWorker({ pr, variant, targetRoot, resultDir, planPath }) {
