@@ -1,0 +1,22 @@
+{
+  "id": "card.button-card-cta.v1",
+  "version": 1,
+  "kind": "card-button-cta",
+  "scope": "collection_initial_render",
+  "title": "Button Card CTA from raw overlay and center footer fields",
+  "summary": "Creates a button-card with a top-level overlayLink and canonical center-footer entry, then proves its CTA text and href in the DOM.",
+  "useWhen": [
+    "The changed card renderer is ButtonCard or reads overlayLink plus footer center CTA data.",
+    "The visitor-visible behavior is a Button Card CTA link on initial render."
+  ],
+  "params": {
+    "id": { "type": "identifier", "default": "qa-button-card", "description": "Unique fixture card id." },
+    "title": { "type": "string", "default": "QA Button Card", "description": "Visible sentinel title." },
+    "ctaText": { "type": "string", "default": "Open QA card", "description": "Expected center-footer CTA text." },
+    "overlayLink": { "type": "url", "default": "https://business.adobe.com/qa/button-card.html", "description": "Top-level overlay URL and expected CTA href." }
+  },
+  "sourceHints": [
+    { "file": "react/src/js/components/Consonant/Cards/ButtonCard.jsx", "symbol": "compiled overlay and center CTA rendering", "needles": ["overlay", "cta2Text"] },
+    { "file": "react/src/js/components/Consonant/Cards/Card.jsx", "symbol": "button-card routing and raw overlay/footer compilation", "needles": ["button-card", "overlayLink", "footer"] }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "id": "filter.nested-filter-prune.v1",
+  "version": 1,
+  "kind": "filter-nested-prune",
+  "scope": "collection_initial_render",
+  "title": "Opened nested left-filter category prunes empty leaves",
+  "summary": "Builds direct opened nested filter data, a card tagged only for the kept leaf, and proves the matching leaf remains while the empty leaf is absent.",
+  "useWhen": [
+    "The changed code removes empty nested filter items from an initially open left filter.",
+    "The behavior is driven by direct filter data rather than a click or expand interaction."
+  ],
+  "params": {
+    "categoryId": { "type": "tag", "default": "caas:products/creative-cloud", "description": "Opened category input value." },
+    "categoryLabel": { "type": "string", "default": "Creative Cloud", "description": "Visible category label." },
+    "keptId": { "type": "tag", "default": "caas:products/photoshop", "description": "Leaf that has a matching card tag." },
+    "keptLabel": { "type": "string", "default": "Photoshop", "description": "Visible kept leaf label." },
+    "removedId": { "type": "tag", "default": "caas:products/lightroom", "description": "Leaf that has no matching card tag." },
+    "removedLabel": { "type": "string", "default": "Lightroom", "description": "Visible empty leaf label." }
+  },
+  "sourceHints": [
+    { "file": "react/src/js/components/Consonant/Container/Container.jsx", "symbol": "removeEmptyFilters nested category items", "needles": ["removeEmptyFilters", "isCategory"] },
+    { "file": "react/src/js/components/Consonant/Filters/Left/Items.jsx", "symbol": "opened nested item rendering", "needles": ["opened", "items"] }
+  ]
+}

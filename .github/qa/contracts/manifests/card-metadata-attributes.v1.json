@@ -1,0 +1,23 @@
+{
+  "id": "card.metadata-attributes.v1",
+  "version": 1,
+  "kind": "card-metadata-attributes",
+  "scope": "collection_initial_render",
+  "title": "Card root metadata attributes",
+  "summary": "Creates a real card with top-level country and reference fields, then proves the card root forwards both fields as DOM data attributes.",
+  "useWhen": [
+    "The changed code forwards raw card metadata to the card root.",
+    "The observable behavior is data-country, data-card-url, or an equivalent root metadata attribute."
+  ],
+  "params": {
+    "cardStyle": { "type": "string", "default": "one-half", "description": "Exact card style exercised by the changed test." },
+    "id": { "type": "identifier", "default": "qa-country-url-card", "description": "Unique fixture card id." },
+    "title": { "type": "string", "default": "QA Country URL Card", "description": "Visible sentinel title." },
+    "country": { "type": "string", "default": "us", "description": "Top-level raw country value." },
+    "reference": { "type": "url", "default": "https://business.adobe.com/qa/country-url.html", "description": "Top-level raw reference URL." }
+  },
+  "sourceHints": [
+    { "file": "react/src/js/components/Consonant/Cards/Card.jsx", "symbol": "card data forwards country/reference to variant roots", "needles": ["country", "reference"] },
+    { "file": "react/src/js/components/Consonant/Cards/OneHalf.jsx", "symbol": "representative card root metadata attributes", "needles": ["data-country", "data-card-url"] }
+  ]
+}

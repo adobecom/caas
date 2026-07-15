@@ -1,0 +1,16 @@
+{
+  "id": "collection.empty-events-removal.v1",
+  "version": 1,
+  "kind": "collection-empty-events-removal",
+  "scope": "collection_initial_render",
+  "title": "Published events collection removes itself on an empty response",
+  "summary": "Rewrites the captured collection endpoint to originSelection=events, returns no cards, and proves the same published host disappears after the controlled response.",
+  "useWhen": [
+    "A changed empty-response branch removes or hides a published collection.",
+    "The branch is gated by originSelection=events and can be exercised on initial load."
+  ],
+  "params": {},
+  "sourceHints": [
+    { "file": "react/src/js/components/Consonant/Container/Container.jsx", "symbol": "removeCollectionFromPage originSelection events", "needles": ["removeCollectionFromPage", "originSelection"] }
+  ]
+}

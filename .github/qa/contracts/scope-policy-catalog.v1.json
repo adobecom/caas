@@ -1,0 +1,10 @@
+{
+  "activePolicyId": "caas-feature-qa-scope.v1",
+  "policies": {
+    "caas-feature-qa-scope.v1": {
+      "file": "scope-policy.v1.json",
+      "version": 1,
+      "sha256": "eb0aa08a8edb066c799c1351efe61fc3021d5274334511ad0f8b79eefe3e40a2"
+    }
+  }
+}
