@@ -138,12 +138,29 @@ const CardFooter = (props) => {
         altRightLive.push(live);
     }
 
-    // Format date for blog card
-    const formattedCardDate = cardDate
-        ? `${String(cardDate.getMonth() + 1)
-            .padStart(2, '0')}-${String(cardDate.getDate())
-            .padStart(2, '0')}-${cardDate.getFullYear()}`
-        : '';
+    // Format date for flex card mm/dd/yyyy
+    const formattedFlexCardDate = () => {
+        const date = new Date(cardDate);
+        if (date) {
+            return `${String(date.getMonth() + 1)}/${String(date.getDate())}/${date.getFullYear()}`;
+        }
+        return '';
+    }
+
+    // Format date for blog card mm-dd-yyyy
+    const formattedBlogCardDate = () => {
+        const date = new Date(cardDate);
+        if (date) {
+            // Remove timezone by constructing a new Date from the date components only (local)
+            const dateObj = typeof cardDate === 'string'
+                ? new Date(cardDate.slice(0, 10)) // e.g. '2023-05-01T12:00:00Z' => '2023-05-01'
+                : new Date(cardDate.getFullYear(), cardDate.getMonth(), cardDate.getDate());
+            return `${String(dateObj.getMonth() + 1)
+                .padStart(2, '0')}-${String(dateObj.getDate())
+                .padStart(2, '0')}-${dateObj.getFullYear()}`;
+        }
+        return '';
+    }
     
     return (
         <div
@@ -155,8 +172,8 @@ const CardFooter = (props) => {
                 {shouldRenderLeft &&
                 <div
                     className="consonant-CardFooter-cell consonant-CardFooter-cell--left">
-                    {isBlog && <span>{formattedCardDate}</span>}
-                    {isFlexCard && showDateOnFooter && !endDate&& <span>{formattedCardDate}</span>}
+                    {isBlog && <span>{formattedBlogCardDate()}</span>}
+                    {isFlexCard && showDateOnFooter && !endDate&& <span>{formattedFlexCardDate()}</span>}
                     <Group renderList={left} onFocus={onFocus} />
                 </div>
                 }
