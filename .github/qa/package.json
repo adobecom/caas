@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test:code-search": "node --test code-search.test.mjs",
-    "test:backtest": "node --test code-search.test.mjs apply-qa-overlay.test.mjs qa-browser-bridge.test.mjs qa-target.test.mjs contracts/contracts.test.mjs scenario-config.test.mjs feature-backtest-batch.test.mjs observation-view.test.mjs renderability.test.mjs llm-json.test.mjs skip-challenge.test.mjs plan-discrimination.test.mjs",
+    "test:backtest": "node --test code-search.test.mjs apply-qa-overlay.test.mjs qa-browser-bridge.test.mjs qa-target.test.mjs contract-routing.test.mjs contracts/contracts.test.mjs scenario-config.test.mjs feature-backtest-batch.test.mjs observation-view.test.mjs renderability.test.mjs llm-json.test.mjs skip-challenge.test.mjs plan-discrimination.test.mjs",
     "contracts:list": "node contract-maker.mjs list",
     "contracts:health": "node contract-maker.mjs health --repo-root ../.."
   },

@@ -14,6 +14,14 @@ on:
         description: 'PR number to feature-test'
         required: true
         type: string
+      prompt_profile:
+        description: 'Historical-backtest prompt profile (ignored for a normal PR feature review)'
+        required: false
+        default: 'baseline-v1'
+        type: choice
+        options:
+          - baseline-v1
+          - lean-contracts-v1
 
 concurrency:
   group: qa-feature-${{ github.event.pull_request.number || inputs.pr_number }}
@@ -129,6 +137,7 @@ jobs:
           PROXY_URL: ${{ secrets.LLM_PROXY_ENDPOINT }}
           MODEL: ${{ secrets.LLM_MODEL }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          QA_PROMPT_PROFILE: ${{ inputs.prompt_profile }}
         run: |
           export BACKTEST_PRS="${BACKTEST_REQUEST#backtest:}"
           node .github/qa/feature-backtest-batch.mjs

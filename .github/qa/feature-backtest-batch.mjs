@@ -12,6 +12,7 @@ const SOURCE_REPO = path.resolve(env('GITHUB_WORKSPACE', process.cwd()));
 const TEMP_ROOT = path.resolve(env('RUNNER_TEMP', path.join(SOURCE_REPO, '.backtest-tmp')), 'caas-feature-backtest');
 const OUTPUT_ROOT = path.resolve(env('BACKTEST_OUTPUT_DIR', path.join(SOURCE_REPO, 'backtest-out')));
 const WORKER = path.join(path.dirname(fileURLToPath(import.meta.url)), 'feature-backtest-worker.mjs');
+const PROMPT_PROFILE = env('QA_PROMPT_PROFILE', 'baseline-v1');
 
 export function parsePrNumbers(value) {
   const numbers = String(value || '').split(/[\s,]+/).filter(Boolean).map(Number);
@@ -65,7 +66,7 @@ function writeSummary(entries) {
   const rows = entries.map((entry) =>
     `| [#${entry.pr}](https://github.com/${REPO}/pull/${entry.pr}) | ${entry.title.replaceAll('|', '\\|')} | ${entry.outcome} | ${entry.detail.replaceAll('|', '\\|')} |`);
   const markdown = `# Historical Feature-QA Back-test\n\n` +
-    `Generated: ${new Date().toISOString()}\n\n` +
+    `Generated: ${new Date().toISOString()}\n\nPrompt profile: \`${PROMPT_PROFILE}\`\n\n` +
     `| PR | Change | Outcome | Detail |\n|---|---|---|---|\n${rows.join('\n')}\n`;
   writeFileSync(path.join(OUTPUT_ROOT, 'summary.md'), markdown);
 }
@@ -135,10 +136,11 @@ async function main() {
       const pre = post?.status === 'PASS' && existsSync(planPath)
         ? runWorker({ pr, variant: 'pre', targetRoot: preRoot, resultDir, planPath }) : null;
       const classification = classifyPair(post, pre);
-      summary.push({ pr, title, ...classification, post: post?.status || null, pre: pre?.status || null });
+      summary.push({ pr, title, promptProfile: post?.promptProfile || PROMPT_PROFILE,
+        ...classification, post: post?.status || null, pre: pre?.status || null });
     } catch (error) {
       console.error(`[batch] PR #${pr} failed: ${error.stack || error.message}`);
-      summary.push({ pr, title, outcome: 'ERROR', detail: error.message, post: null, pre: null });
+      summary.push({ pr, title, promptProfile: PROMPT_PROFILE, outcome: 'ERROR', detail: error.message, post: null, pre: null });
     } finally {
       for (const worktree of [preRoot, postRoot]) {
         try { run('git', ['worktree', 'remove', '--force', worktree], { cwd: SOURCE_REPO }); } catch { /* cleanup below */ }

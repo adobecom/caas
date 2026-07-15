@@ -8,6 +8,14 @@ import { applySpecCardStyle, buildScenarioConfig, normalizeEventFixtureCards } f
 import { contractCatalogGuidance } from './contracts/catalog.mjs';
 import { evaluateContractAssertions } from './contracts/assertions.mjs';
 import { compileContractPlan, isManagedContractPlan } from './contracts/compiler.mjs';
+import {
+  LEAN_CONTRACTS_PROMPT_PROFILE,
+  buildLeanContractPlanPrompt,
+  compactLeanCandidates,
+  discoverManagedContractCandidates,
+  parseBacktestPromptProfile,
+  validateLeanContractSelection,
+} from './contract-routing.mjs';
 import { buildValidationView } from './observation-view.mjs';
 import { requestBoundedJson } from './llm-json.mjs';
 import { configEchoContract, enforceConfigEchoContract, needsConfigEchoChallenge } from './plan-discrimination.mjs';
@@ -41,6 +49,7 @@ const VARIANT = env('BACKTEST_VARIANT', 'post');
 const PLAN_INPUT = env('BACKTEST_PLAN_PATH');
 const RESULT_INPUT = env('BACKTEST_RESULT_PATH');
 const TARGET_INDEX = Number(env('QA_TARGET_INDEX', '0'));
+const PROMPT_PROFILE = parseBacktestPromptProfile(env('QA_PROMPT_PROFILE'));
 
 for (const [name, value] of Object.entries({ PR_NUMBER: PR, TARGET_REPO_ROOT: ROOT_INPUT,
   DIST_DIR: DIST_INPUT, PROXY_URL: PROXY, MODEL, IMS_ACCESS_TOKEN: TOKEN,
@@ -58,6 +67,7 @@ const RESULT_PATH = path.resolve(RESULT_INPUT);
 const SCREENSHOT_PATH = path.resolve(env('BACKTEST_SCREENSHOT_PATH', path.join(path.dirname(RESULT_PATH), `${VARIANT}.png`)));
 const ALLOW = new Set(['app.css', 'main.min.js', 'react.umd.js', 'react.dom.umd.js']);
 const gh = (args) => execFileSync('gh', args, { encoding: 'utf8', maxBuffer: 20 * 1024 * 1024 });
+const modelCallMetrics = [];
 
 const CARD_SHAPE = `A minimal collection card is:
 { "id":"unique", "styles":{"typeOverride":"<copy exact cardStyle from selected test>","backgroundImage":"https://business.adobe.com/content/dam/dx/us/en/images/cards/default/media_1.jpg","icon":""},
@@ -67,6 +77,7 @@ const CARD_SHAPE = `A minimal collection card is:
   "cardDate":"ISO","modifiedDate":"ISO","createdDate":"ISO","country":"US","origin":"hawks" }`;
 
 async function llmResponse(prompt, maxTokens = 4000) {
+  modelCallMetrics.push({ promptChars: String(prompt || '').length, maxTokens });
   const body = JSON.stringify({ model: MODEL, max_tokens: maxTokens, stream: true,
     messages: [{ role: 'user', content: prompt }] });
   for (let attempt = 0; attempt < 3; attempt += 1) {
@@ -127,7 +138,14 @@ async function llm(prompt, maxTokens = 4000) {
 
 function saveResult(result) {
   mkdirSync(path.dirname(RESULT_PATH), { recursive: true });
-  writeFileSync(RESULT_PATH, `${JSON.stringify({ pr: Number(PR), variant: VARIANT, ...result }, null, 2)}\n`);
+  const totalPromptChars = modelCallMetrics.reduce((sum, call) => sum + call.promptChars, 0);
+  writeFileSync(RESULT_PATH, `${JSON.stringify({
+    pr: Number(PR),
+    variant: VARIANT,
+    promptProfile: PROMPT_PROFILE,
+    modelMetrics: { calls: modelCallMetrics.length, totalPromptChars, callsDetail: modelCallMetrics },
+    ...result,
+  }, null, 2)}\n`);
   console.log(`[result] ${result.status}${result.reason ? `: ${result.reason}` : ''}`);
 }
 
@@ -407,6 +425,29 @@ function targetUnresolvedReason(target, observed) {
   } else {
     const evidence = productEvidence();
     postEvidence = evidence;
+    const isLeanContractProfile = PROMPT_PROFILE === LEAN_CONTRACTS_PROMPT_PROFILE;
+    let research;
+    let contractRouting;
+    let exposedLeanCandidates;
+    if (isLeanContractProfile) {
+      contractRouting = discoverManagedContractCandidates({
+        repoRoot: ROOT,
+        changedPaths: evidence.changedPaths,
+        productDiff: evidence.diff,
+      });
+      exposedLeanCandidates = compactLeanCandidates(contractRouting.candidates);
+      console.log(`[contract-router] candidates=${exposedLeanCandidates.map((candidate) => candidate.id).join(',') || '(none)'} searches=${contractRouting.searches.length}`);
+      if (!exposedLeanCandidates.length) {
+        saveResult({
+          status: 'SKIPPED',
+          stage: 'contract-routing',
+          coverage: 'NEEDS_CONTRACT',
+          reason: 'NEEDS_CONTRACT: no reviewed contract has a changed source-hint match for this PR',
+          contractCandidates: [],
+        });
+        return;
+      }
+    } else {
     const detectResponse = await requestBoundedJson({
       ask: llmResponse,
       label: 'detect',
@@ -456,7 +497,7 @@ Reply ONLY JSON: {"testable":true|false,"reason":"one sentence"}.`,
       return;
     }
 
-    const research = await researchCode({
+    research = await researchCode({
       ask: llm,
       repoRoot: ROOT,
       taskContext: `PR: ${evidence.meta.title}\nBody: ${(evidence.meta.body || '').slice(0, 1500)}\nChanged files:\n${evidence.changedPaths.join('\n')}\nChanged test diff:\n${evidence.specDiff}\nFull changed spec context:\n${evidence.specText}\nDiff:\n${evidence.diff.slice(0, 12000)}`,
@@ -464,6 +505,7 @@ Reply ONLY JSON: {"testable":true|false,"reason":"one sentence"}.`,
     console.log(`[research] searches=${research.searches.length} summary=${research.summary.slice(0, 800)}`);
     research.searches.forEach((entry, index) => console.log(
       `[research ${index + 1}] ${entry.query} in ${entry.searchPath} -> ${entry.result.matches.length} block(s)`));
+    }
 
     const { context, routeLibraries } = await browserSession();
     const liveCapture = await captureLiveConfigs(context, routeLibraries);
@@ -491,7 +533,9 @@ Reply ONLY JSON: {"testable":true|false,"reason":"one sentence"}.`,
       captured: liveCapture.bridge?.captured?.count,
     })}`);
     const contractGuide = contractCatalogGuidance();
-    const planRaw = `Reproduce exactly ONE human-authored test/requirement from this historical Adobe CaaS PR on a real page. Do not invent expected behavior.
+    const planRaw = isLeanContractProfile
+      ? buildLeanContractPlanPrompt({ evidence, candidates: exposedLeanCandidates })
+      : `Reproduce exactly ONE human-authored test/requirement from this historical Adobe CaaS PR on a real page. Do not invent expected behavior.
 
 PR: ${evidence.meta.title}
 Body: ${(evidence.meta.body || '').slice(0, 1800)}
@@ -550,23 +594,28 @@ For a managed contract:
 For exploratory.collection.v1 only:
 {"sourceTest":"...","contract":{"id":"exploratory.collection.v1","reason":"why no managed contract matches"},"config":{},"cards":[],"filters":[],"isHashed":false,"expected":"exact assertion","observe":"...","probes":[],"renderability":{"requiredInitial":[{"selector":"...","minMatches":1,"why":"..."}]},"mappingEvidence":[{"file":"...","line":1,"fact":"..."}],"skipReason":""}
 or {"sourceTest":"...","skipReason":"precise unsupported capability or missing mapping"}.`;
+    const planResearchSearches = isLeanContractProfile ? contractRouting.searches : research.searches;
+    const finalizePlannedScenario = (rawPlan) => finalizePlan(
+      isLeanContractProfile ? validateLeanContractSelection(rawPlan, exposedLeanCandidates) : rawPlan,
+      { evidence, liveConfig: postLiveConfig, researchSearches: planResearchSearches },
+    );
     const planResponse = await requestBoundedJson({
       ask: llmResponse,
       prompt: planRaw,
       label: 'plan',
-      maxTokens: 16000,
-      retryMaxTokens: 8000,
-      maxChars: 24000,
-      retrySuffix: `Return the entire replacement JSON object again, with no prose or fences. The prior response was unusable. Keep it below 24,000 characters: use at most eight cards, four filter groups with sixteen total leaf items, four probes, and three concise mappingEvidence entries. Omit non-rendering card fields. If the exact changed behavior requires an unsupported interaction, return the precise skipReason instead of a partial plan.`,
-      parseAndValidate: (rawPlan) => finalizePlan(rawPlan, {
-        evidence, liveConfig: postLiveConfig, researchSearches: research.searches,
-      }),
+      maxTokens: isLeanContractProfile ? 3000 : 16000,
+      retryMaxTokens: isLeanContractProfile ? 1600 : 8000,
+      maxChars: isLeanContractProfile ? 6000 : 24000,
+      retrySuffix: isLeanContractProfile
+        ? 'Return the complete router JSON only: choose one exposed contract and one cited sourceEvidence line, or return a precise NEEDS_CONTRACT skipReason. Do not include fixture/config/probe fields.'
+        : `Return the entire replacement JSON object again, with no prose or fences. The prior response was unusable. Keep it below 24,000 characters: use at most eight cards, four filter groups with sixteen total leaf items, four probes, and three concise mappingEvidence entries. Omit non-rendering card fields. If the exact changed behavior requires an unsupported interaction, return the precise skipReason instead of a partial plan.`,
+      parseAndValidate: finalizePlannedScenario,
     });
     let plan = planResponse.value;
     console.log(`[plan json] ${planResponse.attempts.map(({ attempt, kind, stopReason, chars }) =>
       `attempt=${attempt} kind=${kind} stop=${stopReason} chars=${chars}`).join('; ')}`);
     let planSkipChallenge;
-    if (plan.skipReason && shouldChallengeSkip({ stage: 'plan', evidence })) {
+    if (!isLeanContractProfile && plan.skipReason && shouldChallengeSkip({ stage: 'plan', evidence })) {
       const replanResponse = await requestBoundedJson({
         ask: llmResponse,
         prompt: `${planRaw}\n\nROOT-RENDER SKIP CHALLENGE: This PR changed a DOM/config-to-React bridge and its changed test proves a config/props handoff. A previous planner proposed a skip. Re-plan adversarially before accepting that conclusion. Trace the production caller chain into the mounted component. Preserve the live custom element's data-config as the bridge input; the injected replacement only takes effect after the bridge reaches React. If controlled sentinel cards can prove collection mount, return a complete normal scenario plan. Use a surviving root from the captured Live DOM root hints—React may replace the original custom-element tag—and require one scoped selector containing the sentinel's unique id/title with minMatches covering every equivalent captured root, not separate generic cards elsewhere. Return skipReason only after proving that this handoff cannot affect initial mount through injected config/cards.`,
@@ -575,9 +624,7 @@ or {"sourceTest":"...","skipReason":"precise unsupported capability or missing m
         retryMaxTokens: 8000,
         maxChars: 24000,
         retrySuffix: `Return the entire replacement JSON object again, with no prose or fences. The prior response was unusable. Keep it below 24,000 characters and either provide the complete root-render scenario or a precise unsupported reason.`,
-        parseAndValidate: (rawPlan) => finalizePlan(rawPlan, {
-          evidence, liveConfig: postLiveConfig, researchSearches: research.searches,
-        }),
+        parseAndValidate: finalizePlannedScenario,
       });
       plan = replanResponse.value;
       planSkipChallenge = {
@@ -593,7 +640,7 @@ or {"sourceTest":"...","skipReason":"precise unsupported capability or missing m
     // the planner one chance to find the post-only semantic DOM consequence
     // (or explicitly call the change visual-only) before accepting that plan.
     let planConfigEchoChallenge;
-    if (!plan.skipReason && needsConfigEchoChallenge(plan)) {
+    if (!isLeanContractProfile && !plan.skipReason && needsConfigEchoChallenge(plan)) {
       const contract = configEchoContract(plan);
       try {
         const replanResponse = await requestBoundedJson({
@@ -604,10 +651,7 @@ or {"sourceTest":"...","skipReason":"precise unsupported capability or missing m
           retryMaxTokens: 8000,
           maxChars: 24000,
           retrySuffix: `Return the entire replacement JSON object again, with no prose or fences. Either provide a complete plan whose assertion uses post-only semantic DOM evidence, or a precise visual-judgment skipReason. Do not use the configured style literal's generic class/data echo as evidence. Keep it below 24,000 characters.`,
-          parseAndValidate: (rawPlan) => enforceConfigEchoContract(contract,
-            finalizePlan(rawPlan, {
-              evidence, liveConfig: postLiveConfig, researchSearches: research.searches,
-            })),
+          parseAndValidate: (rawPlan) => enforceConfigEchoContract(contract, finalizePlannedScenario(rawPlan)),
         });
         plan = replanResponse.value;
         planConfigEchoChallenge = {
@@ -631,12 +675,16 @@ or {"sourceTest":"...","skipReason":"precise unsupported capability or missing m
     }
     if (plan.skipReason) {
       saveResult({ status: 'SKIPPED', stage: 'plan', reason: plan.skipReason,
-        researchCount: research.searches.length, sourceTest: plan.sourceTest || '', skipChallenge: planSkipChallenge,
+        coverage: isLeanContractProfile && /^NEEDS_CONTRACT:/.test(plan.skipReason) ? 'NEEDS_CONTRACT' : undefined,
+        researchCount: planResearchSearches.length, sourceTest: plan.sourceTest || '', skipChallenge: planSkipChallenge,
         discriminationChallenge: planConfigEchoChallenge });
       return;
     }
-    bundle = { pr: Number(PR), meta: evidence.meta, plan, target, researchCount: research.searches.length,
-      researchSummary: research.summary, researchSearches: research.searches };
+    bundle = { pr: Number(PR), meta: evidence.meta, plan, target, promptProfile: PROMPT_PROFILE,
+      planningPromptChars: planRaw.length, researchCount: planResearchSearches.length,
+      researchSummary: isLeanContractProfile ? 'Mechanical reviewed-contract source routing.' : research.summary,
+      researchSearches: planResearchSearches };
+    if (isLeanContractProfile) bundle.contractRouting = { candidates: exposedLeanCandidates };
     if (planSkipChallenge) bundle.skipChallenge = planSkipChallenge;
     if (planConfigEchoChallenge) bundle.discriminationChallenge = planConfigEchoChallenge;
     console.log(`[plan] ${plan.sourceTest} contract=${plan.contract?.id || 'none'} cards=${plan.cards?.length || 0} probes=${plan.probes.length} initial=${plan.renderability.requiredInitial.length}`);

@@ -17,6 +17,14 @@ on:
         required: true
         default: 'https://business.adobe.com/customer-success-stories.html'
         type: string
+      prompt_profile:
+        description: 'Preserved prompt baseline or lean reviewed-contract router'
+        required: true
+        default: 'baseline-v1'
+        type: choice
+        options:
+          - baseline-v1
+          - lean-contracts-v1
 
 concurrency:
   group: qa-feature-historical-backtest
@@ -56,6 +64,7 @@ jobs:
           PROXY_URL: ${{ secrets.LLM_PROXY_ENDPOINT }}
           MODEL: ${{ secrets.LLM_MODEL }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          QA_PROMPT_PROFILE: ${{ inputs.prompt_profile }}
         run: node .github/qa/feature-backtest-batch.mjs
 
       - name: Upload plans, results, and screenshots
