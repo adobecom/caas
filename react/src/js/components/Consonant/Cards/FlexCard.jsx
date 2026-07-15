@@ -20,7 +20,7 @@ const FlexCard = () => {
         highlightedTitle, title, headingAria, headingLevel,
         highlightedDescription, description,
         parseMarkDown,
-        footer, renderDivider, cardDate, startDate, endDate, staticDate,
+        footer, renderDivider, cardDate, startDate, endDate,
         extendFooterData, altCtaUsed, hideOnDemandDates,
         linkBlockerTarget, overlay, ctaText,
         onFocus, tabIndex, ariaHidden,
