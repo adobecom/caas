@@ -122,7 +122,6 @@ const FlexCard = () => {
                         cardDate={new Date(cardDate)}
                         startDate={startDate}
                         endDate={endDate}
-                        staticDate={staticDate}
                         cardStyle="flex-card"
                         onFocus={onFocus}
                         title={title}

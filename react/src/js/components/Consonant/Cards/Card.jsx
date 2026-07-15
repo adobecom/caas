@@ -410,6 +410,16 @@ const Card = (props) => {
     const cta2Text = getCtaText(footer, 'center');
     const overlay = (altCtaUsed && isLive && altCtaLink !== '') ? altCtaLink : overlayParams;
 
+    // Parse CTA links
+    const parseLinks = (markup) => {
+        const cta1Url = getCtaLink(footer, 'right');
+        const cta1Text = getCtaText(footer, 'right');
+        const cta2Url = getCtaLink(footer, 'center');
+        return markup
+            .replaceAll('{link:cta1}', `<a href="${cta1Url}">${cta1Text}</a>`)
+            .replaceAll('{link:cta2}', `<a href="${cta2Url}">${cta2Text}</a>`);
+    };
+
     const parseMarkDown = (md = '') => {
         if (searchEnabled) {
             return removeMarkDown(md.replace(/<[^>]*>/g, ''));
@@ -431,16 +441,6 @@ const Card = (props) => {
         }
     
         return markup;
-    };
-
-    // CTA links
-    const parseLinks = (markup) => {
-        const cta1Url = getCtaLink(footer, 'right');
-        const cta1Text = getCtaText(footer, 'right');
-        const cta2Url = getCtaLink(footer, 'center');
-        return markup
-            .replaceAll('{link:cta1}', `<a href="${cta1Url}">${cta1Text}</a>`)
-            .replaceAll('{link:cta2}', `<a href="${cta2Url}">${cta2Text}</a>`);
     };
 
     const optimizedImage = optimizeImageUrl(image);
