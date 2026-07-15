@@ -144,7 +144,7 @@ const CardFooter = (props) => {
             return `${String(date.getMonth() + 1)}/${String(date.getDate())}/${date.getFullYear()}`;
         }
         return '';
-    }
+    };
 
     // Format date for blog card mm-dd-yyyy
     const formattedBlogCardDate = () => {
@@ -159,7 +159,7 @@ const CardFooter = (props) => {
                 .padStart(2, '0')}-${dateObj.getFullYear()}`;
         }
         return '';
-    }
+    };
     
     return (
         <div
@@ -172,7 +172,7 @@ const CardFooter = (props) => {
                 <div
                     className="consonant-CardFooter-cell consonant-CardFooter-cell--left">
                     {isBlog && <span>{formattedBlogCardDate()}</span>}
-                    {isFlexCard && showDateOnFooter && !endDate&& <span>{formattedFlexCardDate()}</span>}
+                    {isFlexCard && showDateOnFooter && !endDate && <span>{formattedFlexCardDate()}</span>}
                     <Group renderList={left} onFocus={onFocus} />
                 </div>
                 }

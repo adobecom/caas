@@ -142,6 +142,7 @@
 
         .consonant-Card-text {
             flex-grow: 1;
+            margin: 0;
 
             &:last-child {
                 margin: 0;
@@ -149,18 +150,24 @@
         }
 
         .consonant-CardFooter {
-            padding: 20px 0 0 0;
-
-            &--divider {
-                margin-top: 10px;
-            }
+            padding: 0;
 
             .consonant-CardFooter-row:has(.consonant-CardFooter-cell--right) {
                 height: auto;
+                margin-top: 12px;
+                padding: 20px 0 0 0;
             }
 
             .consonant-CardFooter-cell--left {
                 font-size: 0.875rem;
+            }
+
+            &--divider {
+                margin-top: 20px;
+
+                .consonant-CardFooter-row:has(.consonant-CardFooter-cell--right) {
+                    margin-top: 0;
+                }
             }
         }
 
