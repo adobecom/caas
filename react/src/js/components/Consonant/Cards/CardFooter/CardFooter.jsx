@@ -42,7 +42,6 @@ const CardFooter = (props) => {
         cardDate,
         startDate,
         endDate,
-        staticDate,
         isFluid,
         onFocus,
         title,
