@@ -10,9 +10,11 @@ import { evaluateContractAssertions } from './contracts/assertions.mjs';
 import { compileContractPlan, isManagedContractPlan } from './contracts/compiler.mjs';
 import {
   LEAN_CONTRACTS_PROMPT_PROFILE,
+  buildLeanCoveragePrompt,
   buildLeanContractPlanPrompt,
   discoverManagedContractCandidates,
   parseBacktestPromptProfile,
+  validateLeanCoverageDecision,
   validateLeanContractSelection,
 } from './contract-routing.mjs';
 import { buildValidationView } from './observation-view.mjs';
@@ -441,11 +443,37 @@ function targetUnresolvedReason(target, observed) {
       exposedLeanCandidates = contractRouting.candidates;
       console.log(`[contract-router] candidates=${exposedLeanCandidates.map((candidate) => candidate.id).join(',') || '(none)'} searches=${contractRouting.searches.length}`);
       if (!exposedLeanCandidates.length) {
+        let coverageDecision;
+        let coverageRoutingError = '';
+        try {
+          const coverageResponse = await requestBoundedJson({
+            ask: llmResponse,
+            label: 'lean coverage routing',
+            prompt: buildLeanCoveragePrompt({ evidence }),
+            maxTokens: 2000,
+            retryMaxTokens: 1200,
+            maxChars: 4000,
+            retrySuffix: 'Return only one complete JSON object with route NEEDS_CONTRACT or OUT_OF_SCOPE, a concrete reason, and a nonempty neededCapabilities array for NEEDS_CONTRACT.',
+            parseAndValidate: validateLeanCoverageDecision,
+          });
+          coverageDecision = coverageResponse.value;
+        } catch (error) {
+          // An unavailable classifier must not become a speculative PASS or
+          // false OUT_OF_SCOPE. Retain the safe mechanical coverage gap.
+          coverageRoutingError = String(error.message || error).slice(0, 800);
+          coverageDecision = {
+            route: 'NEEDS_CONTRACT',
+            reason: 'No reviewed contract matched this PR; coverage classifier was unavailable.',
+            neededCapabilities: ['classify the uncovered browser behavior'],
+          };
+        }
         saveResult({
           status: 'SKIPPED',
           stage: 'contract-routing',
-          coverage: 'NEEDS_CONTRACT',
-          reason: 'NEEDS_CONTRACT: no reviewed contract has a changed source-hint match for this PR',
+          coverage: coverageDecision.route,
+          reason: `${coverageDecision.route}: ${coverageDecision.reason}`,
+          neededCapabilities: coverageDecision.neededCapabilities,
+          coverageRoutingError: coverageRoutingError || undefined,
           contractCandidates: [],
         });
         return;

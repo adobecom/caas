@@ -154,6 +154,30 @@ export function validateLeanContractSelection(rawPlan, candidates) {
   return plan;
 }
 
+/** A no-candidate result is a coverage decision, never a browser verdict. */
+export function validateLeanCoverageDecision(rawDecision) {
+  const decision = rawDecision && typeof rawDecision === 'object' && !Array.isArray(rawDecision) ? rawDecision : null;
+  if (!decision) throw new Error('lean coverage router must return an object');
+  const allowedFields = new Set(['route', 'reason', 'neededCapabilities']);
+  const unexpectedField = Object.keys(decision).find((field) => !allowedFields.has(field));
+  if (unexpectedField) throw new Error(`lean coverage field is not allowed: ${unexpectedField}`);
+  const route = text(decision.route).trim();
+  if (route !== 'NEEDS_CONTRACT' && route !== 'OUT_OF_SCOPE') {
+    throw new Error('lean coverage route must be NEEDS_CONTRACT or OUT_OF_SCOPE');
+  }
+  const reason = text(decision.reason).trim().replace(/\s+/g, ' ').slice(0, 1200);
+  if (reason.length < 6) throw new Error('lean coverage route needs a concrete reason');
+  const neededCapabilities = (Array.isArray(decision.neededCapabilities) ? decision.neededCapabilities : [])
+    .map((item) => text(item).trim().replace(/\s+/g, ' ').slice(0, 300)).filter(Boolean).slice(0, 6);
+  if (route === 'NEEDS_CONTRACT' && !neededCapabilities.length) {
+    throw new Error('NEEDS_CONTRACT needs at least one adapter capability');
+  }
+  if (route === 'OUT_OF_SCOPE' && neededCapabilities.length) {
+    throw new Error('OUT_OF_SCOPE must not propose an adapter capability');
+  }
+  return { route, reason, neededCapabilities };
+}
+
 export function compactLeanCandidates(candidates, maxChars = 12000) {
   const compact = [];
   for (const candidate of (Array.isArray(candidates) ? candidates : [])) {
@@ -200,4 +224,25 @@ ${catalog}
 Reply ONLY one JSON object:
 {"sourceTest":"changed test name/requirement","contract":{"id":"one listed id","params":{},"reason":"brief match"},"mappingEvidence":[{"file":"candidate evidence file","line":123,"fact":"what the changed source establishes"}],"skipReason":""}
 or {"sourceTest":"","skipReason":"NEEDS_CONTRACT: no listed reviewed contract matches this changed behavior"}.`;
+}
+
+/**
+ * Use this only after deterministic catalog routing finds no candidate. It is
+ * deliberately unable to create a scenario, so it can turn historical PRs
+ * into an honest contract backlog without fabricating a browser result.
+ */
+export function buildLeanCoveragePrompt({ evidence }) {
+  return `No reviewed CaaS fixture contract matched this PR. Classify coverage only; do not plan a browser scenario and do not return PASS or FAIL.
+
+Use NEEDS_CONTRACT when the changed code introduces a visitor-visible browser behavior that could be worth a reviewed fixture adapter. Name the missing adapter capability. Use OUT_OF_SCOPE only for refactors, tests/build/tooling, performance-only work, or behavior outside this initial-render collection harness.
+
+PR title: ${text(evidence?.meta?.title).slice(0, 800)}
+PR body: ${text(evidence?.meta?.body).slice(0, 1000)}
+Changed files: ${(Array.isArray(evidence?.changedPaths) ? evidence.changedPaths : []).join('\n').slice(0, 5000)}
+Changed test diff:\n${text(evidence?.specDiff).slice(0, 7000)}
+Changed product diff:\n${text(evidence?.diff).slice(0, 11000)}
+
+Reply ONLY JSON:
+{"route":"NEEDS_CONTRACT","reason":"specific visible behavior not represented by the catalog","neededCapabilities":["one reviewed adapter capability"]}
+or {"route":"OUT_OF_SCOPE","reason":"specific reason this is not a new injectable browser behavior","neededCapabilities":[]}.`;
 }

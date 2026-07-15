@@ -5,10 +5,12 @@ import { fileURLToPath } from 'node:url';
 import {
   BASELINE_PROMPT_PROFILE,
   LEAN_CONTRACTS_PROMPT_PROFILE,
+  buildLeanCoveragePrompt,
   buildLeanContractPlanPrompt,
   compactLeanCandidates,
   discoverManagedContractCandidates,
   parseBacktestPromptProfile,
+  validateLeanCoverageDecision,
   validateLeanContractSelection,
 } from './contract-routing.mjs';
 
@@ -109,4 +111,32 @@ test('lean candidate context remains valid JSON when evidence is large', () => {
   const compact = compactLeanCandidates(candidates);
   assert.ok(JSON.stringify(compact).length <= 12000);
   assert.doesNotThrow(() => JSON.parse(JSON.stringify(compact)));
+});
+
+test('no-candidate coverage routing is bounded to a backlog or an out-of-scope decision', () => {
+  assert.deepEqual(validateLeanCoverageDecision({
+    route: 'NEEDS_CONTRACT', reason: 'A visible static card modifier needs a reviewed DOM contract.',
+    neededCapabilities: ['compile and assert the static modifier'],
+  }), {
+    route: 'NEEDS_CONTRACT', reason: 'A visible static card modifier needs a reviewed DOM contract.',
+    neededCapabilities: ['compile and assert the static modifier'],
+  });
+  assert.equal(validateLeanCoverageDecision({
+    route: 'OUT_OF_SCOPE', reason: 'Only internal refactor wiring changed.', neededCapabilities: [],
+  }).route, 'OUT_OF_SCOPE');
+  assert.throws(() => validateLeanCoverageDecision({ route: 'PASS', reason: 'works' }), /coverage route/);
+  assert.throws(() => validateLeanCoverageDecision({ route: 'NEEDS_CONTRACT', reason: 'visible behavior', neededCapabilities: [] }), /adapter capability/);
+  assert.throws(() => validateLeanCoverageDecision({
+    route: 'OUT_OF_SCOPE', reason: 'Only internal refactor wiring changed.', neededCapabilities: ['a fixture'],
+  }), /must not propose/);
+  assert.throws(() => validateLeanCoverageDecision({
+    route: 'NEEDS_CONTRACT', reason: 'A visible card behavior changed.', neededCapabilities: ['a fixture'], cards: [],
+  }), /field is not allowed/);
+  const prompt = buildLeanCoveragePrompt({
+    meta: { title: 'A static modifier', body: 'Feature details' }, changedPaths: ['react/src/x.jsx'], specDiff: '+ expectation', diff: '+ runtime branch',
+  });
+  assert.match(prompt, /NEEDS_CONTRACT/);
+  assert.match(prompt, /OUT_OF_SCOPE/);
+  assert.doesNotMatch(prompt, /CARD_SHAPE/);
+  assert.match(prompt, /do not plan a browser scenario/);
 });
