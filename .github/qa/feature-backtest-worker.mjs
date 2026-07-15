@@ -8,14 +8,17 @@ import { applySpecCardStyle, buildScenarioConfig, normalizeEventFixtureCards } f
 import { contractCatalogGuidance } from './contracts/catalog.mjs';
 import { evaluateContractAssertions } from './contracts/assertions.mjs';
 import { compileContractPlan, isManagedContractPlan } from './contracts/compiler.mjs';
+import { resolveCoverageScope } from './contracts/scope-policy.mjs';
 import {
   LEAN_CONTRACTS_PROMPT_PROFILE,
+  buildLeanCoverageEvidence,
   buildLeanCoveragePrompt,
   buildLeanContractPlanPrompt,
   discoverManagedContractCandidates,
-  makeLeanCoverageDecisionConservative,
   parseBacktestPromptProfile,
-  validateLeanCoverageDecision,
+  resolveMechanicalLeanCoverage,
+  resolveLeanCoverageSelection,
+  validateLeanCoverageSelection,
   validateLeanContractSelection,
 } from './contract-routing.mjs';
 import { buildValidationView } from './observation-view.mjs';
@@ -151,21 +154,100 @@ function saveResult(result) {
   console.log(`[result] ${result.status}${result.reason ? `: ${result.reason}` : ''}`);
 }
 
+function coverageResultFields(coverageDecision, coverageEvidence) {
+  return {
+    coverage: coverageDecision.coverage,
+    coverageScope: coverageDecision.scope,
+    neededCapabilities: coverageDecision.neededCapabilities,
+    coverageEvidenceIncomplete: Boolean(coverageDecision.evidenceIncomplete),
+    coveragePolicy: {
+      id: coverageDecision.policyId,
+      version: coverageDecision.policyVersion,
+      hash: coverageDecision.policyHash,
+      file: coverageDecision.policyFile,
+    },
+    coverageEvidence: {
+      truncated: Boolean(coverageEvidence?.truncated),
+      pathsTruncated: Boolean(coverageEvidence?.pathsTruncated),
+      changedPathCount: (coverageEvidence?.changedPaths || []).length,
+      changedPaths: coverageEvidence?.changedPaths || [],
+      unrepresentedProductPaths: coverageEvidence?.unrepresentedProductPaths || [],
+      ignoredPathCount: (coverageEvidence?.ignoredPaths || []).length,
+      ignoredPaths: coverageEvidence?.ignoredPaths || [],
+      // Persist exactly the bounded evidence the scope classifier saw. Hunk
+      // numbers are priority-derived, so id/file alone is not auditable later.
+      hunks: (coverageEvidence?.hunks || []).map(({ id, file, diff }) => ({ id, file, diff })),
+    },
+    coverageMappingEvidence: coverageDecision.evidence,
+  };
+}
+
+/**
+ * Coverage classification is shared by no-candidate and candidate-decline
+ * paths. The model selects only a closed scope, after code has established
+ * that the bounded evidence is complete and not mechanically decidable.
+ */
+async function classifyLeanCoverage(evidence) {
+  const coverageEvidence = buildLeanCoverageEvidence(evidence);
+  const automatic = resolveMechanicalLeanCoverage(coverageEvidence);
+  if (automatic) return { coverageEvidence, coverageDecision: automatic, coverageRoutingError: '' };
+  try {
+    const coverageResponse = await requestBoundedJson({
+      ask: llmResponse,
+      label: 'lean coverage routing',
+      prompt: buildLeanCoveragePrompt({ evidence, coverageEvidence }),
+      maxTokens: 2000,
+      retryMaxTokens: 1200,
+      maxChars: 4000,
+      retrySuffix: 'Return only one complete JSON object with one reviewed scope, a concrete summary, and evidence citing an exact exposed changed hunk ID/file. Do not return a route, adapter, fixture, plan, PASS, or FAIL.',
+      parseAndValidate: (rawSelection) => validateLeanCoverageSelection(rawSelection, coverageEvidence),
+    });
+    return {
+      coverageEvidence,
+      coverageDecision: resolveLeanCoverageSelection(coverageResponse.value, coverageEvidence),
+      coverageRoutingError: '',
+    };
+  } catch (error) {
+    // An unavailable classifier must not become a speculative PASS or false
+    // OUT_OF_SCOPE. Retain the QA-owned review fallback and its policy hash.
+    const fallback = resolveCoverageScope('needs_review');
+    return {
+      coverageEvidence,
+      coverageDecision: {
+        ...fallback,
+        reason: 'No reviewed contract matched this PR; coverage classifier was unavailable.',
+        evidence: [],
+        evidenceTruncated: false,
+        evidenceIncomplete: false,
+        automatic: 'classifier-unavailable',
+      },
+      coverageRoutingError: String(error.message || error).slice(0, 800),
+    };
+  }
+}
+
 function productEvidence() {
-  const meta = JSON.parse(gh(['pr', 'view', PR, '-R', REPO, '--json', 'title,body,files']));
+  const meta = JSON.parse(gh(['pr', 'view', PR, '-R', REPO, '--json', 'title,body,changedFiles,files']));
   const rawDiff = gh(['pr', 'diff', PR, '-R', REPO]);
   const sections = rawDiff.split(/(?=^diff --git )/m).filter(Boolean);
   const sectionPath = (section) => section.match(/^diff --git a\/(.+?) b\/(.+)$/m)?.[2] || '';
   const isInfra = (filePath) => filePath.startsWith('.github/') || filePath === 'package-lock.json';
   const diff = sections.filter((section) => !isInfra(sectionPath(section))).join('').slice(0, 30000);
-  const changedPaths = (meta.files || []).map(({ path: filePath }) => filePath).filter((filePath) => !isInfra(filePath));
+  const allChangedPaths = [...new Set([
+    ...(meta.files || []).map(({ path: filePath }) => filePath),
+    ...sections.map(sectionPath).filter(Boolean),
+  ])];
+  const declaredChangedFileCount = Number(meta.changedFiles);
+  const pathsTruncated = Number.isInteger(declaredChangedFileCount) && declaredChangedFileCount >= 0 &&
+    allChangedPaths.length < declaredChangedFileCount;
+  const changedPaths = allChangedPaths.filter((filePath) => !isInfra(filePath));
   const specPaths = changedPaths.filter((filePath) => /\.(spec|test)\.(jsx?|tsx?)$/.test(filePath));
   const specPathSet = new Set(specPaths);
   const specText = specPaths.map((filePath) => {
     try { return `\n// FILE ${filePath}\n${readFileSync(path.resolve(ROOT, filePath), 'utf8')}`; } catch { return ''; }
   }).join('\n').slice(0, 18000);
   const specDiff = sections.filter((section) => specPathSet.has(sectionPath(section))).join('').slice(0, 14000);
-  return { meta, diff, changedPaths, specText, specDiff };
+  return { meta, diff, changedPaths, allChangedPaths, pathsTruncated, coverageDiff: rawDiff, specText, specDiff };
 }
 
 function cleanProbes(probes) {
@@ -431,6 +513,9 @@ function targetUnresolvedReason(target, observed) {
     let research;
     let contractRouting;
     let exposedLeanCandidates;
+    let leanRouterPlan;
+    let leanRouterPrompt = '';
+    let leanRouterAttempts = [];
     if (isLeanContractProfile) {
       contractRouting = discoverManagedContractCandidates({
         repoRoot: ROOT,
@@ -444,38 +529,49 @@ function targetUnresolvedReason(target, observed) {
       exposedLeanCandidates = contractRouting.candidates;
       console.log(`[contract-router] candidates=${exposedLeanCandidates.map((candidate) => candidate.id).join(',') || '(none)'} searches=${contractRouting.searches.length}`);
       if (!exposedLeanCandidates.length) {
-        let coverageDecision;
-        let coverageRoutingError = '';
-        try {
-          const coverageResponse = await requestBoundedJson({
-            ask: llmResponse,
-            label: 'lean coverage routing',
-            prompt: buildLeanCoveragePrompt({ evidence }),
-            maxTokens: 2000,
-            retryMaxTokens: 1200,
-            maxChars: 4000,
-            retrySuffix: 'Return only one complete JSON object with route NEEDS_CONTRACT or OUT_OF_SCOPE, a concrete reason, and a nonempty neededCapabilities array for NEEDS_CONTRACT.',
-            parseAndValidate: validateLeanCoverageDecision,
-          });
-          coverageDecision = makeLeanCoverageDecisionConservative(coverageResponse.value, evidence);
-        } catch (error) {
-          // An unavailable classifier must not become a speculative PASS or
-          // false OUT_OF_SCOPE. Retain the safe mechanical coverage gap.
-          coverageRoutingError = String(error.message || error).slice(0, 800);
-          coverageDecision = {
-            route: 'NEEDS_CONTRACT',
-            reason: 'No reviewed contract matched this PR; coverage classifier was unavailable.',
-            neededCapabilities: ['classify the uncovered browser behavior'],
-          };
-        }
+        const { coverageEvidence, coverageDecision, coverageRoutingError } = await classifyLeanCoverage(evidence);
         saveResult({
           status: 'SKIPPED',
           stage: 'contract-routing',
-          coverage: coverageDecision.route,
-          reason: `${coverageDecision.route}: ${coverageDecision.reason}`,
-          neededCapabilities: coverageDecision.neededCapabilities,
+          reason: `${coverageDecision.coverage}: ${coverageDecision.reason}`,
+          routeSource: 'no-candidate',
           coverageRoutingError: coverageRoutingError || undefined,
+          ...coverageResultFields(coverageDecision, coverageEvidence),
           contractCandidates: [],
+        });
+        return;
+      }
+      // Contract selection needs only changed source evidence, not a live
+      // browser. Resolve a false candidate before touching Chrome so it cannot
+      // be masked by an unrelated capture/target failure.
+      leanRouterPrompt = buildLeanContractPlanPrompt({ evidence, candidates: exposedLeanCandidates });
+      const leanRouterResponse = await requestBoundedJson({
+        ask: llmResponse,
+        prompt: leanRouterPrompt,
+        label: 'lean contract routing',
+        maxTokens: 3000,
+        retryMaxTokens: 1600,
+        maxChars: 6000,
+        retrySuffix: 'Return the complete router JSON only: choose one exposed contract and one cited sourceEvidence line, or return a precise NO_MATCH skipReason. Do not include coverage, adapter, fixture, config, or probe fields.',
+        parseAndValidate: (rawPlan) => validateLeanContractSelection(rawPlan, exposedLeanCandidates),
+      });
+      leanRouterPlan = leanRouterResponse.value;
+      leanRouterAttempts = leanRouterResponse.attempts;
+      console.log(`[lean contract router json] ${leanRouterAttempts.map(({ attempt, kind, stopReason, chars }) =>
+        `attempt=${attempt} kind=${kind} stop=${stopReason} chars=${chars}`).join('; ')}`);
+      if (leanRouterPlan.skipReason) {
+        const { coverageEvidence, coverageDecision, coverageRoutingError } = await classifyLeanCoverage(evidence);
+        saveResult({
+          status: 'SKIPPED',
+          stage: 'contract-routing',
+          reason: `${coverageDecision.coverage}: ${coverageDecision.reason}`,
+          routeSource: 'candidate-decline',
+          candidateDecline: leanRouterPlan.skipReason,
+          contractCandidates: exposedLeanCandidates,
+          coverageRoutingError: coverageRoutingError || undefined,
+          ...coverageResultFields(coverageDecision, coverageEvidence),
+          researchCount: contractRouting.searches.length,
+          sourceTest: leanRouterPlan.sourceTest || '',
         });
         return;
       }
@@ -566,7 +662,7 @@ Reply ONLY JSON: {"testable":true|false,"reason":"one sentence"}.`,
     })}`);
     const contractGuide = contractCatalogGuidance();
     const planRaw = isLeanContractProfile
-      ? buildLeanContractPlanPrompt({ evidence, candidates: exposedLeanCandidates })
+      ? leanRouterPrompt
       : `Reproduce exactly ONE human-authored test/requirement from this historical Adobe CaaS PR on a real page. Do not invent expected behavior.
 
 PR: ${evidence.meta.title}
@@ -631,18 +727,18 @@ or {"sourceTest":"...","skipReason":"precise unsupported capability or missing m
       isLeanContractProfile ? validateLeanContractSelection(rawPlan, exposedLeanCandidates) : rawPlan,
       { evidence, liveConfig: postLiveConfig, researchSearches: planResearchSearches },
     );
-    const planResponse = await requestBoundedJson({
-      ask: llmResponse,
-      prompt: planRaw,
-      label: 'plan',
-      maxTokens: isLeanContractProfile ? 3000 : 16000,
-      retryMaxTokens: isLeanContractProfile ? 1600 : 8000,
-      maxChars: isLeanContractProfile ? 6000 : 24000,
-      retrySuffix: isLeanContractProfile
-        ? 'Return the complete router JSON only: choose one exposed contract and one cited sourceEvidence line, or return a precise NEEDS_CONTRACT skipReason. Do not include fixture/config/probe fields.'
-        : `Return the entire replacement JSON object again, with no prose or fences. The prior response was unusable. Keep it below 24,000 characters: use at most eight cards, four filter groups with sixteen total leaf items, four probes, and three concise mappingEvidence entries. Omit non-rendering card fields. If the exact changed behavior requires an unsupported interaction, return the precise skipReason instead of a partial plan.`,
-      parseAndValidate: finalizePlannedScenario,
-    });
+    const planResponse = isLeanContractProfile
+      ? { value: finalizePlannedScenario(leanRouterPlan), attempts: leanRouterAttempts }
+      : await requestBoundedJson({
+        ask: llmResponse,
+        prompt: planRaw,
+        label: 'plan',
+        maxTokens: 16000,
+        retryMaxTokens: 8000,
+        maxChars: 24000,
+        retrySuffix: `Return the entire replacement JSON object again, with no prose or fences. The prior response was unusable. Keep it below 24,000 characters: use at most eight cards, four filter groups with sixteen total leaf items, four probes, and three concise mappingEvidence entries. Omit non-rendering card fields. If the exact changed behavior requires an unsupported interaction, return the precise skipReason instead of a partial plan.`,
+        parseAndValidate: finalizePlannedScenario,
+      });
     let plan = planResponse.value;
     console.log(`[plan json] ${planResponse.attempts.map(({ attempt, kind, stopReason, chars }) =>
       `attempt=${attempt} kind=${kind} stop=${stopReason} chars=${chars}`).join('; ')}`);
@@ -706,12 +802,25 @@ or {"sourceTest":"...","skipReason":"precise unsupported capability or missing m
       }
     }
     if (plan.skipReason) {
-      saveResult({ status: 'SKIPPED', stage: 'plan', reason: plan.skipReason,
-        coverage: isLeanContractProfile && /^(?:NEEDS_CONTRACT|OUT_OF_SCOPE):/.test(plan.skipReason)
-          ? plan.skipReason.split(':', 1)[0] : undefined,
-        neededCapabilities: isLeanContractProfile ? plan.neededCapabilities || [] : undefined,
-        researchCount: planResearchSearches.length, sourceTest: plan.sourceTest || '', skipChallenge: planSkipChallenge,
-        discriminationChallenge: planConfigEchoChallenge });
+      if (isLeanContractProfile) {
+        const { coverageEvidence, coverageDecision, coverageRoutingError } = await classifyLeanCoverage(evidence);
+        saveResult({
+          status: 'SKIPPED',
+          stage: 'contract-routing',
+          reason: `${coverageDecision.coverage}: ${coverageDecision.reason}`,
+          routeSource: 'candidate-decline',
+          candidateDecline: plan.skipReason,
+          contractCandidates: exposedLeanCandidates.map(({ id }) => id),
+          coverageRoutingError: coverageRoutingError || undefined,
+          ...coverageResultFields(coverageDecision, coverageEvidence),
+          researchCount: planResearchSearches.length,
+          sourceTest: plan.sourceTest || '',
+        });
+      } else {
+        saveResult({ status: 'SKIPPED', stage: 'plan', reason: plan.skipReason,
+          researchCount: planResearchSearches.length, sourceTest: plan.sourceTest || '', skipChallenge: planSkipChallenge,
+          discriminationChallenge: planConfigEchoChallenge });
+      }
       return;
     }
     bundle = { pr: Number(PR), meta: evidence.meta, plan, target, promptProfile: PROMPT_PROFILE,

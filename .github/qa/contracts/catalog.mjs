@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import { readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { resolveCoverageScope } from './scope-policy.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const MANIFEST_DIR = path.join(HERE, 'manifests');
@@ -61,7 +62,12 @@ export function validateContractManifest(value) {
     return { file, symbol, needles };
   }).slice(0, 12);
   if (!sourceHints.length) throw new Error(`contract ${id} needs at least one source hint`);
-  return { id, version, kind, title, summary, useWhen, params, sourceHints };
+  const scope = text(manifest.scope).trim();
+  const scopeResolution = resolveCoverageScope(scope);
+  if (scopeResolution.scope !== scope || scopeResolution.coverage !== 'NEEDS_CONTRACT') {
+    throw new Error(`contract ${id} must declare a reviewed testable QA scope`);
+  }
+  return { id, version, kind, scope, title, summary, useWhen, params, sourceHints };
 }
 
 function readManifest(file) {
@@ -100,6 +106,7 @@ export function contractCatalogGuidance(maxChars = 7000) {
   const contracts = listScenarioContracts().map((contract) => ({
     id: contract.id,
     title: contract.title,
+    scope: contract.scope,
     summary: contract.summary,
     useWhen: contract.useWhen,
     params: Object.fromEntries(Object.entries(contract.params).map(([name, definition]) => [name, {

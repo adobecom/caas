@@ -55,6 +55,7 @@ export function summarizeBacktestResult({ pr, title, promptProfile, post, pre })
     post: post?.status || null,
     pre: pre?.status || null,
     coverage: post?.coverage || null,
+    coverageScope: post?.coverageScope || null,
     neededCapabilities,
   };
 }
@@ -85,7 +86,7 @@ function writeSummary(entries) {
   writeFileSync(path.join(OUTPUT_ROOT, 'summary.json'), `${JSON.stringify(entries, null, 2)}\n`);
   const rows = entries.map((entry) => {
     const coverage = entry.coverage
-      ? `${entry.coverage}${entry.neededCapabilities?.length ? `: ${entry.neededCapabilities.join('; ')}` : ''}` : '';
+      ? `${entry.coverageScope ? `${entry.coverageScope} → ` : ''}${entry.coverage}${entry.neededCapabilities?.length ? `: ${entry.neededCapabilities.join('; ')}` : ''}` : '';
     return `| [#${entry.pr}](https://github.com/${REPO}/pull/${entry.pr}) | ${entry.title.replaceAll('|', '\\|')} | ${entry.outcome} | ${entry.detail.replaceAll('|', '\\|')} | ${coverage.replaceAll('|', '\\|')} |`;
   });
   const markdown = `# Historical Feature-QA Back-test\n\n` +
@@ -167,9 +168,10 @@ async function main() {
     } catch (error) {
       console.error(`[batch] PR #${pr} failed: ${error.stack || error.message}`);
       summary.push({ pr, title, promptProfile: PROMPT_PROFILE, outcome: 'ERROR', detail: error.message,
-        post: null, pre: null, coverage: null, neededCapabilities: [] });
+        post: null, pre: null, coverage: null, coverageScope: null, neededCapabilities: [] });
     } finally {
       for (const worktree of [preRoot, postRoot]) {
+        if (!existsSync(worktree)) continue;
         try { run('git', ['worktree', 'remove', '--force', worktree], { cwd: SOURCE_REPO }); } catch { /* cleanup below */ }
       }
       rmSync(workDir, { recursive: true, force: true });

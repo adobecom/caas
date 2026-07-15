@@ -2,6 +2,7 @@
   "id": "card.metadata-attributes.v1",
   "version": 1,
   "kind": "card-metadata-attributes",
+  "scope": "collection_initial_render",
   "title": "Card root metadata attributes",
   "summary": "Creates a real card with top-level country and reference fields, then proves the card root forwards both fields as DOM data attributes.",
   "useWhen": [

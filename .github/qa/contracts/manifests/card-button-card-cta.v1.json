@@ -2,6 +2,7 @@
   "id": "card.button-card-cta.v1",
   "version": 1,
   "kind": "card-button-cta",
+  "scope": "collection_initial_render",
   "title": "Button Card CTA from raw overlay and center footer fields",
   "summary": "Creates a button-card with a top-level overlayLink and canonical center-footer entry, then proves its CTA text and href in the DOM.",
   "useWhen": [

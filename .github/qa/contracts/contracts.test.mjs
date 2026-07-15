@@ -5,6 +5,7 @@ import { contractCatalogHealth, validateContractProposal } from '../contract-mak
 import { evaluateContractAssertions } from './assertions.mjs';
 import { EXPLORATORY_CONTRACT_ID, contractCatalogGuidance, listScenarioContracts, validateContractManifest } from './catalog.mjs';
 import { compileContractPlan } from './compiler.mjs';
+import { getCoverageScopePolicy, resolveCoverageScope, validateCoverageScopePolicy, validateCoverageScopePolicyCatalog } from './scope-policy.mjs';
 import { buildScenarioConfig } from '../scenario-config.mjs';
 
 const evidence = [{ file: 'react/src/js/components/Consonant/Cards/ButtonCard.jsx', line: 24, fact: 'reads overlayLink' }];
@@ -24,6 +25,7 @@ test('catalog exposes only versioned, inert managed contracts plus an explorator
     'collection.empty-events-removal.v1',
     'filter.nested-filter-prune.v1',
   ]);
+  assert.ok(listScenarioContracts().every((contract) => contract.scope === 'collection_initial_render'));
   assert.match(contractCatalogGuidance(), /card\.button-card-cta\.v1/);
   assert.match(contractCatalogGuidance(), new RegExp(EXPLORATORY_CONTRACT_ID.replaceAll('.', '\\.')));
   assert.throws(() => validateContractManifest({ id: 'bad.v1', version: 1, kind: 'javascript', title: 'x', summary: 'x', useWhen: ['x'] }),
@@ -45,12 +47,53 @@ test('catalog health is read-only and verifies the current source hints', () => 
   assert.deepEqual(report.issues, []);
 });
 
+test('coverage scope policy keeps deferred QA areas distinct from out-of-scope work', () => {
+  const policy = getCoverageScopePolicy();
+  assert.equal(policy.id, 'caas-feature-qa-scope.v1');
+  assert.match(policy.policyHash, /^[a-f0-9]{64}$/);
+  assert.equal(policy.policyFile, 'scope-policy.v1.json');
+  assert.equal(resolveCoverageScope('collection_initial_render').coverage, 'NEEDS_CONTRACT');
+  assert.equal(resolveCoverageScope('interaction_or_state').neededCapabilities[0], 'bounded interaction/state browser bridge');
+  assert.equal(resolveCoverageScope('a11y_only').coverage, 'DEFERRED_A11Y');
+  assert.equal(resolveCoverageScope('visual_only').coverage, 'DEFERRED_VISUAL');
+  assert.equal(resolveCoverageScope('non_product_runtime').coverage, 'OUT_OF_SCOPE');
+  assert.equal(resolveCoverageScope('refactor_only').coverage, 'NEEDS_REVIEW');
+  assert.equal(resolveCoverageScope('refactor_only').policyVersion, 1);
+  assert.equal(resolveCoverageScope('unknown').scope, 'needs_review');
+  assert.throws(() => validateCoverageScopePolicy({
+    id: 'caas-feature-qa-scope.v1', version: 1, defaultScope: 'x', scopes: {},
+  }), /defaultScope/);
+  assert.throws(() => validateCoverageScopePolicy({
+    id: 'caas-feature-qa-scope.v1', version: 1, defaultScope: 'x', scopes: {
+      x: { coverage: 'NEEDS_CONTRACT', neededCapabilities: ['fixture adapter'] },
+    },
+  }), /defaultScope/);
+  assert.throws(() => validateCoverageScopePolicy({
+    id: 'caas-feature-qa-scope.v1', version: 1, defaultScope: 'non_product_runtime', scopes: {
+      non_product_runtime: { coverage: 'OUT_OF_SCOPE', neededCapabilities: [] },
+    },
+  }), /defaultScope must be needs_review/);
+  assert.throws(() => validateCoverageScopePolicy({
+    id: 'caas-feature-qa-scope.v1', version: 1, defaultScope: 'needs_review', scopes: {
+      needs_review: { coverage: 'OUT_OF_SCOPE', neededCapabilities: [] },
+    },
+  }), /needs a NEEDS_REVIEW/);
+  assert.throws(() => validateCoverageScopePolicyCatalog({
+    activePolicyId: 'caas-feature-qa-scope.v1',
+    policies: { 'caas-feature-qa-scope.v1': { file: 'scope-policy.v1.json', version: 1, sha256: 'bad' } },
+  }), /needs sha256/);
+  assert.throws(() => validateCoverageScopePolicyCatalog({
+    activePolicyId: 'caas-feature-qa-scope.v1',
+    policies: { 'caas-feature-qa-scope.v1': { file: 'scope-policy.v2.json', version: 1, sha256: 'a'.repeat(64) } },
+  }), /file must be versioned/);
+});
+
 test('contract maker refuses to mislabel an unsupported behavior as an existing adapter', () => {
   const proposed = validateContractProposal({
     status: 'PROPOSAL',
     manifest: {
       id: 'card.proposal-example.v1', version: 1, kind: 'card-button-cta',
-      title: 'Proposal example', summary: 'A reusable existing adapter shape.', useWhen: ['A button CTA is rendered.'],
+      scope: 'collection_initial_render', title: 'Proposal example', summary: 'A reusable existing adapter shape.', useWhen: ['A button CTA is rendered.'],
       params: {}, sourceHints: [{ file: 'react/src/js/components/Consonant/Cards/ButtonCard.jsx', symbol: 'ButtonCard', needles: ['overlay'] }],
     },
   }, 'card.proposal-example.v1');

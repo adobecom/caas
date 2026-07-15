@@ -1,0 +1,52 @@
+{
+  "id": "caas-feature-qa-scope.v1",
+  "version": 1,
+  "defaultScope": "needs_review",
+  "scopes": {
+    "collection_initial_render": {
+      "coverage": "NEEDS_CONTRACT",
+      "neededCapabilities": ["deterministic initial-render fixture adapter"],
+      "description": "A meaningful collection behavior can be proven by injected config, cards, or filters on first render."
+    },
+    "interaction_or_state": {
+      "coverage": "NEEDS_CONTRACT",
+      "neededCapabilities": ["bounded interaction/state browser bridge"],
+      "description": "A meaningful behavior needs a click, typing, navigation, history, or another controlled state transition."
+    },
+    "visual_only": {
+      "coverage": "DEFERRED_VISUAL",
+      "neededCapabilities": [],
+      "description": "The change is primarily pixel-level appearance and has no meaningful structural DOM assertion."
+    },
+    "a11y_only": {
+      "coverage": "DEFERRED_A11Y",
+      "neededCapabilities": [],
+      "description": "The change is limited to accessibility labels, roles, or attributes in the current QA scope."
+    },
+    "viewport_only": {
+      "coverage": "DEFERRED_VIEWPORT",
+      "neededCapabilities": [],
+      "description": "The behavior is specific to viewport or responsive layout coverage."
+    },
+    "performance_only": {
+      "coverage": "DEFERRED_PERFORMANCE",
+      "neededCapabilities": [],
+      "description": "The change is performance-only and has no deterministic functional browser assertion."
+    },
+    "non_product_runtime": {
+      "coverage": "OUT_OF_SCOPE",
+      "neededCapabilities": [],
+      "description": "The change is tooling, build, CI, dependency, logging, or another non-visitor runtime concern."
+    },
+    "refactor_only": {
+      "coverage": "NEEDS_REVIEW",
+      "neededCapabilities": ["manual review to confirm behavior-preserving source refactor"],
+      "description": "Production source was reorganized without an intended visitor-visible behavior change; keep it reviewable until that claim is confirmed."
+    },
+    "needs_review": {
+      "coverage": "NEEDS_REVIEW",
+      "neededCapabilities": ["manual QA contract triage with complete PR evidence"],
+      "description": "The bounded evidence is incomplete or does not safely fit a reviewed scope."
+    }
+  }
+}

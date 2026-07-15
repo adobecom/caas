@@ -27,6 +27,7 @@ test('keeps a no-catalog capability gap in the batch summary', () => {
       status: 'SKIPPED',
       promptProfile: 'lean-contracts-v1',
       coverage: 'NEEDS_CONTRACT',
+      coverageScope: 'collection_initial_render',
       reason: 'NEEDS_CONTRACT: needs a static card modifier adapter',
       neededCapabilities: ['compile and assert the static modifier'],
     },
@@ -34,6 +35,7 @@ test('keeps a no-catalog capability gap in the batch summary', () => {
   });
   assert.equal(summary.outcome, 'SKIPPED');
   assert.equal(summary.coverage, 'NEEDS_CONTRACT');
+  assert.equal(summary.coverageScope, 'collection_initial_render');
   assert.deepEqual(summary.neededCapabilities, ['compile and assert the static modifier']);
   assert.equal(summary.pre, null);
   assert.equal(shouldReplayPre({ status: 'SKIPPED' }, true), false);

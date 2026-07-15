@@ -312,6 +312,7 @@ export function compileContractPlan(rawPlan, { liveConfig, applicability } = {})
       id: manifest.id,
       version: manifest.version,
       kind: manifest.kind,
+      scope: manifest.scope,
       manifestHash: manifest.manifestHash,
       mode: 'managed',
       params,
