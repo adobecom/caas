@@ -20,7 +20,7 @@ const FlexCard = () => {
         highlightedTitle, title, headingAria, headingLevel,
         highlightedDescription, description,
         parseMarkDown,
-        footer, renderDivider, cardDate, startDate, endDate,
+        footer, renderDivider, cardDate, startDate, endDate, staticDate,
         extendFooterData, altCtaUsed, hideOnDemandDates,
         linkBlockerTarget, overlay, ctaText,
         onFocus, tabIndex, ariaHidden,
@@ -32,9 +32,10 @@ const FlexCard = () => {
     let showDetails = !(flexCardOptions?.hideDetails === true);
     const showTitle = !(flexCardOptions?.hideTitle === true);
     const showDescription = !(flexCardOptions?.hideDescription === true);
-    const showFooter = !(flexCardOptions?.hideFooter === true);
     const textSize = flexCardOptions?.textSize || '';
     const textSizeClass = textSize === 'text-large' ? 'text-large' : '';
+    const showDateOnFooter = flexCardOptions?.showDateOnFooter === true;
+    const showFooter = !hideCTA || showDateOnFooter || endDate;
 
     const getConfig = useConfig();
     const detailsTextOption = getConfig('collection', 'detailsTextOption');
@@ -121,13 +122,16 @@ const FlexCard = () => {
                         cardDate={new Date(cardDate)}
                         startDate={startDate}
                         endDate={endDate}
+                        staticDate={staticDate}
                         cardStyle="flex-card"
                         onFocus={onFocus}
                         title={title}
                         tabIndex={tabIndex}
                         renderOverlay={renderOverlay}
                         hideCTA={hideCTA}
-                        isBlog={false} />
+                        isBlog={false}
+                        isFlexCard={true}
+                        showDateOnFooter={showDateOnFooter} />
                 ))}
             </div>
             {(renderOverlay) &&

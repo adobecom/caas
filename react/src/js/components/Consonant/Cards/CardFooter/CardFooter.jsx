@@ -42,6 +42,7 @@ const CardFooter = (props) => {
         cardDate,
         startDate,
         endDate,
+        staticDate,
         isFluid,
         onFocus,
         title,
@@ -49,6 +50,8 @@ const CardFooter = (props) => {
         renderOverlay,
         hideCTA,
         isBlog,
+        isFlexCard,
+        showDateOnFooter,
     } = props;
 
     /**
@@ -88,7 +91,7 @@ const CardFooter = (props) => {
      * Whether the left footer infobits should render
      * @type {Boolean}
      */
-    const shouldRenderLeft = (left && left.length > 0) || (isBlog && cardDate);
+    const shouldRenderLeft = (left && left.length > 0) || (isBlog && cardDate) || (isFlexCard && showDateOnFooter && cardDate);
 
     /**
      * Whether the center footer infobits should render
@@ -153,6 +156,7 @@ const CardFooter = (props) => {
                 <div
                     className="consonant-CardFooter-cell consonant-CardFooter-cell--left">
                     {isBlog && <span>{formattedCardDate}</span>}
+                    {isFlexCard && showDateOnFooter && !endDate&& <span>{formattedCardDate}</span>}
                     <Group renderList={left} onFocus={onFocus} />
                 </div>
                 }

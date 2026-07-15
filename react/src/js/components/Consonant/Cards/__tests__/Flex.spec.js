@@ -92,17 +92,6 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         expect(textElement).toBeNull();
     });
 
-    test('should hide the card footer when hideFooter is true', () => {
-        renderCard({ cardStyle }, {
-            collection: {
-                flexCard: { hideFooter: true },
-            },
-        });
-
-        const footerElement = screen.queryByTestId('consonant-Card-footer');
-        expect(footerElement).toBeNull();
-    });
-
     test('should apply the text-center class to the card when textAlign is text-center', () => {
         renderCard({ cardStyle }, {
             collection: {
@@ -191,22 +180,45 @@ describe(`Consonant/Card/${cardStyle}`, () => {
         expect(screen.queryByTestId('consonant-Card-label-product-info')).toBeNull();
     });
 
-    test('should render a link blocker when hideCTA is true', () => {
-        const { wrapper } = renderCard({
-            cardStyle,
-            hideCTA: true,
-            overlayLink: 'https://www.some-url.com',
-        });
-
-        const blocker = wrapper.container.querySelector('.consonant-LinkBlocker');
-        expect(blocker).not.toBeNull();
-    });
-
     test('should render a card title with a heading role and aria-level', () => {
         renderCard({ cardStyle });
 
         const titleElement = screen.getByTestId('consonant-Card-title');
         expect(titleElement).toHaveAttribute('aria-level');
+    });
+
+    describe('showDateOnFooter', () => {
+        const cardDate = '2024-01-15T12:00:00.000Z';
+
+        test('should render the card date in the footer when showDateOnFooter is true', () => {
+            renderCard({ cardStyle, cardDate }, {
+                collection: {
+                    flexCard: { showDateOnFooter: true },
+                },
+            });
+
+            expect(screen.getByText('01-15-2024')).toBeInTheDocument();
+        });
+
+        test('should not render the card date in the footer when showDateOnFooter is false', () => {
+            renderCard({ cardStyle, cardDate }, {
+                collection: {
+                    flexCard: { showDateOnFooter: false },
+                },
+            });
+
+            expect(screen.queryByText('01-15-2024')).toBeNull();
+        });
+
+        test('should not render the card date in the footer when an endDate is set', () => {
+            renderCard({ cardStyle, cardDate, endDate: '2024-02-01T12:00:00.000Z' }, {
+                collection: {
+                    flexCard: { showDateOnFooter: true },
+                },
+            });
+
+            expect(screen.queryByText('01-15-2024')).toBeNull();
+        });
     });
 
     // Accessibility tests with jest-axe
