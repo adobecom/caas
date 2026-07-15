@@ -70,17 +70,6 @@ function prepareWorktree(commit, destination) {
   applyQaOverlay(destination);
 }
 
-function ensureDeps(root) {
-  const lockHash = fileHash(path.join(root, 'package-lock.json'));
-  const cached = path.join(CACHE_ROOT, 'nm', lockHash);
-  const nm = path.join(root, 'node_modules');
-  if (existsSync(cached)) { symlinkSync(cached, nm, 'dir'); console.log(`[deps] cache hit ${lockHash.slice(0, 8)}`); return lockHash; }
-  run('npm', ['ci', '--no-audit', '--no-fund'], { cwd: root });
-  try { mkdirSync(path.dirname(cached), { recursive: true }); renameSync(nm, cached); symlinkSync(cached, nm, 'dir'); console.log(`[deps] cached ${lockHash.slice(0, 8)}`); }
-  catch (error) { console.warn(`[deps] cache store failed: ${error.message}`); }
-  return lockHash;
-}
-
 function buildOrRestore(root, buildEnv) {
   const sha = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
   const overlayHash = fileHash(path.join(root, 'react/src/js/app.jsx')).slice(0, 8)
@@ -95,10 +84,13 @@ function buildOrRestore(root, buildEnv) {
 }
 
 function installAndBuild(postRoot, preRoot) {
-  const postLock = ensureDeps(postRoot);
-  const preLock = fileHash(path.join(preRoot, 'package-lock.json'));
-  if (postLock === preLock) { symlinkSync(path.join(CACHE_ROOT, 'nm', postLock), path.join(preRoot, 'node_modules'), 'dir'); console.log('[deps] pre==post lockfile; shared'); }
-  else ensureDeps(preRoot);
+  run('npm', ['ci', '--no-audit', '--no-fund'], { cwd: postRoot });
+  const postLock = path.join(postRoot, 'package-lock.json');
+  const preLock = path.join(preRoot, 'package-lock.json');
+  if (fileHash(postLock) === fileHash(preLock)) {
+    symlinkSync(path.join(postRoot, 'node_modules'), path.join(preRoot, 'node_modules'), 'dir');
+    console.log('[deps] pre/post lockfiles match; sharing installed dependencies');
+  } else run('npm', ['ci', '--no-audit', '--no-fund'], { cwd: preRoot });
   const buildEnv = { ...process.env, NODE_OPTIONS: '--openssl-legacy-provider' };
   buildOrRestore(postRoot, buildEnv);
   buildOrRestore(preRoot, buildEnv);
