@@ -8,10 +8,8 @@
     "A changed empty-response branch removes or hides a published collection.",
     "The branch is gated by originSelection=events and can be exercised on initial load."
   ],
-  "params": {
-    "hostSelector": { "type": "string", "default": "div#caas.caas-preview", "description": "Stable published collection host selector." }
-  },
+  "params": {},
   "sourceHints": [
-    { "file": "react/src/js/components/Consonant/Container/Container.jsx", "symbol": "removeCollectionFromPage originSelection events" }
+    { "file": "react/src/js/components/Consonant/Container/Container.jsx", "symbol": "removeCollectionFromPage originSelection events", "needles": ["removeCollectionFromPage", "originSelection"] }
   ]
 }

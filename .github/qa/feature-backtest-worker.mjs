@@ -12,6 +12,13 @@ import { buildValidationView } from './observation-view.mjs';
 import { requestBoundedJson } from './llm-json.mjs';
 import { configEchoContract, enforceConfigEchoContract, needsConfigEchoChallenge } from './plan-discrimination.mjs';
 import { inspectQaBrowserBridge, installQaBrowserBridge } from './qa-browser-bridge.mjs';
+import {
+  buildTargetedQaOverride,
+  createQaCollectionTarget,
+  isQaTargetRequest,
+  resolveCapturedQaCollectionTarget,
+  targetFromCapturedConfigs,
+} from './qa-target.mjs';
 import { shouldChallengeSkip } from './skip-challenge.mjs';
 import {
   applyScenarioRepair,
@@ -33,11 +40,15 @@ const PAGE = env('PAGE_URL', 'https://business.adobe.com/customer-success-storie
 const VARIANT = env('BACKTEST_VARIANT', 'post');
 const PLAN_INPUT = env('BACKTEST_PLAN_PATH');
 const RESULT_INPUT = env('BACKTEST_RESULT_PATH');
+const TARGET_INDEX = Number(env('QA_TARGET_INDEX', '0'));
 
 for (const [name, value] of Object.entries({ PR_NUMBER: PR, TARGET_REPO_ROOT: ROOT_INPUT,
   DIST_DIR: DIST_INPUT, PROXY_URL: PROXY, MODEL, IMS_ACCESS_TOKEN: TOKEN,
   BACKTEST_PLAN_PATH: PLAN_INPUT, BACKTEST_RESULT_PATH: RESULT_INPUT })) {
   if (!value) throw new Error(`${name} is required`);
+}
+if (!Number.isInteger(TARGET_INDEX) || TARGET_INDEX < 0 || TARGET_INDEX > 99) {
+  throw new Error('QA_TARGET_INDEX must be an integer from 0 to 99');
 }
 
 const ROOT = path.resolve(ROOT_INPUT);
@@ -148,8 +159,11 @@ function cleanProbes(probes) {
   });
 }
 
-function finalizePlan(rawPlan, { evidence, liveConfig }) {
-  const compiled = compileContractPlan(rawPlan, { liveConfig });
+function finalizePlan(rawPlan, { evidence, liveConfig, researchSearches = [] }) {
+  const compiled = compileContractPlan(rawPlan, {
+    liveConfig,
+    applicability: { changedPaths: evidence.changedPaths, researchSearches },
+  });
   const plan = compiled.plan;
   if (plan.skipReason) return plan;
   if (compiled.mode === 'managed') {
@@ -307,7 +321,8 @@ async function captureLiveConfigs(context, routeLibraries) {
   };
 }
 
-async function renderScenario(context, routeLibraries, plan) {
+async function renderScenario(context, routeLibraries, plan, targetInput) {
+  const target = createQaCollectionTarget(targetInput);
   const gateUrl = PAGE + (PAGE.includes('?') ? '&' : '?') + 'caasqa=1';
   const page = await context.newPage();
   const diagnostics = { collectionRequests: [], pageErrors: [], consoleErrors: [], requestFailures: [] };
@@ -322,14 +337,14 @@ async function renderScenario(context, routeLibraries, plan) {
     }
   });
   await page.setViewportSize({ width: 1280, height: 1800 });
-  const injected = { ...(plan.config || {}), _caasQaReplace: true };
+  const injected = buildTargetedQaOverride(plan.config, target);
   await installQaBrowserBridge(page, injected);
   await page.route('**/caas-libs/**', routeLibraries);
   let beforeFixture;
   let beforeFixtureCapture;
   const captureBeforeFixture = () => {
     if (!beforeFixtureCapture) {
-      beforeFixtureCapture = inspectQaBrowserBridge(page, { probes: plan.probes, track: true })
+      beforeFixtureCapture = inspectQaBrowserBridge(page, { probes: plan.probes, track: true, targetToken: target.token })
         .then((bridge) => {
           beforeFixture = { ...bridge, bridge };
           return beforeFixture;
@@ -342,6 +357,7 @@ async function renderScenario(context, routeLibraries, plan) {
     return beforeFixtureCapture;
   };
   await page.route('**/chimera-api/collection**', async (route) => {
+    if (!isQaTargetRequest(route.request().url(), target)) return route.continue();
     diagnostics.collectionRequests.push(route.request().url().slice(0, 1000));
     // Freeze this narrow probe snapshot while the first real collection
     // response is paused. It gives removal/hide tests a real pre-response
@@ -353,24 +369,40 @@ async function renderScenario(context, routeLibraries, plan) {
     });
   });
   await page.goto(gateUrl, { waitUntil: 'load', timeout: 45000 }).catch(() => {});
+  await page.waitForSelector(`[data-caas-qa-target="${target.token}"]`, { timeout: 15000 }).catch(() => {});
   await page.waitForSelector('.consonant-CardsGrid, .consonant-Card', { timeout: 15000 }).catch(() => {});
   await page.waitForTimeout(2500);
-  const bridge = await inspectQaBrowserBridge(page, { probes: plan.probes, generic: true });
+  const bridge = await inspectQaBrowserBridge(page, { probes: plan.probes, generic: true, targetToken: target.token });
   const observed = { ...bridge, bridge };
   if (beforeFixture) observed.beforeFixture = beforeFixture;
-  observed.diagnostics = diagnostics;
+  observed.diagnostics = { ...diagnostics, target };
   mkdirSync(path.dirname(SCREENSHOT_PATH), { recursive: true });
   await page.screenshot({ path: SCREENSHOT_PATH, fullPage: true }).catch(() => {});
   await page.close();
   return observed;
 }
 
+function targetWasResolved(observed) {
+  // A removal contract intentionally deletes its marked host after the fixture
+  // response. Its pre-response scoped bridge is therefore the positive anchor.
+  return observed?.bridge?.target?.found === true || observed?.beforeFixture?.bridge?.target?.found === true;
+}
+
+function targetUnresolvedReason(target, observed) {
+  const finalFound = observed?.bridge?.target?.found === true;
+  const beforeFound = observed?.beforeFixture?.bridge?.target?.found === true;
+  return `QA_COLLECTION_TARGET_UNRESOLVED: target ${target?.fingerprint ? 'fingerprint/occurrence' : 'index'} did not mark a collection (final=${finalFound}, beforeFixture=${beforeFound})`;
+}
+
 (async () => {
   let bundle;
   let postEvidence;
   let postLiveConfig;
+  let target;
   if (VARIANT === 'pre') {
     bundle = JSON.parse(readFileSync(PLAN_PATH, 'utf8'));
+    target = createQaCollectionTarget(bundle.target || { index: TARGET_INDEX, token: `qa-${PR}-target-${TARGET_INDEX}` });
+    if (!target.fingerprint) throw new Error('saved QA target is missing a collection fingerprint; rerun the post scenario first');
     console.log(`[plan] reusing post-PR scenario: ${bundle.plan.sourceTest}`);
   } else {
     const evidence = productEvidence();
@@ -437,11 +469,24 @@ Reply ONLY JSON: {"testable":true|false,"reason":"one sentence"}.`,
     const liveCapture = await captureLiveConfigs(context, routeLibraries);
     const liveConfigs = Array.isArray(liveCapture?.configs) ? liveCapture.configs : [];
     const rootHints = Array.isArray(liveCapture?.rootHints) ? liveCapture.rootHints : [];
-    if (!Array.isArray(liveConfigs) || liveConfigs.length === 0) {
-      throw new Error('QA overlay did not capture a live collection config from the historical build');
+    if (!Array.isArray(liveConfigs) || liveConfigs.length <= TARGET_INDEX) {
+      saveResult({ status: 'SKIPPED', stage: 'capture',
+        reason: `QA_COLLECTION_TARGET_UNRESOLVED: target index ${TARGET_INDEX} is unavailable among ${liveConfigs.length} captured collections`,
+        bridge: liveCapture.bridge ? {
+          version: liveCapture.bridge.version, gateEnabled: liveCapture.bridge.gateEnabled,
+          captured: liveCapture.bridge.captured?.count,
+        } : undefined });
+      return;
     }
-    postLiveConfig = liveConfigs[0];
-    console.log(`[capture] ${liveConfigs.length} live config(s); root hints=${JSON.stringify(rootHints)} bridge=${JSON.stringify({
+    try {
+      target = targetFromCapturedConfigs(liveConfigs, { index: TARGET_INDEX, token: `qa-${PR}-target-${TARGET_INDEX}` });
+    } catch (error) {
+      saveResult({ status: 'SKIPPED', stage: 'capture',
+        reason: `QA_COLLECTION_TARGET_UNRESOLVED: ${String(error.message || error).slice(0, 800)}` });
+      return;
+    }
+    postLiveConfig = liveConfigs[target.index];
+    console.log(`[capture] ${liveConfigs.length} live config(s); target=${JSON.stringify(target)} root hints=${JSON.stringify(rootHints)} bridge=${JSON.stringify({
       version: liveCapture.bridge?.version, gateEnabled: liveCapture.bridge?.gateEnabled,
       captured: liveCapture.bridge?.captured?.count,
     })}`);
@@ -456,13 +501,20 @@ Diff:\n${evidence.diff.slice(0, 12000)}
 
 Current-checkout source research:\n${research.report}
 
-Live collection configs:\n${JSON.stringify(liveConfigs).slice(0, 18000)}
+Selected live collection config (index ${target.index} of ${liveConfigs.length - 1}):\n${JSON.stringify(postLiveConfig).slice(0, 18000)}
 
 Live DOM root hints captured before injection (use these for scoped probes if a custom element is replaced during React mount):\n${JSON.stringify(rootHints)}
 
+Browser bridge readiness from that live capture (generic diagnostics, not product policy):\n${JSON.stringify({
+  version: liveCapture.bridge?.version,
+  gateEnabled: liveCapture.bridge?.gateEnabled,
+  capturedConfigCount: liveCapture.bridge?.captured?.count,
+  override: liveCapture.bridge?.override,
+})}
+
 QA-OWNED FIXTURE CONTRACT CATALOG (current, versioned, and runner-enforced):\n${contractGuide}
 
-CONTRACT SELECTION IS REQUIRED BEFORE BROWSER INJECTION. First choose one managed contract when it describes the changed runtime behavior. For a managed contract, return only sourceTest, contract {id, params, reason}, and mappingEvidence: the runner—not you—compiles the exact config, fixture cards, filters, probes, renderability prerequisites, and deterministic DOM assertions. Do NOT provide or override config/cards/filters/probes/expected for a managed contract; any such guessed data is discarded. The runner validates the compiled scenario locally before it navigates the browser.
+CONTRACT SELECTION IS REQUIRED BEFORE BROWSER INJECTION. First choose one managed contract when it describes the changed runtime behavior. For a managed contract, return only sourceTest, contract {id, params, reason}, and mappingEvidence: the runner—not you—compiles the exact config, fixture cards, filters, probes, renderability prerequisites, and deterministic DOM assertions. Do NOT provide or override config/cards/filters/probes/expected for a managed contract; any such guessed data is discarded. The runner validates the compiled scenario locally before it navigates the browser. One mappingEvidence item must cite a selected catalog sourceHints file that is changed in this PR and falls inside a raw research block; otherwise the local validator rejects the plan before injection.
 
 Use exploratory.collection.v1 only when no managed contract is applicable. It is allowed so a genuinely new feature can still be investigated, but its result is labelled EXPLORATORY/NEEDS_CONTRACT rather than a certified contract result. An exploratory plan must provide the complete config/cards/filters/isHashed/expected/observe/probes/renderability shape below. Never use exploratory merely to avoid an applicable managed contract.
 
@@ -472,7 +524,7 @@ RAW CARD CONTRACT: CARD_SHAPE is illustrative, not a universal schema. Trace the
 
 Harness contract: return only the config keys needed for the selected feature/test. Code deep-merges that feature patch into the captured live config before React receives it, preserving required transport fields such as collection.endpoint and i18n defaults. You MAY and SHOULD add config keys introduced by this PR even when they do not exist on the current live page. A field read through ConfigContext/useConfig/getConfig and supplied by the changed unit test is a proven injectable config path. Absence from today's live config is expected for a historical new feature and is NEVER, by itself, a reason to skip. Do not require an authoring-UI, metadata, or currently deployed production path; this back-test deliberately swaps the parsed config and collection response to exercise the PR build.
 
-BOOTSTRAP DATA-FLOW CHECK: a changed DOM model/custom-element constructor or getAttribute implementation is not automatically internal-only. If a changed property is passed through model.props, createRDC, a decorator, or another wrapper into a mounted React component, test whether preserving the custom element's existing data-config bridge plus sentinel cards makes the collection mount. The local replacement config is only usable after that bridge reaches the mounted component; do not assume it bypasses the changed constructor. React may replace the original custom-element tag during mount, so use a surviving root from the captured Live DOM root hints for one scoped selector that includes the sentinel's unique id/title and proves it is inside each rendered collection; do not require the original tag/data-config attribute to remain in the final DOM. This page captured ${liveConfigs.length} collection config(s): require the scoped selector's minMatches to cover every equivalent captured root, not separate generic root/card selectors or a screenshot.
+BOOTSTRAP DATA-FLOW CHECK: a changed DOM model/custom-element constructor or getAttribute implementation is not automatically internal-only. If a changed property is passed through model.props, createRDC, a decorator, or another wrapper into a mounted React component, test whether preserving the custom element's existing data-config bridge plus sentinel cards makes the collection mount. The local replacement config is only usable after that bridge reaches the mounted component; do not assume it bypasses the changed constructor. The QA bridge selects config index ${target.index}, marks that exact host, fulfills only its marked request, and scopes every probe to it. Do not invent multi-root selectors or require copies in sibling collections.
 
 PRIMARY + DISCRIMINATING ASSERTION: choose the PR's primary new visitor-visible behavior, not an easier added legacy/backward-compatibility regression test when the diff also introduces a new capability. The assertion must be able to differ between the historical base and head because it exercises a runtime branch or DOM output added/changed by this PR. Compare added and removed source before selecting it: a newly added unit test is not enough if it only checks a generic string/class/config pass-through that the base already performed. For a new card style, prefer post-only semantic markup or variant classes from the changed runtime branch; if the change is otherwise visual geometry/color only, return a visual-judgment skip rather than claiming a shallow DOM class proves the design.
 
@@ -506,7 +558,9 @@ or {"sourceTest":"...","skipReason":"precise unsupported capability or missing m
       retryMaxTokens: 8000,
       maxChars: 24000,
       retrySuffix: `Return the entire replacement JSON object again, with no prose or fences. The prior response was unusable. Keep it below 24,000 characters: use at most eight cards, four filter groups with sixteen total leaf items, four probes, and three concise mappingEvidence entries. Omit non-rendering card fields. If the exact changed behavior requires an unsupported interaction, return the precise skipReason instead of a partial plan.`,
-      parseAndValidate: (rawPlan) => finalizePlan(rawPlan, { evidence, liveConfig: postLiveConfig }),
+      parseAndValidate: (rawPlan) => finalizePlan(rawPlan, {
+        evidence, liveConfig: postLiveConfig, researchSearches: research.searches,
+      }),
     });
     let plan = planResponse.value;
     console.log(`[plan json] ${planResponse.attempts.map(({ attempt, kind, stopReason, chars }) =>
@@ -521,7 +575,9 @@ or {"sourceTest":"...","skipReason":"precise unsupported capability or missing m
         retryMaxTokens: 8000,
         maxChars: 24000,
         retrySuffix: `Return the entire replacement JSON object again, with no prose or fences. The prior response was unusable. Keep it below 24,000 characters and either provide the complete root-render scenario or a precise unsupported reason.`,
-        parseAndValidate: (rawPlan) => finalizePlan(rawPlan, { evidence, liveConfig: postLiveConfig }),
+        parseAndValidate: (rawPlan) => finalizePlan(rawPlan, {
+          evidence, liveConfig: postLiveConfig, researchSearches: research.searches,
+        }),
       });
       plan = replanResponse.value;
       planSkipChallenge = {
@@ -549,7 +605,9 @@ or {"sourceTest":"...","skipReason":"precise unsupported capability or missing m
           maxChars: 24000,
           retrySuffix: `Return the entire replacement JSON object again, with no prose or fences. Either provide a complete plan whose assertion uses post-only semantic DOM evidence, or a precise visual-judgment skipReason. Do not use the configured style literal's generic class/data echo as evidence. Keep it below 24,000 characters.`,
           parseAndValidate: (rawPlan) => enforceConfigEchoContract(contract,
-            finalizePlan(rawPlan, { evidence, liveConfig: postLiveConfig })),
+            finalizePlan(rawPlan, {
+              evidence, liveConfig: postLiveConfig, researchSearches: research.searches,
+            })),
         });
         plan = replanResponse.value;
         planConfigEchoChallenge = {
@@ -577,7 +635,7 @@ or {"sourceTest":"...","skipReason":"precise unsupported capability or missing m
         discriminationChallenge: planConfigEchoChallenge });
       return;
     }
-    bundle = { pr: Number(PR), meta: evidence.meta, plan, researchCount: research.searches.length,
+    bundle = { pr: Number(PR), meta: evidence.meta, plan, target, researchCount: research.searches.length,
       researchSummary: research.summary, researchSearches: research.searches };
     if (planSkipChallenge) bundle.skipChallenge = planSkipChallenge;
     if (planConfigEchoChallenge) bundle.discriminationChallenge = planConfigEchoChallenge;
@@ -585,8 +643,29 @@ or {"sourceTest":"...","skipReason":"precise unsupported capability or missing m
   }
 
   const { context, routeLibraries } = await browserSession();
-  let observed = await renderScenario(context, routeLibraries, bundle.plan);
+  if (VARIANT === 'pre') {
+    const replayCapture = await captureLiveConfigs(context, routeLibraries);
+    try {
+      target = resolveCapturedQaCollectionTarget(replayCapture.configs, target);
+    } catch (error) {
+      saveResult({ status: 'SKIPPED', stage: 'target',
+        reason: `QA_COLLECTION_TARGET_UNRESOLVED: ${String(error.message || error).slice(0, 800)}`,
+        bridge: replayCapture.bridge ? {
+          version: replayCapture.bridge.version, gateEnabled: replayCapture.bridge.gateEnabled,
+          captured: replayCapture.bridge.captured?.count,
+        } : undefined });
+      return;
+    }
+  }
+  let observed = await renderScenario(context, routeLibraries, bundle.plan, target || bundle.target);
   console.log(`[observed] ${JSON.stringify(observed).slice(0, 8000)}`);
+  if (!targetWasResolved(observed)) {
+    if (VARIANT === 'post') persistBundle(bundle);
+    saveResult({ status: 'SKIPPED', stage: 'target', reason: targetUnresolvedReason(target || bundle.target, observed),
+      sourceTest: bundle.plan.sourceTest, expected: bundle.plan.expected, contract: bundle.plan.contract,
+      probes: bundle.plan.probes, observed, screenshot: SCREENSHOT_PATH });
+    return;
+  }
   let missingInitial = VARIANT === 'post'
     ? findMissingRequiredInitial(observed, bundle.plan.renderability) : [];
   let validation = (isManagedContractPlan(bundle.plan) || !missingInitial.length)
@@ -687,11 +766,20 @@ or {"skipReason":"precise unsupported interaction or state"}.`,
           screenshot: SCREENSHOT_PATH });
         return;
       }
-      bundle.plan = finalizePlan(repair, { evidence: postEvidence, liveConfig: postLiveConfig });
+      bundle.plan = finalizePlan(repair, {
+        evidence: postEvidence, liveConfig: postLiveConfig, researchSearches: repairResearch.searches,
+      });
       bundle.renderabilityRepair = { ...repairMetadata, outcome: 'REPAIRED' };
       console.log(`[renderability] rerendering repaired scenario; initial=${bundle.plan.renderability.requiredInitial.length}`);
-      observed = await renderScenario(context, routeLibraries, bundle.plan);
+      observed = await renderScenario(context, routeLibraries, bundle.plan, target || bundle.target);
       console.log(`[observed repaired] ${JSON.stringify(observed).slice(0, 8000)}`);
+      if (!targetWasResolved(observed)) {
+        persistBundle(bundle);
+        saveResult({ status: 'SKIPPED', stage: 'target', reason: targetUnresolvedReason(target || bundle.target, observed),
+          sourceTest: bundle.plan.sourceTest, expected: bundle.plan.expected, contract: bundle.plan.contract,
+          probes: bundle.plan.probes, observed, screenshot: SCREENSHOT_PATH });
+        return;
+      }
       validation = await validateScenario(bundle, observed);
       const remaining = findMissingRequiredInitial(observed, bundle.plan.renderability);
       if (remaining.length) {

@@ -73,3 +73,30 @@ test('bridge handles malformed storage, selector errors, clearing, and tracked n
     assert.equal(fakeWindow.__caasQa.inspect({}).override.present, false);
   });
 });
+
+test('bridge scopes probes and generic observations to one QA-marked collection root', () => {
+  const targetRoot = element({ attributes: { 'data-caas-qa-target': 'qa-target-1' } });
+  const targetCard = element({ id: 'target-card', text: 'target' });
+  const otherCard = element({ id: 'other-card', text: 'other' });
+  const host = element({ id: 'caas' });
+  targetRoot.contains = (node) => node === targetRoot || node === targetCard;
+  host.contains = (node) => node === host || node === targetRoot || node === targetCard;
+  withFakePage({
+    '[data-caas-qa-target]': [targetRoot],
+    '.consonant-Card': [targetCard, otherCard],
+    'li.card': [targetCard, otherCard],
+    '.caas-preview': [host],
+  }, ({ fakeWindow }) => {
+    qaBrowserBridgeInit({ _caasQaReplace: true, _caasQaTargetIndex: 1, _caasQaTargetToken: 'qa-target-1' });
+    const observed = fakeWindow.__caasQa.inspect({
+      targetToken: 'qa-target-1', generic: true, track: true, probes: [{ selector: 'li.card' }, { selector: '.caas-preview' }],
+    });
+    assert.equal(observed.target.found, true);
+    assert.equal(observed.override.targetIndex, 1);
+    assert.equal(observed.override.targetTokenPresent, true);
+    assert.deepEqual(observed.probes[0].matches.map((match) => match.id), ['target-card']);
+    assert.deepEqual(observed.probes[1].matches.map((match) => match.id), ['caas']);
+    assert.deepEqual(observed.cards.map((card) => card.id), ['target-card']);
+    assert.equal(observed.trackedNodes.length, 2, 'the scoped card and its scoped host were tracked');
+  });
+});

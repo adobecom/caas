@@ -1,8 +1,16 @@
 const isPlainObject = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
+const UNSAFE_CONFIG_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
 
-function clone(value) {
-  if (Array.isArray(value)) return value.map(clone);
-  if (isPlainObject(value)) return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, clone(item)]));
+function clone(value, path = 'config') {
+  if (Array.isArray(value)) return value.map((item, index) => clone(item, `${path}[${index}]`));
+  if (isPlainObject(value)) {
+    const output = {};
+    for (const [key, item] of Object.entries(value)) {
+      if (UNSAFE_CONFIG_KEYS.has(key)) throw new Error(`unsafe config key: ${path}.${key}`);
+      output[key] = clone(item, `${path}.${key}`);
+    }
+    return output;
+  }
   return value;
 }
 
@@ -15,6 +23,10 @@ function isKnownDummyTransport(value) {
 }
 
 const OWNED_PATH = /^[A-Za-z_$][A-Za-z0-9_$]*(?:\.[A-Za-z_$][A-Za-z0-9_$]*)*$/;
+
+function safeOwnedPath(path) {
+  return OWNED_PATH.test(path) && !path.split('.').some((part) => UNSAFE_CONFIG_KEYS.has(part));
+}
 
 function valueAtPath(value, parts) {
   return parts.reduce((current, key) => (isPlainObject(current) || Array.isArray(current)) ? current[key] : undefined, value);
@@ -40,7 +52,7 @@ export function replaceOwnedScenarioPaths(mergedConfig, patch, ownedPaths = []) 
   const source = isPlainObject(patch) ? patch : {};
   const paths = [...new Set((Array.isArray(ownedPaths) ? ownedPaths : []).map(String))].slice(0, 20);
   for (const ownedPath of paths) {
-    if (!OWNED_PATH.test(ownedPath)) throw new Error(`unsafe owned config path: ${ownedPath}`);
+    if (!safeOwnedPath(ownedPath)) throw new Error(`unsafe owned config path: ${ownedPath}`);
     const parts = ownedPath.split('.');
     const replacement = valueAtPath(source, parts);
     if (replacement === undefined) throw new Error(`owned config path is missing from patch: ${ownedPath}`);
@@ -55,6 +67,7 @@ export function mergeScenarioConfig(base, patch) {
   if (!isPlainObject(patch)) return clone(patch);
   const output = clone(base);
   for (const [key, value] of Object.entries(patch)) {
+    if (UNSAFE_CONFIG_KEYS.has(key)) throw new Error(`unsafe config key: patch.${key}`);
     output[key] = isPlainObject(value) && isPlainObject(output[key])
       ? mergeScenarioConfig(output[key], value) : clone(value);
   }

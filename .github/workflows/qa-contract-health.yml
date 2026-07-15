@@ -1,8 +1,8 @@
 name: QA Contract Catalog Health
 
-# Read-only weekly maintenance: detect catalog source hints that no longer exist
-# on current main. It never edits a contract or a product PR; a QA owner reviews
-# and back-tests any proposal in a separate contract PR.
+# Read-only weekly maintenance: detect missing catalog source hints and source
+# tokens that drifted on current main. It never edits a contract or a product
+# PR; a QA owner reviews and back-tests any proposal in a separate contract PR.
 on:
   schedule:
     - cron: '17 15 * * 1'

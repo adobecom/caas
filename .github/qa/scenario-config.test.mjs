@@ -122,3 +122,12 @@ test('replaces explicitly owned nested config paths so an empty contract map act
   assert.throws(() => replaceOwnedScenarioPaths(base, patch, ['filterPanel[bad]']), /unsafe owned config path/);
   assert.throws(() => replaceOwnedScenarioPaths(base, patch, ['filterPanel.missing']), /missing from patch/);
 });
+
+test('rejects prototype-polluting model config and owned paths before merge', () => {
+  const base = { filterPanel: { categoryMappings: {} } };
+  const patch = { filterPanel: { categoryMappings: {} } };
+  assert.throws(() => replaceOwnedScenarioPaths(base, patch, ['__proto__.polluted']), /unsafe owned config path/);
+  assert.throws(() => replaceOwnedScenarioPaths(base, patch, ['filterPanel.constructor.prototype.polluted']), /unsafe owned config path/);
+  assert.throws(() => mergeScenarioConfig({}, JSON.parse('{"__proto__":{"polluted":"yes"}}')), /unsafe config key/);
+  assert.equal({}.polluted, undefined);
+});

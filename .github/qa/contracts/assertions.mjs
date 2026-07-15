@@ -59,12 +59,13 @@ function evaluateProbe(assertion, observed) {
 }
 
 function evaluateBridge(assertion, observed) {
+  const phase = assertion.phase === 'beforeFixture' ? 'beforeFixture' : 'final';
   const fields = assertion.fields || {};
   const mismatches = Object.entries(fields).flatMap(([path, expected]) => {
-    const actual = getPath(observed?.bridge || {}, path);
+    const actual = getPath(phaseView(observed, phase)?.bridge || {}, path);
     return actual === expected ? [] : [{ path, expected, actual }];
   });
-  return { type: 'bridge', ok: mismatches.length === 0, expected: fields, actual: mismatches };
+  return { type: 'bridge', phase, ok: mismatches.length === 0, expected: fields, actual: mismatches };
 }
 
 function evaluateRequest(assertion, observed) {

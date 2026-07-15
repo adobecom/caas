@@ -29,9 +29,11 @@ test('adds the gated capture/replace hook to a historical checkout', () => {
     const app = readFileSync(path.join(root, 'react/src/js/app.jsx'), 'utf8');
     const general = readFileSync(path.join(root, 'react/src/js/components/Consonant/Helpers/general.js'), 'utf8');
     assert.match(app, /parseToPrimitive, applyQaConfigOverride/);
-    assert.match(app, /applyQaConfigOverride\(parseToPrimitive\(config\)\)/);
+    assert.match(app, /applyQaConfigOverride\(parseToPrimitive\(config\), element\)/);
     assert.match(general, /__caasQaConfigs/);
     assert.match(general, /_caasQaReplace/);
+    assert.match(general, /_caasQaTargetIndex/);
+    assert.match(general, /_caasQaTargetFingerprint/);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 

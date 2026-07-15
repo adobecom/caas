@@ -27,6 +27,29 @@ function usage() {
 propose only writes a new, inert JSON proposal outside contracts/manifests. A reviewer must validate, back-test, and commit it in a separate QA-owned PR.`;
 }
 
+/**
+ * A manifest's `kind` is a reviewed compiler adapter, not an open-ended model
+ * instruction. Keep a proposed new behavior honest: it is either compatible
+ * with an existing adapter or explicitly asks QA to add one first.
+ */
+export function validateContractProposal(value, requestedId = '') {
+  const raw = value && typeof value === 'object' && !Array.isArray(value) ? value : null;
+  if (!raw) throw new Error('proposal must be a JSON object');
+  if (raw.status === 'NEEDS_ADAPTER') {
+    const reason = text(raw.reason).trim().replace(/\s+/g, ' ').slice(0, 1600);
+    if (reason.length < 3) throw new Error('NEEDS_ADAPTER proposal needs a concrete reason');
+    const neededCapabilities = (Array.isArray(raw.neededCapabilities) ? raw.neededCapabilities : [])
+      .map((item) => text(item).trim().replace(/\s+/g, ' ').slice(0, 300)).filter(Boolean).slice(0, 8);
+    if (!neededCapabilities.length) throw new Error('NEEDS_ADAPTER proposal needs at least one required capability');
+    return { status: 'NEEDS_ADAPTER', reason, neededCapabilities };
+  }
+  if (raw.status && raw.status !== 'PROPOSAL') throw new Error(`unsupported proposal status: ${text(raw.status)}`);
+  const manifest = raw.status === 'PROPOSAL' ? raw.manifest : raw;
+  if (!manifest || typeof manifest !== 'object' || Array.isArray(manifest)) throw new Error('PROPOSAL needs a manifest object');
+  if (requestedId && manifest.id !== requestedId) throw new Error('proposal id did not match requested id');
+  return { status: 'PROPOSED', manifest: validateContractManifest(manifest) };
+}
+
 /** Read-only catalog health check suitable for a weekly scheduler. */
 export function contractCatalogHealth(repoRoot) {
   const root = path.resolve(repoRoot || process.cwd());
@@ -34,7 +57,13 @@ export function contractCatalogHealth(repoRoot) {
   const issues = contracts.flatMap((contract) => contract.sourceHints.flatMap((hint) => {
     const file = path.resolve(root, hint.file);
     if (!file.startsWith(`${root}${path.sep}`)) return [{ contract: contract.id, file: hint.file, issue: 'unsafe source hint' }];
-    try { readFileSync(file, 'utf8'); return []; }
+    try {
+      const source = readFileSync(file, 'utf8');
+      const missingNeedles = hint.needles.filter((needle) => !source.includes(needle));
+      return missingNeedles.length
+        ? [{ contract: contract.id, file: hint.file, issue: 'source hint tokens no longer match', missingNeedles }]
+        : [];
+    }
     catch { return [{ contract: contract.id, file: hint.file, issue: 'source hint no longer exists' }]; }
   }));
   return {
@@ -109,11 +138,8 @@ async function propose(args) {
     maxTokens: 3000,
     retryMaxTokens: 1800,
     maxChars: 9000,
-    retrySuffix: 'Return only the complete JSON manifest, with no prose. Use a supported kind, valid versioned id, sourceHints, and parameter defaults.',
-    parseAndValidate: (raw) => {
-      if (raw?.id !== id) throw new Error('proposal id did not match requested id');
-      return validateContractManifest(raw);
-    },
+    retrySuffix: 'Return only one complete documented JSON object, with no prose: either a PROPOSAL with a supported existing kind, valid versioned id, sourceHints (including needles), and parameter defaults; or NEEDS_ADAPTER when no existing kind fits.',
+    parseAndValidate: (raw) => validateContractProposal(raw, id),
     prompt:
 `Propose one NEW, QA-owned, inert fixture-contract manifest. It will be reviewed and back-tested before any catalog change. Never emit JavaScript, shell, selectors that execute code, workflow YAML, or a full scenario fixture.
 
@@ -125,14 +151,18 @@ Evidence supplied by the maintainer:\n${evidence}
 
 Bounded current-code research:\n${research.report}
 
-Return ONLY this JSON shape:
-{"id":"${id}","version":1,"kind":"one supported kind","title":"short title","summary":"reusable fixture behavior","useWhen":["when to choose it"],"params":{"name":{"type":"string|identifier|url|tag","default":"safe literal","description":"..."}},"sourceHints":[{"file":"repo-relative source file","symbol":"symbol/path proved by research"}]}
+Return ONLY one of these JSON shapes:
+{"status":"PROPOSAL","manifest":{"id":"${id}","version":1,"kind":"one supported kind","title":"short title","summary":"reusable fixture behavior","useWhen":["when to choose it"],"params":{"name":{"type":"string|identifier|url|tag","default":"safe literal","description":"..."}},"sourceHints":[{"file":"repo-relative source file","symbol":"symbol/path proved by research","needles":["short exact source token"]}]}}
+{"status":"NEEDS_ADAPTER","reason":"why no existing compiler kind can build and assert this behavior safely","neededCapabilities":["one or more QA-owned adapter capabilities"]}
 
-This is a proposal only. It must describe behavior already supported by the selected compiler kind; if no kind fits, do not invent one—return the closest safe existing kind and make the limitation explicit in summary.`,
+This is a proposal only. It must describe behavior already supported by the selected compiler kind. If no kind fits, never choose the closest kind and never invent a kind: return NEEDS_ADAPTER so QA can add and test a reviewed adapter in its own PR.`,
   });
   const output = safeProposalPath(outputPath);
-  writeFileSync(output, `${JSON.stringify(response.value, null, 2)}\n`);
-  console.log(JSON.stringify({ status: 'PROPOSED', output, contract: response.value, searches: research.searches.length }, null, 2));
+  const saved = response.value.status === 'PROPOSED' ? response.value.manifest : response.value;
+  writeFileSync(output, `${JSON.stringify(saved, null, 2)}\n`);
+  console.log(JSON.stringify({ status: response.value.status, output,
+    contract: response.value.manifest, reason: response.value.reason,
+    neededCapabilities: response.value.neededCapabilities, searches: research.searches.length }, null, 2));
 }
 
 function validatePlan(args) {
@@ -166,8 +196,10 @@ async function main() {
   if (command === 'validate') {
     const file = args[0];
     if (!file) throw new Error('validate needs a proposal path');
-    const manifest = validateContractManifest(JSON.parse(readFileSync(path.resolve(file), 'utf8')));
-    console.log(JSON.stringify({ status: 'VALID', manifest }, null, 2));
+    const proposal = validateContractProposal(JSON.parse(readFileSync(path.resolve(file), 'utf8')));
+    console.log(JSON.stringify(proposal.status === 'PROPOSED'
+      ? { status: 'VALID', manifest: proposal.manifest }
+      : proposal, null, 2));
     return;
   }
   if (command === 'validate-plan') return validatePlan(args);

@@ -382,6 +382,28 @@ describe('utils/general', () => {
                     sort: { enabled: true, defaultSort: 'localFirst' },
                 });
         });
+
+        test('targets a fingerprinted captured collection despite unrelated mount reordering without leaking QA keys into config', () => {
+            setSearch('?caasqa=1');
+            const firstHost = { setAttribute: jest.fn() };
+            const targetHost = { setAttribute: jest.fn() };
+            window.localStorage.setItem('caasQaConfig', JSON.stringify({
+                _caasQaReplace: true,
+                _caasQaTargetIndex: 0,
+                _caasQaTargetToken: 'qa-target-1',
+                _caasQaTargetFingerprint: 'https://example.test/second?a=1&b=2',
+                _caasQaTargetOccurrence: 0,
+                collection: { endpoint: 'target' },
+            }));
+            expect(applyQaConfigOverride({ collection: { endpoint: 'https://example.test/other' } }, firstHost))
+                .toEqual({ collection: { endpoint: 'https://example.test/other' } });
+            expect(applyQaConfigOverride({ collection: { endpoint: 'https://example.test/second?b=2&a=1' } }, targetHost))
+                .toEqual({ collection: { endpoint: 'target' } });
+            expect(firstHost.setAttribute).not.toHaveBeenCalled();
+            expect(targetHost.setAttribute).toHaveBeenCalledWith('data-caas-qa-target', 'qa-target-1');
+            expect(window[qaConfigsProperty]).toHaveLength(2);
+            expect(window.__caasQaTargetStatus).toEqual({ matched: true, index: 1, occurrence: 0 });
+        });
     });
     describe('template', () => {
         PROPS.template.forEach(({

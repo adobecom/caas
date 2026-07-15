@@ -5,6 +5,7 @@ const asObject = (value) => (value && typeof value === 'object' && !Array.isArra
 const clone = (value) => JSON.parse(JSON.stringify(value));
 const IDENTIFIER = /^[A-Za-z][A-Za-z0-9_-]{0,100}$/;
 const TAG = /^[A-Za-z0-9:_/.-]{1,180}$/;
+const REPO_RELATIVE_FILE = /^(?!\/)(?!.*(?:^|\/)\.\.(?:\/|$))[A-Za-z0-9_@./-]{1,500}$/;
 
 function cleanParam(type, raw, name) {
   const value = text(raw).trim();
@@ -49,13 +50,18 @@ function basicCard({ id, title, style, url = 'https://business.adobe.com/' }) {
   };
 }
 
-function bridgeAssertions() {
-  return [{ type: 'bridge', fields: {
+function bridgeAssertions({ phase = 'final', requireTarget = true } = {}) {
+  const fields = {
     gateEnabled: true,
     'override.present': true,
     'override.valid': true,
     'override.replace': true,
-  } }];
+  };
+  // A scoped probe with no marked root is deliberately empty. Require the
+  // marker for ordinary contracts so an absence assertion can never pass just
+  // because target selection failed. Removal contracts prove it pre-response.
+  if (requireTarget) fields['target.found'] = true;
+  return [{ type: 'bridge', phase, fields }];
 }
 
 function metadataScenario(params) {
@@ -87,7 +93,10 @@ function emptyEventsScenario(params, liveConfig) {
   let url;
   try { url = new URL(endpoint); } catch { throw new Error('captured live collection.endpoint is not an absolute URL'); }
   url.searchParams.set('originSelection', 'events');
-  const selector = params.hostSelector;
+  // This selector is a QA-owned invariant for the known removal branch. If
+  // the production host changes, that is a new contract version—not a model
+  // parameter to mutate at runtime.
+  const selector = 'div#caas.caas-preview';
   return {
     config: { collection: { endpoint: url.toString() } },
     cards: [], filters: [], isHashed: false,
@@ -95,7 +104,9 @@ function emptyEventsScenario(params, liveConfig) {
     observe: `the tracked published host ${selector} before and after the controlled response`,
     probes: [{ selector, attributes: ['id', 'data-caas-block'], why: 'published collection host lifecycle anchor' }],
     renderability: { requiredInitial: [{ selector, minMatches: 1, why: 'the real published host must exist before its empty response' }] },
-    assertions: [...bridgeAssertions(),
+    assertions: [
+      ...bridgeAssertions({ phase: 'beforeFixture' }),
+      ...bridgeAssertions({ requireTarget: false }),
       { type: 'request', query: { originSelection: 'events' }, min: 1 },
       { type: 'probe', phase: 'beforeFixture', selector, count: { min: 1 } },
       { type: 'probe', phase: 'final', selector, count: { max: 0 } },
@@ -168,7 +179,8 @@ function buttonCardScenario(params) {
   const ctaSelector = `li#${params.id} a.consonant-ButtonCard-link`;
   return {
     config: { collection: {
-      cardStyle: 'button-card', layout: { type: '3up', container: '1200MaxWidth' }, resultsPerPage: 1, useOverlayLinks: false,
+      cardStyle: 'button-card', layout: { type: '3up', container: '1200MaxWidth' }, resultsPerPage: 1,
+      useOverlayLinks: false, additionalRequestParams: {},
     } },
     cards: [card], filters: [], isHashed: false,
     expected: `Button Card #${params.id} renders CTA '${params.ctaText}' with href '${params.overlayLink}' from overlayLink and footer center data`,
@@ -188,7 +200,9 @@ function buttonCardScenario(params) {
         textEquals: params.ctaText, attributes: { href: params.overlayLink },
       } },
     ],
-    ownedConfigPaths: [],
+    // Card.jsx appends this live map to overlayLink. Own it so the exact URL
+    // asserted below cannot inherit unrelated campaign parameters.
+    ownedConfigPaths: ['collection.additionalRequestParams'],
   };
 }
 
@@ -205,11 +219,63 @@ function normaliseChoice(plan) {
   return { id, params: asObject(nested.params || plan.contractParams), reason: text(nested.reason).trim().slice(0, 800) };
 }
 
+function cleanRepoRelativeFile(raw, label) {
+  const file = text(raw).trim();
+  if (!REPO_RELATIVE_FILE.test(file)) throw new Error(`${label} must be a safe repo-relative file`);
+  return file;
+}
+
+function cleanMappingEvidence(rawEvidence) {
+  const entries = Array.isArray(rawEvidence) ? rawEvidence.slice(0, 4) : [];
+  if (!entries.length) throw new Error('contract plan needs mappingEvidence from current source research');
+  return entries.map((raw, index) => {
+    const item = asObject(raw);
+    const file = cleanRepoRelativeFile(item.file, `mappingEvidence[${index}].file`);
+    const line = Number(item.line);
+    const fact = text(item.fact).trim().replace(/\s+/g, ' ').slice(0, 1000);
+    if (!Number.isInteger(line) || line < 1 || line > 1000000) {
+      throw new Error(`mappingEvidence[${index}].line must be a positive line number`);
+    }
+    if (fact.length < 3) throw new Error(`mappingEvidence[${index}].fact must explain the source mapping`);
+    return { file, line, fact };
+  });
+}
+
+function searchedRanges(applicability) {
+  const entries = Array.isArray(applicability?.researchSearches) ? applicability.researchSearches : [];
+  return entries.flatMap((entry) => (Array.isArray(entry?.result?.matches) ? entry.result.matches : []).flatMap((match) => {
+    let file;
+    try { file = cleanRepoRelativeFile(match?.file, 'research match file'); } catch { return []; }
+    const line = Number(match?.line);
+    const startLine = Number(match?.startLine || line);
+    const endLine = Number(match?.endLine || line);
+    if (!Number.isInteger(startLine) || !Number.isInteger(endLine) || startLine < 1 || endLine < startLine) return [];
+    return [{ file, startLine, endLine }];
+  }));
+}
+
+function validateManagedApplicability(manifest, mappingEvidence, applicability) {
+  // The CLI can validate a saved plan's fixture shape alone. Browser runners
+  // must also prove that the selected contract is tied to current changed code
+  // and a concrete raw source-search block, rather than an LLM assertion.
+  if (!applicability) return;
+  const changedPaths = new Set((Array.isArray(applicability.changedPaths) ? applicability.changedPaths : [])
+    .flatMap((file) => {
+      try { return [cleanRepoRelativeFile(file, 'changed path')]; } catch { return []; }
+    }));
+  const ranges = searchedRanges(applicability);
+  const hintFiles = new Set(manifest.sourceHints.map((hint) => hint.file));
+  const anchor = mappingEvidence.find((item) => hintFiles.has(item.file) && changedPaths.has(item.file) &&
+    ranges.some((range) => range.file === item.file && item.line >= range.startLine && item.line <= range.endLine));
+  if (!anchor) {
+    throw new Error(`CONTRACT_APPLICABILITY_UNPROVEN: ${manifest.id} needs one mappingEvidence item from a changed contract sourceHint and returned research block`);
+  }
+}
+
 function basePlanFields(rawPlan) {
   const sourceTest = text(rawPlan.sourceTest).trim();
   if (!sourceTest) throw new Error('contract plan needs sourceTest');
-  const mappingEvidence = Array.isArray(rawPlan.mappingEvidence) ? rawPlan.mappingEvidence.slice(0, 4) : [];
-  if (!mappingEvidence.length) throw new Error('contract plan needs mappingEvidence from current source research');
+  const mappingEvidence = cleanMappingEvidence(rawPlan.mappingEvidence);
   return { sourceTest: sourceTest.slice(0, 1600), mappingEvidence };
 }
 
@@ -218,7 +284,7 @@ function basePlanFields(rawPlan) {
  * For a known contract, free-form fixture/config/probe fields are intentionally
  * ignored; they are the source of the earlier schema guesses.
  */
-export function compileContractPlan(rawPlan, { liveConfig } = {}) {
+export function compileContractPlan(rawPlan, { liveConfig, applicability } = {}) {
   const plan = asObject(rawPlan);
   if (text(plan.skipReason).trim()) return { mode: 'skipped', plan: { ...plan, skipReason: text(plan.skipReason).trim().slice(0, 1000) } };
   const choice = normaliseChoice(plan);
@@ -235,10 +301,12 @@ export function compileContractPlan(rawPlan, { liveConfig } = {}) {
   }
   const manifest = getScenarioContract(choice.id);
   if (!manifest) throw new Error(`unknown contract.id: ${choice.id}`);
+  const baseFields = basePlanFields(plan);
+  validateManagedApplicability(manifest, baseFields.mappingEvidence, applicability);
   const params = resolveParams(manifest, choice.params);
   const scenario = FACTORIES[manifest.kind](params, liveConfig);
   const compiled = {
-    ...basePlanFields(plan),
+    ...baseFields,
     ...scenario,
     contract: {
       id: manifest.id,

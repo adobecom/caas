@@ -15,7 +15,7 @@
     "overlayLink": { "type": "url", "default": "https://business.adobe.com/qa/button-card.html", "description": "Top-level overlay URL and expected CTA href." }
   },
   "sourceHints": [
-    { "file": "react/src/js/components/Consonant/Cards/ButtonCard.jsx", "symbol": "overlayLink and center footer CTA" },
-    { "file": "react/src/js/components/Consonant/Cards/Card.jsx", "symbol": "button-card CARD_STYLES routing" }
+    { "file": "react/src/js/components/Consonant/Cards/ButtonCard.jsx", "symbol": "compiled overlay and center CTA rendering", "needles": ["overlay", "cta2Text"] },
+    { "file": "react/src/js/components/Consonant/Cards/Card.jsx", "symbol": "button-card routing and raw overlay/footer compilation", "needles": ["button-card", "overlayLink", "footer"] }
   ]
 }

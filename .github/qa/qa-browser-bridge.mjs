@@ -16,7 +16,7 @@ export function qaBrowserBridgeInit(initialOverride) {
   const tracked = new Map();
   let nextNodeId = 1;
   const defaultAttributes = ['role', 'aria-label', 'aria-current', 'aria-live', 'data-testid',
-    'data-country', 'data-card-url', 'href', 'src', 'alt', 'type', 'value'];
+    'data-country', 'data-card-url', 'data-caas-qa-target', 'href', 'src', 'alt', 'type', 'value'];
 
   const gateEnabled = () => {
     try { return new URLSearchParams(root.location?.search || '').has('caasqa'); } catch { return false; }
@@ -32,6 +32,8 @@ export function qaBrowserBridgeInit(initialOverride) {
         present: true,
         valid: true,
         replace: parsed._caasQaReplace === true,
+        targetIndex: Number.isInteger(parsed._caasQaTargetIndex) ? parsed._caasQaTargetIndex : undefined,
+        targetTokenPresent: /^[A-Za-z0-9_-]{1,80}$/.test(text(parsed._caasQaTargetToken)),
         keys: Object.keys(parsed).filter((key) => key !== '_caasQaReplace').sort().slice(0, 40),
       };
     } catch { return { present: true, valid: false, replace: false, keys: [] }; }
@@ -58,9 +60,24 @@ export function qaBrowserBridgeInit(initialOverride) {
       .filter((name) => /^[a-zA-Z_:][-a-zA-Z0-9_:.]*$/.test(name)).slice(0, 12);
     return [{ selector, attributes, why: text(probe?.why).slice(0, 300) }];
   });
-  const take = (selector, limit, attributes = [], track = false) => {
+  const cleanTargetToken = (value) => {
+    const token = text(value).trim();
+    return /^[A-Za-z0-9_-]{1,80}$/.test(token) ? token : '';
+  };
+  const findTargetRoot = (token) => {
+    if (!token) return null;
     try {
-      return [...doc.querySelectorAll(selector)].slice(0, limit).map((element) => {
+      return [...doc.querySelectorAll('[data-caas-qa-target]')]
+        .find((element) => text(element?.getAttribute?.('data-caas-qa-target')) === token) || null;
+    } catch { return null; }
+  };
+  const take = (selector, limit, attributes = [], track = false, targetRoot = null) => {
+    try {
+      const matches = [...doc.querySelectorAll(selector)]
+        .filter((element) => !targetRoot || element === targetRoot || Boolean(targetRoot.contains?.(element)) ||
+          Boolean(element?.contains?.(targetRoot)))
+        .slice(0, limit);
+      return matches.map((element) => {
         if (track) {
           if (!nodeIds.has(element)) nodeIds.set(element, String(nextNodeId++));
           tracked.set(nodeIds.get(element), { selector, element });
@@ -79,13 +96,19 @@ export function qaBrowserBridgeInit(initialOverride) {
   const inspect = (options = {}) => {
     const probes = cleanProbes(options.probes);
     const trackedNow = Boolean(options.track);
+    const targetToken = cleanTargetToken(options.targetToken);
+    const targetRoot = findTargetRoot(targetToken);
+    const scopedTake = (selector, limit, attributes = [], track = false) => (
+      targetToken && !targetRoot ? [] : take(selector, limit, attributes, track, targetRoot)
+    );
     const result = {
       version,
       gateEnabled: gateEnabled(),
       override: overrideStatus(),
       captured: { count: Array.isArray(root.__caasQaConfigs) ? root.__caasQaConfigs.length : 0 },
       rootHints: rootHints(),
-      probes: probes.map((probe) => ({ ...probe, matches: take(probe.selector, 20, probe.attributes, trackedNow) })),
+      target: targetToken ? { token: targetToken, found: Boolean(targetRoot), root: targetRoot ? snapshot(targetRoot) : undefined } : undefined,
+      probes: probes.map((probe) => ({ ...probe, matches: scopedTake(probe.selector, 20, probe.attributes, trackedNow) })),
       trackedNodes: [...tracked.entries()].slice(0, 40).map(([id, entry]) => ({
         id, selector: entry.selector, connected: Boolean(doc.documentElement?.contains?.(entry.element)),
       })),
@@ -95,12 +118,12 @@ export function qaBrowserBridgeInit(initialOverride) {
       catch { result.captured.configs = []; }
     }
     if (options.generic) {
-      result.cards = take('.consonant-Card', 15);
-      result.headings = take('h1,h2,h3,h4,h5,h6,[role="heading"]', 30);
-      result.controls = take('label,button,input,select,[role="button"],[role="searchbox"]', 40);
-      result.filters = take('[class*="Filter"],[class*="filter"]', 40);
-      result.liveRegions = take('[aria-live],[role="status"],[role="alert"]', 20);
-      result.collectionRoots = take('.consonant-CardsGrid,.caas-preview,.caas-config,[class*="consonant-Container"]', 20);
+      result.cards = scopedTake('.consonant-Card', 15);
+      result.headings = scopedTake('h1,h2,h3,h4,h5,h6,[role="heading"]', 30);
+      result.controls = scopedTake('label,button,input,select,[role="button"],[role="searchbox"]', 40);
+      result.filters = scopedTake('[class*="Filter"],[class*="filter"]', 40);
+      result.liveRegions = scopedTake('[aria-live],[role="status"],[role="alert"]', 20);
+      result.collectionRoots = scopedTake('.consonant-CardsGrid,.caas-preview,.caas-config,[class*="consonant-Container"]', 20);
     }
     return result;
   };

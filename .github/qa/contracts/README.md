@@ -9,6 +9,11 @@ injection, and evaluates its small deterministic DOM contract afterward. The
 browser bridge only reports generic facts (override status, captured configs,
 probes, and tracked node lifecycle); it never contains product rules.
 
+On pages with multiple collections, the bridge marks one target using the
+captured endpoint fingerprint plus its occurrence, rather than trusting mount
+order alone. If that target cannot be resolved during a replay, the run skips
+as infrastructure-unresolved instead of judging a sibling collection.
+
 ## Current contracts
 
 - `card.metadata-attributes.v1`: top-level card country/reference → root data attributes.
@@ -40,7 +45,8 @@ Run this weekly against the current main checkout:
 node .github/qa/contract-maker.mjs health --repo-root .
 ```
 
-It is read-only and flags source hints that disappeared. When a feature run is
+It is read-only and flags source hints that disappeared or whose tracked source
+tokens no longer match. When a feature run is
 labelled `NEEDS_CONTRACT`, make a candidate outside `contracts/manifests`:
 
 ```sh
@@ -52,7 +58,10 @@ node .github/qa/contract-maker.mjs propose \
 node .github/qa/contract-maker.mjs validate /tmp/card.example-behavior.v1.json
 ```
 
-The proposal is inert JSON and cannot add executable logic. A QA owner reviews
-it, proves it against a historical post/base pair, and then adds it in a
-separate QA-owned PR. A semantic change gets a new `v2` contract; the job that
-is testing a product PR never silently changes the catalog.
+The proposal is inert JSON and cannot add executable logic. A manifest's
+`kind` selects a reviewed compiler adapter. If a new behavior does not fit an
+existing adapter, the maker returns `NEEDS_ADAPTER` instead of pretending that
+the closest contract applies. A QA owner then adds the adapter, its unit test,
+and its manifest; proves it against a historical post/base pair; and lands it
+in a separate QA-owned PR. A semantic change gets a new `v2` contract; the job
+that is testing a product PR never silently changes the catalog.

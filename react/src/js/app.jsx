@@ -77,7 +77,7 @@ export class ConsonantCardCollecton {
     constructor(config, element) {
         ReactDOM.render((
             <React.Fragment>
-                <Container config={applyQaConfigOverride(parseToPrimitive(config))} />
+                <Container config={applyQaConfigOverride(parseToPrimitive(config), element)} />
             </React.Fragment>), element);
     }
 }

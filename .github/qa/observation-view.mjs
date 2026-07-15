@@ -81,6 +81,7 @@ function compactBridge(value) {
   if (!Object.keys(bridge).length) return undefined;
   const override = asObject(bridge.override);
   const captured = asObject(bridge.captured);
+  const target = asObject(bridge.target);
   return {
     version: bridge.version,
     gateEnabled: Boolean(bridge.gateEnabled),
@@ -90,6 +91,7 @@ function compactBridge(value) {
       keys: (Array.isArray(override.keys) ? override.keys : []).slice(0, 12).map((key) => trim(key, 80)),
     },
     captured: { count: Number(captured.count) || 0 },
+    target: target.token ? { found: Boolean(target.found), token: trim(target.token, 80) } : undefined,
     trackedNodes: (Array.isArray(bridge.trackedNodes) ? bridge.trackedNodes : []).slice(0, 8).map((node) => ({
       selector: trim(node?.selector, 100), connected: Boolean(node?.connected),
     })),

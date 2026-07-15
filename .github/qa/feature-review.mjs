@@ -20,6 +20,7 @@ import { contractCatalogGuidance } from './contracts/catalog.mjs';
 import { evaluateContractAssertions } from './contracts/assertions.mjs';
 import { compileContractPlan, isManagedContractPlan } from './contracts/compiler.mjs';
 import { inspectQaBrowserBridge, installQaBrowserBridge } from './qa-browser-bridge.mjs';
+import { buildTargetedQaOverride, isQaTargetRequest, targetFromCapturedConfigs } from './qa-target.mjs';
 
 const env = (k, d = '') => (process.env[k] ?? d);
 const PR    = env('PR_NUMBER');
@@ -32,9 +33,13 @@ const TOKEN = env('IMS_ACCESS_TOKEN');
 const RUN_URL = env('RUN_URL', '');
 const PAGE  = env('PAGE_URL', 'https://business.adobe.com/customer-success-stories.html');
 const ROOT  = path.resolve(env('GITHUB_WORKSPACE', process.cwd()));
+const TARGET_INDEX = Number(env('QA_TARGET_INDEX', '0'));
 const MARKER = '<!-- feature-qa-review -->';
 const gh = (a) => execFileSync('gh', a, { encoding: 'utf8', maxBuffer: 20 * 1024 * 1024 });
 const ALLOW = new Set(['app.css', 'main.min.js', 'react.umd.js', 'react.dom.umd.js']);
+if (!Number.isInteger(TARGET_INDEX) || TARGET_INDEX < 0 || TARGET_INDEX > 99) {
+  throw new Error('QA_TARGET_INDEX must be an integer from 0 to 99');
+}
 
 const CARD_SHAPE = `Each card (chimera-api/collection "cards[]" item) needs at least:
 { "id": "unique", "styles": { "typeOverride": "one-half", "backgroundImage": "https://business.adobe.com/content/dam/dx/us/en/images/cards/default/media_1.jpg", "icon": "" },
@@ -191,21 +196,36 @@ Respond with ONLY a JSON object: {"testable":true|false,"reason":"one sentence"}
   const captureBridge = await inspectQaBrowserBridge(capPage, { includeConfigs: true });
   const liveConfigs = captureBridge?.captured?.configs || [];
   await capPage.close();
-  const canReplace = Array.isArray(liveConfigs) && liveConfigs.length > 0;
-  console.log(`[capture] ${canReplace ? liveConfigs.length : 0} live collection config(s) captured; bridge=${JSON.stringify({
+  const canReplace = Array.isArray(liveConfigs) && liveConfigs.length > TARGET_INDEX;
+  console.log(`[capture] ${liveConfigs.length} live collection config(s) captured; bridge=${JSON.stringify({
     version: captureBridge?.version, gateEnabled: captureBridge?.gateEnabled, captured: captureBridge?.captured?.count,
   })}`);
+  if (!canReplace) {
+    postComment('SKIPPED', `**QA bridge could not find its target collection** -- skipped before injection.\n\nTarget index ${TARGET_INDEX} was unavailable among ${liveConfigs.length || 'no'} captured collection(s).`);
+    console.log(`[capture] skipped: QA_COLLECTION_TARGET_UNRESOLVED (${liveConfigs.length}, target=${TARGET_INDEX})`); process.exit(0);
+  }
+  let target;
+  try { target = targetFromCapturedConfigs(liveConfigs, { index: TARGET_INDEX, token: `qa-pr-${PR}-target-${TARGET_INDEX}` }); }
+  catch (error) {
+    postComment('SKIPPED', `**QA bridge could not resolve a stable target collection** -- skipped before injection.\n\n> ${String(error.message || error).slice(0, 800)}`);
+    console.log(`[capture] skipped: QA_COLLECTION_TARGET_UNRESOLVED ${error.message}`); process.exit(0);
+  }
 
   // ---- Step 4: plan the injection using live config + searched source ----
-  const planHead = canReplace
-    ? `The page hosts ${liveConfigs.length} card collection(s). Here are their original configs:\n\n${JSON.stringify(liveConfigs).slice(0, 16000)}\n\nThe runner preserves this real transport/default config and applies only a validated feature patch.`
-    : 'Live config capture failed. Build a minimal complete CaaS config that activates the feature and renders every fixture card.';
+  const planHead = `The page hosts ${liveConfigs.length} card collection(s). The runner has selected target index ${target.index}; here is that original config:\n\n${JSON.stringify(liveConfigs[target.index]).slice(0, 16000)}\n\nThe runner preserves this real transport/default config and applies only a validated feature patch. It marks this one host, fulfills only its marked request, and scopes observations to it.`;
   const contractGuide = contractCatalogGuidance();
 
   const planRaw = await llm(
 `You are verifying an Adobe CaaS feature by reproducing ONE changed unit test on a real browser render. The unit test is the specification. Do not invent new feature behavior, extra correctness controls, or expected results.
 
 ${planHead}
+
+Browser bridge readiness from the live capture: ${JSON.stringify({
+  version: captureBridge?.version,
+  gateEnabled: captureBridge?.gateEnabled,
+  capturedConfigCount: captureBridge?.captured?.count,
+  override: captureBridge?.override,
+})}
 
 You were allowed to search the CURRENT PR checkout. This research is authoritative for translating component-level test props into complete card JSON. Use the raw source blocks, not intuition:
 ${research.report}
@@ -225,7 +245,7 @@ ${CARD_SHAPE}
 
 QA-OWNED FIXTURE CONTRACT CATALOG:\n${contractGuide}
 
-Choose a managed contract whenever it describes the changed behavior. For a managed contract, return only sourceTest, contract {id, params, reason}, and mappingEvidence. The QA runner compiles and validates the exact config/cards/filters/probes/assertions before browser injection; any free-form fixture fields are discarded. Use exploratory.collection.v1 only when no contract matches. It can still investigate a new feature, but the result is labelled EXPLORATORY / NEEDS_CONTRACT.
+Choose a managed contract whenever it describes the changed behavior. For a managed contract, return only sourceTest, contract {id, params, reason}, and mappingEvidence. The QA runner compiles and validates the exact config/cards/filters/probes/assertions before browser injection; any free-form fixture fields are discarded. One mappingEvidence item must cite a selected catalog sourceHints file that is changed in this PR and falls inside a raw research block below; otherwise local validation rejects it before browser injection. Use exploratory.collection.v1 only when no contract matches. It can still investigate a new feature, but the result is labelled EXPLORATORY / NEEDS_CONTRACT.
 
 Pick ONE changed unit test whose effect is observable in the DOM.
 - Ignore applyQaConfigOverride, caasQaConfig, __caasQaConfigs, and _caasQaReplace; those are this harness's transport, not the product behavior under test.
@@ -248,7 +268,12 @@ or {"sourceTest":"...","skipReason":"source search could not prove how the test 
     console.log(`[plan] skipped: ${plan2.skipReason}`); process.exit(0);
   }
   let compiled;
-  try { compiled = compileContractPlan(plan2, { liveConfig: liveConfigs[0] || {} }); }
+  try {
+    compiled = compileContractPlan(plan2, {
+      liveConfig: liveConfigs[target.index],
+      applicability: { changedPaths, researchSearches: research.searches },
+    });
+  }
   catch (error) {
     postComment('NEEDS_CONTRACT', `**Local contract validation rejected the scenario before browser injection.**\n\n> ${String(error.message || error).slice(0, 1000)}\n\nNo fixture was injected. Add or select a QA-owned contract, then retry.`);
     console.log(`[contract] rejected before injection: ${error.message}`); process.exit(0);
@@ -259,9 +284,7 @@ or {"sourceTest":"...","skipReason":"source search could not prove how the test 
     console.log(`[plan] skipped after contract compilation: ${plan.skipReason}`); process.exit(0);
   }
   plan.configPatch = plan.config;
-  plan.config = canReplace
-    ? buildScenarioConfig(liveConfigs[0], plan.configPatch, plan.cards, { ownedConfigPaths: plan.ownedConfigPaths })
-    : plan.configPatch;
+  plan.config = buildScenarioConfig(liveConfigs[target.index], plan.configPatch, plan.cards, { ownedConfigPaths: plan.ownedConfigPaths });
   console.log('[plan] sourceTest=' + plan.sourceTest + ' | observe=' + plan.observe);
   console.log('[contract] ' + JSON.stringify(plan.contract));
   console.log('[mapping] ' + JSON.stringify(plan.mappingEvidence));
@@ -271,7 +294,7 @@ or {"sourceTest":"...","skipReason":"source search could not prove how the test 
   }))));
 
   // ---- Step 5: inject config + mocked collection, render the PR build ----
-  const injected = canReplace ? { ...plan.config, _caasQaReplace: true } : plan.config;
+  const injected = buildTargetedQaOverride(plan.config, target);
   const page = await ctx.newPage();
   const diagnostics = { collectionRequests: [], pageErrors: [], consoleErrors: [], requestFailures: [] };
   page.on('pageerror', (error) => diagnostics.pageErrors.push(String(error.message || error).slice(0, 1000)));
@@ -283,22 +306,28 @@ or {"sourceTest":"...","skipReason":"source search could not prove how the test 
   await page.route('**/caas-libs/**', routeLibs);
   let beforeFixture;
   await page.route('**/chimera-api/collection**', async (route) => {
+    if (!isQaTargetRequest(route.request().url(), target)) return route.continue();
     diagnostics.collectionRequests.push(route.request().url().slice(0, 1000));
-    const bridge = await inspectQaBrowserBridge(page, { probes: plan.probes || [], track: true }).catch(() => null);
+    const bridge = await inspectQaBrowserBridge(page, { probes: plan.probes || [], track: true, targetToken: target.token }).catch(() => null);
     if (bridge) beforeFixture = { ...bridge, bridge };
     return route.fulfill({ contentType: 'application/json', body: JSON.stringify({
       cards: plan.cards || [], filters: plan.filters || [], isHashed: Boolean(plan.isHashed),
     }) });
   });
   await page.goto(gateUrl, { waitUntil: 'load', timeout: 45000 }).catch(() => {});
+  await page.waitForSelector(`[data-caas-qa-target="${target.token}"]`, { timeout: 15000 }).catch(() => {});
   await page.waitForSelector('.consonant-CardsGrid .consonant-Card', { timeout: 15000 }).catch(() => {});
   await page.waitForTimeout(2500);
-  const bridge = await inspectQaBrowserBridge(page, { probes: plan.probes || [], generic: true });
-  const observed = { ...bridge, bridge, diagnostics };
+  const bridge = await inspectQaBrowserBridge(page, { probes: plan.probes || [], generic: true, targetToken: target.token });
+  const observed = { ...bridge, bridge, diagnostics: { ...diagnostics, target } };
   if (beforeFixture) observed.beforeFixture = beforeFixture;
   console.log('[observed] ' + JSON.stringify(observed));
   await page.screenshot({ path: '/tmp/feature-render.png', fullPage: true }).catch(() => {});
   await page.close();
+  if (!bridge?.target?.found && !beforeFixture?.bridge?.target?.found) {
+    postComment('SKIPPED', `**QA bridge could not resolve its marked target collection** -- skipped instead of judging another collection.\n\nTarget fingerprint/occurrence did not produce a scoped marker.`);
+    console.log('[target] skipped: QA_COLLECTION_TARGET_UNRESOLVED'); process.exit(0);
+  }
 
   // ---- Step 6: validate rendered vs the selected test assertion ----
   const deterministic = evaluateContractAssertions(plan, observed);

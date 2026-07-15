@@ -17,7 +17,7 @@
     "removedLabel": { "type": "string", "default": "Lightroom", "description": "Visible empty leaf label." }
   },
   "sourceHints": [
-    { "file": "react/src/js/components/Consonant/Container/Container.jsx", "symbol": "removeEmptyFilters nested category items" },
-    { "file": "react/src/js/components/Consonant/Filters/Left/Items.jsx", "symbol": "opened nested item rendering" }
+    { "file": "react/src/js/components/Consonant/Container/Container.jsx", "symbol": "removeEmptyFilters nested category items", "needles": ["removeEmptyFilters", "isCategory"] },
+    { "file": "react/src/js/components/Consonant/Filters/Left/Items.jsx", "symbol": "opened nested item rendering", "needles": ["opened", "items"] }
   ]
 }
