@@ -7,6 +7,8 @@ export const BACKTEST_PROMPT_PROFILES = new Set([
   BASELINE_PROMPT_PROFILE,
   LEAN_CONTRACTS_PROMPT_PROFILE,
 ]);
+export const LEAN_COVERAGE_TEST_DIFF_MAX_CHARS = 7000;
+export const LEAN_COVERAGE_PRODUCT_DIFF_MAX_CHARS = 11000;
 
 const text = (value) => (value === undefined || value === null ? '' : String(value));
 
@@ -178,6 +180,23 @@ export function validateLeanCoverageDecision(rawDecision) {
   return { route, reason, neededCapabilities };
 }
 
+/**
+ * An incomplete prompt must not let the model discard a possible feature. The
+ * safe outcome is a contract backlog entry, which a maintainer can review with
+ * the full PR evidence later.
+ */
+export function makeLeanCoverageDecisionConservative(decision, evidence) {
+  if (decision?.route !== 'OUT_OF_SCOPE') return decision;
+  const diffWasTruncated = text(evidence?.diff).length > LEAN_COVERAGE_PRODUCT_DIFF_MAX_CHARS;
+  const testDiffWasTruncated = text(evidence?.specDiff).length > LEAN_COVERAGE_TEST_DIFF_MAX_CHARS;
+  if (!diffWasTruncated && !testDiffWasTruncated) return decision;
+  return {
+    route: 'NEEDS_CONTRACT',
+    reason: 'Coverage evidence exceeded the bounded review window, so this PR cannot safely be declared out of scope.',
+    neededCapabilities: ['review the uncovered behavior with complete PR evidence before deciding contract coverage'],
+  };
+}
+
 export function compactLeanCandidates(candidates, maxChars = 12000) {
   const compact = [];
   for (const candidate of (Array.isArray(candidates) ? candidates : [])) {
@@ -232,15 +251,19 @@ or {"sourceTest":"","skipReason":"NEEDS_CONTRACT: no listed reviewed contract ma
  * into an honest contract backlog without fabricating a browser result.
  */
 export function buildLeanCoveragePrompt({ evidence }) {
+  const testDiff = text(evidence?.specDiff);
+  const productDiff = text(evidence?.diff);
+  const evidenceWasTruncated = testDiff.length > LEAN_COVERAGE_TEST_DIFF_MAX_CHARS || productDiff.length > LEAN_COVERAGE_PRODUCT_DIFF_MAX_CHARS;
   return `No reviewed CaaS fixture contract matched this PR. Classify coverage only; do not plan a browser scenario and do not return PASS or FAIL.
 
 Use NEEDS_CONTRACT when the changed code introduces a visitor-visible browser behavior that could be worth a reviewed fixture adapter. Name the missing adapter capability. Use OUT_OF_SCOPE only for refactors, tests/build/tooling, performance-only work, or behavior outside this initial-render collection harness.
+${evidenceWasTruncated ? 'Important: the shown evidence is truncated. Do not use OUT_OF_SCOPE; return NEEDS_CONTRACT for manual full-evidence review.' : ''}
 
 PR title: ${text(evidence?.meta?.title).slice(0, 800)}
 PR body: ${text(evidence?.meta?.body).slice(0, 1000)}
 Changed files: ${(Array.isArray(evidence?.changedPaths) ? evidence.changedPaths : []).join('\n').slice(0, 5000)}
-Changed test diff:\n${text(evidence?.specDiff).slice(0, 7000)}
-Changed product diff:\n${text(evidence?.diff).slice(0, 11000)}
+Changed test diff:\n${testDiff.slice(0, LEAN_COVERAGE_TEST_DIFF_MAX_CHARS)}
+Changed product diff:\n${productDiff.slice(0, LEAN_COVERAGE_PRODUCT_DIFF_MAX_CHARS)}
 
 Reply ONLY JSON:
 {"route":"NEEDS_CONTRACT","reason":"specific visible behavior not represented by the catalog","neededCapabilities":["one reviewed adapter capability"]}

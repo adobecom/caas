@@ -13,6 +13,7 @@ import {
   buildLeanCoveragePrompt,
   buildLeanContractPlanPrompt,
   discoverManagedContractCandidates,
+  makeLeanCoverageDecisionConservative,
   parseBacktestPromptProfile,
   validateLeanCoverageDecision,
   validateLeanContractSelection,
@@ -456,7 +457,7 @@ function targetUnresolvedReason(target, observed) {
             retrySuffix: 'Return only one complete JSON object with route NEEDS_CONTRACT or OUT_OF_SCOPE, a concrete reason, and a nonempty neededCapabilities array for NEEDS_CONTRACT.',
             parseAndValidate: validateLeanCoverageDecision,
           });
-          coverageDecision = coverageResponse.value;
+          coverageDecision = makeLeanCoverageDecisionConservative(coverageResponse.value, evidence);
         } catch (error) {
           // An unavailable classifier must not become a speculative PASS or
           // false OUT_OF_SCOPE. Retain the safe mechanical coverage gap.

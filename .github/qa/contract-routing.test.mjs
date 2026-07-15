@@ -9,6 +9,7 @@ import {
   buildLeanContractPlanPrompt,
   compactLeanCandidates,
   discoverManagedContractCandidates,
+  makeLeanCoverageDecisionConservative,
   parseBacktestPromptProfile,
   validateLeanCoverageDecision,
   validateLeanContractSelection,
@@ -132,11 +133,26 @@ test('no-candidate coverage routing is bounded to a backlog or an out-of-scope d
   assert.throws(() => validateLeanCoverageDecision({
     route: 'NEEDS_CONTRACT', reason: 'A visible card behavior changed.', neededCapabilities: ['a fixture'], cards: [],
   }), /field is not allowed/);
-  const prompt = buildLeanCoveragePrompt({
+  const prompt = buildLeanCoveragePrompt({ evidence: {
     meta: { title: 'A static modifier', body: 'Feature details' }, changedPaths: ['react/src/x.jsx'], specDiff: '+ expectation', diff: '+ runtime branch',
-  });
+  } });
   assert.match(prompt, /NEEDS_CONTRACT/);
   assert.match(prompt, /OUT_OF_SCOPE/);
   assert.doesNotMatch(prompt, /CARD_SHAPE/);
   assert.match(prompt, /do not plan a browser scenario/);
+});
+
+test('truncated no-candidate evidence is conservatively retained as a contract gap', () => {
+  const decision = { route: 'OUT_OF_SCOPE', reason: 'Only internal refactor wiring changed.', neededCapabilities: [] };
+  assert.deepEqual(makeLeanCoverageDecisionConservative(decision, {
+    diff: 'x'.repeat(11001), specDiff: '',
+  }), {
+    route: 'NEEDS_CONTRACT',
+    reason: 'Coverage evidence exceeded the bounded review window, so this PR cannot safely be declared out of scope.',
+    neededCapabilities: ['review the uncovered behavior with complete PR evidence before deciding contract coverage'],
+  });
+  const prompt = buildLeanCoveragePrompt({ evidence: {
+    meta: {}, changedPaths: [], specDiff: '', diff: 'x'.repeat(11001),
+  } });
+  assert.match(prompt, /evidence is truncated/);
 });

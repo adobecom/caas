@@ -43,6 +43,26 @@ export function classifyPair(post, pre) {
   return { outcome: 'INCONCLUSIVE', detail: `unexpected pre status ${pre.status}` };
 }
 
+/** Keep no-catalog decisions visible in the batch artifact, not just post.json. */
+export function summarizeBacktestResult({ pr, title, promptProfile, post, pre }) {
+  const neededCapabilities = Array.isArray(post?.neededCapabilities)
+    ? post.neededCapabilities.map((item) => String(item).trim()).filter(Boolean).slice(0, 6) : [];
+  return {
+    pr,
+    title,
+    promptProfile: post?.promptProfile || promptProfile,
+    ...classifyPair(post, pre),
+    post: post?.status || null,
+    pre: pre?.status || null,
+    coverage: post?.coverage || null,
+    neededCapabilities,
+  };
+}
+
+export function shouldReplayPre(post, planExists) {
+  return post?.status === 'PASS' && planExists;
+}
+
 function output(command, args, options = {}) {
   return execFileSync(command, args, { encoding: 'utf8', maxBuffer: 20 * 1024 * 1024, ...options }).trim();
 }
@@ -63,11 +83,14 @@ function readJson(filePath) {
 function writeSummary(entries) {
   mkdirSync(OUTPUT_ROOT, { recursive: true });
   writeFileSync(path.join(OUTPUT_ROOT, 'summary.json'), `${JSON.stringify(entries, null, 2)}\n`);
-  const rows = entries.map((entry) =>
-    `| [#${entry.pr}](https://github.com/${REPO}/pull/${entry.pr}) | ${entry.title.replaceAll('|', '\\|')} | ${entry.outcome} | ${entry.detail.replaceAll('|', '\\|')} |`);
+  const rows = entries.map((entry) => {
+    const coverage = entry.coverage
+      ? `${entry.coverage}${entry.neededCapabilities?.length ? `: ${entry.neededCapabilities.join('; ')}` : ''}` : '';
+    return `| [#${entry.pr}](https://github.com/${REPO}/pull/${entry.pr}) | ${entry.title.replaceAll('|', '\\|')} | ${entry.outcome} | ${entry.detail.replaceAll('|', '\\|')} | ${coverage.replaceAll('|', '\\|')} |`;
+  });
   const markdown = `# Historical Feature-QA Back-test\n\n` +
     `Generated: ${new Date().toISOString()}\n\nPrompt profile: \`${PROMPT_PROFILE}\`\n\n` +
-    `| PR | Change | Outcome | Detail |\n|---|---|---|---|\n${rows.join('\n')}\n`;
+    `| PR | Change | Outcome | Detail | Coverage / adapter backlog |\n|---|---|---|---|---|\n${rows.join('\n')}\n`;
   writeFileSync(path.join(OUTPUT_ROOT, 'summary.md'), markdown);
 }
 
@@ -77,17 +100,19 @@ function prepareWorktree(commit, destination) {
   applyQaOverlay(destination);
 }
 
-function installAndBuild(postRoot, preRoot) {
+function installAndBuildPost(postRoot) {
   run('npm', ['ci', '--no-audit', '--no-fund'], { cwd: postRoot });
+  run('npm', ['run', 'build'], { cwd: postRoot, env: { ...process.env, NODE_OPTIONS: '--openssl-legacy-provider' } });
+}
+
+function installAndBuildPre(postRoot, preRoot) {
   const postLock = path.join(postRoot, 'package-lock.json');
   const preLock = path.join(preRoot, 'package-lock.json');
   if (fileHash(postLock) === fileHash(preLock)) {
     symlinkSync(path.join(postRoot, 'node_modules'), path.join(preRoot, 'node_modules'), 'dir');
     console.log('[deps] pre/post lockfiles match; sharing installed dependencies');
   } else run('npm', ['ci', '--no-audit', '--no-fund'], { cwd: preRoot });
-  const buildEnv = { ...process.env, NODE_OPTIONS: '--openssl-legacy-provider' };
-  run('npm', ['run', 'build'], { cwd: postRoot, env: buildEnv });
-  run('npm', ['run', 'build'], { cwd: preRoot, env: buildEnv });
+  run('npm', ['run', 'build'], { cwd: preRoot, env: { ...process.env, NODE_OPTIONS: '--openssl-legacy-provider' } });
 }
 
 function runWorker({ pr, variant, targetRoot, resultDir, planPath }) {
@@ -129,18 +154,20 @@ async function main() {
       writeFileSync(path.join(resultDir, 'metadata.json'), `${JSON.stringify(metadata, null, 2)}\n`);
       console.log(`\n[batch] PR #${pr}: ${title}`);
       prepareWorktree(metadata.headRefOid, postRoot);
-      prepareWorktree(metadata.baseRefOid, preRoot);
-      installAndBuild(postRoot, preRoot);
+      installAndBuildPost(postRoot);
       const planPath = path.join(resultDir, 'plan.json');
       const post = runWorker({ pr, variant: 'post', targetRoot: postRoot, resultDir, planPath });
-      const pre = post?.status === 'PASS' && existsSync(planPath)
-        ? runWorker({ pr, variant: 'pre', targetRoot: preRoot, resultDir, planPath }) : null;
-      const classification = classifyPair(post, pre);
-      summary.push({ pr, title, promptProfile: post?.promptProfile || PROMPT_PROFILE,
-        ...classification, post: post?.status || null, pre: pre?.status || null });
+      let pre = null;
+      if (shouldReplayPre(post, existsSync(planPath))) {
+        prepareWorktree(metadata.baseRefOid, preRoot);
+        installAndBuildPre(postRoot, preRoot);
+        pre = runWorker({ pr, variant: 'pre', targetRoot: preRoot, resultDir, planPath });
+      }
+      summary.push(summarizeBacktestResult({ pr, title, promptProfile: PROMPT_PROFILE, post, pre }));
     } catch (error) {
       console.error(`[batch] PR #${pr} failed: ${error.stack || error.message}`);
-      summary.push({ pr, title, promptProfile: PROMPT_PROFILE, outcome: 'ERROR', detail: error.message, post: null, pre: null });
+      summary.push({ pr, title, promptProfile: PROMPT_PROFILE, outcome: 'ERROR', detail: error.message,
+        post: null, pre: null, coverage: null, neededCapabilities: [] });
     } finally {
       for (const worktree of [preRoot, postRoot]) {
         try { run('git', ['worktree', 'remove', '--force', worktree], { cwd: SOURCE_REPO }); } catch { /* cleanup below */ }
