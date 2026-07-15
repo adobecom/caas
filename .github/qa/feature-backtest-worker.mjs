@@ -11,7 +11,6 @@ import { compileContractPlan, isManagedContractPlan } from './contracts/compiler
 import {
   LEAN_CONTRACTS_PROMPT_PROFILE,
   buildLeanContractPlanPrompt,
-  compactLeanCandidates,
   discoverManagedContractCandidates,
   parseBacktestPromptProfile,
   validateLeanContractSelection,
@@ -435,7 +434,11 @@ function targetUnresolvedReason(target, observed) {
         changedPaths: evidence.changedPaths,
         productDiff: evidence.diff,
       });
-      exposedLeanCandidates = compactLeanCandidates(contractRouting.candidates);
+      // Keep the full bounded-search candidate objects here. The prompt builder
+      // creates its own display-safe compact view; compacting twice would lose
+      // the raw evidence ranges the model must cite and the validator must
+      // later prove.
+      exposedLeanCandidates = contractRouting.candidates;
       console.log(`[contract-router] candidates=${exposedLeanCandidates.map((candidate) => candidate.id).join(',') || '(none)'} searches=${contractRouting.searches.length}`);
       if (!exposedLeanCandidates.length) {
         saveResult({

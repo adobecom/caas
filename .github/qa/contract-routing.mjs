@@ -147,7 +147,8 @@ export function validateLeanContractSelection(rawPlan, candidates) {
     throw new Error(`LEAN_CONTRACT_PARAMS_FORBIDDEN: ${selected.id}`);
   }
   const mappingEvidence = Array.isArray(plan.mappingEvidence) ? plan.mappingEvidence : [];
-  const grounded = mappingEvidence.some((item) => selected.evidence.some((source) =>
+  const selectedEvidence = Array.isArray(selected.evidence) ? selected.evidence : selected.sourceEvidence || [];
+  const grounded = mappingEvidence.some((item) => selectedEvidence.some((source) =>
     source.file === text(item?.file).trim() && Number(item?.line) >= source.startLine && Number(item?.line) <= source.endLine));
   if (!grounded) throw new Error(`LEAN_CONTRACT_EVIDENCE_UNPROVEN: ${selected.id}`);
   return plan;
@@ -166,7 +167,7 @@ export function compactLeanCandidates(candidates, maxChars = 12000) {
       changedDiff: (candidate.changedDiff || []).slice(0, 1).map(({ file, diff }) => ({
         file, diff: text(diff).slice(0, 1500),
       })),
-      sourceEvidence: (candidate.evidence || []).slice(0, 2).map(({ file, line, startLine, endLine, snippet }) => ({
+      sourceEvidence: (candidate.evidence || candidate.sourceEvidence || []).slice(0, 2).map(({ file, line, startLine, endLine, snippet }) => ({
         file, line, startLine, endLine, snippet: text(snippet).slice(0, 700),
       })),
     };

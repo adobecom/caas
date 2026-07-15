@@ -57,6 +57,15 @@ test('lean contract prompt contains evidence and routing instructions, not a fix
   assert.match(prompt, /Do not invent fixture JSON/);
   assert.doesNotMatch(prompt, /RAW CARD CONTRACT/);
   assert.doesNotMatch(prompt, /NESTED FILTER INITIAL STATE/);
+  const catalog = prompt.match(/Reviewed candidates and raw current-source evidence:\n([\s\S]*?)\n\nReply ONLY/)[1];
+  assert.ok(JSON.parse(catalog)[0].sourceEvidence.length > 0, 'the router receives citable raw source evidence');
+
+  const compactPrompt = buildLeanContractPlanPrompt({
+    evidence: { meta: { title: 'Button card CTA' }, specDiff: '+ expect(cta).toBeVisible()' },
+    candidates: compactLeanCandidates(routed.candidates),
+  });
+  const compactCatalog = compactPrompt.match(/Reviewed candidates and raw current-source evidence:\n([\s\S]*?)\n\nReply ONLY/)[1];
+  assert.ok(JSON.parse(compactCatalog)[0].sourceEvidence.length > 0, 'defensive re-compaction retains evidence');
 });
 
 test('lean router cannot select an unexposed contract or cite another contract evidence block', () => {
