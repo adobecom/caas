@@ -37,6 +37,41 @@ test('discovers only changed, source-backed reviewed contract candidates', () =>
   assert.ok(routed.searches.length >= 1);
   assert.ok(routed.candidates[0].evidence.every((item) => item.file.endsWith('ButtonCard.jsx')));
 
+  const lateHunk = discoverManagedContractCandidates({
+    repoRoot,
+    changedPaths: ['react/src/js/components/Consonant/Cards/ButtonCard.jsx'],
+    productDiff: `${'x'.repeat(30001)}\ndiff --git a/react/src/js/components/Consonant/Cards/ButtonCard.jsx b/react/src/js/components/Consonant/Cards/ButtonCard.jsx\n+const overlay = data.overlay;`,
+  });
+  assert.deepEqual(lateHunk.candidates.map(({ id }) => id), ['card.button-card-cta.v1'],
+    'a reviewed source hunk remains eligible even when it appears after planner-context bounds');
+
+  const removed = discoverManagedContractCandidates({
+    repoRoot,
+    changedPaths: ['react/src/js/components/Consonant/Cards/ButtonCard.jsx'],
+    productDiff: 'diff --git a/react/src/js/components/Consonant/Cards/ButtonCard.jsx b/react/src/js/components/Consonant/Cards/ButtonCard.jsx\n@@ -24,1 +24,0 @@\n-const overlay = data.overlay;',
+    search: () => ({ matches: [] }),
+  });
+  assert.deepEqual(removed.candidates.map(({ id }) => id), ['card.button-card-cta.v1'],
+    'a reviewed contract remains eligible when its changed behavior is deleted');
+  assert.equal(removed.candidates[0].evidence[0].kind, 'deleted-hunk');
+  assert.equal(removed.candidates[0].evidence[0].line, 24);
+  const deletedSource = removed.candidates[0].evidence[0];
+  const deletedSelection = validateLeanContractSelection({
+    sourceTest: 'removed Button Card CTA behavior',
+    contract: { id: 'card.button-card-cta.v1' },
+    mappingEvidence: [{ file: deletedSource.file, line: deletedSource.line, fact: 'reviewed CTA source was removed in this hunk' }],
+  }, removed.candidates);
+  assert.equal(deletedSelection.contract.id, 'card.button-card-cta.v1');
+
+  const retainedRemoval = discoverManagedContractCandidates({
+    repoRoot,
+    changedPaths: ['react/src/js/components/Consonant/Cards/ButtonCard.jsx'],
+    productDiff: 'diff --git a/react/src/js/components/Consonant/Cards/ButtonCard.jsx b/react/src/js/components/Consonant/Cards/ButtonCard.jsx\n@@ -24,1 +24,0 @@\n-const overlay = data.overlay;',
+    search: () => ({ matches: [{ file: 'react/src/js/components/Consonant/Cards/ButtonCard.jsx', line: 200, startLine: 198, endLine: 202, snippet: 'another surviving overlay use' }] }),
+  });
+  assert.deepEqual(retainedRemoval.candidates[0].evidence.map((item) => item.kind), ['current-source'],
+    'a surviving broad needle makes the deletion ambiguous, so it cannot authorize a no-test removal regression');
+
   const none = discoverManagedContractCandidates({ repoRoot, changedPaths: ['README.md'], productDiff: 'diff --git a/README.md b/README.md\n+docs' });
   assert.deepEqual(none.candidates, []);
 
@@ -65,14 +100,16 @@ test('lean contract prompt contains evidence and routing instructions, not a fix
   assert.doesNotMatch(prompt, /NEEDS_CONTRACT:/);
   assert.doesNotMatch(prompt, /RAW CARD CONTRACT/);
   assert.doesNotMatch(prompt, /NESTED FILTER INITIAL STATE/);
-  const catalog = prompt.match(/Reviewed candidates and raw current-source evidence:\n([\s\S]*?)\n\nReply ONLY/)[1];
-  assert.ok(JSON.parse(catalog)[0].sourceEvidence.length > 0, 'the router receives citable raw source evidence');
+  assert.match(prompt, /deleted-hunk/);
+  assert.match(prompt, /even when no changed test remains/);
+  const catalog = prompt.match(/Reviewed candidates and bounded source\/diff evidence:\n([\s\S]*?)\n\nReply ONLY/)[1];
+  assert.ok(JSON.parse(catalog)[0].sourceEvidence.length > 0, 'the router receives citable bounded evidence');
 
   const compactPrompt = buildLeanContractPlanPrompt({
     evidence: { meta: { title: 'Button card CTA' }, specDiff: '+ expect(cta).toBeVisible()' },
     candidates: compactLeanCandidates(routed.candidates),
   });
-  const compactCatalog = compactPrompt.match(/Reviewed candidates and raw current-source evidence:\n([\s\S]*?)\n\nReply ONLY/)[1];
+  const compactCatalog = compactPrompt.match(/Reviewed candidates and bounded source\/diff evidence:\n([\s\S]*?)\n\nReply ONLY/)[1];
   assert.ok(JSON.parse(compactCatalog)[0].sourceEvidence.length > 0, 'defensive re-compaction retains evidence');
 });
 

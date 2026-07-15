@@ -33,7 +33,12 @@ test('adds the gated capture/replace hook to a historical checkout', () => {
     assert.match(general, /__caasQaConfigs/);
     assert.match(general, /_caasQaReplace/);
     assert.match(general, /_caasQaTargetIndex/);
-    assert.match(general, /_caasQaTargetFingerprint/);
+    assert.match(general, /const QA_TARGET_FINGERPRINT_PROPERTY = '_caasQaTargetFingerprint';/);
+    assert.match(general, /\/\* eslint-disable max-len \*\//);
+    assert.match(general, /\/\* eslint-enable max-len \*\//);
+    assert.doesNotMatch(general, /\/\* eslint-disable \*\//, 'must not suppress all lint rules');
+    assert.doesNotMatch(general, /\?\./, 'must remain parseable by historical Babel 6 builds');
+    assert.match(general, /Object\.assign\(\{\}, override\)/);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
@@ -44,5 +49,24 @@ test('is idempotent', () => {
     applyQaOverlay(root);
     const general = readFileSync(path.join(root, 'react/src/js/components/Consonant/Helpers/general.js'), 'utf8');
     assert.equal((general.match(/export const applyQaConfigOverride/g) || []).length, 1);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('replaces a fenced stale hook without duplicating it', () => {
+  const root = fixture();
+  try {
+    applyQaOverlay(root);
+    const generalPath = path.join(root, 'react/src/js/components/Consonant/Helpers/general.js');
+    const stale = readFileSync(generalPath, 'utf8')
+      .replace("const QA_TARGET_FINGERPRINT_PROPERTY = '_caasQaTargetFingerprint';\n", '');
+    writeFileSync(generalPath, stale);
+
+    applyQaOverlay(root);
+    const general = readFileSync(generalPath, 'utf8');
+    assert.equal((general.match(/export const applyQaConfigOverride/g) || []).length, 1);
+    assert.equal((general.match(/const QA_CONFIGS_PROPERTY/g) || []).length, 1);
+    assert.equal((general.match(/\/\* eslint-disable max-len \*\//g) || []).length, 1);
+    assert.equal((general.match(/\/\* eslint-enable max-len \*\//g) || []).length, 1);
+    assert.match(general, /const QA_TARGET_FINGERPRINT_PROPERTY = '_caasQaTargetFingerprint';/);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });

@@ -3,7 +3,11 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const QA_HOOK = `const QA_CONFIGS_PROPERTY = '__caasQaConfigs';
+// Historical builds can use eslint-loader with failOnError. Keep its one known
+// formatting exception scoped to this generated, QA-only hook; all product
+// source and all non-format lint/transpile errors remain fatal.
+const QA_HOOK = `/* eslint-disable max-len */
+const QA_CONFIGS_PROPERTY = '__caasQaConfigs';
 const QA_REPLACE_PROPERTY = '_caasQaReplace';
 const QA_TARGET_INDEX_PROPERTY = '_caasQaTargetIndex';
 const QA_TARGET_TOKEN_PROPERTY = '_caasQaTargetToken';
@@ -26,7 +30,10 @@ const canonicalQaEndpoint = (value) => {
     } catch (e) { return ''; }
 };
 
-const qaConfigFingerprint = config => canonicalQaEndpoint(config?.collection?.endpoint);
+const qaConfigFingerprint = (config) => {
+    const collection = config && config.collection;
+    return canonicalQaEndpoint(collection && collection.endpoint);
+};
 
 const nextQaFingerprintOccurrence = (fingerprint) => {
     if (!fingerprint) return -1;
@@ -71,7 +78,8 @@ export const applyQaConfigOverride = (config, element) => {
             if (!expectedFingerprint || !Number.isInteger(targetOccurrence) || targetOccurrence < 0 || targetOccurrence > 99
                 || actualFingerprint !== expectedFingerprint || actualOccurrence !== targetOccurrence) {
                 try {
-                    if (!window[QA_TARGET_STATUS_PROPERTY]?.matched
+                    const targetStatus = window[QA_TARGET_STATUS_PROPERTY];
+                    if (!(targetStatus && targetStatus.matched)
                         && (configIndex === targetIndex || actualFingerprint === expectedFingerprint)) {
                         window[QA_TARGET_STATUS_PROPERTY] = {
                             matched: false, index: configIndex, occurrence: actualOccurrence,
@@ -83,14 +91,19 @@ export const applyQaConfigOverride = (config, element) => {
         } else if (isTargeted && configIndex !== targetIndex) return config;
         let marked = false;
         if (isTargeted) {
-            try { element?.setAttribute?.(QA_TARGET_ATTRIBUTE, targetToken); marked = true; } catch (e) { /* marker is best-effort */ }
+            try {
+                if (element && typeof element.setAttribute === 'function') {
+                    element.setAttribute(QA_TARGET_ATTRIBUTE, targetToken);
+                }
+                marked = true;
+            } catch (e) { /* marker is best-effort */ }
             try {
                 window[QA_TARGET_STATUS_PROPERTY] = {
                     matched: marked, index: configIndex, occurrence: actualOccurrence,
                 };
             } catch (e) { /* target diagnostics are best-effort */ }
         }
-        const qaOverride = { ...override };
+        const qaOverride = Object.assign({}, override);
         delete qaOverride[QA_REPLACE_PROPERTY];
         delete qaOverride[QA_TARGET_INDEX_PROPERTY];
         delete qaOverride[QA_TARGET_TOKEN_PROPERTY];
@@ -103,7 +116,8 @@ export const applyQaConfigOverride = (config, element) => {
     } catch (e) {
         return config;
     }
-};`;
+};
+/* eslint-enable max-len */`;
 
 export function applyQaOverlay(repoRoot) {
   const root = path.resolve(repoRoot);
@@ -125,8 +139,8 @@ export function applyQaOverlay(repoRoot) {
     app = app.replace(configPattern, 'config={applyQaConfigOverride(parseToPrimitive(config), element)}');
   }
 
-  if (!general.includes('__caasQaConfigs') || !general.includes('_caasQaReplace') || !general.includes('_caasQaTargetFingerprint')) {
-    const existingHook = /(?:const QA_CONFIGS_PROPERTY[\s\S]*?\n\n)?export const applyQaConfigOverride = \(config(?:, element)?\) => \{[\s\S]*?\n\};\n\n(?=const isCaasGroup)/;
+  if (!general.includes('__caasQaConfigs') || !general.includes('_caasQaReplace') || !general.includes("'_caasQaTargetFingerprint'")) {
+    const existingHook = /(?:\/\* eslint-disable max-len \*\/\n)?(?:const QA_CONFIGS_PROPERTY[\s\S]*?\n\n)?export const applyQaConfigOverride = \(config(?:, element)?\) => \{[\s\S]*?\n\};\n(?:\/\* eslint-enable max-len \*\/\n)?\n(?=const isCaasGroup)/;
     if (existingHook.test(general)) general = general.replace(existingHook, `${QA_HOOK}\n\n`);
     else {
       const insertionPoint = /\nconst isCaasGroup\s*=/;

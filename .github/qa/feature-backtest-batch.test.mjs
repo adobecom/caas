@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { classifyPair, parsePrNumbers, shouldReplayPre, summarizeBacktestResult } from './feature-backtest-batch.mjs';
+import { classifyPair, parsePrNumbers, shouldBuildAfterLeanPreflight, shouldReplayPre, summarizeBacktestResult } from './feature-backtest-batch.mjs';
 
 test('parses and deduplicates a bounded PR list', () => {
   assert.deepEqual(parsePrNumbers('532, 490 532'), [532, 490]);
@@ -41,4 +41,7 @@ test('keeps a no-catalog capability gap in the batch summary', () => {
   assert.equal(shouldReplayPre({ status: 'SKIPPED' }, true), false);
   assert.equal(shouldReplayPre({ status: 'PASS' }, false), false);
   assert.equal(shouldReplayPre({ status: 'PASS' }, true), true);
+  assert.equal(shouldBuildAfterLeanPreflight({ status: 'ROUTABLE' }), true);
+  assert.equal(shouldBuildAfterLeanPreflight({ status: 'SKIPPED' }), false);
+  assert.equal(shouldBuildAfterLeanPreflight(null), false);
 });

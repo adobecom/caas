@@ -5,6 +5,7 @@ import { existsSync, mkdirSync, readFileSync, rmSync, symlinkSync, writeFileSync
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { applyQaOverlay } from './apply-qa-overlay.mjs';
+import { LEAN_CONTRACTS_PROMPT_PROFILE } from './contract-routing.mjs';
 
 const env = (name, fallback = '') => process.env[name] ?? fallback;
 const REPO = env('GH_REPO', 'adobecom/caas');
@@ -64,6 +65,11 @@ export function shouldReplayPre(post, planExists) {
   return post?.status === 'PASS' && planExists;
 }
 
+/** A lean preflight only authorizes an expensive historical build when a reviewed contract is a source-level candidate. */
+export function shouldBuildAfterLeanPreflight(route) {
+  return route?.status === 'ROUTABLE';
+}
+
 function output(command, args, options = {}) {
   return execFileSync(command, args, { encoding: 'utf8', maxBuffer: 20 * 1024 * 1024, ...options }).trim();
 }
@@ -98,7 +104,6 @@ function writeSummary(entries) {
 function prepareWorktree(commit, destination) {
   run('git', ['fetch', '--no-tags', 'origin', commit], { cwd: SOURCE_REPO });
   run('git', ['worktree', 'add', '--detach', destination, commit], { cwd: SOURCE_REPO });
-  applyQaOverlay(destination);
 }
 
 function installAndBuildPost(postRoot) {
@@ -127,6 +132,31 @@ function runWorker({ pr, variant, targetRoot, resultDir, planPath }) {
     BACKTEST_PLAN_PATH: planPath,
     BACKTEST_RESULT_PATH: resultPath,
     BACKTEST_SCREENSHOT_PATH: path.join(resultDir, `${variant}.png`),
+    BACKTEST_ROUTE_ONLY: '0',
+  };
+  run(process.execPath, [WORKER], { cwd: path.dirname(WORKER), env: workerEnv });
+  return existsSync(resultPath) ? readJson(resultPath) : null;
+}
+
+/**
+ * Lean routing needs only the PR checkout and QA-owned code search. It runs
+ * before npm install/build so an uncovered historical PR becomes a useful
+ * coverage result instead of a dependency or lint failure.
+ */
+function runLeanPreflight({ pr, targetRoot, resultDir }) {
+  const resultPath = path.join(resultDir, 'route.json');
+  const workerEnv = {
+    ...process.env,
+    PR_NUMBER: String(pr),
+    TARGET_REPO_ROOT: targetRoot,
+    // Route-only mode never reads dist, but the worker keeps its normal input
+    // contract so it cannot silently gain a second, less-validated code path.
+    DIST_DIR: path.join(targetRoot, 'dist'),
+    BACKTEST_VARIANT: 'route',
+    BACKTEST_PLAN_PATH: path.join(resultDir, 'plan.json'),
+    BACKTEST_RESULT_PATH: resultPath,
+    BACKTEST_SCREENSHOT_PATH: path.join(resultDir, 'route.png'),
+    BACKTEST_ROUTE_ONLY: '1',
   };
   run(process.execPath, [WORKER], { cwd: path.dirname(WORKER), env: workerEnv });
   return existsSync(resultPath) ? readJson(resultPath) : null;
@@ -155,12 +185,26 @@ async function main() {
       writeFileSync(path.join(resultDir, 'metadata.json'), `${JSON.stringify(metadata, null, 2)}\n`);
       console.log(`\n[batch] PR #${pr}: ${title}`);
       prepareWorktree(metadata.headRefOid, postRoot);
+      if (PROMPT_PROFILE === LEAN_CONTRACTS_PROMPT_PROFILE) {
+        const route = runLeanPreflight({ pr, targetRoot: postRoot, resultDir });
+        if (!route) throw new Error('lean route preflight did not write a result');
+        if (!shouldBuildAfterLeanPreflight(route)) {
+          if (route.status !== 'SKIPPED') throw new Error(`lean route preflight returned unexpected status ${route.status}`);
+          summary.push(summarizeBacktestResult({ pr, title, promptProfile: PROMPT_PROFILE, post: route, pre: null }));
+          continue;
+        }
+      }
+      // Overlay only the checkout that will actually execute in Chrome. Lean
+      // preflight reads pristine historical source and can classify an
+      // uncovered PR even when its old layout cannot accept the QA hook.
+      applyQaOverlay(postRoot);
       installAndBuildPost(postRoot);
       const planPath = path.join(resultDir, 'plan.json');
       const post = runWorker({ pr, variant: 'post', targetRoot: postRoot, resultDir, planPath });
       let pre = null;
       if (shouldReplayPre(post, existsSync(planPath))) {
         prepareWorktree(metadata.baseRefOid, preRoot);
+        applyQaOverlay(preRoot);
         installAndBuildPre(postRoot, preRoot);
         pre = runWorker({ pr, variant: 'pre', targetRoot: preRoot, resultDir, planPath });
       }

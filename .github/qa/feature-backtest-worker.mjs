@@ -53,8 +53,13 @@ const PAGE = env('PAGE_URL', 'https://business.adobe.com/customer-success-storie
 const VARIANT = env('BACKTEST_VARIANT', 'post');
 const PLAN_INPUT = env('BACKTEST_PLAN_PATH');
 const RESULT_INPUT = env('BACKTEST_RESULT_PATH');
+const ROUTE_ONLY = env('BACKTEST_ROUTE_ONLY') === '1';
 const TARGET_INDEX = Number(env('QA_TARGET_INDEX', '0'));
 const PROMPT_PROFILE = parseBacktestPromptProfile(env('QA_PROMPT_PROFILE'));
+
+if (ROUTE_ONLY && PROMPT_PROFILE !== LEAN_CONTRACTS_PROMPT_PROFILE) {
+  throw new Error('BACKTEST_ROUTE_ONLY is supported only by lean-contracts-v1');
+}
 
 for (const [name, value] of Object.entries({ PR_NUMBER: PR, TARGET_REPO_ROOT: ROOT_INPUT,
   DIST_DIR: DIST_INPUT, PROXY_URL: PROXY, MODEL, IMS_ACCESS_TOKEN: TOKEN,
@@ -232,7 +237,13 @@ function productEvidence() {
   const sections = rawDiff.split(/(?=^diff --git )/m).filter(Boolean);
   const sectionPath = (section) => section.match(/^diff --git a\/(.+?) b\/(.+)$/m)?.[2] || '';
   const isInfra = (filePath) => filePath.startsWith('.github/') || filePath === 'package-lock.json';
-  const diff = sections.filter((section) => !isInfra(sectionPath(section))).join('').slice(0, 30000);
+  // Planner prose stays bounded, but contract candidacy must inspect every
+  // changed hunk. Otherwise a reviewed hint after an arbitrary 30k cutoff
+  // could be mistaken for "no contract" and make the preflight skip a real
+  // executable test. Candidate prompt evidence remains per-file bounded in
+  // discoverManagedContractCandidates.
+  const contractDiff = sections.filter((section) => !isInfra(sectionPath(section))).join('');
+  const diff = contractDiff.slice(0, 30000);
   const allChangedPaths = [...new Set([
     ...(meta.files || []).map(({ path: filePath }) => filePath),
     ...sections.map(sectionPath).filter(Boolean),
@@ -247,7 +258,7 @@ function productEvidence() {
     try { return `\n// FILE ${filePath}\n${readFileSync(path.resolve(ROOT, filePath), 'utf8')}`; } catch { return ''; }
   }).join('\n').slice(0, 18000);
   const specDiff = sections.filter((section) => specPathSet.has(sectionPath(section))).join('').slice(0, 14000);
-  return { meta, diff, changedPaths, allChangedPaths, pathsTruncated, coverageDiff: rawDiff, specText, specDiff };
+  return { meta, diff, contractDiff, changedPaths, allChangedPaths, pathsTruncated, coverageDiff: rawDiff, specText, specDiff };
 }
 
 function cleanProbes(probes) {
@@ -261,10 +272,10 @@ function cleanProbes(probes) {
   });
 }
 
-function finalizePlan(rawPlan, { evidence, liveConfig, researchSearches = [] }) {
+function finalizePlan(rawPlan, { evidence, liveConfig, researchSearches = [], deletedEvidence = [] }) {
   const compiled = compileContractPlan(rawPlan, {
     liveConfig,
-    applicability: { changedPaths: evidence.changedPaths, researchSearches },
+    applicability: { changedPaths: evidence.changedPaths, researchSearches, deletedEvidence },
   });
   const plan = compiled.plan;
   if (plan.skipReason) return plan;
@@ -520,7 +531,7 @@ function targetUnresolvedReason(target, observed) {
       contractRouting = discoverManagedContractCandidates({
         repoRoot: ROOT,
         changedPaths: evidence.changedPaths,
-        productDiff: evidence.diff,
+        productDiff: evidence.contractDiff,
       });
       // Keep the full bounded-search candidate objects here. The prompt builder
       // creates its own display-safe compact view; compacting twice would lose
@@ -528,6 +539,36 @@ function targetUnresolvedReason(target, observed) {
       // later prove.
       exposedLeanCandidates = contractRouting.candidates;
       console.log(`[contract-router] candidates=${exposedLeanCandidates.map((candidate) => candidate.id).join(',') || '(none)'} searches=${contractRouting.searches.length}`);
+      // The batch runner invokes this inexpensive preflight before installing
+      // dependencies or compiling an old PR. A no-candidate result is a final
+      // coverage decision; a candidate merely means the normal post worker
+      // should build and perform its one bounded selection call. This keeps
+      // historical lint/build failures from masking an otherwise safe lean
+      // coverage decision, without granting route-only mode any browser or
+      // fixture authority.
+      if (ROUTE_ONLY) {
+        if (!exposedLeanCandidates.length) {
+          const { coverageEvidence, coverageDecision, coverageRoutingError } = await classifyLeanCoverage(evidence);
+          saveResult({
+            status: 'SKIPPED',
+            stage: 'contract-routing',
+            reason: `${coverageDecision.coverage}: ${coverageDecision.reason}`,
+            routeSource: 'no-candidate',
+            coverageRoutingError: coverageRoutingError || undefined,
+            ...coverageResultFields(coverageDecision, coverageEvidence),
+            contractCandidates: [],
+          });
+        } else {
+          saveResult({
+            status: 'ROUTABLE',
+            stage: 'contract-routing',
+            reason: 'One or more reviewed contracts have changed-source evidence; build is required before deterministic browser execution.',
+            contractCandidates: exposedLeanCandidates.map(({ id }) => id),
+            researchCount: contractRouting.searches.length,
+          });
+        }
+        return;
+      }
       if (!exposedLeanCandidates.length) {
         const { coverageEvidence, coverageDecision, coverageRoutingError } = await classifyLeanCoverage(evidence);
         saveResult({
@@ -723,10 +764,22 @@ For exploratory.collection.v1 only:
 {"sourceTest":"...","contract":{"id":"exploratory.collection.v1","reason":"why no managed contract matches"},"config":{},"cards":[],"filters":[],"isHashed":false,"expected":"exact assertion","observe":"...","probes":[],"renderability":{"requiredInitial":[{"selector":"...","minMatches":1,"why":"..."}]},"mappingEvidence":[{"file":"...","line":1,"fact":"..."}],"skipReason":""}
 or {"sourceTest":"...","skipReason":"precise unsupported capability or missing mapping"}.`;
     const planResearchSearches = isLeanContractProfile ? contractRouting.searches : research.searches;
-    const finalizePlannedScenario = (rawPlan) => finalizePlan(
-      isLeanContractProfile ? validateLeanContractSelection(rawPlan, exposedLeanCandidates) : rawPlan,
-      { evidence, liveConfig: postLiveConfig, researchSearches: planResearchSearches },
-    );
+    const finalizePlannedScenario = (rawPlan) => {
+      const selectedPlan = isLeanContractProfile
+        ? validateLeanContractSelection(rawPlan, exposedLeanCandidates)
+        : rawPlan;
+      const selectedId = selectedPlan?.contract?.id || selectedPlan?.contractId || '';
+      const deletedEvidence = isLeanContractProfile
+        ? (exposedLeanCandidates.find((candidate) => candidate.id === selectedId)?.evidence || [])
+          .filter((item) => item?.kind === 'deleted-hunk')
+        : [];
+      return finalizePlan(selectedPlan, {
+        evidence,
+        liveConfig: postLiveConfig,
+        researchSearches: planResearchSearches,
+        deletedEvidence,
+      });
+    };
     const planResponse = isLeanContractProfile
       ? { value: finalizePlannedScenario(leanRouterPlan), attempts: leanRouterAttempts }
       : await requestBoundedJson({

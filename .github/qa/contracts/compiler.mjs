@@ -254,6 +254,19 @@ function searchedRanges(applicability) {
   }));
 }
 
+function deletedContractRanges(applicability) {
+  const entries = Array.isArray(applicability?.deletedEvidence) ? applicability.deletedEvidence : [];
+  return entries.flatMap((entry) => {
+    if (entry?.kind !== 'deleted-hunk') return [];
+    let file;
+    try { file = cleanRepoRelativeFile(entry?.file, 'deleted contract evidence file'); } catch { return []; }
+    const startLine = Number(entry?.startLine || entry?.line);
+    const endLine = Number(entry?.endLine || entry?.line);
+    if (!Number.isInteger(startLine) || !Number.isInteger(endLine) || startLine < 1 || endLine < startLine) return [];
+    return [{ file, startLine, endLine }];
+  });
+}
+
 function validateManagedApplicability(manifest, mappingEvidence, applicability) {
   // The CLI can validate a saved plan's fixture shape alone. Browser runners
   // must also prove that the selected contract is tied to current changed code
@@ -262,13 +275,15 @@ function validateManagedApplicability(manifest, mappingEvidence, applicability) 
   const changedPaths = new Set((Array.isArray(applicability.changedPaths) ? applicability.changedPaths : [])
     .flatMap((file) => {
       try { return [cleanRepoRelativeFile(file, 'changed path')]; } catch { return []; }
-    }));
+  }));
   const ranges = searchedRanges(applicability);
+  const deletedRanges = deletedContractRanges(applicability);
   const hintFiles = new Set(manifest.sourceHints.map((hint) => hint.file));
   const anchor = mappingEvidence.find((item) => hintFiles.has(item.file) && changedPaths.has(item.file) &&
-    ranges.some((range) => range.file === item.file && item.line >= range.startLine && item.line <= range.endLine));
+    (ranges.some((range) => range.file === item.file && item.line >= range.startLine && item.line <= range.endLine) ||
+      deletedRanges.some((range) => range.file === item.file && item.line >= range.startLine && item.line <= range.endLine)));
   if (!anchor) {
-    throw new Error(`CONTRACT_APPLICABILITY_UNPROVEN: ${manifest.id} needs one mappingEvidence item from a changed contract sourceHint and returned research block`);
+    throw new Error(`CONTRACT_APPLICABILITY_UNPROVEN: ${manifest.id} needs one mappingEvidence item from a changed contract sourceHint and returned research block or reviewed deleted hunk`);
   }
 }
 

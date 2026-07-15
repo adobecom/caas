@@ -173,6 +173,20 @@ test('managed contract selection must be grounded in changed raw source research
     changedPaths: ['react/src/js/components/Consonant/Cards/Card.jsx'],
     researchSearches: [{ result: { matches: [{ file: 'react/src/js/components/Consonant/Cards/Card.jsx', line: 200, startLine: 199, endLine: 201 }] } }],
   } }), /CONTRACT_APPLICABILITY_UNPROVEN/);
+
+  const deleted = compileContractPlan({
+    sourceTest: 'Button Card CTA removal regression',
+    mappingEvidence: [{ file: 'react/src/js/components/Consonant/Cards/ButtonCard.jsx', line: 24, fact: 'removed CTA source is in the reviewed diff hunk' }],
+    contract: { id: 'card.button-card-cta.v1' },
+  }, {
+    liveConfig,
+    applicability: {
+      changedPaths: ['react/src/js/components/Consonant/Cards/ButtonCard.jsx'],
+      researchSearches: [],
+      deletedEvidence: [{ kind: 'deleted-hunk', file: 'react/src/js/components/Consonant/Cards/ButtonCard.jsx', line: 24 }],
+    },
+  });
+  assert.equal(deleted.mode, 'managed', 'a reviewed deleted source hunk can authorize a deterministic removal regression test');
 });
 
 test('empty-event and nested-filter contracts encode lifecycle and owned path rules', () => {
