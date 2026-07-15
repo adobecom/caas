@@ -92,6 +92,15 @@ test('lean router cannot select an unexposed contract or cite another contract e
   }, routed.candidates), /LEAN_CONTRACT_EVIDENCE_UNPROVEN/);
   assert.throws(() => validateLeanContractSelection({ skipReason: 'cannot tell' }, routed.candidates), /LEAN_SKIP_REASON_INVALID/);
   assert.throws(() => validateLeanContractSelection({
+    skipReason: 'NEEDS_CONTRACT: Button Card behavior is not in the catalog',
+  }, routed.candidates), /LEAN_SKIP_CAPABILITY_REQUIRED/);
+  assert.throws(() => validateLeanContractSelection({
+    skipReason: 'OUT_OF_SCOPE: refactor only', neededCapabilities: ['a fixture'],
+  }, routed.candidates), /LEAN_SKIP_CAPABILITY_FORBIDDEN/);
+  assert.throws(() => validateLeanContractSelection({
+    skipReason: 'OUT_OF_SCOPE: refactor only', cards: [],
+  }, routed.candidates), /LEAN_FIXTURE_FIELD_FORBIDDEN/);
+  assert.throws(() => validateLeanContractSelection({
     contract: { id: 'card.button-card-cta.v1', params: { ctaText: 'invented' } },
     mappingEvidence: [{ file: source.file, line: source.line, fact: 'Button Card CTA source' }],
   }, routed.candidates), /LEAN_CONTRACT_PARAMS_FORBIDDEN/);
@@ -99,8 +108,13 @@ test('lean router cannot select an unexposed contract or cite another contract e
     contract: { id: 'card.button-card-cta.v1' }, cards: [],
     mappingEvidence: [{ file: source.file, line: source.line, fact: 'Button Card CTA source' }],
   }, routed.candidates), /LEAN_FIXTURE_FIELD_FORBIDDEN/);
-  assert.equal(validateLeanContractSelection({ skipReason: 'OUT_OF_SCOPE: refactor only' }, routed.candidates).skipReason,
-    'OUT_OF_SCOPE: refactor only');
+  assert.deepEqual(validateLeanContractSelection({
+    skipReason: 'NEEDS_CONTRACT: Button Card behavior is not in the catalog',
+    neededCapabilities: ['compile a Button Card CTA adapter'],
+  }, routed.candidates), {
+    skipReason: 'NEEDS_CONTRACT: Button Card behavior is not in the catalog',
+    neededCapabilities: ['compile a Button Card CTA adapter'],
+  });
 });
 
 test('lean candidate context remains valid JSON when evidence is large', () => {

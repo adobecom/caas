@@ -12,6 +12,11 @@ export const LEAN_COVERAGE_PRODUCT_DIFF_MAX_CHARS = 11000;
 
 const text = (value) => (value === undefined || value === null ? '' : String(value));
 
+function cleanNeededCapabilities(value, max = 6) {
+  return (Array.isArray(value) ? value : [])
+    .map((item) => text(item).trim().replace(/\s+/g, ' ').slice(0, 300)).filter(Boolean).slice(0, max);
+}
+
 /**
  * Keep the historical prompt as an explicit baseline. The lean profile is an
  * experiment for the historical runner only; it must be selected deliberately.
@@ -131,16 +136,24 @@ export function discoverManagedContractCandidates({ repoRoot, changedPaths, prod
 export function validateLeanContractSelection(rawPlan, candidates) {
   const plan = rawPlan && typeof rawPlan === 'object' && !Array.isArray(rawPlan) ? rawPlan : null;
   if (!plan) throw new Error('lean contract router must return an object');
+  const forbiddenFixtureFields = ['config', 'cards', 'filters', 'isHashed', 'probes', 'expected', 'observe', 'renderability', 'assertions', 'ownedConfigPaths'];
+  const suppliedFixtureField = forbiddenFixtureFields.find((field) => Object.hasOwn(plan, field));
+  if (suppliedFixtureField) throw new Error(`LEAN_FIXTURE_FIELD_FORBIDDEN: ${suppliedFixtureField}`);
   const skipReason = text(plan.skipReason).trim();
   if (skipReason) {
     if (!/^(?:NEEDS_CONTRACT|OUT_OF_SCOPE):\s*\S/.test(skipReason)) {
       throw new Error('LEAN_SKIP_REASON_INVALID: use NEEDS_CONTRACT: or OUT_OF_SCOPE: with a concrete reason');
     }
-    return { ...plan, skipReason };
+    const route = skipReason.split(':', 1)[0];
+    const neededCapabilities = cleanNeededCapabilities(plan.neededCapabilities);
+    if (route === 'NEEDS_CONTRACT' && !neededCapabilities.length) {
+      throw new Error('LEAN_SKIP_CAPABILITY_REQUIRED: NEEDS_CONTRACT must name a missing adapter capability');
+    }
+    if (route === 'OUT_OF_SCOPE' && neededCapabilities.length) {
+      throw new Error('LEAN_SKIP_CAPABILITY_FORBIDDEN: OUT_OF_SCOPE must not propose an adapter capability');
+    }
+    return { ...plan, skipReason, neededCapabilities };
   }
-  const forbiddenFixtureFields = ['config', 'cards', 'filters', 'isHashed', 'probes', 'expected', 'observe', 'renderability', 'assertions', 'ownedConfigPaths'];
-  const suppliedFixtureField = forbiddenFixtureFields.find((field) => Object.hasOwn(plan, field));
-  if (suppliedFixtureField) throw new Error(`LEAN_FIXTURE_FIELD_FORBIDDEN: ${suppliedFixtureField}`);
   const id = text(plan.contract?.id || plan.contractId).trim();
   const selected = (Array.isArray(candidates) ? candidates : []).find((candidate) => candidate.id === id);
   if (!selected) throw new Error(`LEAN_CONTRACT_NOT_EXPOSED: ${id || '(missing)'}`);
@@ -169,8 +182,7 @@ export function validateLeanCoverageDecision(rawDecision) {
   }
   const reason = text(decision.reason).trim().replace(/\s+/g, ' ').slice(0, 1200);
   if (reason.length < 6) throw new Error('lean coverage route needs a concrete reason');
-  const neededCapabilities = (Array.isArray(decision.neededCapabilities) ? decision.neededCapabilities : [])
-    .map((item) => text(item).trim().replace(/\s+/g, ' ').slice(0, 300)).filter(Boolean).slice(0, 6);
+  const neededCapabilities = cleanNeededCapabilities(decision.neededCapabilities);
   if (route === 'NEEDS_CONTRACT' && !neededCapabilities.length) {
     throw new Error('NEEDS_CONTRACT needs at least one adapter capability');
   }
@@ -242,7 +254,8 @@ ${catalog}
 
 Reply ONLY one JSON object:
 {"sourceTest":"changed test name/requirement","contract":{"id":"one listed id","params":{},"reason":"brief match"},"mappingEvidence":[{"file":"candidate evidence file","line":123,"fact":"what the changed source establishes"}],"skipReason":""}
-or {"sourceTest":"","skipReason":"NEEDS_CONTRACT: no listed reviewed contract matches this changed behavior"}.`;
+or {"sourceTest":"","skipReason":"NEEDS_CONTRACT: no listed reviewed contract matches this changed behavior","neededCapabilities":["one missing reviewed adapter capability"]}
+or {"sourceTest":"","skipReason":"OUT_OF_SCOPE: refactor or tooling only","neededCapabilities":[]}.`;
 }
 
 /**
