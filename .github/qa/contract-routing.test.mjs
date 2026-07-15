@@ -78,6 +78,17 @@ test('lean router cannot select an unexposed contract or cite another contract e
   assert.throws(() => validateLeanContractSelection({
     contract: { id: 'card.button-card-cta.v1' }, mappingEvidence: [{ file: source.file, line: 999999 }],
   }, routed.candidates), /LEAN_CONTRACT_EVIDENCE_UNPROVEN/);
+  assert.throws(() => validateLeanContractSelection({ skipReason: 'cannot tell' }, routed.candidates), /LEAN_SKIP_REASON_INVALID/);
+  assert.throws(() => validateLeanContractSelection({
+    contract: { id: 'card.button-card-cta.v1', params: { ctaText: 'invented' } },
+    mappingEvidence: [{ file: source.file, line: source.line, fact: 'Button Card CTA source' }],
+  }, routed.candidates), /LEAN_CONTRACT_PARAMS_FORBIDDEN/);
+  assert.throws(() => validateLeanContractSelection({
+    contract: { id: 'card.button-card-cta.v1' }, cards: [],
+    mappingEvidence: [{ file: source.file, line: source.line, fact: 'Button Card CTA source' }],
+  }, routed.candidates), /LEAN_FIXTURE_FIELD_FORBIDDEN/);
+  assert.equal(validateLeanContractSelection({ skipReason: 'OUT_OF_SCOPE: refactor only' }, routed.candidates).skipReason,
+    'OUT_OF_SCOPE: refactor only');
 });
 
 test('lean candidate context remains valid JSON when evidence is large', () => {

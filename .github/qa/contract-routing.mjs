@@ -129,10 +129,23 @@ export function discoverManagedContractCandidates({ repoRoot, changedPaths, prod
 export function validateLeanContractSelection(rawPlan, candidates) {
   const plan = rawPlan && typeof rawPlan === 'object' && !Array.isArray(rawPlan) ? rawPlan : null;
   if (!plan) throw new Error('lean contract router must return an object');
-  if (text(plan.skipReason).trim()) return plan;
+  const skipReason = text(plan.skipReason).trim();
+  if (skipReason) {
+    if (!/^(?:NEEDS_CONTRACT|OUT_OF_SCOPE):\s*\S/.test(skipReason)) {
+      throw new Error('LEAN_SKIP_REASON_INVALID: use NEEDS_CONTRACT: or OUT_OF_SCOPE: with a concrete reason');
+    }
+    return { ...plan, skipReason };
+  }
+  const forbiddenFixtureFields = ['config', 'cards', 'filters', 'isHashed', 'probes', 'expected', 'observe', 'renderability', 'assertions', 'ownedConfigPaths'];
+  const suppliedFixtureField = forbiddenFixtureFields.find((field) => Object.hasOwn(plan, field));
+  if (suppliedFixtureField) throw new Error(`LEAN_FIXTURE_FIELD_FORBIDDEN: ${suppliedFixtureField}`);
   const id = text(plan.contract?.id || plan.contractId).trim();
   const selected = (Array.isArray(candidates) ? candidates : []).find((candidate) => candidate.id === id);
   if (!selected) throw new Error(`LEAN_CONTRACT_NOT_EXPOSED: ${id || '(missing)'}`);
+  const params = plan.contract?.params || plan.contractParams || {};
+  if (!params || typeof params !== 'object' || Array.isArray(params) || Object.keys(params).length) {
+    throw new Error(`LEAN_CONTRACT_PARAMS_FORBIDDEN: ${selected.id}`);
+  }
   const mappingEvidence = Array.isArray(plan.mappingEvidence) ? plan.mappingEvidence : [];
   const grounded = mappingEvidence.some((item) => selected.evidence.some((source) =>
     source.file === text(item?.file).trim() && Number(item?.line) >= source.startLine && Number(item?.line) <= source.endLine));
@@ -173,7 +186,7 @@ export function buildLeanContractPlanPrompt({ evidence, candidates }) {
 
 The runner already did bounded local source search. Use only a candidate below. Do not invent fixture JSON, config patches, selectors, assertions, browser steps, or a new contract. The runner will generate and validate those mechanically after your answer.
 
-Choose a candidate only when its changed source evidence and the changed test describe the same visitor-visible behavior. Cite one exact sourceEvidence file/line from that candidate. Contract parameters are optional; omit them unless the changed test requires a different literal. If no candidate fits, return skipReason beginning with "NEEDS_CONTRACT:". Do not use an exploratory fixture in this profile.
+Choose a candidate only when its changed source evidence and the changed test describe the same visitor-visible behavior. Cite one exact sourceEvidence file/line from that candidate. Do not supply contract parameters: lean-v1 always uses the reviewed defaults. If no candidate fits, return a concrete skipReason beginning with "NEEDS_CONTRACT:"; use "OUT_OF_SCOPE:" only for a refactor/no new injectable runtime behavior. Do not use an exploratory fixture in this profile.
 
 PR title: ${text(evidence?.meta?.title).slice(0, 800)}
 PR body: ${text(evidence?.meta?.body).slice(0, 1000)}

@@ -675,7 +675,8 @@ or {"sourceTest":"...","skipReason":"precise unsupported capability or missing m
     }
     if (plan.skipReason) {
       saveResult({ status: 'SKIPPED', stage: 'plan', reason: plan.skipReason,
-        coverage: isLeanContractProfile && /^NEEDS_CONTRACT:/.test(plan.skipReason) ? 'NEEDS_CONTRACT' : undefined,
+        coverage: isLeanContractProfile && /^(?:NEEDS_CONTRACT|OUT_OF_SCOPE):/.test(plan.skipReason)
+          ? plan.skipReason.split(':', 1)[0] : undefined,
         researchCount: planResearchSearches.length, sourceTest: plan.sourceTest || '', skipChallenge: planSkipChallenge,
         discriminationChallenge: planConfigEchoChallenge });
       return;
