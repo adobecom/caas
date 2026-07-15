@@ -5,6 +5,7 @@ import {
   buildScenarioConfig,
   mergeScenarioConfig,
   normalizeEventFixtureCards,
+  replaceOwnedScenarioPaths,
 } from './scenario-config.mjs';
 
 test('deep-merges feature keys while preserving live collection transport', () => {
@@ -110,4 +111,14 @@ test('still defaults resultsPerPage up to the card count when the patch does not
   const config = buildScenarioConfig(base, { collection: { detailsTextOption: 'productName' } }, 5);
   assert.equal(config.collection.resultsPerPage, 5);
   assert.equal(config.collection.totalCardsToShow, 5);
+});
+
+test('replaces explicitly owned nested config paths so an empty contract map actually clears the live map', () => {
+  const base = { filterPanel: { categoryMappings: { creative: { opened: false } }, filters: [{ id: 'live' }] } };
+  const patch = { filterPanel: { categoryMappings: {}, filters: [{ id: 'qa' }] } };
+  const config = buildScenarioConfig(base, patch, [], { ownedConfigPaths: ['filterPanel.categoryMappings'] });
+  assert.deepEqual(config.filterPanel.categoryMappings, {});
+  assert.deepEqual(config.filterPanel.filters, [{ id: 'qa' }]);
+  assert.throws(() => replaceOwnedScenarioPaths(base, patch, ['filterPanel[bad]']), /unsafe owned config path/);
+  assert.throws(() => replaceOwnedScenarioPaths(base, patch, ['filterPanel.missing']), /missing from patch/);
 });

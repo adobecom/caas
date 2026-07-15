@@ -14,4 +14,6 @@ test('requires post pass and pre fail for a discriminating behavior test', () =>
   assert.equal(classifyPair({ status: 'PASS' }, { status: 'PASS' }).outcome, 'NON_DISCRIMINATING');
   assert.equal(classifyPair({ status: 'FAIL' }, null).outcome, 'POST_FAIL');
   assert.equal(classifyPair({ status: 'SKIPPED', reason: 'refactor' }, null).outcome, 'SKIPPED');
+  assert.equal(classifyPair({ status: 'PASS', contract: { mode: 'exploratory' } }, { status: 'FAIL' }).outcome,
+    'EXPLORATORY_DISCRIMINATING_PASS');
 });

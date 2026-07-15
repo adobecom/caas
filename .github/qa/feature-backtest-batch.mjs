@@ -30,6 +30,13 @@ export function classifyPair(post, pre) {
   if (post.status !== 'PASS') return { outcome: 'POST_FAIL', detail: post.reason || 'post-PR assertion failed' };
   if (!pre) return { outcome: 'ERROR', detail: 'pre-PR result missing' };
   if (pre.status === 'ERROR') return { outcome: 'ERROR', detail: pre.reason || 'pre-PR error' };
+  const exploratory = post.contract?.mode === 'exploratory';
+  if (exploratory && pre.status === 'FAIL') {
+    return { outcome: 'EXPLORATORY_DISCRIMINATING_PASS', detail: 'post passes and pre fails, but no managed QA contract exists yet' };
+  }
+  if (exploratory && pre.status === 'PASS') {
+    return { outcome: 'EXPLORATORY_NON_DISCRIMINATING', detail: 'both builds pass; exploratory scenario needs contract review' };
+  }
   if (pre.status === 'FAIL') return { outcome: 'DISCRIMINATING_PASS', detail: 'post passes and pre fails' };
   if (pre.status === 'PASS') return { outcome: 'NON_DISCRIMINATING', detail: 'both pre and post pass' };
   return { outcome: 'INCONCLUSIVE', detail: `unexpected pre status ${pre.status}` };

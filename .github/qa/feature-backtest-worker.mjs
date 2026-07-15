@@ -5,9 +5,13 @@ import path from 'node:path';
 import { chromium } from 'playwright';
 import { researchCode } from './code-search.mjs';
 import { applySpecCardStyle, buildScenarioConfig, normalizeEventFixtureCards } from './scenario-config.mjs';
+import { contractCatalogGuidance } from './contracts/catalog.mjs';
+import { evaluateContractAssertions } from './contracts/assertions.mjs';
+import { compileContractPlan, isManagedContractPlan } from './contracts/compiler.mjs';
 import { buildValidationView } from './observation-view.mjs';
 import { requestBoundedJson } from './llm-json.mjs';
 import { configEchoContract, enforceConfigEchoContract, needsConfigEchoChallenge } from './plan-discrimination.mjs';
+import { inspectQaBrowserBridge, installQaBrowserBridge } from './qa-browser-bridge.mjs';
 import { shouldChallengeSkip } from './skip-challenge.mjs';
 import {
   applyScenarioRepair,
@@ -145,22 +149,32 @@ function cleanProbes(probes) {
 }
 
 function finalizePlan(rawPlan, { evidence, liveConfig }) {
-  const plan = rawPlan;
+  const compiled = compileContractPlan(rawPlan, { liveConfig });
+  const plan = compiled.plan;
   if (plan.skipReason) return plan;
-  if (!plan.sourceTest || !plan.expected || !plan.config || typeof plan.config !== 'object' ||
-    !Array.isArray(plan.cards) || !Array.isArray(plan.filters)) {
-    throw new Error('agent returned an incomplete scenario plan');
+  if (compiled.mode === 'managed') {
+    plan.configPatch = plan.config;
+    plan.config = buildScenarioConfig(liveConfig, plan.configPatch, plan.cards, {
+      ownedConfigPaths: plan.ownedConfigPaths,
+    });
+    plan.normalizations = [`Compiled fixture/config/probes from QA contract ${plan.contract.id}@${plan.contract.version}.`];
+  } else {
+    if (!plan.expected || !plan.config || typeof plan.config !== 'object' ||
+      !Array.isArray(plan.cards) || !Array.isArray(plan.filters)) {
+      throw new Error('exploratory agent returned an incomplete scenario plan');
+    }
+    const styleNormalization = applySpecCardStyle(plan.cards, evidence.specText);
+    plan.cards = normalizeEventFixtureCards(styleNormalization.cards, plan.config);
+    plan.normalizations = [
+      ...(styleNormalization.style
+        ? [`Copied unambiguous changed-spec cardStyle '${styleNormalization.style}' into fixture cards.`] : []),
+      ...(plan.config?.filterPanel?.eventFilter
+        ? ['Added safe empty event timing fields/secondary footer entry for historical event sorting.'] : []),
+      'Exploratory fixture: no managed QA contract matched this feature yet.',
+    ];
+    plan.configPatch = plan.config;
+    plan.config = buildScenarioConfig(liveConfig, plan.configPatch, plan.cards);
   }
-  const styleNormalization = applySpecCardStyle(plan.cards, evidence.specText);
-  plan.cards = normalizeEventFixtureCards(styleNormalization.cards, plan.config);
-  plan.normalizations = [
-    ...(styleNormalization.style
-      ? [`Copied unambiguous changed-spec cardStyle '${styleNormalization.style}' into fixture cards.`] : []),
-    ...(plan.config?.filterPanel?.eventFilter
-      ? ['Added safe empty event timing fields/secondary footer entry for historical event sorting.'] : []),
-  ];
-  plan.configPatch = plan.config;
-  plan.config = buildScenarioConfig(liveConfig, plan.configPatch, plan.cards);
   plan.probes = cleanProbes(plan.probes);
   plan.renderability = requireRenderability(plan.renderability);
   plan.probes = cleanProbes(prioritizeRenderabilityProbes(plan.probes, plan.renderability));
@@ -187,6 +201,16 @@ function requiredProbeSummary(observed, renderability) {
 }
 
 async function validateScenario(bundle, observed) {
+  const deterministic = evaluateContractAssertions(bundle.plan, observed);
+  if (deterministic) {
+    console.log(`[contract validate] ${deterministic.verdict}: ${deterministic.reason}`);
+    return {
+      verdict: deterministic.verdict,
+      reason: deterministic.reason,
+      validationPayloadChars: 0,
+      contractChecks: deterministic.checks,
+    };
+  }
   const validationView = buildValidationView(observed, 18000);
   console.log(`[validate] payload chars=${validationView.length}`);
   const validationResponse = await requestBoundedJson({
@@ -269,63 +293,18 @@ async function captureLiveConfigs(context, routeLibraries) {
   const gateUrl = PAGE + (PAGE.includes('?') ? '&' : '?') + 'caasqa=1';
   const page = await context.newPage();
   await page.setViewportSize({ width: 1280, height: 1800 });
-  await page.addInitScript(() => { try { window.localStorage.removeItem('caasQaConfig'); } catch { /* noop */ } });
+  await installQaBrowserBridge(page, null);
   await page.route('**/caas-libs/**', routeLibraries);
   await page.goto(gateUrl, { waitUntil: 'load', timeout: 45000 }).catch(() => {});
   await page.waitForSelector('.consonant-CardsGrid', { timeout: 15000 }).catch(() => {});
   await page.waitForTimeout(2500);
-  const capture = await page.evaluate(() => {
-    const candidates = [
-      '.caas-preview[data-caas-block]',
-      '[data-caas-block]',
-      '.caas-preview',
-      '[data-testid="consonant-CardsGrid"]',
-    ];
-    const rootHints = candidates.map((selector) => {
-      try { return { selector, matches: document.querySelectorAll(selector).length }; }
-      catch { return { selector, matches: 0 }; }
-    }).filter(({ matches }) => matches > 0).slice(0, 4);
-    return { configs: window.__caasQaConfigs || [], rootHints };
-  });
+  const bridge = await inspectQaBrowserBridge(page, { includeConfigs: true });
   await page.close();
-  return capture;
-}
-
-async function observePage(page, probes, { generic = true } = {}) {
-  return page.evaluate(({ probeSpecs, includeGeneric }) => {
-    const defaultAttributes = ['role', 'aria-label', 'aria-current', 'aria-live', 'data-testid',
-      'data-country', 'data-card-url', 'href', 'src', 'alt', 'type', 'value'];
-    const snapshot = (element, requested = []) => {
-      const attributes = {};
-      [...new Set([...defaultAttributes, ...requested])].forEach((name) => {
-        const value = element.getAttribute?.(name);
-        if (value !== null && value !== undefined) attributes[name] = value;
-      });
-      return {
-        tag: element.tagName?.toLowerCase(),
-        id: element.id || undefined,
-        cls: String(element.className || '').slice(0, 180) || undefined,
-        text: String(element.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 300),
-        attributes,
-        html: String(element.outerHTML || '').replace(/\s+/g, ' ').slice(0, 700),
-      };
-    };
-    const take = (selector, limit, attributes = []) => {
-      try { return [...document.querySelectorAll(selector)].slice(0, limit).map((element) => snapshot(element, attributes)); }
-      catch (error) { return [{ selectorError: error.message }]; }
-    };
-    const targeted = { probes: probeSpecs.map((probe) => ({ ...probe, matches: take(probe.selector, 20, probe.attributes) })) };
-    if (!includeGeneric) return targeted;
-    return {
-      cards: take('.consonant-Card', 15),
-      headings: take('h1,h2,h3,h4,h5,h6,[role="heading"]', 30),
-      controls: take('label,button,input,select,[role="button"],[role="searchbox"]', 40),
-      filters: take('[class*="Filter"],[class*="filter"]', 40),
-      liveRegions: take('[aria-live],[role="status"],[role="alert"]', 20),
-      collectionRoots: take('.consonant-CardsGrid,.caas-preview,.caas-config,[class*="consonant-Container"]', 20),
-      ...targeted,
-    };
-  }, { probeSpecs: cleanProbes(probes), includeGeneric: generic });
+  return {
+    configs: bridge?.captured?.configs || [],
+    rootHints: bridge?.rootHints || [],
+    bridge,
+  };
 }
 
 async function renderScenario(context, routeLibraries, plan) {
@@ -344,18 +323,16 @@ async function renderScenario(context, routeLibraries, plan) {
   });
   await page.setViewportSize({ width: 1280, height: 1800 });
   const injected = { ...(plan.config || {}), _caasQaReplace: true };
-  await page.addInitScript((config) => {
-    try { window.localStorage.setItem('caasQaConfig', config); } catch { /* noop */ }
-  }, JSON.stringify(injected));
+  await installQaBrowserBridge(page, injected);
   await page.route('**/caas-libs/**', routeLibraries);
   let beforeFixture;
   let beforeFixtureCapture;
   const captureBeforeFixture = () => {
     if (!beforeFixtureCapture) {
-      beforeFixtureCapture = observePage(page, plan.probes, { generic: false })
-        .then((snapshot) => {
-          beforeFixture = snapshot;
-          return snapshot;
+      beforeFixtureCapture = inspectQaBrowserBridge(page, { probes: plan.probes, track: true })
+        .then((bridge) => {
+          beforeFixture = { ...bridge, bridge };
+          return beforeFixture;
         })
         .catch((error) => {
           console.warn(`[before-fixture] probe capture failed: ${String(error.message || error).slice(0, 300)}`);
@@ -378,7 +355,8 @@ async function renderScenario(context, routeLibraries, plan) {
   await page.goto(gateUrl, { waitUntil: 'load', timeout: 45000 }).catch(() => {});
   await page.waitForSelector('.consonant-CardsGrid, .consonant-Card', { timeout: 15000 }).catch(() => {});
   await page.waitForTimeout(2500);
-  const observed = await observePage(page, plan.probes);
+  const bridge = await inspectQaBrowserBridge(page, { probes: plan.probes, generic: true });
+  const observed = { ...bridge, bridge };
   if (beforeFixture) observed.beforeFixture = beforeFixture;
   observed.diagnostics = diagnostics;
   mkdirSync(path.dirname(SCREENSHOT_PATH), { recursive: true });
@@ -463,7 +441,11 @@ Reply ONLY JSON: {"testable":true|false,"reason":"one sentence"}.`,
       throw new Error('QA overlay did not capture a live collection config from the historical build');
     }
     postLiveConfig = liveConfigs[0];
-    console.log(`[capture] ${liveConfigs.length} live config(s); root hints=${JSON.stringify(rootHints)}`);
+    console.log(`[capture] ${liveConfigs.length} live config(s); root hints=${JSON.stringify(rootHints)} bridge=${JSON.stringify({
+      version: liveCapture.bridge?.version, gateEnabled: liveCapture.bridge?.gateEnabled,
+      captured: liveCapture.bridge?.captured?.count,
+    })}`);
+    const contractGuide = contractCatalogGuidance();
     const planRaw = `Reproduce exactly ONE human-authored test/requirement from this historical Adobe CaaS PR on a real page. Do not invent expected behavior.
 
 PR: ${evidence.meta.title}
@@ -477,6 +459,12 @@ Current-checkout source research:\n${research.report}
 Live collection configs:\n${JSON.stringify(liveConfigs).slice(0, 18000)}
 
 Live DOM root hints captured before injection (use these for scoped probes if a custom element is replaced during React mount):\n${JSON.stringify(rootHints)}
+
+QA-OWNED FIXTURE CONTRACT CATALOG (current, versioned, and runner-enforced):\n${contractGuide}
+
+CONTRACT SELECTION IS REQUIRED BEFORE BROWSER INJECTION. First choose one managed contract when it describes the changed runtime behavior. For a managed contract, return only sourceTest, contract {id, params, reason}, and mappingEvidence: the runner—not you—compiles the exact config, fixture cards, filters, probes, renderability prerequisites, and deterministic DOM assertions. Do NOT provide or override config/cards/filters/probes/expected for a managed contract; any such guessed data is discarded. The runner validates the compiled scenario locally before it navigates the browser.
+
+Use exploratory.collection.v1 only when no managed contract is applicable. It is allowed so a genuinely new feature can still be investigated, but its result is labelled EXPLORATORY/NEEDS_CONTRACT rather than a certified contract result. An exploratory plan must provide the complete config/cards/filters/isHashed/expected/observe/probes/renderability shape below. Never use exploratory merely to avoid an applicable managed contract.
 
 ${CARD_SHAPE}
 
@@ -505,7 +493,10 @@ CRITICAL: copy the selected test's exact cardStyle literal into every crafted ca
 RESPONSE SIZE: keep the complete JSON below 24,000 characters. Use no more than eight cards, four filter groups with sixteen total leaf items, four probes, and three mappingEvidence entries. Omit non-rendering card fields and keep explanations concise; the fixture need only prove the exact changed behavior.
 
 Reply ONLY JSON:
-{"sourceTest":"...","config":{},"cards":[],"filters":[],"isHashed":false,"expected":"exact assertion","observe":"...","probes":[],"renderability":{"requiredInitial":[{"selector":"...","minMatches":1,"why":"..."}]},"mappingEvidence":[{"file":"...","line":1,"fact":"..."}],"skipReason":""}
+For a managed contract:
+{"sourceTest":"...","contract":{"id":"one catalog id","params":{},"reason":"why this contract matches the changed source"},"mappingEvidence":[{"file":"...","line":1,"fact":"..."}],"skipReason":""}
+For exploratory.collection.v1 only:
+{"sourceTest":"...","contract":{"id":"exploratory.collection.v1","reason":"why no managed contract matches"},"config":{},"cards":[],"filters":[],"isHashed":false,"expected":"exact assertion","observe":"...","probes":[],"renderability":{"requiredInitial":[{"selector":"...","minMatches":1,"why":"..."}]},"mappingEvidence":[{"file":"...","line":1,"fact":"..."}],"skipReason":""}
 or {"sourceTest":"...","skipReason":"precise unsupported capability or missing mapping"}.`;
     const planResponse = await requestBoundedJson({
       ask: llmResponse,
@@ -590,7 +581,7 @@ or {"sourceTest":"...","skipReason":"precise unsupported capability or missing m
       researchSummary: research.summary, researchSearches: research.searches };
     if (planSkipChallenge) bundle.skipChallenge = planSkipChallenge;
     if (planConfigEchoChallenge) bundle.discriminationChallenge = planConfigEchoChallenge;
-    console.log(`[plan] ${plan.sourceTest} cards=${plan.cards?.length || 0} probes=${plan.probes.length} initial=${plan.renderability.requiredInitial.length}`);
+    console.log(`[plan] ${plan.sourceTest} contract=${plan.contract?.id || 'none'} cards=${plan.cards?.length || 0} probes=${plan.probes.length} initial=${plan.renderability.requiredInitial.length}`);
   }
 
   const { context, routeLibraries } = await browserSession();
@@ -598,7 +589,24 @@ or {"sourceTest":"...","skipReason":"precise unsupported capability or missing m
   console.log(`[observed] ${JSON.stringify(observed).slice(0, 8000)}`);
   let missingInitial = VARIANT === 'post'
     ? findMissingRequiredInitial(observed, bundle.plan.renderability) : [];
-  let validation = missingInitial.length ? null : await validateScenario(bundle, observed);
+  let validation = (isManagedContractPlan(bundle.plan) || !missingInitial.length)
+    ? await validateScenario(bundle, observed) : null;
+
+  // A managed contract owns its scenario inputs. If its declared initial DOM
+  // cannot mount, do not let a free-form repair mutate the contract behind the
+  // model's back; emit a clear contract/runtime failure for catalog maintenance.
+  if (VARIANT === 'post' && missingInitial.length && isManagedContractPlan(bundle.plan)) {
+    persistBundle(bundle);
+    saveResult({
+      status: 'FAIL', stage: 'contract-runtime',
+      reason: `QA_CONTRACT_RUNTIME_MISMATCH: ${validation?.reason || 'required initial DOM was absent'}`,
+      sourceTest: bundle.plan.sourceTest, expected: bundle.plan.expected,
+      contract: bundle.plan.contract, contractChecks: validation?.contractChecks,
+      probes: bundle.plan.probes, renderability: bundle.plan.renderability, missingInitial, observed,
+      screenshot: SCREENSHOT_PATH,
+    });
+    return;
+  }
 
   // A missing post prerequisite means the planner chose a scenario that did not
   // actually mount its target. Repair before semantic validation so a model can
@@ -701,6 +709,7 @@ or {"skipReason":"precise unsupported interaction or state"}.`,
   if (VARIANT === 'post') persistBundle(bundle);
   saveResult({ status: validation.verdict, reason: validation.reason, sourceTest: bundle.plan.sourceTest,
     expected: bundle.plan.expected, researchCount: bundle.researchCount, mappingEvidence: bundle.plan.mappingEvidence,
+    contract: bundle.plan.contract, contractChecks: validation.contractChecks,
     probes: bundle.plan.probes, renderability: bundle.plan.renderability,
     renderabilityRepair: bundle.renderabilityRepair, validationPayloadChars: validation.validationPayloadChars,
     observed, screenshot: SCREENSHOT_PATH });

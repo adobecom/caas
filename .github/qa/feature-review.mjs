@@ -15,6 +15,11 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { chromium } from 'playwright';
 import { researchCode } from './code-search.mjs';
+import { buildScenarioConfig } from './scenario-config.mjs';
+import { contractCatalogGuidance } from './contracts/catalog.mjs';
+import { evaluateContractAssertions } from './contracts/assertions.mjs';
+import { compileContractPlan, isManagedContractPlan } from './contracts/compiler.mjs';
+import { inspectQaBrowserBridge, installQaBrowserBridge } from './qa-browser-bridge.mjs';
 
 const env = (k, d = '') => (process.env[k] ?? d);
 const PR    = env('PR_NUMBER');
@@ -178,20 +183,24 @@ Respond with ONLY a JSON object: {"testable":true|false,"reason":"one sentence"}
   const gateUrl = PAGE + (PAGE.includes('?') ? '&' : '?') + 'caasqa=1';
   const capPage = await ctx.newPage();
   await capPage.setViewportSize({ width: 1280, height: 1800 });
-  await capPage.addInitScript(() => { try { window.localStorage.removeItem('caasQaConfig'); } catch (e) {} });
+  await installQaBrowserBridge(capPage, null);
   await capPage.route('**/caas-libs/**', routeLibs);
   await capPage.goto(gateUrl, { waitUntil: 'load', timeout: 45000 }).catch(() => {});
   await capPage.waitForSelector('.consonant-CardsGrid', { timeout: 15000 }).catch(() => {});
   await capPage.waitForTimeout(2500);
-  const liveConfigs = await capPage.evaluate(() => window.__caasQaConfigs || []);
+  const captureBridge = await inspectQaBrowserBridge(capPage, { includeConfigs: true });
+  const liveConfigs = captureBridge?.captured?.configs || [];
   await capPage.close();
   const canReplace = Array.isArray(liveConfigs) && liveConfigs.length > 0;
-  console.log(`[capture] ${canReplace ? liveConfigs.length : 0} live collection config(s) captured`);
+  console.log(`[capture] ${canReplace ? liveConfigs.length : 0} live collection config(s) captured; bridge=${JSON.stringify({
+    version: captureBridge?.version, gateEnabled: captureBridge?.gateEnabled, captured: captureBridge?.captured?.count,
+  })}`);
 
   // ---- Step 4: plan the injection using live config + searched source ----
   const planHead = canReplace
-    ? `The page hosts ${liveConfigs.length} card collection(s). Here are their original configs:\n\n${JSON.stringify(liveConfigs).slice(0, 16000)}\n\nStart from the sortable/main card-grid config. Return a COMPLETE config with the feature enabled, featuredCards removed, and card limits high enough for every fixture card.`
+    ? `The page hosts ${liveConfigs.length} card collection(s). Here are their original configs:\n\n${JSON.stringify(liveConfigs).slice(0, 16000)}\n\nThe runner preserves this real transport/default config and applies only a validated feature patch.`
     : 'Live config capture failed. Build a minimal complete CaaS config that activates the feature and renders every fixture card.';
+  const contractGuide = contractCatalogGuidance();
 
   const planRaw = await llm(
 `You are verifying an Adobe CaaS feature by reproducing ONE changed unit test on a real browser render. The unit test is the specification. Do not invent new feature behavior, extra correctness controls, or expected results.
@@ -214,6 +223,10 @@ ${diff.slice(0, 8000)}
 Card fixture shape:
 ${CARD_SHAPE}
 
+QA-OWNED FIXTURE CONTRACT CATALOG:\n${contractGuide}
+
+Choose a managed contract whenever it describes the changed behavior. For a managed contract, return only sourceTest, contract {id, params, reason}, and mappingEvidence. The QA runner compiles and validates the exact config/cards/filters/probes/assertions before browser injection; any free-form fixture fields are discarded. Use exploratory.collection.v1 only when no contract matches. It can still investigate a new feature, but the result is labelled EXPLORATORY / NEEDS_CONTRACT.
+
 Pick ONE changed unit test whose effect is observable in the DOM.
 - Ignore applyQaConfigOverride, caasQaConfig, __caasQaConfigs, and _caasQaReplace; those are this harness's transport, not the product behavior under test.
 - If the PR title/body calls out a self-test target, select that named product behavior from the changed spec.
@@ -224,20 +237,33 @@ Pick ONE changed unit test whose effect is observable in the DOM.
 - If source search did not establish an injection path, return skipReason instead of producing a guessed fixture.
 
 Respond with ONLY one JSON object:
-{"sourceTest":"...","config":{},"cards":[],"expected":"exact selected-test assertion restated for DOM","observe":"where to check","mappingEvidence":[{"file":"...","line":123,"fact":"..."}],"skipReason":""}
+For a managed contract:
+{"sourceTest":"...","contract":{"id":"one catalog id","params":{},"reason":"why it matches the changed source"},"mappingEvidence":[{"file":"...","line":123,"fact":"..."}],"skipReason":""}
+For exploratory.collection.v1 only:
+{"sourceTest":"...","contract":{"id":"exploratory.collection.v1","reason":"why no managed contract fits"},"config":{},"cards":[],"filters":[],"isHashed":false,"expected":"exact selected-test assertion restated for DOM","observe":"where to check","probes":[],"renderability":{"requiredInitial":[{"selector":"...","minMatches":1,"why":"..."}]},"mappingEvidence":[{"file":"...","line":123,"fact":"..."}],"skipReason":""}
 or {"sourceTest":"...","skipReason":"source search could not prove how the test input reaches config/card JSON"}.`, 16000);
   const plan2 = extractJson(planRaw);
   if (plan2.skipReason) {
     postComment('SKIPPED', `**Scenario mapping was not proven** -- skipped instead of guessing.\n\n> ${String(plan2.skipReason).slice(0, 800)}\n\nCode searches performed: ${research.searches.length}.`);
     console.log(`[plan] skipped: ${plan2.skipReason}`); process.exit(0);
   }
-  plan.config = plan2.config || {};
-  plan.cards = plan2.cards || [];
-  plan.expected = plan2.expected || '';
-  plan.observe = plan2.observe || '';
-  plan.sourceTest = plan2.sourceTest || '';
-  plan.mappingEvidence = plan2.mappingEvidence || [];
+  let compiled;
+  try { compiled = compileContractPlan(plan2, { liveConfig: liveConfigs[0] || {} }); }
+  catch (error) {
+    postComment('NEEDS_CONTRACT', `**Local contract validation rejected the scenario before browser injection.**\n\n> ${String(error.message || error).slice(0, 1000)}\n\nNo fixture was injected. Add or select a QA-owned contract, then retry.`);
+    console.log(`[contract] rejected before injection: ${error.message}`); process.exit(0);
+  }
+  plan = compiled.plan;
+  if (plan.skipReason) {
+    postComment('SKIPPED', `**Scenario mapping was not proven** -- skipped instead of guessing.\n\n> ${String(plan.skipReason).slice(0, 800)}`);
+    console.log(`[plan] skipped after contract compilation: ${plan.skipReason}`); process.exit(0);
+  }
+  plan.configPatch = plan.config;
+  plan.config = canReplace
+    ? buildScenarioConfig(liveConfigs[0], plan.configPatch, plan.cards, { ownedConfigPaths: plan.ownedConfigPaths })
+    : plan.configPatch;
   console.log('[plan] sourceTest=' + plan.sourceTest + ' | observe=' + plan.observe);
+  console.log('[contract] ' + JSON.stringify(plan.contract));
   console.log('[mapping] ' + JSON.stringify(plan.mappingEvidence));
   console.log('[cards] ' + JSON.stringify(plan.cards.map((card) => ({
     id: card.id, style: card.styles?.typeOverride, country: card.country,
@@ -247,42 +273,41 @@ or {"sourceTest":"...","skipReason":"source search could not prove how the test 
   // ---- Step 5: inject config + mocked collection, render the PR build ----
   const injected = canReplace ? { ...plan.config, _caasQaReplace: true } : plan.config;
   const page = await ctx.newPage();
+  const diagnostics = { collectionRequests: [], pageErrors: [], consoleErrors: [], requestFailures: [] };
+  page.on('pageerror', (error) => diagnostics.pageErrors.push(String(error.message || error).slice(0, 1000)));
+  page.on('console', (message) => {
+    if (message.type() === 'error') diagnostics.consoleErrors.push(message.text().slice(0, 1000));
+  });
   await page.setViewportSize({ width: 1280, height: 1800 });
-  await page.addInitScript((config) => { try { window.localStorage.setItem('caasQaConfig', config); } catch (e) {} },
-    JSON.stringify(injected));
+  await installQaBrowserBridge(page, injected);
   await page.route('**/caas-libs/**', routeLibs);
-  await page.route('**/chimera-api/collection**', async (route) =>
-    route.fulfill({ contentType: 'application/json', body: JSON.stringify({ cards: plan.cards, filters: [], isHashed: false }) }));
+  let beforeFixture;
+  await page.route('**/chimera-api/collection**', async (route) => {
+    diagnostics.collectionRequests.push(route.request().url().slice(0, 1000));
+    const bridge = await inspectQaBrowserBridge(page, { probes: plan.probes || [], track: true }).catch(() => null);
+    if (bridge) beforeFixture = { ...bridge, bridge };
+    return route.fulfill({ contentType: 'application/json', body: JSON.stringify({
+      cards: plan.cards || [], filters: plan.filters || [], isHashed: Boolean(plan.isHashed),
+    }) });
+  });
   await page.goto(gateUrl, { waitUntil: 'load', timeout: 45000 }).catch(() => {});
   await page.waitForSelector('.consonant-CardsGrid .consonant-Card', { timeout: 15000 }).catch(() => {});
   await page.waitForTimeout(2500);
-  const observed = await page.evaluate(() => {
-    const grid = document.querySelector('.consonant-CardsGrid');
-    const cards = grid ? [...grid.querySelectorAll('.consonant-Card')] : [...document.querySelectorAll('.consonant-Card')];
-    return cards.slice(0, 12).map((card, index) => {
-      const title = card.querySelector('[class*="-title"]');
-      const links = [...card.querySelectorAll('a,button')].slice(0, 6).map((element) => ({
-        tag: element.tagName.toLowerCase(),
-        testId: element.getAttribute('data-testid') || undefined,
-        text: (element.textContent || '').trim().slice(0, 50),
-        href: element.getAttribute('href') || undefined,
-        cls: (element.className || '').toString().slice(0, 100) || undefined,
-      }));
-      return {
-        n: index + 1,
-        id: card.id || undefined,
-        title: title ? title.textContent.trim().slice(0, 80) : '',
-        text: (card.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 220),
-        links,
-      };
-    });
-  });
+  const bridge = await inspectQaBrowserBridge(page, { probes: plan.probes || [], generic: true });
+  const observed = { ...bridge, bridge, diagnostics };
+  if (beforeFixture) observed.beforeFixture = beforeFixture;
   console.log('[observed] ' + JSON.stringify(observed));
   await page.screenshot({ path: '/tmp/feature-render.png', fullPage: true }).catch(() => {});
   await page.close();
 
   // ---- Step 6: validate rendered vs the selected test assertion ----
-  const check = await llm(
+  const deterministic = evaluateContractAssertions(plan, observed);
+  let res;
+  if (deterministic) {
+    res = deterministic;
+    console.log(`[contract validate] ${res.verdict}: ${res.reason}`);
+  } else {
+    const check = await llm(
 `A CaaS feature was tested by reproducing one changed unit test on a live render.
 
 Source unit test: ${plan.sourceTest}
@@ -290,23 +315,28 @@ Where to look: ${plan.observe}
 Expected, copied from that test: ${plan.expected}
 Source mapping evidence: ${JSON.stringify(plan.mappingEvidence)}
 
-Rendered first-collection cards (id, title, text, links/buttons):
-${JSON.stringify(observed).slice(0, 6000) || '(no cards rendered)'}
+Observed DOM/probes/bridge state:
+${JSON.stringify(observed).slice(0, 7000) || '(no cards rendered)'}
 
 Does the rendered DOM satisfy ONLY the selected test assertion? Do not introduce new expectations. Respond with ONLY JSON: {"verdict":"PASS"|"FAIL","reason":"one or two sentences citing observed vs expected"}`, 1500);
-  const res = extractJson(check);
+    res = extractJson(check);
+  }
   console.log(`[validate] ${res.verdict}: ${res.reason}`);
+  const renderedCards = (Array.isArray(observed.cards) ? observed.cards : []).map((card, index) => ({
+    n: index + 1, id: card.id || '', text: String(card.text || '').slice(0, 120), href: card.attributes?.href || '',
+  }));
 
   postComment(res.verdict,
-`Injected the PR build with a searched, source-grounded config + collection fixture.
+`Injected the PR build with a searched, source-grounded ${isManagedContractPlan(plan) ? 'QA-owned compiled contract' : 'exploratory'} fixture.
 
 **Source test:** \`${plan.sourceTest || '(n/a)'}\`
 **Code searches:** ${research.searches.length}
+**Contract:** \`${plan.contract?.id || 'none'}\`${isManagedContractPlan(plan) ? ` (v${plan.contract.version}, deterministic validator)` : ' (exploratory)'}
 **Mapping evidence:** ${plan.mappingEvidence.map((item) => `\`${item.file}${item.line ? `:${item.line}` : ''}\``).join(', ') || '_(none returned)_'}
 **Fixture cards:** ${plan.cards.length}
 **Expected:** ${plan.expected}
 **Rendered (first collection):**
-${observed.map((item) => `- ${item.n}. ${item.title || item.text.slice(0, 50)}${item.links.length ? ` [${item.links.map((link) => `${link.testId || link.tag}${link.href ? ` ${link.href}` : ''}`).join(', ')}]` : ''}`).join('\n') || '_(no cards rendered)_'}
+${renderedCards.map((item) => `- ${item.n}. ${item.id || item.text.slice(0, 50)}${item.href ? ` [${item.href}]` : ''}`).join('\n') || '_(no cards rendered)_'}
 
 **Verdict:** ${res.reason}`);
   process.exit(0);

@@ -106,3 +106,23 @@ test('handles missing/empty observed safely', () => {
   assert.deepEqual(parsed.probes, []);
   assert.ok(!parsed.diagnostics || typeof parsed.diagnostics === 'object');
 });
+
+test('keeps compact browser-bridge readiness and tracked-host state under a tight budget', () => {
+  const observed = {
+    probes: bigList(20, 'div'),
+    diagnostics: { consoleErrors: Array.from({ length: 100 }, () => 'x'.repeat(1000)) },
+    bridge: {
+      version: 1, gateEnabled: true,
+      override: { present: true, valid: true, replace: true, keys: Array.from({ length: 50 }, (_, index) => `key-${index}`) },
+      captured: { count: 2, configs: Array.from({ length: 10 }, () => ({ giant: 'x'.repeat(10000) })) },
+      trackedNodes: [{ selector: 'div#caas.caas-preview', connected: false }],
+    },
+  };
+  const view = buildValidationView(observed, 700);
+  assert.ok(view.length <= 700, `view length ${view.length} must stay within budget`);
+  const parsed = JSON.parse(view);
+  assert.equal(parsed.bridge.gateEnabled, true);
+  assert.equal(parsed.bridge.override.valid, true);
+  assert.equal(parsed.bridge.trackedNodes[0].connected, false);
+  assert.equal(parsed.bridge.captured.count, 2);
+});

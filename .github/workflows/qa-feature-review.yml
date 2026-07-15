@@ -38,13 +38,16 @@ jobs:
       # back to that PR's older implementation and does not test the new search.
       - name: Preserve and test the feature reviewer
         run: |
-          node --test .github/qa/code-search.test.mjs
+          npm run --prefix .github/qa test:backtest
           mkdir -p "$RUNNER_TEMP/feature-review"
           cp .github/qa/feature-review.mjs \
              .github/qa/code-search.mjs \
+             .github/qa/scenario-config.mjs \
+             .github/qa/qa-browser-bridge.mjs \
              .github/qa/package.json \
              .github/qa/package-lock.json \
              "$RUNNER_TEMP/feature-review/"
+          cp -R .github/qa/contracts "$RUNNER_TEMP/feature-review/contracts"
 
       - name: Check out the PR's head so we build its actual code
         env:

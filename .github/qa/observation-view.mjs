@@ -76,6 +76,26 @@ function boundDiagnostics(diagnostics, level) {
   };
 }
 
+function compactBridge(value) {
+  const bridge = asObject(value);
+  if (!Object.keys(bridge).length) return undefined;
+  const override = asObject(bridge.override);
+  const captured = asObject(bridge.captured);
+  return {
+    version: bridge.version,
+    gateEnabled: Boolean(bridge.gateEnabled),
+    bridgeError: trim(bridge.bridgeError, 160) || undefined,
+    override: {
+      present: Boolean(override.present), valid: Boolean(override.valid), replace: Boolean(override.replace),
+      keys: (Array.isArray(override.keys) ? override.keys : []).slice(0, 12).map((key) => trim(key, 80)),
+    },
+    captured: { count: Number(captured.count) || 0 },
+    trackedNodes: (Array.isArray(bridge.trackedNodes) ? bridge.trackedNodes : []).slice(0, 8).map((node) => ({
+      selector: trim(node?.selector, 100), connected: Boolean(node?.connected),
+    })),
+  };
+}
+
 const LEVELS = [
   { maxMatches: 5, htmlLen: 300, textLen: 200, sampleLen: 300, maxSamples: 3 },
   { maxMatches: 3, htmlLen: 160, textLen: 160, sampleLen: 200, maxSamples: 3 },
@@ -93,7 +113,7 @@ function compactProbeSummaries(probes) {
   });
 }
 
-function compactPriority(probes, diagnostics, beforeFixtureProbes) {
+function compactPriority(probes, diagnostics, beforeFixtureProbes, bridge) {
   const d = asObject(diagnostics);
   const priority = {
     probes: compactProbeSummaries(probes),
@@ -103,10 +123,12 @@ function compactPriority(probes, diagnostics, beforeFixtureProbes) {
   if (beforeFixtureProbes.length) {
     priority.beforeFixture = { probes: compactProbeSummaries(beforeFixtureProbes) };
   }
+  const bridgeSummary = compactBridge(bridge);
+  if (bridgeSummary) priority.bridge = bridgeSummary;
   return priority;
 }
 
-function smallestPriority(probes, beforeFixtureProbes) {
+function smallestPriority(probes, beforeFixtureProbes, bridge) {
   const priority = { probes: [] };
   const first = probes[0];
   if (first) {
@@ -120,6 +142,10 @@ function smallestPriority(probes, beforeFixtureProbes) {
       probes: [{ selector: trim(p.selector, 16), matchCount: Array.isArray(p.matches) ? p.matches.length : 0 }],
     };
   }
+  const bridgeSummary = compactBridge(bridge);
+  if (bridgeSummary?.bridgeError || bridgeSummary?.gateEnabled) {
+    priority.bridge = { gateEnabled: bridgeSummary.gateEnabled, bridgeError: bridgeSummary.bridgeError };
+  }
   return priority;
 }
 
@@ -130,12 +156,14 @@ export function buildValidationView(observed, budget = 18000) {
   const probes = (Array.isArray(o.probes) ? o.probes : []).slice(0, MAX_PROBES);
   const beforeFixtureProbes = (Array.isArray(o.beforeFixture?.probes) ? o.beforeFixture.probes : [])
     .slice(0, MAX_PROBES);
+  const bridge = compactBridge(o.bridge);
   let priority = null;
   for (const level of LEVELS) {
     priority = {
       probes: probes.map((probe) => boundProbe(probe, level)),
       diagnostics: boundDiagnostics(o.diagnostics, level),
     };
+    if (bridge) priority.bridge = bridge;
     if (beforeFixtureProbes.length) {
       priority.beforeFixture = { probes: beforeFixtureProbes.map((probe) => boundProbe(probe, level)) };
     }
@@ -144,8 +172,8 @@ export function buildValidationView(observed, budget = 18000) {
   // If the bounded evidence is still too large (for example because every character
   // needs JSON escaping), degrade through valid, deterministic JSON views. Never slice
   // JSON text: raw observations remain in the artifact, while this payload must fit.
-  if (!fits(priority, limit)) priority = compactPriority(probes, o.diagnostics, beforeFixtureProbes);
-  if (!fits(priority, limit)) priority = smallestPriority(probes, beforeFixtureProbes);
+  if (!fits(priority, limit)) priority = compactPriority(probes, o.diagnostics, beforeFixtureProbes, o.bridge);
+  if (!fits(priority, limit)) priority = smallestPriority(probes, beforeFixtureProbes, o.bridge);
   if (!fits(priority, limit)) priority = { probes: [] };
   if (!fits(priority, limit)) priority = {};
   const view = { ...priority };
