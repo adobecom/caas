@@ -2,6 +2,16 @@
     .consonant-Card.flex-card {
         .card-hover;
 
+        &.rounded-corners {
+            border-radius: 20px;
+
+            .consonant-Card-header {
+                width: 95%;
+                margin: 8px auto;
+                border-radius: 12px;
+            }
+        }
+
         &:not([class *= "image-small-"]) {
             .card-hover-header;
         }
@@ -130,13 +140,34 @@
             }
         }
 
-        &.rounded-corners {
-            border-radius: 20px;
+        .consonant-Card-text {
+            flex-grow: 1;
+            margin: 0;
 
-            .consonant-Card-header {
-                width: 95%;
-                margin: 8px auto;
-                border-radius: 12px;
+            &:last-child {
+                margin: 0;
+            }
+        }
+
+        .consonant-CardFooter {
+            padding: 0;
+
+            .consonant-CardFooter-row:has(.consonant-CardFooter-cell--right) {
+                height: auto;
+                margin-top: 12px;
+                padding: 20px 0 0 0;
+            }
+
+            .consonant-CardFooter-cell--left {
+                font-size: 0.875rem;
+            }
+
+            &--divider {
+                margin-top: 20px;
+
+                .consonant-CardFooter-row:has(.consonant-CardFooter-cell--right) {
+                    margin-top: 0;
+                }
             }
         }
 
@@ -152,10 +183,6 @@
 
             .consonant-Card-content {
                 padding: 0 24px 12px;
-            }
-
-            .consonant-CardFooter {
-                padding-top: 12px;
             }
         }
 
@@ -174,6 +201,29 @@
                 background-size: auto 48px;
                 background-color: transparent;
                 height: 80px;
+            }
+        }
+
+        &.text-left {
+            .consonant-CardFooter-row {
+                justify-content: flex-start;
+            }
+
+            .consonant-CardFooter-cell {
+                flex-grow: 0;
+            }
+
+            .consonant-CardFooter-cell--left {
+                padding-right: 20px;
+            }
+
+            .consonant-CardFooter-cell--center {
+                justify-content: flex-start;
+                padding-right: 20px;
+            }
+
+            .consonant-CardFooter-cell--right {
+                justify-content: flex-start;
             }
         }
 
@@ -256,4 +306,12 @@
             }
         }
     }
+}
+
+p.consonant-Card-text p:first-child {
+    margin: 0;
+}
+
+p.consonant-Card-text br:first-child {
+    display: none;
 }
