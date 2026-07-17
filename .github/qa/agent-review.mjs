@@ -158,3 +158,5 @@ if (existingId) {
 }
 console.log(`agent-review: review ${existingId ? 'updated' : 'posted'} on PR #${PR} (verdict ${verdict}, diff ${pct}%, timedOut=${timedOut})`);
 process.exit(0);
+
+// touch: verify sticky in-place comment update on re-run (PR #555)
