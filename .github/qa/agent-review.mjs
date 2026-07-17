@@ -37,7 +37,7 @@ const meta = JSON.parse(gh(['pr', 'view', PR, '-R', REPO, '--json', 'title,body,
 // Sticky/history behavior applies to NEW PRs only. Legacy PRs (opened before the
 // cutoff) already carry unstructured bot comments that cannot be cleanly reconciled,
 // so leave them untouched: do nothing and exit.
-const STICKY_CUTOFF = Date.parse('2026-07-17T00:00:00Z');
+const STICKY_CUTOFF = Date.parse('2026-07-16T00:00:00Z');
 if (Number.isFinite(Date.parse(meta.createdAt)) && Date.parse(meta.createdAt) < STICKY_CUTOFF) {
   console.log(`agent-review: PR #${PR} predates sticky-comment cutoff; skipping (legacy PR untouched).`);
   process.exit(0);

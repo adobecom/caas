@@ -4,7 +4,7 @@ import json, os, re, sys, subprocess, tempfile
 # Sticky comments are for NEW PRs only. Legacy PRs already carry unstructured
 # bot comments that cannot be cleanly reconciled; leave them untouched.
 from datetime import datetime, timezone
-_STICKY_CUTOFF = datetime(2026, 7, 17, tzinfo=timezone.utc)
+_STICKY_CUTOFF = datetime(2026, 7, 16, tzinfo=timezone.utc)
 _pr_num = os.environ['PR_NUMBER']
 try:
     _created = subprocess.run(['gh', 'pr', 'view', _pr_num, '--json', 'createdAt', '--jq', '.createdAt'],
