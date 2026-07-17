@@ -136,3 +136,6 @@ AssistivTunnel
 .claude/
 .vscode/
 CLAUDE.md
+
+__pycache__/
+*.pyc
