@@ -136,7 +136,14 @@ MARKER = '<!-- ai-code-review -->'
 REPO_FULL = os.environ.get('GITHUB_REPOSITORY') or subprocess.run(
     ['gh', 'repo', 'view', '--json', 'nameWithOwner', '--jq', '.nameWithOwner'],
     capture_output=True, text=True).stdout.strip()
-NOW_UTC = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
+try:
+    from zoneinfo import ZoneInfo
+    _PTZ = ZoneInfo('America/Los_Angeles')
+except Exception:
+    from datetime import timedelta as _tdd
+    _PTZ = timezone(_tdd(hours=-7))
+_dtp = datetime.now(_PTZ)
+NOW_PT = "%s %d, %d %d:%02d %s %s" % (_dtp.strftime('%b'), _dtp.day, _dtp.year, (_dtp.hour % 12 or 12), _dtp.minute, _dtp.strftime('%p'), _dtp.strftime('%Z') or 'PT')
 _evn = os.environ.get('GITHUB_EVENT_NAME', '')
 _eva = ''
 try:
@@ -346,17 +353,23 @@ if review is None:
     print("AI review failed after retries; no PR comment posted (failure email step will fire).", file=sys.stderr)
 else:
     findings = parse_findings(review)
-    _entry = "- `%s` · %s · %s%s" % (HEAD_SHA or '???????', NOW_UTC, TRIGGER, (' · ' + LAST_MSG[:80].replace('|', '/')) if LAST_MSG else '')
-    hist = ([_entry] + PRIOR_HISTORY)[:12]
-    _nfiles = len(changed_files)
-    header = "_Last updated %s · %s%s%s._" % (NOW_UTC, TRIGGER, (' · commit `%s`' % HEAD_SHA) if HEAD_SHA else '', (' · %d file%s changed in PR' % (_nfiles, '' if _nfiles == 1 else 's')) if _nfiles else '')
     if findings is not None:
-        merged, new_ct, res_ct = reconcile(PRIOR_FINDINGS, findings, HEAD_SHA or '???????', NOW_UTC)
+        merged, new_ct, res_ct = reconcile(PRIOR_FINDINGS, findings, HEAD_SHA or '???????', NOW_PT)
         body_core = render_findings(merged, new_ct, res_ct)
         _state = [{k: v for k, v in f.items() if k != 'isNew'} for f in merged]
+        _openn = sum(1 for f in merged if f.get('status') == 'open')
+        _dp = []
+        if new_ct: _dp.append('+%d new' % new_ct)
+        if res_ct: _dp.append('%d resolved' % res_ct)
+        _delta = (', '.join(_dp) if _dp else 'no changes') + ' (%d open)' % _openn
     else:
         body_core = review
         _state = PRIOR_FINDINGS
+        _delta = 'review updated'
+    _entry = "- `%s` · %s · %s · %s%s" % (HEAD_SHA or '???????', NOW_PT, TRIGGER, _delta, (' — ' + LAST_MSG[:70].replace('|', '/')) if LAST_MSG else '')
+    hist = ([_entry] + PRIOR_HISTORY)[:12]
+    _nfiles = len(changed_files)
+    header = "_Last updated %s · %s%s%s._" % (NOW_PT, TRIGGER, (' · commit `%s`' % HEAD_SHA) if HEAD_SHA else '', (' · %d file%s changed in PR' % (_nfiles, '' if _nfiles == 1 else 's')) if _nfiles else '')
     _state_b64 = base64.b64encode(json.dumps(_state, separators=(',', ':')).encode('utf-8')).decode('ascii')
     body = (MARKER + "\n## AI Code Review\n\n" + header + "\n\n" + body_core + "\n\n"
             + "<details><summary>Review history (%d run%s)</summary>\n\n" % (len(hist), '' if len(hist) == 1 else 's')
