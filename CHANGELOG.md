@@ -1,5 +1,12 @@
 
 
+## [0.61.0](https://github.com/adobecom/caas/compare/0.60.0...0.61.0) (2026-07-17)
+
+
+### Features
+
+* **mwpw-199546:** allows links and line breaks in description ([#553](https://github.com/adobecom/caas/issues/553)) ([8786b55](https://github.com/adobecom/caas/commit/8786b55bc50292fbe34f7a4ea0e145ee48b0caac))
+
 ## [0.60.0](https://github.com/adobecom/caas/compare/0.59.1...0.60.0) (2026-07-13)
 
 
