@@ -19,15 +19,15 @@ export function renderQaChecklist({ verdict, pct, priorVerdict, priorSince, shor
   L.push('');
   L.push('### Open findings');
   if (openItem) {
-    L.push(`- [ ] 🔴 **Visual regression detected** (${pct}% of pixels changed)`
+    L.push(`- [ ] 🔴 **Smoke test failed** (${pct}% of pixels changed)`
       + (openItem.isNew ? ' 🆕' : ` _(open since \`${openItem.since}\`)_`));
   } else {
-    L.push('- [x] No visual regressions ✅');
+    L.push('- [x] Smoke test passed ✅');
   }
   if (resolvedItem) {
     L.push('');
     L.push('### ✅ Resolved');
-    L.push(`- [x] ~~🔴 **Visual regression**~~ — resolved in \`${shortSha}\``);
+    L.push(`- [x] ~~🔴 **Smoke test failed**~~ — resolved in \`${shortSha}\``);
   }
   return { core: L.join('\n'), delta, since };
 }
