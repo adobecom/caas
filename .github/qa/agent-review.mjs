@@ -33,7 +33,15 @@ const ALLOW = new Set(['main.min.js', 'app.css', 'react.umd.js', 'react.dom.umd.
 const ct = (f) => (f.endsWith('.css') ? 'text/css' : 'application/javascript');
 
 // PR context
-const meta = JSON.parse(gh(['pr', 'view', PR, '-R', REPO, '--json', 'title,body,files']));
+const meta = JSON.parse(gh(['pr', 'view', PR, '-R', REPO, '--json', 'title,body,files,createdAt']));
+// Sticky/history behavior applies to NEW PRs only. Legacy PRs (opened before the
+// cutoff) already carry unstructured bot comments that cannot be cleanly reconciled,
+// so leave them untouched: do nothing and exit.
+const STICKY_CUTOFF = Date.parse('2026-07-20T00:00:00Z');
+if (Number.isFinite(Date.parse(meta.createdAt)) && Date.parse(meta.createdAt) < STICKY_CUTOFF) {
+  console.log(`agent-review: PR #${PR} predates sticky-comment cutoff; skipping (legacy PR untouched).`);
+  process.exit(0);
+}
 let diff = '';
 try { diff = gh(['pr', 'diff', PR, '-R', REPO]); } catch {}
 
@@ -132,8 +140,21 @@ if (toolFailed) {
   console.error(`agent-review: tool failure on PR #${PR} (verdict ${verdict}, timedOut=${timedOut}); no comment posted (email step will fire).`);
   process.exit(0);
 }
-// Real result (PASS/FAIL): post a fresh comment per run (do not edit one in place).
+// Real result (PASS/FAIL): keep exactly ONE comment per agent. Find our own comment
+// by its hidden MARKER and edit it in place; create a new one only if none exists.
+// Replaces the old "fresh comment per run" that spammed the PR on every push.
 writeFileSync(`${OUT}/comment.md`, comment);
-gh(['pr', 'comment', PR, '-R', REPO, '--body-file', `${OUT}/comment.md`]);
-console.log(`agent-review: review posted on PR #${PR} (verdict ${verdict}, diff ${pct}%, timedOut=${timedOut})`);
+writeFileSync(`${OUT}/comment.json`, JSON.stringify({ body: comment }));
+let existingId = '';
+try {
+  existingId = gh(['api', `repos/${REPO}/issues/${PR}/comments`, '--paginate',
+    '--jq', `.[] | select(.body | contains("${MARKER}")) | .id`])
+    .split('\n').map((s) => s.trim()).filter(Boolean)[0] || '';
+} catch { existingId = ''; }
+if (existingId) {
+  gh(['api', '-X', 'PATCH', `repos/${REPO}/issues/comments/${existingId}`, '--input', `${OUT}/comment.json`]);
+} else {
+  gh(['api', '-X', 'POST', `repos/${REPO}/issues/${PR}/comments`, '--input', `${OUT}/comment.json`]);
+}
+console.log(`agent-review: review ${existingId ? 'updated' : 'posted'} on PR #${PR} (verdict ${verdict}, diff ${pct}%, timedOut=${timedOut})`);
 process.exit(0);

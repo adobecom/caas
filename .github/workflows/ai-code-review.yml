@@ -110,6 +110,20 @@ jobs:
           python3 << 'EOF'
           import json, os, re, sys, subprocess, tempfile
 
+          # Sticky comments are for NEW PRs only. Legacy PRs already carry unstructured
+          # bot comments that cannot be cleanly reconciled; leave them untouched.
+          from datetime import datetime, timezone
+          _STICKY_CUTOFF = datetime(2026, 7, 20, tzinfo=timezone.utc)
+          _pr_num = os.environ['PR_NUMBER']
+          try:
+              _created = subprocess.run(['gh', 'pr', 'view', _pr_num, '--json', 'createdAt', '--jq', '.createdAt'],
+                                        capture_output=True, text=True).stdout.strip()
+              if _created and datetime.fromisoformat(_created.replace('Z', '+00:00')) < _STICKY_CUTOFF:
+                  print("PR %s predates sticky-comment cutoff; skipping AI review." % _pr_num)
+                  sys.exit(0)
+          except Exception as _e:
+              print("cutoff check failed (%s); proceeding" % _e, file=sys.stderr)
+
           # ---- inputs gathered by earlier steps ----
           with open('pr.diff') as f:
               full_diff = f.read()
@@ -367,8 +381,32 @@ jobs:
                   fh.write(('PR #%s: %s' % (pr_number, fail_reason or 'upstream/stream error'))[:300])
               print("AI review failed after retries; no PR comment posted (failure email step will fire).", file=sys.stderr)
           else:
-              subprocess.run(['gh', 'pr', 'comment', pr_number, '--body', f"## AI Code Review\n\n{review}"], check=True)
-              print("Review posted. Context files included:", len(order))
+              MARKER = '<!-- ai-code-review -->'
+              body = f"{MARKER}\n## AI Code Review\n\n{review}"
+              repo = os.environ.get('GITHUB_REPOSITORY') or subprocess.run(
+                  ['gh', 'repo', 'view', '--json', 'nameWithOwner', '--jq', '.nameWithOwner'],
+                  capture_output=True, text=True).stdout.strip()
+              # Keep exactly ONE comment per agent: edit our marked comment in place if it
+              # exists, else create it once. Replaces the old fresh-comment-per-run posting.
+              _find = subprocess.run(
+                  ['gh', 'api', f'repos/{repo}/issues/{pr_number}/comments', '--paginate',
+                   '--jq', f'.[] | select(.body | contains("{MARKER}")) | .id'],
+                  capture_output=True, text=True)
+              _ids = [ln.strip() for ln in _find.stdout.split('\n') if ln.strip()]
+              _cid = _ids[0] if _ids else ''
+              with tempfile.NamedTemporaryFile('w', delete=False, suffix='.json') as _pf:
+                  json.dump({'body': body}, _pf)
+                  _payload = _pf.name
+              try:
+                  if _cid:
+                      subprocess.run(['gh', 'api', '-X', 'PATCH', f'repos/{repo}/issues/comments/{_cid}',
+                                      '--input', _payload], check=True)
+                  else:
+                      subprocess.run(['gh', 'api', '-X', 'POST', f'repos/{repo}/issues/{pr_number}/comments',
+                                      '--input', _payload], check=True)
+              finally:
+                  os.unlink(_payload)
+              print("Review %s. Context files included: %d" % ('updated' if _cid else 'posted', len(order)))
           EOF
 
       - name: Log AI review failure to the monitor issue
