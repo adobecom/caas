@@ -33,7 +33,7 @@ const ALLOW = new Set(['main.min.js', 'app.css', 'react.umd.js', 'react.dom.umd.
 const ct = (f) => (f.endsWith('.css') ? 'text/css' : 'application/javascript');
 
 // PR context
-const meta = JSON.parse(gh(['pr', 'view', PR, '-R', REPO, '--json', 'title,body,files,createdAt']));
+const meta = JSON.parse(gh(['pr', 'view', PR, '-R', REPO, '--json', 'title,body,files,createdAt,headRefOid,commits']));
 // Sticky/history behavior applies to NEW PRs only. Legacy PRs (opened before the
 // cutoff) already carry unstructured bot comments that cannot be cleanly reconciled,
 // so leave them untouched: do nothing and exit.
@@ -119,20 +119,9 @@ if (existsSync(REPORT_OUT)) {
 }
 
 const MARKER = '<!-- agent-qa-review -->';
-const comment = [
-  MARKER,
-  '## 🤖 Agent QA review — interactive + visual diff (advisory, non-blocking)',
-  '',
-  `Drove the PR build on the live business.adobe.com collection (filtered, searched, paginated, inspected cards), guided by a PR-vs-stable visual diff (**${pct}%** of pixels changed) and the PR code diff. Verdict: **${verdict}**.`,
-  '',
-  report,
-  '',
-  RUN_URL ? `_PR / stable / diff screenshots + console + axe artifacts in the [workflow run](${RUN_URL})._` : '',
-].join('\n');
 
-// A tool failure (CDP/connect error, no report, or timeout) yields UNKNOWN or a
-// timeout -- do NOT post a comment for that. Append a flag file so the workflow can
-// privately email the maintainer instead of broadcasting a failure on the PR.
+// A tool failure (UNKNOWN verdict or timeout) -> do not post a review comment;
+// flag it so the workflow email step can notify the maintainer privately.
 const toolFailed = verdict === 'UNKNOWN' || timedOut;
 if (toolFailed) {
   const flag = `${process.env.GITHUB_WORKSPACE || '.'}/AGENT_REVIEW_FAILED`;
@@ -140,23 +129,68 @@ if (toolFailed) {
   console.error(`agent-review: tool failure on PR #${PR} (verdict ${verdict}, timedOut=${timedOut}); no comment posted (email step will fire).`);
   process.exit(0);
 }
-// Real result (PASS/FAIL): keep exactly ONE comment per agent. Find our own comment
-// by its hidden MARKER and edit it in place; create a new one only if none exists.
-// Replaces the old "fresh comment per run" that spammed the PR on every push.
-writeFileSync(`${OUT}/comment.md`, comment);
-writeFileSync(`${OUT}/comment.json`, JSON.stringify({ body: comment }));
-let existingId = '';
+
+// ---- run metadata for the self-documenting history log ----
+const nowUtc = new Date().toISOString().replace('T', ' ').slice(0, 16) + ' UTC';
+const shortSha = (meta.headRefOid || '').slice(0, 7);
+const commitsArr = meta.commits || [];
+const lastMsg = commitsArr.length ? (commitsArr[commitsArr.length - 1].messageHeadline || '') : '';
+const nFiles = (meta.files || []).length;
+let action = '';
+try { action = (JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8')) || {}).action || ''; } catch {}
+const ev = process.env.GITHUB_EVENT_NAME || '';
+const trigger =
+  (ev === 'pull_request' && action === 'synchronize') ? 'new commit pushed' :
+  (ev === 'pull_request' && action === 'opened') ? 'PR opened' :
+  (ev === 'pull_request' && action === 'reopened') ? 'PR reopened' :
+  (ev === 'workflow_dispatch') ? 'manual re-run' :
+  (ev === 'issue_comment') ? '@ai-bot re-run' : (ev || 'run');
+
+// ---- fetch our existing comment (id + body) to carry the history log forward ----
+let existingId = '', priorBody = '';
 try {
-  existingId = gh(['api', `repos/${REPO}/issues/${PR}/comments`, '--paginate',
-    '--jq', `.[] | select(.body | contains("${MARKER}")) | .id`])
+  const line = gh(['api', `repos/${REPO}/issues/${PR}/comments`, '--paginate',
+    '--jq', `.[] | select(.body | contains("${MARKER}")) | [(.id|tostring), (.body|@base64)] | @tsv`])
     .split('\n').map((s) => s.trim()).filter(Boolean)[0] || '';
+  if (line) {
+    const parts = line.split('\t');
+    existingId = parts[0];
+    if (parts[1]) priorBody = Buffer.from(parts[1], 'base64').toString('utf8');
+  }
 } catch { existingId = ''; }
+
+const prevHist = (priorBody.match(/<!-- history:start -->([\s\S]*?)<!-- history:end -->/) || [null, ''])[1]
+  .split('\n').map((s) => s.trim()).filter((s) => s.startsWith('- '));
+const entry = `- \`${shortSha || '???????'}\` · ${nowUtc} · ${trigger}${lastMsg ? ` · ${lastMsg.slice(0, 80).replace(/\|/g, '/')}` : ''}`;
+const history = [entry, ...prevHist].slice(0, 12);
+
+const headerMeta = `_Last updated ${nowUtc} · ${trigger}${shortSha ? ` · commit \`${shortSha}\`` : ''}${nFiles ? ` · ${nFiles} file${nFiles === 1 ? '' : 's'} changed in PR` : ''}._`;
+const comment = [
+  MARKER,
+  '## Agent QA review — interactive + visual diff (advisory, non-blocking)',
+  '',
+  headerMeta,
+  '',
+  `Drove the PR build on the live business.adobe.com collection (filtered, searched, paginated, inspected cards), guided by a PR-vs-stable visual diff (**${pct}%** of pixels changed) and the PR code diff. Verdict: **${verdict}**.`,
+  '',
+  report,
+  '',
+  RUN_URL ? `_PR / stable / diff screenshots + console + axe artifacts in the [workflow run](${RUN_URL})._` : '',
+  '',
+  `<details><summary>Review history (${history.length} run${history.length === 1 ? '' : 's'})</summary>`,
+  '',
+  '<!-- history:start -->',
+  ...history,
+  '<!-- history:end -->',
+  '</details>',
+].join('\n');
+
+// Keep exactly ONE comment per agent: edit our marked comment in place, or create it once.
+writeFileSync(`${OUT}/comment.json`, JSON.stringify({ body: comment }));
 if (existingId) {
   gh(['api', '-X', 'PATCH', `repos/${REPO}/issues/comments/${existingId}`, '--input', `${OUT}/comment.json`]);
 } else {
   gh(['api', '-X', 'POST', `repos/${REPO}/issues/${PR}/comments`, '--input', `${OUT}/comment.json`]);
 }
-console.log(`agent-review: review ${existingId ? 'updated' : 'posted'} on PR #${PR} (verdict ${verdict}, diff ${pct}%, timedOut=${timedOut})`);
+console.log(`agent-review: review ${existingId ? 'updated' : 'posted'} on PR #${PR} (verdict ${verdict}, ${trigger}, ${history.length} runs logged)`);
 process.exit(0);
-
-// touch: verify sticky in-place comment update on re-run (PR #555)

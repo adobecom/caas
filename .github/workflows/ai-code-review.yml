@@ -381,32 +381,70 @@ jobs:
                   fh.write(('PR #%s: %s' % (pr_number, fail_reason or 'upstream/stream error'))[:300])
               print("AI review failed after retries; no PR comment posted (failure email step will fire).", file=sys.stderr)
           else:
+              import base64
               MARKER = '<!-- ai-code-review -->'
-              body = f"{MARKER}\n## AI Code Review\n\n{review}"
               repo = os.environ.get('GITHUB_REPOSITORY') or subprocess.run(
                   ['gh', 'repo', 'view', '--json', 'nameWithOwner', '--jq', '.nameWithOwner'],
                   capture_output=True, text=True).stdout.strip()
-              # Keep exactly ONE comment per agent: edit our marked comment in place if it
-              # exists, else create it once. Replaces the old fresh-comment-per-run posting.
-              _find = subprocess.run(
+              now_utc = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
+              _ev = os.environ.get('GITHUB_EVENT_NAME', '')
+              _action = ''
+              try:
+                  with open(os.environ.get('GITHUB_EVENT_PATH', '') or os.devnull) as _ef:
+                      _action = (json.load(_ef) or {}).get('action', '')
+              except Exception:
+                  _action = ''
+              if _ev == 'pull_request' and _action == 'synchronize': trigger = 'new commit pushed'
+              elif _ev == 'pull_request' and _action == 'opened': trigger = 'PR opened'
+              elif _ev == 'pull_request' and _action == 'reopened': trigger = 'PR reopened'
+              elif _ev == 'issue_comment': trigger = '@ai-bot re-run'
+              elif _ev == 'workflow_dispatch': trigger = 'manual re-run'
+              else: trigger = _ev or 'run'
+              _pv = subprocess.run(['gh', 'pr', 'view', pr_number, '--json', 'headRefOid,commits'],
+                                   capture_output=True, text=True).stdout
+              try:
+                  _pj = json.loads(_pv)
+                  _sha = (_pj.get('headRefOid') or '')[:7]
+                  _cm = _pj.get('commits') or []
+                  _msg = _cm[-1]['messageHeadline'] if _cm else ''
+              except Exception:
+                  _sha, _msg = '', ''
+              _nfiles = len(changed_files)
+              _raw = subprocess.run(
                   ['gh', 'api', f'repos/{repo}/issues/{pr_number}/comments', '--paginate',
-                   '--jq', f'.[] | select(.body | contains("{MARKER}")) | .id'],
-                  capture_output=True, text=True)
-              _ids = [ln.strip() for ln in _find.stdout.split('\n') if ln.strip()]
-              _cid = _ids[0] if _ids else ''
+                   '--jq', f'.[] | select(.body | contains("{MARKER}")) | [(.id|tostring),(.body|@base64)] | @tsv'],
+                  capture_output=True, text=True).stdout
+              _cid, _prior = '', ''
+              for _ln in _raw.split('\n'):
+                  _ln = _ln.strip()
+                  if _ln:
+                      _pp = _ln.split('\t')
+                      _cid = _pp[0]
+                      if len(_pp) > 1:
+                          try:
+                              _prior = base64.b64decode(_pp[1]).decode('utf-8', 'replace')
+                          except Exception:
+                              _prior = ''
+                      break
+              _mh = re.search(r'<!-- history:start -->(.*?)<!-- history:end -->', _prior, re.S)
+              _hist = [l.strip() for l in _mh.group(1).split('\n') if l.strip().startswith('- ')] if _mh else []
+              _entry = "- `%s` · %s · %s%s" % (_sha or '???????', now_utc, trigger, (' · ' + _msg[:80].replace('|', '/')) if _msg else '')
+              _hist = ([_entry] + _hist)[:12]
+              _header = "_Last updated %s · %s%s%s._" % (now_utc, trigger, (' · commit `%s`' % _sha) if _sha else '', (' · %d file%s changed in PR' % (_nfiles, '' if _nfiles == 1 else 's')) if _nfiles else '')
+              body = (MARKER + "\n## AI Code Review\n\n" + _header + "\n\n" + review + "\n\n"
+                      + "<details><summary>Review history (%d run%s)</summary>\n\n" % (len(_hist), '' if len(_hist) == 1 else 's')
+                      + "<!-- history:start -->\n" + "\n".join(_hist) + "\n<!-- history:end -->\n</details>\n")
               with tempfile.NamedTemporaryFile('w', delete=False, suffix='.json') as _pf:
                   json.dump({'body': body}, _pf)
                   _payload = _pf.name
               try:
                   if _cid:
-                      subprocess.run(['gh', 'api', '-X', 'PATCH', f'repos/{repo}/issues/comments/{_cid}',
-                                      '--input', _payload], check=True)
+                      subprocess.run(['gh', 'api', '-X', 'PATCH', f'repos/{repo}/issues/comments/{_cid}', '--input', _payload], check=True)
                   else:
-                      subprocess.run(['gh', 'api', '-X', 'POST', f'repos/{repo}/issues/{pr_number}/comments',
-                                      '--input', _payload], check=True)
+                      subprocess.run(['gh', 'api', '-X', 'POST', f'repos/{repo}/issues/{pr_number}/comments', '--input', _payload], check=True)
               finally:
                   os.unlink(_payload)
-              print("Review %s. Context files included: %d" % ('updated' if _cid else 'posted', len(order)))
+              print("Review %s (%s). Context files: %d, history: %d" % ('updated' if _cid else 'posted', trigger, len(order), len(_hist)))
           EOF
 
       - name: Log AI review failure to the monitor issue
