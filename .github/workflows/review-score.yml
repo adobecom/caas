@@ -1,0 +1,81 @@
+name: Review Score Gate
+
+# Majority-vote merge gate for adobecom/caas.
+# The JOB's own pass/fail IS the required check (mark "review-score-gate"
+# required in the branch ruleset). No status-write token needed.
+#
+# Only the GitHub usernames in ALLOWED_VOTERS count. Every other review,
+# whether from an org member, an outside GitHub user, or a repo collaborator
+# not on the list, is ignored. Editing the roster is itself a PR.
+#
+# PASS when (approvals - change_requests) >= REQUIRED_SCORE among voters,
+# counting each voter's LATEST decisive review and ignoring the PR author.
+#
+# NOTE: the pull_request_review trigger uses the workflow file from the
+# DEFAULT branch, so this must be merged to main to react to approvals.
+
+"on":
+  pull_request:
+    types: [opened, reopened, synchronize]
+  pull_request_review:
+    types: [submitted, edited, dismissed]
+
+permissions:
+  pull-requests: read
+
+jobs:
+  review-score-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            // ================= EDIT THIS LIST =============================
+            // GitHub usernames allowed to vote. Case-insensitive.
+            // Only these people's approvals / change-requests count.
+            const ALLOWED_VOTERS = [
+              'auniverseaway',
+              'chrischrischris',
+              'cmiqueo',
+              'honstar',
+              'jedjedjedM',
+              'jenssingler',
+              'raissanjay',
+              'sanrai',
+              'sheridansunier',
+              'shkhan91',
+              'sukamat',
+            ];
+            // ---- tunable knobs ------------------------------------------
+            const REQUIRED_SCORE = 1;         // net (approvals - blocks) to merge
+            const TIE_GOES_TO_APPROVE = true; // 1-vs-1 / 2-vs-2 passes if >=1 approval
+            // =============================================================
+
+            const voters = new Set(ALLOWED_VOTERS.map(s => s.toLowerCase()));
+            const pr = context.payload.pull_request;
+            if (!pr) { core.info('no pull_request context; skipping'); return; }
+            const author = (pr.user.login || '').toLowerCase();
+
+            const reviews = await github.paginate(github.rest.pulls.listReviews,
+              { owner: context.repo.owner, repo: context.repo.repo,
+                pull_number: pr.number, per_page: 100 });
+
+            const latest = new Map();
+            for (const r of reviews) {
+              const l = (r.user && r.user.login || '').toLowerCase();
+              if (!l || l === author) continue;
+              if (!voters.has(l)) continue;
+              if (r.state !== 'APPROVED' && r.state !== 'CHANGES_REQUESTED') continue;
+              latest.set(l, r.state);
+            }
+
+            let a = 0, b = 0;
+            for (const s of latest.values()) { if (s === 'APPROVED') a++; else b++; }
+
+            const score = a - b;
+            const pass = score >= REQUIRED_SCORE
+                      || (TIE_GOES_TO_APPROVE && a >= 1 && score === 0);
+
+            const msg = `score ${score} (${a} approve, ${b} block) from allowlisted voters, need >= ${REQUIRED_SCORE}`;
+            core.info(msg);
+            if (!pass) core.setFailed(msg);
