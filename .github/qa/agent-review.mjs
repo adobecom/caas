@@ -11,6 +11,7 @@ import { chromium } from 'playwright';
 import pixelmatch from 'pixelmatch';
 import { PNG } from 'pngjs';
 import { ensureBrowserTab } from './cdp-keepalive.mjs';
+import { renderQaChecklist } from './agent_qa_render.mjs';
 
 const env = (k, d) => process.env[k] ?? d;
 const PR = env('PR_NUMBER');
@@ -33,7 +34,15 @@ const ALLOW = new Set(['main.min.js', 'app.css', 'react.umd.js', 'react.dom.umd.
 const ct = (f) => (f.endsWith('.css') ? 'text/css' : 'application/javascript');
 
 // PR context
-const meta = JSON.parse(gh(['pr', 'view', PR, '-R', REPO, '--json', 'title,body,files']));
+const meta = JSON.parse(gh(['pr', 'view', PR, '-R', REPO, '--json', 'title,body,files,createdAt,headRefOid,commits']));
+// Sticky/history behavior applies to NEW PRs only. Legacy PRs (opened before the
+// cutoff) already carry unstructured bot comments that cannot be cleanly reconciled,
+// so leave them untouched: do nothing and exit.
+const STICKY_CUTOFF = Date.parse('2026-07-16T00:00:00Z');
+if (Number.isFinite(Date.parse(meta.createdAt)) && Date.parse(meta.createdAt) < STICKY_CUTOFF) {
+  console.log(`agent-review: PR #${PR} predates sticky-comment cutoff; skipping (legacy PR untouched).`);
+  process.exit(0);
+}
 let diff = '';
 try { diff = gh(['pr', 'diff', PR, '-R', REPO]); } catch {}
 
@@ -111,20 +120,8 @@ if (existsSync(REPORT_OUT)) {
 }
 
 const MARKER = '<!-- agent-qa-review -->';
-const comment = [
-  MARKER,
-  '## 🤖 Agent QA review — interactive + visual diff (advisory, non-blocking)',
-  '',
-  `Drove the PR build on the live business.adobe.com collection (filtered, searched, paginated, inspected cards), guided by a PR-vs-stable visual diff (**${pct}%** of pixels changed) and the PR code diff. Verdict: **${verdict}**.`,
-  '',
-  report,
-  '',
-  RUN_URL ? `_PR / stable / diff screenshots + console + axe artifacts in the [workflow run](${RUN_URL})._` : '',
-].join('\n');
 
-// A tool failure (CDP/connect error, no report, or timeout) yields UNKNOWN or a
-// timeout -- do NOT post a comment for that. Append a flag file so the workflow can
-// privately email the maintainer instead of broadcasting a failure on the PR.
+// Tool failure (UNKNOWN verdict or timeout) -> do not post; flag for the email step.
 const toolFailed = verdict === 'UNKNOWN' || timedOut;
 if (toolFailed) {
   const flag = `${process.env.GITHUB_WORKSPACE || '.'}/AGENT_REVIEW_FAILED`;
@@ -132,8 +129,82 @@ if (toolFailed) {
   console.error(`agent-review: tool failure on PR #${PR} (verdict ${verdict}, timedOut=${timedOut}); no comment posted (email step will fire).`);
   process.exit(0);
 }
-// Real result (PASS/FAIL): post a fresh comment per run (do not edit one in place).
-writeFileSync(`${OUT}/comment.md`, comment);
-gh(['pr', 'comment', PR, '-R', REPO, '--body-file', `${OUT}/comment.md`]);
-console.log(`agent-review: review posted on PR #${PR} (verdict ${verdict}, diff ${pct}%, timedOut=${timedOut})`);
+
+// ---- Pacific-time run metadata ----
+const nowPT = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true, timeZoneName: 'short' }).format(new Date());
+const shortSha = (meta.headRefOid || '').slice(0, 7);
+const commitsArr = meta.commits || [];
+const lastMsg = commitsArr.length ? (commitsArr[commitsArr.length - 1].messageHeadline || '') : '';
+const nFiles = (meta.files || []).length;
+let action = '';
+try { action = (JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8')) || {}).action || ''; } catch {}
+const ev = process.env.GITHUB_EVENT_NAME || '';
+const trigger =
+  (ev === 'pull_request' && action === 'synchronize') ? 'new commit pushed' :
+  (ev === 'pull_request' && action === 'opened') ? 'PR opened' :
+  (ev === 'pull_request' && action === 'reopened') ? 'PR reopened' :
+  (ev === 'workflow_dispatch') ? 'manual re-run' :
+  (ev === 'issue_comment') ? '@ai-bot re-run' : (ev || 'run');
+
+// ---- fetch our existing comment: id, prior history, prior verdict state ----
+let existingId = '', priorBody = '';
+try {
+  const line = gh(['api', `repos/${REPO}/issues/${PR}/comments`, '--paginate',
+    '--jq', `.[] | select(.body | contains("${MARKER}")) | [(.id|tostring), (.body|@base64)] | @tsv`])
+    .split('\n').map((s) => s.trim()).filter(Boolean)[0] || '';
+  if (line) { const p = line.split('\t'); existingId = p[0]; if (p[1]) priorBody = Buffer.from(p[1], 'base64').toString('utf8'); }
+} catch { existingId = ''; }
+const prevHist = (priorBody.match(/<!-- history:start -->([\s\S]*?)<!-- history:end -->/) || [null, ''])[1]
+  .split('\n').map((s) => s.trim()).filter((s) => s.startsWith('- '));
+let priorVerdict = null, priorSince = '';
+try {
+  const vm = priorBody.match(/<!-- qa-verdict-b64:\s*([A-Za-z0-9+/=]+)\s*-->/);
+  if (vm) { const st = JSON.parse(Buffer.from(vm[1], 'base64').toString('utf8')); priorVerdict = st.verdict || null; priorSince = st.sinceSha || ''; }
+} catch {}
+
+// ---- verdict -> open/resolved checklist (shared render module) ----
+const qa = renderQaChecklist({ verdict, pct, priorVerdict, priorSince, shortSha });
+
+// ---- history entry with per-run summary + running tally ----
+const entry = `- \`${shortSha || '???????'}\` · ${nowPT} · ${trigger} · ${qa.delta}${lastMsg ? ` — ${lastMsg.slice(0, 60).replace(/\|/g, '/')}` : ''}`;
+const history = [entry, ...prevHist].slice(0, 12);
+
+let headerMeta = `_Last updated ${nowPT} · ${trigger}`;
+if (shortSha) headerMeta += ` · commit \`${shortSha}\``;
+if (nFiles) headerMeta += ` · ${nFiles} file${nFiles === 1 ? '' : 's'} changed`;
+headerMeta += '._';
+
+const verdictState = Buffer.from(JSON.stringify({ verdict, sinceSha: qa.since }), 'utf8').toString('base64');
+const comment = [
+  MARKER,
+  '## Agent QA review — interactive + visual diff (advisory, non-blocking)',
+  '',
+  headerMeta,
+  '',
+  qa.core,
+  '',
+  '<details><summary>What the agent checked</summary>',
+  '',
+  report,
+  '',
+  RUN_URL ? `_PR / stable / diff screenshots + console + axe artifacts in the [workflow run](${RUN_URL})._` : '',
+  '</details>',
+  '',
+  `<details><summary>Review history (${history.length} run${history.length === 1 ? '' : 's'})</summary>`,
+  '',
+  '<!-- history:start -->',
+  ...history,
+  '<!-- history:end -->',
+  '</details>',
+  '',
+  `<!-- qa-verdict-b64: ${verdictState} -->`,
+].join('\n');
+
+writeFileSync(`${OUT}/comment.json`, JSON.stringify({ body: comment }));
+if (existingId) {
+  gh(['api', '-X', 'PATCH', `repos/${REPO}/issues/comments/${existingId}`, '--input', `${OUT}/comment.json`]);
+} else {
+  gh(['api', '-X', 'POST', `repos/${REPO}/issues/${PR}/comments`, '--input', `${OUT}/comment.json`]);
+}
+console.log(`agent-review: ${existingId ? 'updated' : 'posted'} PR #${PR} (verdict ${verdict}, ${trigger}, ${history.length} runs)`);
 process.exit(0);
