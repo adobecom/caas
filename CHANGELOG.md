@@ -1,5 +1,26 @@
 
 
+## [0.62.0](https://github.com/adobecom/caas/compare/0.61.1...0.62.0) (2026-07-20)
+
+
+### Features
+
+* **ai-review:** incremental findings checklist (strikethrough done, flag new) ([849efe7](https://github.com/adobecom/caas/commit/849efe7b461a392ee435bca67a811ddb5025820b))
+* **ai-review:** self-documenting run-history log in each sticky comment ([95bfe99](https://github.com/adobecom/caas/commit/95bfe99767d5a70662062056abea4f23c85fd263))
+* **reviews:** Pacific time, per-run history summary, Agent QA checklist ([7b48793](https://github.com/adobecom/caas/commit/7b487933040b60209eb9f380cc3c1171bd61629c))
+
+
+### Bug Fixes
+
+* **ai-review:** only re-report a prior finding if its code is still present ([ae382d3](https://github.com/adobecom/caas/commit/ae382d308a234c7753e400061670d5a230abf967))
+* **ai-review:** set sticky cutoff to 2026-07-16 (clearly past deploy date) ([40b85f8](https://github.com/adobecom/caas/commit/40b85f8af91f25647fbf1c3b0d690eeca26bb853)), closes [#555](https://github.com/adobecom/caas/issues/555) [#553](https://github.com/adobecom/caas/issues/553)
+* revert demo bugs (LESS regression + demo_bug.js); rename Agent QA finding to 'Smoke test failed' ([69efd75](https://github.com/adobecom/caas/commit/69efd75c903050519be4de7acc6d11770ea1395f))
+
+
+### Tests
+
+* **mwpw-sticky:** trivial touch to re-trigger reviewers and verify in-place comment update ([f916b5b](https://github.com/adobecom/caas/commit/f916b5b89b30f1dd847d1d72554facfb010f0bf7))
+
 ## [0.61.1](https://github.com/adobecom/caas/compare/0.61.0...0.61.1) (2026-07-17)
 
 ## [0.61.0](https://github.com/adobecom/caas/compare/0.60.0...0.61.0) (2026-07-17)
