@@ -6,29 +6,32 @@ name: Review Score Gate
     types: [submitted, edited, dismissed]
 permissions:
   pull-requests: read
+  statuses: write
 jobs:
-  review-score-gate:
+  gate:
     runs-on: ubuntu-latest
     steps:
-      - name: Review score gate
+      - name: Compute + post review-score status
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           cat > "$RUNNER_TEMP/review-score.js" <<'SCRIPT'
-          const { execSync } = require('child_process');
+          const { execSync, spawnSync } = require('child_process');
           const ALLOWED_VOTERS = [
             'auniverseaway', 'chrischrischris', 'cmiqueo', 'honstar',
             'jedjedjedM', 'jenssingler', 'raissanjay', 'sanrai',
             'sheridansunier', 'shkhan91', 'sukamat',
           ];
-          const REQUIRED_SCORE = 1;   // net (approvals - blocks); a tie fails, 2 approvals clear 1 block
+          const REQUIRED_SCORE = 1;
           const repo = process.env.REPO;
           const pr = process.env.PR_NUMBER;
+          const sha = process.env.HEAD_SHA;
           const author = (process.env.PR_AUTHOR || '').toLowerCase();
-          if (!pr) { console.log('no pull_request context; skipping'); process.exit(0); }
+          if (!pr || !sha) { console.log('no pull_request context; skipping'); process.exit(0); }
           const voters = new Set(ALLOWED_VOTERS.map(function (s) { return s.toLowerCase(); }));
           const raw = execSync('gh api "repos/' + repo + '/pulls/' + pr + '/reviews?per_page=100" --paginate',
             { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
@@ -44,8 +47,11 @@ jobs:
           for (const s of latest.values()) { if (s === 'APPROVED') a++; else b++; }
           const score = a - b;
           const pass = score >= REQUIRED_SCORE;
-          console.log('score ' + score + ' (' + a + ' approve, ' + b + ' block), need >= ' + REQUIRED_SCORE);
-          if (!pass) { console.error('BLOCKED: review score below threshold'); process.exit(1); }
-          console.log('PASS');
+          const desc = 'score ' + score + ' (' + a + ' approve, ' + b + ' block), need >= ' + REQUIRED_SCORE;
+          console.log((pass ? 'PASS: ' : 'BLOCK: ') + desc);
+          const res = spawnSync('gh', ['api','-X','POST','repos/' + repo + '/statuses/' + sha,
+            '-f','state=' + (pass ? 'success' : 'failure'),'-f','context=review-score-gate','-f','description=' + desc],
+            { encoding: 'utf8' });
+          if (res.status !== 0) { console.error('failed to post status: ' + (res.stderr || '')); process.exit(1); }
           SCRIPT
           node "$RUNNER_TEMP/review-score.js"
