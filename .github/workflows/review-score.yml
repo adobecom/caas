@@ -1,0 +1,51 @@
+name: Review Score Gate
+"on":
+  pull_request:
+    types: [opened, reopened, synchronize]
+  pull_request_review:
+    types: [submitted, edited, dismissed]
+permissions:
+  pull-requests: read
+jobs:
+  review-score-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Review score gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          cat > "$RUNNER_TEMP/review-score.js" <<'SCRIPT'
+          const { execSync } = require('child_process');
+          const ALLOWED_VOTERS = [
+            'auniverseaway', 'chrischrischris', 'cmiqueo', 'honstar',
+            'jedjedjedM', 'jenssingler', 'raissanjay', 'sanrai',
+            'sheridansunier', 'shkhan91', 'sukamat',
+          ];
+          const REQUIRED_SCORE = 1;   // net (approvals - blocks); a tie fails, 2 approvals clear 1 block
+          const repo = process.env.REPO;
+          const pr = process.env.PR_NUMBER;
+          const author = (process.env.PR_AUTHOR || '').toLowerCase();
+          if (!pr) { console.log('no pull_request context; skipping'); process.exit(0); }
+          const voters = new Set(ALLOWED_VOTERS.map(function (s) { return s.toLowerCase(); }));
+          const raw = execSync('gh api "repos/' + repo + '/pulls/' + pr + '/reviews?per_page=100" --paginate',
+            { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+          const reviews = JSON.parse(raw);
+          const latest = new Map();
+          for (const r of reviews) {
+            const l = ((r.user && r.user.login) || '').toLowerCase();
+            if (!l || l === author || !voters.has(l)) continue;
+            if (r.state === 'APPROVED' || r.state === 'CHANGES_REQUESTED') latest.set(l, r.state);
+            else if (r.state === 'DISMISSED') latest.delete(l);
+          }
+          let a = 0, b = 0;
+          for (const s of latest.values()) { if (s === 'APPROVED') a++; else b++; }
+          const score = a - b;
+          const pass = score >= REQUIRED_SCORE;
+          console.log('score ' + score + ' (' + a + ' approve, ' + b + ' block), need >= ' + REQUIRED_SCORE);
+          if (!pass) { console.error('BLOCKED: review score below threshold'); process.exit(1); }
+          console.log('PASS');
+          SCRIPT
+          node "$RUNNER_TEMP/review-score.js"
