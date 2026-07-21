@@ -169,3 +169,4 @@ describe('Consonant/Infobits/Group', () => {
     expect(document.querySelector('.consonant-IconInfobit')).toBeInTheDocument();
   });
 });
+// feature-test target: 545
