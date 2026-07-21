@@ -24,8 +24,7 @@ jobs:
             'jedjedjedM', 'jenssingler', 'raissanjay', 'sanrai',
             'sheridansunier', 'shkhan91', 'sukamat',
           ];
-          const REQUIRED_SCORE = 1;
-          const TIE_GOES_TO_APPROVE = true;
+          const REQUIRED_SCORE = 1;   // net (approvals - blocks); a tie fails, 2 approvals clear 1 block
           const repo = process.env.REPO;
           const pr = process.env.PR_NUMBER;
           const author = (process.env.PR_AUTHOR || '').toLowerCase();
@@ -44,7 +43,7 @@ jobs:
           let a = 0, b = 0;
           for (const s of latest.values()) { if (s === 'APPROVED') a++; else b++; }
           const score = a - b;
-          const pass = score >= REQUIRED_SCORE || (TIE_GOES_TO_APPROVE && a >= 1 && score === 0);
+          const pass = score >= REQUIRED_SCORE;
           console.log('score ' + score + ' (' + a + ' approve, ' + b + ' block), need >= ' + REQUIRED_SCORE);
           if (!pass) { console.error('BLOCKED: review score below threshold'); process.exit(1); }
           console.log('PASS');
