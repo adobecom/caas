@@ -30,6 +30,7 @@ import {
     getSelectedItemsCount,
     debounce,
     mergeDeep,
+    applyQaConfigOverride,
     template,
     optimizeImageUrl,
     preloadFirstCardImage,
@@ -304,6 +305,42 @@ describe('utils/general', () => {
 
                 expect(target).toEqual(expectedValue);
             });
+        });
+    });
+    describe('applyQaConfigOverride', () => {
+        const setSearch = (search) => {
+            window.history.pushState({}, '', `/${search}`);
+        };
+        afterEach(() => {
+            window.localStorage.removeItem('caasQaConfig');
+            setSearch('');
+        });
+
+        test('is a no-op without the ?caasqa gate param', () => {
+            setSearch('');
+            window.localStorage.setItem('caasQaConfig', JSON.stringify({ sort: { localFirstRecencyThreshold: 6 } }));
+            expect(applyQaConfigOverride({ sort: { enabled: true } }))
+                .toEqual({ sort: { enabled: true } });
+        });
+
+        test('deep-merges the stored override when ?caasqa is present', () => {
+            setSearch('?caasqa=1');
+            window.localStorage.setItem('caasQaConfig', JSON.stringify({ sort: { localFirstRecencyThreshold: 6 } }));
+            expect(applyQaConfigOverride({ sort: { enabled: true }, collection: { size: 10 } }))
+                .toEqual({ sort: { enabled: true, localFirstRecencyThreshold: 6 }, collection: { size: 10 } });
+        });
+
+        test('is a no-op when gated but nothing is stored', () => {
+            setSearch('?caasqa=1');
+            expect(applyQaConfigOverride({ sort: { enabled: true } }))
+                .toEqual({ sort: { enabled: true } });
+        });
+
+        test('returns config unchanged on invalid JSON (no throw)', () => {
+            setSearch('?caasqa=1');
+            window.localStorage.setItem('caasQaConfig', '{not valid json');
+            expect(applyQaConfigOverride({ sort: { enabled: true } }))
+                .toEqual({ sort: { enabled: true } });
         });
     });
     describe('template', () => {
