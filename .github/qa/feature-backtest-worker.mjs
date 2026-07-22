@@ -311,7 +311,28 @@ async function renderScenario(context, routeLibraries, plan) {
       try { return [...document.querySelectorAll(selector)].slice(0, limit).map((element) => snapshot(element, attributes)); }
       catch (error) { return [{ selectorError: error.message }]; }
     };
+    const sigRoot = document.querySelector('.consonant-CardsGrid, [class*="consonant-Container"], #caas, .caas-preview') || document.body;
+    const domSignature = (() => {
+      const classes = {}; const attrs = {}; const tags = {}; const testidSet = new Set(); const texts = [];
+      for (const el of sigRoot.querySelectorAll('*')) {
+        const tag = (el.tagName || '').toLowerCase(); if (!tag) continue;
+        tags[tag] = (tags[tag] || 0) + 1;
+        String(el.className || '').split(/\s+/).filter(Boolean).forEach((c) => { classes[c] = (classes[c] || 0) + 1; });
+        if (el.getAttributeNames) for (const n of el.getAttributeNames()) {
+          if (n === 'class' || n === 'style' || n === 'id') continue;
+          if (n === 'data-testid') { const t = el.getAttribute(n); if (t) testidSet.add(t); }
+          if (n.startsWith('data-') || n.startsWith('aria-') || ['role', 'href', 'type', 'alt'].includes(n)) {
+            const v = String(el.getAttribute(n) || '').slice(0, 40); attrs[`${n}=${v}`] = (attrs[`${n}=${v}`] || 0) + 1;
+          }
+        }
+      }
+      sigRoot.querySelectorAll('.consonant-Card [class*="-title"], [class*="Card-label"], [class*="Card-content"]').forEach((e) => {
+        const t = String(e.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 60); if (t) texts.push(t);
+      });
+      return { classes, attrs, tags, testids: [...testidSet].sort(), texts };
+    })();
     return {
+      domSignature,
       cards: take('.consonant-Card', 15),
       headings: take('h1,h2,h3,h4,h5,h6,[role="heading"]', 30),
       controls: take('label,button,input,select,[role="button"],[role="searchbox"]', 40),

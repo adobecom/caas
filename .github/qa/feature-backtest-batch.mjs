@@ -5,6 +5,7 @@ import { cpSync, existsSync, mkdirSync, readFileSync, renameSync, rmSync, symlin
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { applyQaOverlay } from './apply-qa-overlay.mjs';
+import { diffSignatures, summarizeDiff } from './dom-diff.mjs';
 
 const env = (name, fallback = '') => process.env[name] ?? fallback;
 const REPO = env('GH_REPO', 'adobecom/caas');
@@ -142,7 +143,15 @@ async function main() {
       const pre = post?.status === 'PASS' && existsSync(planPath)
         ? runWorker({ pr, variant: 'pre', targetRoot: preRoot, resultDir, planPath }) : null;
       const classification = classifyPair(post, pre);
-      summary.push({ pr, title, ...classification, post: post?.status || null, pre: pre?.status || null });
+      let domDiff = null;
+      const postSig = post?.observed?.domSignature; const preSig = pre?.observed?.domSignature;
+      if (postSig && preSig) {
+        const d = diffSignatures(preSig, postSig);
+        domDiff = { changed: d.changed, summary: summarizeDiff(d) };
+        writeFileSync(path.join(resultDir, 'dom-diff.json'), `${JSON.stringify(d, null, 2)}\n`);
+        console.log(`[dom-diff] PR #${pr}: ${domDiff.summary}`);
+      }
+      summary.push({ pr, title, ...classification, post: post?.status || null, pre: pre?.status || null, domDiff });
     } catch (error) {
       console.error(`[batch] PR #${pr} failed: ${error.stack || error.message}`);
       summary.push({ pr, title, outcome: 'ERROR', detail: error.message, post: null, pre: null });
