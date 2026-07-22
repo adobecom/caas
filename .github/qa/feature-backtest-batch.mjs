@@ -43,6 +43,32 @@ export function parsePrNumbers(value) {
   return unique;
 }
 
+const MUTATION_KINDS = new Set(['break']);
+// Accept "NNN" or "NNN:break". "break" reverts the PR's product change on the
+// post build so the feature is silently absent — a negative control: the judge,
+// given the PR's real intent, should return FLAG (feature missing), not WORKS.
+export function parsePrSpecs(value) {
+  const tokens = String(value || '').split(/[\s,]+/).filter(Boolean);
+  const specs = tokens.map((token) => {
+    const [numText, mutation] = token.split(':');
+    const pr = Number(numText);
+    if (!Number.isInteger(pr) || pr <= 0) {
+      throw new Error('BACKTEST_PRS must contain comma/space-separated positive PR numbers (optionally NNN:break)');
+    }
+    if (mutation && !MUTATION_KINDS.has(mutation)) throw new Error(`unknown mutation kind: ${mutation}`);
+    return { pr, mutation: mutation || null };
+  });
+  if (!specs.length) throw new Error('BACKTEST_PRS must contain comma/space-separated positive PR numbers');
+  const seen = new Set();
+  const unique = [];
+  for (const spec of specs) {
+    const key = `${spec.pr}:${spec.mutation || ''}`;
+    if (!seen.has(key)) { seen.add(key); unique.push(spec); }
+  }
+  if (unique.length > 12) throw new Error('BACKTEST_PRS is limited to 12 PRs per batch');
+  return unique;
+}
+
 export function classifyPair(post, pre) {
   if (!post) return { outcome: 'ERROR', detail: 'post-PR result missing' };
   if (post.status === 'SKIPPED') return { outcome: 'SKIPPED', detail: post.reason || 'not testable' };
@@ -131,6 +157,44 @@ function runWorker({ pr, variant, targetRoot, resultDir, planPath }) {
   return existsSync(resultPath) ? readJson(resultPath) : null;
 }
 
+const QA_OVERLAY_FILES = new Set([
+  'react/src/js/app.jsx',
+  'react/src/js/components/Consonant/Helpers/general.js',
+]);
+
+function mutationTargets(files) {
+  return (Array.isArray(files) ? files : [])
+    .map((entry) => entry.path)
+    .filter((filePath) => filePath
+      && !filePath.startsWith('.github/')
+      && filePath !== 'package-lock.json'
+      && !/\.(spec|test)\.(jsx?|tsx?)$/.test(filePath)
+      && !QA_OVERLAY_FILES.has(filePath));
+}
+
+// Revert the PR's product change on the post worktree so the feature never
+// renders, then commit so the dist cache key (HEAD sha) misses and the broken
+// build is produced. QA overlay files are left intact so the ?caasqa injection
+// still works. pre stays at base, so pre and post render the same absent-feature
+// page -> empty diff -> the judge (given real intent) should FLAG it.
+function applyMutation(postRoot, kind, baseRefOid, files) {
+  if (kind !== 'break') throw new Error(`unknown mutation kind: ${kind}`);
+  const targets = mutationTargets(files);
+  if (!targets.length) throw new Error("mutation 'break': no revertable product files for this PR");
+  const reverted = [];
+  for (const filePath of targets) {
+    let atBase = true;
+    try { output('git', ['cat-file', '-e', `${baseRefOid}:${filePath}`], { cwd: postRoot }); } catch { atBase = false; }
+    if (atBase) run('git', ['checkout', baseRefOid, '--', filePath], { cwd: postRoot });
+    else run('git', ['rm', '-f', '--', filePath], { cwd: postRoot });
+    reverted.push(filePath);
+  }
+  run('git', ['-c', 'core.hooksPath=/dev/null', '-c', 'commit.gpgsign=false', 'commit', '--no-verify', '-am',
+    `qa-mutation:break reverted ${reverted.length} product file(s)`], { cwd: postRoot });
+  console.log(`[mutation] break: reverted ${reverted.length} product file(s): ${reverted.join(', ')}`);
+  return { kind, reverted };
+}
+
 function prIntentDiff(pr) {
   try {
     const raw = output('gh', ['pr', 'diff', String(pr), '-R', REPO]);
@@ -171,7 +235,7 @@ async function judgeExpected(intent, domDiff, visualDiff) {
 }
 
 async function main() {
-  const prs = parsePrNumbers(env('BACKTEST_PRS'));
+  const specs = parsePrSpecs(env('BACKTEST_PRS'));
   rmSync(TEMP_ROOT, { recursive: true, force: true });
   rmSync(OUTPUT_ROOT, { recursive: true, force: true });
   mkdirSync(TEMP_ROOT, { recursive: true });
@@ -179,16 +243,19 @@ async function main() {
   run('git', ['worktree', 'prune'], { cwd: SOURCE_REPO });
   const summary = [];
 
-  for (const pr of prs) {
-    const resultDir = path.join(OUTPUT_ROOT, `pr-${pr}`);
-    const workDir = path.join(TEMP_ROOT, `pr-${pr}`);
+  for (const spec of specs) {
+    const pr = spec.pr;
+    const mutation = spec.mutation;
+    const label = mutation ? `${pr}-${mutation}` : String(pr);
+    const resultDir = path.join(OUTPUT_ROOT, `pr-${label}`);
+    const workDir = path.join(TEMP_ROOT, `pr-${label}`);
     const postRoot = path.join(workDir, 'post');
     const preRoot = path.join(workDir, 'pre');
     mkdirSync(resultDir, { recursive: true });
     let title = `PR ${pr}`;
     try {
       const metadata = JSON.parse(output('gh', ['pr', 'view', String(pr), '-R', REPO,
-        '--json', 'number,title,body,headRefOid,baseRefOid,state']));
+        '--json', 'number,title,body,files,headRefOid,baseRefOid,state']));
       title = metadata.title;
       const body = metadata.body || '';
       const intentDiff = prIntentDiff(pr);
@@ -196,6 +263,7 @@ async function main() {
       console.log(`\n[batch] PR #${pr}: ${title}`);
       prepareWorktree(metadata.headRefOid, postRoot);
       prepareWorktree(metadata.baseRefOid, preRoot);
+      if (mutation) applyMutation(postRoot, mutation, metadata.baseRefOid, metadata.files);
       installAndBuild(postRoot, preRoot);
       const planPath = path.join(resultDir, 'plan.json');
       const post = runWorker({ pr, variant: 'post', targetRoot: postRoot, resultDir, planPath });
@@ -224,7 +292,11 @@ async function main() {
         expected = await judgeExpected({ title, body, diff: intentDiff }, domDiff, visualDiff);
         if (expected) console.log(`[judge] PR #${pr}: ${expected.verdict || 'ERR'} - ${expected.reason || expected.error}`);
       }
-      summary.push({ pr, title, ...classification, post: post?.status || null, pre: pre?.status || null, domDiff, visualDiff, diffVerdict, expected });
+      if (mutation) {
+        const caught = expected?.verdict === 'FLAG';
+        console.log(`[mutation-check] PR #${pr} (${mutation}): ${caught ? 'CAUGHT (judge=FLAG)' : `MISSED (judge=${expected?.verdict || 'none'}, diff=${diffVerdict || 'none'})`}`);
+      }
+      summary.push({ pr, title, mutation, ...classification, post: post?.status || null, pre: pre?.status || null, domDiff, visualDiff, diffVerdict, expected });
     } catch (error) {
       console.error(`[batch] PR #${pr} failed: ${error.stack || error.message}`);
       summary.push({ pr, title, outcome: 'ERROR', detail: error.message, post: null, pre: null });
