@@ -131,6 +131,28 @@ function runWorker({ pr, variant, targetRoot, resultDir, planPath }) {
   return existsSync(resultPath) ? readJson(resultPath) : null;
 }
 
+async function judgeExpected(title, domDiff, visualDiff) {
+  const PROXY = process.env.PROXY_URL; const MODEL = process.env.MODEL; const TOKEN = process.env.IMS_ACCESS_TOKEN;
+  if (!PROXY || !MODEL || !TOKEN) return null;
+  const prompt = `A PR was tested by forcing its feature to render on the OLD code and the NEW code, then diffing the two renders.\n`
+    + `PR title: ${title}\n`
+    + `Structural change detected (new vs old render): ${domDiff ? domDiff.summary : 'none captured'}\n`
+    + `Visual change detected: ${visualDiff ? (visualDiff.changed ? `yes (${visualDiff.pct}% pixels)` : 'no') : 'n/a'}\n\n`
+    + `Is this detected change consistent with what the PR title says it does?\n`
+    + `Reply ONLY JSON: {"verdict":"WORKS"|"FLAG"|"NO_CHANGE","reason":"one sentence"}.\n`
+    + `- WORKS: the detected change matches the PR's stated intent.\n`
+    + `- NO_CHANGE: nothing meaningful changed (a feature that failed to render, or a correct no-op refactor).\n`
+    + `- FLAG: something changed but it does not match the intent / looks unexpected.`;
+  try {
+    const res = await fetch(PROXY, { method: 'POST', headers: { Authorization: `Bearer ${TOKEN}`, 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01' },
+      body: JSON.stringify({ model: MODEL, max_tokens: 600, stream: true, messages: [{ role: 'user', content: prompt }] }) });
+    const raw = await res.text(); let text = '';
+    for (const line of raw.split('\n')) { const t = line.trim(); if (!t.startsWith('data:')) continue; const d = t.slice(5).trim(); if (!d || d === '[DONE]') continue; let e; try { e = JSON.parse(d); } catch { continue; } if (e.type === 'content_block_delta' && e.delta?.type === 'text_delta') text += e.delta.text || ''; }
+    const j = JSON.parse(text.slice(text.indexOf('{'), text.lastIndexOf('}') + 1));
+    return { verdict: j.verdict, reason: j.reason };
+  } catch (error) { return { error: error.message }; }
+}
+
 async function main() {
   const prs = parsePrNumbers(env('BACKTEST_PRS'));
   rmSync(TEMP_ROOT, { recursive: true, force: true });
@@ -178,7 +200,12 @@ async function main() {
         diffVerdict = changed ? 'CHANGED' : 'NO_CHANGE';
         console.log(`[diff-verdict] PR #${pr}: ${diffVerdict} (dom=${domDiff?.changed ?? 'n/a'} visual=${visualDiff?.changed ?? 'n/a'}${visualDiff?.pct !== undefined ? ` ${visualDiff.pct}%` : ''})`);
       }
-      summary.push({ pr, title, ...classification, post: post?.status || null, pre: pre?.status || null, domDiff, visualDiff, diffVerdict });
+      let expected = null;
+      if (diffVerdict) {
+        expected = await judgeExpected(title, domDiff, visualDiff);
+        if (expected) console.log(`[judge] PR #${pr}: ${expected.verdict || 'ERR'} - ${expected.reason || expected.error}`);
+      }
+      summary.push({ pr, title, ...classification, post: post?.status || null, pre: pre?.status || null, domDiff, visualDiff, diffVerdict, expected });
     } catch (error) {
       console.error(`[batch] PR #${pr} failed: ${error.stack || error.message}`);
       summary.push({ pr, title, outcome: 'ERROR', detail: error.message, post: null, pre: null });
