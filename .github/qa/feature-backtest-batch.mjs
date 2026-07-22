@@ -6,6 +6,24 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { applyQaOverlay } from './apply-qa-overlay.mjs';
 import { diffSignatures, summarizeDiff } from './dom-diff.mjs';
+import { PNG } from 'pngjs';
+import pixelmatch from 'pixelmatch';
+
+// Visual diff of the pre-code vs post-code render (same forced scenario). Localised noise
+// (antialiasing) is ignored via a threshold; a taller/shorter page (content changed) counts
+// as a visual change directly.
+function pixelDiff(prePng, postPng) {
+  try {
+    if (!existsSync(prePng) || !existsSync(postPng)) return null;
+    const a = PNG.sync.read(readFileSync(prePng));
+    const b = PNG.sync.read(readFileSync(postPng));
+    if (a.width !== b.width || a.height !== b.height) return { changed: true, pct: 100, reason: 'render size changed' };
+    const diff = new PNG({ width: a.width, height: a.height });
+    const n = pixelmatch(a.data, b.data, diff.data, a.width, a.height, { threshold: 0.1 });
+    const pct = Number(((n / (a.width * a.height)) * 100).toFixed(3));
+    return { changed: pct > 0.1, pct };
+  } catch (error) { return { changed: null, error: error.message }; }
+}
 
 const env = (name, fallback = '') => process.env[name] ?? fallback;
 const REPO = env('GH_REPO', 'adobecom/caas');
@@ -140,7 +158,7 @@ async function main() {
       installAndBuild(postRoot, preRoot);
       const planPath = path.join(resultDir, 'plan.json');
       const post = runWorker({ pr, variant: 'post', targetRoot: postRoot, resultDir, planPath });
-      const pre = post?.status === 'PASS' && existsSync(planPath)
+      const pre = existsSync(planPath)
         ? runWorker({ pr, variant: 'pre', targetRoot: preRoot, resultDir, planPath }) : null;
       const classification = classifyPair(post, pre);
       let domDiff = null;
@@ -151,7 +169,16 @@ async function main() {
         writeFileSync(path.join(resultDir, 'dom-diff.json'), `${JSON.stringify(d, null, 2)}\n`);
         console.log(`[dom-diff] PR #${pr}: ${domDiff.summary}`);
       }
-      summary.push({ pr, title, ...classification, post: post?.status || null, pre: pre?.status || null, domDiff });
+      const visualDiff = pixelDiff(path.join(resultDir, 'pre.png'), path.join(resultDir, 'post.png'));
+      // Diff-based verdict: the render changed old->new (structurally or visually) => the PR
+      // produced an observable effect; both empty => no visible change (refactor/no-op).
+      let diffVerdict = null;
+      if (domDiff || visualDiff) {
+        const changed = Boolean(domDiff?.changed) || Boolean(visualDiff?.changed);
+        diffVerdict = changed ? 'CHANGED' : 'NO_CHANGE';
+        console.log(`[diff-verdict] PR #${pr}: ${diffVerdict} (dom=${domDiff?.changed ?? 'n/a'} visual=${visualDiff?.changed ?? 'n/a'}${visualDiff?.pct !== undefined ? ` ${visualDiff.pct}%` : ''})`);
+      }
+      summary.push({ pr, title, ...classification, post: post?.status || null, pre: pre?.status || null, domDiff, visualDiff, diffVerdict });
     } catch (error) {
       console.error(`[batch] PR #${pr} failed: ${error.stack || error.message}`);
       summary.push({ pr, title, outcome: 'ERROR', detail: error.message, post: null, pre: null });
