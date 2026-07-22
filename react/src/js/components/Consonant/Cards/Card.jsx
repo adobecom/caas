@@ -422,7 +422,7 @@ const Card = (props) => {
 
     const parseMarkDown = (md = '') => {
         if (searchEnabled) {
-            return removeMarkDown(md.replace(/<[^>]*>/g, ''));
+            return parseLinks(removeMarkDown(md)).replaceAll('\n', '<br/>');
         }
         let markup = '';
         if (isProduct && mnemonic) {
