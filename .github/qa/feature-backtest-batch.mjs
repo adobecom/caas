@@ -131,18 +131,35 @@ function runWorker({ pr, variant, targetRoot, resultDir, planPath }) {
   return existsSync(resultPath) ? readJson(resultPath) : null;
 }
 
-async function judgeExpected(title, domDiff, visualDiff) {
+function prIntentDiff(pr) {
+  try {
+    const raw = output('gh', ['pr', 'diff', String(pr), '-R', REPO]);
+    const sections = raw.split(/(?=^diff --git )/m).filter(Boolean);
+    const isInfra = (section) => {
+      const filePath = (section.match(/^diff --git a\/(.+?) b\/(.+)$/m)?.[2]) || '';
+      return filePath.startsWith('.github/') || filePath === 'package-lock.json';
+    };
+    return sections.filter((section) => !isInfra(section)).join('').slice(0, 6000);
+  } catch { return ''; }
+}
+
+async function judgeExpected(intent, domDiff, visualDiff) {
   const PROXY = process.env.PROXY_URL; const MODEL = process.env.MODEL; const TOKEN = process.env.IMS_ACCESS_TOKEN;
   if (!PROXY || !MODEL || !TOKEN) return null;
-  const prompt = `A PR was tested by forcing its feature to render on the OLD code and the NEW code, then diffing the two renders.\n`
-    + `PR title: ${title}\n`
-    + `Structural change detected (new vs old render): ${domDiff ? domDiff.summary : 'none captured'}\n`
-    + `Visual change detected: ${visualDiff ? (visualDiff.changed ? `yes (${visualDiff.pct}% pixels)` : 'no') : 'n/a'}\n\n`
-    + `Is this detected change consistent with what the PR title says it does?\n`
+  const { title = '', body = '', diff = '' } = intent || {};
+  const prompt = `A historical PR was tested by forcing its feature to render on the OLD (pre-PR) code and the NEW (post-PR) code, then diffing the two renders. Decide whether the PR actually does what it claims.\n\n`
+    + `=== WHAT THE PR INTENDED (from its own title, description, and code change) ===\n`
+    + `Title: ${title}\n`
+    + `Description: ${(body || '(none)').slice(0, 1200)}\n`
+    + `Code change (context for INTENT only, NOT proof it works):\n${(diff || '(none)').slice(0, 6000)}\n\n`
+    + `=== WHAT ACTUALLY CHANGED ON THE PAGE (the only evidence of real behavior) ===\n`
+    + `Structural change (new vs old render): ${domDiff ? domDiff.summary : 'none captured'}\n`
+    + `Visual change: ${visualDiff ? (visualDiff.changed ? `yes (${visualDiff.pct}% of pixels)` : 'no') : 'n/a'}\n\n`
+    + `The rendered page diff is the source of truth for what the code ACTUALLY did. The code change only shows what was INTENDED, so never assume it worked because it looks correct.\n`
     + `Reply ONLY JSON: {"verdict":"WORKS"|"FLAG"|"NO_CHANGE","reason":"one sentence"}.\n`
-    + `- WORKS: the detected change matches the PR's stated intent.\n`
-    + `- NO_CHANGE: nothing meaningful changed (a feature that failed to render, or a correct no-op refactor).\n`
-    + `- FLAG: something changed but it does not match the intent / looks unexpected.`;
+    + `- WORKS: the PR intended a visible change AND the page changed in a way that matches that intent.\n`
+    + `- FLAG: the PR intended a visible change but the page shows nothing (feature missing or broken), OR the page changed in a way that does not match the intent (wrong result, or an unrelated element changed or broke).\n`
+    + `- NO_CHANGE: the PR did not intend any visible change (pure refactor, comment/log/formatting tweak) and the page correctly shows no change.`;
   try {
     const res = await fetch(PROXY, { method: 'POST', headers: { Authorization: `Bearer ${TOKEN}`, 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01' },
       body: JSON.stringify({ model: MODEL, max_tokens: 600, stream: true, messages: [{ role: 'user', content: prompt }] }) });
@@ -171,8 +188,10 @@ async function main() {
     let title = `PR ${pr}`;
     try {
       const metadata = JSON.parse(output('gh', ['pr', 'view', String(pr), '-R', REPO,
-        '--json', 'number,title,headRefOid,baseRefOid,state']));
+        '--json', 'number,title,body,headRefOid,baseRefOid,state']));
       title = metadata.title;
+      const body = metadata.body || '';
+      const intentDiff = prIntentDiff(pr);
       writeFileSync(path.join(resultDir, 'metadata.json'), `${JSON.stringify(metadata, null, 2)}\n`);
       console.log(`\n[batch] PR #${pr}: ${title}`);
       prepareWorktree(metadata.headRefOid, postRoot);
@@ -202,7 +221,7 @@ async function main() {
       }
       let expected = null;
       if (diffVerdict) {
-        expected = await judgeExpected(title, domDiff, visualDiff);
+        expected = await judgeExpected({ title, body, diff: intentDiff }, domDiff, visualDiff);
         if (expected) console.log(`[judge] PR #${pr}: ${expected.verdict || 'ERR'} - ${expected.reason || expected.error}`);
       }
       summary.push({ pr, title, ...classification, post: post?.status || null, pre: pre?.status || null, domDiff, visualDiff, diffVerdict, expected });
