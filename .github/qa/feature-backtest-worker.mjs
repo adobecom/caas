@@ -9,6 +9,7 @@ import { validateScenario as checkPayloadSchema } from './schema-validate.mjs';
 import { buildValidationView } from './observation-view.mjs';
 import { requestBoundedJson } from './llm-json.mjs';
 import { shouldChallengeSkip } from './skip-challenge.mjs';
+import { classifyChangedPaths } from './detect-gate.mjs';
 import {
   applyScenarioRepair,
   findMissingRequiredInitial,
@@ -216,22 +217,6 @@ Reply ONLY JSON: {"verdict":"PASS"|"FAIL","reason":"cite concrete observed evide
   return { verdict, reason: validation.reason, validationPayloadChars: validationView.length };
 }
 
-async function rootRenderDetectChallenge(evidence) {
-  const raw = await llm(
-`A historical Adobe CaaS PR is about to be skipped as non-browser-testable. Audit one narrow possibility: a changed DOM/custom-element/config bridge may prevent parsed config from reaching the React root, which is testable by preserving a captured live config and injecting uniquely identifiable cards.
-
-Do not call a change internal-only merely because the changed test asserts model.props or a constructor field. Trace whether that value is passed through a production wrapper/decorator into a mounted component. This challenge applies only to initial render; do not claim click, type, viewport, visual, or accessibility behavior is supported.
-
-PR: ${evidence.meta.title}
-Body: ${(evidence.meta.body || '').slice(0, 1800)}
-Changed test diff:\n${evidence.specDiff}
-Product diff:\n${evidence.diff.slice(0, 12000)}
-
-Reply ONLY JSON: {"testable":true|false,"reason":"one concise source-flow reason"}.`, 2500);
-  const result = extractJson(raw);
-  return { testable: result.testable === true, reason: String(result.reason || '').slice(0, 800) };
-}
-
 async function browserSession() {
   const browser = await chromium.connectOverCDP(CDP);
   const context = browser.contexts()[0] || await browser.newContext();
@@ -360,41 +345,22 @@ async function renderScenario(context, routeLibraries, plan) {
     const evidence = productEvidence();
     postEvidence = evidence;
     let rootRenderChallengeAttempted = false;
-    const detectRaw = await llm(
-`Decide whether this historical Adobe CaaS PR contains a product behavior that can be reproduced on a live page by replacing collection config and collection JSON, then observing the DOM.
-
-Testable examples: newly introduced card rendering, sorting, filtering, config-gated layout, or semantic DOM output. Not testable with this worker: pure refactor, build/tooling, backend-only, performance-only, or behavior requiring user interaction before observation.
-
-STATIC-BOUNDARY CHECK: before calling a behavior interaction-only, inspect every changed comparison, visibility predicate, and mount effect. Trace its initial state and ask whether fixture-controlled config, card count, or filter data can put it exactly on the old/new boundary at first render. A ticket may describe a click/navigation symptom while the changed predicate is already evaluated on mount; that is testable without interaction. Only call it interaction-only after ruling out this bounded initial-state case from the changed source.
-
-The full changed spec files below are context only and contain many old tests. A test is evidence of new behavior only when its assertion/requirement is actually added or modified in CHANGED TEST DIFF, or the product diff/body explicitly introduces that observable behavior. Never classify a component split/file move as a feature merely because existing regression tests still pass or a spec's import paths changed.
-
-PR: ${evidence.meta.title}
-Body: ${(evidence.meta.body || '').slice(0, 1800)}
-Changed files:\n${evidence.changedPaths.join('\n')}
-Changed test diff:\n${evidence.specDiff}
-Full changed spec context:\n${evidence.specText}
-Diff:\n${evidence.diff}
-
-Reply ONLY JSON: {"testable":true|false,"reason":"one sentence"}.`, 3000);
-    let detect = extractJson(detectRaw);
-    console.log(`[detect] testable=${detect.testable} reason=${detect.reason}`);
-    let detectSkipChallenge;
-    if (!detect.testable && shouldChallengeSkip({ stage: 'detect', evidence })) {
-      rootRenderChallengeAttempted = true;
-      const challenge = await rootRenderDetectChallenge(evidence);
-      detectSkipChallenge = {
-        triggered: true,
-        outcome: challenge.testable ? 'CONTINUE' : 'SKIPPED',
-        reason: challenge.reason,
-      };
-      console.log(`[detect root-render challenge] testable=${challenge.testable} reason=${challenge.reason}`);
-      if (challenge.testable) detect = { ...detect, testable: true, reason: challenge.reason };
-    }
-    if (!detect.testable) {
-      saveResult({ status: 'SKIPPED', stage: 'detect', reason: detect.reason, skipChallenge: detectSkipChallenge });
+    // Detect gate: the diff-based pipeline renders the forced scenario on pre- and
+    // post-PR code and lets the judge compare the detected old-vs-new diff against PR
+    // intent, so we no longer decide up front whether a behavior is "assertable" (a
+    // call the old LLM detect prompt got wrong for visual-only and no-op changes).
+    // Skip ONLY CI/tooling/docs changes; every product-code change (including
+    // visual/CSS-only tweaks and apparent no-ops) proceeds to render + diff + judge.
+    const gate = classifyChangedPaths(evidence.changedPaths);
+    console.log(`[detect] product=${gate.productPaths.length} nonProduct=${gate.nonProductPaths.length}`);
+    if (gate.skip) {
+      const reason = evidence.changedPaths.length
+        ? `only CI/tooling/docs changed (${gate.nonProductPaths.join(', ')}); no product-code render to diff`
+        : 'no product-code files changed';
+      saveResult({ status: 'SKIPPED', stage: 'detect', reason });
       return;
     }
+    console.log(`[detect] product-code change -> render+diff+judge: ${gate.productPaths.join(', ')}`);
 
     const research = await researchCode({
       ask: llm,
