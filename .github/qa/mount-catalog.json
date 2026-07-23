@@ -1022,6 +1022,54 @@
       },
       "verified": true,
       "notes": "card footer with divider:true"
+    },
+    {
+      "id": "overlay:logo",
+      "feature": "logo",
+      "variant": "logo",
+      "config": {
+        "collection": {
+          "cardStyle": "1:2"
+        }
+      },
+      "cardPatch": {
+        "overlays": {
+          "logo": {
+            "src": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/cat.png",
+            "alt": "Logo"
+          }
+        }
+      },
+      "expect": {
+        "selector": ".consonant-Card-logo",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "overlays.logo.src; showLogo=!!logoSrc"
+    },
+    {
+      "id": "overlay:badge",
+      "feature": "badge",
+      "variant": "badge",
+      "config": {
+        "collection": {
+          "cardStyle": "1:2",
+          "showCardBadges": "true"
+        }
+      },
+      "cardPatch": {
+        "overlays": {
+          "label": {
+            "description": "BADGE"
+          }
+        }
+      },
+      "expect": {
+        "selector": ".consonant-Card-badge",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "overlays.label.description + collection.showCardBadges=true"
     }
   ]
 }
