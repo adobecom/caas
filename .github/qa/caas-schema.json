@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "CaaS QA payload schema derived from adobecom/caas FE (constants.js DEFAULT_CONFIG + enum dicts, Card.jsx CARD_STYLES registry, Filters/* consumption). Config patch: top-level strict (catch invented sections); sections accept unlisted keys (evolving flags) but enforce enums + deep shapes. Card typeOverride is free (BE emits tag URIs); enum enforced only on configPatch.collection.cardStyle.",
+  "$defs": {
+    "cardStyle": { "enum": ["one-half","three-fourths","double-wide","half-height","product","text-card","full-card","icon-card","news-card","blade-card","editorial-card","blog-card","horizontal-card","button-card","flex-card"] },
+    "sortType": { "enum": ["dateasc","datedesc","modifieddesc","modifiedasc","eventsort","featured","titleasc","titledesc","localfirst","locallast","random"] },
+    "infobitType": { "enum": ["price","button","icon-with-text","link-with-icon","text","icon","link","progress-bar","rating","bookmark","date-interval","gated"] },
+    "infobit": { "type":"object", "properties": { "type": {"$ref":"#/$defs/infobitType"}, "style":{"type":"string"}, "text":{"type":"string"}, "href":{"type":"string"} } },
+    "filterItem": { "type":"object", "additionalProperties": true, "properties": { "id":{"type":"string"}, "label":{"type":"string"}, "selected":{"type":"boolean"}, "opened":{"type":"boolean"}, "isCategory":{"type":"boolean"}, "group":{"type":"string"}, "items":{"type":"array","items":{"$ref":"#/$defs/filterItem"}} } },
+    "filter": { "type":"object", "additionalProperties": true, "properties": { "id":{"type":"string"}, "label":{"type":"string"}, "group":{"type":"string"}, "icon":{"type":"string"}, "opened":{"type":"boolean"}, "selected":{"type":"boolean"}, "items":{"type":"array","items":{"$ref":"#/$defs/filterItem"}} } },
+    "card": { "type":"object", "required":["id"], "additionalProperties": true, "properties": {
+      "id":{"type":"string"},
+      "styles":{"type":"object","additionalProperties":true,"properties":{"typeOverride":{"type":"string"},"backgroundImage":{"type":"string"},"backgroundAltText":{"type":"string"},"mnemonic":{"type":"string"},"icon":{"type":"string"}}},
+      "contentArea":{"type":"object","additionalProperties":true,"properties":{"title":{"type":"string"},"detailText":{"type":"string"},"description":{"type":"string"},"url":{"type":"string"}}},
+      "overlays":{"type":"object"},
+      "footer":{"type":"array","items":{"type":"object","additionalProperties":true,"properties":{"divider":{"type":"boolean"},"left":{"type":"array","items":{"$ref":"#/$defs/infobit"}},"center":{"type":"array","items":{"$ref":"#/$defs/infobit"}},"right":{"type":"array","items":{"$ref":"#/$defs/infobit"}}}}},
+      "tags":{"type":"array","items":{"type":"object","properties":{"id":{"type":"string"}}}},
+      "cardDate":{"type":"string"},"modifiedDate":{"type":"string"},"createdDate":{"type":"string"},"country":{"type":"string"},"origin":{"type":"string"},"arbitrary":{"type":"array"}
+    } },
+    "configPatch": { "type":"object", "additionalProperties": false, "properties": {
+      "collection": { "type":"object", "additionalProperties": true, "properties": {
+        "mode":{"enum":["","light","lightest","dark","darkest"]},
+        "layout":{"type":"object","additionalProperties":false,"properties":{"type":{"enum":["2up","3up","4up","5up"]},"gutter":{"enum":["1x","2x","3x","4x"]},"container":{"enum":["83Percent","1200MaxWidth","1600MaxWidth","32Margin","carousel","categories"]}}},
+        "resultsPerPage":{"type":"integer","minimum":1},
+        "endpoint":{"type":"string"},"title":{"type":"string"},"totalCardLimit":{"type":"integer"},
+        "cardStyle":{"oneOf":[{"$ref":"#/$defs/cardStyle"},{"const":""}]},
+        "bladeCard":{"type":"object","additionalProperties":false,"properties":{"reverse":{"type":"boolean"},"lightText":{"type":"boolean"},"transparent":{"type":"boolean"}}},
+        "displayTotalResults":{"type":"boolean"},"i18n":{"type":"object"}
+      } },
+      "featuredCards":{"type":"array"},"hideCtaIds":{"type":"array"},"hideCtaTags":{"type":"array"},
+      "header":{"type":"object"},
+      "filterPanel":{"type":"object","additionalProperties":true,"properties":{"enabled":{"type":"boolean"},"type":{"enum":["left","top","events"]},"filters":{"type":"array","items":{"$ref":"#/$defs/filter"}},"filterLogic":{"enum":["and","or","xor"]}}},
+      "sort":{"type":"object","additionalProperties":true,"properties":{"enabled":{"type":"boolean"},"defaultSort":{"$ref":"#/$defs/sortType"},"options":{"type":"array","items":{"type":"object","properties":{"label":{"type":"string"},"sort":{"$ref":"#/$defs/sortType"}}}}}},
+      "pagination":{"type":"object","additionalProperties":true,"properties":{"enabled":{"type":"boolean"},"type":{"enum":["loadMore","paginator"]}}},
+      "bookmarks":{"type":"object"},
+      "search":{"type":"object","additionalProperties":true,"properties":{"enabled":{"type":"boolean"},"searchFields":{"type":"array","items":{"type":"string"}}}},
+      "language":{"type":"string"},"country":{"type":"string"},"headers":{"type":"array"},"products":{"type":"object"},
+      "analytics":{},"target":{},"customCard":{},"linkTransformer":{},"reservoir":{}
+    } }
+  },
+  "type":"object","additionalProperties":false,
+  "properties": { "configPatch":{"$ref":"#/$defs/configPatch"}, "cards":{"type":"array","items":{"$ref":"#/$defs/card"}} }
+}

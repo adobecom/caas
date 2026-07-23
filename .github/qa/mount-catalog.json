@@ -1,0 +1,1094 @@
+{
+  "$schema": "caas-mount-catalog/v1",
+  "description": "Verified configs/card-data that mount each CaaS feature on the local index.html harness. Used to deterministically set up a scenario (Phase 1) before diffing old-vs-new.",
+  "harness": {
+    "page": "index.html",
+    "serve": "localhost (npm start / python http.server); localhost uses local mock-json collection"
+  },
+  "lever": {
+    "cardStyle": "collection.cardStyle (aliases 1:2->one-half, 3:4->three-fourths); per-card via card.styles.typeOverride",
+    "cardData": "cards come from the collection endpoint JSON; patch a card to trigger data-driven features"
+  },
+  "entries": [
+    {
+      "id": "card-style:one-half",
+      "feature": "card-style",
+      "variant": "one-half",
+      "config": {
+        "collection": {
+          "cardStyle": "1:2"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-Card.one-half",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "global collection.cardStyle; alias"
+    },
+    {
+      "id": "card-style:three-fourths",
+      "feature": "card-style",
+      "variant": "three-fourths",
+      "config": {
+        "collection": {
+          "cardStyle": "3:4"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-Card.three-fourths",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "global collection.cardStyle; alias"
+    },
+    {
+      "id": "card-style:double-wide",
+      "feature": "card-style",
+      "variant": "double-wide",
+      "config": {
+        "collection": {
+          "cardStyle": "double-wide"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-Card.double-wide",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "global collection.cardStyle passthrough"
+    },
+    {
+      "id": "card-style:half-height",
+      "feature": "card-style",
+      "variant": "half-height",
+      "config": {
+        "collection": {
+          "cardStyle": "half-height"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-Card.half-height",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "global collection.cardStyle passthrough"
+    },
+    {
+      "id": "card-style:product",
+      "feature": "card-style",
+      "variant": "product",
+      "config": {
+        "collection": {
+          "cardStyle": "product"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-Card.product",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "global collection.cardStyle passthrough"
+    },
+    {
+      "id": "card-style:text-card",
+      "feature": "card-style",
+      "variant": "text-card",
+      "config": {
+        "collection": {
+          "cardStyle": "text-card"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-Card.text-card",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "global collection.cardStyle passthrough"
+    },
+    {
+      "id": "card-style:full-card",
+      "feature": "card-style",
+      "variant": "full-card",
+      "config": {
+        "collection": {
+          "cardStyle": "full-card"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-Card.full-card",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "global collection.cardStyle passthrough"
+    },
+    {
+      "id": "card-style:icon-card",
+      "feature": "card-style",
+      "variant": "icon-card",
+      "config": {
+        "collection": {
+          "cardStyle": "icon-card"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-Card.icon-card",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "global collection.cardStyle passthrough"
+    },
+    {
+      "id": "card-style:news-card",
+      "feature": "card-style",
+      "variant": "news-card",
+      "config": {
+        "collection": {
+          "cardStyle": "news-card"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-Card.news-card",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "global collection.cardStyle passthrough"
+    },
+    {
+      "id": "card-style:blade-card",
+      "feature": "card-style",
+      "variant": "blade-card",
+      "config": {
+        "collection": {
+          "cardStyle": "blade-card"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-Card.blade-card",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "global collection.cardStyle passthrough"
+    },
+    {
+      "id": "card-style:editorial-card",
+      "feature": "card-style",
+      "variant": "editorial-card",
+      "config": {
+        "collection": {
+          "cardStyle": "editorial-card"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-Card.editorial-card",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "global collection.cardStyle passthrough"
+    },
+    {
+      "id": "card-style:blog-card",
+      "feature": "card-style",
+      "variant": "blog-card",
+      "config": {
+        "collection": {
+          "cardStyle": "blog-card"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-Card.blog-card",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "global collection.cardStyle passthrough"
+    },
+    {
+      "id": "card-style:horizontal-card",
+      "feature": "card-style",
+      "variant": "horizontal-card",
+      "config": {
+        "collection": {
+          "cardStyle": "horizontal-card"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-Card.horizontal-card",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "global collection.cardStyle passthrough"
+    },
+    {
+      "id": "card-style:button-card",
+      "feature": "card-style",
+      "variant": "button-card",
+      "config": {
+        "collection": {
+          "cardStyle": "button-card"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-Card.button-card",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "global collection.cardStyle passthrough"
+    },
+    {
+      "id": "card-style:flex-card",
+      "feature": "card-style",
+      "variant": "flex-card",
+      "config": {
+        "collection": {
+          "cardStyle": "flex-card"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-Card.flex-card",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "global collection.cardStyle passthrough"
+    },
+    {
+      "id": "feature:video-button",
+      "feature": "video-button",
+      "variant": "half-height",
+      "config": {
+        "collection": {
+          "cardStyle": "half-height"
+        }
+      },
+      "cardPatch": {
+        "overlays": {
+          "videoButton": {
+            "url": "https://video.example.com/demo.mp4"
+          }
+        }
+      },
+      "expect": {
+        "selector": "[data-testid=\"consonant-Card-videoIco\"]",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "video button renders on styles passing videoURL (blade/blog/double-wide/half-height/full); requires a card with overlays.videoButton.url"
+    },
+    {
+      "id": "theme:dark",
+      "feature": "theme",
+      "variant": "dark",
+      "config": {
+        "collection": {
+          "mode": "dark"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-u-themeDark",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "config toggle; marker auto-discovered via render-vs-baseline diff"
+    },
+    {
+      "id": "theme:darkest",
+      "feature": "theme",
+      "variant": "darkest",
+      "config": {
+        "collection": {
+          "mode": "darkest"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-u-themeDarkest",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "config toggle; marker auto-discovered via render-vs-baseline diff"
+    },
+    {
+      "id": "theme:light",
+      "feature": "theme",
+      "variant": "light",
+      "config": {
+        "collection": {
+          "mode": "light"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-u-themeLight",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "config toggle; marker auto-discovered via render-vs-baseline diff"
+    },
+    {
+      "id": "layout:2up",
+      "feature": "layout",
+      "variant": "2up",
+      "config": {
+        "collection": {
+          "layout": {
+            "type": "2up"
+          }
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-CardsGrid--2up",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "config toggle; marker auto-discovered via render-vs-baseline diff"
+    },
+    {
+      "id": "layout:4up",
+      "feature": "layout",
+      "variant": "4up",
+      "config": {
+        "collection": {
+          "layout": {
+            "type": "4up"
+          }
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-CardsGrid--4up",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "config toggle; marker auto-discovered via render-vs-baseline diff"
+    },
+    {
+      "id": "layout:5up",
+      "feature": "layout",
+      "variant": "5up",
+      "config": {
+        "collection": {
+          "layout": {
+            "type": "5up"
+          }
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-CardsGrid--5up",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "config toggle; marker auto-discovered via render-vs-baseline diff"
+    },
+    {
+      "id": "container:83Percent",
+      "feature": "container",
+      "variant": "83Percent",
+      "config": {
+        "collection": {
+          "layout": {
+            "container": "83Percent"
+          }
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-Wrapper--83PercentContainier",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "config toggle; marker auto-discovered via render-vs-baseline diff"
+    },
+    {
+      "id": "container:32Margin",
+      "feature": "container",
+      "variant": "32Margin",
+      "config": {
+        "collection": {
+          "layout": {
+            "container": "32Margin"
+          }
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-Wrapper--32MarginContainer",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "config toggle; marker auto-discovered via render-vs-baseline diff"
+    },
+    {
+      "id": "borders:off",
+      "feature": "card-borders",
+      "variant": "off",
+      "config": {
+        "collection": {
+          "setCardBorders": "false"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-u-noBorders",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "config toggle; marker auto-discovered via render-vs-baseline diff"
+    },
+    {
+      "id": "filter:left",
+      "feature": "filter-panel",
+      "variant": "left",
+      "config": {
+        "filterPanel": {
+          "enabled": "true",
+          "type": "left"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": "[data-testid=\"consonant-LeftFilters\"]",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "collection section; on by default in harness"
+    },
+    {
+      "id": "filter:top",
+      "feature": "filter-panel",
+      "variant": "top",
+      "config": {
+        "filterPanel": {
+          "enabled": "true",
+          "type": "top"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": "[data-testid=\"consonant-TopFilters\"]",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "collection section; on by default in harness"
+    },
+    {
+      "id": "sort:on",
+      "feature": "sort",
+      "variant": "on",
+      "config": {
+        "sort": {
+          "enabled": "true"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": "[data-testid=\"consonant-Select-btn\"]",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "collection section; on by default in harness"
+    },
+    {
+      "id": "search:on",
+      "feature": "search",
+      "variant": "on",
+      "config": {
+        "search": {
+          "enabled": "true"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": "[data-testid=\"consonant-Search-input\"]",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "collection section; on by default in harness"
+    },
+    {
+      "id": "bookmarks:on",
+      "feature": "bookmarks",
+      "variant": "on",
+      "config": {
+        "bookmarks": {
+          "enabled": "true"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": "[data-testid=\"consonant-Bookmarks\"]",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "collection section; on by default in harness"
+    },
+    {
+      "id": "pagination:loadMore",
+      "feature": "pagination",
+      "variant": "loadMore",
+      "config": {
+        "pagination": {
+          "enabled": "true",
+          "type": "loadMore"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": "[data-testid=\"consonant-LoadMore\"]",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "collection section; on by default in harness"
+    },
+    {
+      "id": "pagination:paginator",
+      "feature": "pagination",
+      "variant": "paginator",
+      "config": {
+        "pagination": {
+          "enabled": "true",
+          "type": "paginator"
+        },
+        "collection": {
+          "resultsPerPage": "3"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": "[data-testid=\"consonant-Pagination-itemBtn\"]",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "paginator; needs >1 page so resultsPerPage set low"
+    },
+    {
+      "id": "overlay:banner",
+      "feature": "banner",
+      "variant": "banner",
+      "config": {
+        "collection": {
+          "cardStyle": "1:2"
+        }
+      },
+      "cardPatch": {
+        "overlays": {
+          "banner": {
+            "backgroundColor": "#31A8FF",
+            "fontColor": "#FFFFFF",
+            "description": "Banner text"
+          }
+        }
+      },
+      "expect": {
+        "selector": "[data-testid=\"consonant-Card-banner\"]",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "card-data feature; marker confirmed in default render; cardPatch is minimal shape to add it"
+    },
+    {
+      "id": "overlay:label",
+      "feature": "label",
+      "variant": "label",
+      "config": {
+        "collection": {
+          "cardStyle": "1:2"
+        }
+      },
+      "cardPatch": {
+        "contentArea": {
+          "detailText": "EYEBROW LABEL"
+        }
+      },
+      "expect": {
+        "selector": "[data-testid=\"consonant-Card-label\"]",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "card-data feature; marker confirmed in default render; cardPatch is minimal shape to add it"
+    },
+    {
+      "id": "card:footer",
+      "feature": "footer",
+      "variant": "footer",
+      "config": {
+        "collection": {
+          "cardStyle": "1:2"
+        }
+      },
+      "cardPatch": {
+        "footer": [
+          {
+            "divider": true,
+            "left": [],
+            "center": [],
+            "right": [
+              {
+                "type": "button",
+                "style": "call-to-action",
+                "text": "Learn more",
+                "href": "#"
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "selector": "[data-testid=\"consonant-Card-footer\"]",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "card-data feature; marker confirmed in default render; cardPatch is minimal shape to add it"
+    },
+    {
+      "id": "infobit:cta-button",
+      "feature": "infobit",
+      "variant": "cta-button",
+      "config": {
+        "collection": {
+          "cardStyle": "1:2"
+        }
+      },
+      "cardPatch": {
+        "footer": [
+          {
+            "right": [
+              {
+                "type": "button",
+                "style": "call-to-action",
+                "text": "Learn more",
+                "href": "#"
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "selector": ".consonant-BtnInfobit--cta",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "card-data feature; marker confirmed in default render; cardPatch is minimal shape to add it"
+    },
+    {
+      "id": "infobit:price",
+      "feature": "infobit",
+      "variant": "price",
+      "config": {
+        "collection": {
+          "cardStyle": "1:2"
+        }
+      },
+      "cardPatch": {
+        "footer": [
+          {
+            "divider": true,
+            "left": [],
+            "center": [],
+            "right": [
+              {
+                "type": "price",
+                "price": "$9.99",
+                "text": "From"
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "selector": ".consonant-PriceInfobit",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "footer infobit item; type + shape shown in cardPatch"
+    },
+    {
+      "id": "infobit:text",
+      "feature": "infobit",
+      "variant": "text",
+      "config": {
+        "collection": {
+          "cardStyle": "1:2"
+        }
+      },
+      "cardPatch": {
+        "footer": [
+          {
+            "divider": true,
+            "left": [],
+            "center": [],
+            "right": [
+              {
+                "type": "text",
+                "text": "Info text"
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "selector": ".consonant-TextInfobit",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "footer infobit item; type + shape shown in cardPatch"
+    },
+    {
+      "id": "infobit:icon",
+      "feature": "infobit",
+      "variant": "icon",
+      "config": {
+        "collection": {
+          "cardStyle": "1:2"
+        }
+      },
+      "cardPatch": {
+        "footer": [
+          {
+            "divider": true,
+            "left": [],
+            "center": [],
+            "right": [
+              {
+                "type": "icon",
+                "icon": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/cat.png",
+                "altText": "ico"
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "selector": ".consonant-IconInfobit",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "footer infobit item; type + shape shown in cardPatch"
+    },
+    {
+      "id": "infobit:link",
+      "feature": "infobit",
+      "variant": "link",
+      "config": {
+        "collection": {
+          "cardStyle": "1:2"
+        }
+      },
+      "cardPatch": {
+        "footer": [
+          {
+            "divider": true,
+            "left": [],
+            "center": [],
+            "right": [
+              {
+                "type": "link",
+                "text": "A link",
+                "href": "#"
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "selector": ".consonant-LinkInfobit",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "footer infobit item; type + shape shown in cardPatch"
+    },
+    {
+      "id": "infobit:icon-with-text",
+      "feature": "infobit",
+      "variant": "icon-with-text",
+      "config": {
+        "collection": {
+          "cardStyle": "1:2"
+        }
+      },
+      "cardPatch": {
+        "footer": [
+          {
+            "divider": true,
+            "left": [],
+            "center": [],
+            "right": [
+              {
+                "type": "icon-with-text",
+                "icon": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/cat.png",
+                "text": "Icon text",
+                "altText": "x"
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "selector": ".consonant-IconWithTextInfobit",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "footer infobit item; type + shape shown in cardPatch"
+    },
+    {
+      "id": "infobit:link-with-icon",
+      "feature": "infobit",
+      "variant": "link-with-icon",
+      "config": {
+        "collection": {
+          "cardStyle": "1:2"
+        }
+      },
+      "cardPatch": {
+        "footer": [
+          {
+            "divider": true,
+            "left": [],
+            "center": [],
+            "right": [
+              {
+                "type": "link-with-icon",
+                "text": "Link+icon",
+                "href": "#",
+                "icon": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/cat.png"
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "selector": ".consonant-LinkWithIcoInfobit",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "footer infobit item; type + shape shown in cardPatch"
+    },
+    {
+      "id": "infobit:date-interval",
+      "feature": "infobit",
+      "variant": "date-interval",
+      "config": {
+        "collection": {
+          "cardStyle": "1:2"
+        }
+      },
+      "cardPatch": {
+        "footer": [
+          {
+            "divider": true,
+            "left": [],
+            "center": [],
+            "right": [
+              {
+                "type": "date-interval",
+                "startTime": "2020-01-01T00:00:00Z",
+                "endTime": "2020-12-02T00:00:00Z"
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "selector": ".consonant-DateIntervalInfobit",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "footer infobit item; type + shape shown in cardPatch"
+    },
+    {
+      "id": "infobit:rating",
+      "feature": "infobit",
+      "variant": "rating",
+      "config": {
+        "collection": {
+          "cardStyle": "1:2"
+        }
+      },
+      "cardPatch": {
+        "footer": [
+          {
+            "divider": true,
+            "left": [],
+            "center": [],
+            "right": [
+              {
+                "type": "rating",
+                "ratingValue": 4.5,
+                "ratingCount": "120"
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "selector": ".consonant-RatingInfobit",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "footer infobit item; type + shape shown in cardPatch"
+    },
+    {
+      "id": "infobit:progress-bar",
+      "feature": "infobit",
+      "variant": "progress-bar",
+      "config": {
+        "collection": {
+          "cardStyle": "1:2"
+        }
+      },
+      "cardPatch": {
+        "footer": [
+          {
+            "divider": true,
+            "left": [],
+            "center": [],
+            "right": [
+              {
+                "type": "progress-bar",
+                "barValue": 60,
+                "label": "60%"
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "selector": ".consonant-ProgressInfobit",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "footer infobit item; type + shape shown in cardPatch"
+    },
+    {
+      "id": "hover:grow",
+      "feature": "hover-effect",
+      "variant": "grow",
+      "config": {
+        "collection": {
+          "cardHoverEffect": "grow"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".card-hover-grow",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "config toggle; cardHoverEffect='grow'"
+    },
+    {
+      "id": "footer:divider",
+      "feature": "footer-divider",
+      "variant": "divider",
+      "config": {
+        "collection": {
+          "cardStyle": "1:2"
+        }
+      },
+      "cardPatch": {
+        "footer": [
+          {
+            "divider": true,
+            "left": [],
+            "center": [],
+            "right": [
+              {
+                "type": "text",
+                "text": "x"
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "selector": ".consonant-CardFooter--divider",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "card footer with divider:true"
+    },
+    {
+      "id": "overlay:logo",
+      "feature": "logo",
+      "variant": "logo",
+      "config": {
+        "collection": {
+          "cardStyle": "1:2"
+        }
+      },
+      "cardPatch": {
+        "overlays": {
+          "logo": {
+            "src": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/cat.png",
+            "alt": "Logo"
+          }
+        }
+      },
+      "expect": {
+        "selector": ".consonant-Card-logo",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "overlays.logo.src; showLogo=!!logoSrc"
+    },
+    {
+      "id": "overlay:badge",
+      "feature": "badge",
+      "variant": "badge",
+      "config": {
+        "collection": {
+          "cardStyle": "1:2",
+          "showCardBadges": "true"
+        }
+      },
+      "cardPatch": {
+        "overlays": {
+          "label": {
+            "description": "BADGE"
+          }
+        }
+      },
+      "expect": {
+        "selector": ".consonant-Card-badge",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "overlays.label.description + collection.showCardBadges=true"
+    },
+    {
+      "id": "layout:carousel",
+      "feature": "layout",
+      "variant": "carousel",
+      "config": {
+        "collection": {
+          "layout": {
+            "container": "carousel"
+          }
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-Wrapper--carousel",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "carousel layout mounts via layout.container='carousel'; advancing needs a click (action layer)"
+    }
+  ]
+}
