@@ -974,6 +974,54 @@
       },
       "verified": true,
       "notes": "footer infobit item; type + shape shown in cardPatch"
+    },
+    {
+      "id": "hover:grow",
+      "feature": "hover-effect",
+      "variant": "grow",
+      "config": {
+        "collection": {
+          "cardHoverEffect": "grow"
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".card-hover-grow",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "config toggle; cardHoverEffect='grow'"
+    },
+    {
+      "id": "footer:divider",
+      "feature": "footer-divider",
+      "variant": "divider",
+      "config": {
+        "collection": {
+          "cardStyle": "1:2"
+        }
+      },
+      "cardPatch": {
+        "footer": [
+          {
+            "divider": true,
+            "left": [],
+            "center": [],
+            "right": [
+              {
+                "type": "text",
+                "text": "x"
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "selector": ".consonant-CardFooter--divider",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "card footer with divider:true"
     }
   ]
 }
