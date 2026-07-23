@@ -32,9 +32,10 @@ const FlexCard = () => {
     let showDetails = !(flexCardOptions?.hideDetails === true);
     const showTitle = !(flexCardOptions?.hideTitle === true);
     const showDescription = !(flexCardOptions?.hideDescription === true);
-    const showFooter = !(flexCardOptions?.hideFooter === true);
     const textSize = flexCardOptions?.textSize || '';
     const textSizeClass = textSize === 'text-large' ? 'text-large' : '';
+    const showDateOnFooter = flexCardOptions?.showDateOnFooter === true;
+    const showFooter = !hideCTA || showDateOnFooter || endDate;
 
     const getConfig = useConfig();
     const detailsTextOption = getConfig('collection', 'detailsTextOption');
@@ -108,7 +109,7 @@ const FlexCard = () => {
                     showText
                     highlightedDescription={highlightedDescription}
                     description={showDescription ? description : ''} />
-                {!hideCTA && showFooter &&
+                {showFooter &&
                 footer.map(footerItem => (
                     <CardFooter
                         divider={renderDivider || footerItem.divider}
@@ -127,10 +128,12 @@ const FlexCard = () => {
                         tabIndex={tabIndex}
                         renderOverlay={renderOverlay}
                         hideCTA={hideCTA}
-                        isBlog={false} />
+                        isBlog={false}
+                        isFlexCard={true}
+                        showDateOnFooter={showDateOnFooter} />
                 ))}
             </div>
-            {(renderOverlay || hideCTA) &&
+            {(renderOverlay) &&
             <LinkBlocker
                 target={linkBlockerTarget}
                 link={overlay}
