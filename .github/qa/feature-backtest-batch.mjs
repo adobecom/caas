@@ -226,16 +226,19 @@ async function judgeExpected(intent, domDiff, visualDiff) {
     + `- WORKS: the render shows a change consistent with the PR's core purpose — a structural change when the PR alters markup/classes/attributes/testids, or a visual change when the PR changes CSS values — even if a specific described variant is not visible here.\n`
     + `- FLAG: the change did not apply — the PR alters the DOM (markup/class/attribute/testid) but the structural diff shows NO change, or the PR intends a substantial feature but the render is essentially unchanged — OR the change clearly contradicts the intent (wrong result, opposite effect, or an unrelated element broke).\n`
     + `- NO_CHANGE: the PR did not intend any visible change (pure refactor, comment/log/formatting tweak) and the page correctly shows no change.`;
-  for (let attempt = 0; attempt < 3; attempt += 1) {
+  for (let attempt = 0; attempt < 4; attempt += 1) {
     try {
       const res = await fetch(PROXY, { method: 'POST', headers: { Authorization: `Bearer ${TOKEN}`, 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01' },
         body: JSON.stringify({ model: MODEL, max_tokens: 600, stream: true, messages: [{ role: 'user', content: prompt }] }) });
       const raw = await res.text(); let text = '';
       for (const line of raw.split('\n')) { const t = line.trim(); if (!t.startsWith('data:')) continue; const d = t.slice(5).trim(); if (!d || d === '[DONE]') continue; let e; try { e = JSON.parse(d); } catch { continue; } if (e.type === 'content_block_delta' && e.delta?.type === 'text_delta') text += e.delta.text || ''; }
-      const j = JSON.parse(text.slice(text.indexOf('{'), text.lastIndexOf('}') + 1));
+      const start = text.indexOf('{'); const end = text.lastIndexOf('}');
+      if (start === -1 || end === -1) throw new Error('empty or non-JSON judge response');
+      const j = JSON.parse(text.slice(start, end + 1));
+      if (!j.verdict) throw new Error('judge response missing verdict');
       return { verdict: j.verdict, reason: j.reason };
     } catch (error) {
-      if (attempt === 2) return { error: error.message };
+      if (attempt === 3) return { error: error.message };
       await new Promise((resolve) => { setTimeout(resolve, 5000 * (attempt + 1)); });
     }
   }
