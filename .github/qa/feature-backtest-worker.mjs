@@ -251,37 +251,7 @@ async function captureLiveConfigs(context, routeLibraries) {
   return configs;
 }
 
-async function renderScenario(context, routeLibraries, plan) {
-  const gateUrl = PAGE + (PAGE.includes('?') ? '&' : '?') + 'caasqa=1';
-  const page = await context.newPage();
-  const diagnostics = { collectionRequests: [], pageErrors: [], consoleErrors: [], requestFailures: [] };
-  page.on('pageerror', (error) => diagnostics.pageErrors.push(String(error.message || error).slice(0, 1000)));
-  page.on('console', (message) => {
-    if (message.type() === 'error') diagnostics.consoleErrors.push(message.text().slice(0, 1000));
-  });
-  page.on('requestfailed', (request) => {
-    if (request.url().includes('chimera-api') || request.url().includes('caas-libs')) {
-      diagnostics.requestFailures.push({ url: request.url().slice(0, 500),
-        error: String(request.failure()?.errorText || '').slice(0, 500) });
-    }
-  });
-  await page.setViewportSize({ width: 1280, height: 1800 });
-  const injected = { ...(plan.config || {}), _caasQaReplace: true };
-  await page.addInitScript((config) => {
-    try { window.localStorage.setItem('caasQaConfig', config); } catch { /* noop */ }
-  }, JSON.stringify(injected));
-  await page.route('**/caas-libs/**', routeLibraries);
-  await page.route('**/chimera-api/collection**', async (route) => {
-    diagnostics.collectionRequests.push(route.request().url().slice(0, 1000));
-    return route.fulfill({
-      contentType: 'application/json',
-      body: JSON.stringify({ cards: plan.cards || [], filters: plan.filters || [], isHashed: Boolean(plan.isHashed) }),
-    });
-  });
-  await page.goto(gateUrl, { waitUntil: 'load', timeout: 45000 }).catch(() => {});
-  await page.waitForSelector('.consonant-CardsGrid, .consonant-Card', { timeout: 15000 }).catch(() => {});
-  await page.waitForTimeout(2500);
-  const observed = await page.evaluate((probeSpecs) => {
+const DOM_CAPTURE = (probeSpecs) => {
     const defaultAttributes = ['role', 'aria-label', 'aria-current', 'aria-live', 'data-testid',
       'data-country', 'data-card-url', 'href', 'src', 'alt', 'type', 'value'];
     const snapshot = (element, requested = []) => {
@@ -333,7 +303,59 @@ async function renderScenario(context, routeLibraries, plan) {
       collectionRoots: take('.consonant-CardsGrid,.caas-preview,.caas-config,[class*="consonant-Container"]', 20),
       probes: probeSpecs.map((probe) => ({ ...probe, matches: take(probe.selector, 20, probe.attributes) })),
     };
-  }, cleanProbes(plan.probes));
+  };
+
+async function renderScenario(context, routeLibraries, plan) {
+  const gateUrl = PAGE + (PAGE.includes('?') ? '&' : '?') + 'caasqa=1';
+  const page = await context.newPage();
+  const diagnostics = { collectionRequests: [], pageErrors: [], consoleErrors: [], requestFailures: [] };
+  page.on('pageerror', (error) => diagnostics.pageErrors.push(String(error.message || error).slice(0, 1000)));
+  page.on('console', (message) => {
+    if (message.type() === 'error') diagnostics.consoleErrors.push(message.text().slice(0, 1000));
+  });
+  page.on('requestfailed', (request) => {
+    if (request.url().includes('chimera-api') || request.url().includes('caas-libs')) {
+      diagnostics.requestFailures.push({ url: request.url().slice(0, 500),
+        error: String(request.failure()?.errorText || '').slice(0, 500) });
+    }
+  });
+  await page.setViewportSize({ width: 1280, height: 1800 });
+  const injected = { ...(plan.config || {}), _caasQaReplace: true };
+  await page.addInitScript((config) => {
+    try { window.localStorage.setItem('caasQaConfig', config); } catch { /* noop */ }
+  }, JSON.stringify(injected));
+  await page.route('**/caas-libs/**', routeLibraries);
+  await page.route('**/chimera-api/collection**', async (route) => {
+    diagnostics.collectionRequests.push(route.request().url().slice(0, 1000));
+    return route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({ cards: plan.cards || [], filters: plan.filters || [], isHashed: Boolean(plan.isHashed) }),
+    });
+  });
+  await page.goto(gateUrl, { waitUntil: 'load', timeout: 45000 }).catch(() => {});
+  await page.waitForSelector('.consonant-CardsGrid, .consonant-Card', { timeout: 15000 }).catch(() => {});
+  await page.waitForTimeout(2500);
+  const observed = await page.evaluate(DOM_CAPTURE, cleanProbes(plan.probes));
+  // ACTION LAYER: if the plan asks for a browser interaction, perform it once and re-capture.
+  if (plan.action && plan.action.selector) {
+    const act = plan.action;
+    try {
+      if (act.kind === 'type') {
+        await page.fill(act.selector, String(act.value == null ? '' : act.value));
+      } else {
+        await page.$eval(act.selector, (el) => el.click())
+          .catch(() => page.click(act.selector, { force: true, timeout: 6000 }));
+      }
+      await page.waitForTimeout(1800);
+      observed.afterAction = await page.evaluate(DOM_CAPTURE, cleanProbes(plan.probes));
+      observed.action = act;
+      console.log(`[action] ${act.kind || 'click'} ${act.selector}` + (act.value ? ` = "${act.value}"` : ''));
+    } catch (error) {
+      observed.action = act;
+      observed.actionError = String(error && error.message ? error.message : error).slice(0, 300);
+      console.log(`[action] FAILED ${act.selector}: ${observed.actionError}`);
+    }
+  }
   observed.diagnostics = diagnostics;
   mkdirSync(path.dirname(SCREENSHOT_PATH), { recursive: true });
   await page.screenshot({ path: SCREENSHOT_PATH, fullPage: true }).catch(() => {});
@@ -403,11 +425,11 @@ Harness contract: return only the config keys needed for the selected feature/te
 
 BOOTSTRAP DATA-FLOW CHECK: a changed DOM model/custom-element constructor or getAttribute implementation is not automatically internal-only. If a changed property is passed through model.props, createRDC, a decorator, or another wrapper into a mounted React component, test whether preserving the captured live config plus sentinel cards makes the collection mount. For that root-render case, require a real collection/root selector and unique sentinel-card selectors under that same root; generic .consonant-Card evidence or a screenshot alone is not proof.
 
-Return a minimal feature config patch, crafted cards and filters, the exact expected assertion, and up to six read-only CSS probes that expose the relevant DOM. A probe is {"selector":"CSS selector","attributes":["attribute"],"why":"..."}. The selected assertion must come from the changed test diff or a new observable product requirement explicitly introduced by the PR diff/body; never borrow an old unchanged regression test from the full spec. Follow the production caller chain from test props to config/card/filter JSON and cite it. Return skipReason only if the relevant input cannot be expressed in the replaced config/card/filter JSON, or the change fundamentally requires unsupported interaction (click/hover/type/scroll/resize). For a visual/CSS-only change, do NOT skip: still emit a scenario that renders the affected element (e.g. a card with long text for a line-clamp change); the old-vs-new diff judges the change.
+Return a minimal feature config patch, crafted cards and filters, the exact expected assertion, and up to six read-only CSS probes that expose the relevant DOM. A probe is {"selector":"CSS selector","attributes":["attribute"],"why":"..."}. The selected assertion must come from the changed test diff or a new observable product requirement explicitly introduced by the PR diff/body; never borrow an old unchanged regression test from the full spec. Follow the production caller chain from test props to config/card/filter JSON and cite it. Return skipReason only if the relevant input cannot be expressed in the replaced config/card/filter JSON, or the change requires a MULTI-STEP or unsupported interaction (hover, scroll, drag, resize, URL/history change, or a sequence). If the changed behavior becomes observable after ONE simple interaction (a single click on a visible control, or typing a query into a search field), do NOT skip: return an "action" object (see schema); the harness performs that one action after the initial render and diffs before-vs-after. For a visual/CSS-only change, do NOT skip: still emit a scenario that renders the affected element (e.g. a card with long text for a line-clamp change); the old-vs-new diff judges the change.
 
 BOUNDARY CASES: when the changed source adjusts a comparison or visibility condition, trace its initial values and mount effects. Prefer a minimal fixture whose injected card/filter/config values land exactly at the changed boundary on the initial render (for example, cards.length = cardsPerPage + 1) over assuming a click is necessary from the ticket wording.
 
-RENDER-OR-SKIP: your config MUST actually render the exact component your assertion observes. If the assertion targets a carousel control, set the collection layout/style to the carousel variant so CardsCarousel renders; if it targets nested filter items, the filter panel and its nested filter data must render those items directly. If the target element would only appear after an interaction the harness cannot perform (expanding/collapsing a filter category, advancing/scrolling a carousel, hovering, clicking, typing, resizing the viewport), that is an UNSUPPORTED interaction: return a precise skipReason naming the required interaction instead of a scenario whose target never appears. Never select an assertion you cannot make observable in the initial render.
+RENDER-OR-SKIP: your config MUST actually render the exact component your assertion observes. If the assertion targets a carousel control, set the collection layout/style to the carousel variant so CardsCarousel renders; if it targets nested filter items, the filter panel and its nested filter data must render those items directly. If the target only becomes observable after ONE simple interaction, return an "action" {kind:'click'|'type', selector, value?} naming that single interaction and set requiredInitial to the CONTROL you will interact with (confirm it renders before acting). Use action for: clicking one filter item, clicking a load-more or carousel next/prev control, or typing into a search field. Still return a skipReason for interactions the harness cannot do: hover, scroll, drag, resize, URL/history changes, or a SEQUENCE of interactions. For a pure initial-render assertion, omit action.
 
 INITIAL-RENDER CONTRACT: return renderability.requiredInitial with up to three positive DOM prerequisites that must exist in the initial POST render before the assertion can be judged. Include the exact input/button/card/label whose property you assert, not just a wrapper. For a genuine absence assertion, require a stable rendered parent/card/root instead of the element expected to be absent. Each selector must also be a probe; code prioritizes these probes and will make one bounded scenario-only repair attempt if a prerequisite is missing. Before choosing a click-gated caller, search for another supported config/layout caller that renders the same target initially. An enabled config flag is not proof that a local user-state gate has been satisfied.
 
@@ -416,7 +438,7 @@ CRITICAL: copy the selected test's exact cardStyle literal into every crafted ca
 RESPONSE SIZE: keep the complete JSON below 24,000 characters. Use no more than eight cards, four filter groups with sixteen total leaf items, four probes, and three mappingEvidence entries. Omit non-rendering card fields and keep explanations concise; the fixture need only prove the exact changed behavior.
 
 Reply ONLY JSON:
-{"sourceTest":"...","config":{},"cards":[],"filters":[],"isHashed":false,"expected":"exact assertion","observe":"...","probes":[],"renderability":{"requiredInitial":[{"selector":"...","minMatches":1,"why":"..."}]},"mappingEvidence":[{"file":"...","line":1,"fact":"..."}],"skipReason":""}
+{"sourceTest":"...","config":{},"cards":[],"filters":[],"isHashed":false,"expected":"exact assertion","observe":"...","probes":[],"renderability":{"requiredInitial":[{"selector":"...","minMatches":1,"why":"..."}]},"mappingEvidence":[{"file":"...","line":1,"fact":"..."}],"action":{"kind":"click|type","selector":"CSS selector of the ONE control to interact with","value":"text to type (type only; omit for click)"},"skipReason":""}
 or {"sourceTest":"...","skipReason":"precise unsupported capability or missing mapping"}.`;
     const planResponse = await requestBoundedJson({
       ask: llmResponse,

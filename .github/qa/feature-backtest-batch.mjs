@@ -282,12 +282,16 @@ async function main() {
         ? runWorker({ pr, variant: 'pre', targetRoot: preRoot, resultDir, planPath }) : null;
       const classification = classifyPair(post, pre);
       let domDiff = null;
-      const postSig = post?.observed?.domSignature; const preSig = pre?.observed?.domSignature;
+      // When the tool performed a click/type action, the meaningful comparison is the AFTER-action
+      // state (the change often only appears after the interaction). Otherwise diff the initial render.
+      const acted = Boolean(post?.observed?.afterAction?.domSignature && pre?.observed?.afterAction?.domSignature);
+      const postSig = acted ? post.observed.afterAction.domSignature : post?.observed?.domSignature;
+      const preSig = acted ? pre.observed.afterAction.domSignature : pre?.observed?.domSignature;
       if (postSig && preSig) {
         const d = diffSignatures(preSig, postSig);
-        domDiff = { changed: d.changed, summary: summarizeDiff(d) };
+        domDiff = { changed: d.changed, summary: (acted ? '[after action] ' : '') + summarizeDiff(d), afterAction: acted };
         writeFileSync(path.join(resultDir, 'dom-diff.json'), `${JSON.stringify(d, null, 2)}\n`);
-        console.log(`[dom-diff] PR #${pr}: ${domDiff.summary}`);
+        console.log(`[dom-diff] PR #${pr}${acted ? ' (after action)' : ''}: ${domDiff.summary}`);
       }
       const visualDiff = pixelDiff(path.join(resultDir, 'pre.png'), path.join(resultDir, 'post.png'));
       // Diff-based verdict: the render changed old->new (structurally or visually) => the PR
