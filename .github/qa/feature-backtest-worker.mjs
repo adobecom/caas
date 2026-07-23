@@ -66,7 +66,14 @@ function extractJson(source) {
   const start = text.indexOf('{');
   const end = text.lastIndexOf('}');
   if (start === -1 || end <= start) throw new Error('no JSON object in LLM output');
-  return JSON.parse(text.slice(start, end + 1));
+  const candidate = text.slice(start, end + 1);
+  try { return JSON.parse(candidate); }
+  catch (jsonErr) {
+    // LLM sometimes emits raw control chars (newlines/tabs) inside string values -> "Unterminated string".
+    // Collapse C0 control chars and retry before giving up.
+    try { return JSON.parse(candidate.replace(/[\u0000-\u001f]+/g, ' ')); }
+    catch { throw jsonErr; }
+  }
 }
 
 async function llmResponse(prompt, maxTokens = 4000) {
