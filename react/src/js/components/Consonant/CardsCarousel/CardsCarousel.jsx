@@ -280,7 +280,7 @@ function CardsCarousel({
     }
 
     function nextButtonClick() {
-        if (isMobile() && carouselType === 'default') {
+        if (isMobile()) {
             centerClick();
         } else {
             const carousel = carouselRef.current;
@@ -293,7 +293,7 @@ function CardsCarousel({
     }
 
     function prevButtonClick() {
-        if (isMobile() && carouselType === 'default') {
+        if (isMobile()) {
             centerClick();
         } else {
             const carousel = carouselRef.current;
