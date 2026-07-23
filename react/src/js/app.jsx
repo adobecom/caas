@@ -73,11 +73,57 @@ try {
     /* eslint-disable no-empty */
 }
 
+// --- QA injection hook: window._qa = { config, cardPatch, patchTarget } ---
+function _qaDeepMerge(t, src) {
+    if (!src || typeof src !== 'object') return t;
+    for (const k of Object.keys(src)) {
+        const v = src[k];
+        if (v && typeof v === 'object' && !Array.isArray(v)) {
+            if (!t[k] || typeof t[k] !== 'object') t[k] = {};
+            _qaDeepMerge(t[k], v);
+        } else { t[k] = v; }
+    }
+    return t;
+}
+function _qaApplyConfig(cfg) {
+    try { if (window._qa && window._qa.config) _qaDeepMerge(cfg, window._qa.config); } catch (e) { /* noop */ }
+    return cfg;
+}
+let _qaFetchPatched = false;
+function _qaInstallFetchPatch() {
+    try {
+        if (!window._qa || !window._qa.cardPatch || _qaFetchPatched) return;
+        _qaFetchPatched = true;
+        const orig = window.fetch.bind(window);
+        window.fetch = function qaFetch(...args) {
+            return orig(...args).then((resp) => {
+                try {
+                    return resp.clone().json().then((json) => {
+                        if (json && Array.isArray(json.cards) && window._qa && window._qa.cardPatch) {
+                            const t = window._qa.patchTarget;
+                            let idxs;
+                            if (t === 'all') idxs = json.cards.map((_, i) => i);
+                            else if (typeof t === 'number') idxs = json.cards.slice(0, t).map((_, i) => i);
+                            else idxs = json.cards.slice(0, 3).map((_, i) => i);
+                            for (const i of idxs) _qaDeepMerge(json.cards[i], window._qa.cardPatch);
+                            return new Response(JSON.stringify(json), { status: resp.status, statusText: resp.statusText, headers: resp.headers });
+                        }
+                        return resp;
+                    }).catch(() => resp);
+                } catch (e) { return resp; }
+            });
+        };
+    } catch (e) { /* noop */ }
+}
+
 export class ConsonantCardCollecton {
     constructor(config, element) {
+        const _qaCfg = applyQaConfigOverride(parseToPrimitive(config));
+        _qaApplyConfig(_qaCfg);
+        _qaInstallFetchPatch();
         ReactDOM.render((
             <React.Fragment>
-                <Container config={applyQaConfigOverride(parseToPrimitive(config))} />
+                <Container config={_qaCfg} />
             </React.Fragment>), element);
     }
 }
