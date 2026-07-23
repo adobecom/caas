@@ -219,10 +219,11 @@ async function judgeExpected(intent, domDiff, visualDiff) {
     + `=== WHAT ACTUALLY CHANGED ON THE PAGE (the only evidence of real behavior) ===\n`
     + `Structural change (new vs old render): ${domDiff ? domDiff.summary : 'none captured'}\n`
     + `Visual change: ${visualDiff ? (visualDiff.changed ? `yes (${visualDiff.pct}% of pixels)` : 'no') : 'n/a'}\n\n`
-    + `The rendered page diff is the source of truth for what the code ACTUALLY did. The code change only shows what was INTENDED, so never assume it worked because it looks correct.\n`
+    + `The rendered page diff is the source of truth for what the code ACTUALLY did. The code change only shows what was INTENDED; never assume it worked because it looks correct.\n`
+    + `IMPORTANT: the harness forces ONE scenario/variant of the feature to render, so not every detail in the code or description will be visible here. Judge against the feature's CORE purpose, not every sub-detail. A substantial change broadly consistent with that purpose is WORKS even if a specific described variant, state, or edge case is not visible in this single render.\n`
     + `Reply ONLY JSON: {"verdict":"WORKS"|"FLAG"|"NO_CHANGE","reason":"one sentence"}.\n`
-    + `- WORKS: the PR intended a visible change AND the page changed in a way that matches that intent.\n`
-    + `- FLAG: the PR intended a visible change but the page shows nothing (feature missing or broken), OR the page changed in a way that does not match the intent (wrong result, or an unrelated element changed or broke).\n`
+    + `- WORKS: the page changed in a way broadly consistent with the PR's core purpose (in kind and in scale).\n`
+    + `- FLAG: the PR intended a visible change but the page shows no change, or only a change far smaller or different than the intended feature (feature missing or not applied), OR the change clearly contradicts the intent (wrong result, opposite effect, or an unrelated element broke).\n`
     + `- NO_CHANGE: the PR did not intend any visible change (pure refactor, comment/log/formatting tweak) and the page correctly shows no change.`;
   try {
     const res = await fetch(PROXY, { method: 'POST', headers: { Authorization: `Bearer ${TOKEN}`, 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01' },
