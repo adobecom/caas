@@ -220,19 +220,26 @@ async function judgeExpected(intent, domDiff, visualDiff) {
     + `Structural change (new vs old render): ${domDiff ? domDiff.summary : 'none captured'}\n`
     + `Visual change: ${visualDiff ? (visualDiff.changed ? `yes (${visualDiff.pct}% of pixels)` : 'no') : 'n/a'}\n\n`
     + `The rendered page diff is the source of truth for what the code ACTUALLY did. The code change only shows what was INTENDED; never assume it worked because it looks correct.\n`
-    + `IMPORTANT: the harness forces ONE scenario/variant of the feature to render, so not every detail in the code or description will be visible here. Judge against the feature's CORE purpose, not every sub-detail. A substantial change broadly consistent with that purpose is WORKS even if a specific described variant, state, or edge case is not visible in this single render.\n`
+    + `IMPORTANT: the harness forces ONE scenario/variant to render, so not every detail in the code or description will be visible. Judge against the feature's CORE purpose, not a specific sub-detail — do NOT flag merely because one described variant, state, or edge case is not shown in this single render.\n`
+    + `Also weigh SCALE: compare how big the observed change is against how big the intended feature is. A PR that introduces or restructures visible UI should produce a clear structural (DOM) change and/or a large visual change; if such a PR shows NO structural change and only a small visual difference, the feature did not actually apply -> FLAG. A large visual-only change (e.g. a CSS spacing/clamp/color change) DOES count as applied.\n`
     + `Reply ONLY JSON: {"verdict":"WORKS"|"FLAG"|"NO_CHANGE","reason":"one sentence"}.\n`
-    + `- WORKS: the page changed in a way broadly consistent with the PR's core purpose (in kind and in scale).\n`
-    + `- FLAG: the PR intended a visible change but the page shows no change, or only a change far smaller or different than the intended feature (feature missing or not applied), OR the change clearly contradicts the intent (wrong result, opposite effect, or an unrelated element broke).\n`
+    + `- WORKS: the render shows a change consistent with the PR's core purpose in kind and scale — a matching structural change, or a large visual change matching it — even if a specific described variant is not visible here.\n`
+    + `- FLAG: the PR intended a visible feature but it did not actually apply (no structural change and only a small visual diff for a PR that adds or restructures UI), OR the change clearly contradicts the intent (wrong result, opposite effect, or an unrelated element broke).\n`
     + `- NO_CHANGE: the PR did not intend any visible change (pure refactor, comment/log/formatting tweak) and the page correctly shows no change.`;
-  try {
-    const res = await fetch(PROXY, { method: 'POST', headers: { Authorization: `Bearer ${TOKEN}`, 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({ model: MODEL, max_tokens: 600, stream: true, messages: [{ role: 'user', content: prompt }] }) });
-    const raw = await res.text(); let text = '';
-    for (const line of raw.split('\n')) { const t = line.trim(); if (!t.startsWith('data:')) continue; const d = t.slice(5).trim(); if (!d || d === '[DONE]') continue; let e; try { e = JSON.parse(d); } catch { continue; } if (e.type === 'content_block_delta' && e.delta?.type === 'text_delta') text += e.delta.text || ''; }
-    const j = JSON.parse(text.slice(text.indexOf('{'), text.lastIndexOf('}') + 1));
-    return { verdict: j.verdict, reason: j.reason };
-  } catch (error) { return { error: error.message }; }
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    try {
+      const res = await fetch(PROXY, { method: 'POST', headers: { Authorization: `Bearer ${TOKEN}`, 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01' },
+        body: JSON.stringify({ model: MODEL, max_tokens: 600, stream: true, messages: [{ role: 'user', content: prompt }] }) });
+      const raw = await res.text(); let text = '';
+      for (const line of raw.split('\n')) { const t = line.trim(); if (!t.startsWith('data:')) continue; const d = t.slice(5).trim(); if (!d || d === '[DONE]') continue; let e; try { e = JSON.parse(d); } catch { continue; } if (e.type === 'content_block_delta' && e.delta?.type === 'text_delta') text += e.delta.text || ''; }
+      const j = JSON.parse(text.slice(text.indexOf('{'), text.lastIndexOf('}') + 1));
+      return { verdict: j.verdict, reason: j.reason };
+    } catch (error) {
+      if (attempt === 2) return { error: error.message };
+      await new Promise((resolve) => { setTimeout(resolve, 5000 * (attempt + 1)); });
+    }
+  }
+  return { error: 'judge failed after retries' };
 }
 
 async function main() {
