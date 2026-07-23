@@ -18,6 +18,12 @@ export const CAAS_ENDPOINT_MAP = {
 export const TABLET_MIN_WIDTH = 768;
 
 /**
+ * Maximum viewport width to fit tablets
+ * @type {Number}
+ */
+export const TABLET_BREAKPOINT = 1199;
+
+/**
  * Maximum allowed top filters displayed
  * before "More Filters" button shows up
  * @type {Number}

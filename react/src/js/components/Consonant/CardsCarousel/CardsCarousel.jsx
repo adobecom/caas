@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 import { useConfig } from '../Helpers/hooks';
 import Grid from '../Grid/Grid';
 import { RenderTotalResults } from '../Helpers/rendering';
+import { isMobile } from '../Helpers/Helpers';
 
 const NEXT_BUTTON_NAME = 'next';
 const PREV_BUTTON_NAME = 'previous';
-const TABLET_BREAKPOINT = 1199;
 let cardsShiftedPerClick = null;
 let cardWidth = null;
 
@@ -83,7 +83,7 @@ function CardsCarousel({
     const prevCard = getConfig('collection', 'i18n.prevCards') || 'Previous Cards';
     const useLightText = getConfig('collection', 'useLightText');
     // eslint-disable-next-line no-use-before-define
-    const isIncremental = isMobile() || getConfig('pagination', 'animationStyle').includes('incremental');
+    const isIncremental = isMobile || getConfig('pagination', 'animationStyle').includes('incremental');
     const renderOverlay = getConfig('collection', 'useOverlayLinks');
 
     if (cardsUp.includes('2up')) {
@@ -108,10 +108,6 @@ function CardsCarousel({
 
     let firstVisibleCard = 1;
     let lastVisibleCard = firstVisibleCard + cardsPerPage - 1;
-
-    function isMobile() {
-        return window.innerWidth < TABLET_BREAKPOINT;
-    }
 
     function hideNextButton() {
         const nextBtn = next.current;
@@ -209,7 +205,7 @@ function CardsCarousel({
     }
 
     function mobileLogic() {
-        if (isMobile() && carouselType === 'default') {
+        if (isMobile && carouselType === 'default') {
             hideNav();
         } else {
             showNav();
@@ -284,7 +280,7 @@ function CardsCarousel({
     }
 
     function nextButtonClick() {
-        if (isMobile() && carouselType === 'default') {
+        if (isMobile && carouselType === 'default') {
             centerClick();
         } else {
             const carousel = carouselRef.current;
@@ -297,7 +293,7 @@ function CardsCarousel({
     }
 
     function prevButtonClick() {
-        if (isMobile() && carouselType === 'default') {
+        if (isMobile && carouselType === 'default') {
             centerClick();
         } else {
             const carousel = carouselRef.current;
