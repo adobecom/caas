@@ -1070,6 +1070,25 @@
       },
       "verified": true,
       "notes": "overlays.label.description + collection.showCardBadges=true"
+    },
+    {
+      "id": "layout:carousel",
+      "feature": "layout",
+      "variant": "carousel",
+      "config": {
+        "collection": {
+          "layout": {
+            "container": "carousel"
+          }
+        }
+      },
+      "cardPatch": null,
+      "expect": {
+        "selector": ".consonant-Wrapper--carousel",
+        "min": 1
+      },
+      "verified": true,
+      "notes": "carousel layout mounts via layout.container='carousel'; advancing needs a click (action layer)"
     }
   ]
 }
