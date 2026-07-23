@@ -87,12 +87,58 @@ const extractJson = (s) => {
   return JSON.parse(t.slice(a, b + 1));
 };
 
+function ptStamp() {
+  const d = new Date();
+  return `${d.toLocaleString('en-US', { timeZone: 'America/Los_Angeles', month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true })} PT`;
+}
+
+// Sticky comment: find our marked comment and EDIT it in place (with a local
+// timestamp + a run-history log), instead of posting a new comment each run.
 function postComment(verdict, bodyMd) {
-  const comment = [MARKER, `## 🧪 Feature QA review — injected feature test (advisory, non-blocking)`, '',
-    `Overall: **${verdict}**`, '', bodyMd, '',
-    RUN_URL ? `_Screenshot in the [workflow run](${RUN_URL})._` : ''].join('\n');
-  writeFileSync('/tmp/feature-comment.md', comment);
-  try { gh(['pr', 'comment', PR, '-R', REPO, '--body-file', '/tmp/feature-comment.md']); } catch (e) { console.error('post failed', e.message); }
+  let priorCid = '';
+  let priorBody = '';
+  try {
+    const raw = gh(['api', `repos/${REPO}/issues/${PR}/comments`, '--paginate',
+      '--jq', `.[] | select(.body | contains("${MARKER}")) | [(.id|tostring),(.body|@base64)] | @tsv`]);
+    for (const ln of raw.split('\n')) {
+      const t = ln.trim(); if (!t) continue;
+      const parts = t.split('\t'); priorCid = parts[0];
+      if (parts[1]) { try { priorBody = Buffer.from(parts[1], 'base64').toString('utf8'); } catch { priorBody = ''; } }
+      break;
+    }
+  } catch (e) { /* first run / no comments */ }
+
+  const mh = priorBody.match(/<!-- history:start -->([\s\S]*?)<!-- history:end -->/);
+  const priorHistory = mh ? mh[1].split('\n').map((l) => l.trim()).filter((l) => l.startsWith('- ')) : [];
+  const now = ptStamp();
+  const sha = (env('HEAD_SHA') || env('GITHUB_SHA') || '').slice(0, 7);
+  const trigger = env('GITHUB_EVENT_NAME', 'run');
+  const entry = `- ${now} \u00b7 **${verdict}**${sha ? ` \u00b7 \`${sha}\`` : ''} \u00b7 ${trigger}`;
+  const hist = [entry, ...priorHistory].slice(0, 12);
+  const header = `_Last updated ${now}${sha ? ` \u00b7 commit \`${sha}\`` : ''} \u00b7 ${trigger}._`;
+
+  const body = [
+    MARKER,
+    `## \ud83e\uddea Feature QA review \u2014 injected feature test (advisory, non-blocking)`,
+    '', header, '',
+    `Overall: **${verdict}**`, '',
+    bodyMd, '',
+    RUN_URL ? `_Screenshot in the [workflow run](${RUN_URL})._` : '',
+    '',
+    `<details><summary>Review history (${hist.length} run${hist.length === 1 ? '' : 's'})</summary>`,
+    '',
+    '<!-- history:start -->',
+    hist.join('\n'),
+    '<!-- history:end -->',
+    '</details>',
+  ].join('\n');
+
+  writeFileSync('/tmp/feature-comment.json', JSON.stringify({ body }));
+  try {
+    if (priorCid) gh(['api', '-X', 'PATCH', `repos/${REPO}/issues/comments/${priorCid}`, '--input', '/tmp/feature-comment.json']);
+    else gh(['api', '-X', 'POST', `repos/${REPO}/issues/${PR}/comments`, '--input', '/tmp/feature-comment.json']);
+    console.log(`feature-review comment ${priorCid ? 'updated' : 'posted'} (${now})`);
+  } catch (e) { console.error('post failed', e.message); }
 }
 
 (async () => {

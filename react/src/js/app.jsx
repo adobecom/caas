@@ -85,12 +85,21 @@ function _qaDeepMerge(t, src) {
     }
     return t;
 }
+function _qaGateOpen() {
+    // QA hooks are INERT unless the ?caasqa URL gate is present (same gate as
+    // applyQaConfigOverride). Without it, a third-party script that sets window._qa
+    // cannot override collection config or monkey-patch global fetch in production.
+    try { return new URLSearchParams(window.location.search || '').has('caasqa'); }
+    catch (e) { return false; }
+}
 function _qaApplyConfig(cfg) {
+    if (!_qaGateOpen()) return cfg;
     try { if (window._qa && window._qa.config) _qaDeepMerge(cfg, window._qa.config); } catch (e) { /* noop */ }
     return cfg;
 }
 let _qaFetchPatched = false;
 function _qaInstallFetchPatch() {
+    if (!_qaGateOpen()) return;
     try {
         if (!window._qa || !window._qa.cardPatch || _qaFetchPatched) return;
         _qaFetchPatched = true;
