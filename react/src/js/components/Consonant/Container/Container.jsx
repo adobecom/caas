@@ -1756,7 +1756,7 @@ const Container = (props) => {
     }, []);
 
     const carouselClass = classNames({
-        'modern-carousel': isModernCarousel || isMobile,
+        'modern-carousel': isModernCarousel || isMobile(),
         'modern-carousel--light': isLightCarousel,
     });
 
@@ -1934,7 +1934,7 @@ const Container = (props) => {
                                 resQty={gridCardLen}
                                 cards={gridCards}
                                 cardStyle={cardStyle}
-                                carouselType={(isModernCarousel || isMobile) ? 'modern' : 'default'}
+                                carouselType={(isModernCarousel || isMobile()) ? 'modern' : 'default'}
                                 role="tablist"
                                 onCardBookmark={handleCardBookmarking} />
                             }

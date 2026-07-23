@@ -782,4 +782,4 @@ export const transformFiltersWithCategories = (authoredFilters, categoryMappings
     });
 };
 
-export const isMobile = window.innerWidth < TABLET_BREAKPOINT;
+export const isMobile = () => window.innerWidth < TABLET_BREAKPOINT;
