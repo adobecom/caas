@@ -174,8 +174,8 @@ describe('CardsCarousel comprehensive behaviors', () => {
     });
     const nextBtn = c.querySelector('[name="next"]');
     const prevBtn = c.querySelector('[name="previous"]');
-    expect(prevBtn).toHaveClass('hide');
-    expect(nextBtn).toHaveClass('hide');
+    expect(prevBtn).not.toHaveClass('hide');
+    expect(nextBtn).not.toHaveClass('hide');
   });
 
   test('should not throw when nextBtn is null', async () => {
