@@ -1756,7 +1756,7 @@ const Container = (props) => {
     }, []);
 
     const carouselClass = classNames({
-        'modern-carousel': isModernCarousel || isMobile(),
+        'modern-carousel': isModernCarousel || (isCarouselContainer && isMobile()),
         'modern-carousel--light': isLightCarousel,
     });
 
