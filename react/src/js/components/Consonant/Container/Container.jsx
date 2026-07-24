@@ -71,6 +71,7 @@ import {
     transformFiltersWithCategories,
     expandGroupFiltersToChildren,
     getGroupedFilterSelections,
+    isMobile,
 } from '../Helpers/Helpers';
 
 
@@ -1755,7 +1756,7 @@ const Container = (props) => {
     }, []);
 
     const carouselClass = classNames({
-        'modern-carousel': isModernCarousel,
+        'modern-carousel': isModernCarousel || (isCarouselContainer && isMobile()),
         'modern-carousel--light': isLightCarousel,
     });
 
@@ -1933,7 +1934,7 @@ const Container = (props) => {
                                 resQty={gridCardLen}
                                 cards={gridCards}
                                 cardStyle={cardStyle}
-                                carouselType={isModernCarousel ? 'modern' : 'default'}
+                                carouselType={(isModernCarousel || isMobile()) ? 'modern' : 'default'}
                                 role="tablist"
                                 onCardBookmark={handleCardBookmarking} />
                             }
