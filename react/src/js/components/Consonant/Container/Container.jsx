@@ -215,6 +215,7 @@ const Container = (props) => {
     const [isPartialLoad, setIsPartialLoad] = useState(false);
     const hashedRef = useRef(false);
     const hashedCategoryMappingsRef = useRef(categoryMappings);
+    const originSelectionRef = useRef();
 
     const [, updateState] = React.useState();
     const scrollElementRef = useRef(null);
@@ -1042,6 +1043,7 @@ const Container = (props) => {
         }
 
         const originSelection = collectionEndpointURI.searchParams.get('originSelection');
+        originSelectionRef.current = originSelection;
 
         setLoading(true);
 
@@ -1522,6 +1524,13 @@ const Container = (props) => {
      */
     /* eslint-disable no-unused-vars */
     const { filteredCards = [], nextTransitionMs = 0 } = getFilteredCollection();
+
+    // Remove collection from page if there are no cards to show for the selected Event Filters
+    useEffect(() => {
+        if (originSelectionRef.current.includes('events') && filteredCards.length === 0 && box.current) {
+            removeCollectionFromPage();
+        }
+    }, [filteredCards]);
 
     /**
      * Subset of cards to show the user
