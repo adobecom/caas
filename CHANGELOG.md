@@ -1,5 +1,12 @@
 
 
+## [0.63.0](https://github.com/adobecom/caas/compare/0.62.2...0.63.0) (2026-07-29)
+
+
+### Features
+
+* **mwpw-184989:** caas feature-QA back-test tool (diff + LLM judge + action layer + mobile) ([#566](https://github.com/adobecom/caas/issues/566)) ([01ec1b4](https://github.com/adobecom/caas/commit/01ec1b4702395637d5cb5a83d414b97d797c1f44)), closes [#451](https://github.com/adobecom/caas/issues/451) [#351](https://github.com/adobecom/caas/issues/351) [#423](https://github.com/adobecom/caas/issues/423) [#438](https://github.com/adobecom/caas/issues/438) [#304](https://github.com/adobecom/caas/issues/304) [#469](https://github.com/adobecom/caas/issues/469) [#366](https://github.com/adobecom/caas/issues/366) [#395](https://github.com/adobecom/caas/issues/395) [#395](https://github.com/adobecom/caas/issues/395) [#395](https://github.com/adobecom/caas/issues/395) [#395](https://github.com/adobecom/caas/issues/395) [#395](https://github.com/adobecom/caas/issues/395) [#395](https://github.com/adobecom/caas/issues/395) [#395](https://github.com/adobecom/caas/issues/395) [#395](https://github.com/adobecom/caas/issues/395) [#354](https://github.com/adobecom/caas/issues/354) [#363](https://github.com/adobecom/caas/issues/363) [#469](https://github.com/adobecom/caas/issues/469) [#354](https://github.com/adobecom/caas/issues/354) [#395](https://github.com/adobecom/caas/issues/395) [#354](https://github.com/adobecom/caas/issues/354) [#354](https://github.com/adobecom/caas/issues/354) [#469](https://github.com/adobecom/caas/issues/469) [#354](https://github.com/adobecom/caas/issues/354) [#395](https://github.com/adobecom/caas/issues/395) [#453](https://github.com/adobecom/caas/issues/453)
+
 ## [0.62.2](https://github.com/adobecom/caas/compare/0.62.1...0.62.2) (2026-07-28)
 
 
