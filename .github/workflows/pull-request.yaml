@@ -28,6 +28,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16.13.1
+      - name: Self-test enforcement rules
+        run: node test-enforcement.test.js
       - name: Install dependencies
         run: npm install @actions/core @actions/github
       - name: Check PR Type and Tests
