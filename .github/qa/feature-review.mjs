@@ -308,15 +308,32 @@ or {"sourceTest":"...","skipReason":"source search could not prove how the test 
     // Non-visual DOM artifacts (JSON-LD structured data). Card extraction
     // alone is blind to script/meta tags, which made any assertion about
     // them unverifiable and an automatic FAIL. Capture them explicitly.
-    const jsonLd = [...document.querySelectorAll('script[type="application/ld+json"]')].slice(0, 4)
-      .map((scriptEl, index) => ({
-        n: index + 1,
-        parent: scriptEl.parentElement
-          ? `${scriptEl.parentElement.tagName.toLowerCase()}${scriptEl.parentElement.className ? `.${String(scriptEl.parentElement.className).trim().split(/\s+/)[0]}` : ''}`
-          : '',
-        attrs: [...scriptEl.attributes].map((a) => a.name).join(' '),
-        text: (scriptEl.textContent || '').slice(0, 1500),
-      }));
+    // parentNode is an IDENTITY index: two blocks live in the same container
+    // element if and only if their parentNode values match. The class-based
+    // parent label alone is ambiguous (two different sections can share a
+    // class), which previously made one-block-per-collection look like a
+    // duplicate injection.
+    const parentIdentity = [];
+    const wrappers = [...document.querySelectorAll('.consonant-Wrapper')];
+    const jsonLd = [...document.querySelectorAll('script[type="application/ld+json"]')].slice(0, 6)
+      .map((scriptEl, index) => {
+        const parentEl = scriptEl.parentElement;
+        let parentNode = -1;
+        if (parentEl) {
+          parentNode = parentIdentity.indexOf(parentEl);
+          if (parentNode === -1) { parentIdentity.push(parentEl); parentNode = parentIdentity.length - 1; }
+        }
+        return {
+          n: index + 1,
+          parent: parentEl
+            ? `${parentEl.tagName.toLowerCase()}${parentEl.className ? `.${String(parentEl.className).trim().split(/\s+/)[0]}` : ''}`
+            : '',
+          parentNode,
+          collectionIndex: parentEl ? wrappers.indexOf(scriptEl.closest('.consonant-Wrapper')) : -1,
+          attrs: [...scriptEl.attributes].map((a) => a.name).join(' '),
+          text: (scriptEl.textContent || '').slice(0, 1500),
+        };
+      });
     const cardData = cards.slice(0, 12).map((card, index) => {
       const title = card.querySelector('[class*="-title"]');
       const links = [...card.querySelectorAll('a,button')].slice(0, 6).map((element) => ({
@@ -352,8 +369,9 @@ Source mapping evidence: ${JSON.stringify(plan.mappingEvidence)}
 Rendered first-collection cards (id, title, text, links/buttons):
 ${JSON.stringify(observed.cards).slice(0, 6000) || '(no cards rendered)'}
 
-Structured data blocks on the page (script[type="application/ld+json"], with parent element and content):
+Structured data blocks on the page (script[type="application/ld+json"]):
 ${JSON.stringify(observed.jsonLd).slice(0, 6000) || '(none present)'}
+Reading the blocks: parentNode is an identity index; two blocks share a container element only if their parentNode values are equal. collectionIndex says which .consonant-Wrapper collection (in document order) a block belongs to; -1 means outside any collection (e.g. page head). Per-container assertions must be judged per container, not page-wide.
 
 Does the rendered DOM satisfy ONLY the selected test assertion? Do not introduce new expectations. Respond with ONLY JSON: {"verdict":"PASS"|"FAIL","reason":"one or two sentences citing observed vs expected"}`, 1500);
   const res = extractJson(check);
