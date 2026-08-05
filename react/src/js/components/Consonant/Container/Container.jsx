@@ -1546,7 +1546,7 @@ const Container = (props) => {
      * while numberOfItems reports the true filtered total.
      */
     useEffect(() => {
-        if (!showJsonLd || !gridCards.length) return;
+        if (!showJsonLd) return;
         injectCollectionJsonLd({
             cards: gridCards,
             filters: authoredFilters,

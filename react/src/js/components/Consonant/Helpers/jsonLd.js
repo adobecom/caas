@@ -105,7 +105,9 @@ export const buildCollectionJsonLd = (cards = [], filters = [], collectionTitle 
  * @param {HTMLElement} options.container - collection root element
  * @param {String} options.collectionTitle - optional collection title
  * @param {Number} options.totalItems - true total card count
- * @returns {HTMLElement|null} - the injected script element
+ * @returns {HTMLElement|null} - the injected script element, or null
+ * when there is nothing to describe (any previous block is removed, so
+ * the metadata never describes cards that are no longer shown)
  */
 export const injectCollectionJsonLd = ({
     cards = [],
@@ -114,11 +116,12 @@ export const injectCollectionJsonLd = ({
     collectionTitle = '',
     totalItems = 0,
 } = {}) => {
-    if (typeof document === 'undefined' || !cards.length) return null;
+    if (typeof document === 'undefined') return null;
 
     const parent = container || document.head;
     const existing = parent.querySelector(`script[${SCRIPT_ATTR}]`);
     if (existing) existing.remove();
+    if (!cards.length) return null;
 
     const script = document.createElement('script');
     script.type = 'application/ld+json';

@@ -127,8 +127,17 @@ describe('injectCollectionJsonLd', () => {
         expect(JSON.parse(scripts[0].textContent).numberOfItems).toBe(2);
     });
 
-    test('does nothing with no cards', () => {
+    test('returns null with no cards', () => {
         expect(injectCollectionJsonLd({ cards: [] })).toBeNull();
+    });
+
+    test('removes the stale block when the card list becomes empty', () => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+        injectCollectionJsonLd({ cards: [card], filters: [], container });
+        expect(container.querySelector('script[data-caas-jsonld]')).not.toBeNull();
+        injectCollectionJsonLd({ cards: [], filters: [], container });
+        expect(container.querySelector('script[data-caas-jsonld]')).toBeNull();
     });
 
     test('supports multiple collections on one page independently', () => {
