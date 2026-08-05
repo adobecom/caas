@@ -517,3 +517,5 @@ Card.propTypes = CardType;
 Card.defaultProps = defaultProps;
 
 export default Card;
+
+// probe D: trivial modification of an existing component (enforcement gate test)
