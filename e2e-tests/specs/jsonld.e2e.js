@@ -21,7 +21,6 @@ describe('JSON-LD Collection Emission', () => {
         expect(jsonLd.itemListElement.length).toBeGreaterThan(0);
         expect(jsonLd.itemListElement.length).toBeLessThanOrEqual(50);
         expect(jsonLd.itemListElement[0].item['@type']).toEqual('CreativeWork');
-        expect(jsonLd.itemListElement[0].item.name).not.toBe('');
     });
 
     it('does not emit the block when showJsonLd is disabled', async () => {

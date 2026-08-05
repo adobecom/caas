@@ -11,7 +11,9 @@ import { getByPath } from './general';
  * pairs (possibly hashed) tag ids with human labels, so it acts as the
  * resolver: card tag id -> filter item id -> label.
  *
- * Kept intentionally minimal: each entry is name + url + keywords.
+ * Kept intentionally minimal: each entry is url + keywords. Titles and
+ * descriptions are already crawlable in the visible DOM; the block's
+ * unique contribution is the resolved tag taxonomy and the link.
  * The block is additive and injected after render; zero rendering,
  * payload, or SEO impact.
  */
@@ -44,7 +46,7 @@ export const buildTagLabelMap = (filters = []) => {
 };
 
 /**
- * Builds the minimal Schema.org entry for one card: name, url, keywords.
+ * Builds the minimal Schema.org entry for one card: url and keywords.
  * Tags without a filter label (e.g. unresolvable hashes) are skipped.
  * @param {Object} card - card object
  * @param {Object} tagLabelMap - output of buildTagLabelMap
@@ -53,7 +55,6 @@ export const buildTagLabelMap = (filters = []) => {
 export const buildCardEntry = (card, tagLabelMap = {}) => {
     const entry = {
         '@type': 'CreativeWork',
-        name: getByPath(card, 'contentArea.title', ''),
     };
 
     const url = getByPath(card, 'ctaLink', '')

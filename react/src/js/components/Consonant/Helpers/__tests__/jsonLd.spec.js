@@ -54,11 +54,10 @@ describe('buildTagLabelMap', () => {
 });
 
 describe('buildCardEntry', () => {
-    test('emits name, url and resolved keywords', () => {
+    test('emits url and resolved keywords only', () => {
         const entry = buildCardEntry(card, buildTagLabelMap(filters));
         expect(entry).toEqual({
             '@type': 'CreativeWork',
-            name: 'Getting started with Photoshop',
             url: 'https://adobe.com/resources/photoshop-guide',
             keywords: 'Photoshop',
         });
@@ -71,7 +70,7 @@ describe('buildCardEntry', () => {
 
     test('omits url and keywords when absent', () => {
         const entry = buildCardEntry({ contentArea: { title: 'X' } }, {});
-        expect(entry).toEqual({ '@type': 'CreativeWork', name: 'X' });
+        expect(entry).toEqual({ '@type': 'CreativeWork' });
     });
 });
 
@@ -83,7 +82,7 @@ describe('buildCollectionJsonLd', () => {
         expect(jsonLd.name).toBe('All resources');
         expect(jsonLd.numberOfItems).toBe(1);
         expect(jsonLd.itemListElement[0].position).toBe(1);
-        expect(jsonLd.itemListElement[0].item.name).toBe('Getting started with Photoshop');
+        expect(jsonLd.itemListElement[0].item.url).toBe('https://adobe.com/resources/photoshop-guide');
     });
 
     test('caps serialized entries at 50 while reporting the true total', () => {
