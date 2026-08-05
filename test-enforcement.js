@@ -7,7 +7,10 @@ const enforceTestRequirements = async ({ github, context, core }) => {
         });
 
         const prTitle = context.payload.pull_request.title;
-        const commitType = prTitle.split(':')[0].toLowerCase();
+        // Strip the scope so 'feat(mwpw-123): x' parses as 'feat'.
+        // Previously 'feat(mwpw-123)' !== 'feat' meant every scoped title
+        // (which check-pr-title requires) bypassed enforcement entirely.
+        const commitType = prTitle.split(':')[0].split('(')[0].trim().toLowerCase();
 
         // Add debug logs
         core.info(`PR Title: ${prTitle}`);
@@ -28,12 +31,22 @@ const enforceTestRequirements = async ({ github, context, core }) => {
             f.filename.includes('.e2e.js'),
         );
 
+        const hasUnitTest = files.some(f =>
+            f.filename.includes('.spec.js'),
+        );
+
         // Add debug logs
         core.info(`Has new component? ${hasNewComponent}`);
         core.info(`Has integration test? ${hasIntegrationTest}`);
+        core.info(`Has unit test? ${hasUnitTest}`);
 
         if (commitType === 'feat' && hasNewComponent && !hasIntegrationTest) {
             core.setFailed('New feature components require integration tests');
+            return;
+        }
+
+        if (commitType === 'feat' && hasNewComponent && !hasUnitTest) {
+            core.setFailed('New feature components require unit tests');
             return;
         }
 
