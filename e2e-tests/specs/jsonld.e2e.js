@@ -7,12 +7,12 @@ describe('JSON-LD Collection Emission', () => {
         await browser.url(url);
 
         await browser.waitUntil(
-            async () => $('#caas-collection-jsonld').isExisting(),
+            async () => $('script[data-caas-jsonld]').isExisting(),
             { timeout: 15000, timeoutMsg: 'JSON-LD script tag was not injected' },
         );
 
         /* eslint-disable-next-line */
-        const jsonText = await browser.execute(() => document.querySelector('#caas-collection-jsonld').textContent);
+        const jsonText = await browser.execute(() => document.querySelector('script[data-caas-jsonld]').textContent);
         const jsonLd = JSON.parse(jsonText);
 
         expect(jsonLd['@context']).toEqual('https://schema.org');
@@ -33,7 +33,7 @@ describe('JSON-LD Collection Emission', () => {
             { timeout: 15000, timeoutMsg: 'Cards did not render' },
         );
 
-        const exists = await $('#caas-collection-jsonld').isExisting();
+        const exists = await $('script[data-caas-jsonld]').isExisting();
         expect(exists).toBe(false);
     });
 });

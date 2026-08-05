@@ -130,4 +130,17 @@ describe('injectCollectionJsonLd', () => {
     test('does nothing with no cards', () => {
         expect(injectCollectionJsonLd({ cards: [] })).toBeNull();
     });
+
+    test('supports multiple collections on one page independently', () => {
+        const containerA = document.createElement('div');
+        const containerB = document.createElement('div');
+        document.body.appendChild(containerA);
+        document.body.appendChild(containerB);
+        injectCollectionJsonLd({ cards: [card], filters: [], container: containerA });
+        injectCollectionJsonLd({ cards: [card, hashedCard], filters: [], container: containerB });
+        injectCollectionJsonLd({ cards: [card], filters: [], container: containerA });
+        expect(document.querySelectorAll('script[data-caas-jsonld]')).toHaveLength(2);
+        expect(JSON.parse(containerA.querySelector('script').textContent).numberOfItems).toBe(1);
+        expect(JSON.parse(containerB.querySelector('script').textContent).numberOfItems).toBe(2);
+    });
 });

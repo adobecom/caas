@@ -16,7 +16,7 @@ import { getByPath } from './general';
  * payload, or SEO impact.
  */
 
-const SCRIPT_ID = 'caas-collection-jsonld';
+const SCRIPT_ATTR = 'data-caas-jsonld';
 
 /**
  * Maximum number of cards serialized into the block. Keeps the block
@@ -97,6 +97,8 @@ export const buildCollectionJsonLd = (cards = [], filters = [], collectionTitle 
 /**
  * Injects (or replaces) the JSON-LD script tag for the collection.
  * Idempotent per container: re-renders replace the previous block.
+ * Multiple collections on one page each manage their own block inside
+ * their own container, so they never collide.
  * @param {Object} options
  * @param {Array} options.cards - cards currently shown
  * @param {Array} options.filters - authored filters (post-hashing)
@@ -115,12 +117,12 @@ export const injectCollectionJsonLd = ({
     if (typeof document === 'undefined' || !cards.length) return null;
 
     const parent = container || document.head;
-    const existing = parent.querySelector(`script#${SCRIPT_ID}`);
+    const existing = parent.querySelector(`script[${SCRIPT_ATTR}]`);
     if (existing) existing.remove();
 
     const script = document.createElement('script');
     script.type = 'application/ld+json';
-    script.id = SCRIPT_ID;
+    script.setAttribute(SCRIPT_ATTR, '');
     script.textContent = JSON.stringify(
         buildCollectionJsonLd(cards, filters, collectionTitle, totalItems),
     );
