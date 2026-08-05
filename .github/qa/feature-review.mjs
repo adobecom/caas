@@ -305,7 +305,19 @@ or {"sourceTest":"...","skipReason":"source search could not prove how the test 
   const observed = await page.evaluate(() => {
     const grid = document.querySelector('.consonant-CardsGrid');
     const cards = grid ? [...grid.querySelectorAll('.consonant-Card')] : [...document.querySelectorAll('.consonant-Card')];
-    return cards.slice(0, 12).map((card, index) => {
+    // Non-visual DOM artifacts (JSON-LD structured data). Card extraction
+    // alone is blind to script/meta tags, which made any assertion about
+    // them unverifiable and an automatic FAIL. Capture them explicitly.
+    const jsonLd = [...document.querySelectorAll('script[type="application/ld+json"]')].slice(0, 4)
+      .map((scriptEl, index) => ({
+        n: index + 1,
+        parent: scriptEl.parentElement
+          ? `${scriptEl.parentElement.tagName.toLowerCase()}${scriptEl.parentElement.className ? `.${String(scriptEl.parentElement.className).trim().split(/\s+/)[0]}` : ''}`
+          : '',
+        attrs: [...scriptEl.attributes].map((a) => a.name).join(' '),
+        text: (scriptEl.textContent || '').slice(0, 1500),
+      }));
+    const cardData = cards.slice(0, 12).map((card, index) => {
       const title = card.querySelector('[class*="-title"]');
       const links = [...card.querySelectorAll('a,button')].slice(0, 6).map((element) => ({
         tag: element.tagName.toLowerCase(),
@@ -322,6 +334,7 @@ or {"sourceTest":"...","skipReason":"source search could not prove how the test 
         links,
       };
     });
+    return { cards: cardData, jsonLd };
   });
   console.log('[observed] ' + JSON.stringify(observed));
   await page.screenshot({ path: '/tmp/feature-render.png', fullPage: true }).catch(() => {});
@@ -337,7 +350,10 @@ Expected, copied from that test: ${plan.expected}
 Source mapping evidence: ${JSON.stringify(plan.mappingEvidence)}
 
 Rendered first-collection cards (id, title, text, links/buttons):
-${JSON.stringify(observed).slice(0, 6000) || '(no cards rendered)'}
+${JSON.stringify(observed.cards).slice(0, 6000) || '(no cards rendered)'}
+
+Structured data blocks on the page (script[type="application/ld+json"], with parent element and content):
+${JSON.stringify(observed.jsonLd).slice(0, 6000) || '(none present)'}
 
 Does the rendered DOM satisfy ONLY the selected test assertion? Do not introduce new expectations. Respond with ONLY JSON: {"verdict":"PASS"|"FAIL","reason":"one or two sentences citing observed vs expected"}`, 1500);
   const res = extractJson(check);
@@ -352,7 +368,8 @@ Does the rendered DOM satisfy ONLY the selected test assertion? Do not introduce
 **Fixture cards:** ${plan.cards.length}
 **Expected:** ${plan.expected}
 **Rendered (first collection):**
-${observed.map((item) => `- ${item.n}. ${item.title || item.text.slice(0, 50)}${item.links.length ? ` [${item.links.map((link) => `${link.testId || link.tag}${link.href ? ` ${link.href}` : ''}`).join(', ')}]` : ''}`).join('\n') || '_(no cards rendered)_'}
+${observed.cards.map((item) => `- ${item.n}. ${item.title || item.text.slice(0, 50)}${item.links.length ? ` [${item.links.map((link) => `${link.testId || link.tag}${link.href ? ` ${link.href}` : ''}`).join(', ')}]` : ''}`).join('\n') || '_(no cards rendered)_'}
+**Structured data blocks:** ${observed.jsonLd.length}${observed.jsonLd.length ? ` (first: parent \`${observed.jsonLd[0].parent}\`, ${observed.jsonLd[0].text.length} chars)` : ''}
 
 **Verdict:** ${res.reason}`);
   process.exit(0);
