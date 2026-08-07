@@ -305,7 +305,36 @@ or {"sourceTest":"...","skipReason":"source search could not prove how the test 
   const observed = await page.evaluate(() => {
     const grid = document.querySelector('.consonant-CardsGrid');
     const cards = grid ? [...grid.querySelectorAll('.consonant-Card')] : [...document.querySelectorAll('.consonant-Card')];
-    return cards.slice(0, 12).map((card, index) => {
+    // Non-visual DOM artifacts (JSON-LD structured data). Card extraction
+    // alone is blind to script/meta tags, which made any assertion about
+    // them unverifiable and an automatic FAIL. Capture them explicitly.
+    // parentNode is an IDENTITY index: two blocks live in the same container
+    // element if and only if their parentNode values match. The class-based
+    // parent label alone is ambiguous (two different sections can share a
+    // class), which previously made one-block-per-collection look like a
+    // duplicate injection.
+    const parentIdentity = [];
+    const wrappers = [...document.querySelectorAll('.consonant-Wrapper')];
+    const jsonLd = [...document.querySelectorAll('script[type="application/ld+json"]')].slice(0, 6)
+      .map((scriptEl, index) => {
+        const parentEl = scriptEl.parentElement;
+        let parentNode = -1;
+        if (parentEl) {
+          parentNode = parentIdentity.indexOf(parentEl);
+          if (parentNode === -1) { parentIdentity.push(parentEl); parentNode = parentIdentity.length - 1; }
+        }
+        return {
+          n: index + 1,
+          parent: parentEl
+            ? `${parentEl.tagName.toLowerCase()}${parentEl.className ? `.${String(parentEl.className).trim().split(/\s+/)[0]}` : ''}`
+            : '',
+          parentNode,
+          collectionIndex: parentEl ? wrappers.indexOf(scriptEl.closest('.consonant-Wrapper')) : -1,
+          attrs: [...scriptEl.attributes].map((a) => a.name).join(' '),
+          text: (scriptEl.textContent || '').slice(0, 1500),
+        };
+      });
+    const cardData = cards.slice(0, 12).map((card, index) => {
       const title = card.querySelector('[class*="-title"]');
       const links = [...card.querySelectorAll('a,button')].slice(0, 6).map((element) => ({
         tag: element.tagName.toLowerCase(),
@@ -322,6 +351,7 @@ or {"sourceTest":"...","skipReason":"source search could not prove how the test 
         links,
       };
     });
+    return { cards: cardData, jsonLd };
   });
   console.log('[observed] ' + JSON.stringify(observed));
   await page.screenshot({ path: '/tmp/feature-render.png', fullPage: true }).catch(() => {});
@@ -337,7 +367,11 @@ Expected, copied from that test: ${plan.expected}
 Source mapping evidence: ${JSON.stringify(plan.mappingEvidence)}
 
 Rendered first-collection cards (id, title, text, links/buttons):
-${JSON.stringify(observed).slice(0, 6000) || '(no cards rendered)'}
+${JSON.stringify(observed.cards).slice(0, 6000) || '(no cards rendered)'}
+
+Structured data blocks on the page (script[type="application/ld+json"]):
+${JSON.stringify(observed.jsonLd).slice(0, 6000) || '(none present)'}
+Reading the blocks: parentNode is an identity index; two blocks share a container element only if their parentNode values are equal. collectionIndex says which .consonant-Wrapper collection (in document order) a block belongs to; -1 means outside any collection (e.g. page head). Per-container assertions must be judged per container, not page-wide.
 
 Does the rendered DOM satisfy ONLY the selected test assertion? Do not introduce new expectations. Respond with ONLY JSON: {"verdict":"PASS"|"FAIL","reason":"one or two sentences citing observed vs expected"}`, 1500);
   const res = extractJson(check);
@@ -352,7 +386,8 @@ Does the rendered DOM satisfy ONLY the selected test assertion? Do not introduce
 **Fixture cards:** ${plan.cards.length}
 **Expected:** ${plan.expected}
 **Rendered (first collection):**
-${observed.map((item) => `- ${item.n}. ${item.title || item.text.slice(0, 50)}${item.links.length ? ` [${item.links.map((link) => `${link.testId || link.tag}${link.href ? ` ${link.href}` : ''}`).join(', ')}]` : ''}`).join('\n') || '_(no cards rendered)_'}
+${observed.cards.map((item) => `- ${item.n}. ${item.title || item.text.slice(0, 50)}${item.links.length ? ` [${item.links.map((link) => `${link.testId || link.tag}${link.href ? ` ${link.href}` : ''}`).join(', ')}]` : ''}`).join('\n') || '_(no cards rendered)_'}
+**Structured data blocks:** ${observed.jsonLd.length}${observed.jsonLd.length ? ` (first: parent \`${observed.jsonLd[0].parent}\`, ${observed.jsonLd[0].text.length} chars)` : ''}
 
 **Verdict:** ${res.reason}`);
   process.exit(0);
