@@ -162,6 +162,7 @@ export const DEFAULT_CONFIG = {
             transparent: false,
         },
         displayTotalResults: true,
+        showJsonLd: false,
         totalResultsText: '{} results',
         i18n: {
             prettyDateIntervalFormat: '{LLL} {dd} | {timeRange} {timeZone}',

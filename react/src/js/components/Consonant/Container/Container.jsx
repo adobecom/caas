@@ -30,6 +30,7 @@ import Bookmarks from '../Bookmarks/Bookmarks';
 import Paginator from '../Pagination/Paginator';
 import Grid from '../Grid/Grid';
 import CardFilterer from '../Helpers/CardFilterer';
+import { injectCollectionJsonLd } from '../Helpers/jsonLd';
 import FiltersPanelTop from '../Filters/Top/Panel';
 import LeftFilterPanel from '../Filters/Left/Panel';
 import JsonProcessor from '../Helpers/JsonProcessor';
@@ -113,6 +114,7 @@ const Container = (props) => {
     const paginationType = getConfig('pagination', 'type');
     const paginationIsEnabled = getConfig('pagination', 'enabled');
     const resultsPerPage = getConfig('collection', 'resultsPerPage');
+    const showJsonLd = getConfig('collection', 'showJsonLd');
     const onlyShowBookmarks = getConfig('bookmarks', 'leftFilterPanel.bookmarkOnlyCollection');
     const authoredFilters = getConfig('filterPanel', 'filters');
     const categoryMappings = getConfig('filterPanel', 'categoryMappings');
@@ -1533,6 +1535,26 @@ const Container = (props) => {
     if (isPartialLoad) {
         gridCardLen = cardCount;
     }
+
+    /**
+     * Emits a Schema.org ItemList describing the rendered cards, so LLM
+     * crawlers and agents can classify collection content. Card tag ids
+     * (hashed or not) resolve to labels via the authored filter config,
+     * which Container has already hashed to match when isHashed is set.
+     * Additive script tag, replaced on re-render; no rendering impact.
+     * Opt-in via collection.showJsonLd; serializes at most 50 cards
+     * while numberOfItems reports the true filtered total.
+     */
+    useEffect(() => {
+        if (!showJsonLd) return;
+        injectCollectionJsonLd({
+            cards: gridCards,
+            filters: authoredFilters,
+            container: box.current,
+            collectionTitle: getConfig('collection', 'i18n.title'),
+            totalItems: filteredCards.length,
+        });
+    }, [gridCards, showJsonLd]);
 
     /**
      * Total pages (used by Paginator Component)

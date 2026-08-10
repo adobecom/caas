@@ -43,6 +43,12 @@ const mergeDeep = (target, source) => {
 const generateUrl = (configOverrides = {}) => {
     const finalConfig = mergeDeep(config, configOverrides);
     const state = Buffer.from(JSON.stringify(finalConfig)).toString('base64');
+    // Prefer an explicitly served build. The shared github.io deployment is a
+    // race: every PR deploys to the same site, so e2e could test whichever
+    // PR deployed last instead of its own build.
+    if (process.env.E2E_BASE_URL) {
+        return `${process.env.E2E_BASE_URL}/html/e2e/index.html?state=${state}`;
+    }
     if (process.env.GITHUB_ACTIONS) {
         // eslint-disable-next-line no-template-curly-in-string
         return `https://adobecom.github.io/caas/html/e2e/index.html?state=${state}`;
