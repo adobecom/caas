@@ -1,5 +1,12 @@
 
 
+## [0.63.1](https://github.com/adobecom/caas/compare/0.63.0...0.63.1) (2026-08-07)
+
+
+### Bug Fixes
+
+* **mwpw-203327:** adds banner css to editorial card ([#574](https://github.com/adobecom/caas/issues/574)) ([68a68f1](https://github.com/adobecom/caas/commit/68a68f15fab7cc5b9a44fb4900cb40a4c06891f4))
+
 ## [0.63.0](https://github.com/adobecom/caas/compare/0.62.2...0.63.0) (2026-07-29)
 
 
