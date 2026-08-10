@@ -1,5 +1,12 @@
 
 
+## [0.63.2](https://github.com/adobecom/caas/compare/0.63.1...0.63.2) (2026-08-10)
+
+
+### Bug Fixes
+
+* **mwpw-203417:** enforce unit tests for new components and repair scoped-title bypass ([#568](https://github.com/adobecom/caas/issues/568)) ([1a0388b](https://github.com/adobecom/caas/commit/1a0388bf67514e7815813ef032577efd3dab8c4c))
+
 ## [0.63.1](https://github.com/adobecom/caas/compare/0.63.0...0.63.1) (2026-08-07)
 
 
