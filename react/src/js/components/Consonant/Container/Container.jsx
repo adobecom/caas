@@ -216,6 +216,7 @@ const Container = (props) => {
     const hashedRef = useRef(false);
     const hashedCategoryMappingsRef = useRef(categoryMappings);
     const originSelectionRef = useRef();
+    const [hasLoadedCards, setHasLoadedCards] = useState(false);
 
     const [, updateState] = React.useState();
     const scrollElementRef = useRef(null);
@@ -1227,6 +1228,7 @@ const Container = (props) => {
                     preloadFirstCardImage(processedCards);
 
                     setCards(processedCards);
+                    setHasLoadedCards(true);
 
                     // check if the current page is greater than the last page
                     const lastPage = Math.ceil(processedCards.length / resultsPerPage);
@@ -1527,10 +1529,15 @@ const Container = (props) => {
 
     // Remove collection from page if there are no cards to show for the selected Event Filters
     useEffect(() => {
-        if (originSelectionRef.current.includes('events') && filteredCards.length === 0 && box.current) {
+        if (
+            originSelectionRef.current?.includes('events')
+            && hasLoadedCards
+            && filteredCards.length === 0
+            && box.current
+        ) {
             removeCollectionFromPage();
         }
-    }, [filteredCards]);
+    }, [filteredCards, hasLoadedCards]);
 
     /**
      * Subset of cards to show the user
