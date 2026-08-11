@@ -1,0 +1,138 @@
+name: Feature QA Review
+
+# Advisory, non-blocking. Reasons about whether a PR is a config/data-gated CaaS
+# feature; if so, injects the PR build + a forced config (?caasqa hook) + a mocked
+# chimera-api/collection, renders it on a live page, and validates the result
+# against the PR's own unit tests. If the PR isn't an injectable feature, it skips.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to feature-test'
+        required: true
+        type: string
+
+concurrency:
+  group: qa-feature-${{ github.event.pull_request.number || inputs.pr_number }}
+  cancel-in-progress: true
+
+jobs:
+  feature-review:
+    runs-on: [self-hosted, qa-audit]   # the Mini — only runner with the persistent Chrome/CDP
+    timeout-minutes: 20
+    if: ${{ (github.event_name == 'workflow_dispatch' && !startsWith(inputs.pr_number, 'backtest:')) || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) }}
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # Keep the reviewer that belongs to this workflow revision. A manual replay
+      # checks out an older PR below; without this copy it also rolls the reviewer
+      # back to that PR's older implementation and does not test the new search.
+      - name: Preserve and test the feature reviewer
+        run: |
+          node --test .github/qa/code-search.test.mjs
+          mkdir -p "$RUNNER_TEMP/feature-review"
+          cp .github/qa/feature-review.mjs \
+             .github/qa/code-search.mjs \
+             .github/qa/package.json \
+             .github/qa/package-lock.json \
+             "$RUNNER_TEMP/feature-review/"
+
+      - name: Check out the PR's head so we build its actual code
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr checkout ${{ github.event.pull_request.number || inputs.pr_number }}
+
+      - name: Build the PR's CaaS dist
+        run: |
+          npm ci
+          NODE_OPTIONS=--openssl-legacy-provider npm run build
+
+      - name: Install feature-review deps
+        working-directory: ${{ runner.temp }}/feature-review
+        run: npm ci
+
+      - name: Run feature QA review
+        working-directory: ${{ runner.temp }}/feature-review
+        env:
+          GH_REPO: ${{ github.repository }}
+          DIST_DIR: ${{ github.workspace }}/dist
+          CDP_URL: http://127.0.0.1:9222
+          IMS_ACCESS_TOKEN: ${{ secrets.IMS_ACCESS_TOKEN }}
+          PROXY_URL: ${{ secrets.LLM_PROXY_ENDPOINT }}
+          MODEL: ${{ secrets.LLM_MODEL }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
+        run: |
+          rm -f /tmp/feature-render.png
+          node feature-review.mjs
+
+      - name: Upload render screenshot
+        if: always()
+        run: |
+          mkdir -p feature-out && cp /tmp/feature-render.png feature-out/ 2>/dev/null || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: feature-review-${{ github.run_id }}
+          path: feature-out/
+          retention-days: 14
+
+  # A temporary carrier for historical runs while qa-feature-backtest.yml is
+  # still new on this feature branch and cannot yet be dispatched by filename.
+  # Example manual input: backtest:532,490
+  historical-backtest:
+    if: ${{ github.event_name == 'workflow_dispatch' && startsWith(inputs.pr_number, 'backtest:') }}
+    runs-on: [self-hosted, qa-audit]
+    timeout-minutes: 180
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install back-test browser tools
+        working-directory: .github/qa
+        run: npm ci
+
+      - name: Verify back-test harness
+        working-directory: .github/qa
+        run: npm run test:backtest
+
+      - name: Run historical PRs sequentially
+        env:
+          BACKTEST_REQUEST: ${{ inputs.pr_number }}
+          BACKTEST_OUTPUT_DIR: ${{ github.workspace }}/backtest-out
+          GH_REPO: ${{ github.repository }}
+          PAGE_URL: https://business.adobe.com/customer-success-stories.html
+          CDP_URL: http://127.0.0.1:9222
+          IMS_ACCESS_TOKEN: ${{ secrets.IMS_ACCESS_TOKEN }}
+          PROXY_URL: ${{ secrets.LLM_PROXY_ENDPOINT }}
+          MODEL: ${{ secrets.LLM_MODEL }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          export BACKTEST_PRS="${BACKTEST_REQUEST#backtest:}"
+          node .github/qa/feature-backtest-batch.mjs
+
+      - name: Upload plans, results, and screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: historical-feature-backtest-${{ github.run_id }}
+          path: backtest-out/
+          if-no-files-found: warn
+          retention-days: 30
