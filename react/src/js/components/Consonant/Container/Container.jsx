@@ -1535,13 +1535,14 @@ const Container = (props) => {
     useEffect(() => {
         if (
             originSelectionRef.current?.includes('events')
+            && sanitizedEventFilter.length > 0
             && hasLoadedCards
             && filteredCards.length === 0
             && box.current
         ) {
             removeCollectionFromPage();
         }
-    }, [filteredCards, hasLoadedCards]);
+    }, [filteredCards, hasLoadedCards, eventFilter]);
 
     /**
      * Subset of cards to show the user

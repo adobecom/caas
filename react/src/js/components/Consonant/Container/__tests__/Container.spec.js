@@ -1969,7 +1969,64 @@ describe('Container Component', () => {
             expect(document.body.contains(caasPreview)).toBe(false);
         });
 
-        test('removes collection when cards load successfully but the selected Event Filter narrows results to zero', async () => {
+        test('removes collection when the authored Event Filter narrows results to zero', async () => {
+            // Card has no start/end time, so it lands in the "not-timed" bucket, never "live".
+            const notTimedCards = [
+                {
+                    id: 'card-not-timed',
+                    tags: [],
+                    contentArea: { title: 'Not Timed Card', description: 'no schedule', dateDetailText: {} },
+                    overlays: { banner: {}, logo: {}, label: {}, videoButton: {} },
+                    styles: { typeOverride: '' },
+                    showCard: { from: '2020-01-01T00:00:00Z', until: '2099-12-31T23:59:59Z' },
+                    cardDate: '2024-01-01T00:00:00Z',
+                    footer: [],
+                },
+            ];
+
+            global.fetch = jest.fn(() =>
+                Promise.resolve({
+                    ok: true,
+                    status: 200,
+                    statusText: 'success',
+                    url: 'test.html',
+                    json: () => Promise.resolve({ cards: notTimedCards }),
+                }));
+
+            const eventFilterConfig = {
+                collection: eventsCollectionConfig,
+                filterPanel: {
+                    enabled: true,
+                    eventFilter: 'live',
+                },
+                search: searchConfig,
+                pagination: {
+                    enabled: false,
+                },
+                sort: {
+                    enabled: false,
+                },
+            };
+
+            const caasPreview = document.createElement('div');
+            caasPreview.id = 'caas';
+            caasPreview.className = 'caas-preview';
+            document.body.appendChild(caasPreview);
+
+            await act(async () => {
+                render(
+                    <Container config={eventFilterConfig} />,
+                    { container: caasPreview },
+                );
+            });
+
+            // The authored "live" Event Filter matches none of the loaded cards, narrowing filteredCards to zero.
+            await waitFor(() => {
+                expect(document.body.contains(caasPreview)).toBe(false);
+            });
+        });
+
+        test('does not remove collection when a non-event filter narrows results to zero', async () => {
             // Only card in the API response is tagged Photoshop, so it renders fine on load.
             const filterableCards = [
                 {
@@ -2060,15 +2117,17 @@ describe('Container Component', () => {
             });
             expect(document.body.contains(caasPreview)).toBe(true);
 
-            // Select "Illustrator", which matches none of the loaded cards, narrowing filteredCards to zero.
+            // Select "Illustrator", a product filter unrelated to Event Filters, narrowing filteredCards to zero.
             const illustratorCheckbox = screen.getAllByTestId('consonant-LeftFilter-itemsItemCheckbox')[1];
             await act(async () => {
                 fireEvent.click(illustratorCheckbox);
             });
 
+            // Non-event filters narrowing results to zero must NOT remove the collection.
             await waitFor(() => {
-                expect(document.body.contains(caasPreview)).toBe(false);
+                expect(screen.queryByText('Photoshop Card')).not.toBeInTheDocument();
             });
+            expect(document.body.contains(caasPreview)).toBe(true);
         });
 
         test('does not remove collection when originSelection=events but inside .caas-config', async () => {
