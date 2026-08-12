@@ -52,7 +52,7 @@ jobs:
              .github/qa/package-lock.json \
              "$RUNNER_TEMP/feature-review/"
 
-      - name: Merge the PR changes onto its latest base
+      - name: Check out the latest base plus the PR changes
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
@@ -60,11 +60,9 @@ jobs:
           base_ref="$(gh pr view "$PR_NUMBER" --json baseRefName --jq .baseRefName)"
           git fetch --no-tags origin \
             "+refs/heads/${base_ref}:refs/remotes/origin/${base_ref}" \
-            "+refs/pull/${PR_NUMBER}/head:refs/remotes/origin/qa-pr-${PR_NUMBER}-head"
-          git checkout --detach "origin/${base_ref}"
-          git -c user.name=github-actions \
-            -c user.email=github-actions@github.com \
-            merge --no-edit --no-ff "origin/qa-pr-${PR_NUMBER}-head"
+            "+refs/pull/${PR_NUMBER}/merge:refs/remotes/origin/qa-pr-${PR_NUMBER}-merge"
+          git checkout --detach "origin/qa-pr-${PR_NUMBER}-merge"
+          test "$(git rev-parse HEAD^1)" = "$(git rev-parse "origin/${base_ref}")"
 
       - name: Build the PR's CaaS dist
         run: |
