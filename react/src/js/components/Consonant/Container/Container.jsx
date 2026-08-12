@@ -5,6 +5,7 @@ import React, {
     useState,
     createRef,
 } from 'react';
+import { unstable_batchedUpdates as batchedUpdates } from 'react-dom';
 import classNames from 'classnames';
 import { shape } from 'prop-types';
 // import 'whatwg-fetch'; // Removed: fetch is native in modern browsers
@@ -1228,8 +1229,10 @@ const Container = (props) => {
                     // Injects preload before React renders, saving 50-300ms
                     preloadFirstCardImage(processedCards);
 
-                    setCards(processedCards);
-                    setHasLoadedCards(true);
+                    batchedUpdates(() => {
+                        setCards(processedCards);
+                        setHasLoadedCards(true);
+                    });
 
                     // check if the current page is greater than the last page
                     const lastPage = Math.ceil(processedCards.length / resultsPerPage);
