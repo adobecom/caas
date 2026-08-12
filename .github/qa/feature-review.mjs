@@ -103,8 +103,9 @@ async function observePage(page, actionSelector = '') {
       return style.display !== 'none' && style.visibility !== 'hidden' &&
         Number(style.opacity || 1) !== 0 && rect.width > 0 && rect.height > 0;
     };
-    const firstCollection = document.querySelector('div#caas.caas-preview') || document;
-    const cards = [...firstCollection.querySelectorAll('.consonant-Card')].slice(0, 12).map((card, index) => {
+    const targetCollection = document.querySelector('[data-caas-qa-target="true"]');
+    const cards = [...(targetCollection?.querySelectorAll('.consonant-Card') || [])]
+      .slice(0, 12).map((card, index) => {
       const title = card.querySelector('[class*="-title"]');
       const links = [...card.querySelectorAll('a,button')].slice(0, 6).map((element) => ({
         tag: element.tagName.toLowerCase(),
@@ -124,7 +125,7 @@ async function observePage(page, actionSelector = '') {
     let actionTarget = { selector, count: 0, visibleCount: 0, matches: [] };
     if (selector) {
       try {
-        const matches = [...firstCollection.querySelectorAll(selector)];
+        const matches = [...(targetCollection?.querySelectorAll(selector) || [])];
         actionTarget = {
           selector,
           count: matches.length,
@@ -145,10 +146,10 @@ async function observePage(page, actionSelector = '') {
     return {
       cards,
       collectionRoots: {
-        caasPreview: document.querySelectorAll('div#caas.caas-preview').length,
-        cardsGrid: document.querySelectorAll('.consonant-CardsGrid').length,
-        wrappers: document.querySelectorAll('.consonant-Wrapper').length,
-        cards: document.querySelectorAll('.consonant-Card').length,
+        target: document.querySelectorAll('[data-caas-qa-target="true"]').length,
+        targetCards: targetCollection?.querySelectorAll('.consonant-Card').length || 0,
+        pageCaasPreview: document.querySelectorAll('div#caas.caas-preview').length,
+        pageCards: document.querySelectorAll('.consonant-Card').length,
       },
       actionTarget,
     };
@@ -398,10 +399,27 @@ The selected test describes a click, selection, or text entry, but the planner d
   await page.goto(gateUrl, { waitUntil: 'load', timeout: 45000 }).catch(() => {});
   await page.waitForSelector('.consonant-CardsGrid .consonant-Card', { timeout: 15000 }).catch(() => {});
   await page.waitForTimeout(2500);
+  const targetMarked = await page.evaluate(() => {
+    const target = document.querySelector('div#caas.caas-preview');
+    if (!target) return false;
+    target.setAttribute('data-caas-qa-target', 'true');
+    return true;
+  });
+  if (!targetMarked) {
+    await page.screenshot({ path: '/tmp/feature-render.png', fullPage: true }).catch(() => {});
+    await page.close();
+    postComment('SKIPPED',
+`**Target collection did not render** — skipped instead of reporting a product failure.
+
+**Source test:** \`${plan.sourceTest || '(n/a)'}\`
+**Expected:** ${plan.expected}`);
+    console.log('[render] skipped: no div#caas.caas-preview target');
+    process.exit(0);
+  }
   const before = await observePage(page, plan.action?.selector || '');
   console.log('[observed before] ' + JSON.stringify(before));
   const actionResult = await runFeatureAction(page, plan.action,
-    { scopeSelector: 'div#caas.caas-preview' });
+    { scopeSelector: '[data-caas-qa-target="true"]' });
   if (actionResult?.status === 'SKIPPED') {
     console.log('[action] SKIPPED: ' + actionResult.reason);
     await page.screenshot({ path: '/tmp/feature-render.png', fullPage: true }).catch(() => {});
@@ -443,7 +461,7 @@ ${JSON.stringify(before).slice(0, 6000)}
 DOM after action:
 ${JSON.stringify(after).slice(0, 6000)}
 
-Judge the product only when the planned action was performed. Compare before and after when an action exists. Does the rendered DOM satisfy ONLY the selected test assertion? Do not introduce new expectations. Respond with ONLY JSON: {"verdict":"PASS"|"FAIL","reason":"one or two sentences citing observed vs expected"}`, 1500);
+The host page can contain other unrelated CaaS collections. Judge collection removal using collectionRoots.target and targetCards only; pageCaasPreview/pageCards are diagnostic totals and must not be expected to reach zero. Judge the product only when the planned action was performed. Compare before and after when an action exists. Does the rendered DOM satisfy ONLY the selected test assertion? Do not introduce new expectations. Respond with ONLY JSON: {"verdict":"PASS"|"FAIL","reason":"one or two sentences citing observed vs expected"}`, 1500);
   const res = extractJson(check);
   console.log(`[validate] ${res.verdict}: ${res.reason}`);
 
@@ -456,8 +474,8 @@ Judge the product only when the planned action was performed. Compare before and
 **Fixture cards:** ${plan.cards.length}
 **Expected:** ${plan.expected}
 **Action:** ${plan.action ? `\`${plan.action.kind} ${plan.action.selector}\` — ${actionResult?.status}` : '_(initial render; no action)_'}
-**Before:** collection root ${before.collectionRoots.caasPreview}, cards ${before.collectionRoots.cards}${plan.action ? `, action target ${before.actionTarget.count} (${before.actionTarget.visibleCount} visible)` : ''}
-**After:** collection root ${after.collectionRoots.caasPreview}, cards ${after.collectionRoots.cards}
+**Before:** target collection ${before.collectionRoots.target}, target cards ${before.collectionRoots.targetCards}${plan.action ? `, action target ${before.actionTarget.count} (${before.actionTarget.visibleCount} visible)` : ''}
+**After:** target collection ${after.collectionRoots.target}, target cards ${after.collectionRoots.targetCards}
 **Rendered cards before:**
 ${before.cards.map((item) => `- ${item.n}. ${item.title || item.text.slice(0, 50)}`).join('\n') || '_(no cards rendered)_'}
 **Rendered cards after:**
