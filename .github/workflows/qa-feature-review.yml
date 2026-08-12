@@ -41,11 +41,13 @@ jobs:
         run: |
           node --test \
             .github/qa/code-search.test.mjs \
-            .github/qa/feature-action.test.mjs
+            .github/qa/feature-action.test.mjs \
+            .github/qa/scenario-config.test.mjs
           mkdir -p "$RUNNER_TEMP/feature-review"
           cp .github/qa/feature-review.mjs \
              .github/qa/feature-action.mjs \
              .github/qa/code-search.mjs \
+             .github/qa/scenario-config.mjs \
              .github/qa/package.json \
              .github/qa/package-lock.json \
              "$RUNNER_TEMP/feature-review/"

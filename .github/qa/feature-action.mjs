@@ -36,6 +36,13 @@ export function planDescribesInteraction(plan) {
   return /\b(click(?:s|ed|ing)?|typ(?:e|es|ed|ing)|after (?:the )?(?:filter|search|action|interaction)|select(?:s|ed|ing) (?:a|an|the))\b/i.test(text);
 }
 
+/** An interaction verdict is invalid when its supplied baseline fixture never rendered. */
+export function interactionPrerequisiteFailure(plan, observed) {
+  if (!plan?.action || !Array.isArray(plan.cards) || plan.cards.length === 0) return '';
+  if (Number(observed?.collectionRoots?.targetCards) > 0) return '';
+  return 'the target collection contained zero fixture cards before the planned action';
+}
+
 /**
  * Perform one user-visible action. Missing, hidden, ambiguous, or broken targets
  * are harness limitations, so callers must report SKIPPED rather than FAIL.

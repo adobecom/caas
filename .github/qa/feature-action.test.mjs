@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import {
+  interactionPrerequisiteFailure,
   normalizeFeatureAction,
   planDescribesInteraction,
   runFeatureAction,
@@ -67,6 +68,15 @@ test('detects interaction language when a planner forgets to return an action', 
   assert.equal(planDescribesInteraction({
     sourceTest: 'renders an editorial card', expected: 'card is visible on initial render',
   }), false);
+});
+
+test('rejects an interaction verdict when its initial fixture card did not render', () => {
+  const plan = { action: { kind: 'click', selector: '#filter' }, cards: [{ id: 'baseline' }] };
+  assert.match(interactionPrerequisiteFailure(plan, { collectionRoots: { targetCards: 0 } }),
+    /zero fixture cards/);
+  assert.equal(interactionPrerequisiteFailure(plan, { collectionRoots: { targetCards: 1 } }), '');
+  assert.equal(interactionPrerequisiteFailure({ ...plan, action: null },
+    { collectionRoots: { targetCards: 0 } }), '');
 });
 
 test('performs one visible, unambiguous click', async () => {

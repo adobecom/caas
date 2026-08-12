@@ -17,11 +17,13 @@ import path from 'node:path';
 import { chromium } from 'playwright';
 import { researchCode } from './code-search.mjs';
 import {
+  interactionPrerequisiteFailure,
   normalizeFeatureAction,
   planDescribesInteraction,
   runFeatureAction,
   validateFeatureAction,
 } from './feature-action.mjs';
+import { buildScenarioConfig } from './scenario-config.mjs';
 
 const env = (k, d = '') => (process.env[k] ?? d);
 const PR    = env('PR_NUMBER');
@@ -305,7 +307,7 @@ Respond with ONLY a JSON object: {"testable":true|false,"reason":"one sentence"}
 
   // ---- Step 4: plan the injection using live config + searched source ----
   const planHead = canReplace
-    ? `The page hosts ${liveConfigs.length} card collection(s). Here are their original configs:\n\n${JSON.stringify(liveConfigs).slice(0, 16000)}\n\nStart from the sortable/main card-grid config. Return a COMPLETE config with the feature enabled, featuredCards removed, and card limits high enough for every fixture card.`
+    ? `The page hosts ${liveConfigs.length} card collection(s). Here are their original configs:\n\n${JSON.stringify(liveConfigs).slice(0, 16000)}\n\nReturn only the FEATURE CONFIG PATCH needed for the selected test. The harness deep-merges it over the first captured live config and preserves required transport/default fields. Do not copy or replace unrelated live config sections.`
     : 'Live config capture failed. Build a minimal complete CaaS config that activates the feature and renders every fixture card.';
 
   const planRaw = await llm(
@@ -350,8 +352,11 @@ or {"sourceTest":"...","skipReason":"source search could not prove how the test 
     postComment('SKIPPED', `**Scenario mapping was not proven** -- skipped instead of guessing.\n\n> ${String(plan2.skipReason).slice(0, 800)}\n\nCode searches performed: ${research.searches.length}.`);
     console.log(`[plan] skipped: ${plan2.skipReason}`); process.exit(0);
   }
-  plan.config = plan2.config || {};
+  plan.configPatch = plan2.config || {};
   plan.cards = plan2.cards || [];
+  plan.config = canReplace
+    ? buildScenarioConfig(liveConfigs[0], plan.configPatch, plan.cards)
+    : buildScenarioConfig({}, plan.configPatch, plan.cards);
   plan.expected = plan2.expected || '';
   plan.observe = plan2.observe || '';
   plan.sourceTest = plan2.sourceTest || '';
@@ -375,6 +380,11 @@ or {"sourceTest":"...","skipReason":"source search could not prove how the test 
     id: card.id, style: card.styles?.typeOverride, country: card.country,
     modifiedDate: card.modifiedDate, footer: card.footer,
   }))));
+  console.log('[config] ' + JSON.stringify({
+    patchKeys: Object.keys(plan.configPatch),
+    collection: plan.config.collection,
+    filterPanel: plan.config.filterPanel,
+  }).slice(0, 6000));
   if (!plan.action && planDescribesInteraction(plan)) {
     postComment('SKIPPED',
 `**Interaction scenario was incomplete** — skipped instead of reporting a product failure.
@@ -418,6 +428,23 @@ The selected test describes a click, selection, or text entry, but the planner d
   }
   const before = await observePage(page, plan.action?.selector || '');
   console.log('[observed before] ' + JSON.stringify(before));
+  const prerequisiteFailure = interactionPrerequisiteFailure(plan, before);
+  if (prerequisiteFailure) {
+    await page.screenshot({ path: '/tmp/feature-render.png', fullPage: true }).catch(() => {});
+    await page.close();
+    postComment('SKIPPED',
+`**Interaction prerequisite did not render** — skipped instead of reporting a product failure.
+
+The planned action depends on an initially rendered fixture card, but the target collection contained zero cards before the action. Without that baseline, the before/after assertion is not a valid product test.
+
+**Source test:** \`${plan.sourceTest || '(n/a)'}\`
+**Expected:** ${plan.expected}
+**Fixture cards supplied:** ${plan.cards.length}
+**Initial target cards:** ${before.collectionRoots.targetCards}
+**Initial action target:** ${before.actionTarget.count} match(es), ${before.actionTarget.visibleCount} visible`);
+    console.log(`[render] skipped: ${prerequisiteFailure}`);
+    process.exit(0);
+  }
   const actionResult = await runFeatureAction(page, plan.action,
     { scopeSelector: '[data-caas-qa-target="true"]' });
   if (actionResult?.status === 'SKIPPED') {
