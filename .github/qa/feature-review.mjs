@@ -12,7 +12,7 @@
  * say should happen.
  */
 import { execFileSync } from 'node:child_process';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { chromium } from 'playwright';
 import { collectInteractionEvidence, researchCode } from './code-search.mjs';
@@ -228,9 +228,13 @@ function postComment(verdict, bodyMd) {
   const diff = diffSections.filter((section) => !isReviewerInfra(sectionPath(section))).join('').slice(0, 24000);
   const changedPaths = (meta.files || []).map((f) => f.path).filter((filePath) => !isReviewerInfra(filePath));
   const specPaths = changedPaths.filter((p) => /\.(spec|test)\.(jsx?|tsx?)$/.test(p));
-  const specText = specPaths.map((p) => {
-    try { return `\n// FILE ${p}\n${readFileSync(path.resolve(ROOT, p), 'utf8')}`; } catch { return ''; }
-  }).join('\n').slice(0, 14000);
+  // Feed the planner the changed test hunks, not the beginning of each full test
+  // file. Large suites can place the new interaction test thousands of lines in,
+  // beyond a fixed file-prefix budget.
+  const specText = diffSections
+    .filter((section) => specPaths.includes(sectionPath(section)))
+    .join('\n')
+    .slice(0, 14000);
 
   // ---- Step 1: decide whether the PR's feature can be exercised at all ----
   const detect = await llm(
