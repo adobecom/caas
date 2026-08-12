@@ -20,6 +20,15 @@ export function normalizeFeatureAction(value) {
   return action;
 }
 
+/** Positional selectors are brittle across component wrappers and repeated collections. */
+export function validateFeatureAction(action) {
+  if (!action) return null;
+  if (/:(?:nth|first|last|eq)(?:-|\(|:)/i.test(action.selector)) {
+    throw new Error('feature action selector must use a stable attribute, not a positional pseudo-class');
+  }
+  return action;
+}
+
 /** Fail closed when a planner describes an interaction but forgets its action. */
 export function planDescribesInteraction(plan) {
   const text = `${plan?.sourceTest || ''} ${plan?.expected || ''}`;
@@ -30,15 +39,25 @@ export function planDescribesInteraction(plan) {
  * Perform one user-visible action. Missing, hidden, ambiguous, or broken targets
  * are harness limitations, so callers must report SKIPPED rather than FAIL.
  */
-export async function runFeatureAction(page, rawAction) {
+export async function runFeatureAction(page, rawAction, { scopeSelector = '' } = {}) {
   const action = normalizeFeatureAction(rawAction);
   if (!action) return null;
-  const locator = page.locator(action.selector);
+  let locator = page.locator(action.selector);
+  let scopeCount;
+  if (scopeSelector) {
+    const scopes = page.locator(scopeSelector);
+    scopeCount = await scopes.count();
+    if (scopeCount === 0) {
+      return { action, status: 'SKIPPED', scopeCount, reason: `action scope did not render: ${scopeSelector}` };
+    }
+    locator = scopes.first().locator(action.selector);
+  }
   const targetCount = await locator.count();
   if (targetCount !== 1) {
     return {
       action,
       status: 'SKIPPED',
+      scopeCount,
       targetCount,
       reason: targetCount === 0
         ? `action target did not render: ${action.selector}`
@@ -50,6 +69,7 @@ export async function runFeatureAction(page, rawAction) {
     return {
       action,
       status: 'SKIPPED',
+      scopeCount,
       targetCount,
       targetVisible,
       reason: `action target rendered but is not visible: ${action.selector}`,
@@ -58,11 +78,12 @@ export async function runFeatureAction(page, rawAction) {
   try {
     if (action.kind === 'type') await locator.fill(action.value);
     else await locator.click();
-    return { action, status: 'PERFORMED', targetCount, targetVisible };
+    return { action, status: 'PERFORMED', scopeCount, targetCount, targetVisible };
   } catch (error) {
     return {
       action,
       status: 'SKIPPED',
+      scopeCount,
       targetCount,
       targetVisible,
       reason: `action could not be performed: ${String(error?.message || error).slice(0, 300)}`,
