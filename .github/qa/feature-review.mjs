@@ -15,7 +15,7 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { chromium } from 'playwright';
-import { researchCode } from './code-search.mjs';
+import { collectInteractionEvidence, researchCode } from './code-search.mjs';
 import {
   interactionPrerequisiteFailure,
   normalizeFeatureAction,
@@ -279,9 +279,13 @@ Respond with ONLY a JSON object: {"testable":true|false,"reason":"one sentence"}
     repoRoot: ROOT,
     taskContext: `PR: ${meta.title}\nChanged files:\n${changedPaths.join('\n')}\n\nChanged tests:\n${specText}\n\nDiff:\n${diff.slice(0, 10000)}`,
   });
+  const interactionEvidence = collectInteractionEvidence({ repoRoot: ROOT, specText });
   console.log(`[research] searches=${research.searches.length} summary=${research.summary.slice(0, 800)}`);
   research.searches.forEach((entry, index) => {
     console.log(`[research ${index + 1}] ${entry.query} in ${entry.searchPath} -> ${entry.result.matches.length} match block(s)`);
+  });
+  interactionEvidence.searches.forEach((entry, index) => {
+    console.log(`[interaction evidence ${index + 1}] ${entry.query} -> ${entry.result.matches.length} match block(s)`);
   });
 
   // ---- Step 3: capture the page's REAL live config(s) (first pass, no override) ----
@@ -317,6 +321,8 @@ ${planHead}
 
 You were allowed to search the CURRENT PR checkout. This research is authoritative for translating component-level test props into complete card JSON. Use the raw source blocks, not intuition:
 ${research.report}
+
+${interactionEvidence.report}
 
 Changed unit tests:
 ${specText}

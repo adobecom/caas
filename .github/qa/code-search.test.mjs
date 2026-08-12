@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { researchCode, searchCode } from './code-search.mjs';
+import { collectInteractionEvidence, researchCode, searchCode } from './code-search.mjs';
 
 const qaDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(qaDir, '../..');
@@ -59,6 +59,20 @@ test('broad symbol searches prioritize different files and include definitions',
   });
   assert.equal(new Set(result.matches.map(({ file }) => file)).size, result.matches.length);
   assert.ok(result.matches.some(({ file, snippet }) => file.endsWith('/Card.jsx') && /function extendFooterData/.test(snippet)));
+});
+
+test('grounds changed-test interaction selectors without consuming model search turns', () => {
+  const result = collectInteractionEvidence({
+    repoRoot,
+    specText: `
+      const checkbox = screen.getAllByTestId('consonant-LeftFilter-itemsItemCheckbox')[1];
+      render(<Container config={{ collection: eventsCollectionConfig }} />);
+    `,
+  });
+  assert.ok(result.searches.some(({ query }) => query === 'consonant-LeftFilter-itemsItemCheckbox'));
+  assert.ok(result.searches.some(({ query }) => query === 'eventsCollectionConfig'));
+  assert.match(result.report, /Filters\/Left\/Items\.jsx/);
+  assert.match(result.report, /htmlFor=\{nestedItem\.id\}/);
 });
 
 test('rejects paths outside the checkout', () => {
