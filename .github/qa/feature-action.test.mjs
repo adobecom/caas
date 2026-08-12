@@ -4,6 +4,7 @@ import {
   interactionPrerequisiteFailure,
   normalizeFeatureAction,
   planDescribesInteraction,
+  prepareConfigForAction,
   runFeatureAction,
   validateFeatureAction,
 } from './feature-action.mjs';
@@ -77,6 +78,20 @@ test('rejects an interaction verdict when its initial fixture card did not rende
   assert.equal(interactionPrerequisiteFailure(plan, { collectionRoots: { targetCards: 1 } }), '');
   assert.equal(interactionPrerequisiteFailure({ ...plan, action: null },
     { collectionRoots: { targetCards: 0 } }), '');
+});
+
+test('opens the injected filter group containing an exact action target', () => {
+  const config = {
+    filterPanel: { filters: [
+      { id: 'group-a', openedOnLoad: false, items: [{ id: 'group-a/item-a' }] },
+      { id: 'group-b', items: [{ id: 'group-b/item-b' }] },
+    ] },
+  };
+  const prepared = prepareConfigForAction(config,
+    { kind: 'click', selector: 'label[for="group-b/item-b"]' });
+  assert.equal(prepared.filterPanel.filters[0].openedOnLoad, false);
+  assert.equal(prepared.filterPanel.filters[1].openedOnLoad, true);
+  assert.equal(config.filterPanel.filters[1].openedOnLoad, undefined);
 });
 
 test('performs one visible, unambiguous click', async () => {

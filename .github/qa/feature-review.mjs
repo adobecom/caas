@@ -20,6 +20,7 @@ import {
   interactionPrerequisiteFailure,
   normalizeFeatureAction,
   planDescribesInteraction,
+  prepareConfigForAction,
   runFeatureAction,
   validateFeatureAction,
 } from './feature-action.mjs';
@@ -383,6 +384,7 @@ or {"sourceTest":"...","skipReason":"source search could not prove how the test 
     console.log(`[plan] skipped: ${error.message || error}`);
     process.exit(0);
   }
+  plan.config = prepareConfigForAction(plan.config, plan.action);
   console.log('[plan] sourceTest=' + plan.sourceTest + ' | observe=' + plan.observe);
   console.log('[action plan] ' + JSON.stringify(plan.action));
   console.log('[mapping] ' + JSON.stringify(plan.mappingEvidence));

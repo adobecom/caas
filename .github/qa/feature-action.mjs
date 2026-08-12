@@ -43,6 +43,30 @@ export function interactionPrerequisiteFailure(plan, observed) {
   return 'the target collection contained zero fixture cards before the planned action';
 }
 
+const actionAttributeValue = (selector) => {
+  const match = String(selector || '').match(/\[(?:for|id|value)\s*=\s*(["'])(.*?)\1\]/i);
+  return match?.[2] || '';
+};
+
+const containsFilterItem = (items, targetId) => Array.isArray(items) && items.some((item) =>
+  String(item?.id || '') === targetId || containsFilterItem(item?.items, targetId));
+
+/** Open the injected filter group containing an exact action target. */
+export function prepareConfigForAction(config, action) {
+  if (!config || typeof config !== 'object' || !action) return config;
+  const targetId = actionAttributeValue(action.selector);
+  const filters = config.filterPanel?.filters;
+  if (!targetId || !Array.isArray(filters)) return config;
+  return {
+    ...config,
+    filterPanel: {
+      ...config.filterPanel,
+      filters: filters.map((group) => containsFilterItem(group?.items, targetId)
+        ? { ...group, openedOnLoad: true } : group),
+    },
+  };
+}
+
 /**
  * Perform one user-visible action. Missing, hidden, ambiguous, or broken targets
  * are harness limitations, so callers must report SKIPPED rather than FAIL.
