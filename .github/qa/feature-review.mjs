@@ -337,7 +337,7 @@ Pick ONE changed unit test whose effect is observable in the DOM.
 - Use dates relative to today (${new Date().toISOString().slice(0, 10)}) when the test uses relative dates.
 - If the selected test clicks one control or types one query, return an action. The selector must match exactly one VISIBLE element on the initial render. If the target is a left-filter item, you MUST set that filter group's openedOnLoad=true in config so its label/input is initially visible.
 - Use action kind "click" for one visible button/label/control and "type" for one visible input. Put the typed query in action.value. If the behavior still needs multiple interactions after config injection, return skipReason.
-- Action selectors MUST identify the intended control by a stable exact attribute such as input[value="caas:products/illustrator"], label[for="caas:products/illustrator"], a unique id, or a unique data-testid. NEVER use positional selectors such as :nth-child, :nth-of-type, :first, or :last. data-testid alone is not unique when multiple filter items share it.
+- Action selectors MUST identify the intended control by a stable exact attribute such as label[for="caas:products/illustrator"], a unique id/value, or a unique data-testid. Prefer the associated label for checkbox/radio controls because native inputs can be visually hidden. NEVER use positional selectors such as :nth-child, :nth-of-type, :first, or :last. data-testid alone is not unique when multiple filter items share it.
 - Read the actual config path and interaction target; do not infer that a Product filter is an Event Filter merely from a test name or comment.
 - If source search did not establish an injection path, return skipReason instead of producing a guessed fixture.
 

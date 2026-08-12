@@ -3,6 +3,7 @@ const MAX_VALUE_LENGTH = 1000;
 const SUPPORTED_KINDS = new Set(['click', 'type']);
 
 const asObject = (value) => (value && typeof value === 'object' && !Array.isArray(value) ? value : {});
+const cssAttributeValue = (value) => String(value).replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 
 /** Normalize the single bounded browser action supported by Feature QA. */
 export function normalizeFeatureAction(value) {
@@ -43,6 +44,7 @@ export async function runFeatureAction(page, rawAction, { scopeSelector = '' } =
   const action = normalizeFeatureAction(rawAction);
   if (!action) return null;
   let locator = page.locator(action.selector);
+  let scope;
   let scopeCount;
   if (scopeSelector) {
     const scopes = page.locator(scopeSelector);
@@ -50,7 +52,8 @@ export async function runFeatureAction(page, rawAction, { scopeSelector = '' } =
     if (scopeCount === 0) {
       return { action, status: 'SKIPPED', scopeCount, reason: `action scope did not render: ${scopeSelector}` };
     }
-    locator = scopes.first().locator(action.selector);
+    scope = scopes.first();
+    locator = scope.locator(action.selector);
   }
   const targetCount = await locator.count();
   if (targetCount !== 1) {
@@ -64,7 +67,25 @@ export async function runFeatureAction(page, rawAction, { scopeSelector = '' } =
         : `action target is ambiguous (${targetCount} matches): ${action.selector}`,
     };
   }
-  const targetVisible = await locator.isVisible().catch(() => false);
+  let targetVisible = await locator.isVisible().catch(() => false);
+  let resolvedSelector = action.selector;
+  // CaaS visually hides native checkbox/radio inputs and exposes a styled label.
+  // Resolve that label deterministically; this is the same single user action.
+  if (!targetVisible && action.kind === 'click') {
+    const type = String(await locator.getAttribute('type').catch(() => '') || '').toLowerCase();
+    const id = await locator.getAttribute('id').catch(() => '');
+    if ((type === 'checkbox' || type === 'radio') && id) {
+      const labelSelector = `label[for="${cssAttributeValue(id)}"]`;
+      const labelLocator = scope ? scope.locator(labelSelector) : page.locator(labelSelector);
+      const labelCount = await labelLocator.count();
+      const labelVisible = labelCount === 1 && await labelLocator.isVisible().catch(() => false);
+      if (labelVisible) {
+        locator = labelLocator;
+        targetVisible = true;
+        resolvedSelector = labelSelector;
+      }
+    }
+  }
   if (!targetVisible) {
     return {
       action,
@@ -78,7 +99,7 @@ export async function runFeatureAction(page, rawAction, { scopeSelector = '' } =
   try {
     if (action.kind === 'type') await locator.fill(action.value);
     else await locator.click();
-    return { action, status: 'PERFORMED', scopeCount, targetCount, targetVisible };
+    return { action, resolvedSelector, status: 'PERFORMED', scopeCount, targetCount, targetVisible };
   } catch (error) {
     return {
       action,

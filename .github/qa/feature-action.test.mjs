@@ -7,11 +7,12 @@ import {
   validateFeatureAction,
 } from './feature-action.mjs';
 
-function fakePage({ count = 1, visible = true, clickError, fillError } = {}) {
+function fakePage({ count = 1, visible = true, clickError, fillError, attributes = {} } = {}) {
   const calls = [];
   const makeLocator = (selector) => ({
     count: async () => count,
     isVisible: async () => visible,
+    getAttribute: async (name) => attributes[name] ?? null,
     first: () => {
       calls.push(['first']);
       return makeLocator(selector);
@@ -96,6 +97,29 @@ test('scopes an action to the first injected collection when the host page has s
     ['childLocator', 'label[for="illustrator"]'],
     ['click'],
   ]);
+});
+
+test('clicks the visible associated label for a visually hidden checkbox', async () => {
+  const calls = [];
+  const input = {
+    count: async () => 1,
+    isVisible: async () => false,
+    getAttribute: async (name) => ({ type: 'checkbox', id: 'caas:products/illustrator' })[name] || null,
+  };
+  const label = {
+    count: async () => 1,
+    isVisible: async () => true,
+    click: async () => calls.push('label clicked'),
+  };
+  const scope = { locator: (selector) => selector.startsWith('label[') ? label : input };
+  const scopes = { count: async () => 2, first: () => scope };
+  const page = { locator: (selector) => selector === '.caas-preview' ? scopes : input };
+  const result = await runFeatureAction(page,
+    { kind: 'click', selector: 'input[value="caas:products/illustrator"]' },
+    { scopeSelector: '.caas-preview' });
+  assert.equal(result.status, 'PERFORMED');
+  assert.equal(result.resolvedSelector, 'label[for="caas:products/illustrator"]');
+  assert.deepEqual(calls, ['label clicked']);
 });
 
 test('missing, hidden, and ambiguous targets are skipped instead of failed', async () => {
