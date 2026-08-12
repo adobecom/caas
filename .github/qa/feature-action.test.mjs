@@ -56,13 +56,13 @@ test('rejects positional selectors that do not identify the intended control', (
     kind: 'click', selector: '[data-testid="checkbox"]:nth-of-type(2)',
   })), /stable attribute/);
   assert.deepEqual(validateFeatureAction(normalizeFeatureAction({
-    kind: 'click', selector: 'label[for="caas:products/illustrator"]',
-  })), { kind: 'click', selector: 'label[for="caas:products/illustrator"]' });
+    kind: 'click', selector: 'label[for="filter-group/item-b"]',
+  })), { kind: 'click', selector: 'label[for="filter-group/item-b"]' });
 });
 
 test('detects interaction language when a planner forgets to return an action', () => {
   assert.equal(planDescribesInteraction({
-    sourceTest: 'removes collection after selecting Illustrator',
+    sourceTest: 'removes collection after selecting an unmatched filter',
     expected: 'clicking the checkbox removes #caas',
   }), true);
   assert.equal(planDescribesInteraction({
@@ -114,7 +114,7 @@ test('clicks the visible associated label for a visually hidden checkbox', async
   const input = {
     count: async () => 1,
     isVisible: async () => false,
-    getAttribute: async (name) => ({ type: 'checkbox', id: 'caas:products/illustrator' })[name] || null,
+    getAttribute: async (name) => ({ type: 'checkbox', id: 'filter-group/item-b' })[name] || null,
   };
   const label = {
     count: async () => 1,
@@ -125,10 +125,10 @@ test('clicks the visible associated label for a visually hidden checkbox', async
   const scopes = { count: async () => 2, first: () => scope };
   const page = { locator: (selector) => selector === '.caas-preview' ? scopes : input };
   const result = await runFeatureAction(page,
-    { kind: 'click', selector: 'input[value="caas:products/illustrator"]' },
+    { kind: 'click', selector: 'input[value="filter-group/item-b"]' },
     { scopeSelector: '.caas-preview' });
   assert.equal(result.status, 'PERFORMED');
-  assert.equal(result.resolvedSelector, 'label[for="caas:products/illustrator"]');
+  assert.equal(result.resolvedSelector, 'label[for="filter-group/item-b"]');
   assert.deepEqual(calls, ['label clicked']);
 });
 
