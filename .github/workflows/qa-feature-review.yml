@@ -2,8 +2,9 @@ name: Feature QA Review
 
 # Advisory, non-blocking. Reasons about whether a PR is a config/data-gated CaaS
 # feature; if so, injects the PR build + a forced config (?caasqa hook) + a mocked
-# chimera-api/collection, renders it on a live page, and validates the result
-# against the PR's own unit tests. If the PR isn't an injectable feature, it skips.
+# chimera-api/collection, optionally performs one visible click or text entry,
+# and validates before/after DOM evidence against the PR's own unit tests. If
+# the PR isn't injectable or the action cannot run, it skips.
 
 on:
   pull_request:
@@ -38,9 +39,12 @@ jobs:
       # back to that PR's older implementation and does not test the new search.
       - name: Preserve and test the feature reviewer
         run: |
-          node --test .github/qa/code-search.test.mjs
+          node --test \
+            .github/qa/code-search.test.mjs \
+            .github/qa/feature-action.test.mjs
           mkdir -p "$RUNNER_TEMP/feature-review"
           cp .github/qa/feature-review.mjs \
+             .github/qa/feature-action.mjs \
              .github/qa/code-search.mjs \
              .github/qa/package.json \
              .github/qa/package-lock.json \

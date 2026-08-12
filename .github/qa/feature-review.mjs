@@ -7,14 +7,20 @@
  * feature we can force by (a) overriding the config (via the ?caasqa localStorage
  * hook) and (b) mocking the chimera-api/collection response? If not, it skips
  * cleanly. If yes, it injects the PR build + the config + a crafted collection,
- * renders it on a live page, reads the result, and validates it against what the
- * PR's own unit tests say should happen.
+ * renders it on a live page, optionally performs one click or type action, reads
+ * the before/after result, and validates it against what the PR's own unit tests
+ * say should happen.
  */
 import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { chromium } from 'playwright';
 import { researchCode } from './code-search.mjs';
+import {
+  normalizeFeatureAction,
+  planDescribesInteraction,
+  runFeatureAction,
+} from './feature-action.mjs';
 
 const env = (k, d = '') => (process.env[k] ?? d);
 const PR    = env('PR_NUMBER');
@@ -86,6 +92,66 @@ const extractJson = (s) => {
   if (a === -1 || b === -1 || b <= a) throw new Error('no JSON in LLM output');
   return JSON.parse(t.slice(a, b + 1));
 };
+
+async function observePage(page, actionSelector = '') {
+  return page.evaluate((selector) => {
+    const isVisible = (element) => {
+      if (!element) return false;
+      const style = window.getComputedStyle(element);
+      const rect = element.getBoundingClientRect();
+      return style.display !== 'none' && style.visibility !== 'hidden' &&
+        Number(style.opacity || 1) !== 0 && rect.width > 0 && rect.height > 0;
+    };
+    const cards = [...document.querySelectorAll('.consonant-Card')].slice(0, 12).map((card, index) => {
+      const title = card.querySelector('[class*="-title"]');
+      const links = [...card.querySelectorAll('a,button')].slice(0, 6).map((element) => ({
+        tag: element.tagName.toLowerCase(),
+        testId: element.getAttribute('data-testid') || undefined,
+        text: (element.textContent || '').trim().slice(0, 50),
+        href: element.getAttribute('href') || undefined,
+        cls: (element.className || '').toString().slice(0, 100) || undefined,
+      }));
+      return {
+        n: index + 1,
+        id: card.id || undefined,
+        title: title ? title.textContent.trim().slice(0, 80) : '',
+        text: (card.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 220),
+        links,
+      };
+    });
+    let actionTarget = { selector, count: 0, visibleCount: 0, matches: [] };
+    if (selector) {
+      try {
+        const matches = [...document.querySelectorAll(selector)];
+        actionTarget = {
+          selector,
+          count: matches.length,
+          visibleCount: matches.filter(isVisible).length,
+          matches: matches.slice(0, 5).map((element) => ({
+            tag: element.tagName.toLowerCase(),
+            text: (element.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 100),
+            testId: element.getAttribute('data-testid') || undefined,
+            value: element.value || element.getAttribute('value') || undefined,
+            checked: 'checked' in element ? Boolean(element.checked) : undefined,
+            visible: isVisible(element),
+          })),
+        };
+      } catch (error) {
+        actionTarget = { selector, count: 0, visibleCount: 0, matches: [], selectorError: error.message };
+      }
+    }
+    return {
+      cards,
+      collectionRoots: {
+        caasPreview: document.querySelectorAll('div#caas.caas-preview').length,
+        cardsGrid: document.querySelectorAll('.consonant-CardsGrid').length,
+        wrappers: document.querySelectorAll('.consonant-Wrapper').length,
+        cards: document.querySelectorAll('.consonant-Card').length,
+      },
+      actionTarget,
+    };
+  }, actionSelector);
+}
 
 function ptStamp() {
   const d = new Date();
@@ -165,9 +231,9 @@ function postComment(verdict, bodyMd) {
   const detect = await llm(
 `You are triaging an Adobe CaaS (Consonant card collection) pull request to decide if its feature can be EXERCISED by an automated harness.
 
-The harness renders the REAL PR build on a live page and can force exactly two things: (1) the CaaS CONFIG for a collection (it reads the page's real config and can replace it wholesale), and (2) the COLLECTION DATA (the chimera-api/collection JSON, replaced with crafted cards). It then reads the resulting DOM.
+The harness renders the REAL PR build on a live page and can force the CaaS CONFIG and COLLECTION DATA. It can then perform ONE simple interaction: clicking one visible control or typing into one visible input, followed by a second DOM capture.
 
-TESTABLE only if the behaviour is driven by config and/or card data (a new sort mode, filter behaviour, a card field rendering, a config-gated layout). NOT testable if it is a pure refactor, build/CI/tooling/deps, test-only, backend/service-only, or needs unsupported auth / interaction / external state.
+TESTABLE only if the behaviour is driven by config/card data, optionally followed by one visible click or text entry (a new sort mode, filter/search behaviour, a card field rendering, a config-gated layout). NOT testable if it is a pure refactor, build/CI/tooling/deps, test-only, backend/service-only, or needs auth, external state, or a multi-step interaction that cannot be made single-step through injected config.
 
 The changed-file list and diff below already exclude this reviewer's own workflow, search implementation, and gated applyQaConfigOverride hook. Never select those QA mechanics as the product feature. For a self-test PR whose title/body names an earlier product behavior, test that named behavior from the included product spec.
 
@@ -267,10 +333,13 @@ Pick ONE changed unit test whose effect is observable in the DOM.
 - Set an explicitly registered card style that actually renders that component, and neutralize searched config conditions that suppress it.
 - Preserve the test's exact feature inputs and assertions. Add only nonessential baseline fields needed to make the card render.
 - Use dates relative to today (${new Date().toISOString().slice(0, 10)}) when the test uses relative dates.
+- If the selected test clicks one control or types one query, return an action. The selector must match exactly one VISIBLE element on the initial render. You may set non-semantic UI state such as a filter group's openedOnLoad=true so the intended control is initially visible, but do not change the feature input or assertion.
+- Use action kind "click" for one visible button/label/control and "type" for one visible input. Put the typed query in action.value. If the behavior still needs multiple interactions after config injection, return skipReason.
+- Read the actual config path and interaction target; do not infer that a Product filter is an Event Filter merely from a test name or comment.
 - If source search did not establish an injection path, return skipReason instead of producing a guessed fixture.
 
 Respond with ONLY one JSON object:
-{"sourceTest":"...","config":{},"cards":[],"expected":"exact selected-test assertion restated for DOM","observe":"where to check","mappingEvidence":[{"file":"...","line":123,"fact":"..."}],"skipReason":""}
+{"sourceTest":"...","config":{},"cards":[],"expected":"exact selected-test assertion restated for DOM","observe":"where to check","mappingEvidence":[{"file":"...","line":123,"fact":"..."}],"action":{"kind":"click|type","selector":"CSS selector matching exactly one visible element","value":"text for type only"},"skipReason":""}
 or {"sourceTest":"...","skipReason":"source search could not prove how the test input reaches config/card JSON"}.`, 16000);
   const plan2 = extractJson(planRaw);
   if (plan2.skipReason) {
@@ -283,12 +352,25 @@ or {"sourceTest":"...","skipReason":"source search could not prove how the test 
   plan.observe = plan2.observe || '';
   plan.sourceTest = plan2.sourceTest || '';
   plan.mappingEvidence = plan2.mappingEvidence || [];
+  plan.action = normalizeFeatureAction(plan2.action);
   console.log('[plan] sourceTest=' + plan.sourceTest + ' | observe=' + plan.observe);
+  console.log('[action plan] ' + JSON.stringify(plan.action));
   console.log('[mapping] ' + JSON.stringify(plan.mappingEvidence));
   console.log('[cards] ' + JSON.stringify(plan.cards.map((card) => ({
     id: card.id, style: card.styles?.typeOverride, country: card.country,
     modifiedDate: card.modifiedDate, footer: card.footer,
   }))));
+  if (!plan.action && planDescribesInteraction(plan)) {
+    postComment('SKIPPED',
+`**Interaction scenario was incomplete** — skipped instead of reporting a product failure.
+
+The selected test describes a click, selection, or text entry, but the planner did not return the required browser action.
+
+**Source test:** \`${plan.sourceTest || '(n/a)'}\`
+**Expected:** ${plan.expected}`);
+    console.log('[plan] skipped: interaction described without an action');
+    process.exit(0);
+  }
 
   // ---- Step 5: inject config + mocked collection, render the PR build ----
   const injected = canReplace ? { ...plan.config, _caasQaReplace: true } : plan.config;
@@ -302,28 +384,29 @@ or {"sourceTest":"...","skipReason":"source search could not prove how the test 
   await page.goto(gateUrl, { waitUntil: 'load', timeout: 45000 }).catch(() => {});
   await page.waitForSelector('.consonant-CardsGrid .consonant-Card', { timeout: 15000 }).catch(() => {});
   await page.waitForTimeout(2500);
-  const observed = await page.evaluate(() => {
-    const grid = document.querySelector('.consonant-CardsGrid');
-    const cards = grid ? [...grid.querySelectorAll('.consonant-Card')] : [...document.querySelectorAll('.consonant-Card')];
-    return cards.slice(0, 12).map((card, index) => {
-      const title = card.querySelector('[class*="-title"]');
-      const links = [...card.querySelectorAll('a,button')].slice(0, 6).map((element) => ({
-        tag: element.tagName.toLowerCase(),
-        testId: element.getAttribute('data-testid') || undefined,
-        text: (element.textContent || '').trim().slice(0, 50),
-        href: element.getAttribute('href') || undefined,
-        cls: (element.className || '').toString().slice(0, 100) || undefined,
-      }));
-      return {
-        n: index + 1,
-        id: card.id || undefined,
-        title: title ? title.textContent.trim().slice(0, 80) : '',
-        text: (card.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 220),
-        links,
-      };
-    });
-  });
-  console.log('[observed] ' + JSON.stringify(observed));
+  const before = await observePage(page, plan.action?.selector || '');
+  console.log('[observed before] ' + JSON.stringify(before));
+  const actionResult = await runFeatureAction(page, plan.action);
+  if (actionResult?.status === 'SKIPPED') {
+    console.log('[action] SKIPPED: ' + actionResult.reason);
+    await page.screenshot({ path: '/tmp/feature-render.png', fullPage: true }).catch(() => {});
+    await page.close();
+    postComment('SKIPPED',
+`Injected the PR build and fixture, but the planned browser interaction could not be performed. This is a harness/scenario limitation, not a product failure.
+
+**Source test:** \`${plan.sourceTest || '(n/a)'}\`
+**Expected:** ${plan.expected}
+**Action:** \`${plan.action?.kind || 'unknown'} ${plan.action?.selector || ''}\`
+**Initial action target:** ${before.actionTarget.count} match(es), ${before.actionTarget.visibleCount} visible
+**Reason:** ${actionResult.reason}`);
+    process.exit(0);
+  }
+  if (actionResult) {
+    console.log(`[action] ${actionResult.status}: ${plan.action.kind} ${plan.action.selector}`);
+    await page.waitForTimeout(1800);
+  }
+  const after = actionResult ? await observePage(page, plan.action.selector) : before;
+  console.log('[observed after] ' + JSON.stringify(after));
   await page.screenshot({ path: '/tmp/feature-render.png', fullPage: true }).catch(() => {});
   await page.close();
 
@@ -336,10 +419,16 @@ Where to look: ${plan.observe}
 Expected, copied from that test: ${plan.expected}
 Source mapping evidence: ${JSON.stringify(plan.mappingEvidence)}
 
-Rendered first-collection cards (id, title, text, links/buttons):
-${JSON.stringify(observed).slice(0, 6000) || '(no cards rendered)'}
+Planned action: ${JSON.stringify(plan.action) || '(none; initial-render assertion)'}
+Action result: ${JSON.stringify(actionResult) || '(no action required)'}
 
-Does the rendered DOM satisfy ONLY the selected test assertion? Do not introduce new expectations. Respond with ONLY JSON: {"verdict":"PASS"|"FAIL","reason":"one or two sentences citing observed vs expected"}`, 1500);
+DOM before action:
+${JSON.stringify(before).slice(0, 6000)}
+
+DOM after action:
+${JSON.stringify(after).slice(0, 6000)}
+
+Judge the product only when the planned action was performed. Compare before and after when an action exists. Does the rendered DOM satisfy ONLY the selected test assertion? Do not introduce new expectations. Respond with ONLY JSON: {"verdict":"PASS"|"FAIL","reason":"one or two sentences citing observed vs expected"}`, 1500);
   const res = extractJson(check);
   console.log(`[validate] ${res.verdict}: ${res.reason}`);
 
@@ -351,8 +440,13 @@ Does the rendered DOM satisfy ONLY the selected test assertion? Do not introduce
 **Mapping evidence:** ${plan.mappingEvidence.map((item) => `\`${item.file}${item.line ? `:${item.line}` : ''}\``).join(', ') || '_(none returned)_'}
 **Fixture cards:** ${plan.cards.length}
 **Expected:** ${plan.expected}
-**Rendered (first collection):**
-${observed.map((item) => `- ${item.n}. ${item.title || item.text.slice(0, 50)}${item.links.length ? ` [${item.links.map((link) => `${link.testId || link.tag}${link.href ? ` ${link.href}` : ''}`).join(', ')}]` : ''}`).join('\n') || '_(no cards rendered)_'}
+**Action:** ${plan.action ? `\`${plan.action.kind} ${plan.action.selector}\` — ${actionResult?.status}` : '_(initial render; no action)_'}
+**Before:** collection root ${before.collectionRoots.caasPreview}, cards ${before.collectionRoots.cards}${plan.action ? `, action target ${before.actionTarget.count} (${before.actionTarget.visibleCount} visible)` : ''}
+**After:** collection root ${after.collectionRoots.caasPreview}, cards ${after.collectionRoots.cards}
+**Rendered cards before:**
+${before.cards.map((item) => `- ${item.n}. ${item.title || item.text.slice(0, 50)}`).join('\n') || '_(no cards rendered)_'}
+**Rendered cards after:**
+${after.cards.map((item) => `- ${item.n}. ${item.title || item.text.slice(0, 50)}`).join('\n') || '_(no cards rendered)_'}
 
 **Verdict:** ${res.reason}`);
   process.exit(0);
