@@ -320,7 +320,7 @@ function CardsCarousel({
     useEffect(() => {
         mobileLogic();
         setAriaAttributes(carouselRef.current);
-    });
+    }, []);
 
     return (
         <Fragment>
