@@ -297,6 +297,34 @@ tags: ['event1'] },
             expect(ids.indexOf(3)).toBeLessThan(ids.indexOf(1));
         });
 
+        test('Local First with recency threshold – fallback group sorted by modifiedDate even when cardDate diverges', () => {
+            const oldDate1 = new Date();
+            oldDate1.setMonth(oldDate1.getMonth() - 4);
+            const oldDate2 = new Date();
+            oldDate2.setMonth(oldDate2.getMonth() - 5);
+
+            const cards = [
+                { id: 1, country: '', modifiedDate: oldDate2.toISOString(), cardDate: oldDate1.toISOString() },
+                { id: 2, country: '', modifiedDate: oldDate1.toISOString(), cardDate: oldDate2.toISOString() },
+            ];
+            const cardFilterer = new CardFilterer([...cards]);
+            const { filteredCards } = cardFilterer.sortCards({ sort: 'localfirst' }, [], [], [], false, 3);
+
+            expect(filteredCards.map(c => c.id)).toEqual([2, 1]);
+        });
+
+        test('Local First with recency threshold – negative threshold falls back to original behavior', () => {
+            const cards = [
+                { id: 1, country: 'US' },
+                { id: 2, country: 'DE' },
+                { id: 3, country: 'FR' },
+            ];
+            const cardFilterer = new CardFilterer([...cards]);
+            const { filteredCards } = cardFilterer.sortCards({ sort: 'localfirst' }, [], [], [], false, -3);
+
+            expect(filteredCards.map(c => c.country)).toEqual(['DE', 'FR', 'US']);
+        });
+
         test('Local First with recency threshold – no threshold falls back to original behavior', () => {
             const cards = [
                 { id: 1, country: 'US' },
