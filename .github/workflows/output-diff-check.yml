@@ -1,0 +1,98 @@
+# Build Output Diff — Layer 1 (deterministic, advisory, non-blocking)
+#
+# Answers one question for a PR: does the shipped bundle actually change?
+# It builds the base branch and the PR, normalizes away the build-timestamp
+# banner, and compares the output.
+#
+#   NO_CHANGE -> nothing users receive changed. Safe to fast-track. This is the
+#                auto-greenlight path for the flood of Dependabot / security /
+#                dev-dependency bumps that don't touch shipped code.
+#   CHANGED   -> the bundle differs. The unified diff + summary are uploaded as
+#                artifacts for a human (or Layer 2, the QA agent) to judge.
+#
+# This job ALWAYS succeeds — it never blocks a merge. It only reports.
+#
+# Phase 1 scope: results go to the Actions run summary + artifacts, which works
+# even for Dependabot PRs (GitHub gives those a read-only token and withholds
+# secrets, so we deliberately do NOT try to post a PR comment here). Wiring the
+# result into the QA agent's PR comment is Phase 2 (via workflow_run, which runs
+# with write permissions in the base repo context).
+
+name: Build Output Diff (advisory)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    # Phase 1: start with the Dependabot / security firehose. Delete this
+    # `paths:` block to make the check run on EVERY PR (it's generic — any PR
+    # whose bundle is unchanged earns the same fast-track).
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: output-diff-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  build-output-diff:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # need base branch history to build the base ref
+
+      - name: Record PR head SHA
+        run: echo "HEAD_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 16.13.1
+          cache: 'npm'
+
+      # ---------- Build the PR head ----------
+      - name: Install deps (PR)
+        run: npm ci
+      - name: Build (PR)
+        run: npm run build
+      - name: Save PR output
+        run: |
+          mkdir -p "$RUNNER_TEMP/head"
+          cp -f dist/main.js dist/app.css "$RUNNER_TEMP/head/" 2>/dev/null || true
+
+      # ---------- Build the base branch ----------
+      - name: Check out base ref
+        run: git checkout --force ${{ github.event.pull_request.base.sha }}
+      - name: Install deps (base)
+        run: npm ci
+      - name: Build (base)
+        run: npm run build
+      - name: Save base output
+        run: |
+          mkdir -p "$RUNNER_TEMP/base"
+          cp -f dist/main.js dist/app.css "$RUNNER_TEMP/base/" 2>/dev/null || true
+
+      # ---------- Compare ----------
+      - name: Restore PR checkout (for the compare script)
+        run: git checkout --force "$HEAD_SHA"
+
+      - name: Compare build output
+        id: compare
+        run: |
+          chmod +x scripts/compare-build-output.sh
+          scripts/compare-build-output.sh "$RUNNER_TEMP/base" "$RUNNER_TEMP/head" "$RUNNER_TEMP/diff"
+          echo "result=$(cat "$RUNNER_TEMP/diff/result.txt")" >> "$GITHUB_OUTPUT"
+
+      - name: Publish summary to the run
+        run: cat "$RUNNER_TEMP/diff/summary.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload diff artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output-diff
+          path: ${{ runner.temp }}/diff
+          if-no-files-found: warn
