@@ -1,0 +1,69 @@
+name: Validate IMS Token
+
+on:
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Adobe LLM Proxy
+        id: call
+        run: |
+          RESPONSE=$(curl -s -X POST https://adobe-llm-proxy.paolo-moz.workers.dev/v1/messages \
+            -H "Authorization: Bearer ${{ secrets.IMS_ACCESS_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -H "anthropic-version: 2023-06-01" \
+            -d '{"model":"claude-sonnet-5","max_tokens":30,"messages":[{"role":"user","content":"Reply with only: token validated."}]}')
+
+          if echo "$RESPONSE" | grep -q '"type":"message"'; then
+            echo "status=success" >> $GITHUB_OUTPUT
+          else
+            echo "status=failed" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Comment on monitor issue
+        uses: actions/github-script@v7
+        env:
+          STATUS: ${{ steps.call.outputs.status }}
+        with:
+          script: |
+            const status = process.env.STATUS;
+            const emoji = status === 'success' ? '✅' : '❌';
+            const timestamp = new Date().toISOString();
+
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100,
+            });
+
+            const existing = issues.find(i => i.title === 'IMS Token Monitor');
+
+            let issueNumber;
+            if (existing) {
+              issueNumber = existing.number;
+            } else {
+              const { data: newIssue } = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: 'IMS Token Monitor',
+                body: 'Automated IMS token health checks. Each comment is one run.',
+              });
+              issueNumber = newIssue.number;
+            }
+
+            const body = status === 'success'
+              ? `${emoji} Token valid — ${timestamp}`
+              : `${emoji} Token FAILED — ${timestamp}\n\n> Re-run \`node refresh-token.mjs --visible\` to re-login.`;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              body,
+            });

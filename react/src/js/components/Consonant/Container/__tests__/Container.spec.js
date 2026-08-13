@@ -1863,4 +1863,295 @@ describe('Container Component', () => {
             expect(screen.getByText('Photoshop')).toBeInTheDocument();
         });
     });
+
+    describe('removeCollectionFromPage (mwpw-186583)', () => {
+        // Endpoint without originSelection=events — removal should never trigger
+        const baseCollectionConfig = {
+            totalCardsToShow: 50,
+            lazyLoad: false,
+            resultsPerPage: 10,
+            endpoint: 'https://www.somedomain.com/some-test-api.json',
+            cardStyle: 'none',
+            showTotalResults: false,
+            i18n: {
+                prettyDateIntervalFormat: '{LLL} {dd} | {timeRange} {timeZone}',
+                totalResultsText: '{total} Results',
+                title: 'Test Collection',
+                titleHeadingLevel: 'h2',
+            },
+        };
+
+        // Endpoint with originSelection=events — removal logic is active
+        const eventsCollectionConfig = {
+            ...baseCollectionConfig,
+            endpoint: 'https://www.somedomain.com/some-test-api.json?originSelection=events',
+        };
+
+        const searchConfig = {
+            i18n: {
+                noResultsTitle: 'No Results Found',
+                noResultsDescription: 'Authored description.',
+            },
+        };
+
+        beforeEach(() => {
+            // Return an empty cards array for all tests in this block
+            global.fetch = jest.fn(() =>
+                Promise.resolve({
+                    ok: true,
+                    status: 200,
+                    statusText: 'success',
+                    url: 'test.html',
+                    json: () => Promise.resolve({ cards: [] }),
+                }));
+        });
+
+        afterEach(() => {
+            // Restore the default cards mock used by the rest of the suite
+            global.fetch = jest.fn(() =>
+                Promise.resolve({
+                    ok: 'ok',
+                    status: 200,
+                    statusText: 'success',
+                    url: 'test.html',
+                    json: () => Promise.resolve({ cards }),
+                }));
+        });
+
+        test('does not remove collection when originSelection is not events', async () => {
+            // Even with the correct div#caas.caas-preview wrapper, the guard
+            // `originSelection === 'events'` prevents removal.
+            const caasPreview = document.createElement('div');
+            caasPreview.id = 'caas';
+            caasPreview.className = 'caas-preview';
+            document.body.appendChild(caasPreview);
+
+            await act(async () => {
+                render(
+                    <Container config={{ collection: baseCollectionConfig, search: searchConfig }} />,
+                    { container: caasPreview },
+                );
+            });
+
+            expect(document.body.contains(caasPreview)).toBe(true);
+
+            // Cleanup
+            document.body.removeChild(caasPreview);
+        });
+
+        test('does nothing when originSelection=events but no div#caas.caas-preview ancestor', async () => {
+            // box.current.closest('div#caas.caas-preview') returns null, so nothing is removed.
+            let container;
+            await act(async () => {
+                const result = render(
+                    <Container config={{ collection: eventsCollectionConfig, search: searchConfig }} />,
+                );
+                container = result.container;
+            });
+
+            expect(container.querySelector('.consonant-Wrapper')).toBeInTheDocument();
+        });
+
+        test('removes collection from DOM on a published page when originSelection=events and API returns no cards', async () => {
+            const caasPreview = document.createElement('div');
+            caasPreview.id = 'caas';
+            caasPreview.className = 'caas-preview';
+            document.body.appendChild(caasPreview);
+
+            await act(async () => {
+                render(
+                    <Container config={{ collection: eventsCollectionConfig, search: searchConfig }} />,
+                    { container: caasPreview },
+                );
+            });
+
+            // removeCollectionFromPage should have called parentNode.removeChild(caasPreview)
+            expect(document.body.contains(caasPreview)).toBe(false);
+        });
+
+        test('removes collection when the authored Event Filter narrows results to zero', async () => {
+            // Card has no start/end time, so it lands in the "not-timed" bucket, never "live".
+            const notTimedCards = [
+                {
+                    id: 'card-not-timed',
+                    tags: [],
+                    contentArea: { title: 'Not Timed Card', description: 'no schedule', dateDetailText: {} },
+                    overlays: { banner: {}, logo: {}, label: {}, videoButton: {} },
+                    styles: { typeOverride: '' },
+                    showCard: { from: '2020-01-01T00:00:00Z', until: '2099-12-31T23:59:59Z' },
+                    cardDate: '2024-01-01T00:00:00Z',
+                    footer: [],
+                },
+            ];
+
+            global.fetch = jest.fn(() =>
+                Promise.resolve({
+                    ok: true,
+                    status: 200,
+                    statusText: 'success',
+                    url: 'test.html',
+                    json: () => Promise.resolve({ cards: notTimedCards }),
+                }));
+
+            const eventFilterConfig = {
+                collection: eventsCollectionConfig,
+                filterPanel: {
+                    enabled: true,
+                    eventFilter: 'live',
+                },
+                search: searchConfig,
+                pagination: {
+                    enabled: false,
+                },
+                sort: {
+                    enabled: false,
+                },
+            };
+
+            const caasPreview = document.createElement('div');
+            caasPreview.id = 'caas';
+            caasPreview.className = 'caas-preview';
+            document.body.appendChild(caasPreview);
+
+            await act(async () => {
+                render(
+                    <Container config={eventFilterConfig} />,
+                    { container: caasPreview },
+                );
+            });
+
+            // The authored "live" Event Filter matches none of the loaded cards, narrowing filteredCards to zero.
+            await waitFor(() => {
+                expect(document.body.contains(caasPreview)).toBe(false);
+            });
+        });
+
+        test('does not remove collection when a non-event filter narrows results to zero', async () => {
+            // Only card in the API response is tagged Photoshop, so it renders fine on load.
+            const filterableCards = [
+                {
+                    id: 'card-photoshop',
+                    tags: [{ id: 'caas:products/photoshop' }],
+                    contentArea: { title: 'Photoshop Card', description: 'PS tutorial', dateDetailText: {} },
+                    overlays: { banner: {}, logo: {}, label: {}, videoButton: {} },
+                    styles: { typeOverride: '' },
+                    showCard: { from: '2020-01-01T00:00:00Z', until: '2099-12-31T23:59:59Z' },
+                    cardDate: '2024-01-01T00:00:00Z',
+                    footer: [],
+                },
+            ];
+
+            global.fetch = jest.fn(() =>
+                Promise.resolve({
+                    ok: true,
+                    status: 200,
+                    statusText: 'success',
+                    url: 'test.html',
+                    json: () => Promise.resolve({ cards: filterableCards }),
+                }));
+
+            const filterableEventsConfig = {
+                collection: eventsCollectionConfig,
+                filterPanel: {
+                    enabled: true,
+                    type: 'left',
+                    filterLogic: 'or',
+                    showEmptyFilters: true,
+                    filters: [
+                        {
+                            group: 'Products',
+                            id: 'caas:products',
+                            items: [
+                                { label: 'Photoshop', id: 'caas:products/photoshop' },
+                                { label: 'Illustrator', id: 'caas:products/illustrator' },
+                            ],
+                        },
+                    ],
+                    i18n: {
+                        leftPanel: {
+                            header: 'Refine The Results',
+                            clearAllFiltersText: 'Clear All',
+                            mobile: {
+                                filtersBtnLabel: 'Filters',
+                                panel: {
+                                    header: 'Filter by',
+                                    totalResultsText: '{total} Results',
+                                    applyBtnText: 'Apply',
+                                    clearFilterText: 'Clear',
+                                    doneBtnText: 'Done',
+                                },
+                                group: {
+                                    totalResultsText: '{total} Results',
+                                    applyBtnText: 'Apply',
+                                    clearFilterText: 'Clear',
+                                    doneBtnText: 'Done',
+                                },
+                            },
+                        },
+                    },
+                },
+                search: searchConfig,
+                pagination: {
+                    enabled: false,
+                },
+                sort: {
+                    enabled: false,
+                },
+            };
+
+            const caasPreview = document.createElement('div');
+            caasPreview.id = 'caas';
+            caasPreview.className = 'caas-preview';
+            document.body.appendChild(caasPreview);
+
+            await act(async () => {
+                render(
+                    <Container config={filterableEventsConfig} />,
+                    { container: caasPreview },
+                );
+            });
+
+            // Cards loaded successfully - collection must still be present.
+            await waitFor(() => {
+                expect(screen.getByText('Photoshop Card')).toBeInTheDocument();
+            });
+            expect(document.body.contains(caasPreview)).toBe(true);
+
+            // Select "Illustrator", a product filter unrelated to Event Filters, narrowing filteredCards to zero.
+            const illustratorCheckbox = screen.getAllByTestId('consonant-LeftFilter-itemsItemCheckbox')[1];
+            await act(async () => {
+                fireEvent.click(illustratorCheckbox);
+            });
+
+            // Non-event filters narrowing results to zero must NOT remove the collection.
+            await waitFor(() => {
+                expect(screen.queryByText('Photoshop Card')).not.toBeInTheDocument();
+            });
+            expect(document.body.contains(caasPreview)).toBe(true);
+        });
+
+        test('does not remove collection when originSelection=events but inside .caas-config', async () => {
+            // The !collectionRoot.closest('div.caas-config') guard prevents removal in the configurator.
+            const configWrapper = document.createElement('div');
+            configWrapper.className = 'caas-config';
+            const caasPreview = document.createElement('div');
+            caasPreview.id = 'caas';
+            caasPreview.className = 'caas-preview';
+            configWrapper.appendChild(caasPreview);
+            document.body.appendChild(configWrapper);
+
+            await act(async () => {
+                render(
+                    <Container config={{ collection: eventsCollectionConfig, search: searchConfig }} />,
+                    { container: caasPreview },
+                );
+            });
+
+            // Collection wrapper must remain in the DOM
+            expect(document.body.contains(configWrapper)).toBe(true);
+
+            // Cleanup manually-appended wrapper
+            document.body.removeChild(configWrapper);
+        });
+    });
 });

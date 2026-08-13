@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import classNames from 'classnames';
-import cuid from 'cuid';
 import {
     string,
     shape,
@@ -10,7 +9,7 @@ import {
     number,
 } from 'prop-types';
 
-import CardFooter from './CardFooter/CardFooter';
+import CardContext from './CardContext';
 import prettyFormatDate from '../Helpers/prettyFormat';
 import { INFOBIT_TYPE } from '../Helpers/constants';
 import { hasTag } from '../Helpers/Helpers';
@@ -34,8 +33,40 @@ import {
     tagsType,
     bannerMapType,
 } from '../types/card';
-import LinkBlocker from './LinkBlocker/LinkBlocker';
-import VideoButton from '../Modal/videoButton';
+
+import OneHalf from './OneHalf';
+import ThreeFourths from './ThreeFourths';
+import DoubleWide from './DoubleWide';
+import HalfHeight from './HalfHeight';
+import Product from './Product';
+import TextCard from './TextCard';
+import FullCard from './FullCard';
+import IconCard from './IconCard';
+import NewsCard from './NewsCard';
+import BladeCard from './BladeCard';
+import EditorialCard from './EditorialCard';
+import BlogCard from './BlogCard';
+import HorizontalCard from './HorizontalCard';
+import ButtonCard from './ButtonCard';
+import FlexCard from './FlexCard';
+
+const CARD_STYLES = {
+    'one-half': OneHalf,
+    'three-fourths': ThreeFourths,
+    'double-wide': DoubleWide,
+    'half-height': HalfHeight,
+    'product': Product,
+    'text-card': TextCard,
+    'full-card': FullCard,
+    'icon-card': IconCard,
+    'news-card': NewsCard,
+    'blade-card': BladeCard,
+    'editorial-card': EditorialCard,
+    'blog-card': BlogCard,
+    'horizontal-card': HorizontalCard,
+    'button-card': ButtonCard,
+    'flex-card': FlexCard,
+};
 
 const CardType = {
     cardStyle: string,
@@ -64,6 +95,8 @@ const CardType = {
     origin: string,
     ariaHidden: bool,
     tabIndex: number,
+    country: string,
+    reference: string,
 };
 
 const defaultProps = {
@@ -90,29 +123,15 @@ const defaultProps = {
     origin: '',
     ariaHidden: false,
     tabIndex: 0,
+    country: '',
+    reference: '',
 };
 
-/**
- * 1/2 image aspect ratio card
- *
- * @component
- * @example
- * const props= {
-    id: String,
-    styles: Object,
-    contentArea: Object,
-    overlays: Object,
-    renderBorder: Boolean,
-    renderOverlay: Boolean,
-    overlayLink: String,
- * }
- * return (
- *   <Card {...props}/>
- * )
- */
 const Card = (props) => {
     const {
         id,
+        country,
+        reference,
         footer,
         lh,
         tags,
@@ -184,9 +203,6 @@ const Card = (props) => {
 
     const getConfig = useConfig();
 
-    /**
-     **** Authored Configs ****
-     */
     const i18nFormat = getConfig('collection', 'i18n.prettyDateIntervalFormat');
     const locale = getConfig('language', '');
     const disableBanners = getConfig('collection', 'disableBanners');
@@ -204,29 +220,19 @@ const Card = (props) => {
     const useCenterVideoPlay = getConfig('collection', 'useCenterVideoPlay');
     const searchEnabled = getConfig('search', 'enabled');
     const editorialOpenVariant = getConfig('collection', 'editorialOpenVariant') || false;
+    const useRoundedCorners = getConfig('collection', 'useRoundedCorners') || false;
+    const flexCardOptions = getConfig('collection', 'flexCard');
 
-    /**
-     * Class name for the card:
-     * whether card border should be rendered or no;
-     * @type {String}
-     */
     const cardClassName = classNames({
         'consonant-Card': true,
         'consonant-u-noBorders': !renderBorder,
         'consonant-hide-cta': hideCTA,
         'consonant-editorial--open': editorialOpenVariant,
+        'rounded-corners': useRoundedCorners,
     });
 
-    /**
-     * Formatted date string
-     * @type {String}
-     */
     const prettyDate = startTime ? prettyFormatDate(startTime, endTime, locale, i18nFormat) : '';
 
-    /**
-     * Detail text
-     * @type {String}
-     */
     let detailText = prettyDate || label;
     if (detailsTextOption === 'modifiedDate' && modifiedDate) {
         const localModifiedDate = new Date(modifiedDate);
@@ -239,41 +245,26 @@ const Card = (props) => {
     } else if (detailsTextOption === 'staticDate' && cardDate) {
         const staticDate = new Date(cardDate.replace(/Z$/, ''));
         detailText = staticDate.toLocaleDateString();
+    } else if (detailsTextOption === 'hidden') {
+        detailText = '';
+    } else if (detailsTextOption === 'productName' && cardStyle !== 'flex-card') {
+        detailText = '';
     }
 
-    /**
-     * isGated
-     * @type {Boolean}
-     */
     const isGated = hasTag(/caas:gated/, tags)
         || hasTag(/caas:card-style\/half-height-featured/, tags)
         || hasTag(/7ed3/, tags)
         || hasTag(/1j6zgcx\/3bhv/, tags);
 
-    /**
-     * isRegistered
-     * @type {Boolean}
-     */
     const isRegistered = useRegistered(false);
 
-    /**
-     * isInPerson
-     * @type {Boolean}
-     */
     const isInPerson = hasTag(/events\/session-format\/in-person/, tags)
         || hasTag(/e505\/3ssk/, tags);
 
-    /**
-     * Extends infobits with the configuration data
-     * @param {Array} data - Array of the infobits
-     * @return {Array} - Array of the infobits with the configuration data added
-     */
     function extendFooterData(data) {
         if (!data) return [];
 
         return data.map((infobit) => {
-            // MWPW-129085: Compiler wrongly compiles this object to private, read-only,
-            // Created copy so object instance has public methods and properties.
             const copy = { ...infobit };
             if (copy.type === INFOBIT_TYPE.BOOKMARK) {
                 if (isGated) {
@@ -302,12 +293,6 @@ const Card = (props) => {
         });
     }
 
-    /**
-     * Extends footer data and extracts an alt CTA if it exists
-     * this is important for when overlay links are being used for live events
-     * @param {Array} footerData
-     * @return {String}
-     */
     function getAltCtaLink(footerData) {
         if (!footerData) return '';
         if (footerData.length === 1) {
@@ -318,45 +303,52 @@ const Card = (props) => {
                 return altCta[0].href;
             }
         }
-        // default value is an unauthored alt cta
         return '';
     }
 
-    /**
-     * Get CTA text from footer data for analytics on overlay cards
-     * @param {Array} footerData
-     * @return {String}
-     */
     function getCtaText(footerData, ctaUsed) {
         if (!footerData) return '';
         if (footerData.length === 1) {
             const {
                 altCta = [],
                 right = [],
+                center = [],
             } = footerData[0];
             if (ctaUsed === 'right' && right.length === 1) {
                 return right[0].text;
+            } else if (ctaUsed === 'center' && center.length === 1) {
+                return center[0].text;
             } else if (ctaUsed === 'alt' && altCta.length === 1) {
                 return altCta[0].text;
             }
-            return '';
         }
         return '';
     }
 
-    // Card styles
-    const isOneHalf = cardStyle === 'one-half';
-    const isThreeFourths = cardStyle === 'three-fourths';
-    const isDoubleWide = cardStyle === 'double-wide';
+    function getCtaLink(footerData, ctaUsed) {
+        if (!footerData) return '';
+        if (footerData.length === 1) {
+            const {
+                altCta = [],
+                right = [],
+                center = [],
+            } = footerData[0];
+            if (ctaUsed === 'right' && right.length === 1) {
+                return right[0].href;
+            } else if (ctaUsed === 'center' && center.length === 1) {
+                return center[0].href;
+            } else if (ctaUsed === 'alt' && altCta.length === 1) {
+                return altCta[0].href;
+            }
+        }
+        return '';
+    }
+
     const isHalfHeight = cardStyle === 'half-height';
     const isProduct = cardStyle === 'product';
-    const isText = cardStyle === 'text-card';
-    const isFull = cardStyle === 'full-card';
-    const isIcon = cardStyle === 'icon-card';
-    const isNews = cardStyle === 'news-card';
     const isBlade = cardStyle === 'blade-card';
-    const isEditorial = cardStyle === 'editorial-card';
-    const isBlog = cardStyle === 'blog-card';
+    const isIcon = cardStyle === 'icon-card';
+
     const bladeVariant = isBlade
         ? [
             bladeCard.reverse ? 'reverse' : '',
@@ -364,23 +356,8 @@ const Card = (props) => {
             bladeCard.transparent ? 'transparent' : '',
         ].filter(Boolean).join(' ')
         : '';
-    const isHorizontal = cardStyle === 'horizontal-card';
 
-    // Card elements to show
-    const isTitleOnly = isHalfHeight || isThreeFourths || isFull || isIcon
-        || isNews || isHorizontal;
-    const showHeader = !isProduct;
     const fromDexter = origin === 'Dexter';
-    const showBadge = (isOneHalf || isThreeFourths || isFull) && (fromDexter || showCardBadges);
-    const showLogo = isOneHalf || isThreeFourths || isFull || isText
-        || (isHalfHeight && showCardBadges);
-    const showLabel = !isProduct && !isText && !isEditorial || (isEditorial && editorialOpenVariant);
-    const showVideoButton = !isProduct && !isText && !isIcon;
-    const videoButtonStyle = useCenterVideoPlay && !isHalfHeight ? "center" : "";
-    const showText = !isHalfHeight && !isFull && !isNews && !isHorizontal;
-    const showFooter = isOneHalf || isProduct || isText || isNews || isBlade || isEditorial || isBlog;
-    const showFooterLeft = !isProduct;
-    const showFooterCenter = !isProduct && !altCtaUsed;
     let hideBanner = false;
     let eventBanner = '';
     const hideOnDemandDates = hideDateInterval && isDateAfterInterval(getCurrentDate(), endDate);
@@ -407,7 +384,6 @@ const Card = (props) => {
         }
     }
 
-    // Events card custom banners
     /* istanbul ignore if */
     if (isEventsCard) {
         hideBanner = isInPerson && eventBanner === bannerMap.onDemand;
@@ -431,15 +407,19 @@ const Card = (props) => {
     const isUpcoming = isDateBeforeInterval(getCurrentDate(), startDate);
     const altCtaLink = getAltCtaLink(footer);
     const ctaText = (altCtaUsed && isUpcoming && altCtaLink !== '') ? getCtaText(footer, 'alt') : getCtaText(footer, 'right');
+    const cta2Text = getCtaText(footer, 'center');
     const overlay = (altCtaUsed && isLive && altCtaLink !== '') ? altCtaLink : overlayParams;
-    const getsFocus = (isHalfHeight && !videoURLToUse)
-        || isThreeFourths
-        || isFull
-        || isDoubleWide
-        || isIcon
-        || hideCTA;
 
-    // Sanitize markdown before dangerouslySetInnerHTML
+    // Parse CTA links
+    const parseLinks = (markup) => {
+        const cta1Url = getCtaLink(footer, 'right');
+        const cta1Text = getCtaText(footer, 'right');
+        const cta2Url = getCtaLink(footer, 'center');
+        return markup
+            .replaceAll('{link:cta1}', `<a href="${cta1Url}">${cta1Text}</a>`)
+            .replaceAll('{link:cta2}', `<a href="${cta2Url}">${cta2Text}</a>`);
+    };
+
     const parseMarkDown = (md = '') => {
         if (searchEnabled) {
             return removeMarkDown(md.replace(/<[^>]*>/g, ''));
@@ -449,224 +429,87 @@ const Card = (props) => {
             markup += `<img src=${mnemonic} alt="mnemonic" loading="lazy" />`;
         }
         markup += md && md.toString()
-            .replace(/<[^>]*>/g, '') // remove any markup <>
+            .replace(/<[^>]*>/g, '')
             .replaceAll('{**', '<b>')
             .replaceAll('**}', '</b>')
             .replaceAll('{*', '<i>')
-            .replaceAll('*}', '</i>');
+            .replaceAll('*}', '</i>')
+            .replaceAll('\n', '<br/>');
+
+        if (markup.toLowerCase().includes('{link:')) {
+            return parseLinks(markup);
+        }
+    
         return markup;
     };
 
-    // Optimize image URL by adding format=webply for adobe.com images
-    // This reduces image size from ~208KB to ~36.5KB
     const optimizedImage = optimizeImageUrl(image);
 
-    return (
-        <li
-            daa-lh={lh}
-            className={`${cardStyle} ${cardClassName} ${bladeVariant}`}
-            data-testid="consonant-Card"
-            id={id}>
-            {showHeader &&
-            <div
-                data-testid="consonant-Card-header"
-                className="consonant-Card-header"
-                style={{ backgroundImage: `url("${optimizedImage}")` }}
-                role={(!isIcon && altText) ? 'img' : ''}
-                aria-label={!isIcon ? altText : ''}>
-                {hasBanner && !disableBanners && !isIcon && !isNews &&
-                <span
-                    data-testid="consonant-Card-banner"
-                    className="consonant-Card-banner"
-                    style={({
-                        backgroundColor: bannerBackgroundColorToUse,
-                        color: bannerFontColorToUse,
-                    })}>
-                    {bannerIconToUse &&
-                        <div
-                            className="consonant-Card-bannerIconWrapper">
-                            <img
-                                alt=""
-                                loading="lazy"
-                                src={bannerIconToUse}
-                                data-testid="consonant-Card-bannerImg" />
-                        </div>
-                    }
-                    <span>{bannerDescriptionToUse}</span>
-                </span>
-                }
-                {showBadge &&
-                badgeText &&
-                <span
-                    className="consonant-Card-badge">
-                    {badgeText}
-                </span>
-                }
-                {showVideoButton &&
-                videoURL &&
-                !isHalfHeight &&
-                <VideoButton
-                    title={title}
-                    videoURL={videoURLToUse}
-                    gateVideo={gateVideo}
-                    onFocus={onFocus}
-                    tabIndex={tabIndex}
-                    className={`consonant-Card-videoIco ${videoButtonStyle}`} />
-                }
-                {showLogo &&
-                (logoSrc || (isText && image)) &&
-                <div
-                    style={({
-                        backgroundColor: logoBg,
-                        borderColor: logoBorderBg,
-                    })}
-                    data-testid="consonant-Card-logo"
-                    className="consonant-Card-logo">
-                    <img
-                        // the text card uses the image as logo
-                        src={isText ? image : logoSrc}
-                        alt={isText ? '' : (logoAlt || '')}
-                        loading="lazy"
-                        width="32" />
-                </div>
-                }
-                {isIcon &&
-                <div
-                    data-testid="consonant-Card-logo"
-                    className="consonant-Card-logo">
-                    <img
-                        src={cardIcon}
-                        alt=""
-                        loading="lazy"
-                        width="32"
-                        data-testid="consonant-Card-logoImg" />
-                </div>
-                }
-            </div>
-            }
-            <div
-                className="consonant-Card-content">
-                {showVideoButton &&
-                videoURL &&
-                isHalfHeight &&
-                <VideoButton
-                    title={title}
-                    videoURL={videoURLToUse}
-                    gateVideo={gateVideo}
-                    onFocus={onFocus}
-                    tabIndex={tabIndex}
-                    className={`consonant-Card-videoIco ${videoButtonStyle}`} />
-                }
+    const cardData = useMemo(() => ({
+        id,
+        country,
+        reference,
+        lh,
+        cardClassName,
+        cardStyle,
+        bladeVariant,
+        optimizedImage,
+        altText,
+        cta2Text,
+        flexCardOptions,
+        hasBanner,
+        disableBanners,
+        bannerBackgroundColor: bannerBackgroundColorToUse,
+        bannerFontColor: bannerFontColorToUse,
+        bannerIcon: bannerIconToUse,
+        bannerDescription: bannerDescriptionToUse,
+        badgeText,
+        fromDexter,
+        showCardBadges,
+        videoURL,
+        videoURLToUse,
+        gateVideo,
+        useCenterVideoPlay,
+        logoSrc,
+        logoAlt,
+        logoBg,
+        logoBorderBg,
+        image,
+        cardIcon,
+        iconAlt,
+        detailText,
+        editorialOpenVariant,
+        highlightedTitle,
+        title,
+        headingAria,
+        headingLevel,
+        highlightedDescription,
+        description,
+        parseMarkDown,
+        footer,
+        renderDivider,
+        cardDate,
+        startDate,
+        endDate,
+        extendFooterData,
+        altCtaUsed,
+        hideOnDemandDates,
+        linkBlockerTarget,
+        overlay,
+        ctaText,
+        onFocus,
+        tabIndex,
+        ariaHidden,
+        renderOverlay,
+        hideCTA,
+    }));
 
-                {showLabel &&
-                detailText &&
-                <span
-                    data-testid="consonant-Card-label"
-                    className="consonant-Card-label">
-                    {detailText}
-                </span>
-                }
-                {isIcon &&
-                (detailText === '') &&
-                <span
-                    data-testid="consonant-Card-label"
-                    className="consonant-Card-label">
-                    {iconAlt}
-                </span>
-                }
-                { (isTitleOnly && highlightedTitle) &&
-                    <p
-                        data-testid="consonant-Card-title"
-                        className="consonant-Card-title">
-                        {highlightedTitle}
-                    </p>
-                }
-                { (isTitleOnly && !highlightedTitle) &&
-                    <p
-                        data-testid="consonant-Card-title"
-                        className="consonant-Card-title"
-                        title={removeMarkDown(title)}
-                        dangerouslySetInnerHTML={{ __html: parseMarkDown(title) }} />
-                }
-                { (!isTitleOnly && highlightedTitle) &&
-                    <p
-                        role="heading"
-                        {...(headingAria && { 'aria-label': headingAria })}
-                        aria-level={headingLevel}
-                        data-testid="consonant-Card-title"
-                        className="consonant-Card-title"
-                        title={removeMarkDown(title)}>
-                        {highlightedTitle}
-                    </p>
-                }
-                { (!isTitleOnly && !highlightedTitle) &&
-                    <p
-                        role="heading"
-                        {...(headingAria && { 'aria-label': headingAria })}
-                        aria-level={headingLevel}
-                        data-testid="consonant-Card-title"
-                        className="consonant-Card-title"
-                        title={removeMarkDown(title)}
-                        dangerouslySetInnerHTML={{ __html: parseMarkDown(title) }} />
-                }
-                { showText && !isIcon && (
-                    highlightedDescription ? (
-                        <p
-                            data-testid="consonant-Card-text"
-                            className="consonant-Card-text">
-                            {highlightedDescription}
-                        </p>
-                    ) : (
-                        description && (
-                            <p
-                                data-testid="consonant-Card-text"
-                                className="consonant-Card-text"
-                                dangerouslySetInnerHTML={{ __html: parseMarkDown(description) }} />
-                        )
-                    )
-                ) }
-                {showFooter &&
-                (!hideCTA || isBlog) &&
-                footer.map(footerItem => (
-                    <CardFooter
-                        divider={renderDivider || footerItem.divider}
-                        isFluid={footerItem.isFluid}
-                        key={cuid()}
-                        left={(showFooterLeft && !hideOnDemandDates) ?
-                            extendFooterData(footerItem.left) : []}
-                        center={showFooterCenter ? extendFooterData(footerItem.center) : []}
-                        right={extendFooterData(footerItem.right)}
-                        altRight={altCtaUsed ? extendFooterData(footerItem.altCta) : []}
-                        cardDate={new Date(cardDate)}
-                        startDate={startDate}
-                        endDate={endDate}
-                        cardStyle={cardStyle}
-                        onFocus={onFocus}
-                        title={title}
-                        tabIndex={tabIndex}
-                        renderOverlay={renderOverlay}
-                        hideCTA={hideCTA}
-                        isBlog={isBlog} />
-                ))}
-                {(isThreeFourths || isDoubleWide || isFull)
-                    && !renderOverlay
-                    && <LinkBlocker
-                        target={linkBlockerTarget}
-                        link={overlay}
-                        title={title}
-                        getsFocus={getsFocus || true}
-                        daa={ctaText} />}
-            </div>
-            {(renderOverlay || hideCTA || isHalfHeight || isIcon || isHorizontal)
-            && <LinkBlocker
-                target={linkBlockerTarget}
-                link={overlay}
-                title={title}
-                getsFocus={getsFocus || true}
-                ariaHidden={ariaHidden}
-                tabIndex={ariaHidden ? -1 : 0}
-                daa={ctaText} />}
-        </li>
+    const CardComponent = CARD_STYLES[cardStyle] || OneHalf;
+
+    return (
+        <CardContext.Provider value={cardData}>
+            <CardComponent />
+        </CardContext.Provider>
     );
 };
 

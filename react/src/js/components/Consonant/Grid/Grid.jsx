@@ -93,7 +93,6 @@ const Grid = (props) => {
     const paginationType = getConfig('pagination', 'type');
     const collectionButtonStyle = getConfig('collection', 'collectionButtonStyle');
     const cardHoverEffect = getConfig('collection', 'cardHoverEffect');
-
     let customCard;
     try {
         /* eslint-disable-next-line no-new-func */

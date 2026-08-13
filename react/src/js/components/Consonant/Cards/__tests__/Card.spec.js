@@ -143,3 +143,33 @@ describe('Card Component - Specific Conditions', () => {
         expect(descriptionTextElement).toHaveTextContent('This is a bold and italic text.');
     });
 });
+
+describe('MEP debug attributes for Hightlight CaaS feature', () => {
+    const cardStyles = [
+        'one-half', 'three-fourths', 'double-wide', 'half-height',
+        'product', 'text-card', 'full-card', 'icon-card', 'news-card',
+        'blade-card', 'editorial-card', 'blog-card', 'horizontal-card',
+        'button-card',
+    ];
+
+    test.each(cardStyles)('%s stamps data-country and data-card-url when populated', (cardStyle) => {
+        renderCard({
+            cardStyle,
+            country: 'us',
+            reference: 'https://business.adobe.com/customer-success-stories/foo.html',
+        });
+        const li = screen.getByTestId('consonant-Card');
+        expect(li).toHaveAttribute('data-country', 'us');
+        expect(li).toHaveAttribute(
+            'data-card-url',
+            'https://business.adobe.com/customer-success-stories/foo.html',
+        );
+    });
+
+    test('omits data-country and data-card-url when both are empty', () => {
+        renderCard({ cardStyle: 'one-half' });
+        const li = screen.getByTestId('consonant-Card');
+        expect(li).not.toHaveAttribute('data-country');
+        expect(li).not.toHaveAttribute('data-card-url');
+    });
+});

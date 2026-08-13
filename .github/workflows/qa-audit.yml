@@ -1,0 +1,151 @@
+name: QA Audit
+
+# Manual-trigger only. Engineer clicks "Run workflow" in the Actions tab,
+# picks a CaaS version, gets a GitHub Issue with the structured a11y +
+# visual audit findings. No schedule, no PR trigger - intentional, this is
+# a "I want to QA-check this before/after a release" tool, not background noise.
+
+on:
+  workflow_dispatch:
+    inputs:
+      caasver:
+        description: 'CaaS version tag to test (e.g. 0.51.5). See /releases for available tags.'
+        required: true
+        default: '0.51.5'
+        type: string
+      base_url:
+        description: 'Page to load CaaS into via ?caasver=<version>.'
+        required: false
+        default: 'https://business.adobe.com/resources/main.html'
+        type: string
+      max_turns:
+        description: 'Max agent turns per scenario. Lower for speed, higher for resilience.'
+        required: false
+        default: '10'
+        type: string
+
+# Public repo + self-hosted runner: only authorized users with write access
+# can trigger workflow_dispatch, so external visitors cannot execute code
+# on the runner. The existing AI Code Review workflow uses the same posture.
+concurrency:
+  group: qa-audit-${{ inputs.caasver }}
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: [self-hosted, qa-audit]
+    timeout-minutes: 30
+    permissions:
+      issues: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show inputs
+        run: |
+          echo "caasver:   ${{ inputs.caasver }}"
+          echo "base_url:  ${{ inputs.base_url }}"
+          echo "max_turns: ${{ inputs.max_turns }}"
+          echo "runner:    $(uname -a)"
+          node --version
+          which magick || echo "ImageMagick not installed - diff_screenshots will skip"
+
+      - name: Install Playwright (isolated from main package.json)
+        # The CaaS project uses WebdriverIO for e2e; Playwright is QA-audit-specific
+        # and lives in its own package.json under .github/qa/ to avoid polluting
+        # the React build dependency tree.
+        working-directory: .github/qa
+        run: |
+          npm ci --no-audit --no-fund
+          npx playwright install chromium --with-deps 2>&1 | tail -5 || true
+
+      - name: Run audit suite
+        id: run
+        env:
+          IMS_ACCESS_TOKEN: ${{ secrets.IMS_ACCESS_TOKEN }}
+          PROXY_URL: ${{ secrets.LLM_PROXY_ENDPOINT }}
+          MODEL: ${{ secrets.LLM_MODEL }}
+          CAASVER: ${{ inputs.caasver }}
+          BASE_URL: ${{ inputs.base_url }}
+          MAX_TURNS: ${{ inputs.max_turns }}
+          USER_DATA_DIR: /tmp/chrome-qa-profile
+        run: |
+          chmod +x .github/qa/run-all-audits.sh
+          .github/qa/run-all-audits.sh
+
+      - name: Aggregate report
+        id: aggregate
+        env:
+          # Credentials let aggregate-report.mjs rewrite the raw agent
+          # transcript into a developer-friendly narrative. If any are
+          # missing or the call fails the script falls back to a structured
+          # raw format.
+          IMS_ACCESS_TOKEN: ${{ secrets.IMS_ACCESS_TOKEN }}
+          PROXY_URL: ${{ secrets.LLM_PROXY_ENDPOINT }}
+          MODEL: ${{ secrets.LLM_MODEL }}
+        run: |
+          RESULTS_DIR=$(grep -E '^RESULTS_DIR=' /tmp/qa-audit-output.txt 2>/dev/null | tail -1 | sed 's/^RESULTS_DIR=//' || true)
+          # Fallback: find the most recent results-* dir under .github/qa/
+          if [ -z "$RESULTS_DIR" ]; then
+            RESULTS_DIR=$(ls -dt .github/qa/results-* 2>/dev/null | head -1)
+          fi
+          if [ -z "$RESULTS_DIR" ]; then
+            echo "ERROR: no results directory found" >&2
+            exit 1
+          fi
+          echo "Aggregating from: $RESULTS_DIR"
+          # aggregate-report.mjs writes structured verdict to a sidecar file
+          # so the workflow does not have to grep a (possibly LLM-rewritten)
+          # narrative for verdict signal.
+          node .github/qa/aggregate-report.mjs "$RESULTS_DIR" \
+            > /tmp/qa-audit-report.md \
+            2> >(tee /tmp/qa-audit-stderr.log >&2)
+          VERDICT=$(cat /tmp/qa-audit-verdict.txt 2>/dev/null || echo "FAIL")
+          echo "verdict=$VERDICT" >> "$GITHUB_OUTPUT"
+          echo "results_dir=$RESULTS_DIR" >> "$GITHUB_OUTPUT"
+          head -40 /tmp/qa-audit-report.md
+
+      - name: Upload artifacts (logs, screenshots, videos)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-audit-${{ inputs.caasver }}-${{ github.run_id }}
+          path: |
+            .github/qa/results-*/
+            .github/qa/qa-artifacts/
+          retention-days: 30
+
+      - name: Post GitHub Issue with report
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          ARTIFACT_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          LABEL_VERDICT=qa-${{ steps.aggregate.outputs.verdict }}
+          # Best-effort label creation (idempotent).
+          gh label create qa-audit  --color BFD4F2 --description "Generated by .github/workflows/qa-audit.yml" 2>/dev/null || true
+          gh label create qa-PASS   --color 0E8A16 --description "QA audit run passed" 2>/dev/null || true
+          gh label create qa-FAIL   --color B60205 --description "QA audit run found defects" 2>/dev/null || true
+          {
+            cat /tmp/qa-audit-report.md
+            echo ""
+            echo "---"
+            echo ""
+            echo "**Artifacts:** [logs, screenshots, videos]($ARTIFACT_URL) (workflow run #${{ github.run_id }})"
+            echo "**Triggered by:** @${{ github.actor }}"
+          } > /tmp/qa-issue-body.md
+          gh issue create \
+            --title "QA Audit: caasver=${{ inputs.caasver }} ($DATE) - ${{ steps.aggregate.outputs.verdict }}" \
+            --label "qa-audit,$LABEL_VERDICT" \
+            --body-file /tmp/qa-issue-body.md
+
+      - name: Set workflow conclusion based on verdict
+        if: always()
+        run: |
+          if [ "${{ steps.aggregate.outputs.verdict }}" = "FAIL" ]; then
+            echo "QA audit found defects. See the posted Issue."
+            exit 1
+          fi
+          echo "QA audit passed."
