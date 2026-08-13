@@ -5,6 +5,7 @@ import React, {
     useState,
     createRef,
 } from 'react';
+import { unstable_batchedUpdates as batchedUpdates } from 'react-dom';
 import classNames from 'classnames';
 import { shape } from 'prop-types';
 // import 'whatwg-fetch'; // Removed: fetch is native in modern browsers
@@ -217,6 +218,8 @@ const Container = (props) => {
     const [isPartialLoad, setIsPartialLoad] = useState(false);
     const hashedRef = useRef(false);
     const hashedCategoryMappingsRef = useRef(categoryMappings);
+    const originSelectionRef = useRef();
+    const [hasLoadedCards, setHasLoadedCards] = useState(false);
 
     const [, updateState] = React.useState();
     const scrollElementRef = useRef(null);
@@ -1044,6 +1047,7 @@ const Container = (props) => {
         }
 
         const originSelection = collectionEndpointURI.searchParams.get('originSelection');
+        originSelectionRef.current = originSelection;
 
         setLoading(true);
 
@@ -1226,7 +1230,10 @@ const Container = (props) => {
                     // Injects preload before React renders, saving 50-300ms
                     preloadFirstCardImage(processedCards);
 
-                    setCards(processedCards);
+                    batchedUpdates(() => {
+                        setCards(processedCards);
+                        setHasLoadedCards(true);
+                    });
 
                     // check if the current page is greater than the last page
                     const lastPage = Math.ceil(processedCards.length / resultsPerPage);
@@ -1524,6 +1531,19 @@ const Container = (props) => {
      */
     /* eslint-disable no-unused-vars */
     const { filteredCards = [], nextTransitionMs = 0 } = getFilteredCollection();
+
+    // Remove collection from page if there are no cards to show for the selected Event Filters
+    useEffect(() => {
+        if (
+            originSelectionRef.current?.includes('events')
+            && sanitizedEventFilter.length > 0
+            && hasLoadedCards
+            && filteredCards.length === 0
+            && box.current
+        ) {
+            removeCollectionFromPage();
+        }
+    }, [filteredCards, hasLoadedCards, eventFilter]);
 
     /**
      * Subset of cards to show the user
