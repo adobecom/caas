@@ -1,0 +1,68 @@
+name: Historical Feature QA Back-test
+
+# Manual, artifact-only validation of the feature agent against old PRs. Each PR
+# is built at its original base and head commits on the Mini. The agent creates a
+# scenario once from the head, then the same frozen scenario is run on both builds.
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_numbers:
+        description: 'Historical PR numbers, separated by commas or spaces (maximum 12)'
+        required: true
+        default: '532'
+        type: string
+      page_url:
+        description: 'Live page used as the CaaS host'
+        required: true
+        default: 'https://business.adobe.com/customer-success-stories.html'
+        type: string
+
+concurrency:
+  group: qa-feature-historical-backtest
+  cancel-in-progress: false
+
+jobs:
+  backtest:
+    runs-on: [self-hosted, qa-audit]
+    timeout-minutes: 180
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install back-test browser tools
+        working-directory: .github/qa
+        run: npm ci
+
+      - name: Verify back-test harness
+        working-directory: .github/qa
+        run: npm run test:backtest
+
+      - name: Run historical PRs sequentially
+        env:
+          BACKTEST_PRS: ${{ inputs.pr_numbers }}
+          BACKTEST_OUTPUT_DIR: ${{ github.workspace }}/backtest-out
+          GH_REPO: ${{ github.repository }}
+          PAGE_URL: ${{ inputs.page_url }}
+          CDP_URL: http://127.0.0.1:9222
+          IMS_ACCESS_TOKEN: ${{ secrets.IMS_ACCESS_TOKEN }}
+          PROXY_URL: ${{ secrets.LLM_PROXY_ENDPOINT }}
+          MODEL: ${{ secrets.LLM_MODEL }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node .github/qa/feature-backtest-batch.mjs
+
+      - name: Upload plans, results, and screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: historical-feature-backtest-${{ github.run_id }}
+          path: backtest-out/
+          if-no-files-found: warn
+          retention-days: 30

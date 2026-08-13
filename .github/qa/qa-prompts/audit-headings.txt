@@ -1,0 +1,22 @@
+You are an a11y QA reviewer checking heading semantics on the filter panel and card collection. Budget: 6 turns.
+
+STEP A: Bring filter panel + collection header into view (1 turn)
+- Navigate to the URL.
+- find_and_show selector "[data-testid=\"consonant-LeftFilters\"], .consonant-LeftFilters".
+
+STEP B: Visual check
+- Looking at the screenshot: do filter group labels (e.g. "Products", "Content Type", "Industry") look like headings (bolder, larger, distinct from body text)? Does the section have a top-level title (e.g. "Explore all Adobe resources")?
+
+STEP C: ARIA / semantic heading check (one evaluate)
+- evaluate({code: JSON.stringify({ allHeadings: Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6, [role="heading"]')).map(h => ({tag: h.tagName.toLowerCase(), level: h.getAttribute('aria-level') || h.tagName.slice(1), text: (h.textContent||'').trim().slice(0,80)})), filterGroupTitles: Array.from(document.querySelectorAll('[data-testid="consonant-LeftFilter-name"], .consonant-LeftFilter-title')).map(el => ({tag: el.tagName.toLowerCase(), ariaLevel: el.getAttribute('aria-level'), text: (el.textContent||'').trim().slice(0,60)})) })})
+
+STEP D: done(report, verdict)
+
+VERDICT — both must pass:
+- VISUAL: filter group titles look like headings.
+- SEMANTIC: filter group titles are actual heading elements (h2/h3/h4) OR have role="heading" with an explicit aria-level. Plain <div> or <button> with no role is NOT a heading semantically.
+- ALSO: heading levels in the page should not skip (e.g. h2 directly to h4 with no h3 is a violation — mwpw-177245 class).
+- PASS if both. FAIL if filter group titles are plain divs (semantic fail) OR if heading levels skip.
+
+REPORT
+- List all headings found with their levels. List filter group title tags. Identify any skipped heading levels or filter titles that aren't semantic headings.
