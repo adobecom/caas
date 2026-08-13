@@ -2,8 +2,9 @@ name: Feature QA Review
 
 # Advisory, non-blocking. Reasons about whether a PR is a config/data-gated CaaS
 # feature; if so, injects the PR build + a forced config (?caasqa hook) + a mocked
-# chimera-api/collection, renders it on a live page, and validates the result
-# against the PR's own unit tests. If the PR isn't an injectable feature, it skips.
+# chimera-api/collection, optionally performs one visible click or text entry,
+# and validates before/after DOM evidence against the PR's own unit tests. If
+# the PR isn't injectable or the action cannot run, it skips.
 
 on:
   pull_request:
@@ -29,6 +30,12 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Full history: the "Check out the latest base plus the PR changes"
+          # step below runs `git rev-parse HEAD^1`, which needs the merge
+          # commit's parents present. The default depth-1 shallow clone cuts
+          # them off, making that assertion fail with "ambiguous argument HEAD^1".
+          fetch-depth: 0
       - uses: actions/setup-node@v3
         with:
           node-version: 18
@@ -38,18 +45,30 @@ jobs:
       # back to that PR's older implementation and does not test the new search.
       - name: Preserve and test the feature reviewer
         run: |
-          node --test .github/qa/code-search.test.mjs
+          node --test \
+            .github/qa/code-search.test.mjs \
+            .github/qa/feature-action.test.mjs \
+            .github/qa/scenario-config.test.mjs
           mkdir -p "$RUNNER_TEMP/feature-review"
           cp .github/qa/feature-review.mjs \
+             .github/qa/feature-action.mjs \
              .github/qa/code-search.mjs \
+             .github/qa/scenario-config.mjs \
              .github/qa/package.json \
              .github/qa/package-lock.json \
              "$RUNNER_TEMP/feature-review/"
 
-      - name: Check out the PR's head so we build its actual code
+      - name: Check out the latest base plus the PR changes
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh pr checkout ${{ github.event.pull_request.number || inputs.pr_number }}
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
+        run: |
+          base_ref="$(gh pr view "$PR_NUMBER" --json baseRefName --jq .baseRefName)"
+          git fetch --no-tags origin \
+            "+refs/heads/${base_ref}:refs/remotes/origin/${base_ref}" \
+            "+refs/pull/${PR_NUMBER}/merge:refs/remotes/origin/qa-pr-${PR_NUMBER}-merge"
+          git checkout --detach "origin/qa-pr-${PR_NUMBER}-merge"
+          test "$(git rev-parse HEAD^1)" = "$(git rev-parse "origin/${base_ref}")"
 
       - name: Build the PR's CaaS dist
         run: |
