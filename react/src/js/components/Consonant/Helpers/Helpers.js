@@ -9,7 +9,7 @@ import {
     sanitizeText,
     removeDuplicatesByKey,
 } from './general';
-import { EVENT_TIMING_IDS } from './constants';
+import { EVENT_TIMING_IDS, TABLET_BREAKPOINT } from './constants';
 import {
     eventTiming,
     convertDateStrToMs,
@@ -781,3 +781,5 @@ export const transformFiltersWithCategories = (authoredFilters, categoryMappings
         };
     });
 };
+
+export const isMobile = () => window.innerWidth < TABLET_BREAKPOINT;

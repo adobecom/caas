@@ -1,5 +1,35 @@
 
 
+## [0.63.2](https://github.com/adobecom/caas/compare/0.63.1...0.63.2) (2026-08-10)
+
+
+### Bug Fixes
+
+* **mwpw-203417:** enforce unit tests for new components and repair scoped-title bypass ([#568](https://github.com/adobecom/caas/issues/568)) ([1a0388b](https://github.com/adobecom/caas/commit/1a0388bf67514e7815813ef032577efd3dab8c4c))
+
+## [0.63.1](https://github.com/adobecom/caas/compare/0.63.0...0.63.1) (2026-08-07)
+
+
+### Bug Fixes
+
+* **mwpw-203327:** adds banner css to editorial card ([#574](https://github.com/adobecom/caas/issues/574)) ([68a68f1](https://github.com/adobecom/caas/commit/68a68f15fab7cc5b9a44fb4900cb40a4c06891f4))
+
+## [0.63.0](https://github.com/adobecom/caas/compare/0.62.2...0.63.0) (2026-07-29)
+
+
+### Features
+
+* **mwpw-184989:** caas feature-QA back-test tool (diff + LLM judge + action layer + mobile) ([#566](https://github.com/adobecom/caas/issues/566)) ([01ec1b4](https://github.com/adobecom/caas/commit/01ec1b4702395637d5cb5a83d414b97d797c1f44)), closes [#451](https://github.com/adobecom/caas/issues/451) [#351](https://github.com/adobecom/caas/issues/351) [#423](https://github.com/adobecom/caas/issues/423) [#438](https://github.com/adobecom/caas/issues/438) [#304](https://github.com/adobecom/caas/issues/304) [#469](https://github.com/adobecom/caas/issues/469) [#366](https://github.com/adobecom/caas/issues/366) [#395](https://github.com/adobecom/caas/issues/395) [#395](https://github.com/adobecom/caas/issues/395) [#395](https://github.com/adobecom/caas/issues/395) [#395](https://github.com/adobecom/caas/issues/395) [#395](https://github.com/adobecom/caas/issues/395) [#395](https://github.com/adobecom/caas/issues/395) [#395](https://github.com/adobecom/caas/issues/395) [#395](https://github.com/adobecom/caas/issues/395) [#354](https://github.com/adobecom/caas/issues/354) [#363](https://github.com/adobecom/caas/issues/363) [#469](https://github.com/adobecom/caas/issues/469) [#354](https://github.com/adobecom/caas/issues/354) [#395](https://github.com/adobecom/caas/issues/395) [#354](https://github.com/adobecom/caas/issues/354) [#354](https://github.com/adobecom/caas/issues/354) [#469](https://github.com/adobecom/caas/issues/469) [#354](https://github.com/adobecom/caas/issues/354) [#395](https://github.com/adobecom/caas/issues/395) [#453](https://github.com/adobecom/caas/issues/453)
+
+## [0.62.2](https://github.com/adobecom/caas/compare/0.62.1...0.62.2) (2026-07-28)
+
+
+### Bug Fixes
+
+* **mwpw-177128:** various accessibility and color fixes ([#564](https://github.com/adobecom/caas/issues/564)) ([193bb1d](https://github.com/adobecom/caas/commit/193bb1de4717f976719f2e943bd4df904f10b9f1))
+* **mwpw-182729:** modern carousel nav controls on mobile ([#565](https://github.com/adobecom/caas/issues/565)) ([e539f0a](https://github.com/adobecom/caas/commit/e539f0ad4bfc90103e52e4277a09cda03b028e43))
+* post review-score as a commit status (updates in place; no stale check-run stacking) ([#561](https://github.com/adobecom/caas/issues/561)) ([babe4bb](https://github.com/adobecom/caas/commit/babe4bb6cc2d80493d48a5e53b03722e7c23d518))
+
 ## [0.62.1](https://github.com/adobecom/caas/compare/0.62.0...0.62.1) (2026-07-21)
 
 ## [0.62.0](https://github.com/adobecom/caas/compare/0.61.1...0.62.0) (2026-07-20)
