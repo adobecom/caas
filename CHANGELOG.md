@@ -1,5 +1,12 @@
 
 
+## [0.66.0](https://github.com/adobecom/caas/compare/0.65.0...0.66.0) (2026-08-13)
+
+
+### Features
+
+* **mwpw-198303:** removes collection from page if there are no filtered cards to display ([#575](https://github.com/adobecom/caas/issues/575)) ([1d461f6](https://github.com/adobecom/caas/commit/1d461f69fd32df2b6addcc3ef126aa5383df4b2f))
+
 ## [0.65.0](https://github.com/adobecom/caas/compare/0.64.0...0.65.0) (2026-08-13)
 
 
