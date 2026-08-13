@@ -1,5 +1,23 @@
 
 
+## [0.65.0](https://github.com/adobecom/caas/compare/0.64.0...0.65.0) (2026-08-13)
+
+
+### Features
+
+* **mwpw-190373:** add recency threshold to localFirst geo-sort ([eb2a55f](https://github.com/adobecom/caas/commit/eb2a55f63816f0f48c05c1e9d9f86ccbd1d5cc1b))
+
+
+### Bug Fixes
+
+* **mwpw-190373:** coerce localFirstRecencyThreshold to int to handle string values ([1102390](https://github.com/adobecom/caas/commit/1102390f34fd569982b964e90e5c75f78d4a3840))
+* **mwpw-190373:** fix localFirst fallback sort field and guard negative recency threshold ([3456ae6](https://github.com/adobecom/caas/commit/3456ae6455d3ddc86bd8ee36906d4a005116a053))
+
+
+### Chores
+
+* **mwpw-190373:** add .specify to gitignore ([729ab51](https://github.com/adobecom/caas/commit/729ab51908bc9ba218d0b091516187410a51aa57))
+
 ## [0.64.0](https://github.com/adobecom/caas/compare/0.63.2...0.64.0) (2026-08-13)
 
 
