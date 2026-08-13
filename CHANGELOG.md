@@ -1,5 +1,412 @@
 
 
+## [0.66.0](https://github.com/adobecom/caas/compare/0.65.0...0.66.0) (2026-08-13)
+
+
+### Features
+
+* **mwpw-198303:** removes collection from page if there are no filtered cards to display ([#575](https://github.com/adobecom/caas/issues/575)) ([1d461f6](https://github.com/adobecom/caas/commit/1d461f69fd32df2b6addcc3ef126aa5383df4b2f))
+
+## [0.65.0](https://github.com/adobecom/caas/compare/0.64.0...0.65.0) (2026-08-13)
+
+
+### Features
+
+* **mwpw-190373:** add recency threshold to localFirst geo-sort ([eb2a55f](https://github.com/adobecom/caas/commit/eb2a55f63816f0f48c05c1e9d9f86ccbd1d5cc1b))
+
+
+### Bug Fixes
+
+* **mwpw-190373:** coerce localFirstRecencyThreshold to int to handle string values ([1102390](https://github.com/adobecom/caas/commit/1102390f34fd569982b964e90e5c75f78d4a3840))
+* **mwpw-190373:** fix localFirst fallback sort field and guard negative recency threshold ([3456ae6](https://github.com/adobecom/caas/commit/3456ae6455d3ddc86bd8ee36906d4a005116a053))
+
+
+### Chores
+
+* **mwpw-190373:** add .specify to gitignore ([729ab51](https://github.com/adobecom/caas/commit/729ab51908bc9ba218d0b091516187410a51aa57))
+
+## [0.64.0](https://github.com/adobecom/caas/compare/0.63.2...0.64.0) (2026-08-13)
+
+
+### Features
+
+* **mwpw-198303:** enable interactions in feature QA ([#576](https://github.com/adobecom/caas/issues/576)) ([d35c4a0](https://github.com/adobecom/caas/commit/d35c4a09a704c1a220c3fcd9b00503002500cab5))
+
+## [0.63.2](https://github.com/adobecom/caas/compare/0.63.1...0.63.2) (2026-08-10)
+
+
+### Bug Fixes
+
+* **mwpw-203417:** enforce unit tests for new components and repair scoped-title bypass ([#568](https://github.com/adobecom/caas/issues/568)) ([1a0388b](https://github.com/adobecom/caas/commit/1a0388bf67514e7815813ef032577efd3dab8c4c))
+
+## [0.63.1](https://github.com/adobecom/caas/compare/0.63.0...0.63.1) (2026-08-07)
+
+
+### Bug Fixes
+
+* **mwpw-203327:** adds banner css to editorial card ([#574](https://github.com/adobecom/caas/issues/574)) ([68a68f1](https://github.com/adobecom/caas/commit/68a68f15fab7cc5b9a44fb4900cb40a4c06891f4))
+
+## [0.63.0](https://github.com/adobecom/caas/compare/0.62.2...0.63.0) (2026-07-29)
+
+
+### Features
+
+* **mwpw-184989:** caas feature-QA back-test tool (diff + LLM judge + action layer + mobile) ([#566](https://github.com/adobecom/caas/issues/566)) ([01ec1b4](https://github.com/adobecom/caas/commit/01ec1b4702395637d5cb5a83d414b97d797c1f44)), closes [#451](https://github.com/adobecom/caas/issues/451) [#351](https://github.com/adobecom/caas/issues/351) [#423](https://github.com/adobecom/caas/issues/423) [#438](https://github.com/adobecom/caas/issues/438) [#304](https://github.com/adobecom/caas/issues/304) [#469](https://github.com/adobecom/caas/issues/469) [#366](https://github.com/adobecom/caas/issues/366) [#395](https://github.com/adobecom/caas/issues/395) [#395](https://github.com/adobecom/caas/issues/395) [#395](https://github.com/adobecom/caas/issues/395) [#395](https://github.com/adobecom/caas/issues/395) [#395](https://github.com/adobecom/caas/issues/395) [#395](https://github.com/adobecom/caas/issues/395) [#395](https://github.com/adobecom/caas/issues/395) [#395](https://github.com/adobecom/caas/issues/395) [#354](https://github.com/adobecom/caas/issues/354) [#363](https://github.com/adobecom/caas/issues/363) [#469](https://github.com/adobecom/caas/issues/469) [#354](https://github.com/adobecom/caas/issues/354) [#395](https://github.com/adobecom/caas/issues/395) [#354](https://github.com/adobecom/caas/issues/354) [#354](https://github.com/adobecom/caas/issues/354) [#469](https://github.com/adobecom/caas/issues/469) [#354](https://github.com/adobecom/caas/issues/354) [#395](https://github.com/adobecom/caas/issues/395) [#453](https://github.com/adobecom/caas/issues/453)
+
+## [0.62.2](https://github.com/adobecom/caas/compare/0.62.1...0.62.2) (2026-07-28)
+
+
+### Bug Fixes
+
+* **mwpw-177128:** various accessibility and color fixes ([#564](https://github.com/adobecom/caas/issues/564)) ([193bb1d](https://github.com/adobecom/caas/commit/193bb1de4717f976719f2e943bd4df904f10b9f1))
+* **mwpw-182729:** modern carousel nav controls on mobile ([#565](https://github.com/adobecom/caas/issues/565)) ([e539f0a](https://github.com/adobecom/caas/commit/e539f0ad4bfc90103e52e4277a09cda03b028e43))
+* post review-score as a commit status (updates in place; no stale check-run stacking) ([#561](https://github.com/adobecom/caas/issues/561)) ([babe4bb](https://github.com/adobecom/caas/commit/babe4bb6cc2d80493d48a5e53b03722e7c23d518))
+
+## [0.62.1](https://github.com/adobecom/caas/compare/0.62.0...0.62.1) (2026-07-21)
+
+## [0.62.0](https://github.com/adobecom/caas/compare/0.61.1...0.62.0) (2026-07-20)
+
+
+### Features
+
+* **ai-review:** incremental findings checklist (strikethrough done, flag new) ([849efe7](https://github.com/adobecom/caas/commit/849efe7b461a392ee435bca67a811ddb5025820b))
+* **ai-review:** self-documenting run-history log in each sticky comment ([95bfe99](https://github.com/adobecom/caas/commit/95bfe99767d5a70662062056abea4f23c85fd263))
+* **reviews:** Pacific time, per-run history summary, Agent QA checklist ([7b48793](https://github.com/adobecom/caas/commit/7b487933040b60209eb9f380cc3c1171bd61629c))
+
+
+### Bug Fixes
+
+* **ai-review:** only re-report a prior finding if its code is still present ([ae382d3](https://github.com/adobecom/caas/commit/ae382d308a234c7753e400061670d5a230abf967))
+* **ai-review:** set sticky cutoff to 2026-07-16 (clearly past deploy date) ([40b85f8](https://github.com/adobecom/caas/commit/40b85f8af91f25647fbf1c3b0d690eeca26bb853)), closes [#555](https://github.com/adobecom/caas/issues/555) [#553](https://github.com/adobecom/caas/issues/553)
+* revert demo bugs (LESS regression + demo_bug.js); rename Agent QA finding to 'Smoke test failed' ([69efd75](https://github.com/adobecom/caas/commit/69efd75c903050519be4de7acc6d11770ea1395f))
+
+
+### Tests
+
+* **mwpw-sticky:** trivial touch to re-trigger reviewers and verify in-place comment update ([f916b5b](https://github.com/adobecom/caas/commit/f916b5b89b30f1dd847d1d72554facfb010f0bf7))
+
+## [0.61.1](https://github.com/adobecom/caas/compare/0.61.0...0.61.1) (2026-07-17)
+
+## [0.61.0](https://github.com/adobecom/caas/compare/0.60.0...0.61.0) (2026-07-17)
+
+
+### Features
+
+* **mwpw-199546:** allows links and line breaks in description ([#553](https://github.com/adobecom/caas/issues/553)) ([8786b55](https://github.com/adobecom/caas/commit/8786b55bc50292fbe34f7a4ea0e145ee48b0caac))
+
+## [0.60.0](https://github.com/adobecom/caas/compare/0.59.1...0.60.0) (2026-07-13)
+
+
+### Features
+
+* **mwpw-184989:** add ?caasqa-gated localStorage config override for automated QA ([a7b2555](https://github.com/adobecom/caas/commit/a7b255565191166e4bf429345043cc262a6f785c))
+
+## [0.59.1](https://github.com/adobecom/caas/compare/0.59.0...0.59.1) (2026-07-13)
+
+
+### Bug Fixes
+
+* allows styling for secondary links ([#545](https://github.com/adobecom/caas/issues/545)) ([71e8d90](https://github.com/adobecom/caas/commit/71e8d90e85e7e7a3a909977269af9baffa85520b))
+
+## [0.59.0](https://github.com/adobecom/caas/compare/0.58.0...0.59.0) (2026-07-08)
+
+
+### Features
+
+* **mwpw-195996:** adds new icon and product name option  ([#532](https://github.com/adobecom/caas/issues/532)) ([3285b51](https://github.com/adobecom/caas/commit/3285b51867ea9335957568587cde11443a3d39fa))
+
+## [0.58.0](https://github.com/adobecom/caas/compare/0.57.3...0.58.0) (2026-07-07)
+
+
+### Features
+
+* **mwpw-200160:** email maintainer privately on review tool failure instead of a pr comment ([2f7687c](https://github.com/adobecom/caas/commit/2f7687ccddb08a7d1d66b06e22a99bd566a4449f))
+* **mwpw-200160:** log review tool failures to a monitor issue and cc maintainer, keep check green ([256ac70](https://github.com/adobecom/caas/commit/256ac70b80dd2ec7a27aa11d0fe51bc6395feea8))
+
+
+### Bug Fixes
+
+* **mwpw-200160:** keep cdp chrome tab alive with pre-connect guard and stale-tab reaping ([3759b59](https://github.com/adobecom/caas/commit/3759b59c328469748c03a60ed09a3e26dece2505))
+* **mwpw-200160:** mention maintainer on every failure comment so each failure notifies ([852d79f](https://github.com/adobecom/caas/commit/852d79f79ce452243941e58c929db1389833289e))
+* **mwpw-200160:** one monitor issue reused open-or-closed, mention only when a failure streak starts ([0cb6b63](https://github.com/adobecom/caas/commit/0cb6b6320cbc4f4320c20aa878ed6a499fb7e95d))
+* **mwpw-200160:** post agent qa review as a new comment each run instead of updating in place ([e089d2e](https://github.com/adobecom/caas/commit/e089d2e7798094467ba51112dfc3e73de3e2b843))
+* **mwpw-200160:** quote label in monitor-issue log step to fix github-script syntax error ([8052f8f](https://github.com/adobecom/caas/commit/8052f8fe00aeef6ce6277a9372afd5eb0c5784f0))
+* **mwpw-200160:** retry ai review on mid-stream errors, not just http status failures ([dde2242](https://github.com/adobecom/caas/commit/dde2242b182d157231226a0dc13b2ae59349f9d1))
+* **mwpw-200160:** stream ai review over sse to end gateway timeouts, guard truncated streams ([0c1c2c9](https://github.com/adobecom/caas/commit/0c1c2c973a7654210f5c303698fc57e912540c31))
+
+
+### Chores
+
+* **mwpw-200160:** remove dead notify code and stale wording from review-failure log ([8f17d12](https://github.com/adobecom/caas/commit/8f17d12f17646c21d9dbcc6e7aeed17c5a3186f8))
+
+## [0.57.3](https://github.com/adobecom/caas/compare/0.57.2...0.57.3) (2026-07-07)
+
+
+### Bug Fixes
+
+* **mwpw-200160:** cap prior comments at 12k chars to reduce prompt size ([7d50b0b](https://github.com/adobecom/caas/commit/7d50b0b47a659338bcb2786935b37e8397b6fa62))
+* **mwpw-200160:** raise AI review max_tokens to 16k for thinking models ([5766d66](https://github.com/adobecom/caas/commit/5766d66b746b4d91296489d14728580b43f1a1e1))
+* **mwpw-200160:** raise max_tokens to 32k for large PR reviews ([1ad6eb7](https://github.com/adobecom/caas/commit/1ad6eb72563738c43c566ac9caf88fbbcb12914b))
+* **mwpw-200160:** revert comment cap, keep max_tokens at 32k ([b18f237](https://github.com/adobecom/caas/commit/b18f2371d763909fdf7180583b17b13313cb2ef4))
+
+## [0.57.2](https://github.com/adobecom/caas/compare/0.57.1...0.57.2) (2026-07-07)
+
+
+### Bug Fixes
+
+* **mwpw-200160:** handle extended thinking blocks in AI review response parser ([a10313f](https://github.com/adobecom/caas/commit/a10313f1dd44f3ca42f95716de6d940a41cdf5e7))
+
+## [0.57.1](https://github.com/adobecom/caas/compare/0.57.0...0.57.1) (2026-07-06)
+
+
+### Bug Fixes
+
+* **mwpw-196902:** switch proxy validation model to claude-sonnet-5 ([a216398](https://github.com/adobecom/caas/commit/a2163989751185d4040b6ad9139fd4ae01086420))
+
+## [0.57.0](https://github.com/adobecom/caas/compare/0.56.1...0.57.0) (2026-06-25)
+
+
+### Features
+
+* **mwpw-184989:** ground AI review in source context + PR thread with evidence rules ([e0a8e58](https://github.com/adobecom/caas/commit/e0a8e5882597ff6503acf10efadc579ba4f6bb53))
+* **mwpw-184989:** use [@ai-bot](https://github.com/ai-bot) marker, curate context to [@ai-bot](https://github.com/ai-bot) comments, rerun on edit ([393f685](https://github.com/adobecom/caas/commit/393f685d0de9e12fbeca5a3d2139bfa5ded691b8))
+
+
+### Bug Fixes
+
+* **mwpw-184989:** make fork guard fail closed ([8e57f0e](https://github.com/adobecom/caas/commit/8e57f0e8f915a5ef702292b8b6c4fc12d31c6bbc))
+* **mwpw-184989:** never run AI review on fork code; bound file reads to repo ([8c59ff7](https://github.com/adobecom/caas/commit/8c59ff783451555df2fd9af7903e6ed57366d2d8))
+
+## [0.56.1](https://github.com/adobecom/caas/compare/0.56.0...0.56.1) (2026-06-25)
+
+
+### Bug Fixes
+
+* **mwpw-199538:** guard caas-endpoint lookup against prototype chain ([7b65e27](https://github.com/adobecom/caas/commit/7b65e271f4df698cba1f78255bcfeaa7dfe48a72)), closes [#537](https://github.com/adobecom/caas/issues/537)
+
+## [0.56.0](https://github.com/adobecom/caas/compare/0.55.2...0.56.0) (2026-06-24)
+
+
+### Features
+
+* **mwpw-199538:** add caas-endpoint query param to override API base URL ([37567e0](https://github.com/adobecom/caas/commit/37567e0ca6b58b8f414396e2ab279c68caa55f4c))
+
+## [0.55.2](https://github.com/adobecom/caas/compare/0.55.1...0.55.2) (2026-06-22)
+
+
+### Bug Fixes
+
+* **mwpw-184989:** raise ai-code-review diff cap to 16000 and mark truncation ([4918c6c](https://github.com/adobecom/caas/commit/4918c6cf66a67ac4c41a2dddb9c8af9fc35890ea))
+* **mwpw-184989:** simplify ai-review diff cap to single MAX_CHARS ([24f0294](https://github.com/adobecom/caas/commit/24f0294316038ac64a52d860fa6718e8db6e37e6))
+
+## [0.55.1](https://github.com/adobecom/caas/compare/0.55.0...0.55.1) (2026-06-18)
+
+
+### Bug Fixes
+
+* **mwpw-196902:** harden workflow against script injection ([30e7900](https://github.com/adobecom/caas/commit/30e79009c7d427cfda65392e362414b109d4eaf3))
+* **mwpw-196902:** reduce ims token monitor noise ([e880ba3](https://github.com/adobecom/caas/commit/e880ba3fba1888d93e231c8adc01213a8878e8f1))
+
+## [0.55.0](https://github.com/adobecom/caas/compare/0.54.2...0.55.0) (2026-06-18)
+
+
+### Features
+
+* **mwpw-173596:** adds new flex card code ([#490](https://github.com/adobecom/caas/issues/490)) ([3c4139e](https://github.com/adobecom/caas/commit/3c4139e723a46ac996c244f6f60f5cca34e0b98c))
+
+## [0.54.2](https://github.com/adobecom/caas/compare/0.54.1...0.54.2) (2026-06-18)
+
+
+### Bug Fixes
+
+* **mwpw-182553:** for accessibilty increases card-text line-clamp to 5 ([#469](https://github.com/adobecom/caas/issues/469)) ([5fc97a4](https://github.com/adobecom/caas/commit/5fc97a4fcca75d51af49cf4ac00e6e060a683b86))
+
+## [0.54.1](https://github.com/adobecom/caas/compare/0.54.0...0.54.1) (2026-06-16)
+
+
+### Bug Fixes
+
+* **mwpw-184989:** drop hardcoded caasver, test the bare prod url ([b7708b1](https://github.com/adobecom/caas/commit/b7708b179293c972d88c6452c5d7f333f96eedc1))
+
+## [0.54.0](https://github.com/adobecom/caas/compare/0.53.0...0.54.0) (2026-06-16)
+
+
+### Features
+
+* **mwpw-184989:** add agent-driven visual + perceptual QA review on PRs ([5afe047](https://github.com/adobecom/caas/commit/5afe0474f96f101945403dbfb0608ef1eefd33c4))
+* **mwpw-184989:** agent review = interactive + PR-vs-stable visual-diff guide ([a4ed68c](https://github.com/adobecom/caas/commit/a4ed68cce8d92334c24ad324b389fe7378791429))
+* **mwpw-184989:** make agent QA interactive (drive qa-runner on PR build) ([807c601](https://github.com/adobecom/caas/commit/807c6016c2662b35e35ad1f3f2764ff48b985979))
+
+
+### Bug Fixes
+
+* **mwpw-184989:** disconnect capture client + cap agent runtime to unblock runner ([aba1843](https://github.com/adobecom/caas/commit/aba18436f737538c85319d9fa0e35f8bfe8855d3))
+* **mwpw-184989:** harden agent-review + pin to qa-audit runner ([0bd78c1](https://github.com/adobecom/caas/commit/0bd78c12e5db792cea328e9ac1213e6716feff6d))
+* **mwpw-184989:** harden agent-review per review (dedup, redact, allowlist) ([56c739a](https://github.com/adobecom/caas/commit/56c739a93e5e5906f8401d749f3becc1a1c42525))
+
+## [0.53.0](https://github.com/adobecom/caas/compare/0.52.1...0.53.0) (2026-05-31)
+
+
+### Features
+
+* **qa-audit:** rewrite issue body as developer-friendly narrative via Claude ([8f462e9](https://github.com/adobecom/caas/commit/8f462e95613c28a414c462908520da54ae359a71))
+
+
+### Chores
+
+* **ai-code-review:** source model name from secrets.LLM_MODEL instead of hardcode ([49bf280](https://github.com/adobecom/caas/commit/49bf280c8064802a628a69cb54ef32e627bede78))
+
+
+### Code Refactoring
+
+* **qa-audit:** remove hardcoded LLM proxy URL + model name from public code ([3968869](https://github.com/adobecom/caas/commit/396886933b3aaf247658d5cb2808df92d6d4d6b8))
+
+## [0.52.1](https://github.com/adobecom/caas/compare/0.52.0...0.52.1) (2026-05-31)
+
+
+### Bug Fixes
+
+* **qa-audit:** install playwright + treat NO_VERDICT as fail ([ebd9a87](https://github.com/adobecom/caas/commit/ebd9a87e7505f0bc56778690f4016beb83c0b6a7)), closes [#480](https://github.com/adobecom/caas/issues/480)
+
+## [0.52.0](https://github.com/adobecom/caas/compare/0.51.5...0.52.0) (2026-05-31)
+
+
+### Features
+
+* **qa-audit:** manual-trigger workflow for AI-driven a11y + visual audits ([87cccc1](https://github.com/adobecom/caas/commit/87cccc17b92efdd46f3a08007b2e8f7611a31fd1))
+
+
+### Chores
+
+* **ci:** pin ai-code-review to X64 self-hosted runner ([c93d36a](https://github.com/adobecom/caas/commit/c93d36a36893775f5a86789c778677f5f4fa0085))
+* **qa-audit:** pin workflow to sanrai-mba runner via qa-audit label ([9143bc6](https://github.com/adobecom/caas/commit/9143bc680c82d5ca2fe43ee968facc184fe6833e))
+
+## [0.51.5](https://github.com/adobecom/caas/compare/0.51.4...0.51.5) (2026-05-29)
+
+
+### Bug Fixes
+
+* remove stray escape in print statement ([c7352f8](https://github.com/adobecom/caas/commit/c7352f8bc013ec47854d12cb6aee34856657d6cd))
+
+
+### Chores
+
+* harden AI code review workflow ([ef66453](https://github.com/adobecom/caas/commit/ef6645393811ba0a63140e621809178d162c2dc5))
+
+## [0.51.4](https://github.com/adobecom/caas/compare/0.51.3...0.51.4) (2026-05-29)
+
+
+### Bug Fixes
+
+* add checkout step required by claude-code-action ([ae49b42](https://github.com/adobecom/caas/commit/ae49b42909e59e34c1e829ef10adcddce1d8f2f1))
+* call proxy directly instead of claude-code-action (beta flag incompatibility) ([096969b](https://github.com/adobecom/caas/commit/096969ba41511e5da6cad813fdbd038ac75127a0))
+* run on self-hosted Mac runner to bypass Cloudflare IP block ([4969238](https://github.com/adobecom/caas/commit/496923877ada79f7fff04d40921dc54b8922e5b6))
+* use curl instead of urllib to avoid macOS SSL cert issue ([1cc5279](https://github.com/adobecom/caas/commit/1cc5279cc06adef47a8591aedf33e16ef68280d5))
+
+## [0.51.3](https://github.com/adobecom/caas/compare/0.51.2...0.51.3) (2026-05-28)
+
+
+### Chores
+
+* trigger IMS validation via dispatch from local cron ([484b693](https://github.com/adobecom/caas/commit/484b693b0df311285aaf34b7e1907489fe7b7edc))
+
+## [0.51.2](https://github.com/adobecom/caas/compare/0.51.1...0.51.2) (2026-05-28)
+
+
+### Documentation
+
+* correct Javelin tag cycle day from Thursdays to Mondays ([6954a9f](https://github.com/adobecom/caas/commit/6954a9fb2af3cd32b857edab503df663a67fdfc9))
+* MWPW-193054 add consumer onboarding runbook and agents entry point ([3f7d1f9](https://github.com/adobecom/caas/commit/3f7d1f96db3672b474741f41aae52660e4e05dfb))
+
+## [0.51.1](https://github.com/adobecom/caas/compare/0.51.0...0.51.1) (2026-05-21)
+
+
+### Bug Fixes
+
+* **mwpw-177207:** adds visible Sort by: label to sort dropdown ([#451](https://github.com/adobecom/caas/issues/451)) ([6473e96](https://github.com/adobecom/caas/commit/6473e96a4520e386068b2c4350c9a06f17d98e25))
+
+## [0.51.0](https://github.com/adobecom/caas/compare/0.50.8...0.51.0) (2026-05-21)
+
+
+### Features
+
+* **mwpw-186583:** removes empty collection from published page ([#465](https://github.com/adobecom/caas/issues/465)) ([5934e3a](https://github.com/adobecom/caas/commit/5934e3a54a52f52a209936de33b56a9f03d1cc18))
+
+## [0.50.8](https://github.com/adobecom/caas/compare/0.50.7...0.50.8) (2026-05-19)
+
+
+### Bug Fixes
+
+* **mwpw-00000:** pin Chrome binary in scheduled bulk-publisher e2e ([e68faba](https://github.com/adobecom/caas/commit/e68faba119be5364015f55851251c1cab0c8400a)), closes [#461](https://github.com/adobecom/caas/issues/461) [#466](https://github.com/adobecom/caas/issues/466)
+
+## [0.50.7](https://github.com/adobecom/caas/compare/0.50.6...0.50.7) (2026-05-19)
+
+
+### Chores
+
+* **mwpw-00000:** update gitignore ([2e7c9d2](https://github.com/adobecom/caas/commit/2e7c9d21a23b4f489c5b9cbc268b81679b843d72))
+
+## [0.50.6](https://github.com/adobecom/caas/compare/0.50.5...0.50.6) (2026-05-15)
+
+
+### Bug Fixes
+
+* **mwpw-00000:** pin Chrome binary path in wdio configs to unblock E2E ([eab90fa](https://github.com/adobecom/caas/commit/eab90faf81e4dad5749d3c772e2eba75dd017d02)), closes [#458](https://github.com/adobecom/caas/issues/458)
+
+## [0.50.5](https://github.com/adobecom/caas/compare/0.50.4...0.50.5) (2026-05-13)
+
+## [0.50.4](https://github.com/adobecom/caas/compare/0.50.3...0.50.4) (2026-05-13)
+
+## [0.50.3](https://github.com/adobecom/caas/compare/0.50.2...0.50.3) (2026-05-13)
+
+## [0.50.2](https://github.com/adobecom/caas/compare/0.50.1...0.50.2) (2026-05-13)
+
+## [0.50.1](https://github.com/adobecom/caas/compare/0.50.0...0.50.1) (2026-05-13)
+
+## [0.50.0](https://github.com/adobecom/caas/compare/0.49.0...0.50.0) (2026-05-09)
+
+
+### Features
+
+* **mwpw-194203:** add data-country/data-card-url to card variants with parameterized unit tests ([d921a02](https://github.com/adobecom/caas/commit/d921a02980a163da51a187114856fa683a206f1d))
+
+## [0.49.0](https://github.com/adobecom/caas/compare/0.48.4...0.49.0) (2026-05-05)
+
+
+### Features
+
+* **mwpw-189783:** new card styles button and rounded corners ([#444](https://github.com/adobecom/caas/issues/444)) ([9986cdb](https://github.com/adobecom/caas/commit/9986cdbc9092bb7a2ee278a66809d8e31287f830))
+
+## [0.48.4](https://github.com/adobecom/caas/compare/0.48.3...0.48.4) (2026-05-05)
+
+
+### Bug Fixes
+
+* **mwpw-189715:** adds screen reader announcement to filter result ([#452](https://github.com/adobecom/caas/issues/452)) ([9c0667d](https://github.com/adobecom/caas/commit/9c0667dcc3148938db1fab1d2fad0229272de2a9))
+
+## [0.48.3](https://github.com/adobecom/caas/compare/0.48.2...0.48.3) (2026-04-22)
+
+## [0.48.2](https://github.com/adobecom/caas/compare/0.48.1...0.48.2) (2026-04-09)
+
+
+### Bug Fixes
+
+* **MWPW-190906:** updates focus color on dark background ([#442](https://github.com/adobecom/caas/issues/442)) ([c8db5e5](https://github.com/adobecom/caas/commit/c8db5e552e792b5e7f22174966f3f2b8b5cd0658))
+
+## [0.48.1](https://github.com/adobecom/caas/compare/0.48.0...0.48.1) (2026-04-08)
+
+
+### Bug Fixes
+
+* **MWPW-190007:** increases contrast on carousel nav focus ring ([#441](https://github.com/adobecom/caas/issues/441)) ([b3fb3e3](https://github.com/adobecom/caas/commit/b3fb3e35c8c3e34d5f72c10ac17c9edee44a0146))
+
+## [0.48.0](https://github.com/adobecom/caas/compare/0.47.5...0.48.0) (2026-03-30)
+
+
+### Features
+
+* **mwpw-190735:** splits Card.jsx into different files for each card style ([#432](https://github.com/adobecom/caas/issues/432)) ([8ac8cd0](https://github.com/adobecom/caas/commit/8ac8cd0d7ab9cb1736b34264a5272fc13549086b))
+
 ## [0.47.5](https://github.com/adobecom/caas/compare/0.47.4...0.47.5) (2026-03-27)
 
 

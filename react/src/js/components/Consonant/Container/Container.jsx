@@ -5,6 +5,7 @@ import React, {
     useState,
     createRef,
 } from 'react';
+import { unstable_batchedUpdates as batchedUpdates } from 'react-dom';
 import classNames from 'classnames';
 import { shape } from 'prop-types';
 // import 'whatwg-fetch'; // Removed: fetch is native in modern browsers
@@ -49,6 +50,7 @@ import {
     ONE_SECOND_DELAY,
     SORT_TYPES,
     EVENT_TIMING_IDS,
+    CAAS_ENDPOINT_MAP,
 } from '../Helpers/constants';
 import {
     ConfigContext,
@@ -70,6 +72,7 @@ import {
     transformFiltersWithCategories,
     expandGroupFiltersToChildren,
     getGroupedFilterSelections,
+    isMobile,
 } from '../Helpers/Helpers';
 
 
@@ -159,6 +162,7 @@ const Container = (props) => {
     const eventFilter = getConfig('filterPanel', 'eventFilter');
     const searchEnabled = getConfig('search', 'enabled');
     const sortEnabled = getConfig('sort', 'enabled');
+    const localFirstRecencyThreshold = getConfig('sort', 'localFirstRecencyThreshold');
     const cardStyle = getConfig('collection', 'cardStyle');
     const title = getConfig('collection', 'i18n.title');
     const headers = getConfig('headers', '');
@@ -214,9 +218,12 @@ const Container = (props) => {
     const [isPartialLoad, setIsPartialLoad] = useState(false);
     const hashedRef = useRef(false);
     const hashedCategoryMappingsRef = useRef(categoryMappings);
+    const originSelectionRef = useRef();
+    const [hasLoadedCards, setHasLoadedCards] = useState(false);
 
     const [, updateState] = React.useState();
     const scrollElementRef = useRef(null);
+    const box = useRef();
     const nextTransition = React.useCallback(() => updateState({}), []);
     /**
      * @typedef {Object} urlState
@@ -401,6 +408,13 @@ const Container = (props) => {
     /**
      **** Helper Methods ****
      */
+
+    function removeCollectionFromPage() {
+        const collectionRoot = box.current.closest('div#caas.caas-preview');
+        if (collectionRoot && collectionRoot.parentNode && !collectionRoot.closest('div.caas-config')) {
+            collectionRoot.parentNode.removeChild(collectionRoot);
+        }
+    }
 
     function getParentChild(id) {
         let i = id.length;
@@ -1008,6 +1022,17 @@ const Container = (props) => {
         let collectionEndpoint = getConfig('collection', 'endpoint');
         const fallbackEndpoint = getConfig('collection', 'fallbackEndpoint');
 
+        const caasEndpointKey = new URLSearchParams(window.location.search).get('caas-endpoint');
+        const endpointOverride = Object.prototype.hasOwnProperty.call(
+            CAAS_ENDPOINT_MAP,
+            caasEndpointKey,
+        )
+            ? CAAS_ENDPOINT_MAP[caasEndpointKey]
+            : undefined;
+        if (endpointOverride && collectionEndpoint.startsWith(endpointOverride.from)) {
+            collectionEndpoint = endpointOverride.to + collectionEndpoint.slice(endpointOverride.from.length);
+        }
+
         const r = new RegExp('^(?:[a-z]+:)?//', 'i');
         let collectionEndpointURI;
         if (r.test(collectionEndpoint)) {
@@ -1020,6 +1045,9 @@ const Container = (props) => {
             collectionEndpointURI.searchParams.set('flatFile', false);
             collectionEndpoint = collectionEndpointURI.toString();
         }
+
+        const originSelection = collectionEndpointURI.searchParams.get('originSelection');
+        originSelectionRef.current = originSelection;
 
         setLoading(true);
 
@@ -1064,6 +1092,9 @@ const Container = (props) => {
                     setIsFirstLoad(true);
                     if (!getByPath(payload, 'cards.length')) {
                         logLana({ message: `no cards return by query to this endpoint: ${endPoint}`, tags: 'collection' });
+                        if (originSelection === 'events' && box.current) {
+                            removeCollectionFromPage();
+                        }
                         return;
                     }
                     if (payload.isHashed && !hashedRef.current) {
@@ -1199,7 +1230,10 @@ const Container = (props) => {
                     // Injects preload before React renders, saving 50-300ms
                     preloadFirstCardImage(processedCards);
 
-                    setCards(processedCards);
+                    batchedUpdates(() => {
+                        setCards(processedCards);
+                        setHasLoadedCards(true);
+                    });
 
                     // check if the current page is greater than the last page
                     const lastPage = Math.ceil(processedCards.length / resultsPerPage);
@@ -1422,8 +1456,6 @@ const Container = (props) => {
         };
     }, [showMobileFilters]);
 
-    const box = useRef();
-
     useEffect(() => {
         /* istanbul ignore if */
         if (box && !visibleStamp && isLazy) {
@@ -1485,7 +1517,7 @@ const Container = (props) => {
      * @returns {Object}
      * */
     const getFilteredCollection = () => cardFilterer
-        .sortCards(sortOption, sanitizedEventFilter, featuredCards, hideCtaIds, isFirstLoad)
+        .sortCards(sortOption, sanitizedEventFilter, featuredCards, hideCtaIds, isFirstLoad, localFirstRecencyThreshold)
         .keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks)
         .keepCardsWithinDateRange()
         .filterCards(expandedFilterIds, activePanels, filterLogic, FILTER_TYPES, currCategories, groupedFilterSelections)
@@ -1499,6 +1531,19 @@ const Container = (props) => {
      */
     /* eslint-disable no-unused-vars */
     const { filteredCards = [], nextTransitionMs = 0 } = getFilteredCollection();
+
+    // Remove collection from page if there are no cards to show for the selected Event Filters
+    useEffect(() => {
+        if (
+            originSelectionRef.current?.includes('events')
+            && sanitizedEventFilter.length > 0
+            && hasLoadedCards
+            && filteredCards.length === 0
+            && box.current
+        ) {
+            removeCollectionFromPage();
+        }
+    }, [filteredCards, hasLoadedCards, eventFilter]);
 
     /**
      * Subset of cards to show the user
@@ -1732,7 +1777,7 @@ const Container = (props) => {
     }, []);
 
     const carouselClass = classNames({
-        'modern-carousel': isModernCarousel,
+        'modern-carousel': isModernCarousel || (isCarouselContainer && isMobile()),
         'modern-carousel--light': isLightCarousel,
     });
 
@@ -1910,7 +1955,7 @@ const Container = (props) => {
                                 resQty={gridCardLen}
                                 cards={gridCards}
                                 cardStyle={cardStyle}
-                                carouselType={isModernCarousel ? 'modern' : 'default'}
+                                carouselType={(isModernCarousel || isMobile()) ? 'modern' : 'default'}
                                 role="tablist"
                                 onCardBookmark={handleCardBookmarking} />
                             }

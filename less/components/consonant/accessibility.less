@@ -6,6 +6,16 @@ body.tabbing {
         .consonant-Pagination {
             *:focus {
                 border: @consonantFocusedColor solid 2px;
+
+                &:after {
+                    border-color: transparent;
+                }
+            }
+        }
+
+        .consonant-Pagination.lightText {
+            *:focus {
+                border: #dedede solid 2px !important;
             }
         }
 

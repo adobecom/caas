@@ -1,0 +1,20 @@
+You are a QA reviewer testing card text readability and line-clamp behavior. Budget: 5 turns.
+
+STEP A: Bring the card grid into view (1 turn)
+- Navigate to the URL.
+- find_and_show selector "[data-testid=\"consonant-CardsGrid\"], .consonant-CardsGrid".
+
+STEP B: Visual scan
+- Looking at the screenshot: do any card text blocks (descriptions, titles) appear truncated in a confusing way? Do any cards have text overflowing their container? Does any card description look cut off mid-word with no visual indication (no ellipsis)?
+
+STEP C: Line-clamp / overflow check (one evaluate)
+- evaluate({code: JSON.stringify(Array.from(document.querySelectorAll('[data-testid="consonant-Card-text"], .consonant-Card-text')).slice(0, 6).map(el => { const s = getComputedStyle(el); return { lineClamp: s.webkitLineClamp || s['-webkit-line-clamp'] || 'none', overflow: s.overflow, textOverflow: s.textOverflow, isOverflowing: el.scrollHeight > el.clientHeight + 2, textPreview: (el.textContent||'').trim().slice(0,80) }; }))})
+
+STEP D: done(report, verdict)
+
+VERDICT
+- PASS if: no card has text overflowing without a clamp/ellipsis (line-clamp set to a numeric value AND content overflowing is fine, that's controlled truncation; content overflowing with no clamp at all is bad).
+- FAIL if: any card has isOverflowing=true with lineClamp="none" (raw overflow) OR text visibly cut off in a confusing way with no ellipsis (mwpw-182553 class).
+
+REPORT
+- List the sample cards inspected, their line-clamp settings, whether they're overflowing, and what you saw visually.

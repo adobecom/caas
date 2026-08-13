@@ -62,7 +62,9 @@ const Footer = (props) => {
         <div
             className="consonant-TopFilter-footer">
             <span
-                className="consonant-TopFilter-footerResQty">
+                className="consonant-TopFilter-footerResQty"
+                role="status"
+                aria-live="polite">
                 {mobileGroupTotalResultsText}
             </span>
             {shouldShowClearButton &&
