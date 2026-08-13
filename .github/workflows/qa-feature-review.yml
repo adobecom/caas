@@ -30,6 +30,12 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Full history: the "Check out the latest base plus the PR changes"
+          # step below runs `git rev-parse HEAD^1`, which needs the merge
+          # commit's parents present. The default depth-1 shallow clone cuts
+          # them off, making that assertion fail with "ambiguous argument HEAD^1".
+          fetch-depth: 0
       - uses: actions/setup-node@v3
         with:
           node-version: 18
