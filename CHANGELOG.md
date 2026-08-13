@@ -1,5 +1,12 @@
 
 
+## [0.64.0](https://github.com/adobecom/caas/compare/0.63.2...0.64.0) (2026-08-13)
+
+
+### Features
+
+* **mwpw-198303:** enable interactions in feature QA ([#576](https://github.com/adobecom/caas/issues/576)) ([d35c4a0](https://github.com/adobecom/caas/commit/d35c4a09a704c1a220c3fcd9b00503002500cab5))
+
 ## [0.63.2](https://github.com/adobecom/caas/compare/0.63.1...0.63.2) (2026-08-10)
 
 
