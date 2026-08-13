@@ -134,6 +134,7 @@ AssistivTunnel
 
 # Local editor and Claude config
 .claude/
+.specify/
 .vscode/
 CLAUDE.md
 
