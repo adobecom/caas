@@ -163,6 +163,41 @@ function formatTranscript(entries) {
   return text.slice(-MAX_TRANSCRIPT_CHARS);
 }
 
+const unique = (values) => [...new Set(values.filter(Boolean))];
+
+/**
+ * Add deterministic source evidence for browser interactions named by changed tests.
+ * This does not replace model-directed research; it prevents selector/config grounding
+ * from depending on whether the model spends its bounded search turns on test markup.
+ */
+export function collectInteractionEvidence({ repoRoot, specText, maxQueries = 6 }) {
+  const source = String(specText || '');
+  const testIds = unique([...source.matchAll(
+    /\b(?:get|find|query)(?:All)?ByTestId\s*\(\s*['"`]([^'"`]+)['"`]/g,
+  )].map((match) => match[1]));
+  const configSymbols = unique([...source.matchAll(/\b([A-Za-z_$][\w$]*Config)\b/g)]
+    .map((match) => match[1]));
+  const queries = [
+    ...configSymbols.map((query) => ({ query, why: 'changed test config fixture definition and transport' })),
+    ...testIds.map((query) => ({ query, why: 'changed test interaction target markup' })),
+  ].slice(0, Math.max(1, Math.min(Number(maxQueries) || 6, 8)));
+  const searches = queries.map(({ query, why }) => {
+    try {
+      return { query, why, result: searchCode({
+        repoRoot, query, searchPath: DEFAULT_SEARCH_PATH, maxMatches: 3, contextLines: 5,
+      }) };
+    } catch (error) {
+      return { query, why, result: { query, searchPath: DEFAULT_SEARCH_PATH, matches: [], error: error.message } };
+    }
+  });
+  return {
+    searches,
+    report: searches.length
+      ? `DETERMINISTIC CHANGED-TEST INTERACTION EVIDENCE\n${formatTranscript(searches)}`
+      : 'DETERMINISTIC CHANGED-TEST INTERACTION EVIDENCE\n(no test IDs or config fixture symbols found)',
+  };
+}
+
 /**
  * Give a text-only LLM endpoint an agentic, bounded search loop. `ask` is the
  * existing proxy call. Each response is either another safe search request or a

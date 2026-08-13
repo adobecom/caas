@@ -7,14 +7,24 @@
  * feature we can force by (a) overriding the config (via the ?caasqa localStorage
  * hook) and (b) mocking the chimera-api/collection response? If not, it skips
  * cleanly. If yes, it injects the PR build + the config + a crafted collection,
- * renders it on a live page, reads the result, and validates it against what the
- * PR's own unit tests say should happen.
+ * renders it on a live page, optionally performs one click or type action, reads
+ * the before/after result, and validates it against what the PR's own unit tests
+ * say should happen.
  */
 import { execFileSync } from 'node:child_process';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { chromium } from 'playwright';
-import { researchCode } from './code-search.mjs';
+import { collectInteractionEvidence, researchCode } from './code-search.mjs';
+import {
+  interactionPrerequisiteFailure,
+  normalizeFeatureAction,
+  planDescribesInteraction,
+  prepareConfigForAction,
+  runFeatureAction,
+  validateFeatureAction,
+} from './feature-action.mjs';
+import { buildScenarioConfig } from './scenario-config.mjs';
 
 const env = (k, d = '') => (process.env[k] ?? d);
 const PR    = env('PR_NUMBER');
@@ -87,6 +97,68 @@ const extractJson = (s) => {
   return JSON.parse(t.slice(a, b + 1));
 };
 
+async function observePage(page, actionSelector = '') {
+  return page.evaluate((selector) => {
+    const isVisible = (element) => {
+      if (!element) return false;
+      const style = window.getComputedStyle(element);
+      const rect = element.getBoundingClientRect();
+      return style.display !== 'none' && style.visibility !== 'hidden' &&
+        Number(style.opacity || 1) !== 0 && rect.width > 0 && rect.height > 0;
+    };
+    const targetCollection = document.querySelector('[data-caas-qa-target="true"]');
+    const cards = [...(targetCollection?.querySelectorAll('.consonant-Card') || [])]
+      .slice(0, 12).map((card, index) => {
+      const title = card.querySelector('[class*="-title"]');
+      const links = [...card.querySelectorAll('a,button')].slice(0, 6).map((element) => ({
+        tag: element.tagName.toLowerCase(),
+        testId: element.getAttribute('data-testid') || undefined,
+        text: (element.textContent || '').trim().slice(0, 50),
+        href: element.getAttribute('href') || undefined,
+        cls: (element.className || '').toString().slice(0, 100) || undefined,
+      }));
+      return {
+        n: index + 1,
+        id: card.id || undefined,
+        title: title ? title.textContent.trim().slice(0, 80) : '',
+        text: (card.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 220),
+        links,
+      };
+    });
+    let actionTarget = { selector, count: 0, visibleCount: 0, matches: [] };
+    if (selector) {
+      try {
+        const matches = [...(targetCollection?.querySelectorAll(selector) || [])];
+        actionTarget = {
+          selector,
+          count: matches.length,
+          visibleCount: matches.filter(isVisible).length,
+          matches: matches.slice(0, 5).map((element) => ({
+            tag: element.tagName.toLowerCase(),
+            text: (element.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 100),
+            testId: element.getAttribute('data-testid') || undefined,
+            value: element.value || element.getAttribute('value') || undefined,
+            checked: 'checked' in element ? Boolean(element.checked) : undefined,
+            visible: isVisible(element),
+          })),
+        };
+      } catch (error) {
+        actionTarget = { selector, count: 0, visibleCount: 0, matches: [], selectorError: error.message };
+      }
+    }
+    return {
+      cards,
+      collectionRoots: {
+        target: document.querySelectorAll('[data-caas-qa-target="true"]').length,
+        targetCards: targetCollection?.querySelectorAll('.consonant-Card').length || 0,
+        pageCaasPreview: document.querySelectorAll('div#caas.caas-preview').length,
+        pageCards: document.querySelectorAll('.consonant-Card').length,
+      },
+      actionTarget,
+    };
+  }, actionSelector);
+}
+
 function ptStamp() {
   const d = new Date();
   return `${d.toLocaleString('en-US', { timeZone: 'America/Los_Angeles', month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true })} PT`;
@@ -157,17 +229,21 @@ function postComment(verdict, bodyMd) {
   const diff = diffSections.filter((section) => !isReviewerInfra(sectionPath(section))).join('').slice(0, 24000);
   const changedPaths = (meta.files || []).map((f) => f.path).filter((filePath) => !isReviewerInfra(filePath));
   const specPaths = changedPaths.filter((p) => /\.(spec|test)\.(jsx?|tsx?)$/.test(p));
-  const specText = specPaths.map((p) => {
-    try { return `\n// FILE ${p}\n${readFileSync(path.resolve(ROOT, p), 'utf8')}`; } catch { return ''; }
-  }).join('\n').slice(0, 14000);
+  // Feed the planner the changed test hunks, not the beginning of each full test
+  // file. Large suites can place the new interaction test thousands of lines in,
+  // beyond a fixed file-prefix budget.
+  const specText = diffSections
+    .filter((section) => specPaths.includes(sectionPath(section)))
+    .join('\n')
+    .slice(0, 14000);
 
   // ---- Step 1: decide whether the PR's feature can be exercised at all ----
   const detect = await llm(
 `You are triaging an Adobe CaaS (Consonant card collection) pull request to decide if its feature can be EXERCISED by an automated harness.
 
-The harness renders the REAL PR build on a live page and can force exactly two things: (1) the CaaS CONFIG for a collection (it reads the page's real config and can replace it wholesale), and (2) the COLLECTION DATA (the chimera-api/collection JSON, replaced with crafted cards). It then reads the resulting DOM.
+The harness renders the REAL PR build on a live page and can force the CaaS CONFIG and COLLECTION DATA. It can then perform ONE simple interaction: clicking one visible control or typing into one visible input, followed by a second DOM capture.
 
-TESTABLE only if the behaviour is driven by config and/or card data (a new sort mode, filter behaviour, a card field rendering, a config-gated layout). NOT testable if it is a pure refactor, build/CI/tooling/deps, test-only, backend/service-only, or needs unsupported auth / interaction / external state.
+TESTABLE only if the behaviour is driven by config/card data, optionally followed by one visible click or text entry (a new sort mode, filter/search behaviour, a card field rendering, a config-gated layout). NOT testable if it is a pure refactor, build/CI/tooling/deps, test-only, backend/service-only, or needs auth, external state, or a multi-step interaction that cannot be made single-step through injected config.
 
 The changed-file list and diff below already exclude this reviewer's own workflow, search implementation, and gated applyQaConfigOverride hook. Never select those QA mechanics as the product feature. For a self-test PR whose title/body names an earlier product behavior, test that named behavior from the included product spec.
 
@@ -208,9 +284,13 @@ Respond with ONLY a JSON object: {"testable":true|false,"reason":"one sentence"}
     repoRoot: ROOT,
     taskContext: `PR: ${meta.title}\nChanged files:\n${changedPaths.join('\n')}\n\nChanged tests:\n${specText}\n\nDiff:\n${diff.slice(0, 10000)}`,
   });
+  const interactionEvidence = collectInteractionEvidence({ repoRoot: ROOT, specText });
   console.log(`[research] searches=${research.searches.length} summary=${research.summary.slice(0, 800)}`);
   research.searches.forEach((entry, index) => {
     console.log(`[research ${index + 1}] ${entry.query} in ${entry.searchPath} -> ${entry.result.matches.length} match block(s)`);
+  });
+  interactionEvidence.searches.forEach((entry, index) => {
+    console.log(`[interaction evidence ${index + 1}] ${entry.query} -> ${entry.result.matches.length} match block(s)`);
   });
 
   // ---- Step 3: capture the page's REAL live config(s) (first pass, no override) ----
@@ -236,7 +316,7 @@ Respond with ONLY a JSON object: {"testable":true|false,"reason":"one sentence"}
 
   // ---- Step 4: plan the injection using live config + searched source ----
   const planHead = canReplace
-    ? `The page hosts ${liveConfigs.length} card collection(s). Here are their original configs:\n\n${JSON.stringify(liveConfigs).slice(0, 16000)}\n\nStart from the sortable/main card-grid config. Return a COMPLETE config with the feature enabled, featuredCards removed, and card limits high enough for every fixture card.`
+    ? `The page hosts ${liveConfigs.length} card collection(s). Here are their original configs:\n\n${JSON.stringify(liveConfigs).slice(0, 16000)}\n\nReturn only the FEATURE CONFIG PATCH needed for the selected test. The harness deep-merges it over the first captured live config and preserves required transport/default fields. Do not copy or replace unrelated live config sections.`
     : 'Live config capture failed. Build a minimal complete CaaS config that activates the feature and renders every fixture card.';
 
   const planRaw = await llm(
@@ -246,6 +326,8 @@ ${planHead}
 
 You were allowed to search the CURRENT PR checkout. This research is authoritative for translating component-level test props into complete card JSON. Use the raw source blocks, not intuition:
 ${research.report}
+
+${interactionEvidence.report}
 
 Changed unit tests:
 ${specText}
@@ -267,28 +349,65 @@ Pick ONE changed unit test whose effect is observable in the DOM.
 - Set an explicitly registered card style that actually renders that component, and neutralize searched config conditions that suppress it.
 - Preserve the test's exact feature inputs and assertions. Add only nonessential baseline fields needed to make the card render.
 - Use dates relative to today (${new Date().toISOString().slice(0, 10)}) when the test uses relative dates.
+- If the selected test clicks one control or types one query, return an action. The selector must match exactly one VISIBLE element on the initial render. If the target is a left-filter item, you MUST set that filter group's openedOnLoad=true in config so its label/input is initially visible.
+- Use action kind "click" for one visible button/label/control and "type" for one visible input. Put the typed query in action.value. If the behavior still needs multiple interactions after config injection, return skipReason.
+- Action selectors MUST identify the intended control by a stable exact attribute such as label[for="filter-group/item-b"], a unique id/value, or a unique data-testid. Prefer the associated label for checkbox/radio controls because native inputs can be visually hidden. NEVER use positional selectors such as :nth-child, :nth-of-type, :first, or :last. data-testid alone is not unique when multiple filter items share it.
+- Read the actual config path and interaction target; do not infer that a Product filter is an Event Filter merely from a test name or comment.
 - If source search did not establish an injection path, return skipReason instead of producing a guessed fixture.
 
 Respond with ONLY one JSON object:
-{"sourceTest":"...","config":{},"cards":[],"expected":"exact selected-test assertion restated for DOM","observe":"where to check","mappingEvidence":[{"file":"...","line":123,"fact":"..."}],"skipReason":""}
+{"sourceTest":"...","config":{},"cards":[],"expected":"exact selected-test assertion restated for DOM","observe":"where to check","mappingEvidence":[{"file":"...","line":123,"fact":"..."}],"action":{"kind":"click|type","selector":"CSS selector matching exactly one visible element","value":"text for type only"},"skipReason":""}
 or {"sourceTest":"...","skipReason":"source search could not prove how the test input reaches config/card JSON"}.`, 16000);
   const plan2 = extractJson(planRaw);
   if (plan2.skipReason) {
     postComment('SKIPPED', `**Scenario mapping was not proven** -- skipped instead of guessing.\n\n> ${String(plan2.skipReason).slice(0, 800)}\n\nCode searches performed: ${research.searches.length}.`);
     console.log(`[plan] skipped: ${plan2.skipReason}`); process.exit(0);
   }
-  plan.config = plan2.config || {};
+  plan.configPatch = plan2.config || {};
   plan.cards = plan2.cards || [];
+  plan.config = canReplace
+    ? buildScenarioConfig(liveConfigs[0], plan.configPatch, plan.cards)
+    : buildScenarioConfig({}, plan.configPatch, plan.cards);
   plan.expected = plan2.expected || '';
   plan.observe = plan2.observe || '';
   plan.sourceTest = plan2.sourceTest || '';
   plan.mappingEvidence = plan2.mappingEvidence || [];
+  try {
+    plan.action = validateFeatureAction(normalizeFeatureAction(plan2.action));
+  } catch (error) {
+    postComment('SKIPPED',
+`**Interaction plan was unsafe** — skipped instead of reporting a product failure.
+
+**Source test:** \`${plan.sourceTest || '(n/a)'}\`
+**Expected:** ${plan.expected}
+**Reason:** ${String(error.message || error).slice(0, 500)}`);
+    console.log(`[plan] skipped: ${error.message || error}`);
+    process.exit(0);
+  }
+  plan.config = prepareConfigForAction(plan.config, plan.action);
   console.log('[plan] sourceTest=' + plan.sourceTest + ' | observe=' + plan.observe);
+  console.log('[action plan] ' + JSON.stringify(plan.action));
   console.log('[mapping] ' + JSON.stringify(plan.mappingEvidence));
   console.log('[cards] ' + JSON.stringify(plan.cards.map((card) => ({
     id: card.id, style: card.styles?.typeOverride, country: card.country,
     modifiedDate: card.modifiedDate, footer: card.footer,
   }))));
+  console.log('[config] ' + JSON.stringify({
+    patchKeys: Object.keys(plan.configPatch),
+    collection: plan.config.collection,
+    filterPanel: plan.config.filterPanel,
+  }).slice(0, 6000));
+  if (!plan.action && planDescribesInteraction(plan)) {
+    postComment('SKIPPED',
+`**Interaction scenario was incomplete** — skipped instead of reporting a product failure.
+
+The selected test describes a click, selection, or text entry, but the planner did not return the required browser action.
+
+**Source test:** \`${plan.sourceTest || '(n/a)'}\`
+**Expected:** ${plan.expected}`);
+    console.log('[plan] skipped: interaction described without an action');
+    process.exit(0);
+  }
 
   // ---- Step 5: inject config + mocked collection, render the PR build ----
   const injected = canReplace ? { ...plan.config, _caasQaReplace: true } : plan.config;
@@ -302,28 +421,64 @@ or {"sourceTest":"...","skipReason":"source search could not prove how the test 
   await page.goto(gateUrl, { waitUntil: 'load', timeout: 45000 }).catch(() => {});
   await page.waitForSelector('.consonant-CardsGrid .consonant-Card', { timeout: 15000 }).catch(() => {});
   await page.waitForTimeout(2500);
-  const observed = await page.evaluate(() => {
-    const grid = document.querySelector('.consonant-CardsGrid');
-    const cards = grid ? [...grid.querySelectorAll('.consonant-Card')] : [...document.querySelectorAll('.consonant-Card')];
-    return cards.slice(0, 12).map((card, index) => {
-      const title = card.querySelector('[class*="-title"]');
-      const links = [...card.querySelectorAll('a,button')].slice(0, 6).map((element) => ({
-        tag: element.tagName.toLowerCase(),
-        testId: element.getAttribute('data-testid') || undefined,
-        text: (element.textContent || '').trim().slice(0, 50),
-        href: element.getAttribute('href') || undefined,
-        cls: (element.className || '').toString().slice(0, 100) || undefined,
-      }));
-      return {
-        n: index + 1,
-        id: card.id || undefined,
-        title: title ? title.textContent.trim().slice(0, 80) : '',
-        text: (card.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 220),
-        links,
-      };
-    });
+  const targetMarked = await page.evaluate(() => {
+    const target = document.querySelector('div#caas.caas-preview');
+    if (!target) return false;
+    target.setAttribute('data-caas-qa-target', 'true');
+    return true;
   });
-  console.log('[observed] ' + JSON.stringify(observed));
+  if (!targetMarked) {
+    await page.screenshot({ path: '/tmp/feature-render.png', fullPage: true }).catch(() => {});
+    await page.close();
+    postComment('SKIPPED',
+`**Target collection did not render** — skipped instead of reporting a product failure.
+
+**Source test:** \`${plan.sourceTest || '(n/a)'}\`
+**Expected:** ${plan.expected}`);
+    console.log('[render] skipped: no div#caas.caas-preview target');
+    process.exit(0);
+  }
+  const before = await observePage(page, plan.action?.selector || '');
+  console.log('[observed before] ' + JSON.stringify(before));
+  const prerequisiteFailure = interactionPrerequisiteFailure(plan, before);
+  if (prerequisiteFailure) {
+    await page.screenshot({ path: '/tmp/feature-render.png', fullPage: true }).catch(() => {});
+    await page.close();
+    postComment('SKIPPED',
+`**Interaction prerequisite did not render** — skipped instead of reporting a product failure.
+
+The planned action depends on an initially rendered fixture card, but the target collection contained zero cards before the action. Without that baseline, the before/after assertion is not a valid product test.
+
+**Source test:** \`${plan.sourceTest || '(n/a)'}\`
+**Expected:** ${plan.expected}
+**Fixture cards supplied:** ${plan.cards.length}
+**Initial target cards:** ${before.collectionRoots.targetCards}
+**Initial action target:** ${before.actionTarget.count} match(es), ${before.actionTarget.visibleCount} visible`);
+    console.log(`[render] skipped: ${prerequisiteFailure}`);
+    process.exit(0);
+  }
+  const actionResult = await runFeatureAction(page, plan.action,
+    { scopeSelector: '[data-caas-qa-target="true"]' });
+  if (actionResult?.status === 'SKIPPED') {
+    console.log('[action] SKIPPED: ' + actionResult.reason);
+    await page.screenshot({ path: '/tmp/feature-render.png', fullPage: true }).catch(() => {});
+    await page.close();
+    postComment('SKIPPED',
+`Injected the PR build and fixture, but the planned browser interaction could not be performed. This is a harness/scenario limitation, not a product failure.
+
+**Source test:** \`${plan.sourceTest || '(n/a)'}\`
+**Expected:** ${plan.expected}
+**Action:** \`${plan.action?.kind || 'unknown'} ${plan.action?.selector || ''}\`
+**Initial action target:** ${before.actionTarget.count} match(es), ${before.actionTarget.visibleCount} visible
+**Reason:** ${actionResult.reason}`);
+    process.exit(0);
+  }
+  if (actionResult) {
+    console.log(`[action] ${actionResult.status}: ${plan.action.kind} ${plan.action.selector}`);
+    await page.waitForTimeout(1800);
+  }
+  const after = actionResult ? await observePage(page, plan.action.selector) : before;
+  console.log('[observed after] ' + JSON.stringify(after));
   await page.screenshot({ path: '/tmp/feature-render.png', fullPage: true }).catch(() => {});
   await page.close();
 
@@ -336,10 +491,16 @@ Where to look: ${plan.observe}
 Expected, copied from that test: ${plan.expected}
 Source mapping evidence: ${JSON.stringify(plan.mappingEvidence)}
 
-Rendered first-collection cards (id, title, text, links/buttons):
-${JSON.stringify(observed).slice(0, 6000) || '(no cards rendered)'}
+Planned action: ${JSON.stringify(plan.action) || '(none; initial-render assertion)'}
+Action result: ${JSON.stringify(actionResult) || '(no action required)'}
 
-Does the rendered DOM satisfy ONLY the selected test assertion? Do not introduce new expectations. Respond with ONLY JSON: {"verdict":"PASS"|"FAIL","reason":"one or two sentences citing observed vs expected"}`, 1500);
+DOM before action:
+${JSON.stringify(before).slice(0, 6000)}
+
+DOM after action:
+${JSON.stringify(after).slice(0, 6000)}
+
+The host page can contain other unrelated CaaS collections. Judge collection removal using collectionRoots.target and targetCards only; pageCaasPreview/pageCards are diagnostic totals and must not be expected to reach zero. Judge the product only when the planned action was performed. Compare before and after when an action exists. Does the rendered DOM satisfy ONLY the selected test assertion? Do not introduce new expectations. Respond with ONLY JSON: {"verdict":"PASS"|"FAIL","reason":"one or two sentences citing observed vs expected"}`, 1500);
   const res = extractJson(check);
   console.log(`[validate] ${res.verdict}: ${res.reason}`);
 
@@ -351,8 +512,13 @@ Does the rendered DOM satisfy ONLY the selected test assertion? Do not introduce
 **Mapping evidence:** ${plan.mappingEvidence.map((item) => `\`${item.file}${item.line ? `:${item.line}` : ''}\``).join(', ') || '_(none returned)_'}
 **Fixture cards:** ${plan.cards.length}
 **Expected:** ${plan.expected}
-**Rendered (first collection):**
-${observed.map((item) => `- ${item.n}. ${item.title || item.text.slice(0, 50)}${item.links.length ? ` [${item.links.map((link) => `${link.testId || link.tag}${link.href ? ` ${link.href}` : ''}`).join(', ')}]` : ''}`).join('\n') || '_(no cards rendered)_'}
+**Action:** ${plan.action ? `\`${plan.action.kind} ${plan.action.selector}\` — ${actionResult?.status}` : '_(initial render; no action)_'}
+**Before:** target collection ${before.collectionRoots.target}, target cards ${before.collectionRoots.targetCards}${plan.action ? `, action target ${before.actionTarget.count} (${before.actionTarget.visibleCount} visible)` : ''}
+**After:** target collection ${after.collectionRoots.target}, target cards ${after.collectionRoots.targetCards}
+**Rendered cards before:**
+${before.cards.map((item) => `- ${item.n}. ${item.title || item.text.slice(0, 50)}`).join('\n') || '_(no cards rendered)_'}
+**Rendered cards after:**
+${after.cards.map((item) => `- ${item.n}. ${item.title || item.text.slice(0, 50)}`).join('\n') || '_(no cards rendered)_'}
 
 **Verdict:** ${res.reason}`);
   process.exit(0);
