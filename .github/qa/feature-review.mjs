@@ -41,6 +41,52 @@ const MARKER = '<!-- feature-qa-review -->';
 const gh = (a) => execFileSync('gh', a, { encoding: 'utf8', maxBuffer: 20 * 1024 * 1024 });
 const ALLOW = new Set(['app.css', 'main.min.js', 'react.umd.js', 'react.dom.umd.js']);
 
+// --- Cross-signal: read the deterministic build-output-diff verdict ---------
+// The build-output-diff workflow builds the app on both base and PR, compares
+// the shipped bundle, and posts a `build-output-diff` commit status on the PR
+// head whose description is NO_CHANGE or CHANGED. When this feature agent has
+// no injectable feature to exercise, it consults that verdict instead of a
+// blind "skipped" — so a dependency bump that changes nothing is reported as
+// safe, and one that alters the bundle is flagged for review.
+// Returns 'NO_CHANGE' | 'CHANGED' | null (not posted / unavailable).
+async function bundleDiffVerdict() {
+  let sha;
+  try { sha = JSON.parse(gh(['api', `repos/${REPO}/pulls/${PR}`])).head?.sha; }
+  catch { return null; }
+  if (!sha) return null;
+  // The diff builds the app twice (~3 min) and runs in parallel with this
+  // agent, so its status may lag. Poll briefly before giving up.
+  for (let i = 0; i < 8; i++) {
+    try {
+      const statuses = JSON.parse(gh(['api', `repos/${REPO}/commits/${sha}/statuses?per_page=100`]));
+      const s = statuses.find((x) => x.context === 'build-output-diff');
+      if (s && s.description) {
+        const d = s.description.toUpperCase();
+        if (d.includes('NO_CHANGE') || d.includes('NO CHANGE')) return 'NO_CHANGE';
+        if (d.includes('CHANGED')) return 'CHANGED';
+      }
+    } catch { /* transient; retry */ }
+    await new Promise((r) => setTimeout(r, 15000));
+  }
+  return null;
+}
+
+// Post the "no injectable feature" outcome, informed by the build-output-diff
+// verdict rather than emitting a bare skip.
+async function postNonInjectable(reasonMd) {
+  const v = await bundleDiffVerdict();
+  if (v === 'NO_CHANGE') {
+    postComment('SAFE (no bundle change)',
+      `**No injectable feature to exercise** — and the deterministic build-output-diff proves the **shipped bundle is byte-identical to base** after normalization, so this change is safe for what ships.\n\n> ${reasonMd}`);
+  } else if (v === 'CHANGED') {
+    postComment('NEEDS REVIEW (bundle changed)',
+      `**No injectable feature to exercise**, but build-output-diff reports the **shipped bundle CHANGED** vs base — review the diff artifact before merging.\n\n> ${reasonMd}`);
+  } else {
+    postComment('SKIPPED',
+      `**Not an injectable feature** -- skipped.\n\n> ${reasonMd}\n\nThis PR's change isn't driven by config/collection data the harness can force, and the build-output-diff verdict wasn't available to consult. (The visual/smoke review still applies.)`);
+  }
+}
+
 const CARD_SHAPE = `Each card (chimera-api/collection "cards[]" item) needs at least:
 { "id": "unique", "styles": { "typeOverride": "one-half", "backgroundImage": "https://business.adobe.com/content/dam/dx/us/en/images/cards/default/media_1.jpg", "icon": "" },
   "contentArea": { "title": "<visible title>", "detailText": "<eyebrow>", "url": "https://business.adobe.com/" },
@@ -267,14 +313,14 @@ Respond with ONLY a JSON object: {"testable":true|false,"reason":"one sentence"}
   try { plan = extractJson(detect); }
   catch (e) {
     if (/\b(skip|not testable|not a feature|refactor|tooling|infrastructure|cannot|no runtime)\b/i.test(detect)) {
-      postComment('SKIPPED', `**Not an injectable feature** -- skipped.\n\n> ${String(detect).slice(0, 500)}`);
+      await postNonInjectable(String(detect).slice(0, 500));
       console.log('skipped (prose): not testable'); process.exit(0);
     }
     throw e;
   }
   console.log(`[detect] testable=${plan.testable} reason=${plan.reason}`);
   if (!plan.testable) {
-    postComment('SKIPPED', `**Not an injectable feature** -- skipped.\n\n> ${plan.reason}\n\nThis PR's change isn't driven by config/collection data the harness can force, so a feature test wouldn't be meaningful. (The visual/smoke review still applies.)`);
+    await postNonInjectable(plan.reason);
     console.log('skipped: not testable'); process.exit(0);
   }
 
