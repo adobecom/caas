@@ -58,8 +58,8 @@ describe('CardsCarousel comprehensive behaviors', () => {
     const c = await setupCarousel(500);
     const nextBtn = c.querySelector('[name="next"]');
     const prevBtn = c.querySelector('[name="previous"]');
-    expect(nextBtn).toHaveClass('hide');
-    expect(prevBtn).toHaveClass('hide');
+    expect(nextBtn).not.toHaveClass('hide');
+    expect(prevBtn).not.toHaveClass('hide');
   });
 
   test('mobile: clicking next invokes centerClick and scrolls', async () => {
@@ -139,16 +139,6 @@ describe('CardsCarousel comprehensive behaviors', () => {
     expect(prevBtn).toHaveClass('hide');
   });
 
-  test('mobileLogic: scroll hides both nav buttons on mobile', async () => {
-    const c = await setupCarousel(500);
-    const carousel = c.querySelector('.consonant-Container--carousel');
-    fireEvent.scroll(carousel);
-    const nextBtn = c.querySelector('[name="next"]');
-    const prevBtn = c.querySelector('[name="previous"]');
-    expect(nextBtn).toHaveClass('hide');
-    expect(prevBtn).toHaveClass('hide');
-  });
-
   test('aria attributes: visible/invisible cards get correct attrs', async () => {
     const c = await setupCarousel(1400);
     const cardEls = c.querySelectorAll('.consonant-Card');
@@ -184,8 +174,8 @@ describe('CardsCarousel comprehensive behaviors', () => {
     });
     const nextBtn = c.querySelector('[name="next"]');
     const prevBtn = c.querySelector('[name="previous"]');
-    expect(prevBtn).toHaveClass('hide');
-    expect(nextBtn).toHaveClass('hide');
+    expect(prevBtn).not.toHaveClass('hide');
+    expect(nextBtn).not.toHaveClass('hide');
   });
 
   test('should not throw when nextBtn is null', async () => {

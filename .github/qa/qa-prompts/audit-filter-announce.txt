@@ -1,0 +1,50 @@
+You are an a11y QA reviewer testing whether a filter click is announced to screen readers via aria-live regions. Budget: 5 turns max.
+
+This is a tight, deterministic scenario. Do exactly these steps, no improvisation, no extra exploration.
+
+STEP 1: Navigate.
+
+STEP 2: Bring filter panel into view.
+find_and_show selector "[data-testid=\"consonant-LeftFilters\"], .consonant-LeftFilters".
+
+STEP 3: Queue the full probe in ONE evaluate. The script auto-expands the first filter group if needed, captures BEFORE state, clicks a checkbox, waits 2s, captures AFTER state, stashes the result on window.
+evaluate({code: `
+(function() {
+  const snapshot = () => ({
+    cardCount: document.querySelectorAll('[data-testid="consonant-Card"]').length,
+    resultsLabel: (document.querySelector('[data-testid="consonant-FiltersInfo-results"]') || {}).textContent && document.querySelector('[data-testid="consonant-FiltersInfo-results"]').textContent.trim(),
+    liveRegions: Array.from(document.querySelectorAll('[aria-live], [role="status"], [role="alert"]')).map(el => ({ role: el.getAttribute('role'), aria: el.getAttribute('aria-live'), atomic: el.getAttribute('aria-atomic'), text: (el.textContent||'').trim().slice(0,140) }))
+  });
+  const findCheckbox = () => document.querySelector('[data-testid="consonant-LeftFilter-itemsItemCheckbox"]') || document.querySelector('.consonant-LeftFilters input[type="checkbox"]');
+  // Expand the first filter group if no checkbox visible.
+  if (!findCheckbox()) {
+    const grp = document.querySelector('[data-testid="consonant-LeftFilter-link"]');
+    if (grp) grp.click();
+  }
+  setTimeout(() => {
+    const before = snapshot();
+    const cb = findCheckbox();
+    let clickResult = 'no checkbox found';
+    if (cb) { cb.click(); clickResult = 'clicked: ' + (cb.id || cb.value || 'unnamed'); }
+    setTimeout(() => {
+      window.__filterAnnounceResult = { before, clickResult, after: snapshot() };
+    }, 2000);
+  }, 800);
+})();
+'queued; result will appear at window.__filterAnnounceResult in about 3 seconds';
+`})
+
+STEP 4: Read the result. Wait first.
+evaluate({code: `new Promise(r => setTimeout(r, 3500)).then(() => JSON.stringify(window.__filterAnnounceResult || {error: 'not ready'}))`})
+
+STEP 5: done(report, verdict).
+
+VERDICT — both must pass:
+- FUNCTIONAL: after.cardCount !== before.cardCount OR after.resultsLabel !== before.resultsLabel (filter actually filtered).
+- ANNOUNCEMENT: at least one liveRegion's text changed between before and after. Compare the arrays item-by-item.
+- PASS if both. FAIL if either. A FUNCTIONAL PASS / ANNOUNCEMENT FAIL is the mwpw-189715 / mwpw-177233 bug class.
+
+REPORT
+- Functional section: before counts vs after counts.
+- Announcement section: paste before.liveRegions and after.liveRegions as JSON arrays so the diff is plain to read.
+- Verdict reason in one sentence.
