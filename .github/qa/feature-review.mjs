@@ -54,9 +54,7 @@ async function bundleDiffVerdict() {
   try { sha = JSON.parse(gh(['api', `repos/${REPO}/pulls/${PR}`])).head?.sha; }
   catch { return null; }
   if (!sha) return null;
-  // The diff builds the app twice (~3 min) and runs in parallel with this
-  // agent, so its status may lag. Poll briefly before giving up.
-  for (let i = 0; i < 8; i++) {
+  const readStatus = () => {
     try {
       const statuses = JSON.parse(gh(['api', `repos/${REPO}/commits/${sha}/statuses?per_page=100`]));
       const s = statuses.find((x) => x.context === 'build-output-diff');
@@ -65,10 +63,31 @@ async function bundleDiffVerdict() {
         if (d.includes('NO_CHANGE') || d.includes('NO CHANGE')) return 'NO_CHANGE';
         if (d.includes('CHANGED')) return 'CHANGED';
       }
-    } catch { /* transient; retry */ }
+    } catch { /* transient */ }
+    return null;
+  };
+  // 'none' (never triggered) | 'running' | 'done'
+  const runState = () => {
+    try {
+      const runs = JSON.parse(gh(['api', `repos/${REPO}/actions/workflows/output-diff-check.yml/runs?head_sha=${sha}&per_page=5`]));
+      const list = runs.workflow_runs || [];
+      if (!list.length) return 'none';
+      return list.some((r) => r.status !== 'completed') ? 'running' : 'done';
+    } catch { return 'running'; } // API hiccup: assume still running, keep waiting
+  };
+  // Wait until the build-output-diff RUN actually completes, then read its verdict —
+  // the diff builds the app twice (~3 min), slower than this agent reaches the skip
+  // decision, so a fixed window would race it. Hard cap well under the job timeout.
+  const deadline = Date.now() + 15 * 60 * 1000;
+  for (;;) {
+    const v = readStatus();
+    if (v) return v;
+    const state = runState();
+    if (state === 'none') return null;
+    if (state === 'done') { await new Promise((r) => setTimeout(r, 8000)); return readStatus(); }
+    if (Date.now() > deadline) return null;
     await new Promise((r) => setTimeout(r, 15000));
   }
-  return null;
 }
 
 // Post the "no injectable feature" outcome, informed by the build-output-diff
