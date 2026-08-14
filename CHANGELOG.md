@@ -1,5 +1,12 @@
 
 
+## [0.66.2](https://github.com/adobecom/caas/compare/0.66.1...0.66.2) (2026-08-14)
+
+
+### Dependencies
+
+* **deps-dev:** bump msw from 0.21.3 to 0.49.3 ([#412](https://github.com/adobecom/caas/issues/412)) ([5433e23](https://github.com/adobecom/caas/commit/5433e2350a4b39b1e5d5beacd398bebc7f62c5c6))
+
 ## [0.66.1](https://github.com/adobecom/caas/compare/0.66.0...0.66.1) (2026-08-14)
 
 ## [0.66.0](https://github.com/adobecom/caas/compare/0.65.0...0.66.0) (2026-08-13)
