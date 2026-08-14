@@ -1,4 +1,4 @@
-#!/usr/bin/env2bash
+#!/usr/bin/env bash
 #
 # compare-build-output.sh
 #
