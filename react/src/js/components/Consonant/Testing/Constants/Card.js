@@ -95,6 +95,14 @@ export const DEFAULT_PROPS_BLOG = {
     onFocus: jest.fn(),
 };
 
+export const DEFAULT_PROPS_FLEX = {
+    ...CARD_PROPS,
+    bannerMap: {},
+    footer,
+    onClick: jest.fn(),
+    onFocus: jest.fn(),
+};
+
 export const DEFAULT_PROPS_BUTTON = {
     ...CARD_PROPS,
     footer: [{

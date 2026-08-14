@@ -124,7 +124,18 @@ const Group = (props) => {
                         );
 
                     case INFOBIT_TYPE.LINK:
-                        if (infobit.style === "button") return '';
+                        if (infobit.style === 'button') return '';
+                        if (infobit.style === 'primary' || infobit.style === 'call-to-action') {
+                            return (
+                                <Button
+                                    {...infobit}
+                                    key={cuid()}
+                                    onFocus={onFocus}
+                                    title={title}
+                                    tabIndex={tabIndex}
+                                    renderOverlay={renderOverlay} />
+                            );
+                        }
                         return (
                             <TextLink
                                 {...infobit}
