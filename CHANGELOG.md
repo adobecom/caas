@@ -1,5 +1,12 @@
 
 
+## [0.66.7](https://github.com/adobecom/caas/compare/0.66.6...0.66.7) (2026-08-18)
+
+
+### Dependencies
+
+* **deps-dev:** bump babel-jest from 30.3.0 to 30.4.1 ([#580](https://github.com/adobecom/caas/issues/580)) ([b42ed08](https://github.com/adobecom/caas/commit/b42ed08b6ccfafe29e48d9a0552979e92b52e06c))
+
 ## [0.66.6](https://github.com/adobecom/caas/compare/0.66.5...0.66.6) (2026-08-18)
 
 ## [0.66.5](https://github.com/adobecom/caas/compare/0.66.4...0.66.5) (2026-08-18)
