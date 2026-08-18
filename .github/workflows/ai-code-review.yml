@@ -19,7 +19,7 @@ concurrency:
 
 jobs:
   review:
-    runs-on: [self-hosted, X64]
+    runs-on: [self-hosted, qa-audit]   # the Mini only. The X64 pool also matches macos-qa, whose git is broken.
     # Two entry points, each gated:
     #  - pull_request: same-repo PRs only (no fork code on the self-hosted runner).
     #  - issue_comment: only on a PR, only when the body mentions "@ai-bot",
