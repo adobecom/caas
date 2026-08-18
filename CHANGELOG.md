@@ -1,5 +1,12 @@
 
 
+## [0.66.3](https://github.com/adobecom/caas/compare/0.66.2...0.66.3) (2026-08-18)
+
+
+### Dependencies
+
+* **deps-dev:** bump @babel/plugin-transform-class-properties ([#420](https://github.com/adobecom/caas/issues/420)) ([5b596b2](https://github.com/adobecom/caas/commit/5b596b2590012c19c065a2f9455bec2526d78a39))
+
 ## [0.66.2](https://github.com/adobecom/caas/compare/0.66.1...0.66.2) (2026-08-14)
 
 
