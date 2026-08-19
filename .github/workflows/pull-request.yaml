@@ -97,7 +97,7 @@ jobs:
   sonarqube:
     name: Run SonarQube Analysis
     needs: check-coverage-thresholds
-    runs-on: adobecom-gha-runners
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
         with:
