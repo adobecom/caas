@@ -711,4 +711,5 @@ export const removeMarkDown = (md = '') => {
         .replaceAll('**}', '')
         .replaceAll('{*', '')
         .replaceAll('*}', '');
+        // .replace(/\{link:([^|]+)\|[^}]+\}/g, '$1');
 };

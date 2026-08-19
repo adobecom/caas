@@ -411,17 +411,31 @@ const Card = (props) => {
     const overlay = (altCtaUsed && isLive && altCtaLink !== '') ? altCtaLink : overlayParams;
 
     // Parse CTA links
-    const parseLinks = (markup) => {
-        const cta1Url = getCtaLink(footer, 'right');
-        const cta1Text = getCtaText(footer, 'right');
-        const cta2Url = getCtaLink(footer, 'center');
-        return markup
-            .replaceAll('{link:cta1}', `<a href="${cta1Url}">${cta1Text}</a>`)
-            .replaceAll('{link:cta2}', `<a href="${cta2Url}">${cta2Text}</a>`);
-    };
+    // const parseLinks = (markup) => {
+    //     const cta1Url = getCtaLink(footer, 'right');
+    //     const cta1Text = getCtaText(footer, 'right');
+    //     const cta2Url = getCtaLink(footer, 'center');
+    //     return markup
+    //         .replaceAll('{link:cta1}', `<a href="${cta1Url}">${cta1Text}</a>`)
+    //         .replaceAll('{link:cta2}', `<a href="${cta2Url}">${cta2Text}</a>`);
+    // };
+
+    // parseLinks() - converts links in the card description from:
+    //  {link:Adobe Inc.|https://www.adobe.com}
+    // to
+    //  <a href="https://www.adobe.com">Adobe Inc.</a>
+    const parseLinks = (markup) => markup
+        .replace(
+            /\{link:([^{}|]+)\|([^{}]+)\}/g,
+            (match, text, url) => `<a href="${url}">${text}</a>`,
+        )
+        .replace(/\{link:[^{}]*$/, '...');
 
     const parseMarkDown = (md = '') => {
         if (searchEnabled) {
+            if (md.toLowerCase().includes('{link:')) {
+               return parseLinks(removeMarkDown(md)).replaceAll('\n', '<br/>');
+            }
             return removeMarkDown(md.replace(/<[^>]*>/g, ''));
         }
         let markup = '';
