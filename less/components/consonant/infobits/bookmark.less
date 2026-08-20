@@ -1,0 +1,32 @@
+@default-bookmark: extract(@consonant-BookmarkInfobit-bookmarks, 1);
+@default-filled-bookmark: extract(@consonant-BookmarkInfobit-filled-bookmarks, 1);
+
+.consonant {
+    &-BookmarkInfobit {
+        margin-left: 16px;
+        padding: 0;
+
+        .no-font;
+        .no-border-no-outline;
+        .focused;
+
+        background-color: transparent;
+
+        &.is-active &-ico {
+            background-image: url(@default-filled-bookmark);
+        }
+
+        &.is-disabled {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        &-ico {
+            display: block;
+            width: @consonant-BookmarkInfobit-ico-width;
+            height: @consonant-BookmarkInfobit-ico-height;
+            background: transparent url(@default-bookmark) no-repeat 50% 50%;
+            background-size: contain;
+        }
+    }
+}

@@ -1,0 +1,41 @@
+/* Available modificators:
+- .consonant-NoResultsView--withLightText;
+*/
+
+.consonant {
+    &-NoResultsView {
+        max-width: 86%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 20px;
+        padding: 24px;
+        overflow: hidden;
+
+        &-title {
+            display: block;
+            margin-bottom: 20px;
+
+            .font(1.125rem, 1.6875rem, 400, @consonantDarkGrey400, center);
+        }
+
+        &-description {
+            text-align: center;
+
+            * {
+                .font(0.875rem, 1.3125rem, 400, @consonantDarkGrey400, center);
+            }
+
+            strong {
+                font-weight: 700;
+            }
+        }
+
+        &--withLightText &-title {
+            color: @consonantWhite;
+        }
+
+        &--withLightText &-description * {
+            color: @consonantWhite;
+        }
+    }
+}

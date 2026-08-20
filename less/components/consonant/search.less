@@ -1,0 +1,170 @@
+.consonant {
+    &-Search {
+        position: relative;
+        padding-bottom: 12px;
+
+        label {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 100%;
+            cursor: pointer;
+            word-break: break-word;
+        }
+
+        &-inputTitle {
+            .hide-all;
+
+            margin: 0 0 5px;
+
+            .font(0.75rem, 0.875rem, 400, @consonantDarkGrey200);
+
+            cursor: pointer;
+        }
+
+        &-inputWrapper {
+            position: relative;
+            display: block;
+            width: 100%;
+
+            &:after {
+                content: '';
+                width: @consonant-Search-inputWrapper-size;
+                height: @consonant-Search-inputWrapper-size;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 10px;
+                margin: auto;
+                background: transparent url(@consonant-Search-inputWrapper-src) no-repeat 0 0;
+                background-size: cover;
+                z-index: 1;
+            }
+        }
+
+        input {
+            box-sizing: border-box;
+            min-height: @consonant-Search-input-minHeight;
+
+            .full-width;
+
+            padding: 0 8px 0 32px;
+
+            .font(@line-height: 1.875rem, @color: @consonantDarkGrey400);
+
+            border: 1px solid @consonantLightGrey200;
+            border-radius: 5px;
+            background-color: @consonantWhite;
+            transition:
+                border-color @consonantTransitionTime @consonantTransitionFunc
+                background-color @consonantTransitionTime @consonantTransitionFunc;
+            outline: 0;
+            box-shadow: none;
+
+            &::-webkit-search-decoration,
+            &::-webkit-search-cancel-button,
+            &::-webkit-search-results-button,
+            &::-webkit-search-results-decoration {
+                .hide-all;
+            }
+
+            &::-ms-reveal,
+            &::-ms-clear {
+                .hide-all;
+
+                width: 0;
+                height: 0;
+            }
+
+            &::placeholder {
+                font-style: italic;
+                color: @consonantLightGrey800;
+                transition: opacity @consonantTransitionTime @consonantTransitionFunc;
+            }
+
+            &:focus {
+                padding-right: 32px;
+                border-color: @consonantLightBlue200;
+                background-color: @consonantWhite;
+
+                &::placeholder {
+                    opacity: 0;
+                }
+            }
+        }
+
+        input:valid + &-inputClear {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        &-inputClear {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            width: @consonant-Search-inputClear-size;
+            height: @consonant-Search-inputClear-size;
+            top: 0;
+            bottom: 0;
+            right: 6px;
+            margin: auto;
+            font-size: 0;
+            line-height: 0;
+            border: 0;
+            border-radius: 50%;
+            background-color: @consonantLightGrey100;
+            outline: 0;
+            pointer-events: none;
+            transition: background-color @consonantTransitionTime @consonantTransitionFunc;
+
+            &:before,
+            &:after {
+                content: '';
+                position: absolute;
+                width: 8px;
+                height: 1px;
+
+                .position-absolute-0;
+
+                margin: auto;
+                background-color: @consonantDarkGrey200;
+                transform: rotate(45deg);
+            }
+
+            &:after {
+                transform: rotate(-45deg);
+            }
+
+            &:focus {
+                border: 1px solid @consonantFocusedColor;
+            }
+        }
+
+        @media @consonant-desktop-up {
+            order: -2;
+
+            &-inputTitle {
+                display: block;
+            }
+
+            &-inputClear {
+                width: @consonant-Search-inputClear-size1200Breakpoint;
+                height: @consonant-Search-inputClear-size1200Breakpoint;
+
+                &:before,
+                &:after {
+                    width: @consonant-Search-inputClearPseudoEl-width1200Breakpoint;
+                }
+
+                &:hover {
+                    background-color: @consonantLightBlue100;
+                }
+
+                &:hover:before,
+                &:hover:after {
+                    background-color: @consonantWhite;
+                }
+            }
+        }
+    }
+}

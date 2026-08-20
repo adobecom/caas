@@ -1,0 +1,53 @@
+.hide-all {
+    display: none;
+}
+
+/*
+* A method to safely hide elements
+* whose pixels need to be measured
+* even if they are not visible.
+*/
+.hide-overflow {
+    height: 0;
+    overflow: hidden;
+    // To ensure the hiding of the element WITHOUT removing
+    // the element from the flow of the page.
+    // If an absolute positioned element is nested inside
+    // of a STATIC positioned element.
+    visibility: hidden;
+}
+
+.visually-hidden {
+    position: absolute;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+}
+
+@media @for-tablet-portrait-up {
+    .hide-all {
+        display: none;
+    }
+
+    .hide-tablet-up {
+        display: none;
+    }
+}
+
+@media @for-desktop-up {
+    .hide-all {
+        display: none;
+    }
+
+    .hide-tablet-up {
+        display: none;
+    }
+
+    .hide-desktop-up {
+        display: none;
+    }
+}

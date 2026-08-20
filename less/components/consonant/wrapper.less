@@ -1,0 +1,89 @@
+/* Available modifiers:
+- .consonant-Wrapper--withLeftFilter;
+- .consonant-Wrapper--1200MaxWidth;
+- .consonant-Wrapper--1600MaxWidth;
+- .consonant-Wrapper--83PercentContainier;
+- .consonant-Wrapper--32MarginContainer;
+*/
+
+.consonant {
+    &-Wrapper {
+        font-family: "adobe-clean", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        margin-top: 1px;
+
+        & * {
+            box-sizing: border-box;
+        }
+
+        &-inner {
+            > *:last-of-type {
+                display: block;
+                position: relative;
+                flex-grow: 1;
+            }
+        }
+
+        &-collection {
+            background-color: transparent;
+
+            &.is-loading {
+                min-height: @consonant-Wrapper-minHeight;
+            }
+        }
+
+        &-collection:first-child {
+            .consonant-FiltersInfo:empty {
+                display: none;
+            }
+        }
+
+        /* Modifiers */
+
+        &--1200MaxWidth &-inner {
+            max-width: @consonantDesktopMinWidth;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        &--1600MaxWidth &-inner {
+            max-width: @consonantLargeDesktopMinWidth;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        &--83PercentContainier &-inner {
+            width: 83.3%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        &--32MarginContainer &-inner {
+            max-width: unset;
+            margin-left: @consonant-Wrapper-horizontalMargin;
+            margin-right: @consonant-Wrapper-horizontalMargin;
+        }
+
+        @media @consonant-desktop-up {
+            &--withLeftFilter &-inner {
+                display: grid;
+                grid-template-columns: 204px auto;
+                gap: 32px;
+            }
+
+            &-collection {
+                overflow: visible;
+            }
+        }
+
+        @media @consonant-big-desktop-up {
+            &-collection {
+                margin-bottom: 8px;
+            }
+        }
+    }
+}

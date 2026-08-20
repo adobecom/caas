@@ -1,0 +1,100 @@
+.consonant-Card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: @consonantBaseColor;
+
+    .full-width;
+
+    padding-bottom: 7px;
+    text-align: left;
+    border: 1px solid @consonantGray300;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0 auto;
+
+    &-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        padding: 20px 24px 24px;
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+    }
+
+    &-title {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        margin: 0 0 7px;
+
+        .line-clamp(2);
+
+        .font(1.125rem, 1.375rem, 700, @consonantGray900);
+
+        text-decoration: none;
+        word-break: break-word;
+        overflow: hidden;
+    }
+
+    &-text {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        margin: 0 0 14px;
+        padding: 0;
+
+        .line-clamp(5);
+
+        .font(0.875rem, 1.3125rem, 400, @consonantGray700);
+
+        overflow: hidden;
+
+        &:empty {
+            display: none;
+        }
+    }
+
+    &-label + &-title + p {
+        max-height: 1rem * 4;
+        line-height: 1rem;
+    }
+
+    .consonant-BtnInfobit:first-child {
+        margin-left: 0;
+    }
+
+    .consonant-CardFooter--divider:last-child {
+        padding-top: 20px;
+    }
+
+    &.consonant-hide-cta {
+        .consonant-OneHalfCard-title + p {
+            max-height: initial;
+            -webkit-line-clamp: 7;
+            margin: 0;
+        }
+    }
+
+    &.consonant-u-noBorders {
+        border: 0;
+    }
+
+    &:focus {
+        border: 2px;
+        border-color: @consonantFocusedColor;
+    }
+
+    @media @consonant-IE11-only {
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: @consonantCardMinWidth;
+    }
+
+    @media @consonant-tablet-up {
+        padding-bottom: 0;
+
+        &-content {
+            padding-bottom: 24px;
+        }
+    }
+}

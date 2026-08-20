@@ -1,0 +1,195 @@
+/* Available modifiers:
+- .consonant-FiltersInfo-wrapper--noLine;
+- .consonant-FiltersInfo-btn--withFilters;
+- .consonant-FiltersInfo--withLightText;
+*/
+
+.consonant {
+    &-FiltersInfo {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+
+        .margin-auto;
+
+        box-sizing: border-box;
+        padding: 0 0 16px;
+        top: 0;
+        left: 0;
+        background-color: transparent;
+
+        &-search {
+            .full-width;
+        }
+
+        &-btnWrapper {
+            max-width: 100%;
+        }
+
+        &-btn {
+            display: inline-flex;
+            align-items: center;
+            min-width: @consonant-FiltersInfo-btn-minWidth;
+            max-width: 100%;
+            margin-bottom: 10px;
+            padding: 0 0 0 11px;
+            border: 1px solid @consonantDarkGrey400;
+            border-radius: 5px;
+            overflow: hidden;
+
+            .font(0.875rem, 1.875rem, 700, @consonantDarkGrey400);
+
+            text-transform: capitalize;
+            background-color: @consonantBaseColor;
+            outline: 0;
+            user-select: none;
+
+            &:focus {
+                border-color: @consonantFocusedColor;
+            }
+
+            &Selected {
+                display: block;
+                max-width: 40%;
+                padding-left: 8px;
+                padding-right: 7px;
+                border-left: 1px solid @consonantDarkGrey400;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+
+            &--withFilters {
+                background-color: @consonantLightGrey100;
+                color: @consonantDarkGrey600;
+            }
+        }
+
+        &-btnIco {
+            display: block;
+            min-width: @consonant-FiltersInfo-btnIco-size;
+            width: @consonant-FiltersInfo-btnIco-size;
+            height: @consonant-FiltersInfo-btnIco-size;
+            margin-right: 8px;
+            background: transparent url(@consonant-FiltersInfo-btnIco-src) no-repeat 0 0;
+        }
+
+        &-btnText {
+            display: block;
+            max-width: 100%;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            padding-right: 7px;
+            overflow: hidden;
+        }
+
+        &-wrapper {
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+            padding-top: 14px;
+
+            &:first-child {
+                padding-top: 0;
+            }
+        }
+
+        &-title {
+            max-width: @consonant-FiltersInfo-title-width;
+            margin: 0;
+
+            .font(1.125rem, 1.375rem, 700, @consonantDarkGrey800);
+        }
+
+        &-results {
+            display: block;
+            margin-left: auto;
+            padding-left: 12px;
+
+            .font(0.875rem, 1.3125rem, 400, @consonantDarkGrey400, right);
+
+            strong {
+                font-weight: 700;
+            }
+        }
+
+        &--withLightText &-title {
+            color: @consonantLightGrey200;
+        }
+
+        &--withLightText &-results {
+            color: @consonantLightGrey200;
+        }
+
+        > .consonant-Select {
+            margin-left: auto;
+        }
+
+        @media @consonant-desktop-up {
+            flex-wrap: nowrap;
+            align-items: stretch;
+            margin-left: auto;
+            margin-right: auto;
+            padding-bottom: 28px;
+
+            &-wrapper {
+                order: -1;
+                padding: 0 32px 0 0;
+                flex-wrap: nowrap;
+                align-items: center;
+
+                &:after {
+                    content: '';
+                    position: absolute;
+                    width: 1px;
+                    background-color: @consonantLightGrey300;
+                    top: 0;
+                    bottom: 0;
+                    right: 16px;
+                    margin: auto;
+                }
+
+                &--noLine:after,
+                &:only-child:after {
+                    .hide-all;
+                }
+            }
+
+            &-search + &-wrapper:last-child {
+                padding-right: 0;
+
+                &:after {
+                    display: none;
+                }
+            }
+
+            &-results {
+                min-width: 15%;
+                max-width: 25%;
+            }
+
+            &-btn,
+            &-search {
+                .hide-all;
+            }
+        }
+
+        @media @consonant-big-desktop-up {
+            &-title {
+                max-width: @consonant-FiltersInfo-title-1440BreakpointWidth;
+            }
+        }
+    }
+}
+
+/*  Add extra top space when left filter panel is enabled to keep header of the left
+    filter panel on the same level as text of .consonant-FiltersInfo-title
+*/
+div:not(:only-child) > .consonant-FiltersInfo .consonant-FiltersInfo-wrapper:only-child {
+    padding-top: 6px;
+}

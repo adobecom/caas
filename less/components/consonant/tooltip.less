@@ -1,0 +1,53 @@
+[data-tooltip-wrapper] {
+    position: relative;
+    overflow: visible;
+
+    @media @consonant-desktop-up {
+        &:hover .consonant-Tooltip {
+            z-index: 6000000;
+            animation-name: fade-in-up;
+            animation-duration: @consonantTransitionTime;
+            animation-delay: 0.2s;
+            animation-timing-function: @consonantTransitionFunc;
+            animation-fill-mode: forwards;
+        }
+    }
+}
+
+.consonant {
+    &-Tooltip {
+        position: absolute;
+        display: none;
+        width: @consonant-Tooltip-width;
+        padding: 7px 14px;
+        bottom: calc(~ '100% + ' @consonant-Tooltip-vertPosition);
+        left: -72px;
+
+        .font(@size: 0.75rem, @align: center, @color: @consonantBaseColor);
+
+        text-decoration: none;
+        border-radius: 8px;
+        background-color: @consonantGray700;
+        z-index: -1;
+        user-select: text;
+        opacity: 0;
+
+        &:after {
+            content: '';
+            position: absolute;
+            width: @consonant-TooltipPseudoEl-width;
+            height: @consonant-TooltipPseudoEl-width;
+            bottom: -3px;
+            left: 0;
+            right: 0;
+            margin: auto;
+            background-color: @consonantGray700;
+            transform-origin: 50% 50%;
+            transform: rotate(45deg);
+        }
+
+        @media @consonant-desktop-up {
+            display: block;
+        }
+    }
+}

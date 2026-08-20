@@ -1,0 +1,354 @@
+/* Available modifiers:
+  - consonant-TopFilters-filters--truncated;
+  - consonant-TopFilters-clearBtnWrapper--withBlur;
+  - consonant-TopFilters--withLightText;
+*/
+
+.consonant {
+    &-TopFilters {
+        display: block;
+        margin: 0 auto;
+        padding-bottom: 16px;
+
+        &-inner {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            align-items: flex-start;
+            max-width: 100%;
+        }
+
+        &-filters:last-child > div:last-child {
+            margin-right: 0;
+        }
+
+        &-inner > *:not(&-filtersWrapper):first-child {
+            margin-left: auto;
+            margin-right: 0;
+        }
+
+        &-searchWrapper {
+            display: block;
+            order: -2;
+        }
+
+        &-filtersWrapper {
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-start;
+            flex-grow: 1;
+            max-width: calc(~ '100% - ' @consonant-Select-width ~ ' - 8px');
+
+            &:first-child {
+                max-width: 100%;
+                justify-content: flex-start;
+            }
+
+            @media @consonant-IE11-only {
+                flex-basis: 100%;
+            }
+        }
+
+        &-filtersWrapper + * {
+            margin-left: auto;
+        }
+
+        &-filters {
+            display: flex;
+            justify-content: flex-start;
+            align-items: stretch;
+            margin-right: 16px;
+            overflow-y: auto;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+
+        &-filters > div h3 button {
+            white-space: nowrap;
+        }
+
+        &-filters&-filters--truncated {
+            /* Make each filter white-space nowrap; */
+            & > div h3 button {
+                white-space: nowrap;
+            }
+        }
+
+        &-moreBtn {
+            display: none;
+            margin-bottom: 8px;
+            padding: 5px 12px 6px;
+
+            .font(0.875rem, 1.1875rem, 700, @consonantDarkGrey400, center);
+
+            text-transform: capitalize;
+            background-color: @consonantWhite;
+            border: 1px solid @consonantLightGrey200;
+            border-radius: 16px;
+            outline: 0;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        &-title {
+            display: none;
+            margin-right: 12px;
+            min-width: 55px;
+            max-width: 20%;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            user-select: none;
+
+            .font(1rem, 2rem, 600, @consonantDarkGrey800);
+        }
+
+        &-clearBtnWrapper {
+            position: sticky;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            right: 0;
+            min-height: 32px;
+            max-width: 40%;
+
+            &:empty {
+                margin-left: -16px;
+                overflow: visible;
+            }
+
+            &--withBlur:after {
+                content: '';
+                position: absolute;
+                width: @consonant-top-filters-filters-fade-width;
+                height: 100%;
+                background:
+                    transparent
+                    linear-gradient(
+                        270deg,
+                        rgba(255, 255, 255, 1) 0%,
+                        rgba(255, 255, 255, 0) 100%
+                    ) 0% 0% no-repeat padding-box;
+                top: 0;
+                bottom: 0;
+                right: 100%;
+                margin: auto;
+                z-index: 2;
+                pointer-events: none;
+            }
+        }
+
+        &-clearBtn {
+            padding: 0;
+            max-width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+
+            .font(0.875rem, 2rem, 700, @consonantLightBlue100, right);
+
+            background-color: transparent;
+
+            .focused;
+        }
+
+        &-selectWrapper {
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 8px;
+            order: -1;
+            overflow: visible;
+
+            &:only-child {
+                margin-left: auto;
+                margin-right: 0;
+            }
+        }
+
+        &-searchIcoWrapper {
+            display: none;
+        }
+
+        &-infoWrapper {
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+            padding-top: 16px;
+
+            &:only-child {
+                padding-top: 0;
+            }
+        }
+
+        &-collectionTitle {
+            margin: 0;
+
+            .font(1.125rem, 1.375rem, 700, @consonantDarkGrey800);
+        }
+
+        &-results {
+            display: block;
+            margin-left: auto;
+            padding-left: 12px;
+
+            .font(0.875rem, 1.3125rem, 400, @consonantDarkGrey400, right);
+        }
+
+        &-results strong {
+            font-weight: 700;
+        }
+
+        &--withLightText &-title {
+            color: @consonantWhite;
+        }
+
+        &--withLightText &-collectionTitle {
+            color: @consonantWhite;
+        }
+
+        &--withLightText &-results {
+            color: @consonantWhite;
+        }
+
+        &--withLightText .consonant-SearchIco {
+            filter: invert(1);
+        }
+
+        &:empty {
+            display: none;
+        }
+
+        @media @consonant-tablet-up {
+            padding-bottom: 32px;
+
+            &-filtersWrapper {
+                max-width: 60%;
+                justify-content: flex-start;
+                margin-right: 16px;
+            }
+
+            &-title {
+                display: block;
+            }
+
+            &-filters {
+                align-items: flex-start;
+                flex-wrap: wrap;
+                overflow: hidden;
+
+                &--truncated {
+                    justify-content: flex-start;
+                    flex-wrap: nowrap;
+                    overflow-x: auto;
+                }
+
+                &--truncated &-moreBtn {
+                    display: block;
+                    min-width: 120px;
+                    margin-right: 24px;
+                }
+
+                &--truncated > div:nth-child(n+4) {
+                    display: none;
+                }
+            }
+
+            &-filters > div h3 button {
+                white-space: normal;
+            }
+
+            &-clearBtnWrapper:after {
+                display: none;
+            }
+
+            &-moreBtn {
+                display: block;
+                min-width: auto;
+            }
+
+            &-selectWrapper {
+                order: 0;
+                margin-right: 0;
+            }
+
+            &-searchIcoWrapper {
+                position: relative;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-width: calc(@consonant-SearchIco-size ~ ' + 40px');
+                min-height: 24px;
+
+                & > div {
+                    position: relative;
+                    width: @consonant-searchIcoWrapper-searchWidth;
+                    top: 0;
+                    right: 20px;
+                    z-index: 3;
+                    margin-bottom: -20px;
+                }
+
+                &:only-child > div {
+                    right: 0;
+                }
+
+                & > div + button {
+                    display: none;
+                    margin: 0;
+                    padding: 0;
+                }
+            }
+        }
+
+        @media @consonant-desktop-up {
+            /* Hide search input label; */
+
+            &-searchIcoWrapper label > span:first-child {
+                display: none;
+            }
+
+            &-selectWrapper {
+                min-width: auto;
+                margin-right: 0;
+                margin-left: 0;
+
+                & > div:first-child > button {
+                    padding-right: 24px;
+                    border: 1px solid @consonantLightGrey200;
+                    border-radius: 4px;
+                }
+
+                /* Add paddings for sort select; */
+
+                & > div:first-child {
+                    &:after {
+                        right: 4px;
+                    }
+                }
+            }
+
+            &-filters {
+                overflow: visible;
+            }
+
+            &-filters&-filters--truncated {
+                justify-content: flex-start;
+                flex-wrap: wrap;
+                overflow: visible;
+
+                & > div:last-child {
+                    margin-right: 0;
+                }
+            }
+
+            .is-opened {
+                margin-bottom: 8px;
+            }
+        }
+    }
+}

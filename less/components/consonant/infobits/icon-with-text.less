@@ -1,0 +1,29 @@
+.consonant {
+    &-IconWithTextInfobit {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        min-width: 0;
+        max-width: 100%;
+        margin-left: 16px;
+
+        img {
+            display: block;
+            width: auto;
+            height: auto;
+            max-width: @consonant-IconWithTextInfobit-img-maxWidth;
+            max-height: @consonant-IconWithTextInfobit-img-maxHeight;
+            margin-right: 4px;
+            object-fit: contain;
+            user-select: none;
+        }
+
+        &-text {
+            max-width: 100%;
+            max-height: 1rem * 2;
+
+            .font(0.875rem, 1rem, 400, @consonantGray700);
+            .line-clamp(2);
+        }
+    }
+}

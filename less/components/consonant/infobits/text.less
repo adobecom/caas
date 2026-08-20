@@ -1,0 +1,15 @@
+.consonant {
+    &-TextInfobit {
+        min-width: 0;
+        max-width: 100%;
+        max-height: 1rem * 2;
+        margin: 0 0 0 16px;
+
+        .font(0.875rem, 1rem, 400, @consonantGray700, left);
+        .line-clamp(2);
+    }
+}
+
+img + .consonant-TextInfobit {
+    margin-left: 4px;
+}

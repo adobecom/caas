@@ -1,0 +1,15 @@
+/* Initial breakpoints*/
+@consonant-mobile-ceiling: %(~"only screen and (max-width: %s)", (@consonantTabletMinWidth));
+@consonant-carousel-mobile-ceiling: %(~"only screen and (max-width: %s)", (@consonant599PxWidth));
+@consonant-carousel-down: %(~"only screen and (max-width: %s)", (@consonant1199PxWidth));
+@consonant-tablet-up: %(~"only screen and (min-width: %s)", @consonantTabletMinWidth);
+@consonant-desktop-up: %(~"only screen and (min-width: %s)", @consonantDesktopMinWidth);
+@consonant-big-desktop-up: %(~"only screen and (min-width: %s)", @consonantBigDesktopMinWidth);
+@consonant-680px-up: %(~"only screen and (min-width: %s)", @consonant680PxWidth);
+@consonant-600px-up: %(~"only screen and (min-width: %s)", @consonant600PxWidth);
+
+/* Browser type related */
+@consonant-IE11-only: ~"all and (-ms-high-contrast: none), (-ms-high-contrast: active)";
+
+/* Theme related */
+@dark-theme: ~"(prefers-color-scheme: dark)";

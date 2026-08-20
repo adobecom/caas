@@ -1,0 +1,93 @@
+/* Available modifiers:
+- .consonant-CardFooter-row--fluid;
+- .consonant-CardFooter--divider;
+- .consonant-CardFooter-cell--left;
+- .consonant-CardFooter-cell--center;
+- .consonant-CardFooter-cell--right;
+*/
+
+.consonant {
+    &-CardFooter {
+        margin-top: auto;
+        padding-top: 24px;
+
+        &:not(:last-child) {
+            padding-top: 0;
+            padding-bottom: 10px;
+        }
+
+        & + & {
+            margin-top: 0;
+            padding-top: 10px;
+        }
+
+        & + &:not(&--divider) {
+            padding-top: 0;
+        }
+
+        &--divider:last-child {
+            border-top: 1px solid @consonantGray300;
+        }
+
+        &-row {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: stretch;
+            height: @consonant-CardFooter-height;
+        }
+
+        &-cell {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            max-width: 100%;
+            flex-basis: auto;
+            flex-grow: 1;
+
+            &:empty {
+                display: none;
+            }
+
+            &--left > *:first-child {
+                margin-left: 0;
+            }
+
+            &--center {
+                justify-content: center;
+
+                &:first-child:not(:only-child) {
+                    justify-content: flex-start;
+                }
+
+                &:first-child > *:first-child {
+                    margin-left: 0;
+                }
+            }
+
+            &--right {
+                justify-content: flex-end;
+            }
+
+            & > *:nth-of-type(n + 11) {
+                display: none;
+            }
+
+            @media @consonant-IE11-only {
+                width: 100%;
+            }
+        }
+
+        & + & ~ & {
+            display: none;
+        }
+    }
+}
+
+/* Less padding bottom to fit content when label, title and 2 footers */
+
+span + h2 + p + .consonant-CardFooter + .consonant-CardFooter {
+    margin-bottom: -10px;
+}
+
+.set-cell-max-width(@consonant-CardFooter-maxCells);

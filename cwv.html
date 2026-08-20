@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Core Web Vitals Charts</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .chart-container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+<h1>Core Web Vitals Progression</h1>
+
+<div class="chart-container">
+    <div class="chart-title">Largest Contentful Paint (LCP)</div>
+    <canvas id="lcpChart"></canvas>
+</div>
+<div class="chart-container">
+    <div class="chart-title">First Input Delay (FID)</div>
+    <canvas id="fidChart"></canvas>
+</div>
+<div class="chart-container">
+    <div class="chart-title">Cumulative Layout Shift (CLS)</div>
+    <canvas id="clsChart"></canvas>
+</div>
+
+<script>
+    const ranges = {
+        lcp: [
+            { yMin: 0, yMax: 2500, backgroundColor: 'rgba(0, 255, 0, 0.1)', label: 'Good ≤ 2.5s' },
+            { yMin: 2500, yMax: 4000, backgroundColor: 'rgba(255, 255, 0, 0.1)', label: 'Needs Improvement' },
+            { yMin: 4000, yMax: Infinity, backgroundColor: 'rgba(255, 0, 0, 0.1)', label: 'Poor > 4.0s' }
+        ],
+        fid: [
+            { yMin: 0, yMax: 100, backgroundColor: 'rgba(0, 255, 0, 0.1)', label: 'Good ≤ 100ms' },
+            { yMin: 100, yMax: 300, backgroundColor: 'rgba(255, 255, 0, 0.1)', label: 'Needs Improvement' },
+            { yMin: 300, yMax: Infinity, backgroundColor: 'rgba(255, 0, 0, 0.1)', label: 'Poor > 300ms' }
+        ],
+        cls: [
+            { yMin: 0, yMax: 0.1, backgroundColor: 'rgba(0, 255, 0, 0.1)', label: 'Good ≤ 0.1' },
+            { yMin: 0.1, yMax: 0.25, backgroundColor: 'rgba(255, 255, 0, 0.1)', label: 'Needs Improvement' },
+            { yMin: 0.25, yMax: Infinity, backgroundColor: 'rgba(255, 0, 0, 0.1)', label: 'Poor > 0.25' }
+        ]
+    };
+
+    async function fetchData() {
+        const response = await fetch('./web-vitals-history.json');
+        return await response.json();
+    }
+
+    async function initializeCharts() {
+        const data = await fetchData();
+        const labels = data.map(entry => {
+            const date = new Date(entry.date);
+            return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+        });
+
+        const lcpData = data.map(entry => entry.metrics.lcp || null);
+        const fidData = data.map(entry => entry.metrics.fid || null);
+        const clsData = data.map(entry => entry.metrics.cls !== null ? entry.metrics.cls : 0);
+
+        createChart(
+            document.getElementById('lcpChart').getContext('2d'),
+            'LCP (ms)',
+            lcpData,
+            'rgba(0, 123, 255, 1)',
+            ranges.lcp,
+            data
+        );
+
+        createChart(
+            document.getElementById('fidChart').getContext('2d'),
+            'FID (ms)',
+            fidData,
+            'rgba(40, 167, 69, 1)',
+            ranges.fid,
+            data
+        );
+
+        createChart(
+            document.getElementById('clsChart').getContext('2d'),
+            'CLS',
+            clsData,
+            'rgba(255, 193, 7, 1)',
+            ranges.cls,
+            data
+        );
+    }
+
+    function createChart(ctx, label, data, color, ranges, hoverData) {
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: hoverData.map(entry => {
+                    const date = new Date(entry.date);
+                    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+                }),
+                datasets: [{
+                    label: label,
+                    data: data,
+                    borderColor: color,
+                    backgroundColor: color.replace('1)', '0.2)'),
+                    fill: true,
+                    tension: 0.2
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: { title: { display: true, text: 'Date & Time' } },
+                    y: { title: { display: true, text: label }, beginAtZero: true }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                const index = context.dataIndex;
+                                const entry = hoverData[index];
+                                return [
+                                    `PR #${entry.pr.number}: ${entry.pr.title}`,
+                                    `Date: ${new Date(entry.date).toLocaleString()}`,
+                                    `${label}: ${context.raw}`
+                                ];
+                            }
+                        },
+                        backgroundColor: color,
+                        titleFont: { size: 16 },
+                        bodyFont: { size: 14 },
+                        bodySpacing: 10,
+                        padding: 15
+                    },
+                    annotation: {
+                        annotations: ranges.map(({ yMin, yMax, backgroundColor, label }) => ({
+                            type: 'box',
+                            yMin: yMin,
+                            yMax: yMax,
+                            backgroundColor: backgroundColor,
+                            borderWidth: 0,
+                            label: {
+                                content: label,
+                                enabled: true,
+                                position: 'center',
+                                backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                                color: '#fff',
+                                font: { size: 10 }
+                            }
+                        }))
+                    }
+                }
+            }
+        });
+    }
+
+    initializeCharts();
+</script>
+</body>
+</html>

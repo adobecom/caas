@@ -1,0 +1,90 @@
+/* Available modifiers:
+- .consonant-Loader--absolute;
+- .consonant-Loader--medium;
+- .consonant-Loader--big;
+*/
+
+.consonant {
+    &-Loader {
+        box-sizing: border-box;
+        display: inline-block;
+        position: relative;
+        width: @consonant-Loader-size;
+        height: @consonant-Loader-size;
+        border-radius: 50%;
+        overflow: hidden;
+
+        &--absolute {
+            position: absolute;
+
+            .position-absolute-0;
+
+            margin: auto;
+            z-index: 9;
+        }
+
+        &:after {
+            content: '';
+            position: absolute;
+            box-sizing: border-box;
+
+            .position-absolute-0;
+
+            border: 2px solid @consonantLightGrey200;
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        div {
+            box-sizing: border-box;
+            display: block;
+            position: absolute;
+            width: @consonant-Loader-size;
+            height: @consonant-Loader-size;
+            border: 2px solid @consonantLightBlue200;
+            border-radius: 100%;
+            animation: circle 1s ease-in infinite;
+            transform-origin: 50% 50%;
+            border-color: @consonantLightBlue200 transparent transparent transparent;
+            z-index: 2;
+            opacity: 1;
+            overflow: visible;
+
+            &:nth-child(1) {
+                animation-delay: -0.1s;
+            }
+
+            &:nth-child(2) {
+                animation-delay: -0.14s;
+            }
+
+            &:nth-child(3) {
+                animation-delay: -0.14s;
+            }
+        }
+
+        &--medium {
+            width: @consonant-Loader--medium-size;
+            height: @consonant-Loader--medium-size;
+
+            &:after,
+            div {
+                width: @consonant-Loader--medium-size;
+                height: @consonant-Loader--medium-size;
+                border-width: 4px;
+            }
+        }
+
+        &--big {
+            width: @consonant-Loader--big-size;
+            height: @consonant-Loader--big-size;
+
+            &:after,
+            div {
+                width: @consonant-Loader--big-size;
+                height: @consonant-Loader--big-size;
+                border-width: 5px;
+            }
+        }
+    }
+}

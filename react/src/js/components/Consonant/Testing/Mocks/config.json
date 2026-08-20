@@ -1,0 +1,219 @@
+{
+    "collection": {
+        "lazyLoad": false,
+        "layout": {
+            "type": "3up",
+            "gutter": "4x",
+            "container": "1200MaxWidth"
+        },
+        "resultsPerPage": 10,
+        "endpoint": "https://www.somedomain.com/some-test-api.json",
+        "totalCardsToShow": 150,
+        "cardStyle": "none",
+        "showTotalResults": true,
+        "useOverlayLinks": false,
+        "cardHoverEffect": "default",
+        "useCenterVideoPlay": false,
+        "bladeCard": {
+            "reverse": false,
+            "lightText": false,
+            "transparent": false
+        },
+        "i18n": {
+            "prettyDateIntervalFormat": "{LLL} {dd} | {timeRange} {timeZone}",
+            "totalResultsText": "{total} Results",
+            "title": "Your Top Picks",
+            "titleHeadingLevel": "h2",
+            "playVideo": "Play, {cardTitle}"
+        }
+    },
+    "featuredCards": "[]",
+    "header": {
+        "enabled": false
+    },
+    "filterPanel": {
+        "enabled": true,
+        "type": "left",
+        "filterLogic": "and",
+        "showEmptyFilters": true,
+        "filters": [
+            {
+                "group": "First Tag Group Label",
+                "id": "tag-namespace-1",
+                "icon": "https://www.somedomain.com/some-group-icon.svg",
+                "openedOnLoad": true,
+                "items": [
+                    {
+                        "label": "Tag 1 Label",
+                        "id": "tag-namespace-1/tag1"
+                    },
+                    {
+                        "label": "Tag 2 Label",
+                        "id": "tag-namespace-1/tag2"
+                    },
+                    {
+                        "label": "Tag 3 Label",
+                        "id": "tag-namespace-1/tag3"
+                    },
+                    {
+                        "label": "Tag 4 Label",
+                        "id": "tag-namespace-1/tag4"
+                    },
+                    {
+                        "label": "Tag 5 Label",
+                        "id": "tag-namespace-1/tag5"
+                    },
+                    {
+                        "label": "Tag 6 Label",
+                        "id": "tag-namespace-1/tag6"
+                    },
+                    {
+                        "label": "Tag 7 Label",
+                        "id": "tag-namespace-1/tag7"
+                    },
+                    {
+                        "label": "Tag 8 Label",
+                        "id": "tag-namespace-1/tag8"
+                    },
+                    {
+                        "label": "Tag 9 Label",
+                        "id": "tag-namespace-1/tag9"
+                    },
+                    {
+                        "label": "Tag 10 Label",
+                        "id": "tag-namespace-1/tag10"
+                    }
+                ]
+            },
+            {
+                "group": "Second Tag Group Label",
+                "id": "tag-namespace-2",
+                "icon": "https://www.somedomain.com/some-group-icon.svg",
+                "openedOnLoad": false,
+                "items": [
+                    {
+                        "label": "Tag 1 Label",
+                        "id": "tag-namespace-2/tag1"
+                    },
+                    {
+                        "label": "Tag 2 Label",
+                        "id": "tag-namespace-2/tag2"
+                    }
+                ]
+            }
+        ],
+        "i18n": {
+            "leftPanel": {
+                "header": "Filters",
+                "clearAllFiltersText": "Clear All",
+                "mobile": {
+                    "filtersBtnLabel": "Filters:",
+                    "panel": {
+                        "header": "Filters",
+                        "totalResultsText": "{total Results}",
+                        "applyBtnText": "Apply",
+                        "clearFilterText": "Clear",
+                        "doneBtnText": "Done"
+                    },
+                    "group": {
+                        "totalResultsText": "{total} Results",
+                        "applyBtnText": "Apply",
+                        "clearFilterText": "Clear",
+                        "doneBtnText": "Done"
+                    }
+                }
+            },
+            "topPanel": {
+                "groupLabel": "Filters:",
+                "clearAllFiltersText": "Clear All",
+                "moreFiltersBtnText": "More +",
+                "mobile": {
+                    "group": {
+                        "totalResultsText": "Total {total}",
+                        "applyBtnText": "Apply",
+                        "clearFilterText": "Clear",
+                        "doneBtnText": "Done"
+                    }
+                }
+            }
+        }
+    },
+    "hideCtaIds": "[]",
+    "hideCtaTags": "[]",
+    "sort": {
+        "enabled": true,
+        "defaultSort": "featured",
+        "options": [
+            {
+                "label": "featured",
+                "sort": "featured"
+            },
+            {
+                "label": "Title: (A-Z)",
+                "sort": "titleAsc"
+            },
+            {
+                "label": "Title: (Z-A)",
+                "sort": "titleDesc"
+            },
+            {
+                "label": "Date",
+                "sort": "dateAsc"
+            },
+            {
+                "label": "Date: (Newest to oldest)",
+                "sort": "dateDesc"
+            }
+        ]
+    },
+    "pagination": {
+        "enabled": true,
+        "type": "paginator",
+        "resultsQuantityShown": true,
+        "animationStyle": "paged",
+        "i18n": {
+            "loadMore": {
+                "btnText": "Load More",
+                "resultsQuantityText": "{start} {end}"
+            },
+            "paginator": {
+                "resultsQuantityText": "{start} {end} {total}",
+                "prevLabel": "Previous",
+                "nextLabel": "Next"
+            }
+        }
+    },
+    "bookmarks": {
+        "showOnCards": true,
+        "leftFilterPanel": {
+            "bookmarkOnlyCollection": false,
+            "showBookmarksFilter": true,
+            "selectBookmarksIcon": "https://www.somedomain.com/some-select-bookmark-icon.svg",
+            "unselectBookmarksIcon": "https://www.somedomain.com/some-unselect-bookmark-icon.svg"
+        },
+        "i18n": {
+            "leftFilterPanel": {
+                "filterTitle": "Refine your results"
+            }
+        }
+    },
+    "search": {
+        "enabled": true,
+        "searchFields": ["contentArea.title","contentArea.description", "search.meta.author", "overlays.label.text"],
+        "i18n": {
+            "leftFilterPanel": {
+                "searchTitle": "Search",
+                "searchPlaceholderText": "Search here..."
+            },
+            "topFilterPanel": {
+                "searchPlaceholderText": "Search here..."
+            },
+            "filterInfo": {
+                "searchPlaceholderText": "Search here..."
+            }
+        }
+    },
+    "language": "en",
+    "country": "us",
+    "customCard": ["", ""]
+}

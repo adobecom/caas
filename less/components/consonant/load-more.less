@@ -1,0 +1,123 @@
+/* Available modifiers:
+- .consonant-LoadMore--overBg;
+- .consonant-LoadMore--themeThree;
+*/
+
+.consonant {
+    &-LoadMore {
+        display: block;
+
+        .margin-auto;
+
+        padding-bottom: 48px;
+        text-align: center;
+        user-select: none;
+
+        &-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        &-text {
+            max-width: 75%;
+            margin: 0 0 14px;
+
+            .font(@line-height: 1.1875rem, @color: @consonantGray800, @align: center);
+
+            transition: color @consonantTransitionTime @consonantTransitionFunc;
+        }
+
+        &-btn {
+            max-width: 75%;
+            box-sizing: border-box;
+            padding: 5px 13px;
+
+            .font(@line-height: 1.1875rem, @weight: 700, @color: @consonantGray800, @align: center);
+
+            background-color: transparent;
+            border: 2px solid @consonantGray800;
+            border-radius: 30px;
+            outline: 0;
+            user-select: none;
+            transition:
+                color @consonantTransitionTime @consonantTransitionFunc,
+                background-color @consonantTransitionTime @consonantTransitionFunc,
+                border-color @consonantTransitionTime @consonantTransitionFunc;
+
+            &:hover {
+                background-color: @consonantGray800;
+                color: @consonantGray50;
+            }
+
+            &:active {
+                background-color: @consonantGray900;
+                border-color: @consonantGray900;
+                color: @consonantGray50;
+            }
+
+            .focused;
+        }
+
+        @media @dark-theme {
+            &-btn {
+                color: @consonantDarkGrey100;
+                border-color: @consonantDarkGrey100;
+
+                &:hover {
+                    background-color: @consonantDarkGrey100;
+                    color: @consonantDarkGrey900;
+                }
+
+                &:active {
+                    background-color: @consonantLightGrey50;
+                    border-color: @consonantLightGrey50;
+                    color: @consonantDarkGrey900;
+                }
+            }
+
+            &-text {
+                color: @consonantDarkGrey100;
+            }
+        }
+
+        /* Related to the modificators */
+
+        &--overBg &-btn {
+            border-color: @consonantBaseColor;
+            color: @consonantBaseColor;
+
+            &:hover,
+            &:active {
+                background-color: @consonantBaseColor;
+                border-color: @consonantBaseColor;
+                color: @consonantGray800;
+            }
+        }
+
+        &--themeThree &-btn {
+            color: @consonantGray800;
+            border-color: @consonantGray800;
+            background-color: transparent;
+
+            &:hover,
+            &:active {
+                color: @consonantBaseColor;
+                border-color: @consonantGray800;
+                background-color: @consonantGray800;
+            }
+        }
+
+        &--themeThree &-text {
+            color: @consonantGray800;
+        }
+
+        &--overBg &-text {
+            color: @consonantBaseColor;
+        }
+
+        @media @consonant-desktop-up {
+            padding-bottom: 112px;
+        }
+    }
+}

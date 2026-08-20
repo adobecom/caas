@@ -1,0 +1,151 @@
+/* Available modifiers:
+- .consonant-CardsGrid--with1xGutter;
+- .consonant-CardsGrid--with2xGutter;
+- .consonant-CardsGrid--with3xGutter;
+- .consonant-CardsGrid--with4xGutter;
+- .consonant-CardsGrid--2up;
+- .consonant-CardsGrid--3up;
+- .consonant-CardsGrid--4up;
+- .consonant-CardsGrid--5up;
+- .consonant-CardsGrid--doubleWideCards;
+*/
+.consonant {
+    &-CardsGrid {
+        display: grid !important;
+        justify-content: center;
+        width: 100%;
+        max-width: 100%;
+        grid-template-columns: repeat(auto-fit, minmax(@consonantCardMinWidth, max-content));
+
+        @media (max-width: 320px) {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Cards hover grow animation */
+
+        &.card-hover-grow {
+            .consonant-Card.one-half {
+                transition: all 0.2s ease-in-out;
+            }
+
+            .consonant-Card.one-half:hover {
+                transform: scale(1.03);
+                transition: all 0.2s ease-in-out;
+            }
+
+            .consonant-Card.one-half [class *= -header]:after {
+                display: none !important;
+            }
+        }
+
+        /* Spacing variations */
+
+        &--with1xGutter {
+            gap: @consonant-CardsGrid-gutterSize;
+            padding-bottom: @consonant-CardsGrid-gutterSize;
+        }
+
+        &--with2xGutter {
+            gap: @consonant-CardsGrid-gutterSize * 2;
+            padding-bottom: @consonant-CardsGrid-gutterSize * 2;
+        }
+
+        &--with3xGutter {
+            gap: @consonant-CardsGrid-gutterSize * 3;
+            padding-bottom: @consonant-CardsGrid-gutterSize * 3;
+        }
+
+        &--with4xGutter {
+            gap: @consonant-CardsGrid-gutterSize * 4;
+            padding-bottom: @consonant-CardsGrid-gutterSize * 4;
+        }
+
+        /* Cards variations */
+
+        &--2up {
+            grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-mobileMinWidth, max-content));
+
+            .consonant-Card {
+                max-width: @consonant-DoubleWideCard-maxWidth;
+
+                &-content {
+                    width: 100%;
+                    max-width: 100%;
+                }
+            }
+        }
+
+        &--3up {
+            .consonant-Card {
+                width: @consonantCardMaxWidth;
+                max-width: 100%;
+
+                &-content {
+                    width: 100%;
+                    max-width: 100%;
+                }
+            }
+        }
+
+        &--4up {
+            grid-template-columns: repeat(auto-fit, minmax(@consonant-CardsGrid-smallerCardMinWidth, max-content));
+
+            .consonant-Card {
+                min-width: @consonant-CardsGrid-smallerCardMinWidth;
+                width: @consonant-CardsGrid-smallerCardMaxWidth;
+                max-width: 100%;
+                height: @consonant-CardsGrid-smallerCardheight;
+
+                &-content {
+                    width: 100%;
+                    max-width: 100%;
+                    padding: 20px;
+                }
+            }
+        }
+
+        &--5up {
+            grid-template-columns: repeat(auto-fit, minmax(@consonant-CardsGrid-smallestCardMinWidth, max-content));
+
+            .consonant-Card {
+                min-width: @consonant-CardsGrid-smallestCardMinWidth;
+                max-width: @consonant-CardsGrid-smallestCardMaxWidth;
+                height: @consonant-CardsGrid-smallestCardHeight;
+
+                &-content {
+                    width: 100%;
+                    max-width: 100%;
+                    padding: 20px;
+                }
+            }
+
+            .one-half.consonant-Card {
+                height: auto;
+
+                .consonant-Card-header {
+                    min-height: @consonant-CardsGrid-smallestCardImgOneHalfHeight;
+                    max-height: @consonant-CardsGrid-smallestCardImgOneHalfHeight;
+                }
+            }
+        }
+
+        @media @consonant-680px-up {
+            &--2up {
+                grid-template-columns: repeat(auto-fit, minmax(@consonant-DoubleWideCard-desktopMinWidth, max-content));
+            }
+        }
+    }
+}
+
+ul.consonant-CardsGrid {
+    margin: 0;
+    padding: 0 0 32px 0;
+}
+
+@media (max-width: 600px) {
+    div:not(.consonant-Container--carousel) > .consonant-CardsGrid {
+        display: flex !important;
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,106 @@
+/* Available modifiers:
+- .consonant-BtnInfobit--cta;
+- .consonant-BtnInfobit-ico--last;
+*/
+
+.consonant {
+    &-BtnInfobit {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: @consonant-BtnInfobit-minWidth;
+        max-width: 100%;
+        height: @consonant-BtnInfobit-maxHeight;
+        max-height: @consonant-BtnInfobit-maxHeight;
+        margin-left: 16px;
+        padding-left: 16px;
+        padding-right: 16px;
+        text-decoration: none;
+        border: 2px solid @consonantGray800;
+        border-radius: 16px;
+        background-color: transparent;
+        cursor: pointer;
+        transition:
+            border-color @consonantTransitionTime @consonantTransitionFunc,
+            background-color @consonantTransitionTime @consonantTransitionFunc;
+
+        span {
+            .font(0.8235rem, 0.9375rem, 700, @consonantGray800, center);
+            .line-clamp(2);
+
+            transition: color @consonantTransitionTime @consonantTransitionFunc;
+        }
+
+        &:hover {
+            text-decoration: none !important;
+            border-color: @consonantGray800;
+            background-color: @consonantGray800;
+        }
+
+        &:hover span {
+            color: @consonantBaseColor;
+        }
+
+        &:active {
+            text-decoration: none !important;
+            border-color: @consonantGray900;
+            background-color: @consonantGray900;
+        }
+
+        &:active span {
+            color: @consonantBaseColor;
+        }
+
+        .focused;
+
+        &--cta {
+            background-color: @accessibleBlueLink;
+            border-color: @accessibleBlueLink;
+
+            span {
+                color: @consonantBaseColor;
+            }
+
+            &:hover {
+                text-decoration: none !important;
+                background-color: @accessibleCTABgHover;
+                border-color: @accessibleCTABgHover;
+            }
+
+            &:hover span {
+                color: @consonantBaseColor;
+            }
+
+            &:active {
+                text-decoration: none !important;
+                background-color: @accessibleCTABgHover;
+                border-color: @accessibleCTABgHover;
+            }
+
+            &:active span {
+                color: @consonantBaseColor;
+            }
+        }
+
+        &-ico {
+            width: auto;
+            height: auto;
+            max-width: @consonant-BtnInfobit-ico-maxWidth;
+            max-height: @consonant-BtnInfobit-ico-maxHeight;
+            margin-right: 8px;
+            overflow: hidden;
+            object-fit: cover;
+            user-select: none;
+
+            &--last {
+                order: 1;
+                margin-left: 8px;
+                margin-right: 0;
+            }
+
+            &:only-child {
+                margin: 0;
+            }
+        }
+    }
+}

@@ -1,0 +1,2003 @@
+import React, {
+    Fragment,
+    useEffect,
+    useRef,
+    useState,
+    createRef,
+} from 'react';
+import { unstable_batchedUpdates as batchedUpdates } from 'react-dom';
+import classNames from 'classnames';
+import { shape } from 'prop-types';
+// import 'whatwg-fetch'; // Removed: fetch is native in modern browsers
+import { logLana } from '../Helpers/lana';
+import Popup from '../Sort/Popup';
+import Search from '../Search/Search';
+import Loader from '../Loader/Loader';
+import {
+    getByPath,
+    saveBookmarksToLocalStorage,
+    readBookmarksFromLocalStorage,
+    readInclusionsFromLocalStorage,
+    sanitizeEventFilter,
+    getTransitions,
+    removeMarkDown,
+    preloadFirstCardImage,
+} from '../Helpers/general';
+import { configType } from '../types/config';
+import CardsCarousel from '../CardsCarousel/CardsCarousel';
+import NoResultsView from '../NoResults/View';
+import LoadMore from '../Pagination/LoadMore';
+import Bookmarks from '../Bookmarks/Bookmarks';
+import Paginator from '../Pagination/Paginator';
+import Grid from '../Grid/Grid';
+import CardFilterer from '../Helpers/CardFilterer';
+import FiltersPanelTop from '../Filters/Top/Panel';
+import LeftFilterPanel from '../Filters/Left/Panel';
+import JsonProcessor from '../Helpers/JsonProcessor';
+import { useWindowDimensions, useURLState } from '../Helpers/hooks';
+import { Info as LeftInfo } from '../Filters/Left/Info';
+import {
+    DESKTOP_MIN_WIDTH,
+    FILTER_TYPES,
+    FILTER_PANEL,
+    LOADER_SIZE,
+    PAGINATION_COUNT,
+    TABLET_MIN_WIDTH,
+    TRUNCATE_TEXT_QTY,
+    SORT_POPUP_LOCATION,
+    THEME_TYPE,
+    LAYOUT_CONTAINER,
+    ONE_SECOND_DELAY,
+    SORT_TYPES,
+    EVENT_TIMING_IDS,
+    CAAS_ENDPOINT_MAP,
+} from '../Helpers/constants';
+import {
+    ConfigContext,
+    ExpandableContext,
+} from '../Helpers/contexts';
+import {
+    getDefaultSortOption,
+    getNumSelectedFilterItems,
+    makeConfigGetter,
+} from '../Helpers/consonant';
+
+import {
+    shouldDisplayPaginator,
+    getNumCardsToShow,
+    getTotalPages,
+    getActiveFilterIds,
+    getActivePanels,
+    getUpdatedCardBookmarkData,
+    transformFiltersWithCategories,
+    expandGroupFiltersToChildren,
+    getGroupedFilterSelections,
+    isMobile,
+} from '../Helpers/Helpers';
+
+
+/**
+ * Consonant Card Collection
+ * Config is implicitly populated by authors
+ *
+ * @component
+ * @example
+ * const config = {
+    collection: {},
+    featuredCards: [{}],
+    filterPanel: {},
+    hideCtaIds: [{}],
+    hideCtaTags: [{}],
+    sort: {},
+    pagination: {},
+    bookmarks: {},
+    search: {},
+    language: ''
+ * }
+ * return (
+ *   <Container config={config}/>
+ * )
+ */
+const Container = (props) => {
+    const { config } = props;
+    const getConfig = makeConfigGetter(config);
+    const filterGroupPrefix = 'ch_';
+    const searchPrefix = 'sh_';
+    const CARD_HASH_LENGTH = 10;
+    const BODY = document.body;
+
+    /**
+     **** Authored Configs ****
+     */
+    const filterPanelEnabled = getConfig('filterPanel', 'enabled');
+    const filterPanelType = getConfig('filterPanel', 'type');
+    const paginationType = getConfig('pagination', 'type');
+    const paginationIsEnabled = getConfig('pagination', 'enabled');
+    const resultsPerPage = getConfig('collection', 'resultsPerPage');
+    const onlyShowBookmarks = getConfig('bookmarks', 'leftFilterPanel.bookmarkOnlyCollection');
+    const authoredFilters = getConfig('filterPanel', 'filters');
+    const categoryMappings = getConfig('filterPanel', 'categoryMappings');
+    const filterLogic = getConfig('filterPanel', 'filterLogic').toLowerCase().trim();
+    let totalCardLimit = getConfig('collection', 'totalCardsToShow');
+    const sampleSize = getConfig('collection', 'reservoir.sample');
+    const reservoirSize = getConfig('collection', 'reservoir.pool');
+    const searchFields = getConfig('search', 'searchFields');
+    const sortOptions = getConfig('sort', 'options');
+    const defaultSort = getConfig('sort', 'defaultSort');
+    const defaultSortOption = getDefaultSortOption(config, defaultSort);
+    let featuredCards = getConfig('featuredCards', '')
+        .toString()
+        .replace(/\[|\]/g, '')
+        .replace(/`/g, '')
+        .split(',');
+    // eslint-disable-next-line no-use-before-define,max-len
+    featuredCards = featuredCards.concat(featuredCards.map(id => rollingHash(id, CARD_HASH_LENGTH)));
+    let hideCtaIds = getConfig('hideCtaIds', '')
+        .toString()
+        .replace(/\[|\]/g, '')
+        .replace(/`/g, '')
+        .split(',');
+    // eslint-disable-next-line no-use-before-define
+    hideCtaIds = hideCtaIds.concat(hideCtaIds.map(id => rollingHash(id, CARD_HASH_LENGTH)));
+    let hideCtaTags = getConfig('hideCtaTags', '')
+        .toString()
+        .replace(/\[|\]/g, '')
+        .replace(/`/g, '')
+        .split(',');
+    const leftPanelSearchPlaceholder = getConfig('search', 'i18n.leftFilterPanel.searchPlaceholderText');
+    const topPanelSearchPlaceholder = getConfig('search', 'i18n.topFilterPanel.searchPlaceholderText');
+    const searchPlaceholderText = getConfig('search', 'i18n.filterInfo.searchPlaceholderText');
+    const noResultsTitle = getConfig('search', 'i18n.noResultsTitle');
+    const noResultsDescription = getConfig('search', 'i18n.noResultsDescription');
+    const apiFailureTitle = getConfig('collection', 'i18n.onErrorTitle');
+    const apiFailureDescription = getConfig('collection', 'i18n.onErrorDescription');
+    const isLazy = getConfig('collection', 'lazyload');
+    const trackImpressions = getConfig('analytics', 'trackImpressions');
+    const collectionIdentifier = getConfig('analytics', 'collectionIdentifier');
+    const targetEnabled = getConfig('target', 'enabled');
+    const useLastViewedSession = getConfig('target', 'lastViewedSession');
+    const authoredMode = getConfig('collection', 'mode');
+    const authoredLayoutContainer = getConfig('collection', 'layout.container');
+    const showEmptyFilters = getConfig('filterPanel', 'showEmptyFilters');
+    const eventFilter = getConfig('filterPanel', 'eventFilter');
+    const searchEnabled = getConfig('search', 'enabled');
+    const sortEnabled = getConfig('sort', 'enabled');
+    const localFirstRecencyThreshold = getConfig('sort', 'localFirstRecencyThreshold');
+    const cardStyle = getConfig('collection', 'cardStyle');
+    const title = getConfig('collection', 'i18n.title');
+    const headers = getConfig('headers', '');
+    const partialLoadWithBackgroundFetch = getConfig('collection', 'partialLoadWithBackgroundFetch.enabled');
+    const partialLoadCount = getConfig('collection', 'partialLoadWithBackgroundFetch.partialLoadCount');
+    const renderOverlay = getConfig('collection', 'useOverlayLinks');
+    const animationStyle = getConfig('pagination', 'animationStyle');
+    const isModernCarousel = animationStyle?.toLowerCase().includes('modern');
+    const isLightCarousel = animationStyle?.toLowerCase().includes('light');
+
+
+    /**
+     **** Constants ****
+     */
+    const DESKTOP_SCREEN_SIZE = window.innerWidth >= DESKTOP_MIN_WIDTH;
+    const isXorFilter = filterLogic.toLowerCase().trim() === FILTER_TYPES.XOR;
+    const isCarouselContainer = authoredLayoutContainer === LAYOUT_CONTAINER.CAROUSEL;
+    const isStandardContainer = authoredLayoutContainer !== LAYOUT_CONTAINER.CAROUSEL;
+    const isCategoriesContainer = authoredLayoutContainer === LAYOUT_CONTAINER.CATEGORIES;
+
+    // eslint-disable-next-line no-use-before-define
+    const categories = getConfig('filterPanel', 'categories');
+    // eslint-disable-next-line no-use-before-define, max-len
+    const authoredCategories = isCategoriesContainer ? getAuthoredCategories(authoredFilters, categories) : [];
+    const sanitizedEventFilter = eventFilter ? sanitizeEventFilter(eventFilter) : [];
+
+    /**
+     **** Hooks ****
+     */
+    /**
+     * @typedef {Array} timedCollection - result of Timed Event Sort
+     * @description — As an alternative/iteration on filtered cards for timed
+     * collections
+     * @typedef {Function} setTimedCollection
+     * @description - Sets timedCollection after setTimeout triggers
+     *
+     * @type {[Array, Function]} timedCollection
+     */
+    /* eslint-disable no-unused-vars */
+    const [timedCollection, setTimedCollection] = useState([]);
+    /**
+     * @typedef {Number} transition - MS to next transition
+     * @description —  set by eventSort, from cardFilteret.nextTransitionMs
+     * @typedef {Function} setTransition
+     * @description - next Transition trigger
+     *
+     * @type {[Number, Function]} transition
+     */
+    /* eslint-disable no-unused-vars */
+    const [transition, setTransition] = useState(0);
+
+    const [cardCount, setCardCount] = useState(0);
+    const [isPartialLoad, setIsPartialLoad] = useState(false);
+    const hashedRef = useRef(false);
+    const hashedCategoryMappingsRef = useRef(categoryMappings);
+    const originSelectionRef = useRef();
+    const [hasLoadedCards, setHasLoadedCards] = useState(false);
+
+    const [, updateState] = React.useState();
+    const scrollElementRef = useRef(null);
+    const box = useRef();
+    const nextTransition = React.useCallback(() => updateState({}), []);
+    /**
+     * @typedef {Object} urlState
+     * @description — object with url query values
+     *
+     * @typedef {Function} setUrlState
+     * @description - set url query value by key
+     *
+     * @typedef {Function} clearUrlState
+     * @description - clear whole url query state
+     *
+     * @type {[Object, Function, Function]} OpenDropdown
+     */
+    const [urlState, setUrlState, clearUrlState] = useURLState();
+
+    /**
+     * @typedef {Number} OpenDropdownState - Id of a selected dropdown
+     * @description — Passed in Context Provider So All Nested Components can be in sync
+     *
+     * @typedef {Function} OpenDropdownStateSetter
+     * @description
+     *
+     * @type {[Number, Function]} OpenDropdown
+     */
+    const [openDropdown, setOpenDropdown] = useState(null);
+
+    /**
+     * @typedef {Array} BookmarkedCardIdsState — Initiailzed From Local Storage
+     *
+     * @typedef {Function} BookmarkedCardIdsSetter — Sets internal state of saved bookmarks
+     *
+     * @type {[Array, Function]} BookmarkedCardIds
+     */
+    const [bookmarkedCardIds, setBookmarkedCardIds] = useState(readBookmarksFromLocalStorage());
+    const [inclusionIds] = useState(readInclusionsFromLocalStorage());
+
+    /**
+     * @typedef {Number} CurrentPageState — Initialized to the first page
+     * @description Same page state for 'Load More' or 'Paginator'
+     *
+     * @typedef {Function} CurrentPageStateSetter — Sets page as user navigates through pages
+     *
+     * @type {[Number, Function]} CurrentPage
+     */
+    const [currentPage, setCurrentPage] = useState(+urlState.page || 1);
+
+    /**
+     * @typedef {Array} FiltersState — Contains Filters For Filter Panel
+     * @description Same Filter state for Left or Top
+     *
+     * @typedef {Function} FiltersStateSetter — Sets Authored Filters as State
+     *
+     * @type {[Array, Function]} Filters
+     */
+    const [filters, setFilters] = useState([]);
+    // window.filters = filters;
+    const [currCategories, setCategories] = useState([]);
+
+    /**
+     * @typedef {String} SearchQueryState — Will be used to search through cards
+     * @typedef {Function} SearchQueryStateSetter — Sets user search query
+     *
+     * @type {[String, Function]} SearchQuery
+     */
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('');
+
+    /**
+     * @typedef {String} SortOpenedState — Toggles Sort Popup Opened Or Closed
+     * @typedef {Function} SortOpenedStateSetter — Sets Sort Option
+     *
+     * @type {[Boolean, Function]} SortOpened
+     */
+    const [sortOpened, setSortOpened] = useState(false);
+
+    /**
+     * @typedef {String} SortOptionState — Can be one of a range of types
+     * @description 'Title (A-Z)', 'Title (Z-A), Date (New to Old), Date (Old to New), Featured
+     *
+     * @typedef {Function} SortOptionStateSetter — Sets Sort Option
+     *
+     * @type {[String, Function]} SortOption
+     */
+    const [sortOption, setSortOption] = useState(defaultSortOption);
+
+    if (sortOption.sort === SORT_TYPES.RANDOM) {
+        totalCardLimit = sampleSize;
+    }
+
+    /**
+     * @typedef {Boolean} WindowWidthState — Can either be true or false
+     * @description Used to toggle between mobile and desktop layouts
+     *
+     * @typedef {Function} WindowWidthStateSetter — Updates window width
+     *
+     * @type {[Number]} WindowWidth
+     */
+    const { width: windowWidth } = useWindowDimensions();
+
+    /**
+     * @typedef {Boolean} ShowMobileFiltersState — Can either be true or false
+     * @description When true mobile filters will appear on the page
+     *
+     * @typedef {Function} ShowMobileFiltersStateSetter
+     * @description Toggles mobile filter header/footer to show or hide
+     *
+     * @type {[Boolean, Function]} ShowMobileFilters
+     */
+    const [showMobileFilters, setShowMobileFilters] = useState(false);
+
+    /**
+     * @typedef {Boolean} ShowBookmarkState — Can either be true or false
+     * @description For Top Filter Panel, there is a limit to how many filter groups can show
+     *
+     * @typedef {Function} ShowBookmarkStateSetter — Sets limit on filter quantity
+     * @description When over allowed Filter Group Quantity - A "More +" button appears
+     *
+     * @type {[Boolean, Function]} ShowBookmarks
+     */
+    const [showBookmarks, setShowBookmarks] = useState(false);
+
+    /**
+     * @typedef {Boolean} LimitFilterQuantityState — Can either be true or false
+     * @description For Top Filter Panel, there is a limit to how many filter groups can show
+     *
+     * @typedef {Function} LimitFilterQuantityStateSetter — Sets limit on filter quantity
+     * @description When over allowed Filter Group Quantity - A "More +" button appears
+     *
+     * @type {[Boolean, Function]} LimitFilterQuantity
+     */
+    const [showLimitedFiltersQty, setShowLimitedFiltersQty] = useState(filterPanelType === 'top');
+
+    /**
+     * @typedef {Array} CardState
+     * @description sets cards retrieved either server side render or API call
+     *
+     * @typedef {Function} CardStateSetter
+     * @description E.g. Render Featured Cards Server side, While collection cards from API call
+     *
+     * @type {[Array, Function]} Cards
+     */
+    const [cards, setCards] = useState([]);
+
+    /**
+     * @typedef {Boolean} LoadingState — Can either be true or false
+     * @description When true a loading spinner will appear on the page
+     *
+     * @typedef {Function} LoadingStateSetter — Sets loader true or false
+     * @description True while waiting for API response. False on cards retrieved or api failure
+     *
+     * @type {[Boolean, Function]} Loading
+     */
+    const [isLoading, setLoading] = useState(false);
+
+    /**
+     * @typedef {Boolean} ApiFailureState — Can either be true or false
+     * @description When true an API error has occured
+     *
+     * @typedef {Function} ApiFailureStateSetter — Sets API failure flag true or false
+     * @description True when retrieved or api failure. False otherwise
+     *
+     * @type {[Boolean, Function]} ApiFailure
+     */
+    const [isApiFailure, setApiFailure] = useState(false);
+    const [randomSortId, setRandomSortId] = useState(null);
+    const [isFirstLoad, setIsFirstLoad] = useState(true);
+    const [visibleStamp, setVisibleStamp] = useState();
+    const [hasFetched, setHasFetched] = useState(false);
+
+    /**
+     * Creates a DOM reference to first filter item
+     * @returns {Object} - filter item DOM reference
+     */
+    const filterItemRef = createRef();
+
+    /**
+     * Creates a DOM reference to filter info button
+     * @returns {Object} - filter info DOM reference
+     */
+    const filterInfoRef = createRef();
+
+    /**
+     **** Helper Methods ****
+     */
+
+    function removeCollectionFromPage() {
+        const collectionRoot = box.current.closest('div#caas.caas-preview');
+        if (collectionRoot && collectionRoot.parentNode && !collectionRoot.closest('div.caas-config')) {
+            collectionRoot.parentNode.removeChild(collectionRoot);
+        }
+    }
+
+    function getParentChild(id) {
+        let i = id.length;
+        while (id[i] !== '/' && i >= 0) {
+            i--;
+        }
+        return [id.substring(0, i), id.substring(i + 1)];
+    }
+
+    function rollingHash(s, l) {
+        if (!s) {
+            return '';
+        }
+        const BASE = 53;
+        const MOD = 10 ** l + 7;
+        let hash = 0;
+        let basePower = 1;
+        for (let i = 0; i < s.length; i++) {
+            hash = (hash + (s.charCodeAt(i) - 97 + 1) * basePower) % MOD;
+            basePower = (basePower * BASE) % MOD;
+        }
+        return ((hash + MOD) % MOD).toString(36);
+    }
+
+    /**
+     * For a given group of filters, it will unselect all of them
+     * @param {Array} filterGroups - a group of filters
+     * @returns {Array} fitlerGroups - the updated group of filters
+     */
+    const getAllFiltersClearedState = filterGroups => filterGroups.map(filterGroup => ({
+        ...filterGroup,
+        items: filterGroup.items.map(filterItem => ({
+            ...filterItem,
+            selected: false,
+            // Clear nested items in categories
+            ...(filterItem.isCategory && filterItem.items && {
+                items: filterItem.items.map(nestedItem => ({
+                    ...nestedItem,
+                    selected: false,
+                })),
+            }),
+        })),
+    }));
+
+    /**
+     * For a given group of filters, it will unselect the one with a given id
+     * @param {Number} id - the id of an individual filter item
+     * @param {Array} filterGroups - a group of filters
+     * @returns {Array} fitlerGroups - the updated group of filters
+     */
+    const getFilterItemClearedState = (id, filterGroups) => filterGroups.map((filterGroup) => {
+        if (filterGroup.id !== id) {
+            return filterGroup;
+        }
+        return {
+            ...filterGroup,
+            items: filterGroup.items.map(filterItem => ({
+                ...filterItem,
+                selected: false,
+                // Clear nested items in categories
+                ...(filterItem.isCategory && filterItem.items && {
+                    items: filterItem.items.map(nestedItem => ({
+                        ...nestedItem,
+                        selected: false,
+                    })),
+                }),
+            })),
+        };
+    });
+
+    /**
+     * Will uncheck a filter with a given id
+     * @param {Number} id - the id of an individual filter item
+     * @returns {Void} - an updated state
+     */
+    const clearFilterItem = (id, group = '') => {
+        setFilters((prevFilters) => {
+            const filterClearedState = getFilterItemClearedState(id, prevFilters);
+            return filterClearedState;
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        clearUrlState();
+        // actually clear the url state
+        urlParams.forEach((value, key) => {
+            const chFilter = key.toLowerCase().replace('ch_', '').replace(/ /g, '-');
+            if (key.indexOf(filterGroupPrefix) !== 0
+                && !id.toLowerCase().includes(chFilter)
+                || !group.toLowerCase().replace(/ /g, '-').includes(chFilter)) {
+                setUrlState(key, value.replace(/%20/g, ' '));
+            }
+        });
+    };
+
+    /**
+     * Will uncheck all filter items
+     * @returns {Void} - an updated state
+     */
+    const clearAllFilters = () => {
+        setFilters((prevFilters) => {
+            const allFiltersClearedState = getAllFiltersClearedState(prevFilters);
+            return allFiltersClearedState;
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+
+        clearUrlState();
+        urlParams.forEach((value, key) => {
+            if (key.indexOf(filterGroupPrefix) !== 0) setUrlState(key, value);
+        });
+    };
+
+    /**
+     * Resets filters, and search to empty. Hides bookmark filter
+     * @returns {Void} - an updated state
+     */
+    const resetFiltersSearchAndBookmarks = () => {
+        clearAllFilters();
+        setSearchQuery('');
+        const urlParams = new URLSearchParams(window.location.search);
+        clearUrlState();
+        urlParams.forEach((value, key) => {
+            if (key.indexOf(filterGroupPrefix) === -1
+                && key.indexOf(searchPrefix) === -1) setUrlState(key, value);
+        });
+        setShowBookmarks(false);
+    };
+
+    /**
+     **** EVENT HANDLERS ****
+     */
+
+    /**
+     * On Load More Button Click, Increment Page Cuonter By 1
+     *
+     * @param {ClickEvent} e
+     * @listens ClickEvent
+     */
+    const onLoadMoreClick = () => {
+        setCurrentPage(prevState => prevState + 1);
+        window.scrollTo(0, window.pageYOffset);
+    };
+
+    /**
+     * Takes sort user selects and sets it so cards are sorted
+     *
+     * @param {ClickEvent} e - The observable event.
+     * @listens ClickEvent
+     */
+    const handleSortChange = (option) => {
+        setSortOption(option);
+        setSortOpened(false);
+        setIsFirstLoad(false);
+    };
+
+    /**
+     * Handles whenever the search box is clicked or input field
+     * changes
+     *
+     * @param {ClickEvent, ChangeEvent} e
+     * @listens ClickEvent, ChangeEvent
+     */
+    const handleSearchInputChange = (val) => {
+        setSearchQuery(val);
+        setCurrentPage(1);
+        setUrlState(searchPrefix, val);
+    };
+
+    /**
+     * Handles when a group of filters is clicked. Behavior should be
+     * to toggle group open or closed
+     *
+     * @param {ClickEvent} e - The observable event.
+     * @listens ClickEvent
+     */
+    const handleFilterGroupClick = (filterId) => {
+        setFilters((prevFilters) => {
+            let opened;
+            return prevFilters.map((el) => {
+                if (el.id === filterId) {
+                    opened = !el.opened;
+                } else {
+                    // eslint-disable-next-line prefer-destructuring
+                    opened = el.opened;
+                }
+                return { ...el, opened };
+            });
+        });
+    };
+
+    /**
+     * Syncs complete filter state to URL (replaces incremental update approach)
+     * This ensures URL always matches the actual filter state
+     *
+     * @param {string} filterId - filter group id
+     * @param {Array} currentFilters - the current filter state
+     * @returns {Void} - an updated url
+     */
+    const syncFiltersToUrl = (filterId, currentFilters) => {
+        const filter = currentFilters.find(({ id }) => id === filterId);
+        if (!filter) return;
+
+        const { group, items } = filter;
+        const selectedLabels = [];
+
+        // Collect all selected items (both top-level and nested)
+        items.forEach(item => {
+            if (item.selected && !item.isCategory) {
+                // Regular flat item that's selected
+                selectedLabels.push(item.label);
+            }
+
+            if (item.isCategory) {
+                // Check if category itself is selected
+                if (item.selected) {
+                    selectedLabels.push(item.label);
+                }
+                // Check nested items within category
+                if (item.items) {
+                    item.items.forEach(nestedItem => {
+                        if (nestedItem.selected) {
+                            selectedLabels.push(nestedItem.label);
+                        }
+                    });
+                }
+            }
+        });
+
+        // Update URL with complete state (using Set to avoid duplicates)
+        const uniqueLabels = [...new Set(selectedLabels)];
+        setUrlState(filterGroupPrefix + group, uniqueLabels);
+    };
+
+    /**
+     * Handles what happens when a specific filter item (checkbox)
+     * is clicked
+     *
+     * @param {CheckboxClickEvent} e
+     * @listens CheckboxClickEvent
+     */
+    const handleCheckBoxChange = (filterId, itemId, isChecked) => {
+        if (isXorFilter && isChecked) {
+            clearAllFilters();
+        }
+
+        setFilters(prevFilters => {
+            const newFilters = prevFilters.map((filter) => {
+                if (filter.id !== filterId) return filter;
+
+                // Check if the clicked item is a category/group
+                const clickedItem = filter.items.find(item => item.id === itemId);
+                const isClickingCategory = clickedItem && clickedItem.isCategory;
+
+                // Check if the clicked item is a nested child within a category
+                let parentCategory = null;
+                if (!isClickingCategory) {
+                    parentCategory = filter.items.find(item =>
+                        item.isCategory && item.items && item.items.some(nested => nested.id === itemId)
+                    );
+                }
+
+                return {
+                    ...filter,
+                    items: filter.items.map((item) => {
+                        // If we're clicking a category and selecting it, deselect all other categories
+                        if (isClickingCategory && isChecked && item.isCategory && item.id !== itemId) {
+                            return {
+                                ...item,
+                                selected: false,
+                            };
+                        }
+
+                        // If it's a category, handle category selection
+                        if (item.isCategory) {
+                            // If this is the category being clicked
+                            if (item.id === itemId) {
+                                // Context-aware behavior only for LEFT filter panel
+                                if (filterPanelType === 'left') {
+                                    // If expanded: clear everything and deselect
+                                    if (item.opened) {
+                                        return {
+                                            ...item,
+                                            selected: false,
+                                            items: item.items.map(nestedItem => ({
+                                                ...nestedItem,
+                                                selected: false,
+                                            })),
+                                        };
+                                    }
+                                    // If collapsed: check if any nested items are already selected
+                                    const hasSelectedNestedItems = item.items && item.items.some(nestedItem => nestedItem.selected);
+                                    if (hasSelectedNestedItems) {
+                                        // If nested items are selected, deselect them all
+                                        return {
+                                            ...item,
+                                            selected: false,
+                                            items: item.items.map(nestedItem => ({
+                                                ...nestedItem,
+                                                selected: false,
+                                            })),
+                                        };
+                                    }
+                                    // If no nested items selected: select the group
+                                    return {
+                                        ...item,
+                                        selected: true,
+                                    };
+                                }
+                                // Standard toggle behavior for TOP filter panel
+                                const newSelected = !item.selected;
+                                return {
+                                    ...item,
+                                    selected: newSelected,
+                                    // If unchecking category, also uncheck all children
+                                    items: newSelected ? item.items : item.items.map(nestedItem => ({
+                                        ...nestedItem,
+                                        selected: false,
+                                    })),
+                                };
+                            }
+                            // If clicking a child while this category is selected, deselect the category
+                            if (parentCategory && item.id === parentCategory.id && isChecked) {
+                                return {
+                                    ...item,
+                                    selected: false,
+                                    items: item.items.map(nestedItem => ({
+                                        ...nestedItem,
+                                        selected: nestedItem.id === itemId ? !nestedItem.selected : nestedItem.selected,
+                                    })),
+                                };
+                            }
+                            // Otherwise, check nested items for individual product selection
+                            return {
+                                ...item,
+                                items: item.items.map(nestedItem => ({
+                                    ...nestedItem,
+                                    selected: nestedItem.id === itemId ? !nestedItem.selected : nestedItem.selected,
+                                })),
+                            };
+                        }
+                        // Regular flat item
+                        return {
+                            ...item,
+                            selected: item.id === itemId ? !item.selected : item.selected,
+                        };
+                    }),
+                };
+            });
+
+            // Sync the complete filter state to URL after updating
+            syncFiltersToUrl(filterId, newFilters);
+
+            return newFilters;
+        });
+        setCurrentPage(1);
+    };
+
+    /**
+     * Toggles category opened/closed state
+     *
+     * @param {String} filterId - The filter ID
+     * @param {String} categoryId - The category ID to toggle
+     */
+    const handleCategoryToggle = (filterId, categoryId) => {
+        setFilters(prevFilters => prevFilters.map((filter) => {
+            if (filter.id !== filterId) return filter;
+
+            return {
+                ...filter,
+                items: filter.items.map((item) => {
+                    if (item.id === categoryId && item.isCategory) {
+                        return {
+                            ...item,
+                            opened: !item.opened,
+                        };
+                    }
+                    return item;
+                }),
+            };
+        }));
+    };
+
+    /**
+     * Shows/Hides Mobile Filter Panel
+     *
+     * @param {ClickEvent} e
+     * @listens ClickEvent
+     */
+    const handleMobileFiltersToggle = () => setShowMobileFilters(prev => !prev);
+
+    /**
+     * When a card's bookmark icon is clicked, save the card
+     *
+     * @param {ClickEvent} e
+     * @listens ClickEvent
+     */
+    const handleCardBookmarking = (id) => {
+        // Update bookmarked IDs
+        const cardIsBookmarked = bookmarkedCardIds.find(card => card === id);
+
+        if (cardIsBookmarked) {
+            setBookmarkedCardIds(prev => prev.filter(el => el !== id));
+        } else {
+            setBookmarkedCardIds(prev => [...prev, id]);
+        }
+    };
+
+    /**
+     * Will show  or hide all saved bookmarks when clicked
+     *
+     * @param {ClickEvent} e
+     * @listens ClickEvent
+     */
+    const handleShowBookmarksFilterClick = (e) => {
+        e.stopPropagation();
+        setShowBookmarks(prev => !prev);
+        setCurrentPage(1);
+    };
+
+    /**
+     * If top filter panel, toggle or hide more button
+     *
+     * @param {ClickEvent} e
+     * @listens ClickEvent
+     */
+    const handleShowAllTopFilters = () => {
+        setShowLimitedFiltersQty(prev => !prev);
+    };
+
+    /**
+     * On window click, all dropdowns should hide
+     *
+     * @param {ClickEvent} e
+     * @listens ClickEvent
+     */
+    const handleWindowClick = () => {
+        setOpenDropdown(null);
+    };
+
+    /**
+     * Handles escape for mobile filter dialog
+     *
+     * @param event
+     */
+    const handleMobileFilterEscape = (event) => {
+        if (event.key !== 'Escape' && event.key !== 'Esc') return;
+
+        setShowMobileFilters(false);
+    };
+
+    /**
+     **** Effects ****
+     */
+
+    /**
+     * Sets authored filters as state
+     * @returns {Void} - an updated state
+     */
+
+    useEffect(() => {
+        // Transform filters with category groupings if categoryMappings exist
+        const transformedFilters = transformFiltersWithCategories(authoredFilters, categoryMappings);
+
+        const finalFilters = transformedFilters.map(filterGroup => ({
+            ...filterGroup,
+            opened: DESKTOP_SCREEN_SIZE ? filterGroup.openedOnLoad : false,
+            items: filterGroup.items.map(filterItem => ({
+                ...filterItem,
+                selected: false,
+                // If it's a category, preserve its nested items structure
+                ...(filterItem.isCategory && {
+                    items: filterItem.items.map(nestedItem => ({
+                        ...nestedItem,
+                        selected: false,
+                    })),
+                }),
+            })),
+        }));
+
+        setFilters(finalFilters);
+    }, []);
+
+    /**
+     * Sets filters from url as state
+     * @returns {Void} - an updated state
+     */
+    useEffect(() => {
+        setFilters(origin => origin.map((filter) => {
+            const { group, items } = filter;
+            const urlStateValue = urlState[filterGroupPrefix + group];
+
+            if (!urlStateValue) return filter;
+            /* istanbul ignore next  */
+            const urlStateArray = urlStateValue.split(',');
+            return {
+                ...filter,
+                opened: true,
+                /* istanbul ignore next */
+                items: items.map(item => {
+                    // If it's a category, check both category and nested items
+                    if (item.isCategory && item.items) {
+                        const isCategorySelected = urlStateArray.includes(String(item.label));
+                        const mappedNestedItems = item.items.map(nestedItem => ({
+                            ...nestedItem,
+                            selected: urlStateArray.includes(String(nestedItem.label)),
+                        }));
+                        // Check if any nested items are selected from URL
+                        const hasSelectedNestedItems = mappedNestedItems.some(nestedItem => nestedItem.selected);
+
+                        return {
+                            ...item,
+                            selected: isCategorySelected,
+                            opened: isCategorySelected || hasSelectedNestedItems, // Expand if category or any nested item is selected
+                            items: mappedNestedItems,
+                        };
+                    }
+                    // Flat item
+                    return {
+                        ...item,
+                        selected: urlStateArray.includes(String(item.label)),
+                    };
+                }),
+            };
+        }));
+        const urlSearchValue = urlState[searchPrefix];
+        if (urlSearchValue) {
+            setSearchQuery(urlSearchValue[0]);
+        }
+    }, []);
+
+    useEffect(() => {
+        setRandomSortId(Math.floor((Math.random() * 10e12)));
+    }, []);
+
+    /**
+     * Trigger after button load more click
+     * @returns {Void} - an updated url page
+     */
+    useEffect(() => {
+        setUrlState('page', currentPage === 1 ? '' : currentPage);
+    }, [currentPage]);
+
+    const removeEmptyFilters = (allFilters, cardsFromJson) => {
+        const tags = [].concat(...cardsFromJson.map(card => card.tags.map(tag => tag.id)));
+
+        const timingTags = [
+            EVENT_TIMING_IDS.LIVE,
+            EVENT_TIMING_IDS.ONDEMAND,
+            EVENT_TIMING_IDS.UPCOMING,
+        ];
+
+        return allFilters.map(filter => ({
+            ...filter,
+            opened: DESKTOP_SCREEN_SIZE ? filter.openedOnLoad : false,
+            /* istanbul ignore next */
+            items: filter.items.filter(item => {
+                const matchesDirectly = tags.includes(item.id)
+                    || tags.includes(item.label)
+                    || tags.toString().includes(`/${item.id}`)
+                    || timingTags.includes(item.id);
+
+                // If it's a category, filter nested items recursively
+                if (item.isCategory) {
+                    const filteredNestedItems = item.items.filter(nestedItem =>
+                        tags.includes(nestedItem.id)
+                        || tags.includes(nestedItem.label)
+                        || tags.toString().includes(`/${nestedItem.id}`),
+                    );
+                    // Keep category if it has any nested items with cards
+                    if (filteredNestedItems.length > 0) {
+                        item.items = filteredNestedItems; // Update nested items
+                        return true;
+                    }
+                    return false;
+                }
+
+                return matchesDirectly;
+            }).map(item => {
+                // Ensure nested items are preserved for categories
+                if (item.isCategory && item.items) {
+                    return { ...item };
+                }
+                return item;
+            }),
+        })).filter(filter => filter.items.length > 0);
+    };
+
+    /**
+     * This handles getting Cards, there are some conditions:
+     * - If target is not enabled a simple request is made without mods or delay.
+     * - If target is enabled & tVisitor API is present add values from Visitor
+     * - If target is enabled & the Visitor API is not present setTimeout with
+     * counter to recheck for the Visitor API. If 20 attempts are made w/o
+     * success fail the request.
+     * @returns {Void} - an updated state
+     */
+    useEffect(() => {
+        if ((isLazy && visibleStamp) || (isLazy && !hasFetched)) {
+            return;
+        }
+        const { // eslint-disable-line no-underscore-dangle
+            __satelliteLoadedPromise: visitorPromise,
+        } = window;
+
+        let collectionEndpoint = getConfig('collection', 'endpoint');
+        const fallbackEndpoint = getConfig('collection', 'fallbackEndpoint');
+
+        const caasEndpointKey = new URLSearchParams(window.location.search).get('caas-endpoint');
+        const endpointOverride = Object.prototype.hasOwnProperty.call(
+            CAAS_ENDPOINT_MAP,
+            caasEndpointKey,
+        )
+            ? CAAS_ENDPOINT_MAP[caasEndpointKey]
+            : undefined;
+        if (endpointOverride && collectionEndpoint.startsWith(endpointOverride.from)) {
+            collectionEndpoint = endpointOverride.to + collectionEndpoint.slice(endpointOverride.from.length);
+        }
+
+        const r = new RegExp('^(?:[a-z]+:)?//', 'i');
+        let collectionEndpointURI;
+        if (r.test(collectionEndpoint)) {
+            collectionEndpointURI = new URL(collectionEndpoint);
+        } else {
+            collectionEndpointURI = new URL(collectionEndpoint, window.location.origin);
+        }
+
+        if (!fallbackEndpoint) {
+            collectionEndpointURI.searchParams.set('flatFile', false);
+            collectionEndpoint = collectionEndpointURI.toString();
+        }
+
+        const originSelection = collectionEndpointURI.searchParams.get('originSelection');
+        originSelectionRef.current = originSelection;
+
+        setLoading(true);
+
+        /**
+         * @func getCards
+         * @desc wraps fetch with function to make it reusable
+         *
+         * @param {String} endPoint, URL with params for card request
+         * @returns {Void} - an updated state
+         */
+        function getCards(endPoint = collectionEndpoint) {
+            const start = Date.now();
+            return window.fetch(endPoint, {
+                credentials: 'include',
+                headers,
+            })
+                .then((resp) => {
+                    const {
+                        ok,
+                        status,
+                        statusText,
+                        url,
+                    } = resp;
+
+                    if (ok) {
+                        return resp.json().then((json) => {
+                            const validData = !!Object.keys(json).length;
+
+                            if (validData) return json;
+
+                            logLana({ message: `no valid response data from ${endPoint}`, tags: 'collection' });
+                            /* istanbul ignore next */
+                            return Promise.reject(new Error('no valid reponse data'));
+                        });
+                    }
+                    logLana({ message: `failure for call to ${url}`, tags: 'collection', errorMessage: `${status}: ${statusText}` });
+                    return Promise.reject(new Error(`${status}: ${statusText}, failure for call to ${url}`));
+                })
+                .then((payload) => {
+                    logLana({ message: `response took ${(Date.now() - start) / 1000}s`, tags: 'collection' });
+                    setLoading(false);
+                    setIsFirstLoad(true);
+                    if (!getByPath(payload, 'cards.length')) {
+                        logLana({ message: `no cards return by query to this endpoint: ${endPoint}`, tags: 'collection' });
+                        if (originSelection === 'events' && box.current) {
+                            removeCollectionFromPage();
+                        }
+                        return;
+                    }
+                    if (payload.isHashed && !hashedRef.current) {
+                        hashedRef.current = true;
+                        const TAG_HASH_LENGTH = 6;
+                        for (const group of authoredFilters) {
+                            group.id = rollingHash(group.id, TAG_HASH_LENGTH);
+                            for (const filterItem of group.items) {
+                                const [parent, child] = getParentChild(filterItem.id);
+                                filterItem.id = `${rollingHash(parent, TAG_HASH_LENGTH)}/${rollingHash(child, TAG_HASH_LENGTH)}`;
+ 
+                                // If this is a category with nested items, hash those too
+                                if (filterItem.isCategory && filterItem.items) {
+                                    for (const nestedItem of filterItem.items) {
+                                        const [nestedParent, nestedChild] = getParentChild(nestedItem.id);
+                                        nestedItem.id = `${rollingHash(nestedParent, TAG_HASH_LENGTH)}/${rollingHash(nestedChild, TAG_HASH_LENGTH)}`;
+                                    }
+                                }
+                            }
+                        }
+                        const temp = [];
+                        for (const tag of hideCtaTags) {
+                            const [parent, child] = getParentChild(tag);
+                            if (parent !== '' && child !== '') {
+                                temp.push(`${rollingHash(parent, TAG_HASH_LENGTH)}/${rollingHash(child, TAG_HASH_LENGTH)}`);
+                            }
+                        }
+                        hideCtaTags = temp;
+
+                        // Hash categoryMappings keys and items so they match hashed filter IDs
+                        if (categoryMappings && Object.keys(categoryMappings).length > 0) {
+                            const hcm = {};
+                            Object.entries(categoryMappings).forEach(([catId, catData]) => {
+                                const [catParent, catChild] = getParentChild(catId);
+                                const hashedCatId = `${rollingHash(catParent, TAG_HASH_LENGTH)}/${rollingHash(catChild, TAG_HASH_LENGTH)}`;
+                                hcm[hashedCatId] = {
+                                    label: catData.label,
+                                    items: catData.items.map((itemId) => {
+                                        const [itemParent, itemChild] = getParentChild(itemId);
+                                        return `${rollingHash(itemParent, TAG_HASH_LENGTH)}/${rollingHash(itemChild, TAG_HASH_LENGTH)}`;
+                                    }),
+                                };
+                            });
+                            hashedCategoryMappingsRef.current = hcm;
+                        }
+
+                        // Re-initialize filters with hashed IDs and apply category transformations
+                        const hashedTransformedFilters = transformFiltersWithCategories(
+                            authoredFilters, hashedCategoryMappingsRef.current,
+                        );
+                        const hashedFinalFilters = hashedTransformedFilters.map(filterGroup => ({
+                            ...filterGroup,
+                            opened: DESKTOP_SCREEN_SIZE ? filterGroup.openedOnLoad : false,
+                            items: filterGroup.items.map(filterItem => ({
+                                ...filterItem,
+                                selected: false,
+                                // If it's a category, preserve its nested items structure
+                                ...(filterItem.isCategory && {
+                                    items: filterItem.items.map(nestedItem => ({
+                                        ...nestedItem,
+                                        selected: false,
+                                    })),
+                                }),
+                            })),
+                        }));
+                        setFilters(hashedFinalFilters);
+                    }
+                    setCardCount(payload.totalCount ? payload.totalCount : payload.cards.length);
+                    const { processedCards = [] } = new JsonProcessor(payload.cards)
+                        .removeDuplicateCards()
+                        .addCardMetaData(
+                            TRUNCATE_TEXT_QTY,
+                            onlyShowBookmarks,
+                            bookmarkedCardIds,
+                            hideCtaIds,
+                            hideCtaTags,
+                        );
+                    if (isCategoriesContainer) {
+                        setFilters(prevFilters => prevFilters.map((filter) => {
+                            const { group, items } = filter;
+                            const urlStateValue = urlState[filterGroupPrefix + group];
+                            if (!urlStateValue) return filter;
+                            const urlStateArray = urlStateValue.split(',');
+                            return {
+                                ...filter,
+                                opened: true,
+                                items: items.map(item => ({
+                                    ...item,
+                                    selected: urlStateArray.includes(String(item.label)),
+                                })),
+                            };
+                        }));
+                    } else {
+                        // Use prevFilters to preserve transformation (including categoryMappings)
+                        setFilters(prevFilters => prevFilters.map((filter) => {
+                            const { group, items } = filter;
+                            const urlStateValue = urlState[filterGroupPrefix + group];
+                            if (!urlStateValue) return filter;
+                            const urlStateArray = urlStateValue.split(',');
+                            return {
+                                ...filter,
+                                opened: true,
+                                items: items.map(item => {
+                                    // Preserve nested items for categories
+                                    if (item.isCategory && item.items) {
+                                        return {
+                                            ...item,
+                                            items: item.items.map(nestedItem => ({
+                                                ...nestedItem,
+                                                selected: urlStateArray.includes(String(nestedItem.label)),
+                                            })),
+                                        };
+                                    }
+                                    return {
+                                        ...item,
+                                        selected: urlStateArray.includes(String(item.label)),
+                                    };
+                                }),
+                            };
+                        }));
+                    }
+
+                    const transitions = getTransitions(processedCards);
+                    if (sortOption.sort.toLowerCase() === 'eventsort') {
+                        while (transitions.size() > 0) {
+                            setTimeout(() => {
+                                nextTransition();
+                            }, transitions.dequeue().priority + ONE_SECOND_DELAY);
+                        }
+                    }
+
+                    // Preload first card image to improve LCP
+                    // Injects preload before React renders, saving 50-300ms
+                    preloadFirstCardImage(processedCards);
+
+                    batchedUpdates(() => {
+                        setCards(processedCards);
+                        setHasLoadedCards(true);
+                    });
+
+                    // check if the current page is greater than the last page
+                    const lastPage = Math.ceil(processedCards.length / resultsPerPage);
+                    if (currentPage > lastPage) {
+                        setCurrentPage(1);
+                    }
+
+                    if (!showEmptyFilters) {
+                        setFilters(prevFilters => removeEmptyFilters(prevFilters, processedCards));
+                    }
+                    setTimeout(() => {
+                        if (!scrollElementRef.current) return;
+                        if (processedCards.length === 0) return;
+                        if (currentPage === 1) return;
+                        const cardsToshow = processedCards.slice(0, resultsPerPage * currentPage);
+                        const getLastPageID = (resultsPerPage * currentPage) - resultsPerPage;
+                        /* istanbul ignore if */
+                        if (cardsToshow.length < getLastPageID) return;
+                        const lastID = scrollElementRef.current.children[getLastPageID];
+                        lastID.scrollIntoView();
+                    }, 100);
+                }).catch(() => {
+                    if (endPoint === collectionEndpoint && fallbackEndpoint) {
+                        getCards(fallbackEndpoint);
+                        return;
+                    }
+                    logLana({ message: 'failed to return processed cards', tags: 'collection' });
+                    setLoading(false);
+                    setApiFailure(true);
+                });
+        }
+
+        function visitorApiFallback(visitor, url) {
+            try {
+                const v = visitor.getVisitorId();
+                url.searchParams.set('mcgvid', v.getMarketingCloudVisitorID());
+                url.searchParams.set('sdid', v.getSupplementalDataID());
+                url.searchParams.set('mboxAAMB', v.getAudienceManagerBlob());
+                url.searchParams.set('mboxMCGLH', v.getAudienceManagerLocationHint());
+                getCards(url.toString());
+            } catch (e) {
+                getCards(collectionEndpoint);
+            }
+        }
+
+        function alloyApiFallback(visitor, url) {
+            const satellite = window._satellite; // eslint-disable-line no-underscore-dangle
+            if (window.alloy && window.edgeConfigId && satellite
+                && satellite.alloyConfigurePromise) {
+                satellite.alloyConfigurePromise
+                    .then(() => window.alloy('getIdentity'))
+                    .then((res) => {
+                        const ecid = getByPath(res, 'identity.ECID');
+                        const regionId = getByPath(res, 'edge.regionId');
+                        if (ecid && regionId) {
+                            url.searchParams.set('mcgvid', ecid);
+                            url.searchParams.set('mboxMCGLH', regionId);
+                            getCards(url.toString());
+                        } else {
+                            visitorApiFallback(visitor, url);
+                        }
+                    })
+                    .catch(() => {
+                        visitorApiFallback(visitor, url);
+                    });
+            } else {
+                visitorApiFallback(visitor, url);
+            }
+        }
+
+        function getVisitorData(visitorApi) {
+            const url = new URL(collectionEndpoint);
+            const revealId = useLastViewedSession && localStorage.getItem('targetValueRevealID');
+            if (revealId) url.searchParams.set('currentEntityId', revealId);
+            visitorApi
+                .then((visitor) => {
+                    const identity = window.alloy_getIdentity;
+                    if (identity) {
+                        identity
+                            .then((res) => {
+                                const ecid = getByPath(res, 'identity.ECID');
+                                const regionId = getByPath(res, 'edge.regionId');
+                                if (ecid && regionId) {
+                                    url.searchParams.set('mcgvid', ecid);
+                                    url.searchParams.set('mboxMCGLH', regionId);
+                                    getCards(url.toString());
+                                } else {
+                                    alloyApiFallback(visitor, url);
+                                }
+                            })
+                            .catch(() => {
+                                alloyApiFallback(visitor, url);
+                            });
+                    } else {
+                        alloyApiFallback(visitor, url);
+                    }
+                })
+                .catch(() => {
+                    getCards(collectionEndpoint);
+                });
+        }
+
+        /**
+         * @func visitorRetry
+         * @desc Visitor API is late loading often, this sets a recursive call
+         * in a setTimeout to run 20 times, and then fail the request.
+         *
+         * @returns {Void} - an updated state, thru calling getVisitorData which
+         * calls getCards
+         */
+        /* istanbul ignore next */
+        function visitorRetry() {
+            let retryCount = 0;
+
+            const timedRetry = () => {
+                setTimeout(() => {
+                    if (retryCount >= 20) {
+                        setLoading(false);
+
+                        setApiFailure(true);
+
+                        return;
+                    }
+
+                    const { // eslint-disable-line no-underscore-dangle
+                        __satelliteLoadedPromise: visitorPromiseRetry,
+                    } = window;
+
+                    if (visitorPromiseRetry) {
+                        getVisitorData(visitorPromiseRetry);
+                    }
+
+                    if (!visitorPromiseRetry && retryCount < 20) {
+                        timedRetry();
+                    }
+
+                    retryCount += 1;
+                }, 100);
+            };
+
+            timedRetry();
+        }
+        /* istanbul ignore if */
+        if (targetEnabled && visitorPromise) {
+            getVisitorData(visitorPromise);
+        }
+        /* istanbul ignore if */
+        if (targetEnabled && !visitorPromise) {
+            visitorRetry();
+        }
+
+        if (!targetEnabled && !partialLoadWithBackgroundFetch) {
+            getCards();
+        }
+        if (!targetEnabled && partialLoadWithBackgroundFetch) {
+            const collectionEndpointUrl = new URL(collectionEndpoint);
+            collectionEndpointUrl.searchParams.set('partialLoadCount', String(partialLoadCount));
+            setIsPartialLoad(true);
+            getCards(collectionEndpointUrl.toString()).then(() => {
+                getCards().then(() => {
+                    setIsPartialLoad(false);
+                });
+            });
+        }
+
+        function handleKeyDown(e) {
+            if (e.key === 'Tab') {
+                BODY.classList.add('tabbing');
+            }
+        }
+
+        function handleMouseDown() {
+            BODY.classList.remove('tabbing');
+        }
+
+        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('mousedown', handleMouseDown);
+    }, [visibleStamp, hasFetched]);
+
+    /**
+     * Saves cards to local storage and updates card w/ bookmarked data
+     * @returns {Void} - an updated state
+     */
+    useEffect(() => {
+        saveBookmarksToLocalStorage(bookmarkedCardIds);
+        setCards(getUpdatedCardBookmarkData(cards, bookmarkedCardIds));
+    }, [bookmarkedCardIds]);
+
+
+    /**
+     * Handles clearing state on showBookmarks
+     * @returns {Void} - an updated state
+     */
+    useEffect(() => {
+        if (showBookmarks) {
+            clearAllFilters();
+            setSearchQuery('');
+        }
+    }, [showBookmarks]);
+
+    /**
+     * Handles focus and escape on mobile filter toggle
+     * @returns {Void}
+     */
+    useEffect(() => {
+        if (showMobileFilters) {
+            if (filterItemRef && filterItemRef.current) {
+                filterItemRef.current.focusMobTitle();
+            }
+            document.addEventListener('keydown', handleMobileFilterEscape);
+        } else {
+            if (filterInfoRef && filterInfoRef.current) {
+                filterInfoRef.current.focus();
+            }
+            document.removeEventListener('keydown', handleMobileFilterEscape);
+        }
+
+        return () => {
+            document.removeEventListener('keydown', handleMobileFilterEscape);
+        };
+    }, [showMobileFilters]);
+
+    useEffect(() => {
+        /* istanbul ignore if */
+        if (box && !visibleStamp && isLazy) {
+            const io = new IntersectionObserver((entries) => {
+                if (entries[0].intersectionRatio <= 0) return;
+                setHasFetched(true);
+                setVisibleStamp(new Date().getTime());
+            });
+            io.observe(box.current);
+        }
+    }, [box]);
+
+    /**
+     **** Derived State ****
+     */
+
+    /**
+     * Array of filters chosen by the user
+     * @type {Array}
+     */
+    const activeFilterIds = getActiveFilterIds(filters);
+
+    /**
+     * Expand group/category filters to their child filters
+     * @type {Array}
+     */
+    const expandedFilterIds = expandGroupFiltersToChildren(activeFilterIds, hashedCategoryMappingsRef.current);
+
+    /**
+     * Grouped filter selections — preserves category boundaries so that
+     * AND/XOR logic applies between user selections, not within a category expansion.
+     * @type {Array<Array<string>>}
+     */
+    const groupedFilterSelections = getGroupedFilterSelections(activeFilterIds, hashedCategoryMappingsRef.current);
+
+    /**
+     * Array of filters panels (groupings) created by the author
+     * @type {Array}
+     */
+    const activePanels = getActivePanels(expandedFilterIds) || new Set();
+
+    /**
+     * Instance of CardFilterer class that handles returning subset of cards
+     * based off user interactions
+     *
+     * @type {Object}
+     */
+    const cardFilterer = new CardFilterer(
+        cards,
+        randomSortId,
+        sampleSize,
+        reservoirSize,
+        featuredCards,
+    );
+
+    /**
+     * @type {Function} getFilteredCollection
+     * @desc Closure around CardFilterer for reuse within context
+     * @returns {Object}
+     * */
+    const getFilteredCollection = () => cardFilterer
+        .sortCards(sortOption, sanitizedEventFilter, featuredCards, hideCtaIds, isFirstLoad, localFirstRecencyThreshold)
+        .keepBookmarkedCardsOnly(onlyShowBookmarks, bookmarkedCardIds, showBookmarks)
+        .keepCardsWithinDateRange()
+        .filterCards(expandedFilterIds, activePanels, filterLogic, FILTER_TYPES, currCategories, groupedFilterSelections)
+        .truncateList(totalCardLimit)
+        .searchCards(removeMarkDown(searchQuery), searchFields, cardStyle)
+        .removeCards(inclusionIds);
+
+    /**
+     * @type {Array} filteredCards: Filtered cards based off current state of page
+     * @type {Number} nextTransitionMs: Number for timed event sort transition
+     */
+    /* eslint-disable no-unused-vars */
+    const { filteredCards = [], nextTransitionMs = 0 } = getFilteredCollection();
+
+    // Remove collection from page if there are no cards to show for the selected Event Filters
+    useEffect(() => {
+        if (
+            originSelectionRef.current?.includes('events')
+            && sanitizedEventFilter.length > 0
+            && hasLoadedCards
+            && filteredCards.length === 0
+            && box.current
+        ) {
+            removeCollectionFromPage();
+        }
+    }, [filteredCards, hasLoadedCards, eventFilter]);
+
+    /**
+     * Subset of cards to show the user
+     * @type {Array}
+     */
+    const gridCards = timedCollection.length ? timedCollection : filteredCards;
+    let gridCardLen = gridCards.length;
+    if (isPartialLoad) {
+        gridCardLen = cardCount;
+    }
+
+    /**
+     * Total pages (used by Paginator Component)
+     * @type {Number}
+     */
+    const totalPages = getTotalPages(resultsPerPage, gridCardLen);
+
+    /**
+     * Number of cards to show (used by Load More component)
+     * @type {Number}
+     */
+    const numCardsToShow = getNumCardsToShow(resultsPerPage, currentPage, gridCardLen);
+
+    /**
+     * How many filters were selected - (used by Left Filter Panel)
+     * @type {Number}
+     */
+    const selectedFiltersItemsQty = getNumSelectedFilterItems(filters);
+
+    /**
+     * Conditions to Display A Form Of Pagination
+     * @type {Boolean}
+     */
+    const displayPagination = shouldDisplayPaginator(
+        paginationIsEnabled,
+        totalCardLimit,
+        gridCardLen,
+    );
+    /**
+     * Conditions to display the Load More Button
+     * @type {Boolean}
+     */
+    const displayLoadMore = displayPagination && paginationType === 'loadMore';
+
+    /**
+     * Conditions to display the Paginator Component
+     * @type {Boolean}
+     */
+    const displayPaginator = displayPagination && paginationType === 'paginator';
+
+    /**
+     * Conditions to display the Left Filter Panel Component
+     * @type {Boolean}
+     */
+    const displayLeftFilterPanel = filterPanelEnabled && filterPanelType === FILTER_PANEL.LEFT;
+
+    /**
+     * Whether at lease one card was returned by Card Filterer
+     * @type {Boolean}
+     */
+    const atLeastOneCard = gridCardLen > 0;
+
+    /**
+     * Where to place the Sort Popup (either left or right)
+     * @type {String} - Location of Sort Popup in Top Filter Panel View
+     */
+    const topPanelSortPopupLocation = filters.length > 0 && windowWidth < TABLET_MIN_WIDTH ?
+        SORT_POPUP_LOCATION.LEFT : SORT_POPUP_LOCATION.RIGHT;
+
+    /**
+     * How Long Paginator Component Should Be
+     * @type {Number} - Location of Sort Popup in Top Filter Panel View
+     */
+    const paginatorCount = DESKTOP_SCREEN_SIZE ? PAGINATION_COUNT.DESKTOP : PAGINATION_COUNT.MOBILE;
+
+    /**
+     * Whether we are using the top filter panel or not
+     * @type {Boolean}
+     */
+    const isTopFilterPanel = filterPanelType === FILTER_PANEL.TOP;
+
+    /**
+     * Whether we are using the top filter panel or not
+     * @type {Boolean}
+     */
+    const isLeftFilterPanel = filterPanelType === FILTER_PANEL.LEFT;
+
+    /**
+     * Ui options that cause grid to rerender necessitate the aria attribute being set
+     * @type {Boolean}
+     */
+    const isGridAreaLive =
+        filterPanelEnabled ||
+        searchEnabled ||
+        sortEnabled ||
+        paginationIsEnabled;
+
+    let filterNames = '';
+    filters.forEach((el) => {
+        el.items.filter(item => item.selected).forEach((item) => {
+            filterNames += `${item.label}, `;
+        });
+    });
+
+    /**
+     **** Class names ****
+     */
+
+    /**
+     * Class name for the authored theme:
+     * light, dark, darkest;
+     * @type {String}
+     */
+    const themeClass = classNames({
+        'consonant-u-themeLight': authoredMode === THEME_TYPE.LIGHT,
+        'consonant-u-themeDark': authoredMode === THEME_TYPE.DARK,
+        'consonant-u-themeDarkest': authoredMode === THEME_TYPE.DARKEST,
+    });
+
+    /**
+     * @param {*} filterList
+     * @param {*} categoryList
+     * @returns List of categories for the top pills
+     *          Prepends the "All Topics" pill to the list of categories
+     */
+    function getAuthoredCategories(filterList, categoryList) {
+        const categoryIds = filterList
+            .filter(filter => filter.id.includes('caas:product-categories'))
+            .map(item => item.id);
+
+        // Sorts category list based on authored order
+        const selectedCategories = categoryIds
+            .map(id => categoryList && categoryList.filter(category => category.id === id)[0]);
+
+        return [{
+            group: 'All Topics',
+            title: 'All Topics',
+            id: '',
+            items: [],
+        }, ...selectedCategories];
+    }
+
+    /**
+     * @returns List of all products from all categories for the 'All products' menu
+     *          Prepends the "All products" label to the list of categories
+     */
+    function getAllCategoryProducts() {
+        if (!authoredCategories) return [];
+        let allCategories = [];
+        for (const category of authoredCategories) {
+            if (category && category.items) {
+                for (const item of category.items) {
+                    item.fromCategory = true;
+                }
+                allCategories = allCategories.concat(category.items);
+            }
+        }
+
+        return {
+            group: 'All products',
+            id: 'caas:all-products',
+            items: allCategories,
+        };
+    }
+
+    /**
+     * @param {*} selectedCategories
+     * @param {*} groupId
+     * Sets the categories and filters based on the selected category
+     */
+    function categoryHandler(selectedCategories, groupId) {
+        const temp = [];
+        for (const category of selectedCategories) {
+            temp.push(category.id);
+        }
+        setCategories(temp);
+        setFilters((prevFilters) => {
+            prevFilters.pop();
+            const newGroup = authoredCategories.filter(category => category.id === groupId)[0];
+            if (!newGroup.items.length) {
+                const nextFilters = prevFilters.concat(getAllCategoryProducts());
+                return nextFilters;
+            }
+            prevFilters.push(newGroup);
+            return prevFilters;
+        });
+        setSelectedCategory(groupId);
+        setCurrentPage(1);
+    }
+
+    /**
+     * @param {*} category
+     * @returns The Authored icon for the category if exists,
+     *          otherwise returns the default icon from the tags or an empty string
+     */
+    function getCategoryIcon(category) {
+        const authoredIcon = authoredFilters
+            .filter(filter => filter.id === category.id)
+            .map(filter => filter.icon)
+            .toString();
+        return authoredIcon || category.icon || '';
+    }
+
+    const collectionStr = collectionIdentifier ? `${collectionIdentifier} | ` : '';
+    const filterStr = selectedFiltersItemsQty ? filterNames : 'No Filters';
+    const searchQueryStr = searchQuery || 'None';
+    const collectionAnalytics = `${collectionStr}Card Collection | Filters: ${filterStr}| Search Query: ${searchQueryStr}`;
+    /**
+     * Class name for the consonant wrapper:
+     * whether consonant wrapper contains left filter;
+     * @type {String}
+     */
+    const wrapperClass = classNames({
+        'consonant-Wrapper': true,
+        'consonant-Wrapper--32MarginContainer': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_100_VW_32_MARGIN,
+        'consonant-Wrapper--83PercentContainier': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_83_VW,
+        'consonant-Wrapper--1200MaxWidth': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_1200_PX,
+        'consonant-Wrapper--1600MaxWidth': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_1600_PX,
+        'consonant-Wrapper--1200MaxWidth Categories': isCategoriesContainer,
+        'consonant-Wrapper--carousel': isCarouselContainer,
+        'consonant-Wrapper--withLeftFilter': filterPanelEnabled && isLeftFilterPanel,
+    });
+
+    useEffect(() => {
+        if (isCategoriesContainer) {
+            setFilters((prevFilters) => {
+                const nextFilters = prevFilters.concat(getAllCategoryProducts());
+                return nextFilters;
+            });
+        }
+    }, []);
+
+    const carouselClass = classNames({
+        'modern-carousel': isModernCarousel || (isCarouselContainer && isMobile()),
+        'modern-carousel--light': isLightCarousel,
+    });
+
+    return (
+        <ConfigContext.Provider value={config}>
+            <ExpandableContext.Provider value={{ value: openDropdown, setValue: setOpenDropdown }} >
+                {/* eslint-disable-next-line max-len */}
+                {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions,jsx-a11y/click-events-have-key-events */}
+                <section
+                    ref={box}
+                    role="group"
+                    aria-label={title || 'Card Collection'}
+                    daa-lh={collectionAnalytics}
+                    daa-im={String(trackImpressions)}
+                    onClick={handleWindowClick}
+                    className={`${wrapperClass} ${themeClass}`}>
+                    <div className="consonant-Wrapper-inner">
+                        { isCategoriesContainer &&
+                        <Fragment>
+                            <h2 data-testid="consonant-TopFilters-categoriesTitle" className="consonant-TopFilters-categoriesTitle">
+                                {title}
+                            </h2>
+                            <div className="filters-category">
+                                {
+                                    authoredCategories.map((category) => {
+                                        if (!category) return null;
+                                        let selected = '';
+                                        if (category.id === selectedCategory) {
+                                            selected = 'selected';
+                                        }
+                                        return (
+                                            <button
+                                                key={category.id}
+                                                onClick={() => {
+                                                    categoryHandler(category.items, category.id);
+                                                }}
+                                                data-selected={selected}
+                                                data-testid={`category-button-${category.id}`}
+                                                data-group={category.group.replaceAll(' ', '').toLowerCase()}>
+                                                <img className="filters-category--icon" src={getCategoryIcon(category)} alt={category.icon && 'Category icon'} />
+                                                {category.title}
+                                            </button>
+                                        );
+                                    })
+                                }
+                            </div>
+                        </Fragment>
+                        }
+                        { displayLeftFilterPanel && isStandardContainer &&
+                        <div className="consonant-Wrapper-leftFilterWrapper">
+                            <LeftFilterPanel
+                                filters={filters}
+                                selectedFiltersQty={selectedFiltersItemsQty}
+                                windowWidth={windowWidth}
+                                onFilterClick={handleFilterGroupClick}
+                                onClearAllFilters={resetFiltersSearchAndBookmarks}
+                                onClearFilterItems={clearFilterItem}
+                                onCheckboxClick={handleCheckBoxChange}
+                                onCategoryToggle={handleCategoryToggle}
+                                onMobileFiltersToggleClick={handleMobileFiltersToggle}
+                                onSelectedFilterClick={handleCheckBoxChange}
+                                showMobileFilters={showMobileFilters}
+                                resQty={gridCardLen}
+                                bookmarkComponent={
+                                    <Bookmarks
+                                        showBookmarks={showBookmarks}
+                                        onClick={handleShowBookmarksFilterClick}
+                                        savedCardsCount={bookmarkedCardIds.length} />
+                                }
+                                searchComponent={
+                                    <Search
+                                        placeholderText={leftPanelSearchPlaceholder}
+                                        name="filtersSideSearch"
+                                        value={searchQuery}
+                                        autofocus={false}
+                                        onSearch={handleSearchInputChange} />
+                                }
+                                ref={filterItemRef} />
+                        </div>
+                        }
+                        <div className={`consonant-Wrapper-collection${isLoading ? ' is-loading' : ''} ${carouselClass}`}>
+                            { isTopFilterPanel && isStandardContainer &&
+                            <FiltersPanelTop
+                                filterPanelEnabled={filterPanelEnabled}
+                                filters={filters}
+                                searchQuery={searchQuery}
+                                windowWidth={windowWidth}
+                                resQty={gridCardLen}
+                                onCheckboxClick={handleCheckBoxChange}
+                                onCategoryToggle={handleCategoryToggle}
+                                onFilterClick={handleFilterGroupClick}
+                                onClearFilterItems={clearFilterItem}
+                                categories={currCategories}
+                                onClearAllFilters={resetFiltersSearchAndBookmarks}
+                                showLimitedFiltersQty={showLimitedFiltersQty}
+                                searchComponent={
+                                    <Search
+                                        placeholderText={topPanelSearchPlaceholder}
+                                        name="filtersTopSearch"
+                                        value={searchQuery}
+                                        autofocus={DESKTOP_SCREEN_SIZE}
+                                        onSearch={handleSearchInputChange} />
+                                }
+                                sortComponent={
+                                    <Popup
+                                        opened={sortOpened}
+                                        id="sort"
+                                        val={sortOption}
+                                        values={sortOptions}
+                                        onSelect={handleSortChange}
+                                        name="filtersTopSelect"
+                                        autoWidth
+                                        optionsAlignment={topPanelSortPopupLocation} />
+                                }
+                                onShowAllClick={handleShowAllTopFilters} />
+                            }
+                            { isLeftFilterPanel && isStandardContainer &&
+                            <LeftInfo
+                                enabled={filterPanelEnabled}
+                                filtersQty={filters.length}
+                                filters={filters}
+                                cardsQty={gridCardLen}
+                                selectedFiltersQty={selectedFiltersItemsQty}
+                                windowWidth={windowWidth}
+                                onMobileFiltersToggleClick={handleMobileFiltersToggle}
+                                searchComponent={(
+                                    <Search
+                                        placeholderText={searchPlaceholderText}
+                                        name="searchFiltersInfo"
+                                        value={searchQuery}
+                                        autofocus={false}
+                                        onSearch={handleSearchInputChange} />
+                                )}
+                                sortComponent={
+                                    <Popup
+                                        opened={sortOpened}
+                                        id="sort"
+                                        val={sortOption}
+                                        values={sortOptions}
+                                        onSelect={handleSortChange}
+                                        autoWidth={false}
+                                        optionsAlignment="right" />
+                                }
+                                sortOptions={sortOptions}
+                                ref={filterInfoRef} />
+                            }
+                            { atLeastOneCard && isStandardContainer &&
+                            <Fragment>
+                                <Grid
+                                    resultsPerPage={resultsPerPage}
+                                    pages={currentPage}
+                                    cards={gridCards}
+                                    forwardedRef={scrollElementRef}
+                                    onCardBookmark={handleCardBookmarking}
+                                    isAriaLiveActive={isGridAreaLive}
+                                    renderOverlay={renderOverlay} />
+                                {displayLoadMore &&
+                                <LoadMore
+                                    onClick={onLoadMoreClick}
+                                    show={numCardsToShow}
+                                    total={gridCardLen} />
+                                }
+                                {displayPaginator &&
+                                <Paginator
+                                    pageCount={paginatorCount}
+                                    currentPageNumber={currentPage}
+                                    totalPages={totalPages}
+                                    showItemsPerPage={resultsPerPage}
+                                    totalResults={gridCardLen}
+                                    onClick={setCurrentPage} />
+                                }
+                            </Fragment>}
+                            { atLeastOneCard && isCarouselContainer && !(cardStyle === 'custom-card') &&
+                            <CardsCarousel
+                                resQty={gridCardLen}
+                                cards={gridCards}
+                                cardStyle={cardStyle}
+                                carouselType={(isModernCarousel || isMobile()) ? 'modern' : 'default'}
+                                role="tablist"
+                                onCardBookmark={handleCardBookmarking} />
+                            }
+                            { atLeastOneCard && isCarouselContainer && (cardStyle === 'custom-card') &&
+                            <NoResultsView
+                                title="Not Supported"
+                                description="Using custom cards within a carousel layout is currently not supported. Please
+                                re-author the component"
+                                replaceValue="" />
+                            }
+                            { isLoading && !atLeastOneCard &&
+                            <Loader
+                                size={LOADER_SIZE.BIG}
+                                hidden={!totalCardLimit}
+                                absolute />
+                            }
+                            { !isApiFailure && !atLeastOneCard && !isLoading &&
+                            <NoResultsView
+                                title={noResultsTitle}
+                                description={noResultsDescription}
+                                replaceValue={searchQuery} />
+                            }
+                            { isApiFailure &&
+                            <NoResultsView
+                                title={apiFailureTitle}
+                                description={apiFailureDescription}
+                                replaceValue="" />
+                            }
+                        </div>
+                    </div>
+                </section>
+            </ExpandableContext.Provider>
+        </ConfigContext.Provider>
+    );
+};
+
+Container.propTypes = {
+    config: shape(configType),
+};
+
+Container.defaultProps = {
+    config: {},
+};
+
+export default Container;

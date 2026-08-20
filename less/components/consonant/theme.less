@@ -1,0 +1,778 @@
+/* Themes generation file */
+
+/* Available modificators:
+- .consonant-u-themeLight;
+- .consonant-u-themeLightest;
+- .consonant-u-themeDark;
+- .consonant-u-themeDarkest;
+*/
+
+/* Configuration */
+
+@consonantThemes: Light, Dark, Darkest;
+
+/* Default theme colors */
+
+@consonantBaseColor: #fff;
+
+/* Gray */
+
+@consonantGray50: @consonantBaseColor;
+@consonantGray75: @consonantBaseColor;
+@consonantGray100: @consonantBaseColor;
+@consonantGray200: #f4f4f4;
+@consonantGray300: #eaeaea;
+@consonantGray400: #d3d3d3;
+@consonantGray500: #bcbcbc;
+@consonantGray600: #959595;
+@consonantGray700: #747474;
+@consonantGray800: #505050;
+@consonantGray900: #323232;
+@consonantAccessibleGray: #767676;
+@consonantAccessibleLightGray: #949494;
+
+/* Blue */
+
+@consonantBlue400: #378ef0;
+@consonantBlue500: #2680eb;
+@consonantBlue600: #1473e6;
+@consonantBlue700: #0d66d0;
+
+@accessibleBlueLink: #3b63fb;
+@accessibleCTABgHover: #274dea;
+
+/* Red */
+
+@consonantRed400: #ec5b62;
+@consonantRed500: #e34850;
+@consonantRed600: #d7373f;
+@consonantRed700: #c9252d;
+
+/* Orange */
+
+@consonantOrange400: #f29423;
+@consonantOrange500: #e68619;
+@consonantOrange600: #da7b11;
+@consonantOrange700: #cb6f10;
+
+/* Green */
+
+@consonantGreen400: #33ab84;
+@consonantGreen500: #2d9d78;
+@consonantGreen600: #268e6c;
+@consonantGreen700: #12805c;
+
+/* Light theme colors */
+
+.themeDefs(Light) {
+    @consonantBaseColor: #fff;
+
+    /* Gray */
+
+    @consonantGray75: #fafafa;
+    @consonantGray100: #f5f5f5;
+    @consonantGray200: #eaeaea;
+    @consonantGray300: #e1e1e1;
+    @consonantGray400: #cacaca;
+    @consonantGray500: #b3b3b3;
+    @consonantGray600: #8e8e8e;
+    @consonantGray700: #6e6e6e;
+    @consonantGray800: #4b4b4b;
+    @consonantGray900: #2c2c2c;
+
+    /* Blue */
+
+    @consonantBlue400: #2680eb;
+    @consonantBlue500: #1473e6;
+    @consonantBlue600: #0d66d0;
+    @consonantBlue700: #095aba;
+
+    @accessibleBlueLink: #3b63fb;
+
+    /* Red */
+
+    @consonantRed400: #e34850;
+    @consonantRed500: #d7373f;
+    @consonantRed600: #c9252d;
+    @consonantRed700: #bb121a;
+
+    /* Orange */
+
+    @consonantOrange400: #e68619;
+    @consonantOrange500: #da7b11;
+    @consonantOrange600: #cb6f10;
+    @consonantOrange700: #bd640d;
+
+    /* Green */
+
+    @consonantGreen400: #2d9d78;
+    @consonantGreen500: #268e6c;
+    @consonantGreen600: #12805c;
+    @consonantGreen700: #107154;
+}
+
+/* Dark theme colors */
+
+.themeDefs(Dark) {
+    @consonantBaseColor: #323232;
+
+    /* Gray */
+
+    @consonantGray50: #252525;
+    @consonantGray75: #2f2f2f;
+    @consonantGray100: #323232;
+    @consonantGray200: #3e3e3e;
+    @consonantGray300: #4a4a4a;
+    @consonantGray400: #5a5a5a;
+    @consonantGray500: #6e6e6e;
+    @consonantGray600: #909090;
+    @consonantGray700: #b9b9b9;
+    @consonantGray800: #e3e3e3;
+    @consonantGray900: #fff;
+
+    /* Blue */
+
+    @consonantBlue400: #2680eb;
+    @consonantBlue500: #378ef0;
+    @consonantBlue600: #4b9cf5;
+    @consonantBlue700: #5aa9fa;
+
+    @accessibleBlueLink: #5da3f4;
+
+    /* Red */
+
+    @consonantRed400: #e34850;
+    @consonantRed500: #ec5b62;
+    @consonantRed600: #f76d74;
+    @consonantRed700: #ff7b82;
+
+    /* Orange */
+
+    @consonantOrange400: #e68619;
+    @consonantOrange500: #f29423;
+    @consonantOrange600: #f9a43f;
+    @consonantOrange700: #ffb55b;
+
+    /* Green */
+
+    @consonantGreen400: #2d9d78;
+    @consonantGreen500: #33ab84;
+    @consonantGreen600: #39b990;
+    @consonantGreen700: #3fc89c;
+}
+
+/* Darkest theme colors */
+
+.themeDefs(Darkest) {
+    @consonantBaseColor: #1e1e1e;
+
+    /* Gray */
+
+    @consonantGray50: #080808;
+    @consonantGray75: #1a1a1a;
+    @consonantGray100: #1e1e1e;
+    @consonantGray200: #2c2c2c;
+    @consonantGray300: #393939;
+    @consonantGray400: #494949;
+    @consonantGray500: #5c5c5c;
+    @consonantGray600: #7c7c7c;
+    @consonantGray700: #a2a2a2;
+    @consonantGray800: #c8c8c8;
+    @consonantGray900: #efefef;
+
+    /* Blue */
+
+    @consonantBlue400: #1473e6;
+    @consonantBlue500: #2680eb;
+    @consonantBlue600: #378ef0;
+    @consonantBlue700: #4b9cf5;
+
+    @accessibleBlueLink: #5da3f4;
+
+    /* Red */
+
+    @consonantRed400: #d7373f;
+    @consonantRed500: #e34850;
+    @consonantRed600: #ec5b62;
+    @consonantRed700: #f76d74;
+
+    /* Orange */
+
+    @consonantOrange400: #da7b11;
+    @consonantOrange500: #e68619;
+    @consonantOrange600: #f29423;
+    @consonantOrange700: #f9a43f;
+
+    /* Green */
+
+    @consonantGreen400: #268e6c;
+    @consonantGreen500: #2d9d78;
+    @consonantGreen600: #33ab84;
+    @consonantGreen700: #39b990;
+}
+
+/* Generate styles for each theme */
+
+.buildThemes(@index) when (@index < length(@consonantThemes) + 1) {
+    @name: extract(@consonantThemes, @index);
+
+    .consonant-u-theme@{name} {
+        .themeDefs(@name);
+
+        .consonant-CardsGrid .consonant {
+            &-FiltersInfo {
+                &-title,
+                &-results {
+                    color: @consonantGray900;
+                }
+            }
+
+            /* consonant-LeftFilters */
+
+            &-LeftFilters {
+                border-color: @consonantGray300;
+                background-color: @consonantBaseColor;
+
+                &-deskTitle {
+                    color: inherit;
+                }
+
+                .consonant-Search {
+                    &-inputTitle {
+                        color: @consonantGray800;
+                    }
+
+                    &-input {
+                        background-color: @consonantGray100;
+                        color: @consonantGray900;
+                    }
+                }
+
+                .consonant-ChosenFilter {
+                    color: @consonantGray800;
+                }
+
+                .consonant-LeftFilter {
+                    &-link,
+                    &-itemsItemName {
+                        color: @consonantGray900;
+                    }
+
+                    &.is-opened .consonant-LeftFilter-link {
+                        color: @consonantGray800;
+                    }
+
+                    &-itemsItem:hover {
+                        background-color: @consonantGray50;
+                    }
+                }
+            }
+
+            /* consonant-Pagination */
+
+            &-Pagination {
+                &-btn,
+                &-itemBtn,
+                &-summary {
+                    color: @consonantGray900;
+                }
+            }
+
+            /* consonant-ThreeFourthCard */
+
+            &-Card.three-fourths {
+                border-color: @consonantGray300;
+                background-color: @consonantBaseColor;
+
+                .consonant-Card {
+                    &-inner {
+                        background-color: @consonantBaseColor;
+
+                        @media @consonant-desktop-up {
+                            &:focus:after {
+                                border-color: @consonantBlue600;
+                            }
+                        }
+                    }
+
+                    &-header {
+                        background-color: @consonantGray300;
+                    }
+
+                    &-label {
+                        color: @consonantGray800;
+                    }
+
+                    &-title {
+                        color: @consonantGray900;
+                    }
+
+                    &-banner {
+                        color: @consonantBaseColor;
+                        background-color: @consonantBlue600;
+                    }
+
+                    &-badge {
+                        color: @consonantGray700;
+                        border-color: @consonantGray600;
+                        background-color: @consonantBaseColor;
+                    }
+                }
+            }
+
+            /* consonant-OneHalfCard */
+
+            &-Card.one-half {
+                border-color: @consonantGray300;
+                background-color: @consonantBaseColor;
+
+                .consonant-Card {
+                    &-inner {
+                        background-color: @consonantBaseColor;
+                    }
+
+                    &-header {
+                        background-color: @consonantGray300;
+                    }
+
+                    &-label {
+                        color: @consonantGray800;
+                    }
+
+                    &-title {
+                        color: @consonantGray900;
+                    }
+
+                    &-text {
+                        color: @consonantGray700;
+                    }
+
+                    &-banner {
+                        color: @consonantBaseColor;
+                        background-color: @consonantBlue600;
+                    }
+
+                    &-badge {
+                        color: @consonantGray700;
+                        border-color: @consonantGray600;
+                        background-color: @consonantBaseColor;
+                    }
+                }
+            }
+
+            /* consonant-TextCard */
+
+            &-Card.text-card {
+                border-color: @consonantGray300;
+                background-color: @consonantBaseColor;
+
+                .consonant-Card {
+                    &-inner {
+                        background-color: @consonantBaseColor;
+                    }
+
+                    &-header {
+                        background-color: @consonantBaseColor;
+                    }
+
+                    &-label {
+                        color: @consonantGray800;
+                    }
+
+                    &-title {
+                        color: @consonantGray900;
+                    }
+
+                    &-text {
+                        color: @consonantGray700;
+                    }
+
+                    &-banner {
+                        color: @consonantBaseColor;
+                        background-color: @consonantBlue600;
+                    }
+
+                    &-badge {
+                        color: @consonantGray700;
+                        border-color: @consonantGray600;
+                        background-color: @consonantBaseColor;
+                    }
+                }
+            }
+
+            /* consonant-Card.product-card */
+
+            &-Card.product {
+                border-color: @consonantGray300;
+                background-color: @consonantBaseColor;
+
+                .consonant-Card {
+                    &-inner {
+                        background-color: @consonantBaseColor;
+                    }
+
+                    &-title {
+                        color: @consonantGray900;
+                    }
+
+                    &-text {
+                        color: @consonantGray700;
+                    }
+                }
+            }
+
+            /* consonant-Card.icon-card */
+
+            &-Card.icon-card {
+                border-color: @consonantGray300;
+                background-color: @consonantBaseColor;
+
+                .consonant-Card {
+                    &-header {
+                        filter: contrast(0.5) saturate(1.5);
+                    }
+
+                    &-label {
+                        color: @consonantGray900;
+                    }
+
+                    &-title {
+                        color: @consonantGray900;
+                    }
+                }
+            }
+
+            /* consonant-DoubleWideCard */
+
+            &-Card.double-wide {
+                border-color: @consonantGray300;
+                background-color: @consonantBaseColor;
+
+                .consonant-Card {
+                    &-inner {
+                        background-color: @consonantBaseColor;
+
+                        @media @consonant-desktop-up {
+                            &:focus:after {
+                                border-color: @consonantBlue600;
+                            }
+                        }
+                    }
+
+                    &-title {
+                        color: @consonantGray900;
+                    }
+
+                    &-text {
+                        color: @consonantGray700;
+                    }
+
+                    &-label {
+                        color: @consonantGray800;
+                    }
+                }
+            }
+
+            /* consonant-FullCard */
+
+            &-Card.full-card {
+                border-color: @consonantGray500;
+                background-color: @consonantBaseColor;
+
+                .consonant-Card {
+                    &-inner {
+                        @media @consonant-desktop-up {
+                            &:focus:after {
+                                border-color: @consonantBlue600;
+                            }
+                        }
+
+                        &:before {
+                            border-color: @consonantBaseColor;
+                            box-shadow: 1px 1px 0 0 @consonantBaseColor;
+                        }
+                    }
+
+                    &-header {
+                        background-color: @consonantGray300;
+                    }
+
+                    &-banner {
+                        color: @consonantBaseColor;
+                        background-color: @consonantBlue600;
+                    }
+
+                    &-label {
+                        color: @consonantBaseColor;
+                    }
+
+                    &-title {
+                        color: @consonantGray400;
+                    }
+
+                    &-badge {
+                        color: @consonantGray700;
+                        border-color: @consonantGray600;
+                        background-color: @consonantBaseColor;
+                    }
+                }
+            }
+
+            /* consonant-HalfHeightCard */
+
+            &-Card.half-height {
+                .consonant-Card {
+                    &-title {
+                        color: @consonantBaseColor;
+                    }
+
+                    &-label {
+                        color: @consonantBaseColor;
+                    }
+
+                    &-banner {
+                        color: @consonantBaseColor;
+                        background-color: @consonantBlue600;
+                    }
+
+                    @media @consonant-desktop-up {
+                        &:focus:after {
+                            border-color: @consonantBlue600;
+                        }
+                    }
+                }
+            }
+
+            /* consonant-CardFooter */
+
+            &-CardFooter {
+                &--divider:last-child {
+                    border-color: @consonantGray300;
+                }
+            }
+        }
+
+        /* consonant-BookmarkInfobit */
+
+        .consonant-BookmarkInfobit {
+            @url: extract(@consonant-BookmarkInfobit-bookmarks, @index + 1);
+            @urlFilled: extract(@consonant-BookmarkInfobit-filled-bookmarks, @index + 1);
+
+            &.is-active .consonant-BookmarkInfobit-ico {
+                background-image: url(@urlFilled);
+            }
+
+            &-ico {
+                background-image: url(@url);
+            }
+
+            @media @consonant-desktop-up {
+                &:focus {
+                    outline-color: @consonantBlue600;
+                }
+            }
+        }
+
+        /* consonant-Tooltip */
+
+        .consonant-Tooltip {
+            color: @consonantBaseColor;
+            background-color: @consonantGray700;
+
+            &:after {
+                background-color: @consonantGray700;
+            }
+        }
+
+        /* .consonant-BtnInfobit */
+
+        .consonant-BtnInfobit {
+            border-color: @consonantGray800;
+            background-color: @consonantBaseColor;
+
+            &:not(&--cta) span {
+                color: @consonantGray800;
+            }
+
+            &:hover {
+                border-color: @consonantGray800;
+                background-color: @consonantGray800;
+            }
+
+            &:hover:not(&--cta) span {
+                color: @consonantBaseColor;
+            }
+
+            &:active {
+                border-color: @consonantGray900;
+                background-color: @consonantGray900;
+            }
+
+            &:active:not(&--cta) span {
+                color: @consonantBaseColor;
+            }
+
+            &:focus {
+                outline-color: @consonantBlue600;
+            }
+
+            &--cta {
+                border-color: @accessibleBlueLink;
+                background-color: @accessibleBlueLink;
+
+                &:hover {
+                    border-color: @accessibleCTABgHover;
+                    background-color: @accessibleCTABgHover;
+                }
+
+                &:active {
+                    border-color: @accessibleCTABgHover;
+                    background-color: @accessibleCTABgHover;
+                }
+            }
+        }
+
+        /* consonant-DateIntervalInfobit */
+
+        .consonant-DateIntervalInfobit {
+            color: @consonantGray700;
+        }
+
+        /* consonant-IconWithTextInfobit */
+
+        .consonant-IconWithTextInfobit {
+            &-text {
+                color: @consonantGray700;
+            }
+        }
+
+        /* consonant-LinkWithIcoInfobit */
+
+        .consonant-LinkWithIcoInfobit {
+            &:focus {
+                outline-color: @consonantBlue600;
+            }
+
+            span {
+                color: @consonantBlue500;
+            }
+
+            &:hover span {
+                color: @consonantBlue600;
+            }
+
+            &:active span {
+                color: @consonantBlue700;
+            }
+        }
+
+        /* consonant-LinkInfobit */
+
+        .consonant-LinkInfobit {
+            color: @accessibleBlueLink;
+
+            &:hover {
+                color: @consonantBlue600;
+            }
+
+            &:active {
+                color: @consonantBlue700;
+            }
+
+            &:focus {
+                outline-color: @consonantBlue600;
+            }
+        }
+
+        /* consonant-PriceInfobit */
+
+        .consonant-PriceInfobit {
+            &-price {
+                color: @consonantGray900;
+            }
+
+            &-term {
+                color: @consonantGray600;
+            }
+        }
+
+        /* consonant-ProgressInfobit */
+
+        .consonant-ProgressInfobit {
+            &-text {
+                color: @consonantGray700;
+            }
+
+            &-el {
+                background-color: @consonantBaseColor;
+                border-color: @consonantGray400;
+            }
+        }
+
+        /* consonant-RatingInfobit */
+
+        .consonant-RatingInfobit {
+            @empty-star: extract(@consonant-RatingInfobit-empty-stars, @index + 1);
+            @filled-star: extract(@consonant-RatingInfobit-filled-stars, @index + 1);
+
+            &-stars:before {
+                background-image: url(@empty-star);
+            }
+
+            &-stars:after {
+                background-image: url(@filled-star);
+            }
+
+            &-text {
+                color: @consonantGray600;
+            }
+        }
+
+        /* consonant-TextInfobit */
+
+        .consonant-TextInfobit {
+            color: @consonantGray700;
+        }
+
+        /* consonant-LoadMore */
+
+        .consonant-LoadMore {
+            &--overBg &-btn {
+                color: @consonantGray800;
+            }
+        }
+    }
+
+    .buildThemes(@index + 1);
+}
+
+/* Theme-specific styles  */
+
+.consonant-u-themeDark .consonant-CardsGrid .consonant-Card.full-card .consonant-Card-content,
+.consonant-u-themeDarkest .consonant-CardsGrid .consonant-Card.full-card .consonant-Card-content {
+    background:
+        transparent
+        linear-gradient(
+            180deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.5) 15%,
+            rgba(255, 255, 255, 0.8) 40%,
+            rgba(255, 255, 255, 1) 100%
+        ) 0% 0% no-repeat padding-box;
+}
+
+.consonant-u-themeDark .consonant-CardsGrid .consonant-Card.half-height .consonant-Card-header:after,
+.consonant-u-themeDarkest .consonant-CardsGrid .consonant-Card.half-height .consonant-Card-header:after {
+    background:
+        transparent
+        linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.01) 35%,
+            rgba(255, 255, 255, 0.75) 60%,
+            rgba(255, 255, 255, 0.85) 100%
+        ) 0 0% no-repeat;
+}
+
+/* Start themes generation */
+
+.buildThemes(1);

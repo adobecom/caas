@@ -1,0 +1,238 @@
+{
+  "cards":[
+    {
+      "id": "1.0.0",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2099-12-31T21:45:00Z"
+      },
+      "tags": [
+        {
+          "id": "caas:location/stamford-ct"
+        },
+        {
+          "id": "caas:product-category/photography/image-editing"
+        },
+        {
+          "id": "caas:event/create-now"
+        }
+      ],
+      "overlays": {
+        "banner": {
+          "backgroundColor": "white",
+          "fontColor": "darkgray",
+          "description": "Event",
+          "icon": ""
+        },
+        "logo": {},
+        "label": {},
+        "videoButton": {}
+      },
+      "contentArea": {
+        "detailText": "Photography",
+        "title": "Create now event in Stamford, CT teaching image editing for Photographers",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "1:2",
+        "backgroundImage": ""
+      },
+      "footer": [
+        {
+          "divider": true,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
+              "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
+              "cardSaveText": "Save Card",
+              "cardUnsaveText": "Unsave Card"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "primary",
+              "text": "Go to Event",
+              "href": ""
+            }
+          ]
+        }
+      ],
+      "cardDate": "2020-07-02T09:41:35.933Z",
+      "startDate": "2023-01-01T00:00:00.000Z",
+      "endDate": "2024-01-01T00:00:00.000Z",
+      "country": "ch"
+    },
+    {
+      "id": "1.0.1",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2099-12-31T21:45:00Z"
+      },
+      "tags": [
+        {
+          "id": "caas:location/stamford-ct"
+        },
+        {
+          "id": "caas:product-category/graphic-design/image-editing"
+        },
+        {
+          "id": "caas:event/create-now"
+        }
+      ],
+      "overlays": {
+        "banner": {
+          "backgroundColor": "white",
+          "fontColor": "darkgray",
+          "description": "Live1",
+          "icon": ""
+        },
+        "logo": {},
+        "label": {},
+        "videoButton": {}
+      },
+      "contentArea": {
+        "detailText": "Graphic Design",
+        "title": "Create now event in Stamford, CT teaching image editing for Graphic Designers",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "3:4",
+        "backgroundImage": ""
+      },
+      "footer": [
+        {
+          "divider": true,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
+              "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
+              "cardSaveText": "Save Card",
+              "cardUnsaveText": "Unsave Card"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "primary",
+              "text": "Go to Event",
+              "href": ""
+            }
+          ]
+        }
+      ],
+      "cardDate": "2020-07-02T09:41:35.933Z",
+      "startDate": "2023-01-01T00:00:00.000Z",
+      "endDate": "2025-01-01T00:00:00.000Z",
+      "country": "xx"
+    },
+    {
+      "id": "1.0.2",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2099-12-31T21:45:00Z"
+      },
+      "tags": [
+        {
+          "id": "caas:location/stamford-ct"
+        },
+        {
+          "id": "caas:product-category/graphic-design/image-editing"
+        },
+        {
+          "id": "caas:event/create-now"
+        }
+      ],
+      "overlays": {
+        "banner": {
+          "backgroundColor": "white",
+          "fontColor": "darkgray",
+          "description": "Featured",
+          "icon": ""
+        },
+        "logo": {},
+        "label": {},
+        "videoButton": {}
+      },
+      "contentArea": {
+        "detailText": "Graphic Design",
+        "title": "Create now event in Stamford, CT teaching image editing for Graphic Designers",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "3:4",
+        "backgroundImage": ""
+      },
+      "footer": [
+        {
+          "divider": true,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
+              "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
+              "cardSaveText": "Save Card",
+              "cardUnsaveText": "Unsave Card"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "primary",
+              "text": "Go to Event",
+              "href": ""
+            }
+          ]
+        }
+      ],
+      "cardDate": "2020-07-02T09:41:35.933Z",
+      "startDate": "2023-01-01T00:00:00.000Z",
+      "endDate": "2025-01-01T00:00:00.000Z",
+      "country": "xx"
+    },
+    {
+      "id": "1.0.italic",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2099-12-31T21:45:00Z"
+      },
+      "tags": [],
+      "overlays": {
+        "banner": {},
+        "logo": {},
+        "label": {},
+        "videoButton": {}
+      },
+      "contentArea": {
+        "detailText": "",
+        "title": "Test {**Bold**} & {*Italic*} Title",
+        "description": "Here’s a {**bold**} word and an {*italic*} word.",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "3:4",
+        "backgroundImage": ""
+      },
+      "footer": [
+        {
+          "divider": false,
+          "left": [],
+          "center": [],
+          "right": []
+        }
+      ],
+      "cardDate": "2020-07-02T09:41:35.933Z",
+      "startDate": "2023-01-01T00:00:00.000Z",
+      "endDate": "2025-01-01T00:00:00.000Z",
+      "country": "ch"
+    }
+  ]
+}

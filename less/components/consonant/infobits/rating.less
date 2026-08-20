@@ -1,0 +1,68 @@
+@empty-stars: extract(@consonant-RatingInfobit-empty-stars, 1);
+@filled-stars: extract(@consonant-RatingInfobit-filled-stars, 1);
+
+/*Available modifiers:
+- .consonant-RatingInfobit--negMargin;
+*/
+
+.consonant {
+    &-RatingInfobit {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        max-width: 100%;
+        margin-left: 16px;
+
+        &--negMargin {
+            margin-right: @consonant-RatingInfobit-textMinWidth * -1;
+        }
+
+        &-stars {
+            display: block;
+            position: relative;
+            height: @consonant-RatingInfobit-starHeigth;
+            max-width: 100%;
+            white-space: nowrap;
+
+            &:before {
+                content: '';
+                display: block;
+                position: relative;
+                height: @consonant-RatingInfobit-starHeigth;
+                background: transparent url(@empty-stars) repeat-x 0 0;
+                background-size: @consonant-RatingInfobit-starWidth @consonant-RatingInfobit-starHeigth;
+                z-index: 1;
+                overflow: hidden;
+            }
+
+            &:after {
+                content: '';
+                display: block;
+                position: absolute;
+                height: @consonant-RatingInfobit-starHeigth;
+                background: transparent url(@filled-stars) repeat-x 0 0;
+                background-size: @consonant-RatingInfobit-starWidth @consonant-RatingInfobit-starHeigth;
+                z-index: 2;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                overflow: hidden;
+            }
+        }
+
+        &-text {
+            max-width: 35%;
+            margin-left: 7px;
+
+            .font(0.875rem, 1.375rem, 400, @consonantGray600);
+
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+    }
+}
+
+.set-rating-width(@consonant-RatingInfobit-maxStarsQty);
+.set-rating(@consonant-RatingInfobit-stepsQty);
+.set-rating-stars-as-cover(@consonant-RatingInfobit-starsAsCover);

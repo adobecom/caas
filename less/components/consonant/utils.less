@@ -1,0 +1,234 @@
+.font (
+    @size: 0.875rem,
+    @line-height: 1rem,
+    @weight: normal,
+    @color: @consonantDarkGrey200,
+    @align: left
+) {
+    font-family: "adobe-clean", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: @size;
+    line-height: @line-height;
+    font-weight: @weight;
+    color: @color;
+    font-style: normal;
+    word-break: break-word;
+    text-align: @align;
+}
+
+.no-font {
+    font-size: 0;
+    line-height: 0;
+}
+
+.margin-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.no-margin {
+    margin: 0;
+}
+
+.full-width {
+    width: 100%;
+    max-width: 100%;
+}
+
+.position-absolute-0 {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.hide-all {
+    display: none;
+}
+
+.hide-overflow {
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+}
+
+.no-border-no-outline {
+    border: 0;
+    outline: 0;
+}
+
+.focused {
+    &:focus {
+        outline: 0;
+    }
+
+    @media @consonant-desktop-up {
+        &:focus {
+            outline: 2px solid @consonantFocusedColor;
+        }
+    }
+}
+
+.focus-pseudo-element {
+    position: relative;
+
+    &:focus:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        border: 2px solid @consonantBlue600;
+        z-index: 1;
+    }
+}
+
+.focus-shadow-round {
+    position: relative;
+
+    &:focus {
+        &:after {
+            border-radius: 18px;
+            content: "";
+            display: block;
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 0;
+            margin: -2px;
+            transition: box-shadow 0.13s ease-out, margin 0.13s ease-out;
+            box-shadow: 0 0 0 2px @consonantFocusedColor;
+        }
+    }
+}
+
+.focus-underline {
+    &:focus {
+        box-shadow: 0 2px 0 0 @consonantFocusedColor;
+    }
+}
+
+.card-hover {
+    &:hover {
+        box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+        transition: box-shadow @consonantTransitionTime @consonantTransitionFunc;
+    }
+}
+
+// .card-hover-img,
+.card-hover-header {
+    // [class *= "-img"],
+    [class *= "-header"] {
+        position: relative;
+
+        &:after {
+            position: absolute;
+            content: '';
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            z-index: 0;
+            background-color: rgba(0, 0, 0, 0.35);
+            opacity: 0;
+            transition: opacity @consonantTransitionTime @consonantTransitionFunc;
+        }
+    }
+
+    // &:hover [class *= "-img"]:after,
+    &:hover [class *= "-header"]:after {
+        opacity: 1;
+    }
+}
+
+.set-rating-width (@i) when (@i > 0) {
+    .consonant-RatingInfobit[data-stars = "@{i}"] {
+        min-width: @i * @consonant-RatingInfobit-starWidth + @consonant-RatingInfobit-textMinWidth;
+    }
+
+    .consonant-RatingInfobit[data-stars = "@{i}"] .consonant-RatingInfobit-stars:before {
+        width: @i * @consonant-RatingInfobit-starWidth;
+    }
+
+    .set-rating-width (@i - 1);
+}
+
+.set-rating (@i) when (@i >= 0) {
+    .consonant-RatingInfobit-stars[data-rating = "@{i}"]:after {
+        width: @i * 1%;
+    }
+
+    .set-rating (@i - 1);
+}
+
+.set-rating-stars-as-cover (@i) when (@i >= 0) {
+    .consonant-RatingInfobit-stars[data-rating = "@{i}"]:after {
+        background-size: cover;
+    }
+
+    .set-rating-stars-as-cover (@i - 1);
+}
+
+.set-cell-max-width (@i) when (@i >= 0) {
+    [data-cells = "@{i}"]:not(.consonant-CardFooter-row--fluid) .consonant-CardFooter-cell {
+        max-width: 100% / @i;
+    }
+
+    .set-cell-max-width (@i - 1);
+}
+
+.line-clamp(@lines) {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: @lines;
+    overflow: hidden;
+}
+
+.video-button-styles {
+    display: block;
+    position: absolute;
+    width: @consonantCardVideoIcoSize;
+    height: @consonantCardVideoIcoSize;
+    right: 24px;
+    bottom: 16px;
+
+    .no-font;
+
+    background: transparent url(@consonantCardPlayIcoData) no-repeat 0 0;
+    background-size: cover;
+    z-index: 1;
+    cursor: pointer;
+    transform-origin: 50% 50%;
+    transition: transform @consonantTransitionTime @consonantTransitionFunc;
+
+    &:hover,
+    &:active {
+        transform: scale(1.1);
+        background: transparent url(@consonantCardPlayIcoHoverData) no-repeat 0 0;
+        transition: transform @consonantTransitionTime @consonantTransitionFunc;
+    }
+
+    &.center {
+        width: 72px;
+        height: 72px;
+        right: calc(50% - 36px);
+        bottom: calc(50% - 36px);
+        opacity: 0.66;
+    }
+
+    &.center:hover {
+        width: 72px;
+        height: 72px;
+        right: calc(50% - 36px);
+        bottom: calc(50% - 36px);
+        background-size: 72px;
+        opacity: 1;
+    }
+}
+
+.hide {
+    display: none !important;
+}

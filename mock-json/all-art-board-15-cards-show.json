@@ -1,0 +1,578 @@
+{
+	"cards": [
+		{
+			"id": "1",
+			"showCard": {
+				"from": "2020-10-01T20:00:00Z",
+				"until": "2099-12-31T21:45:00Z"
+			},
+			"styles": {
+				"typeOverride": "3:2",
+				"backgroundImage": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/cat.png"
+			},
+			"overlays": {
+				"banner": {},
+				"logo": {
+					"src": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/clock.svg"
+				},
+				"label": {
+					"text": "Some Label"
+				},
+				"videoButton": {}
+			},
+			"tags": [],
+			"contentArea": {
+				"detailText": "",
+				"title": "1 - Descended from astronomers rock and the headline keeps going to three lines.",
+				"description": "",
+				"dateDetailText": {}
+			},
+			"footer": [
+				{
+					"divider": true,
+					"left": [],
+					"center": [],
+					"right": [{
+						"type": "button",
+						"style": "call-to-action",
+						"text": "Read More",
+						"href": "https://www.google.com"
+					}]
+				}
+			],
+			"search": {
+				"meta": {
+					"author": "Sanjay Rai",
+					"description": "Some meta description",
+					"tags": "Analytics"
+				}
+			}
+		},
+		{
+			"id": "2",
+			"showCard": {
+				"from": "2020-10-01T20:00:00Z",
+				"until": "2099-12-31T21:45:00Z"
+			},
+			"styles": {
+				"typeOverride": "3:2",
+				"backgroundImage": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/cat.png"
+			},
+			"overlays": {
+				"banner": {
+					"backgroundColor": "#EBC526",
+					"fontColor": "#002148",
+					"description": "Featured",
+					"icon": ""
+				},
+				"logo": {},
+				"label": {},
+				"videoButton": {}
+			},
+			"tags": [],
+			"contentArea": {
+				"detailText": "Details",
+				"title": "2 - Descended from astronomers rock and onto two lines.",
+				"description": "",
+				"dateDetailText": {}
+			},
+			"footer": [
+				{
+					"divider": true,
+					"left": [],
+					"center": [],
+					"right": [
+						{
+							"type": "link",
+							"href": "https://www.google.com",
+							"text": "Text link"
+						},
+						{
+							"type": "button",
+							"style": "call-to-action",
+							"text": "Read More"
+						}
+					]
+				}
+			],
+			"search": {
+				"meta": {
+					"author": "Sanjay Rai",
+					"description": "Some meta description",
+					"tags": "Analytics"
+				}
+			}
+		},
+		{
+			"id": "3",
+			"showCard": {
+				"from": "2020-10-01T20:00:00Z",
+				"until": "2099-12-31T21:45:00Z"
+			},
+			"styles": {
+				"typeOverride": "3:2",
+				"backgroundImage": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/cat.png"
+			},
+			"overlays": {
+				"banner": {},
+				"logo": {},
+				"label": {},
+				"videoButton": {
+					"url": "https://www.youtube.com/embed/HIbAz29L-FA?modestbranding=1&playsinline=0&showinfo=0&enablejsapi=1&origin=http://localhost:54059&widgetid=1"
+				}
+			},
+			"tags": [],
+			"contentArea": {
+				"detailText": "Details",
+				"title": "3 - Descended from astronomers rock and onto two lines.",
+				"description": "The wizard quickly jinxed the gnomes before they vaporized. Zelda might fix the job growth plans very quickly on Monday.",
+				"dateDetailText": {}
+			},
+			"footer": [
+				{
+					"divider": true,
+					"left": [
+					],
+					"center": [],
+					"right": [
+						{
+							"type": "link",
+							"href": "https://www.google.com",
+							"text": "Text link"
+						},
+						{
+							"type": "button",
+							"style": "call-to-action",
+							"text": "Read More"
+						}
+					]
+				}
+			],
+			"search": {
+				"meta": {
+					"author": "Sanjay Rai",
+					"description": "Some meta description",
+					"tags": "Analytics"
+				}
+			}
+		},
+		{
+			"id": "4",
+			"showCard": {
+				"from": "2020-10-01T20:00:00Z",
+				"until": "2099-12-31T21:45:00Z"
+			},
+			"styles": {
+				"typeOverride": "3:2",
+				"backgroundImage": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/cat.png"
+			},
+			"overlays": {
+				"banner": {},
+				"logo": {
+					"src": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/looka.png",
+					"alt": "",
+					"backgroundColor": "#ffffff",
+					"borderColor": "#ffffff"
+				},
+				"label": {},
+				"videoButton": {}
+			},
+			"tags": [],
+			"contentArea": {
+				"detailText": "Details",
+				"title": "4 - Descended from astronomers rock and onto two lines.",
+				"description": "Author Name",
+				"dateDetailText": {}
+			},
+			"footer": [
+				{
+					"divider": true,
+					"left": [
+						{
+							"type": "icon-with-text",
+							"src": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/heart.svg",
+							"text": "4"
+						},
+						{
+							"type": "icon-with-text",
+							"src": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/upload.svg",
+							"text": "8"
+						},
+						{
+							"type": "icon",
+							"src": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg"
+						}
+					],
+					"center": [],
+					"right": [{
+						"type": "button",
+						"style": "call-to-action",
+						"text": "Read More"
+					}]
+				}
+			],
+			"search": {
+				"meta": {
+					"author": "Sanjay Rai",
+					"description": "Some meta description",
+					"tags": "Analytics"
+				}
+			}
+		},
+		{
+			"id": "5",
+			"showCard": {
+				"from": "2020-10-01T20:00:00Z",
+				"until": "2099-12-31T21:45:00Z"
+			},
+			"styles": {
+				"typeOverride": "3:2",
+				"backgroundImage": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/cat.png"
+			},
+			"overlays": {
+				"banner": {},
+				"logo": {},
+				"label": {},
+				"videoButton": {}
+			},
+			"tags": [],
+			"contentArea": {
+				"detailText": "Details",
+				"title": "5 - Descended from astronomers rock and onto two lines.",
+				"description": "",
+				"dateDetailText": {}
+			},
+			"footer": [
+				{
+					"divider": false,
+					"left": [{
+						"type": "progress-bar",
+						"label": "Progress",
+						"completionText": "6/10",
+						"percentage": "60%",
+						"color": "#1473E6"
+					}],
+					"center": [],
+					"right": []
+				},
+				{
+					"divider": true,
+					"left": [{
+						"type": "icon-with-text",
+						"src": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/bookmark.svg",
+						"text": "10 Tuts"
+					}],
+					"center": [{
+						"type": "icon-with-text",
+						"src": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/clock.svg",
+						"text": "117 min"
+					}],
+					"right": [{
+						"type": "icon-with-text",
+						"src": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/eye.svg",
+						"text": "68k"
+					}]
+				}
+			],
+			"search": {
+				"meta": {
+					"author": "Sanjay Rai",
+					"description": "Some meta description",
+					"tags": "Analytics"
+				}
+			}
+		},
+		{
+			"id": "6",
+			"showCard": {
+				"from": "2020-10-01T20:00:00Z",
+				"until": "2099-12-31T21:45:00Z"
+			},
+			"styles": {
+				"typeOverride": "3:2",
+				"backgroundImage": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/cat.png"
+			},
+			"overlays": {
+				"banner": {},
+				"logo": {},
+				"label": {},
+				"videoButton": {}
+			},
+			"tags": [],
+			"contentArea": {
+				"detailText": "Details",
+				"title": "6 - Descended from astronomers rock and onto two lines.",
+				"description": "",
+				"dateDetailText": {}
+			},
+			"footer": [
+				{
+					"divider": true,
+					"left": [{
+						"type": "progress-bar",
+						"label": "Progress",
+						"completionText": "6/10",
+						"percentage": "60%",
+						"color": "#1473E6"
+					}],
+					"center": [],
+					"right": []
+				}
+			],
+			"search": {
+				"meta": {
+					"author": "Sanjay Rai",
+					"description": "Some meta description",
+					"tags": "Analytics"
+				}
+			}
+		},
+		{
+			"id": "7",
+			"showCard": {
+				"from": "2020-10-01T20:00:00Z",
+				"until": "2099-12-31T21:45:00Z"
+			},
+			"styles": {
+				"typeOverride": "1:1",
+				"backgroundImage": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/cat-large.png"
+			},
+			"overlays": {
+				"banner": {},
+				"logo": {},
+				"label": {},
+				"videoButton": {}
+			},
+			"tags": [],
+			"contentArea": {
+				"detailText": "",
+				"title": "7 - Descended from astronomers rock and onto two lines.",
+				"description": "",
+				"dateDetailText": {}
+			},
+			"footer": [],
+			"search": {
+				"meta": {
+					"author": "Sanjay Rai",
+					"description": "Some meta description",
+					"tags": "Analytics"
+				}
+			}
+		},
+		{
+			"id": "8",
+			"showCard": {
+				"from": "2020-10-01T20:00:00Z",
+				"until": "2099-12-31T21:45:00Z"
+			},
+			"styles": {
+				"typeOverride": "1:1",
+				"backgroundImage": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/cat-large.png"
+			},
+			"overlays": {
+				"banner": {
+					"backgroundColor": "#EBC526",
+					"fontColor": "#002148",
+					"description": "Featured"
+				},
+				"logo": {},
+				"label": {},
+				"videoButton": {}
+			},
+			"tags": [],
+			"contentArea": {
+				"detailText": "Details",
+				"title": "8 - Descended from astronomers rock and onto two lines.",
+				"description": "",
+				"dateDetailText": {}
+			},
+			"footer": [],
+			"search": {
+				"meta": {
+					"author": "Sanjay Rai",
+					"description": "Some meta description",
+					"tags": "Analytics"
+				}
+			}
+		},
+		{
+			"id": "9",
+			"showCard": {
+				"from": "2020-10-01T20:00:00Z",
+				"until": "2099-12-31T21:45:00Z"
+			},
+			"styles": {
+				"typeOverride": "1:1",
+				"backgroundImage": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/cat-large.png"
+			},
+			"overlays": {
+				"banner": {},
+				"logo": {},
+				"label": {},
+				"videoButton": {
+					"url": "https://www.youtube.com/watch?v=hY7m5jjJ9mM&ab_channel=TigerFunnyWorks"
+				}
+			},
+			"tags": [],
+			"contentArea": {
+				"detailText": "Details",
+				"title": "9 - Descended from astronomers rock and onto two lines.",
+				"description": "",
+				"dateDetailText": {}
+			},
+			"footer": [],
+			"search": {
+				"meta": {
+					"author": "Sanjay Rai",
+					"description": "Some meta description",
+					"tags": "Analytics"
+				}
+			}
+		},
+		{
+			"id": "10",
+			"showCard": {
+				"from": "2020-10-01T20:00:00Z",
+				"until": "2099-12-31T21:45:00Z"
+			},
+			"styles": {
+				"typeOverride": "1:1",
+				"backgroundImage": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/cat-large.png"
+			},
+			"overlays": {
+				"banner": {},
+				"logo": {
+					"src": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/looka.png",
+					"alt": "",
+					"backgroundColor": "#ffffff",
+					"borderColor": "#ffffff"
+				},
+				"label": {},
+				"videoButton": {
+					"url": "https://www.youtube.com/watch?v=hY7m5jjJ9mM&ab_channel=TigerFunnyWorks"
+				}
+			},
+			"tags": [],
+			"contentArea": {
+				"detailText": "Details",
+				"title": "10 - Descended from astronomers rock and onto two lines.",
+				"description": "",
+				"dateDetailText": {}
+			},
+			"footer": [],
+			"search": {
+				"meta": {
+					"author": "Sanjay Rai",
+					"description": "Some meta description",
+					"tags": "Analytics"
+				}
+			}
+		},
+		{
+			"id": "11",
+			"showCard": {
+				"from": "2020-10-01T20:00:00Z",
+				"until": "2099-12-31T21:45:00Z"
+			},
+			"styles": {
+				"typeOverride": "full-card",
+				"backgroundImage": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/cat-large.png"
+			},
+			"overlays": {
+				"banner": {},
+				"logo": {},
+				"label": {},
+				"videoButton": {}
+			},
+			"tags": [],
+			"contentArea": {
+				"detailText": "",
+				"title": "11 - Check out cats in Lorem",
+				"description": "",
+				"dateDetailText": {}
+			},
+			"footer": [],
+			"search": {
+				"meta": {
+					"author": "Sanjay Rai",
+					"description": "Some meta description",
+					"tags": "Analytics"
+				}
+			}
+		},
+		{
+			"id": "12",
+			"showCard": {
+				"from": "2020-10-01T20:00:00Z",
+				"until": "2099-12-31T21:45:00Z"
+			},
+			"styles": {
+				"typeOverride": "full-card",
+				"backgroundImage": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/cat-large.png"
+			},
+			"overlays": {
+				"banner": {
+					"backgroundColor": "#EBC526",
+					"fontColor": "#002148",
+					"description": "Badge"
+				},
+				"logo": {},
+				"label": {},
+				"videoButton": {}
+			},
+			"tags": [],
+			"contentArea": {
+				"detailText": "Details",
+				"title": "12 - Check out cats in Lorem onto two lines.",
+				"description": "",
+				"dateDetailText": {}
+			},
+			"footer": [],
+			"search": {
+				"meta": {
+					"author": "Sanjay Rai",
+					"description": "Some meta description",
+					"tags": "Analytics"
+				}
+			}
+		},
+		{
+			"id": "13",
+			"showCard": {
+				"from": "2020-10-01T20:00:00Z",
+				"until": "2099-12-31T21:45:00Z"
+			},
+			"styles": {
+				"typeOverride": "full-card",
+				"backgroundImage": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/cat-large.png"
+			},
+			"overlays": {
+				"banner": {
+					"backgroundColor": "#EBC526",
+					"fontColor": "#002148",
+					"description": "Featured"
+				},
+				"logo": {},
+				"label": {},
+				"videoButton": {
+					"url": "https://www.youtube.com/watch?v=hY7m5jjJ9mM&ab_channel=TigerFunnyWorks"
+				}
+			},
+			"tags": [],
+			"contentArea": {
+				"detailText": "Details",
+				"title": "13 - Check out cats in Lorem onto two lines.",
+				"description": "",
+				"dateDetailText": {}
+			},
+			"footer": [],
+			"search": {
+				"meta": {
+					"author": "Sanjay Rai",
+					"description": "Some meta description",
+					"tags": "Analytics"
+				}
+			}
+		}
+	]
+}

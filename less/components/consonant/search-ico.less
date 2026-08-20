@@ -1,0 +1,41 @@
+.consonant {
+    &-SearchIco {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-sizing: border-box;
+        align-self: stretch;
+        height: 32px;
+        padding-left: 20px;
+        padding-right: 20px;
+        border: 0;
+        outline: 0;
+        background-color: transparent;
+        transition: background-color @consonantTransitionTime / 2 @consonantTransitionFunc;
+
+        .no-font;
+
+        &:active,
+        &:hover {
+            background-color: fade(@consonantLightGrey200, 30%);
+        }
+
+        span {
+            display: block;
+            width: @consonant-SearchIco-size;
+            height: @consonant-SearchIco-size;
+            background: transparent url(@consonant-SearchIco-data) no-repeat 0 0;
+            background-size: contain;
+        }
+
+        @media @consonant-desktop-up {
+            padding-left: 18px;
+            padding-right: 18px;
+            border: 2px solid transparent;
+
+            &:focus {
+                border-color: @consonantFocusedColor;
+            }
+        }
+    }
+}

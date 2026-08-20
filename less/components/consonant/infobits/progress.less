@@ -1,0 +1,61 @@
+/* Available modifiers:
+- .consonant-ProgressInfobit-text--italic;
+*/
+
+.consonant {
+    &-ProgressInfobit {
+        min-width: 0;
+        max-width: 100%;
+        width: 100%;
+        margin-left: 16px;
+
+        &-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-self: flex-start;
+            margin-bottom: 5px;
+        }
+
+        &-text {
+            display: block;
+            max-width: 100%;
+            padding-right: 8px;
+
+            .font(0.875rem, 1.375rem, 700, @consonantGray700);
+
+            text-transform: uppercase;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            letter-spacing: 0.14px;
+            overflow: hidden;
+
+            &:last-of-type {
+                padding-right: 0;
+            }
+
+            &--italic {
+                font-style: italic;
+            }
+        }
+
+        &-el {
+            position: relative;
+            width: 100%;
+            height: @consonant-ProgressInfobit-el-height;
+            background-color: @consonantBaseColor;
+            border: 1px solid @consonantGray400;
+            border-radius: 5px;
+        }
+
+        &-val {
+            position: absolute;
+            top: -1px;
+            bottom: -1px;
+            left: -1px;
+            z-index: 1;
+            border-radius: 5px;
+
+            .no-font;
+        }
+    }
+}

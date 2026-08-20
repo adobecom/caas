@@ -1,0 +1,357 @@
+{
+  "cards": [
+    {
+      "id": "card-photoshop-only",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2099-12-31T21:45:00Z"
+      },
+      "tags": [
+        {
+          "id": "4x24/l1s1"
+        }
+      ],
+      "overlays": {
+        "banner": {
+          "backgroundColor": "#31A8FF",
+          "fontColor": "#FFFFFF",
+          "description": "Photoshop Only",
+          "icon": ""
+        },
+        "logo": {},
+        "label": {},
+        "videoButton": {}
+      },
+      "contentArea": {
+        "detailText": "TEST CARD",
+        "title": "Card #1: Tagged with PHOTOSHOP only",
+        "description": "This card should appear when: (1) Photoshop filter is selected, (2) Creative Cloud group is selected",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "1:2",
+        "backgroundImage": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/cat.png"
+      },
+      "footer": [
+        {
+          "divider": true,
+          "left": [],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "call-to-action",
+              "text": "Read More",
+              "href": "https://www.google.com"
+            }
+          ]
+        }
+      ],
+      "cardDate": "2024-01-01T09:00:00.000Z"
+    },
+    {
+      "id": "card-creative-cloud-tag",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2099-12-31T21:45:00Z"
+      },
+      "tags": [
+        {
+          "id": "4x24/egtb"
+        }
+      ],
+      "overlays": {
+        "banner": {
+          "backgroundColor": "#FF0000",
+          "fontColor": "#FFFFFF",
+          "description": "Creative Cloud Tag",
+          "icon": ""
+        },
+        "logo": {},
+        "label": {},
+        "videoButton": {}
+      },
+      "contentArea": {
+        "detailText": "TEST CARD",
+        "title": "Card #2: Tagged with CREATIVE-CLOUD tag (NOT a product)",
+        "description": "This card should NOT appear when Creative Cloud group is selected, because it's tagged with the group ID itself, not any of its child products",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "1:2",
+        "backgroundImage": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/cat.png"
+      },
+      "footer": [
+        {
+          "divider": true,
+          "left": [],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "call-to-action",
+              "text": "Read More",
+              "href": "https://www.google.com"
+            }
+          ]
+        }
+      ],
+      "cardDate": "2024-01-02T09:00:00.000Z"
+    },
+    {
+      "id": "card-photoshop-illustrator",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2099-12-31T21:45:00Z"
+      },
+      "tags": [
+        {
+          "id": "4x24/l1s1"
+        },
+        {
+          "id": "4x24/l3zk"
+        }
+      ],
+      "overlays": {
+        "banner": {
+          "backgroundColor": "#FF9A00",
+          "fontColor": "#FFFFFF",
+          "description": "Multiple Products",
+          "icon": ""
+        },
+        "logo": {},
+        "label": {},
+        "videoButton": {}
+      },
+      "contentArea": {
+        "detailText": "TEST CARD",
+        "title": "Card #3: Tagged with PHOTOSHOP and ILLUSTRATOR",
+        "description": "This card should appear when: (1) Photoshop filter is selected, (2) Illustrator filter is selected, (3) Creative Cloud group is selected",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "1:2",
+        "backgroundImage": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/cat.png"
+      },
+      "footer": [
+        {
+          "divider": true,
+          "left": [],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "call-to-action",
+              "text": "Read More",
+              "href": "https://www.google.com"
+            }
+          ]
+        }
+      ],
+      "cardDate": "2024-01-03T09:00:00.000Z"
+    },
+    {
+      "id": "card-acrobat-only",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2099-12-31T21:45:00Z"
+      },
+      "tags": [
+        {
+          "id": "4x24/82so"
+        }
+      ],
+      "overlays": {
+        "banner": {
+          "backgroundColor": "#DC3545",
+          "fontColor": "#FFFFFF",
+          "description": "Acrobat Only",
+          "icon": ""
+        },
+        "logo": {},
+        "label": {},
+        "videoButton": {}
+      },
+      "contentArea": {
+        "detailText": "TEST CARD",
+        "title": "Card #4: Tagged with ACROBAT only (Document Cloud)",
+        "description": "This card should appear when: (1) Acrobat filter is selected, (2) Document Cloud group is selected. Should NOT appear when Creative Cloud group is selected.",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "1:2",
+        "backgroundImage": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/cat.png"
+      },
+      "footer": [
+        {
+          "divider": true,
+          "left": [],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "call-to-action",
+              "text": "Read More",
+              "href": "https://www.google.com"
+            }
+          ]
+        }
+      ],
+      "cardDate": "2024-01-04T09:00:00.000Z"
+    },
+    {
+      "id": "card-indesign-premiere",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2099-12-31T21:45:00Z"
+      },
+      "tags": [
+        {
+          "id": "4x24/epi9"
+        },
+        {
+          "id": "4x24/j6cp"
+        }
+      ],
+      "overlays": {
+        "banner": {
+          "backgroundColor": "#9900FF",
+          "fontColor": "#FFFFFF",
+          "description": "Multiple CC Products",
+          "icon": ""
+        },
+        "logo": {},
+        "label": {},
+        "videoButton": {}
+      },
+      "contentArea": {
+        "detailText": "TEST CARD",
+        "title": "Card #5: Tagged with INDESIGN and PREMIERE PRO",
+        "description": "This card should appear when: (1) InDesign filter is selected, (2) Premiere Pro filter is selected, (3) Creative Cloud group is selected",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "1:2",
+        "backgroundImage": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/cat.png"
+      },
+      "footer": [
+        {
+          "divider": true,
+          "left": [],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "call-to-action",
+              "text": "Read More",
+              "href": "https://www.google.com"
+            }
+          ]
+        }
+      ],
+      "cardDate": "2024-01-05T09:00:00.000Z"
+    },
+    {
+      "id": "card-analytics-target",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2099-12-31T21:45:00Z"
+      },
+      "tags": [
+        {
+          "id": "4x24/i1di"
+        },
+        {
+          "id": "4x24/8hpv"
+        }
+      ],
+      "overlays": {
+        "banner": {
+          "backgroundColor": "#28A745",
+          "fontColor": "#FFFFFF",
+          "description": "Experience Cloud",
+          "icon": ""
+        },
+        "logo": {},
+        "label": {},
+        "videoButton": {}
+      },
+      "contentArea": {
+        "detailText": "TEST CARD",
+        "title": "Card #6: Tagged with ANALYTICS and TARGET (Experience Cloud)",
+        "description": "This card should appear when: (1) Analytics filter is selected, (2) Target filter is selected, (3) Experience Cloud group is selected",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "1:2",
+        "backgroundImage": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/cat.png"
+      },
+      "footer": [
+        {
+          "divider": true,
+          "left": [],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "call-to-action",
+              "text": "Read More",
+              "href": "https://www.google.com"
+            }
+          ]
+        }
+      ],
+      "cardDate": "2024-01-06T09:00:00.000Z"
+    },
+    {
+      "id": "card-no-products",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2099-12-31T21:45:00Z"
+      },
+      "tags": [
+        {
+          "id": "7o1v/4ami"
+        }
+      ],
+      "overlays": {
+        "banner": {
+          "backgroundColor": "#6C757D",
+          "fontColor": "#FFFFFF",
+          "description": "No Products",
+          "icon": ""
+        },
+        "logo": {},
+        "label": {},
+        "videoButton": {}
+      },
+      "contentArea": {
+        "detailText": "TEST CARD",
+        "title": "Card #7: NO product tags (only topic tags)",
+        "description": "This card should appear when NO product filters are selected. Should disappear when any product or group filter is selected.",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "1:2",
+        "backgroundImage": "https://caas-chimera.s3-us-west-1.amazonaws.com/img/cat.png"
+      },
+      "footer": [
+        {
+          "divider": true,
+          "left": [],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "call-to-action",
+              "text": "Read More",
+              "href": "https://www.google.com"
+            }
+          ]
+        }
+      ],
+      "cardDate": "2024-01-07T09:00:00.000Z"
+    }
+  ],
+  "isHashed": true
+}

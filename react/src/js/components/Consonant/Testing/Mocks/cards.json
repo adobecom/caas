@@ -1,0 +1,1256 @@
+[
+    {
+        "id": "3",
+        "appliesTo": [
+            {
+                "id": "namespace-1/tag1"
+            }
+        ],
+        "showCard": {
+            "from": "2020-10-01T20:00:00Z",
+            "until": "2099-12-31T21:45:00Z"
+        },
+        "styles": {
+            "typeOverride": "3:2",
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
+        },
+        "overlays": {
+            "banner": {
+                "description": "Some Banner Description",
+                "backgroundColor": "#CB6F10",
+                "fontColor": "#FFFFFF",
+                "icon": "https://some-url.com/some-icon.svg"
+            },
+            "logo": {
+                "src": "somg.svg",
+                "alt": "logo-alt-text",
+                "backgroundColor": "#000000",
+                "borderColor": "#ffffff"
+            },
+            "label": {
+                "description": "Some Badge Text"
+            },
+            "videoButton": {
+                "url": "https://some-url.com/some-video-url.mp4"
+            }
+        },
+        "tags": [],
+        "contentArea": {
+            "detailText": "some details",
+            "title": "3 - Infobit",
+            "description": "Some Description",
+            "dateDetailText": {
+                "startTime": "2021-10-11T21:00:00.000Z",
+                "endTime": "2021-10-11T21:00:00.000Z"
+            }
+        },
+        "footer": [
+            {
+                "divider": false,
+                "left": [
+                    {
+                        "type": "bookmark",
+                        "saveCardIcon": "https://some-url.com/some-saved-bookmark-icon.svg",
+                        "unsaveCardIcon": "https://some-url.com/some-unsave-bookmark-icon.svg",
+                        "cardSaveText": "Save Card",
+                        "cardUnsaveText": "Unsave Card"
+                    },
+                    {
+                        "type": "icon-with-text",
+                        "src": "https://some-url.com/some-icon.svg",
+                        "text": "117 min"
+                    }
+                ],
+                "center": [],
+                "right": [
+                    {
+                        "type": "date-interval",
+                        "startTime": "2021-10-11T21:00:00.000Z",
+                        "endTime": "2021-10-11T21:00:00.000Z"
+                    }
+                ]
+            }
+        ],
+        "search": {},
+        "cardDate": "2020-10-19T05:42:36.871Z",
+        "ctaLink": "https://www.some-url.com"
+    },
+    {
+        "id": "4",
+        "appliesTo": [
+            {
+                "id": "namespace-1/tag2"
+            }
+        ],
+        "showCard": {
+            "from": "2020-10-01T20:00:00Z",
+            "until": "2099-12-31T21:45:00Z"
+        },
+        "styles": {
+            "typeOverride": "3:2",
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
+        },
+        "overlays": {
+            "banner": {
+                "description": "Some Banner Description",
+                "backgroundColor": "#CB6F10",
+                "fontColor": "#FFFFFF",
+                "icon": "https://some-url.com/some-icon.svg"
+            },
+            "logo": {},
+            "label": {},
+            "videoButton": {
+                "url": "https://some-url.com/some-video-url.mp4"
+            }
+        },
+        "tags": [],
+        "contentArea": {
+            "detailText": "",
+            "title": "Some Title 5",
+            "description": "",
+            "dateDetailText": {
+                "startTime": "2021-10-11T21:00:00.000Z"
+            }
+        },
+        "footer": [
+            {
+                "divider": false,
+                "left": [
+                    {
+                        "type": "icon",
+                        "src": "https://some-url.com/some-bookmark-icon.svg"
+                    },
+                    {
+                        "type": "date",
+                        "text": "10 tuts"
+                    }
+                ],
+                "center": [
+                    {
+                        "type": "icon",
+                        "src": "https://some-url.com/some-icon.svg"
+                    },
+                    {
+                        "type": "text",
+                        "text": "117 min"
+                    }
+                ],
+                "right": [
+                    {
+                        "type": "icon-with-text",
+                        "src": "https://some-url.com/some-icon.svg",
+                        "text": "68k"
+                    }
+                ]
+            }
+        ],
+        "search": {},
+        "cardDate": "2020-10-19T05:42:36.871Z",
+        "ctaLink": "https://www.some-url.com"
+    },
+    {
+        "id": "5",
+        "appliesTo": [
+            {
+                "id": "namespace-1/tag3"
+            }
+        ],
+        "showCard": {
+            "from": "2020-10-01T20:00:00Z",
+            "until": "2099-12-31T21:45:00Z"
+        },
+        "styles": {
+            "typeOverride": "3:2",
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
+        },
+        "overlays": {
+            "banner": {
+                "description": "Some Banner Description",
+                "backgroundColor": "#CB6F10",
+                "fontColor": "#FFFFFF",
+                "icon": "https://some-url.com/some-icon.svg"
+            },
+            "logo": {},
+            "label": {},
+            "videoButton": {
+                "url": "https://some-url.com/some-video-url.mp4"
+            }
+        },
+        "tags": [],
+        "contentArea": {
+            "detailText": "",
+            "title": "5 - infobit",
+            "description": "",
+            "dateDetailText": {
+                "endTime": "2021-10-11T21:00:00.000Z"
+            }
+        },
+        "footer": [
+            {
+                "divider": true,
+                "left": [],
+                "center": [
+                    {
+                        "type": "icon-with-text",
+                        "src": "https://some-url.com/some-icon.svg",
+                        "text": "4"
+                    },
+                    {
+                        "type": "icon-with-text",
+                        "src": "https://some-url.com/some-icon.svg",
+                        "text": 8
+                    },
+                    {
+                        "type": "icon",
+                        "src": "https://some-url.com/some-saved-bookmark-icon.svg"
+                    }
+                ],
+                "right": []
+            }
+        ],
+        "cardDate": "2020-10-19T05:42:36.871Z",
+        "ctaLink": "https://www.some-url.com"
+    },
+    {
+        "id": "6",
+        "appliesTo": [
+            {
+                "id": "namespace-1/tag4"
+            }
+        ],
+        "showCard": {
+            "from": "2020-10-01T20:00:00Z",
+            "until": "2099-12-31T21:45:00Z"
+        },
+        "styles": {
+            "typeOverride": "3:2",
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
+        },
+        "overlays": {
+            "banner": {
+                "description": "Some Banner Description",
+                "backgroundColor": "#CB6F10",
+                "fontColor": "#FFFFFF",
+                "icon": "https://some-url.com/some-icon.svg"
+            },
+            "logo": {},
+            "label": {},
+            "videoButton": {
+                "url": "https://some-url.com/some-video-url.mp4"
+            }
+        },
+        "tags": [],
+        "contentArea": {
+            "detailText": "some details",
+            "title": "6 - infobit",
+            "description": "",
+            "dateDetailText": {}
+        },
+        "footer": [
+            {
+                "divider": true,
+                "left": [],
+                "center": [],
+                "right": [
+                    {
+                        "type": "button",
+                        "style": "call-to-action",
+                        "text": "Button"
+                    }
+                ]
+            }
+        ],
+        "cardDate": "2020-10-19T05:42:36.871Z",
+        "ctaLink": "https://www.some-url.com"
+    },
+    {
+        "id": "10",
+        "appliesTo": [
+            {
+                "id": "namespace-1/tag5"
+            }
+        ],
+        "showCard": {
+            "from": "2020-10-01T20:00:00Z",
+            "until": "2099-12-31T21:45:00Z"
+        },
+        "styles": {
+            "typeOverride": "3:2",
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
+        },
+        "overlays": {
+            "banner": {
+                "description": "Some Banner Description uniq",
+                "backgroundColor": "#CB6F10",
+                "fontColor": "#FFFFFF",
+                "icon": "https://some-url.com/some-icon.svg"
+            },
+            "logo": {},
+            "label": {},
+            "videoButton": {
+                "url": "https://some-url.com/some-video-url.mp4"
+            }
+        },
+        "tags": [],
+        "contentArea": {
+            "detailText": "",
+            "title": "10 - Infobit",
+            "description": "Some Description",
+            "dateDetailText": {}
+        },
+        "footer": [
+            {
+                "divider": true,
+                "left": [
+                    {
+                        "type": "icon",
+                        "src": "https://some-url.com/some-icon.svg"
+                    },
+                    {
+                        "type": "icon",
+                        "src": "https://some-url.com/some-icon.svg"
+                    }
+                ],
+                "center": [],
+                "right": [
+                    {
+                        "type": "button",
+                        "style": "call-to-action",
+                        "text": "Button"
+                    }
+                ]
+            }
+        ],
+        "cardDate": "2020-10-19T05:42:36.871Z",
+        "ctaLink": "https://www.some-url.com"
+    },
+    {
+        "id": "12",
+        "appliesTo": [
+            {
+                "id": "namespace-1/tag4"
+            }
+        ],
+        "showCard": {
+            "from": "2020-10-01T20:00:00Z",
+            "until": "2099-12-31T21:45:00Z"
+        },
+        "styles": {
+            "typeOverride": "3:2",
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
+        },
+        "overlays": {
+            "banner": {
+                "description": "Some Banner Description",
+                "backgroundColor": "#CB6F10",
+                "fontColor": "#FFFFFF",
+                "icon": "https://some-url.com/some-icon.svg"
+            },
+            "logo": {},
+            "label": {},
+            "videoButton": {
+                "url": "https://some-url.com/some-video-url.mp4"
+            }
+        },
+        "tags": [],
+        "contentArea": {
+            "detailText": "",
+            "title": "12 - Infobit",
+            "description": "",
+            "dateDetailText": {}
+        },
+        "footer": [
+            {
+                "divider": true,
+                "left": [
+                    {
+                        "type": "icon",
+                        "src": "https://some-url.com/some-icon.svg"
+                    },
+                    {
+                        "type": "icon",
+                        "src": "https://some-url.com/some-icon.svg"
+                    }
+                ],
+                "center": [],
+                "right": [
+                    {
+                        "type": "button",
+                        "style": "call-to-action",
+                        "text": "Button"
+                    }
+                ]
+            }
+        ],
+        "cardDate": "2020-10-19T05:42:36.871Z",
+        "ctaLink": "https://www.some-url.com"
+    },
+    {
+        "id": "N",
+        "appliesTo": [
+            {
+                "id": "namespace-1/tag5"
+            }
+        ],
+        "showCard": {
+            "from": "2020-10-01T20:00:00Z",
+            "until": "2099-12-31T21:45:00Z"
+        },
+        "styles": {
+            "typeOverride": "3:2",
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
+        },
+        "overlays": {
+            "banner": {
+                "description": "Some Banner Description",
+                "backgroundColor": "#CB6F10",
+                "fontColor": "#FFFFFF",
+                "icon": "https://some-url.com/some-icon.svg"
+            },
+            "logo": {},
+            "label": {},
+            "videoButton": {
+                "url": "https://some-url.com/some-video-url.mp4"
+            }
+        },
+        "tags": [],
+        "contentArea": {
+            "detailText": "",
+            "title": "14 Infobit",
+            "description": "",
+            "dateDetailText": {}
+        },
+        "footer": [
+            {
+                "divider": true,
+                "left": [
+                    {
+                        "type": "rating",
+                        "totalStars": 5,
+                        "starsFilled": 2.5,
+                        "label": "1.4"
+                    }
+                ],
+                "center": [],
+                "right": [
+                    {
+                        "type": "button",
+                        "style": "call-to-action",
+                        "text": "Button"
+                    }
+                ]
+            }
+        ],
+        "cardDate": "2020-10-19T05:42:36.871Z",
+        "ctaLink": "https://www.some-url.com"
+    },
+    {
+        "id": "11",
+        "appliesTo": [
+            {
+                "id": "namespace-1/tag6"
+            }
+        ],
+        "showCard": {
+            "from": "2020-10-01T20:00:00Z",
+            "until": "2099-12-31T21:45:00Z"
+        },
+        "styles": {
+            "typeOverride": "3:2",
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
+        },
+        "overlays": {
+            "banner": {
+                "description": "Some Banner Description",
+                "backgroundColor": "#CB6F10",
+                "fontColor": "#FFFFFF",
+                "icon": "https://some-url.com/some-icon.svg"
+            },
+            "logo": {},
+            "label": {},
+            "videoButton": {
+                "url": "https://some-url.com/some-video-url.mp4"
+            }
+        },
+        "tags": [],
+        "contentArea": {
+            "detailText": "",
+            "title": "11 - Infobit",
+            "description": "",
+            "dateDetailText": {}
+        },
+        "footer": [
+            {
+                "divider": true,
+                "left": [
+                    {
+                        "type": "price",
+                        "price": "$29.99",
+                        "term": "month"
+                    }
+                ],
+                "center": [],
+                "right": [
+                    {
+                        "type": "button",
+                        "style": "call-to-action",
+                        "text": "Button"
+                    }
+                ]
+            }
+        ],
+        "cardDate": "2020-10-19T05:42:36.871Z",
+        "ctaLink": "https://www.some-url.com"
+    },
+    {
+        "id": "7",
+        "appliesTo": [
+            {
+                "id": "namespace-1/tag7"
+            }
+        ],
+        "showCard": {
+            "from": "2020-10-01T20:00:00Z",
+            "until": "2099-12-31T21:45:00Z"
+        },
+        "styles": {
+            "typeOverride": "3:2",
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
+        },
+        "overlays": {
+            "banner": {
+                "description": "Some Banner Description",
+                "backgroundColor": "#CB6F10",
+                "fontColor": "#FFFFFF",
+                "icon": "https://some-url.com/some-icon.svg"
+            },
+            "logo": {},
+            "label": {},
+            "videoButton": {
+                "url": "https://some-url.com/some-video-url.mp4"
+            }
+        },
+        "contentArea": {
+            "detailText": "",
+            "title": "7 - Infobit",
+            "description": "",
+            "dateDetailText": {}
+        },
+        "footer": [
+            {
+                "left": [],
+                "center": [
+                    {
+                        "type": "link",
+                        "href": "https://www.some-url.com",
+                        "text": "Click here"
+                    }
+                ],
+                "right": [
+                    {
+                        "type": "button",
+                        "href": "https://www.some-url.com",
+                        "text": "Button"
+                    }
+                ]
+            }
+        ],
+        "cardDate": "2020-10-19T05:42:36.871Z",
+        "ctaLink": "https://www.some-url.com"
+    },
+    {
+        "id": "13",
+        "appliesTo": [
+            {
+                "id": "namespace2/tag8"
+            }
+        ],
+        "showCard": {
+            "from": "2020-10-01T20:00:00Z",
+            "until": "2099-12-31T21:45:00Z"
+        },
+        "styles": {
+            "typeOverride": "3:2",
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
+        },
+        "overlays": {
+            "banner": {
+                "description": "Some Banner Description",
+                "backgroundColor": "#CB6F10",
+                "fontColor": "#FFFFFF",
+                "icon": "https://some-url.com/some-icon.svg"
+            },
+            "logo": {},
+            "label": {},
+            "videoButton": {
+                "url": "https://some-url.com/some-video-url.mp4"
+            }
+        },
+        "tags": [],
+        "contentArea": {
+            "detailText": "",
+            "title": "13 Infobit",
+            "description": "",
+            "dateDetailText": {}
+        },
+        "footer": [
+            {
+                "divider": true,
+                "left": [
+                    {
+                        "type": "icon",
+                        "src": "https://some-url.com/some-icon.svg"
+                    },
+                    {
+                        "type": "icon",
+                        "src": "https://some-url.com/some-icon.svg"
+                    }
+                ],
+                "center": [
+                    {
+                        "type": "icon-with-text",
+                        "src": "https://some-url.com/some-icon.svg",
+                        "text": "3.7"
+                    }
+                ],
+                "right": [
+                    {
+                        "type": "button",
+                        "style": "call-to-action",
+                        "text": "$9.99"
+                    }
+                ]
+            }
+        ],
+        "cardDate": "2020-10-19T05:42:36.871Z",
+        "ctaLink": "https://www.some-url.com"
+    },
+    {
+        "id": "14",
+        "showCard": {
+            "from": "2020-10-01T20:00:00Z",
+            "until": "2099-12-31T21:45:00Z"
+        },
+        "styles": {
+            "typeOverride": "3:2",
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
+        },
+        "overlays": {
+            "banner": {
+                "description": "Some Banner Description",
+                "backgroundColor": "#CB6F10",
+                "fontColor": "#FFFFFF",
+                "icon": "https://some-url.com/some-icon.svg"
+            },
+            "logo": {},
+            "label": {},
+            "videoButton": {
+                "url": "https://some-url.com/some-video-url.mp4"
+            }
+        },
+        "tags": [],
+        "contentArea": {
+            "detailText": "",
+            "title": "14 - Infobit",
+            "description": "",
+            "dateDetailText": {}
+        },
+        "footer": [
+            {
+                "left": [
+                    {
+                        "type": "icon-with-text",
+                        "src": "https://some-url.com/some-icon.svg",
+                        "text": "68k"
+                    }
+                ],
+                "center": [],
+                "right": [
+                    {
+                        "type": "button",
+                        "style": "call-to-action",
+                        "text": "Button"
+                    }
+                ]
+            }
+        ],
+        "cardDate": "2020-10-19T05:42:36.871Z",
+        "ctaLink": "https://www.some-url.com"
+    },
+    {
+        "id": "8",
+        "title": "Some Title 9",
+        "appliesTo": [
+            {
+                "id": "namespace2/tag10"
+            }
+        ],
+        "showCard": {
+            "from": "2020-10-01T20:00:00Z",
+            "until": "2099-12-31T21:45:00Z"
+        },
+        "styles": {
+            "typeOverride": "3:2",
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
+        },
+        "overlays": {
+            "banner": {
+                "description": "Some Banner Description",
+                "backgroundColor": "#CB6F10",
+                "fontColor": "#FFFFFF",
+                "icon": "https://some-url.com/some-icon.svg"
+            },
+            "logo": {},
+            "label": {},
+            "videoButton": {
+                "url": "https://some-url.com/some-video-url.mp4"
+            }
+        },
+        "tags": [],
+        "contentArea": {
+            "detailText": "",
+            "title": "8 - Infobit",
+            "description": "",
+            "dateDetailText": {}
+        },
+        "footer": [
+            {
+                "left": [
+                    {
+                        "type": "icon-with-text",
+                        "src": "https://some-url.com/some-icon.svg",
+                        "text": "68k"
+                    }
+                ],
+                "center": [],
+                "right": [
+                    {
+                        "type": "button",
+                        "style": "call-to-action",
+                        "text": "Button"
+                    }
+                ]
+            }
+        ],
+        "cardDate": "2020-10-19T05:42:36.871Z",
+        "ctaLink": "https://www.some-url.com"
+    },
+    {
+        "id": "9",
+        "appliesTo": [
+            {
+                "id": "namespace2/tag11"
+            }
+        ],
+        "showCard": {
+            "from": "2020-10-01T20:00:00Z",
+            "until": "2099-12-31T21:45:00Z"
+        },
+        "styles": {
+            "typeOverride": "3:2",
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
+        },
+        "overlays": {
+            "banner": {
+                "description": "Some Banner Description",
+                "backgroundColor": "#CB6F10",
+                "fontColor": "#FFFFFF",
+                "icon": "https://some-url.com/some-icon.svg"
+            },
+            "logo": {},
+            "label": {},
+            "videoButton": {
+                "url": "https://some-url.com/some-video-url.mp4"
+            }
+        },
+        "tags": [],
+        "contentArea": {
+            "detailText": "",
+            "title": "Infobit 15",
+            "description": "",
+            "dateDetailText": {}
+        },
+        "footer": [
+            {
+                "left": [
+                    {
+                        "type": "icon-with-text",
+                        "src": "https://some-url.com/some-icon.svg",
+                        "text": "68k"
+                    }
+                ],
+                "center": [
+                    {
+                        "type": "link",
+                        "href": "https://www.some-url.com",
+                        "text": "Text link"
+                    }
+                ],
+                "right": [
+                    {
+                        "type": "button",
+                        "style": "call-to-action",
+                        "href": "https://www.some-url.com",
+                        "text": "Button"
+                    }
+                ]
+            }
+        ],
+        "cardDate": "2020-10-19T05:42:36.871Z",
+        "ctaLink": "https://www.some-url.com"
+    },
+    {
+        "id": "15",
+        "showCard": {
+            "from": "2020-10-01T20:00:00Z",
+            "until": "2099-12-31T21:45:00Z"
+        },
+        "styles": {
+            "typeOverride": "3:2",
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
+        },
+        "overlays": {
+            "banner": {
+                "description": "Some Banner Description",
+                "backgroundColor": "#CB6F10",
+                "fontColor": "#FFFFFF",
+                "icon": "https://some-url.com/some-icon.svg"
+            },
+            "logo": {},
+            "label": {},
+            "videoButton": {
+                "url": "https://some-url.com/some-video-url.mp4"
+            }
+        },
+        "tags": [],
+        "contentArea": {
+            "detailText": "",
+            "title": "15 Infobit",
+            "description": "",
+            "dateDetailText": {}
+        },
+        "footer": [
+            {
+                "left": [
+                    {
+                        "type": "progress-bar",
+                        "label": "Progress",
+                        "completionText": "6/10",
+                        "percentage": "60%",
+                        "color": "#1473E6"
+                    }
+                ],
+                "center": [],
+                "right": []
+            }
+        ],
+        "cardDate": "2020-10-19T05:42:36.871Z",
+        "ctaLink": "https://www.some-url.com"
+    },
+    {
+        "id": "16",
+        "showCard": {
+            "from": "2020-10-01T20:00:00Z",
+            "until": "2099-12-31T21:45:00Z"
+        },
+        "styles": {
+            "typeOverride": "3:2",
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
+        },
+        "overlays": {
+            "banner": {
+                "description": "Some Banner Description",
+                "backgroundColor": "#CB6F10",
+                "fontColor": "#FFFFFF",
+                "icon": "https://some-url.com/some-icon.svg"
+            },
+            "logo": {},
+            "label": {},
+            "videoButton": {
+                "url": "https://some-url.com/some-video-url.mp4"
+            }
+        },
+        "tags": [],
+        "contentArea": {
+            "detailText": "",
+            "title": "16 - Infobit",
+            "description": "",
+            "dateDetailText": {}
+        },
+        "footer": [
+            {
+                "left": [
+                    {
+                        "type": "progress-bar",
+                        "label": "Progress",
+                        "completionText": "6/10",
+                        "percentage": "60%",
+                        "color": "#1473E6"
+                    }
+                ],
+                "center": [],
+                "right": []
+            },
+            {
+                "divider": false,
+                "left": [
+                    {
+                        "type": "icon",
+                        "src": "https://some-url.com/some-bookmark-icon.svg"
+                    },
+                    {
+                        "type": "text",
+                        "text": "10 tuts"
+                    }
+                ],
+                "center": [
+                    {
+                        "type": "icon",
+                        "src": "https://some-url.com/some-icon.svg"
+                    },
+                    {
+                        "type": "text",
+                        "text": "117 min"
+                    }
+                ],
+                "right": [
+                    {
+                        "type": "icon-with-text",
+                        "src": "https://some-url.com/some-icon.svg",
+                        "text": "68k"
+                    }
+                ]
+            }
+        ],
+        "cardDate": "2020-10-19T05:42:36.871Z",
+        "ctaLink": "https://www.some-url.com"
+    },
+    {
+        "id": "17",
+        "showCard": {
+            "from": "2020-10-01T20:00:00Z",
+            "until": "2099-12-31T21:45:00Z"
+        },
+        "styles": {
+            "typeOverride": "3:2",
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
+        },
+        "overlays": {
+            "banner": {
+                "description": "Some Banner Description",
+                "backgroundColor": "#CB6F10",
+                "fontColor": "#FFFFFF",
+                "icon": "https://some-url.com/some-icon.svg"
+            },
+            "logo": {},
+            "label": {},
+            "videoButton": {
+                "url": "https://some-url.com/some-video-url.mp4"
+            }
+        },
+        "tags": [],
+        "contentArea": {
+            "detailText": "",
+            "title": "16 - Infobit",
+            "description": "",
+            "dateDetailText": {}
+        },
+        "footer": [
+            {
+                "left": [
+                    {
+                        "type": "progress-bar",
+                        "label": "Progress",
+                        "completionText": "6/10",
+                        "percentage": "60%",
+                        "color": "#1473E6"
+                    }
+                ],
+                "center": [],
+                "right": []
+            },
+            {
+                "left": [],
+                "center": [
+                    {
+                        "type": "link",
+                        "href": "https://www.some-url.com",
+                        "text": "Text link"
+                    }
+                ],
+                "right": [
+                    {
+                        "type": "button",
+                        "href": "https://www.some-url.com",
+                        "style": "call-to-action",
+                        "text": "Button"
+                    }
+                ]
+            }
+        ],
+        "cardDate": "2020-10-19T05:42:36.871Z",
+        "ctaLink": "https://www.some-url.com"
+    },
+    {
+        "id": "18",
+        "showCard": {
+            "from": "2020-10-01T20:00:00Z",
+            "until": "2099-12-31T21:45:00Z"
+        },
+        "styles": {
+            "typeOverride": "3:2",
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
+        },
+        "overlays": {
+            "banner": {
+                "description": "Some Banner Description",
+                "backgroundColor": "#CB6F10",
+                "fontColor": "#FFFFFF",
+                "icon": "https://some-url.com/some-icon.svg"
+            },
+            "logo": {},
+            "label": {},
+            "videoButton": {
+                "url": "https://some-url.com/some-video-url.mp4"
+            }
+        },
+        "tags": [],
+        "contentArea": {
+            "detailText": "",
+            "title": "18 - Infobit: Link w/ Icon use case",
+            "description": "",
+            "dateDetailText": {}
+        },
+        "footer": [
+            {
+                "left": [
+                    {
+                        "type": "link-with-icon",
+                        "openInNewTab": false,
+                        "linkHint": "Click Here",
+                        "src": "Some Src",
+                        "srcAltText": "Some Alt Text"
+                    }
+                ],
+                "center": [],
+                "right": []
+            }
+        ],
+        "cardDate": "2020-10-19T05:42:36.871Z",
+        "ctaLink": "https://www.some-url.com"
+    },
+    {
+        "id": "19",
+        "showCard": {
+            "from": "2020-10-01T20:00:00Z",
+            "until": "2099-12-31T21:45:00Z"
+        },
+        "styles": {
+            "typeOverride": "3:2",
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
+        },
+        "overlays": {
+            "banner": {
+                "description": "Some Banner Description",
+                "backgroundColor": "#CB6F10",
+                "fontColor": "#FFFFFF",
+                "icon": "https://some-url.com/some-icon.svg"
+            },
+            "logo": {},
+            "label": {},
+            "videoButton": {
+                "url": "https://some-url.com/some-video-url.mp4"
+            }
+        },
+        "tags": [],
+        "contentArea": {
+            "detailText": "",
+            "title": "No Footer Defined",
+            "description": "",
+            "dateDetailText": {}
+        },
+        "footer": [],
+        "cardDate": "2020-10-19T05:42:36.871Z",
+        "ctaLink": "https://www.some-url.com"
+    },
+    {
+        "id": "20",
+        "showCard": {
+            "from": "2020-10-01T20:00:00Z",
+            "until": "2099-12-31T21:45:00Z"
+        },
+        "styles": {
+            "typeOverride": "1:1",
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
+        },
+        "overlays": {
+            "banner": {
+                "description": "Some Banner Description",
+                "backgroundColor": "#CB6F10",
+                "fontColor": "#FFFFFF",
+                "icon": "https://some-url.com/some-icon.svg"
+            },
+            "logo": {},
+            "label": {},
+            "videoButton": {
+                "url": "https://some-url.com/some-video-url.mp4"
+            }
+        },
+        "tags": [],
+        "contentArea": {
+            "detailText": "",
+            "title": "No Footer Defined",
+            "description": "",
+            "dateDetailText": {}
+        },
+        "footer": [],
+        "cardDate": "2020-10-19T05:42:36.871Z",
+        "ctaLink": "https://www.some-url.com"
+    },
+    {
+        "id": "21",
+        "showCard": {
+            "from": "2020-10-01T20:00:00Z",
+            "until": "2099-12-31T21:45:00Z"
+        },
+        "styles": {
+            "typeOverride": null,
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
+        },
+        "overlays": {
+            "banner": {
+                "description": "Some Banner Description",
+                "backgroundColor": "#CB6F10",
+                "fontColor": "#FFFFFF",
+                "icon": "https://some-url.com/some-icon.svg"
+            },
+            "logo": {},
+            "label": {},
+            "videoButton": {
+                "url": "https://some-url.com/some-video-url.mp4"
+            }
+        },
+        "tags": [],
+        "contentArea": {
+            "detailText": "",
+            "title": "No Footer Defined",
+            "description": "",
+            "dateDetailText": {}
+        },
+        "footer": [],
+        "cardDate": "2020-10-19T05:42:36.871Z",
+        "ctaLink": "https://www.some-url.com"
+    },
+    {
+        "id": "22",
+        "showCard": {
+            "from": "2020-10-01T20:00:00Z",
+            "until": "2099-12-31T21:45:00Z"
+        },
+        "styles": {
+            "typeOverride": "1:1",
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
+        },
+        "overlays": {
+            "banner": {
+                "description": "Some Banner Description",
+                "backgroundColor": "#CB6F10",
+                "fontColor": "#FFFFFF",
+                "icon": "https://some-url.com/some-icon.svg"
+            },
+            "logo": {},
+            "label": {},
+            "videoButton": {
+                "url": "https://some-url.com/some-video-url.mp4"
+            }
+        },
+        "tags": [],
+        "contentArea": {
+            "detailText": "",
+            "title": "No Footer Defined",
+            "description": "",
+            "dateDetailText": {}
+        },
+        "footer": [],
+        "cardDate": "2020-10-19T05:42:36.871Z",
+        "ctaLink": "https://www.some-url.com"
+    },
+    {
+        "id": "23",
+        "showCard": {
+            "from": "2020-10-01T20:00:00Z",
+            "until": "2099-12-31T21:45:00Z"
+        },
+        "styles": {
+            "typeOverride": "full-card",
+            "backgroundImage": "https://some-url.com/some-background-image.png",
+            "icon": "https://some-url.com/icons/blog.svg",
+            "iconAlt": "Article"
+        },
+        "overlays": {
+            "banner": {
+                "description": "Some Banner Description",
+                "backgroundColor": "#CB6F10",
+                "fontColor": "#FFFFFF",
+                "icon": "https://some-url.com/some-icon.svg"
+            },
+            "logo": {},
+            "label": {},
+            "videoButton": {
+                "url": "https://some-url.com/some-video-url.mp4"
+            }
+        },
+        "tags": [],
+        "contentArea": {
+            "detailText": "",
+            "title": "No Footer Defined",
+            "description": "",
+            "dateDetailText": {}
+        },
+        "footer": [],
+        "cardDate": "2020-10-19T05:42:36.871Z",
+        "ctaLink": "https://www.some-url.com"
+    }
+]

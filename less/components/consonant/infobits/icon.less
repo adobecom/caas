@@ -1,0 +1,17 @@
+.consonant {
+    &-IconInfobit {
+        display: block;
+        min-width: @consonant-IconInfobit-size / 2;
+        width: auto;
+        height: auto;
+        max-width: @consonant-IconInfobit-size;
+        max-height: @consonant-IconInfobit-size;
+        margin-left: 16px;
+        object-fit: contain;
+        user-select: none;
+
+        & + & {
+            margin-left: 12px;
+        }
+    }
+}

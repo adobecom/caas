@@ -1,0 +1,279 @@
+.consonant {
+    &-LeftFilters {
+        position: static;
+        display: flex;
+        flex-direction: column;
+
+        .full-width;
+        .position-absolute-0;
+
+        background-color: @consonantWhite;
+        overflow: visible;
+        user-select: none;
+
+        > * {
+            .hide-all;
+        }
+
+        /* We need anti-BEM approach here; */
+        > .consonant-Search {
+            .hide-all;
+        }
+
+        &-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .hide-all;
+            .full-width;
+
+            padding: 14px 12px;
+            border-bottom: 1px solid @consonantLightGrey200;
+        }
+
+        &-deskTitle {
+            .hide-all;
+            .no-margin;
+
+            max-width: 70%;
+
+            .font(1rem, 1.1875rem, 700, @consonantDarkGrey800);
+        }
+
+        &-mobTitle {
+            display: flex;
+            align-items: center;
+
+            span {
+                .font(
+                    @size: 1rem,
+                    @line-height: 1.1875rem,
+                    @color: @consonantDarkGrey400
+                );
+
+                &:focus {
+                    outline: 1px solid @consonantFocusedColor;
+                }
+            }
+        }
+
+        &-mobBack {
+            display: block;
+            width: @consonant-LeftFilters-mobBack-size;
+            height: @consonant-LeftFilters-mobBack-size;
+            margin-right: 13px;
+
+            .no-font;
+
+            border: 1px solid #eaeaea;
+            border-radius: 50%;
+            background: #fff url(@consonant-LeftFilters-mobBack-data) no-repeat 50% 50%;
+            background-position: contain;
+            outline: 0;
+
+            &:focus {
+                border-color: @consonantFocusedColor;
+            }
+        }
+
+        &-clearLink {
+            .hide-all;
+
+            padding: 0;
+
+            .font(0.875rem, 1rem, 400, @consonantAccessibleGray);
+
+            text-transform: capitalize;
+            background-color: transparent;
+            outline: 0;
+
+            .focused;
+        }
+
+        &-list {
+            margin-bottom: auto;
+            padding-left: 16px;
+            padding-right: 16px;
+            overflow-y: auto;
+        }
+
+        /* Start related to mobile footer */
+
+        &-mobileFooter {
+            display: none;
+            align-items: center;
+            padding: 16px;
+            border-top: 1px solid @consonantLightGrey200;
+            order: 2;
+        }
+
+        &-mobileFooterTotalResQty {
+            display: block;
+            margin-right: auto;
+            max-width: 55%;
+
+            .font(
+                @weight: 700,
+                @color: @consonantDarkGrey400
+            );
+
+            text-transform: capitalize;
+        }
+
+        &-mobileFooterClearBtn {
+            display: block;
+            margin-right: 17px;
+            padding: 0;
+
+            .font(
+                @weight: 700,
+                @color: @consonantLightBlue100
+            );
+
+            background-color: transparent;
+
+            .no-border-no-outline;
+
+            .focus-underline;
+
+            &:first-child {
+                margin-left: auto;
+            }
+        }
+
+        &-mobileFooterClearBtn + &-mobileFooterBtn {
+            margin-left: 0;
+        }
+
+        &-mobileFooterBtn {
+            min-width: @consonant-LeftFilters-mobileFooterBtn-minWidth;
+            margin-left: auto;
+            padding: 8px 16px 8px;
+
+            .font(
+                @weight: 700,
+                @color: @consonantWhite,
+                @align: center
+            );
+
+            text-transform: capitalize;
+            background-color: @consonantLightBlue100;
+            border-radius: 20px;
+
+            .no-border-no-outline;
+
+            .focus-shadow-round;
+        }
+
+        /* End related to mobile footer */
+
+        &.is-opened {
+            position: fixed;
+            z-index: 10000;
+            display: flex;
+
+            & > button {
+                display: flex;
+            }
+        }
+
+        &.is-opened &-mobileFooter,
+        &.is-opened &-header {
+            display: flex;
+        }
+
+        &.is-opened &-list {
+            display: block;
+        }
+
+        &.is-opened &-itemName img {
+            .hide-all;
+
+            position: relative;
+            top: 4px;
+        }
+
+        /* Start related to chosen filters */
+
+        &-chosenFilters {
+            position: relative;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: -16px;
+
+            .full-width;
+
+            padding-bottom: 8px;
+            background-color: transparent;
+
+            &:empty {
+                .hide-all;
+            }
+        }
+
+        /* End related to chosen filters */
+
+        @media @consonant-desktop-up {
+            width: @consonant-filters-1200-break-width;
+            max-width: @consonant-filters-1200-break-width;
+            margin-right: 32px;
+            padding: 8px 16px 16px;
+            border-radius: 4px;
+            overflow: visible;
+
+            &-list {
+                display: block;
+                margin-bottom: 0;
+                padding: 0;
+                border-top: 1px solid @consonantLightGrey200;
+                overflow: hidden;
+                z-index: 1;
+            }
+
+            &-mobTitle {
+                display: none;
+            }
+
+            &-header {
+                display: flex;
+                padding: 0 0 24px;
+                border-bottom: 1px solid @consonantLightGrey200;
+                order: -3;
+
+                & + button:after {
+                    display: none;
+                }
+            }
+
+            &-deskTitle {
+                display: block;
+            }
+
+            > .consonant-Search {
+                display: block;
+                padding-top: 13px;
+                padding-bottom: 32px;
+            }
+
+            > button {
+                display: flex;
+            }
+
+            &-clearLink {
+                display: block;
+                transition: color @consonantTransitionTime @consonantTransitionFunc;
+
+                &:hover,
+                &:active {
+                    color: @consonantLightBlue100;
+                }
+            }
+
+            &-chosenFilters {
+                display: flex;
+            }
+        }
+    }
+}

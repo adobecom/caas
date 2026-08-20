@@ -1,0 +1,734 @@
+{
+  "cards":[
+    {
+      "id": "1.0.0",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2099-12-31T21:45:00Z"
+      },
+      "tags": [
+        {
+          "id": "caas:location/stamford-ct"
+        },
+        {
+          "id": "caas:product-category/photography/photoshop"
+        },
+        {
+          "id": "caas:event/create-now"
+        }
+      ],
+      "overlays": {
+        "banner": {
+          "backgroundColor": "white",
+          "fontColor": "darkgray",
+          "description": "Event",
+          "icon": ""
+        },
+        "logo": {},
+        "label": {},
+        "videoButton": {}
+      },
+      "contentArea": {
+        "detailText": "Photography",
+        "title": "Create now event in Stamford, CT teaching Photoshop for Photographers",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "",
+        "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/104643%20Adobe_Digital-Bites-web-graphics_marquee%201600x600.jpg"
+      },
+      "footer": [
+        {
+          "divider": true,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
+              "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
+              "cardSaveText": "Save Card",
+              "cardUnsaveText": "Unsave Card"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "primary",
+              "text": "Go to Event",
+              "href": "https://www.adobe.com/max.html"
+            }
+          ]
+        }
+      ],
+      "cardDate": "2020-07-02T09:41:35.933Z",
+      "startDate": "2023-01-01T00:00:00.000Z",
+      "endDate": "2024-01-01T00:00:00.000Z",
+      "country": "ch"
+    },
+    {
+      "id": "1.0.1",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2099-12-31T21:45:00Z"
+      },
+      "tags": [
+        {
+          "id": "caas:location/stamford-ct"
+        },
+        {
+          "id": "caas:product-category/graphic-design/photoshop"
+        },
+        {
+          "id": "caas:event/create-now"
+        }
+      ],
+      "overlays": {
+        "banner": {
+          "backgroundColor": "white",
+          "fontColor": "darkgray",
+          "description": "Live1",
+          "icon": ""
+        },
+        "logo": {},
+        "label": {},
+        "videoButton": {}
+      },
+      "contentArea": {
+        "detailText": "Graphic Design",
+        "title": "Create now event in Stamford, CT teaching Photoshop for Graphic Designers",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "",
+        "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/104643%20Adobe_Digital-Bites-web-graphics_marquee%201600x600.jpg"
+      },
+      "footer": [
+        {
+          "divider": true,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
+              "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
+              "cardSaveText": "Save Card",
+              "cardUnsaveText": "Unsave Card"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "primary",
+              "text": "Go to Event",
+              "href": "https://www.adobe.com/max.html"
+            }
+          ]
+        }
+      ],
+      "cardDate": "2020-07-02T09:41:35.933Z",
+      "startDate": "2023-01-01T00:00:00.000Z",
+      "endDate": "2025-01-01T00:00:00.000Z",
+      "country": "xx"
+    },
+    {
+      "id": "1.0.2",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2099-12-31T21:45:00Z"
+      },
+      "tags": [
+        {
+          "id": "caas:location/stamford-ct"
+        },
+        {
+          "id": "caas:product-category/graphic-design/photoshop"
+        },
+        {
+          "id": "caas:product-category/photography/photoshop"
+        },
+        {
+          "id": "caas:event/create-now"
+        }
+      ],
+      "overlays": {
+        "banner": {
+          "backgroundColor": "red",
+          "fontColor": "darkgray",
+          "description": "Live2",
+          "icon": ""
+        },
+        "logo": {},
+        "label": {},
+        "videoButton": {}
+      },
+      "contentArea": {
+        "detailText": "Photography & Graphic Design",
+        "title": "Create now event in Stamford, CT teaching Photoshop for Graphic Designers AND Photographers",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "",
+        "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/104643%20Adobe_Digital-Bites-web-graphics_marquee%201600x600.jpg"
+      },
+      "footer": [
+        {
+          "divider": true,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
+              "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
+              "cardSaveText": "Save Card",
+              "cardUnsaveText": "Unsave Card"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "primary",
+              "text": "Go to Event",
+              "href": "https://www.adobe.com/max.html"
+            }
+          ]
+        }
+      ],
+      "cardDate": "2020-07-02T09:41:35.933Z",
+      "startDate": "2025-01-01T00:00:00.000Z",
+      "endDate": "2026-01-01T00:00:00.000Z",
+      "country": "xx"
+    },
+    {
+      "id": "1.0.3",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2099-12-31T21:45:00Z"
+      },
+      "tags": [
+        {
+          "id": "caas:location/stamford-ct"
+        },
+        {
+          "id": "caas:product-category/photography/lightroom"
+        },
+        {
+          "id": "caas:event/create-now"
+        }
+      ],
+      "overlays": {
+        "banner": {
+          "backgroundColor": "white",
+          "fontColor": "darkgray",
+          "description": "Event",
+          "icon": ""
+        },
+        "logo": {},
+        "label": {},
+        "videoButton": {
+          "url": "https://www.adobe.com/max.html"
+        }
+      },
+      "contentArea": {
+        "detailText": "Photography",
+        "title": "Create now event in Stamford, CT teaching Lightroom for Photographers",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "",
+        "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/104643%20Adobe_Digital-Bites-web-graphics_marquee%201600x600.jpg"
+      },
+      "footer": [
+        {
+          "divider": true,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
+              "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
+              "cardSaveText": "Save Card",
+              "cardUnsaveText": "Unsave Card"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "primary",
+              "text": "Go to Event",
+              "href": "https://www.adobe.com/max.html"
+            }
+          ]
+        }
+      ],
+      "cardDate": "2020-07-02T09:41:35.933Z",
+      "startDate": "2023-01-01T00:00:00.000Z",
+      "endDate": "2024-01-01T00:00:00.000Z",
+      "country": "ch"
+    },
+    {
+      "id": "1.0.4",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2099-12-31T21:45:00Z"
+      },
+      "tags": [
+        {
+          "id": "caas:location/stamford-ct"
+        },
+        {
+          "id": "caas:product-category/photoshop/lightroom"
+        },
+        {
+          "id": "caas:product-category/video/lightroom"
+        },
+        {
+          "id": "caas:event/create-now"
+        }
+      ],
+      "overlays": {
+        "banner": {
+          "backgroundColor": "white",
+          "fontColor": "darkgray",
+          "description": "Event",
+          "icon": ""
+        },
+        "logo": {},
+        "label": {},
+        "videoButton": {
+          "url": "https://www.adobe.com/max.html"
+        }
+      },
+      "contentArea": {
+        "detailText": "Video & Photography",
+        "title": "Create now event in Stamford, CT teaching Photoshop for Graphic Designers AND Videographers",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "",
+        "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/104643%20Adobe_Digital-Bites-web-graphics_marquee%201600x600.jpg"
+      },
+      "footer": [
+        {
+          "divider": true,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
+              "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
+              "cardSaveText": "Save Card",
+              "cardUnsaveText": "Unsave Card"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "primary",
+              "text": "Go to Event",
+              "href": "https://www.adobe.com/max.html"
+            }
+          ]
+        }
+      ],
+      "cardDate": "2020-07-02T09:41:35.933Z",
+      "startDate": "2024-01-01T00:00:00.000Z",
+      "endDate": "2025-01-01T00:00:00.000Z",
+      "country": "xx"
+    },
+    {
+      "id": "1.1.0",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2099-12-31T21:45:00Z"
+      },
+      "tags": [
+        {
+          "id": "caas:location/san-francisco-ca"
+        },
+        {
+          "id": "caas:product-category/photography/photoshop"
+        },
+        {
+          "id": "caas:event/create-now"
+        }
+      ],
+      "overlays": {
+        "banner": {
+          "backgroundColor": "white",
+          "fontColor": "darkgray",
+          "description": "Event",
+          "icon": ""
+        },
+        "logo": {},
+        "label": {},
+        "videoButton": {}
+      },
+      "contentArea": {
+        "detailText": "Photography",
+        "title": "Create now event in San Francisco, CA teaching Photoshop for Photographers",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "",
+        "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/104643%20Adobe_Digital-Bites-web-graphics_marquee%201600x600.jpg"
+      },
+      "footer": [
+        {
+          "divider": true,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
+              "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
+              "cardSaveText": "Save Card",
+              "cardUnsaveText": "Unsave Card"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "primary",
+              "text": "Go to Event",
+              "href": "https://www.adobe.com/max.html"
+            }
+          ]
+        }
+      ],
+      "cardDate": "2020-07-02T09:41:35.933Z",
+      "country": "xx"
+    },
+    {
+      "id": "1.1.1",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2099-12-31T21:45:00Z"
+      },
+      "tags": [
+        {
+          "id": "caas:location/san-francisco-ca"
+        },
+        {
+          "id": "caas:product-category/graphic-design/photoshop"
+        },
+        {
+          "id": "caas:event/create-now"
+        }
+      ],
+      "overlays": {
+        "banner": {
+          "backgroundColor": "white",
+          "fontColor": "darkgray",
+          "description": "Event",
+          "icon": ""
+        },
+        "logo": {},
+        "label": {},
+        "videoButton": {}
+      },
+      "contentArea": {
+        "detailText": "Graphic Design",
+        "title": "Create now event in San Francisco, CA teaching Photoshop for Graphic Designers",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "",
+        "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/104643%20Adobe_Digital-Bites-web-graphics_marquee%201600x600.jpg"
+      },
+      "footer": [
+        {
+          "divider": true,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
+              "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
+              "cardSaveText": "Save Card",
+              "cardUnsaveText": "Unsave Card"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "primary",
+              "text": "Go to Event",
+              "href": "https://www.adobe.com/max.html"
+            }
+          ]
+        }
+      ],
+      "cardDate": "2020-07-02T09:41:35.933Z",
+      "country": "xx"
+    },
+    {
+      "id": "1.1.2",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2099-12-31T21:45:00Z"
+      },
+      "tags": [
+        {
+          "id": "caas:location/san-francisco-ca"
+        },
+        {
+          "id": "caas:product-category/graphic-design/photoshop"
+        },
+        {
+          "id": "caas:product-category/photography/photoshop"
+        },
+        {
+          "id": "caas:event/create-now"
+        }
+      ],
+      "overlays": {
+        "banner": {
+          "backgroundColor": "white",
+          "fontColor": "darkgray",
+          "description": "Event",
+          "icon": ""
+        },
+        "logo": {},
+        "label": {},
+        "videoButton": {}
+      },
+      "contentArea": {
+        "detailText": "Photography & Graphic Design",
+        "title": "Create now event in San Francisco, CA teaching Photoshop for Graphic Designers AND Photographers",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "",
+        "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/104643%20Adobe_Digital-Bites-web-graphics_marquee%201600x600.jpg"
+      },
+      "footer": [
+        {
+          "divider": true,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
+              "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
+              "cardSaveText": "Save Card",
+              "cardUnsaveText": "Unsave Card"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "primary",
+              "text": "Go to Event",
+              "href": "https://www.adobe.com/max.html"
+            }
+          ]
+        }
+      ],
+      "cardDate": "2020-07-02T09:41:35.933Z",
+      "country": "xx"
+    },
+    {
+      "id": "2.0.0",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2099-12-31T21:45:00Z"
+      },
+      "tags": [
+        {
+          "id": "caas:location/stamford-ct"
+        },
+        {
+          "id": "caas:product-category/photography/photoshop"
+        },
+        {
+          "id": "caas:event/adobe-live"
+        }
+      ],
+      "overlays": {
+        "banner": {
+          "backgroundColor": "white",
+          "fontColor": "darkgray",
+          "description": "Event",
+          "icon": ""
+        },
+        "logo": {},
+        "label": {},
+        "videoButton": {}
+      },
+      "contentArea": {
+        "detailText": "Photography",
+        "title": "Adobe Live event in Stamford, CT teaching Photoshop for Photographers",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "",
+        "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/104643%20Adobe_Digital-Bites-web-graphics_marquee%201600x600.jpg"
+      },
+      "footer": [
+        {
+          "divider": true,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
+              "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
+              "cardSaveText": "Save Card",
+              "cardUnsaveText": "Unsave Card"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "primary",
+              "text": "Go to Event",
+              "href": "https://www.adobe.com/max.html"
+            }
+          ]
+        }
+      ],
+      "cardDate": "2020-07-02T09:41:35.933Z",
+      "country": "xx"
+    },
+    {
+      "id": "2.0.1",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2099-12-31T21:45:00Z"
+      },
+      "tags": [
+        {
+          "id": "caas:location/stamford-ct"
+        },
+        {
+          "id": "caas:product-category/graphic-design/photoshop"
+        },
+        {
+          "id": "caas:event/adobe-live"
+        }
+      ],
+      "overlays": {
+        "banner": {
+          "backgroundColor": "white",
+          "fontColor": "darkgray",
+          "description": "Event",
+          "icon": ""
+        },
+        "logo": {},
+        "label": {},
+        "videoButton": {}
+      },
+      "contentArea": {
+        "detailText": "Graphics Design",
+        "title": "Adobe Live event in Stamford, CT teaching Photoshop for Graphic Designers",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "",
+        "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/104643%20Adobe_Digital-Bites-web-graphics_marquee%201600x600.jpg"
+      },
+      "footer": [
+        {
+          "divider": true,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
+              "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
+              "cardSaveText": "Save Card",
+              "cardUnsaveText": "Unsave Card"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "primary",
+              "text": "Go to Event",
+              "href": "https://www.adobe.com/max.html"
+            }
+          ]
+        }
+      ],
+      "cardDate": "2020-07-02T09:41:35.933Z",
+      "country": "xx"
+    },
+    {
+      "id": "2.0.2",
+      "showCard": {
+        "from": "2020-10-01T20:00:00Z",
+        "until": "2099-12-31T21:45:00Z"
+      },
+      "tags": [
+        {
+          "id": "caas:location/stamford-ct"
+        },
+        {
+          "id": "caas:product-category/graphic-design/photoshop"
+        },
+        {
+          "id": "caas:product-category/photography/photoshop"
+        },
+        {
+          "id": "caas:event/adobe-live"
+        }
+      ],
+      "overlays": {
+        "banner": {
+          "backgroundColor": "white",
+          "fontColor": "darkgray",
+          "description": "Event",
+          "icon": ""
+        },
+        "logo": {},
+        "label": {},
+        "videoButton": {}
+      },
+      "contentArea": {
+        "detailText": "Photography & Graphic Design",
+        "title": "Adobe Live event in Stamford, CT teaching Photoshop for Graphic Designers AND Photographers",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+        "dateDetailText": {}
+      },
+      "styles": {
+        "typeOverride": "",
+        "backgroundImage": "https://adobe.com/content/dam/www/uk/en/enterprise/events/webinars/marquee's/104643%20Adobe_Digital-Bites-web-graphics_marquee%201600x600.jpg"
+      },
+      "footer": [
+        {
+          "divider": true,
+          "left": [
+            {
+              "type": "bookmark",
+              "saveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/saved_bookmark.svg",
+              "unsaveCardIcon": "https://caas-chimera.s3-us-west-1.amazonaws.com/icons/unsaved_bookmark.svg",
+              "cardSaveText": "Save Card",
+              "cardUnsaveText": "Unsave Card"
+            }
+          ],
+          "center": [],
+          "right": [
+            {
+              "type": "button",
+              "style": "primary",
+              "text": "Go to Event",
+              "href": "https://www.adobe.com/max.html"
+            }
+          ]
+        }
+      ],
+      "cardDate": "2020-07-02T09:41:35.933Z",
+      "country": "ch"
+    }
+  ]
+}

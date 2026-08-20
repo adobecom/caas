@@ -1,0 +1,365 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="robots" content="noodp" />
+
+    <meta name="template" content="" />
+
+    <link rel="stylesheet" href="../dist/app.css" type="text/css">
+    <link rel="stylesheet" href="../dependencies/typekit.css" type="text/css">
+    <link rel="stylesheet" href="../dependencies/dexter/publish.css" type="text/css">
+    <title>CaaS Test Page</title>
+
+    <style>
+        body {
+            font-family: 'adobe-clean';
+        }
+        .feds-header-wrapper {
+            left: 0;
+            right: 0;
+            top: 0;
+            transition: transform .3s ease;
+            width: 100%;
+            background: #fff;
+            z-index: 999;
+            height: 96px;
+        }
+        .feds-header-wrapper,
+        .feds-header-wrapper .feds-navBar {
+            border-bottom: solid 1px #dedede;
+        }
+        .feds-header-wrapper--sticky {
+            position: sticky;
+        }
+        .feds-header-wrapper ul {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            list-style: none;
+            padding: 0;
+        }
+        .feds-header-wrapper li {
+            padding: 20px;
+        }
+        .feds-navBar ul {
+            font-size: 14px;
+        }
+        .feds-navBar  li:nth-child(1) {
+            font-size: 16px;
+            color: red;
+            font-weight:600;
+            padding-left: 6px;
+        }
+        .feds-subNav li {
+            padding: 10px 5px;
+            font-size: 12px;
+        }
+        .page-heading  {
+            width: 90%;
+            max-width: 1400px;
+            margin: 50px auto;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    </style>
+</head>
+
+<body class="page basicpage spectrum spectrum--lightest">
+    <!-- Custom fake global nav -->
+    <div class="feds-header-wrapper feds-header-wrapper--sticky">
+        <header>
+            <div class="feds-navBar">
+                <ul>
+                    <li>Adobe</li>
+                    <li>About Adobe</li>
+                    <li>Adobe Trust Center</li>
+                    <li>Privacy</li>
+                    <li>Status</li>
+                    <li>Security</li>
+                    <li>Compliance</li>
+                    <li>By Solutions</li>
+                    <li>Resources</li>
+                </ul>
+            </div>
+            <div class="feds-subNav">
+                <ul>
+                    <li>Home</li>
+                    <li>/</li>
+                    <li>Customer Success Stories</li>
+                </ul>
+            </div>
+        </header>
+    </div>  
+
+    <div class="page-heading">
+        <h2>CaaS Test Page</h2>
+        <p>This is the test page for  jira ticket #: <a taget="_blank" href="https://jira.corp.adobe.com/browse/MWPW-129766">MWPW-129766</a></p>
+        <p>
+            <b>To Test</b>: Scroll down the page and click on any page on the paginator.<br>
+            <b>Expected</b>: The page should scroll up to the top of the card collection <b>AND</b> the top of the collection component should stay below the sticky header.<br>
+        </p>
+    </div>
+
+    <div class="root responsivegrid">
+        <div class="aem-Grid aem-Grid--12 aem-Grid--default--12">
+            <div class="aem-Grid aem-Grid--12 aem-Grid--default--12 ">
+                <div class="position aem-GridColumn aem-GridColumn--default--12">
+                    <div id="root_content_position"
+                         class="dexter-Position mobile-place-static mobile-place-left mobile-place-top mobile-padding-top-0 mobile-padding-right-0 mobile-padding-bottom-0 mobile-padding-left-0 mobile-margin-top-0 mobile-margin-right-0 mobile-margin-bottom-0 mobile-margin-left-0 is-Editor-false"
+                         style="background-color: transparent; background-position: 50% 50%;">
+                        <div class="aem-Grid aem-Grid--12 aem-Grid--default--12 ">
+                            <div class="cardcollection aem-GridColumn aem-GridColumn--default--12">
+                                <section id="create-app" class="create-app consonant">
+                                    <div class="collection-Container  create-card-collection">
+                                        <div class="container create-card-collection__outer-wrapper">
+                                            <consonant-card-collection id="foo" data-config=""></consonant-card-collection>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .help {
+            border-top: solid 1px #666;
+            padding: 20px 0;
+            font-family: Arial, Helvetica, sans-serif;
+            width: 90%;
+            max-width: 1400px;
+            margin: 50px auto;
+        }
+    </style>
+    <div class="help">
+        <p><b>Testing Tips</b></p>
+        <p>URLParam State examples:</p>
+        <ol>
+            <li>Hide filter Panel: <a href="./carlos-test-page?state=filterPanel.enabled:false"><code>filterPanel.enabled:false</code></a></li>
+            <li>Results per Page: <a href="./carlos-test-page?state=collection.resultsPerPage:3"><code>collection.resultsPerPage:3</code></a></li>
+            <li>Combined statements: <a href="./carlos-test-page?state=filterPanel.enabled:false,collection.resultsPerPage:3"><code>filterPanel.enabled:false,collection.resultsPerPage:3</code></a></li>
+        </ol>
+
+    </div>
+
+
+    <!-- Default config object -->
+    <script>
+        let config = {
+            "collection": {
+                "mode": "lightest",
+                "layout": {
+                    "type": "3up",
+                    "gutter": "4x",
+                    "container": "1200MaxWidth"
+                },
+                "lazyload": "false",
+                "button": {
+                    "style": "call\u002Dto\u002Daction"
+                },
+                "resultsPerPage": 6,
+                "endpoint": "../../caas/mock-json/smoke.json",
+                "fallbackEndpoint": "",
+                "totalCardsToShow": "1000",
+                "cardStyle": "1:2",
+                "showTotalResults": "true",
+                "i18n": {
+                    "prettyDateIntervalFormat": "{ddd}, {LLL} {dd} | {timeRange} {timeZone}",
+                    "totalResultsText": "{total} results",
+                    "title": "Sessions",
+                    "titleHeadingLevel": "h2",
+                    "cardTitleAccessibilityLevel": "6",
+                    "onErrorTitle": "Sorry there was a system error.",
+                    "onErrorDescription": "Please try reloading the page or try coming back to the page another time.",
+                    "lastModified": "Last modified {date} "
+                },
+                "detailsTextOption": "default",
+                "setCardBorders": "true",
+                "useOverlayLinks": "false",
+                "banner": {
+                    "register": {
+                        "description": "Sign Up",
+                        "url": "#registration"
+                    },
+                    "upcoming": {
+                        "description": "Upcoming"
+                    },
+                    "live": {
+                        "description": "Live"
+                    },
+                        "onDemand": {
+                        "description": "On Demand"
+                    }
+                },
+                "useLightText": "false",
+                "disableBanners": "false",
+                "reservoir": {
+                    "sample": "3",
+                    "pool": "10000"
+                },
+                "ctaAction": "",
+                "additionalRequestParams": {}
+            },
+            "featuredCards": "[]",
+            "filterPanel": {
+                "enabled": "true",
+                "eventFilter": "",
+                "type": "left",
+                "showEmptyFilters": "true",
+                "filters": [{"openedOnLoad":false,"icon":"","id":"caas:cta","items":[{"label":"Read now","id":"caas:cta/read-now"}],"group":"CTA"}],
+                "filterLogic": "or",
+                "i18n": {
+                    "leftPanel": {
+                        "header": "Refine Your Results",
+                        "clearAllFiltersText": "Clear All",
+                        "mobile": {
+                            "filtersBtnLabel": "Filters",
+                            "panel": {
+                                "header": "Filter by",
+                                "totalResultsText": "{total} results",
+                                "applyBtnText": "Apply",
+                                "clearFilterText": "Clear",
+                                "doneBtnText": "Done"
+                            },
+                            "group": {
+                                "totalResultsText": "{total} results",
+                                "applyBtnText": "Apply",
+                                "clearFilterText": "Clear",
+                                "doneBtnText": "Done"
+                            }
+                        }
+                    },
+                    "topPanel": {
+                        "groupLabel": "Filters:",
+                        "clearAllFiltersText": "Clear All",
+                        "moreFiltersBtnText": "More Filters +",
+                        "mobile": {
+                            "group": {
+                                "totalResultsText": "{total} results",
+                                "applyBtnText": "Apply",
+                                "clearFilterText": "Clear",
+                                "doneBtnText": "Done"
+                            }
+                        }
+                    }
+                }
+            },
+            "hideCtaIds": "[]",
+            "sort": {
+                "enabled": "true",
+                "defaultSort": "titleAsc",
+                "options": [{"label":"Featured","sort":"featured"},{"label":"Title: (A - Z)","sort":"titleAsc"},{"label":"Random","sort":"random"},{"label":"Date: (Newest to Oldest)","sort":"dateDesc"}]
+            },
+            "pagination": {
+                "animationStyle": "paged",
+                "enabled": "true",
+                "resultsQuantityShown": "true",
+                "loadMoreButton": {
+                    "style": "primary",
+                    "useThemeThree": "true"
+                },
+                "type": "paginator",
+                "i18n": {
+                    "loadMore": {
+                        "btnText": "Load More",
+                        "resultsQuantityText": "{start} of {end} displayed"
+                    },
+                    "paginator": {
+                        "resultsQuantityText": "{start} - {end} of {total} results",
+                        "prevLabel": "Prev",
+                        "nextLabel": "Next"
+                    }
+                }
+            },
+            "bookmarks": {
+                "showOnCards": "true",
+                "leftFilterPanel": {
+                    "bookmarkOnlyCollection": "false",
+                    "showBookmarksFilter": "true",
+                    "selectBookmarksIcon": "",
+                    "unselectBookmarksIcon": ""
+                },
+                "i18n": {
+                    "leftFilterPanel": {
+                        "filterTitle": "My favorites"
+                    },
+                    "card": {
+                        "saveText": "Save Card",
+                        "unsaveText": "Unsave Card"
+                    }
+                }
+            },
+            "search": {
+                "enabled": "true",
+                "searchFields": ["contentArea.title","contentArea.description","contentArea.detailText"],
+                "i18n": {
+                    "noResultsTitle": "Authored No Results Title",
+                    "noResultsDescription": "Authored No Results Description",
+                    "leftFilterPanel": {
+                        "searchTitle": "Buy now",
+                        "searchPlaceholderText": "Search Here"
+                    },
+                    "topFilterPanel": {
+                        "searchPlaceholderText": "Search Here"
+                    },
+                    "filterInfo": {
+                        "searchPlaceholderText": "Search Here"
+                    }
+                }
+            },
+            "language": "en",
+            "country": "US",
+            "analytics": {
+                "trackImpressions": "",
+                "collectionIdentifier": ""
+            },
+            "target": {
+                "enabled": "",
+                "lastViewedSession": ""
+            },
+            "customCard": ["return `<div>Please author a valid custom card key<\/div>`"]
+        };
+
+        //
+        // Params to override default config object
+        //
+        const searchParams = new URLSearchParams(location.search);
+        const newState = searchParams?.get('state');
+        const newProps = newState?.split(",");
+        if (newProps) {
+            // Creates a newConfig object from the new property
+            const newConfig = { ...config };
+            newProps.forEach((keys, i) => {
+                const [path, value] = keys.split(":")
+                const pathArr = path.split(".");
+                let nestedObj = newConfig;
+                for (let i = 0; i < pathArr.length - 1; i++) {
+                    nestedObj = nestedObj[pathArr[i]]; // access the nested object
+                }
+                nestedObj[pathArr[pathArr.length - 1]] = value;
+            });
+            config = newConfig;
+        }
+
+        document.getElementById('foo').setAttribute('data-config', JSON.stringify(config))
+    </script>
+
+
+    <script type="text/javascript" src="../dist/main.source.js"></script>
+
+</body>
+
+
+<div class="modalContainer parsys">
+</div>
+
+<script type="text/javascript" src="../dependencies/dexter/head.js"></script>
+<script type="text/javascript" src="../dependencies/dexter/publish.js"></script>
+
+</html>

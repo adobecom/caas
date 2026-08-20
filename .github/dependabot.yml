@@ -1,0 +1,22 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+
+    # Schedule: Only Mondays at 9am Pacific (not constantly!)
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Los_Angeles"
+
+    # Limit: Max 5 open PRs at once (prevents overwhelming flood)
+    open-pull-requests-limit: 5
+
+    # No grouping: Dependabot will open individual PRs per update
+
+    # Safety: Ignore major version bumps (too risky to auto-update)
+    # We'll handle React 16→18, Webpack 3→5 manually
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]

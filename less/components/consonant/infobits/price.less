@@ -1,0 +1,36 @@
+.consonant {
+    &-PriceInfobit {
+        display: flex;
+        justify-content: flex-start;
+        align-items: baseline;
+        min-width: 0;
+        max-width: 100%;
+        margin-left: 16px;
+
+        &-price {
+            max-width: 100%;
+            flex-shrink: 0;
+
+            .font(1.125rem, 1.6875rem, 400, @consonantGray900);
+
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        &-term {
+            position: relative;
+            flex-shrink: 1;
+
+            .font(0.875rem, 1.6875rem, 400, @consonantGray600);
+
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+
+            &:before {
+                content: '/';
+            }
+        }
+    }
+}
