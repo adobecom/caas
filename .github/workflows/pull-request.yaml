@@ -97,7 +97,7 @@ jobs:
   sonarqube:
     name: Run SonarQube Analysis
     needs: check-coverage-thresholds
-    runs-on: self-hosted
+    runs-on: sonarqube-runners
     steps:
       - uses: actions/checkout@v4
         with:
