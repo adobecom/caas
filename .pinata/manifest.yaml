@@ -1,0 +1,17 @@
+# Fiesta tenant contract — CaaS (Content as a Service, aka Chimera) identity.
+#
+# The harness reads this at the pinned commit and holds no CaaS-specific
+# knowledge of its own. Identity ladder: adobe (company) > acom (org) >
+# caas (product) > … . Unknown keys are rejected, so a typo fails loudly.
+org: acom
+product: caas
+repo: adobecom/caas
+owners_from: CODEOWNERS
+
+# Which shared mental models the planner consults for CaaS work. Selection is
+# tenant-owned; content resolves from the shared registry
+# (Adobe-acom/pinata-tool-shelf/mental-models/) at run time.
+mental_models:
+    use:
+        - caas-consonant
+        - caas-quality
