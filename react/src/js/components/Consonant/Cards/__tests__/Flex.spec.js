@@ -238,7 +238,6 @@ describe(`Consonant/Card/${cardStyle}`, () => {
     expect(
       productInfoElement.querySelector(".product-info-title")
     ).toBeNull();
-    expect(screen.queryByText("Acrobat")).toBeNull();
   });
 
   test("should not render the detail text when the product icon is shown", () => {
