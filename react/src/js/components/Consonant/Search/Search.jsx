@@ -126,6 +126,7 @@ const Search = ({
                         id={searchId}
                         data-testid="consonant-Search-input"
                         type="search"
+                        autoComplete="off"
                         placeholder={placeholderText}
                         onClick={e => e.stopPropagation()}
                         value={value}
