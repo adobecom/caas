@@ -48,7 +48,7 @@ jobs:
           script: |
             const commit = context.sha;
             const { owner, repo } = context.repo;
-            
+
             // Find the PR that was merged
             const { data: prs } = await github.rest.pulls.list({
               owner,
@@ -58,16 +58,16 @@ jobs:
               direction: 'desc',
               per_page: 100
             });
-            
+
             const mergedPR = prs.find(pr => pr.merge_commit_sha === commit);
-            
+
             if (mergedPR) {
               core.exportVariable('PR_NUMBER', mergedPR.number);
               core.exportVariable('PR_TITLE', mergedPR.title);
               core.exportVariable('GITHUB_EVENT_NAME', 'pull_request');
               core.exportVariable('GITHUB_EVENT_ACTION', 'closed');
               core.exportVariable('GITHUB_PULL_REQUEST_MERGED', 'true');
-            
+
               console.log(`Found PR #${mergedPR.number}: ${mergedPR.title}`);
             } else {
               console.log('No matching PR found for this commit');
@@ -105,3 +105,38 @@ jobs:
           git add web-vitals-history.json
           git commit -m "chore: update web vitals history [skip ci]" || echo "No changes to commit"
           git push origin main || echo "No changes to push"
+  check-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+      - name: Install
+        run: npm ci
+      - name: Coverage
+        run: npm run test:coverage
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+  sonarqube:
+    name: Run SonarQube Analysis
+    needs: check-coverage
+    runs-on: [self-hosted, macos-qa]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Download coverage report
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+      - uses: SonarSource/sonarqube-scan-action@v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
