@@ -1,0 +1,107 @@
+# CaaS verification gates. When this file is present the harness runs these in
+# place of its built-in set; commands run in the worktree.
+#
+# Mirrors what the repo's own merge path enforces (.github/workflows/
+# pull-request.yaml: lint, build, unit tests + coverage thresholds) plus a
+# deterministic port of the Feature QA Review agent's render probe
+# (.github/qa/caas-render.mjs). Every command below was run against a clean
+# checkout before being declared here.
+
+# Producer rebuild budget for gates that route to regenerate; the acom floor
+# caps it at 5 and tenants may only tighten it.
+regeneration:
+    max_candidates: 5
+
+# Command gates need the pinned devDeps. The repo's own .npmrc sets
+# legacy-peer-deps, so a plain ci works on modern node.
+provision: npm ci
+
+gates:
+    lockfiles:
+        template: protected_paths
+        name: Dependency lockfile
+        # An npm install during a code change rewrites this as a side effect.
+        # Dependency bumps are their own ticket.
+        paths:
+            - 'package-lock.json'
+        blocking: true
+        failure_route: escalate_to_human
+
+    lint:
+        template: command
+        name: ESLint (changed files)
+        # Diff-scoped on purpose: `npm run lint` bakes in --fix (it mutates the
+        # tree and hides fixable errors), and the base tree carries pre-existing
+        # violations outside the changed set — a repo-wide check-only run fails
+        # on main. Measured, not assumed.
+        cmd: npx eslint {js_files}
+        blocking: true
+        failure_route: repair_loop
+        repair:
+            cmd: npx eslint {js_files} --fix
+
+    unit-tests:
+        template: command
+        name: Jest unit suites + coverage thresholds
+        # jest.config.js sets collectCoverage: true with global thresholds
+        # (97.4% lines / 82% branches), so this single command is BOTH the test
+        # gate and the coverage gate: a candidate that adds untested code fails
+        # here until the producer ships tests with it. Full run measured at
+        # 73 suites / 918 tests in ~7s on a clean checkout.
+        cmd: npx jest
+        timeout_s: 600
+        blocking: true
+        failure_route: regenerate
+
+    build:
+        template: command
+        name: Webpack production build
+        # webpack 3 uses MD4 hashing, removed from OpenSSL 3: on node >= 17 the
+        # build dies with ERR_OSSL_EVP_UNSUPPORTED unless the legacy provider is
+        # enabled. This is the repo's own documented posture — its QA workflows
+        # build exactly this way on modern node (.github/workflows/
+        # qa-agent-review.yml); upstream CI avoids it by pinning node 16.13.1,
+        # which the harness image does not ship.
+        cmd: NODE_OPTIONS=--openssl-legacy-provider npm run build
+        timeout_s: 300
+        blocking: true
+        failure_route: regenerate
+
+    renderability:
+        template: command
+        name: Bundle mounts a card collection (headless chromium)
+        # Deterministic port of the Feature QA Review agent's render probe
+        # (.github/qa/caas-render.mjs): serve the repo's own local harness
+        # (index.html + dist/main.min.js + mock-json/) and require the Consonant
+        # grid to mount, >= 1 card to render, and no uncaught page errors. Unit
+        # tests exercise components in jsdom; webpack can still emit a bundle
+        # that throws on a real page, and nothing else on the merge path loads
+        # one. Chromium + playwright come from the harness image.
+        cmd: python3 .pinata/scripts/check-render.py
+        timeout_s: 300
+        blocking: true
+        # The probe cannot repair a bundle; the producer redoes the candidate.
+        failure_route: regenerate
+
+    # No format gate: the repo has no prettier config — formatting is ESLint's
+    # job here, and the lint gate's repair already runs --fix.
+    #
+    # No dist-sync gate: dist/* is gitignored except two vendored React UMDs
+    # (.gitignore:123) — build outputs are not committed, so there is nothing
+    # to drift.
+
+    # Last on purpose: the adversary reviews the code together with every
+    # deterministic gate result, not blind of them.
+    adversary:
+        template: adversary
+        name: Adversarial review — independent merge gate (INV-4)
+        description: >-
+            Independent-model review of the diff before merge, required by the
+            acom org floor. Plays the role caas's own ai-code-review.yml plays
+            upstream (stateful LLM diff review): correctness, security, data
+            loss — style and nits belong to the lint gate. Skips honestly when
+            no adversary model is reachable.
+        blocking: true
+        # Floor 2026-07-06 posture: bounded producer rebuild with the concerns
+        # as feedback, human review only at round exhaustion.
+        failure_route: regenerate
