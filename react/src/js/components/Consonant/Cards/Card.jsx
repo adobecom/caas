@@ -247,7 +247,7 @@ const Card = (props) => {
         detailText = staticDate.toLocaleDateString();
     } else if (detailsTextOption === 'hidden') {
         detailText = '';
-    } else if (detailsTextOption === 'productName' && cardStyle !== 'flex-card') {
+    } else if (detailsTextOption?.startsWith('product') && cardStyle !== 'flex-card') {
         detailText = '';
     }
 
