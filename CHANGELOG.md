@@ -1,5 +1,12 @@
 
 
+## [0.67.0](https://github.com/adobecom/caas/compare/0.66.7...0.67.0) (2026-08-22)
+
+
+### Features
+
+* **mwpw-000000:** add the .pinata harness tenant contract ([1dfc31d](https://github.com/adobecom/caas/commit/1dfc31dd608e23b12563cee06a170fb710b79a39))
+
 ## [0.66.7](https://github.com/adobecom/caas/compare/0.66.6...0.66.7) (2026-08-18)
 
 
