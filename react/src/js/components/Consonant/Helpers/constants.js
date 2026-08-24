@@ -228,7 +228,7 @@ export const DEFAULT_CONFIG = {
     },
     search: {
         enabled: true,
-        inputPlaceholderText: 'Search here...',
+        inputPlaceholderText: 'Search resources here...',
         leftPanelTitle: 'Search',
         searchFields: [
             'title',
