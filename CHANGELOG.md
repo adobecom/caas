@@ -1,5 +1,12 @@
 
 
+## [0.68.0](https://github.com/adobecom/caas/compare/0.67.1...0.68.0) (2026-08-24)
+
+
+### Features
+
+* **mwpw-204921:** adds support for Product Icon in detailsText option ([#589](https://github.com/adobecom/caas/issues/589)) ([67dc7d7](https://github.com/adobecom/caas/commit/67dc7d733b38c4c7109af0ff205df12ccd9007b2))
+
 ## [0.67.1](https://github.com/adobecom/caas/compare/0.67.0...0.67.1) (2026-08-24)
 
 ## [0.67.0](https://github.com/adobecom/caas/compare/0.66.7...0.67.0) (2026-08-22)
