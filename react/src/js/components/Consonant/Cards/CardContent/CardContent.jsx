@@ -14,6 +14,7 @@ const CardContent = ({
     showLabel,
     detailText,
     productInfo,
+    productIconOnly,
     showIconAlt,
     iconAlt,
     isTitleOnly,
@@ -42,7 +43,9 @@ const CardContent = ({
                 {productInfo.tagImage && (
                     <img className="product-info-icon" src={productInfo.tagImage} alt={productInfo.title || ''} />
                 )}
-                <span className="product-info-title">{productInfo.title || ''}</span>
+                {productInfo.title && !productIconOnly && (
+                    <span className="product-info-title">{productInfo.title || ''}</span>
+                )}
             </span>
         )}
         {showIconAlt && (detailText === '') &&
@@ -121,6 +124,7 @@ CardContent.propTypes = {
     highlightedDescription: node,
     description: string,
     productInfo: shape(productInfoType),
+    productIconOnly: bool,
     showTitle: bool,
 };
 
@@ -139,6 +143,7 @@ CardContent.defaultProps = {
     highlightedDescription: null,
     description: '',
     productInfo: null,
+    productIconOnly: false,
     showTitle: true,
 };
 

@@ -39,16 +39,17 @@ const FlexCard = () => {
 
     const getConfig = useConfig();
     const detailsTextOption = getConfig('collection', 'detailsTextOption');
-    const products = useMemo(() => (detailsTextOption === 'productName'
+    const showProductIconOnly = detailsTextOption === 'productIcon';
+    const products = useMemo(() => (detailsTextOption?.startsWith('product')
         ? Object.values(getConfig('products') || {}).filter((product) => product && product.tagID)
         : []), [detailsTextOption, getConfig]);
 
-    let showProductName = false;
+    let showProductInfo = false;
     let productInfo = null;
     if (products.length > 0) {
         const productData = products.find(product => product.tagID === detailText);
         if (productData?.title) {
-            showProductName = true;
+            showProductInfo = true;
             productInfo = {
                 tagImage: productData.tagImage,
                 title: productData.title
@@ -96,8 +97,9 @@ const FlexCard = () => {
             <div className="consonant-Card-content">
                 <CardContent
                     showLabel
-                    detailText={showDetails && !showProductName ? detailText : ''}
-                    productInfo={showDetails && showProductName ? productInfo : null}
+                    detailText={showDetails && !showProductInfo ? detailText : ''}
+                    productInfo={showDetails && showProductInfo ? productInfo : null}
+                    productIconOnly={showProductIconOnly}
                     showIconAlt={false}
                     isTitleOnly={false}
                     showTitle={showTitle}
@@ -129,7 +131,7 @@ const FlexCard = () => {
                         renderOverlay={renderOverlay}
                         hideCTA={hideCTA}
                         isBlog={false}
-                        isFlexCard={true}
+                        isFlexCard
                         showDateOnFooter={showDateOnFooter} />
                 ))}
             </div>
