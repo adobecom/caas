@@ -1,5 +1,12 @@
 
 
+## [0.68.1](https://github.com/adobecom/caas/compare/0.68.0...0.68.1) (2026-08-25)
+
+
+### Bug Fixes
+
+* **mwpw-205473:** add required x-session-id and x-slicc-version headers to Adobe LLM proxy calls ([#597](https://github.com/adobecom/caas/issues/597)) ([2aff406](https://github.com/adobecom/caas/commit/2aff4061247cb451998b56e97b49ca589529260d))
+
 ## [0.68.0](https://github.com/adobecom/caas/compare/0.67.1...0.68.0) (2026-08-24)
 
 
