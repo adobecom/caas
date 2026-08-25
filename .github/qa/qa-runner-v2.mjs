@@ -52,10 +52,14 @@ import { chromium } from 'playwright';
 import { spawnSync } from 'child_process';
 import { mkdirSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
+import { randomUUID } from 'crypto';
 import { ensureBrowserTab } from './cdp-keepalive.mjs';
 
 const PROXY_URL  = process.env.PROXY_URL || '';
 const MODEL      = process.env.MODEL || '';
+// Adobe LLM proxy requires these headers on every request (added mid-2026).
+const SESSION_ID    = randomUUID();
+const SLICC_VERSION = '1.0.0';
 const MAX_TURNS  = Number(process.env.MAX_TURNS || 10);
 const MAX_TOKENS = 4096;
 const ARTIFACTS  = resolve(process.cwd(), 'qa-artifacts');
@@ -358,6 +362,8 @@ function callLLM(messages) {
             '-H', `Authorization: Bearer ${token}`,
             '-H', 'Content-Type: application/json',
             '-H', 'anthropic-version: 2023-06-01',
+            '-H', `x-session-id: ${SESSION_ID}`,
+            '-H', `x-slicc-version: ${SLICC_VERSION}`,
             '--max-time', '90',
             '--data-binary', '@-',
         ], { input: payload, encoding: 'utf8', timeout: 95_000 });
@@ -900,6 +906,8 @@ async function main() {
                     '-H', `Authorization: Bearer ${token}`,
                     '-H', 'Content-Type: application/json',
                     '-H', 'anthropic-version: 2023-06-01',
+                    '-H', `x-session-id: ${SESSION_ID}`,
+                    '-H', `x-slicc-version: ${SLICC_VERSION}`,
                     '--max-time', '90',
                     '--data-binary', '@-',
                 ], { input: forcedPayload, encoding: 'utf8', timeout: 95_000 });
