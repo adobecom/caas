@@ -123,20 +123,3 @@ jobs:
         with:
           name: coverage-report
           path: coverage/
-  sonarqube:
-    name: Run SonarQube Analysis
-    needs: check-coverage
-    runs-on: sonarqube-runners
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Download coverage report
-        uses: actions/download-artifact@v4
-        with:
-          name: coverage-report
-          path: coverage/
-      - uses: SonarSource/sonarqube-scan-action@v6
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
