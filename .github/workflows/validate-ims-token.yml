@@ -13,10 +13,13 @@ jobs:
       - name: Call Adobe LLM Proxy
         id: call
         run: |
+          SESSION_ID=$(cat /proc/sys/kernel/random/uuid)
           RESPONSE=$(curl -s -X POST https://adobe-llm-proxy.paolo-moz.workers.dev/v1/messages \
             -H "Authorization: Bearer ${{ secrets.IMS_ACCESS_TOKEN }}" \
             -H "Content-Type: application/json" \
             -H "anthropic-version: 2023-06-01" \
+            -H "x-session-id: $SESSION_ID" \
+            -H "x-slicc-version: 1.0.0" \
             -d '{"model":"claude-sonnet-5","max_tokens":30,"messages":[{"role":"user","content":"Reply with only: token validated."}]}')
 
           if echo "$RESPONSE" | grep -q '"type":"message"'; then
