@@ -2,9 +2,14 @@
 // Renders a scenario NEW vs OLD on localhost via window._qa, computes a real DOM diff,
 // and asks the ACTUAL LLM judge (same prompt as the batch) for WORKS/FLAG/NO_CHANGE.
 // Creds sourced from env (PROXY_URL/MODEL/IMS_ACCESS_TOKEN); values never printed.
+import { randomUUID } from 'node:crypto';
 import { chromium } from 'playwright';
 import { readFileSync } from 'fs';
 import { diffSignatures, summarizeDiff } from './dom-diff.mjs';
+
+// The LLM proxy rejects any request without `x-session-id` (HTTP 403
+// missing_required_header). One id per process, as in qa-runner-v2.mjs.
+const SESSION_ID = randomUUID();
 
 const cat = JSON.parse(readFileSync('/private/tmp/schema-branch/.github/qa/mount-catalog.json', 'utf8'));
 const byId = Object.fromEntries(cat.entries.map((e) => [e.id, e]));
@@ -70,7 +75,7 @@ async function judgeExpected(intent, domDiff, visualDiff) {
     + `- NO_CHANGE: the PR did not intend any visible change (pure refactor, comment/log/formatting tweak) and the page correctly shows no change.`;
   for (let attempt = 0; attempt < 4; attempt += 1) {
     try {
-      const res = await fetch(PROXY, { method: 'POST', headers: { Authorization: `Bearer ${TOKEN}`, 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01' },
+      const res = await fetch(PROXY, { method: 'POST', headers: { Authorization: `Bearer ${TOKEN}`, 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01', 'x-session-id': SESSION_ID },
         body: JSON.stringify({ model: MODEL, max_tokens: 600, stream: true, messages: [{ role: 'user', content: prompt }] }) });
       const raw = await res.text(); let text = '';
       for (const line of raw.split('\n')) { const t = line.trim(); if (!t.startsWith('data:')) continue; const d = t.slice(5).trim(); if (!d || d === '[DONE]') continue; let e; try { e = JSON.parse(d); } catch { continue; } if (e.type === 'content_block_delta' && e.delta?.type === 'text_delta') text += e.delta.text || ''; }

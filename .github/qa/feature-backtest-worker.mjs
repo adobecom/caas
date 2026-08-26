@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { randomUUID } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -10,6 +11,11 @@ import { buildValidationView } from './observation-view.mjs';
 import { requestBoundedJson } from './llm-json.mjs';
 import { shouldChallengeSkip } from './skip-challenge.mjs';
 import { classifyChangedPaths } from './detect-gate.mjs';
+
+// The LLM proxy rejects any request without `x-session-id` (HTTP 403
+// missing_required_header). One id per process, as in qa-runner-v2.mjs.
+const SESSION_ID = randomUUID();
+
 import {
   applyScenarioRepair,
   findMissingRequiredInitial,
@@ -90,6 +96,7 @@ async function llmResponse(prompt, maxTokens = 4000) {
           Authorization: `Bearer ${TOKEN}`,
           'Content-Type': 'application/json',
           'anthropic-version': '2023-06-01',
+          'x-session-id': SESSION_ID,
         },
         body,
         signal: controller.signal,

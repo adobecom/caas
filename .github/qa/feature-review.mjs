@@ -12,6 +12,7 @@
  * say should happen.
  */
 import { execFileSync } from 'node:child_process';
+import { randomUUID } from 'node:crypto';
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { chromium } from 'playwright';
@@ -25,6 +26,10 @@ import {
   validateFeatureAction,
 } from './feature-action.mjs';
 import { buildScenarioConfig } from './scenario-config.mjs';
+
+// The LLM proxy rejects any request without `x-session-id` (HTTP 403
+// missing_required_header). One id per process, as in qa-runner-v2.mjs.
+const SESSION_ID = randomUUID();
 
 const env = (k, d = '') => (process.env[k] ?? d);
 const PR    = env('PR_NUMBER');
@@ -127,6 +132,7 @@ async function llm(prompt, maxTokens = 4000) {
           Authorization: `Bearer ${TOKEN}`,
           'Content-Type': 'application/json',
           'anthropic-version': '2023-06-01',
+          'x-session-id': SESSION_ID,
         },
         body,
         signal: controller.signal,
@@ -303,7 +309,15 @@ function postComment(verdict, bodyMd) {
     .slice(0, 14000);
 
   // ---- Step 1: decide whether the PR's feature can be exercised at all ----
-  const detect = await llm(
+  // This triage is the only thing standing between the agent and its report,
+  // and it needs the LLM proxy. The build-output-diff verdict does NOT -- it is
+  // a commit status read over the REST API. So when the proxy is unavailable,
+  // fall through to that deterministic verdict rather than dying silently: a
+  // dependency bump whose shipped bundle is byte-identical is still provably
+  // safe, and saying so is the whole point of this cross-signal.
+  let detect;
+  try {
+    detect = await llm(
 `You are triaging an Adobe CaaS (Consonant card collection) pull request to decide if its feature can be EXERCISED by an automated harness.
 
 The harness renders the REAL PR build on a live page and can force the CaaS CONFIG and COLLECTION DATA. It can then perform ONE simple interaction: clicking one visible control or typing into one visible input, followed by a second DOM capture.
@@ -326,6 +340,12 @@ Diff (truncated):
 ${diff}
 
 Respond with ONLY a JSON object: {"testable":true|false,"reason":"one sentence"}.`, 4000);
+  } catch (error) {
+    await postNonInjectable(
+      `Triage model unavailable (${error.message}) -- reporting the deterministic bundle diff only.`);
+    console.log('llm unavailable: posted the build-output-diff verdict without triage');
+    process.exit(0);
+  }
 
   console.error('[detect raw first 400]:', String(detect).slice(0, 400));
   let plan;
@@ -587,4 +607,14 @@ ${after.cards.map((item) => `- ${item.n}. ${item.title || item.text.slice(0, 50)
 
 **Verdict:** ${res.reason}`);
   process.exit(0);
-})().catch((e) => { console.error('feature-review error:', e.stack || e.message); process.exit(0); });
+})().catch((e) => {
+  // Advisory and non-blocking by design -- but a green run with no comment is
+  // exactly how this agent's outage stayed invisible. Leave a marker so the
+  // workflow's monitor step can log it, the way Agent QA Review already does.
+  console.error('feature-review error:', e.stack || e.message);
+  try {
+    writeFileSync(`${env('GITHUB_WORKSPACE', '.')}/FEATURE_REVIEW_FAILED`,
+      `PR #${PR}: ${e.stack || e.message}\n`, { flag: 'a' });
+  } catch { /* best effort */ }
+  process.exit(0);
+});

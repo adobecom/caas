@@ -1,5 +1,11 @@
 // Feed the AFTER-CLICK difference (old good code vs new broken code) to the REAL LLM judge.
+import { randomUUID } from 'node:crypto';
 import { readFileSync } from 'fs';
+
+// The LLM proxy rejects any request without `x-session-id` (HTTP 403
+// missing_required_header). One id per process, as in qa-runner-v2.mjs.
+const SESSION_ID = randomUUID();
+
 const pre = JSON.parse(readFileSync('/tmp/after-good.json','utf8'));   // old code after click
 const post = JSON.parse(readFileSync('/tmp/after-bugged.json','utf8')); // new (broken) code after click
 const summary = `[after action] The tool clicked the "Digital Trends" filter on both builds. `
@@ -23,7 +29,7 @@ async function judge(intent, domDiff) {
     + `- WORKS: NEW behaves like the feature intends (narrows on click).\n`
     + `- FLAG: NEW contradicts the intent (e.g. filtering no longer narrows; the click has no effect on NEW though it did on OLD).\n`
     + `- NO_CHANGE: no visible difference and none intended.`;
-  const res = await fetch(PROXY,{method:'POST',headers:{Authorization:`Bearer ${TOKEN}`,'Content-Type':'application/json','anthropic-version':'2023-06-01'},body:JSON.stringify({model:MODEL,max_tokens:400,stream:true,messages:[{role:'user',content:prompt}]})});
+  const res = await fetch(PROXY,{method:'POST',headers:{Authorization:`Bearer ${TOKEN}`,'Content-Type':'application/json','anthropic-version':'2023-06-01','x-session-id':SESSION_ID},body:JSON.stringify({model:MODEL,max_tokens:400,stream:true,messages:[{role:'user',content:prompt}]})});
   const raw=await res.text(); let text='';
   for(const line of raw.split('\n')){const t=line.trim();if(!t.startsWith('data:'))continue;const d=t.slice(5).trim();if(!d||d==='[DONE]')continue;let e;try{e=JSON.parse(d)}catch{continue}if(e.type==='content_block_delta'&&e.delta?.type==='text_delta')text+=e.delta.text||''}
   const j=JSON.parse(text.slice(text.indexOf('{'),text.lastIndexOf('}')+1));
