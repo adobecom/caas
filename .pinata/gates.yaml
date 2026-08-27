@@ -36,9 +36,18 @@ gates:
         # on main. Measured, not assumed.
         cmd: npx eslint {js_files}
         blocking: true
-        failure_route: repair_loop
-        repair:
-            cmd: npx eslint {js_files} --fix
+        # regenerate, not repair_loop: repair patches ONE implementation file and
+        # is forbidden from touching tests, so a lint error the producer wrote
+        # into a spec file has no repair path — and `eslint --fix` cannot help
+        # when the rule has no fixer. Run 35a537cc dead-ended exactly there:
+        # react/style-prop-object on two lines of a generated Button.spec.js,
+        # --fix a no-op, repair declining because the target is a test, and a
+        # human left holding a lint failure nothing could act on. Regenerating
+        # hands eslint's output back to the producer, which CAN rewrite its own
+        # test — the route every other gate in this file already uses.
+        # The `repair:` block goes with it: the runner dispatches repair only for
+        # repair_loop, so under this route it would be config that never runs.
+        failure_route: regenerate
 
     unit-tests:
         template: command
