@@ -27,9 +27,10 @@ import { readFileSync, readdirSync, existsSync, writeFileSync } from 'fs';
 import { join, basename } from 'path';
 import { spawnSync } from 'child_process';
 
-// The LLM proxy rejects any request without `x-session-id` (HTTP 403
+// The LLM proxy rejects any request without `x-session-id` and `x-slicc-version` (HTTP 403
 // missing_required_header). One id per process, as in qa-runner-v2.mjs.
 const SESSION_ID = randomUUID();
+const SLICC_VERSION = '1.0.0';
 
 const PROXY_URL = process.env.PROXY_URL || '';
 const MODEL = process.env.MODEL || '';
@@ -179,6 +180,7 @@ function rewriteWithLLM() {
             '-H', 'Content-Type: application/json',
             '-H', 'anthropic-version: 2023-06-01',
             '-H', `x-session-id: ${SESSION_ID}`,
+            '-H', `x-slicc-version: ${SLICC_VERSION}`,
             '--max-time', '90',
             '--data-binary', '@-',
         ],

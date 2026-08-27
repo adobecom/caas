@@ -9,9 +9,10 @@ import { diffSignatures, summarizeDiff } from './dom-diff.mjs';
 import { PNG } from 'pngjs';
 import pixelmatch from 'pixelmatch';
 
-// The LLM proxy rejects any request without `x-session-id` (HTTP 403
+// The LLM proxy rejects any request without `x-session-id` and `x-slicc-version` (HTTP 403
 // missing_required_header). One id per process, as in qa-runner-v2.mjs.
 const SESSION_ID = randomUUID();
+const SLICC_VERSION = '1.0.0';
 
 // Visual diff of the pre-code vs post-code render (same forced scenario). Localised noise
 // (antialiasing) is ignored via a threshold; a taller/shorter page (content changed) counts
@@ -232,7 +233,7 @@ async function judgeExpected(intent, domDiff, visualDiff) {
     + `- NO_CHANGE: the PR did not intend any visible change (pure refactor, comment/log/formatting tweak) and the page correctly shows no change.`;
   for (let attempt = 0; attempt < 4; attempt += 1) {
     try {
-      const res = await fetch(PROXY, { method: 'POST', headers: { Authorization: `Bearer ${TOKEN}`, 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01', 'x-session-id': SESSION_ID },
+      const res = await fetch(PROXY, { method: 'POST', headers: { Authorization: `Bearer ${TOKEN}`, 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01', 'x-session-id': SESSION_ID, 'x-slicc-version': SLICC_VERSION },
         body: JSON.stringify({ model: MODEL, max_tokens: 600, stream: true, messages: [{ role: 'user', content: prompt }] }) });
       const raw = await res.text(); let text = '';
       for (const line of raw.split('\n')) { const t = line.trim(); if (!t.startsWith('data:')) continue; const d = t.slice(5).trim(); if (!d || d === '[DONE]') continue; let e; try { e = JSON.parse(d); } catch { continue; } if (e.type === 'content_block_delta' && e.delta?.type === 'text_delta') text += e.delta.text || ''; }

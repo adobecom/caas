@@ -27,9 +27,10 @@ import {
 } from './feature-action.mjs';
 import { buildScenarioConfig } from './scenario-config.mjs';
 
-// The LLM proxy rejects any request without `x-session-id` (HTTP 403
+// The LLM proxy rejects any request without `x-session-id` and `x-slicc-version` (HTTP 403
 // missing_required_header). One id per process, as in qa-runner-v2.mjs.
 const SESSION_ID = randomUUID();
+const SLICC_VERSION = '1.0.0';
 
 const env = (k, d = '') => (process.env[k] ?? d);
 const PR    = env('PR_NUMBER');
@@ -133,6 +134,7 @@ async function llm(prompt, maxTokens = 4000) {
           'Content-Type': 'application/json',
           'anthropic-version': '2023-06-01',
           'x-session-id': SESSION_ID,
+          'x-slicc-version': SLICC_VERSION,
         },
         body,
         signal: controller.signal,
