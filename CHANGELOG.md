@@ -1,5 +1,12 @@
 
 
+## [0.68.2](https://github.com/adobecom/caas/compare/0.68.1...0.68.2) (2026-08-27)
+
+
+### Bug Fixes
+
+* **mwpw-184989:** send x-session-id to the LLM proxy and stop Feature QA failing silently ([#600](https://github.com/adobecom/caas/issues/600)) ([faaa4fd](https://github.com/adobecom/caas/commit/faaa4fda3971de714152cc63958eef787b263508)), closes [#591](https://github.com/adobecom/caas/issues/591)
+
 ## [0.68.1](https://github.com/adobecom/caas/compare/0.68.0...0.68.1) (2026-08-25)
 
 
