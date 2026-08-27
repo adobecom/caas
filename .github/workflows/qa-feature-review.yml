@@ -28,6 +28,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
+      issues: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -94,6 +95,36 @@ jobs:
         run: |
           rm -f /tmp/feature-render.png
           node feature-review.mjs
+
+      # feature-review.mjs is advisory and always exits 0, so a tool outage
+      # (dead proxy, CDP gone, GH API error) looks exactly like a healthy run:
+      # green job, no comment, nobody notified. Mirror the Agent QA Review
+      # monitor so those failures land on the one tracking issue instead.
+      - name: Log feature review failure to the monitor issue
+        if: always()
+        uses: actions/github-script@v7
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        with:
+          script: |
+            const fs = require('fs');
+            if (!fs.existsSync('FEATURE_REVIEW_FAILED')) { core.info('Feature QA Review OK; nothing to log.'); return; }
+            const reason = fs.readFileSync('FEATURE_REVIEW_FAILED', 'utf8').trim();
+            const { owner, repo } = context.repo;
+            const title = 'CI: AI / Agent review tool failures';
+            // Find the ONE monitor issue whether open OR closed, so we never create duplicates.
+            const sr = await github.rest.search.issuesAndPullRequests({ q: `repo:${owner}/${repo} is:issue in:title "${title}"`, per_page: 10 });
+            let issue = (sr.data.items || []).find(i => i.title === title);
+            if (!issue) {
+              const res = await github.rest.issues.create({ owner, repo, title, body: 'Automated log of AI Code Review / Agent QA Review TOOL failures (upstream / CDP / stream errors, not code regressions). Each comment is one failed run and @-mentions the maintainer; the PR check stays green. Close this issue when handled; a later failure reopens it.' });
+              issue = res.data;
+            } else if (issue.state === 'closed') {
+              await github.rest.issues.update({ owner, repo, issue_number: issue.number, state: 'open' });
+            }
+            const cc = '\n\ncc @sanrai';   // mention on every failure -> a notification each time
+            const body = ['\u274c **Feature QA Review** could not run \u2014 ' + new Date().toISOString(), '', '- ' + reason.split('\n')[0], '- Run: ' + process.env.RUN_URL, cc].join('\n');
+            await github.rest.issues.createComment({ owner, repo, issue_number: issue.number, body });
+            core.info('Logged Feature QA Review failure on issue #' + issue.number);
 
       - name: Upload render screenshot
         if: always()

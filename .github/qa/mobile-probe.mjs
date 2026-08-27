@@ -1,9 +1,16 @@
+import { randomUUID } from 'node:crypto';
 import { researchCode } from './code-search.mjs';
+
+// The LLM proxy rejects any request without `x-session-id` and `x-slicc-version` (HTTP 403
+// missing_required_header). One id per process, as in qa-runner-v2.mjs.
+const SESSION_ID = randomUUID();
+const SLICC_VERSION = '1.0.0';
+
 const PROXY=process.env.PROXY_URL, MODEL=process.env.MODEL, TOKEN=process.env.IMS_ACCESS_TOKEN;
 const REPO_ROOT='/private/tmp/schema-branch';
 function extractJson(src){const t=String(src).replace(/```(?:json)?/gi,'').trim();const a=t.indexOf('{'),b=t.lastIndexOf('}');return JSON.parse(t.slice(a,b+1));}
 async function llm(prompt, maxTokens=3000){
-  const res=await fetch(PROXY,{method:'POST',headers:{Authorization:`Bearer ${TOKEN}`,'Content-Type':'application/json','anthropic-version':'2023-06-01'},body:JSON.stringify({model:MODEL,max_tokens:maxTokens,stream:true,messages:[{role:'user',content:prompt}]})});
+  const res=await fetch(PROXY,{method:'POST',headers:{Authorization:`Bearer ${TOKEN}`,'Content-Type':'application/json','anthropic-version':'2023-06-01','x-session-id':SESSION_ID,'x-slicc-version':SLICC_VERSION},body:JSON.stringify({model:MODEL,max_tokens:maxTokens,stream:true,messages:[{role:'user',content:prompt}]})});
   const raw=await res.text(); let text='';
   for(const line of raw.split('\n')){const s=line.trim();if(!s.startsWith('data:'))continue;const d=s.slice(5).trim();if(!d||d==='[DONE]')continue;let e;try{e=JSON.parse(d)}catch{continue}if(e.type==='content_block_delta'&&e.delta?.type==='text_delta')text+=e.delta.text||''}
   return text.trim();
