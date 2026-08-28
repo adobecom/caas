@@ -23,3 +23,4 @@ Lingo / language-first routing (multi-locale URL handling) is **out of scope** f
 - Commit messages flow through husky prompts — ticket number, change type, short description.
 - Ticket prefix is `MWPW-<number>` (e.g. `MWPW-193054: Add consumer onboarding runbook`).
 - Slack: `#javelin-friends` for access requests and team coordination.
+- ESLint (airbnb config) is enforced on every changed `.js`/`.jsx` file — `__tests__` spec files included. A rule that has tripped generated JSX before: `react/style-prop-object` — a `style` prop takes an object (`style={{ width: '600px' }}`), never a string. Before pushing (for AI agents: before declaring the change finished), run `npx eslint <the files you touched>` for a check-only pass — `npm run lint` bakes in `--fix`, which mutates the tree and hides what it fixed.
