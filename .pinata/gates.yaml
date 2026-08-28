@@ -57,7 +57,13 @@ gates:
         # gate and the coverage gate: a candidate that adds untested code fails
         # here until the producer ships tests with it. Full run measured at
         # 73 suites / 918 tests in ~7s on a clean checkout.
-        cmd: npx jest
+        # --maxWorkers=2: the verify pod is cgroup-limited (2 CPU / 4Gi) but
+        # node sizes jest's worker pool from the HOST's cores, so coverage
+        # instrumentation across 73 suites fanned out enough workers to OOM-kill
+        # the pod — freezing every in-flight run on it (Stage, 2026-08-28,
+        # runs 703a1d7a / 56124728, the first night these gates ever executed).
+        # Two workers fit the pod's own CPU budget; the 600s ceiling has room.
+        cmd: npx jest --maxWorkers=2
         timeout_s: 600
         blocking: true
         failure_route: regenerate
