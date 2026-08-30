@@ -22,7 +22,7 @@ jobs:
           chrome-version: '146'
       - uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 24
       - name: Install
         run: npm ci
       - name: Run Bulk Publisher E2E Tests
