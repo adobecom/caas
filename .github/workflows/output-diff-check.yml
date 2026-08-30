@@ -12,12 +12,12 @@
 
 name: Build Output Diff (advisory)
 
+# Runs on EVERY pull request (no paths filter) so every PR gets a verdict — a
+# change with no shipped-output impact (deps, refactors, CI/tooling) reports
+# NO_CHANGE, which the Feature QA agent consults to say "safe" instead of "skipped".
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    paths:
-      - 'package.json'
-      - 'package-lock.json'
 
 permissions:
   contents: read
