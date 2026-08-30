@@ -174,7 +174,9 @@ if (shortSha) headerMeta += ` · commit \`${shortSha}\``;
 if (nFiles) headerMeta += ` · ${nFiles} file${nFiles === 1 ? '' : 's'} changed`;
 headerMeta += '._';
 
-const verdictState = Buffer.from(JSON.stringify({ verdict, sinceSha: qa.since }), 'utf8').toString('base64');
+// Include the reviewed head SHA so downstream automation can prove that a PASS
+// belongs to the PR's current commit rather than a stale pre-rebase run.
+const verdictState = Buffer.from(JSON.stringify({ verdict, sinceSha: qa.since, headSha: shortSha }), 'utf8').toString('base64');
 const comment = [
   MARKER,
   '## Agent QA review — interactive + visual diff (advisory, non-blocking)',
