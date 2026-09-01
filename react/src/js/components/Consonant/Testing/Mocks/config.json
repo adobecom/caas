@@ -106,6 +106,7 @@
             "leftPanel": {
                 "header": "Filters",
                 "clearAllFiltersText": "Clear All",
+                "clearAllFiltersAriaLabel": "Clear all filters",
                 "mobile": {
                     "filtersBtnLabel": "Filters:",
                     "panel": {
@@ -126,6 +127,8 @@
             "topPanel": {
                 "groupLabel": "Filters:",
                 "clearAllFiltersText": "Clear All",
+                "clearAllFiltersAriaLabel": "Clear all filters",
+                "clearFilterAriaLabel": "Clear {name} filters",
                 "moreFiltersBtnText": "More +",
                 "mobile": {
                     "group": {
