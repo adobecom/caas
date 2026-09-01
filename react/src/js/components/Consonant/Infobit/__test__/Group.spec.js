@@ -119,6 +119,24 @@ describe('Consonant/Infobits/Group', () => {
     expect(buttonElement.textContent).toBe('CTA Link');
   });
 
+  test('Should render Link infobit with style "secondary" as a Button', () => {
+    const renderList = [
+      {
+        type: INFOBIT_TYPE.LINK,
+        style: 'secondary',
+        href: 'https://example.com',
+        text: 'Secondary Link'
+      }
+    ];
+
+    render(<Group renderList={renderList} />);
+    const buttonElement = screen.getByTestId('consonant-BtnInfobit');
+    expect(buttonElement).toBeInTheDocument();
+    expect(buttonElement).toHaveAttribute('href', 'https://example.com');
+    expect(buttonElement.textContent).toBe('Secondary Link');
+    expect(document.querySelector('.consonant-LinkInfobit')).not.toBeInTheDocument();
+  });
+
   test('Should render Gated infobit correctly', () => {
     const renderList = [
       {

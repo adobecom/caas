@@ -125,7 +125,7 @@ const Group = (props) => {
 
                     case INFOBIT_TYPE.LINK:
                         if (infobit.style === 'button') return '';
-                        if (infobit.style === 'primary' || infobit.style === 'call-to-action') {
+                        if (infobit.style === 'primary' || infobit.style === 'call-to-action' || infobit.style === 'secondary') {
                             return (
                                 <Button
                                     {...infobit}
