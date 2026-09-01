@@ -216,13 +216,17 @@ jobs:
     needs: deployment
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js 18.0.0x
+      # pa11y is installed at its current major, not @latest: pa11y 10 raised
+      # its engine floor to Node 22.13 and its ESM-only deps crash any older
+      # runtime with ERR_REQUIRE_ESM, which is exactly how @latest broke every
+      # PR here overnight. Node and the pa11y major move together, on purpose.
+      - name: Use Node.js 22
         uses: actions/setup-node@v3
         with:
-          node-version: 18.0.0
+          node-version: 22
       - name: Run pa11y
         run: |
-          npm install -g pa11y@latest
+          npm install -g pa11y@10
           pa11y --config pa11y.json https://adobecom.github.io/caas/?cb=$(date +%s)
   run-core-web-vitals-checks:
     runs-on: ubuntu-latest
