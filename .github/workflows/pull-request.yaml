@@ -97,6 +97,10 @@ jobs:
   sonarqube:
     name: Run SonarQube Analysis
     needs: check-coverage-thresholds
+    # Skip for Dependabot PRs — secrets are withheld by GitHub for Dependabot-triggered
+    # workflows, so SONAR_HOST_URL resolves empty and the scan fails. A dependency bump
+    # only touches package.json/package-lock.json, so there is no source to analyse.
+    if: github.event_name == 'pull_request' && github.event.pull_request.user.login != 'dependabot[bot]'
     runs-on: sonarqube-runners
     steps:
       - uses: actions/checkout@v4
