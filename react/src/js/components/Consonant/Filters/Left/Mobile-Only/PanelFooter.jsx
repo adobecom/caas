@@ -12,6 +12,7 @@ const panelFooterType = {
     applyText: string,
     showTotalResults: bool,
     clearAllFiltersText: string,
+    clearAllFiltersAriaLabel: string,
     someFiltersAreSelected: bool,
     showTotalResultsText: string,
     onClearAllFilters: func.isRequired,
@@ -25,6 +26,7 @@ const defaultProps = {
     applyText: '',
     showTotalResults: false,
     clearAllFiltersText: '',
+    clearAllFiltersAriaLabel: '',
     showTotalResultsText: '',
     someFiltersAreSelected: false,
 };
@@ -55,6 +57,7 @@ const PanelFooter = forwardRef((props, ref) => {
         resQty,
         onClearAllFilters,
         clearAllFiltersText,
+        clearAllFiltersAriaLabel,
         onMobileFiltersToggleClick,
         someFiltersAreSelected,
         applyText,
@@ -100,6 +103,7 @@ const PanelFooter = forwardRef((props, ref) => {
                 type="button"
                 data-testid="consonant-LeftFilters-mobileFooterClearBtn"
                 className="consonant-LeftFilters-mobileFooterClearBtn"
+                aria-label={clearAllFiltersAriaLabel}
                 onClick={onClearAllFilters}>
                 {clearAllFiltersText}
             </button>
