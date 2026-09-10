@@ -1,5 +1,12 @@
 
 
+## [0.68.12](https://github.com/adobecom/caas/compare/0.68.11...0.68.12) (2026-09-10)
+
+
+### Dependencies
+
+* **deps-dev:** bump commitizen from 4.3.1 to 4.3.2 ([#595](https://github.com/adobecom/caas/issues/595)) ([98b3962](https://github.com/adobecom/caas/commit/98b3962ff91a8f3e5e0063a85a31f67e4bb21016))
+
 ## [0.68.11](https://github.com/adobecom/caas/compare/0.68.10...0.68.11) (2026-09-10)
 
 
