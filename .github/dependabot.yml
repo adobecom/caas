@@ -3,15 +3,19 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
 
-    # Schedule: Only Mondays at 9am Pacific (not constantly!)
+    # Check each weekday morning so safe updates can flow continuously.
+    # Security updates are advisory-triggered and do not wait for this schedule.
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "09:00"
+      interval: "daily"
+      time: "06:00"
       timezone: "America/Los_Angeles"
 
     # Limit: Max 5 open PRs at once (prevents overwhelming flood)
     open-pull-requests-limit: 5
+
+    # Dependabot normally rebases automatically. Keep this explicit because the
+    # safe-automerge controller requires every candidate to include latest main.
+    rebase-strategy: "auto"
 
     # No grouping: Dependabot will open individual PRs per update
 
