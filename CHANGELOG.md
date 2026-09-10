@@ -1,5 +1,12 @@
 
 
+## [0.68.10](https://github.com/adobecom/caas/compare/0.68.9...0.68.10) (2026-09-10)
+
+
+### Dependencies
+
+* **deps-dev:** bump @babel/preset-react from 7.28.5 to 7.29.7 ([#593](https://github.com/adobecom/caas/issues/593)) ([20c876d](https://github.com/adobecom/caas/commit/20c876d515ecc315936786d554abdc67aec75bbb))
+
 ## [0.68.9](https://github.com/adobecom/caas/compare/0.68.8...0.68.9) (2026-09-10)
 
 
