@@ -1,5 +1,19 @@
 
 
+## [0.68.9](https://github.com/adobecom/caas/compare/0.68.8...0.68.9) (2026-09-10)
+
+
+### Dependencies
+
+* **deps-dev:** bump @ungap/structured-clone from 1.3.0 to 1.3.3 ([#592](https://github.com/adobecom/caas/issues/592)) ([89f4f20](https://github.com/adobecom/caas/commit/89f4f20307384ac2b18b969c78ff79b491a60500))
+
+## [0.68.8](https://github.com/adobecom/caas/compare/0.68.7...0.68.8) (2026-09-10)
+
+
+### Dependencies
+
+* **deps-dev:** bump chromedriver from 146.0.5 to 146.0.6 ([#591](https://github.com/adobecom/caas/issues/591)) ([d181506](https://github.com/adobecom/caas/commit/d1815064315eac237b73e232ab2c882fb1cffdb3))
+
 ## [0.68.7](https://github.com/adobecom/caas/compare/0.68.6...0.68.7) (2026-09-10)
 
 ## [0.68.6](https://github.com/adobecom/caas/compare/0.68.5...0.68.6) (2026-09-04)
