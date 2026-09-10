@@ -126,6 +126,9 @@ jobs:
   sonarqube:
     name: Run SonarQube Analysis
     needs: check-coverage
+    # Repository switch: Settings > Secrets and variables > Actions > Variables.
+    # Sonar stays disabled unless SONAR_ENABLED is explicitly set to "true".
+    if: ${{ vars.SONAR_ENABLED == 'true' }}
     runs-on: sonarqube-runners
     steps:
       - uses: actions/checkout@v4
