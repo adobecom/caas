@@ -131,6 +131,15 @@ describe('Consonant/Filters/Top/Panel', () => {
         fireEvent.click(clearButtonElement);
         expect(onClearAllFilters).toHaveBeenCalled();
     });
+    test('Top panel clear-all button should have aria-label conveying purpose', () => {
+        renderTopFilterPanel({
+            filterPanelEnabled: true,
+            filters: selectedAllFilters,
+        });
+
+        const clearButtonElement = screen.queryByTestId('consonant-TopFilters-clearBtn');
+        expect(clearButtonElement).toHaveAttribute('aria-label', 'Clear all filters');
+    });
 
     test('should load analytics onto the filter panel', () => {
         renderTopFilterPanel({

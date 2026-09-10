@@ -70,6 +70,21 @@ describe('Consonant/Left/Panel', () => {
 
         onClearAllFilters.mockClear();
     });
+    test('Desktop clear-all button should have aria-label conveying purpose', () => {
+        renderFilterPanel();
+
+        const clearButtonElement = screen.queryByTestId('consonant-LeftFilters-clearLink');
+        expect(clearButtonElement).toHaveAttribute('aria-label', 'Clear all filters');
+    });
+    test('Mobile clear-all button should have aria-label conveying purpose', () => {
+        renderFilterPanel({
+            filters: selectedAllFilters,
+            windowWidth: NON_DESKTOP_WIDTH,
+        });
+
+        const mobileFooterClearElement = screen.queryByTestId('consonant-LeftFilters-mobileFooterClearBtn');
+        expect(mobileFooterClearElement).toHaveAttribute('aria-label', 'Clear all filters');
+    });
     test('Should be able to clear all filters using a mobile footer', () => {
         const { props: { onClearAllFilters } } = renderFilterPanel({
             filters: selectedAllFilters,

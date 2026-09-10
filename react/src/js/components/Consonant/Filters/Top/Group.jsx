@@ -11,7 +11,7 @@ import {
 import { Items } from './Items';
 import { Footer } from './Footer';
 import { filterItemType } from '../../types/config';
-import { stopPropagation } from '../../Helpers/general';
+import { stopPropagation, template } from '../../Helpers/general';
 import {
     useConfig,
     useExpandable,
@@ -82,6 +82,8 @@ const Group = (props) => {
         getConfig('filterPanel', 'i18n.topPanel.mobile.group.totalResultsText').replace('{total}', results);
     const mobileGroupApplyBtnText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.applyBtnText');
     const mobileGroupDoneBtnText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.doneBtnText');
+    const clearFilterAriaLabelTemplate = getConfig('filterPanel', 'i18n.topPanel.clearFilterAriaLabel');
+    const clearFilterAriaLabel = template(clearFilterAriaLabelTemplate, { name });
     const isCategoriesPage = getConfig('collection', 'layout.container') === 'categories';
     const isProductsFilter = id === 'caas:all-products';
 
@@ -257,6 +259,7 @@ const Group = (props) => {
                                     mobileFooterBtnText={mobileFooterBtnText}
                                     handleToggle={handleToggle}
                                     clearFilterText={clearFilterText}
+                                    clearFilterAriaLabel={clearFilterAriaLabel}
                                     handleClear={handleClear}
                                     numItemsSelected={numItemsSelected}
                                     mobileGroupTotalResultsText={mobileGroupTotalResultsText} />

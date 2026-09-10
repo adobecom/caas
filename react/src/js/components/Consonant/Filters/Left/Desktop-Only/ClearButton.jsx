@@ -6,11 +6,13 @@ import {
 
 const clearButtonType = {
     clearAllFiltersText: string,
+    clearAllFiltersAriaLabel: string,
     onClearAllFilters: func.isRequired,
 };
 
 const defaultProps = {
     clearAllFiltersText: '',
+    clearAllFiltersAriaLabel: '',
 };
 
 /**
@@ -35,6 +37,7 @@ const ClearBtn = (props) => {
     const {
         onClearAllFilters,
         clearAllFiltersText,
+        clearAllFiltersAriaLabel,
     } = props;
 
     return (
@@ -42,6 +45,7 @@ const ClearBtn = (props) => {
             type="button"
             data-testid="consonant-LeftFilters-clearLink"
             className="consonant-LeftFilters-clearLink"
+            aria-label={clearAllFiltersAriaLabel}
             onClick={onClearAllFilters}
             tabIndex="0">
             {clearAllFiltersText}

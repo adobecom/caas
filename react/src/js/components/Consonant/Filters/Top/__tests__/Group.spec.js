@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom/extend-expect';
 import {
+    screen,
     fireEvent,
 } from '@testing-library/react';
 
@@ -8,6 +9,7 @@ import setup from '../../../Testing/Utils/Settings';
 import { testAccessibility } from '../../../Testing/Utils/a11yTest';
 import {
     DEFAULT_PROPS,
+    selectedAllItems,
 } from '../../../Testing/Constants/FilterItem';
 
 const renderTopFilterGroup = setup(Group, DEFAULT_PROPS);
@@ -49,6 +51,13 @@ describe('Consonant/Filters/Top/Group', () => {
         // Second click - should change back to "Open"
         fireEvent.click(filterButton);
         expect(filterNameElement).toHaveAttribute('daa-ll', `${name} Open`);
+    });
+
+    test('Per-group footer clear button should have aria-label naming the group', () => {
+        const { props: { name } } = renderTopFilterGroup(selectedAllItems);
+
+        const clearBtn = screen.queryByTestId('consonant-TopFilter-footerClearBtn');
+        expect(clearBtn).toHaveAttribute('aria-label', `Clear ${name} filters`);
     });
 
     // Accessibility test with jest-axe
