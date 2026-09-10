@@ -209,6 +209,88 @@ describe(`Consonant/Card/${cardStyle}`, () => {
     ).toBeNull();
   });
 
+  test("should render the product icon without a title when detailsTextOption is productIcon and a matching product exists", () => {
+    renderCard(
+      {
+        cardStyle,
+        contentArea: { detailText: "some details" },
+      },
+      {
+        collection: {
+          detailsTextOption: "productIcon",
+        },
+        products: {
+          acrobat: {
+            tagID: "some details",
+            title: "Acrobat",
+            tagImage: "https://example.com/acrobat-icon.svg",
+          },
+        },
+      }
+    );
+
+    const productInfoElement = screen.getByTestId(
+      "consonant-Card-label-product-info"
+    );
+    expect(
+      productInfoElement.querySelector(".product-info-icon")
+    ).not.toBeNull();
+    expect(
+      productInfoElement.querySelector(".product-info-title")
+    ).toBeNull();
+  });
+
+  test("should not render the detail text when the product icon is shown", () => {
+    renderCard(
+      {
+        cardStyle,
+        contentArea: { detailText: "some details" },
+      },
+      {
+        collection: {
+          detailsTextOption: "productIcon",
+        },
+        products: {
+          acrobat: {
+            tagID: "some details",
+            title: "Acrobat",
+            tagImage: "https://example.com/acrobat-icon.svg",
+          },
+        },
+      }
+    );
+
+    const detailText = screen.queryByText("some details");
+    expect(detailText).toBeNull();
+  });
+
+  test("should hide the detail text when detailsTextOption is productIcon but no product matches", () => {
+    renderCard(
+      {
+        cardStyle,
+        contentArea: { detailText: "some details" },
+      },
+      {
+        collection: {
+          detailsTextOption: "productIcon",
+        },
+        products: {
+          acrobat: {
+            tagID: "unrelated-tag",
+            title: "Acrobat",
+            tagImage: "https://example.com/acrobat-icon.svg",
+          },
+        },
+      }
+    );
+
+    expect(screen.queryByText("some details")).toBeNull();
+    expect(screen.queryByTestId("consonant-Card-label")).toBeNull();
+    expect(
+      screen.queryByTestId("consonant-Card-label-product-info")
+    ).toBeNull();
+  });
+
   test("should render a card title with a heading role and aria-level", () => {
     renderCard({ cardStyle });
 

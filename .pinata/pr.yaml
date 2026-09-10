@@ -1,0 +1,32 @@
+# PR body and branch naming for harness-authored CaaS changes.
+#
+# KNOWN GAP (engine follow-up, not fixable from this file): caas CI lints PR
+# TITLES via commitlint — `type(mwpw-NNNNNN): message` (commitlint.config.js,
+# check-pr-title in pull-request.yaml). The harness currently titles PRs
+# "[pinata-code] <issue title>", which that check rejects. pr.yaml has no title
+# field today; until the engine grows one, a harness PR needs its title edited
+# once (e.g. `fix(mwpw-184448): …`) to go green.
+issue_key_pattern: 'MWPW-\d+'
+# Ticket-first branches, matching the team convention (AGENTS.md: ticket
+# number in every change; branches off main).
+branch_pattern: ['{issue_key}', '{title_slug}']
+page: /index.html
+fallbacks:
+    issue_key: 'Resolves: <!-- link the MWPW Jira ticket, e.g. [MWPW-0000](…) -->'
+    test_urls: |-
+        - Local harness: `npm start` → http://localhost:3000/index.html (mock data)
+        - <!-- no verified visual evidence this run — see the run dashboard -->
+template: |
+    {summary_bullets}
+
+    Resolves: [{issue_key}](https://jira.corp.adobe.com/browse/{issue_key})
+
+    **Verification** (what the harness ran green before opening this PR):
+    - ESLint on the changed files, check-only
+    - `npx jest` — full unit suites with the repo's coverage thresholds
+    - `NODE_OPTIONS=--openssl-legacy-provider npm run build`
+    - Renderability: the built bundle mounted a Consonant card collection on
+      the local harness (index.html + mock-json) in headless chromium
+
+    **Test URLs**:
+    {test_urls}

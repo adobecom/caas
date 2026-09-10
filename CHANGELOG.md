@@ -1,5 +1,80 @@
 
 
+## [0.68.12](https://github.com/adobecom/caas/compare/0.68.11...0.68.12) (2026-09-10)
+
+
+### Dependencies
+
+* **deps-dev:** bump commitizen from 4.3.1 to 4.3.2 ([#595](https://github.com/adobecom/caas/issues/595)) ([98b3962](https://github.com/adobecom/caas/commit/98b3962ff91a8f3e5e0063a85a31f67e4bb21016))
+
+## [0.68.11](https://github.com/adobecom/caas/compare/0.68.10...0.68.11) (2026-09-10)
+
+
+### Dependencies
+
+* **deps-dev:** bump serve from 14.2.5 to 14.2.6 ([#594](https://github.com/adobecom/caas/issues/594)) ([74c80fb](https://github.com/adobecom/caas/commit/74c80fbdc3b4579043de8de80ddb586ce64b18b0))
+
+## [0.68.10](https://github.com/adobecom/caas/compare/0.68.9...0.68.10) (2026-09-10)
+
+
+### Dependencies
+
+* **deps-dev:** bump @babel/preset-react from 7.28.5 to 7.29.7 ([#593](https://github.com/adobecom/caas/issues/593)) ([20c876d](https://github.com/adobecom/caas/commit/20c876d515ecc315936786d554abdc67aec75bbb))
+
+## [0.68.9](https://github.com/adobecom/caas/compare/0.68.8...0.68.9) (2026-09-10)
+
+
+### Dependencies
+
+* **deps-dev:** bump @ungap/structured-clone from 1.3.0 to 1.3.3 ([#592](https://github.com/adobecom/caas/issues/592)) ([89f4f20](https://github.com/adobecom/caas/commit/89f4f20307384ac2b18b969c78ff79b491a60500))
+
+## [0.68.8](https://github.com/adobecom/caas/compare/0.68.7...0.68.8) (2026-09-10)
+
+
+### Dependencies
+
+* **deps-dev:** bump chromedriver from 146.0.5 to 146.0.6 ([#591](https://github.com/adobecom/caas/issues/591)) ([d181506](https://github.com/adobecom/caas/commit/d1815064315eac237b73e232ab2c882fb1cffdb3))
+
+## [0.68.7](https://github.com/adobecom/caas/compare/0.68.6...0.68.7) (2026-09-10)
+
+## [0.68.6](https://github.com/adobecom/caas/compare/0.68.5...0.68.6) (2026-09-04)
+
+## [0.68.5](https://github.com/adobecom/caas/compare/0.68.4...0.68.5) (2026-09-04)
+
+## [0.68.4](https://github.com/adobecom/caas/compare/0.68.3...0.68.4) (2026-08-28)
+
+## [0.68.3](https://github.com/adobecom/caas/compare/0.68.2...0.68.3) (2026-08-27)
+
+## [0.68.2](https://github.com/adobecom/caas/compare/0.68.1...0.68.2) (2026-08-27)
+
+
+### Bug Fixes
+
+* **mwpw-184989:** send x-session-id to the LLM proxy and stop Feature QA failing silently ([#600](https://github.com/adobecom/caas/issues/600)) ([faaa4fd](https://github.com/adobecom/caas/commit/faaa4fda3971de714152cc63958eef787b263508)), closes [#591](https://github.com/adobecom/caas/issues/591)
+
+## [0.68.1](https://github.com/adobecom/caas/compare/0.68.0...0.68.1) (2026-08-25)
+
+
+### Bug Fixes
+
+* **mwpw-205473:** add required x-session-id and x-slicc-version headers to Adobe LLM proxy calls ([#597](https://github.com/adobecom/caas/issues/597)) ([2aff406](https://github.com/adobecom/caas/commit/2aff4061247cb451998b56e97b49ca589529260d))
+
+## [0.68.0](https://github.com/adobecom/caas/compare/0.67.1...0.68.0) (2026-08-24)
+
+
+### Features
+
+* **mwpw-204921:** adds support for Product Icon in detailsText option ([#589](https://github.com/adobecom/caas/issues/589)) ([67dc7d7](https://github.com/adobecom/caas/commit/67dc7d733b38c4c7109af0ff205df12ccd9007b2))
+
+## [0.67.1](https://github.com/adobecom/caas/compare/0.67.0...0.67.1) (2026-08-24)
+
+## [0.67.0](https://github.com/adobecom/caas/compare/0.66.7...0.67.0) (2026-08-22)
+
+
+### Features
+
+* **mwpw-000000:** add the .pinata harness tenant contract ([1dfc31d](https://github.com/adobecom/caas/commit/1dfc31dd608e23b12563cee06a170fb710b79a39))
+
 ## [0.66.7](https://github.com/adobecom/caas/compare/0.66.6...0.66.7) (2026-08-18)
 
 

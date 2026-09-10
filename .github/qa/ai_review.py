@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import json, os, re, sys, subprocess, tempfile
+import json, os, re, sys, subprocess, tempfile, uuid
 
 # Sticky comments are for NEW PRs only. Legacy PRs already carry unstructured
 # bot comments that cannot be cleanly reconciled; leave them untouched.
@@ -269,10 +269,13 @@ payload = json.dumps({
 })
 
 # Headers via a 0600 temp config so the Bearer token never appears in argv.
+# The Adobe LLM proxy requires x-session-id and x-slicc-version (added mid-2026).
 with tempfile.NamedTemporaryFile('w', delete=False, suffix='.conf') as cf:
     cf.write(f'header = "Authorization: Bearer {token}"\n')
     cf.write('header = "Content-Type: application/json"\n')
     cf.write('header = "anthropic-version: 2023-06-01"\n')
+    cf.write(f'header = "x-session-id: {uuid.uuid4()}"\n')
+    cf.write('header = "x-slicc-version: 1.0.0"\n')
     config_file = cf.name
 
 import time

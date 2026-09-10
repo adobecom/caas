@@ -1,0 +1,48 @@
+{
+    "source_app": "caas",
+    "name": "caas",
+    "app_name": "caas",
+    "github_repo": "adobecom/caas",
+    "default_branch": "main",
+    "branch_naming": "jira",
+    "branch_naming_prefixes": ["MWPW"],
+    "services": [
+        { "name": "harness", "env_var": "CAAS_PORT", "default": 3000 }
+    ],
+    "depends_on": [],
+    "pipeline": {
+        "event_trail": true,
+        "structured_prd": true,
+        "progress_tracking": {
+            "github": true,
+            "slack": true
+        }
+    },
+    "test_urls": {
+        "envs": {
+            "@caas_local": "http://localhost:3000",
+            "@bacom_live": "https://business.adobe.com/resources/main.html",
+            "@adobe_prod": "https://www.adobe.com"
+        },
+        "default_path": "/index.html"
+    },
+    "verify": {
+        "command": "NODE_OPTIONS=--openssl-legacy-provider npm run build",
+        "after": ["build", "fix", "patch"],
+        "cwd": ".",
+        "timeout_seconds": 600,
+        "max_attempts": 1,
+        "on_failure": {
+            "draft_pr": true,
+            "exit_nonzero": false
+        }
+    },
+    "mental_models": {
+        "domains": ["caas-consonant", "caas-quality"],
+        "path_overrides": [
+            { "pattern": "e2e-tests/", "domains": ["caas-quality"] },
+            { "pattern": ".github/qa/", "domains": ["caas-quality"] },
+            { "pattern": "less/", "domains": ["caas-consonant"] }
+        ]
+    }
+}
