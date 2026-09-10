@@ -1,5 +1,12 @@
 
 
+## [0.68.11](https://github.com/adobecom/caas/compare/0.68.10...0.68.11) (2026-09-10)
+
+
+### Dependencies
+
+* **deps-dev:** bump serve from 14.2.5 to 14.2.6 ([#594](https://github.com/adobecom/caas/issues/594)) ([74c80fb](https://github.com/adobecom/caas/commit/74c80fbdc3b4579043de8de80ddb586ce64b18b0))
+
 ## [0.68.10](https://github.com/adobecom/caas/compare/0.68.9...0.68.10) (2026-09-10)
 
 
