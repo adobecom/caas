@@ -10,8 +10,11 @@
  * for unit tests. This file is always executed from trusted default-branch code
  * by workflow_run/schedule, never from the Dependabot branch.
  */
-import { execFileSync, spawnSync } from 'node:child_process';
+import { execFile, execFileSync, spawnSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
+import { promisify } from 'node:util';
+
+const execFileAsync = promisify(execFile);
 
 const DEPENDABOT = 'dependabot[bot]';
 const ALLOWED_FILES = new Set(['package.json', 'package-lock.json']);
@@ -33,6 +36,16 @@ const DECISION_MARKER = '<!-- dependabot-safe-automerge -->';
 const CONFLICT_MARKER = '<!-- dependabot-conflict-recovery:';
 const TWO_HOURS_MS = 2 * 60 * 60 * 1000;
 const THIRTY_MINUTES_MS = 30 * 60 * 1000;
+const TERMINAL_CHECK_FAILURES = new Set([
+  'ACTION_REQUIRED',
+  'CANCELLED',
+  'FAILURE',
+  'NEUTRAL',
+  'SKIPPED',
+  'STALE',
+  'STARTUP_FAILURE',
+  'TIMED_OUT',
+]);
 
 export function extractAgentVerdict(comments, headSha) {
   const shortSha = headSha.slice(0, 7);
@@ -117,7 +130,7 @@ export function evaluateCandidate(candidate) {
 
   for (const name of REQUIRED_CHECKS) {
     const state = resultState(checkRuns, name);
-    if (['FAILURE', 'CANCELLED', 'TIMED_OUT', 'ACTION_REQUIRED', 'STALE'].includes(state)) {
+    if (TERMINAL_CHECK_FAILURES.has(state)) {
       return { state: 'human', reason: `${name} concluded ${state}` };
     }
     if (state !== 'SUCCESS') return { state: 'waiting', reason: `waiting for ${name} (${state})` };
@@ -170,6 +183,20 @@ function ghJson(args, options) {
   return output ? JSON.parse(output) : null;
 }
 
+async function ghJsonAsync(args) {
+  try {
+    const { stdout } = await execFileAsync('gh', args, {
+      encoding: 'utf8',
+      maxBuffer: 64 * 1024 * 1024,
+    });
+    const output = stdout.trim();
+    return output ? JSON.parse(output) : null;
+  } catch (error) {
+    const detail = String(error.stderr || error.message || '').trim();
+    throw new Error(`gh ${args.join(' ')} failed: ${detail}`);
+  }
+}
+
 function elapsed(from, to = Date.now()) {
   const minutes = Math.max(0, Math.round((to - Date.parse(from)) / 60000));
   if (minutes < 60) return `${minutes}m`;
@@ -192,16 +219,29 @@ function disableAutoMerge(repo, pr) {
   gh(['pr', 'merge', String(pr), '--repo', repo, '--disable-auto'], { allowFailure: true });
 }
 
-function postOnce(repo, pr, marker, body) {
+export function commentChange(comments, marker, body) {
+  const desiredBody = `${marker}\n${body}`;
+  const existing = comments.find((comment) => (comment.body || '').includes(marker));
+  if (!existing) return { action: 'create', body: desiredBody };
+  if (existing.body === desiredBody) return { action: 'none' };
+  return { action: 'update', id: existing.id, body: desiredBody };
+}
+
+function upsertComment(repo, pr, marker, body) {
   const comments = ghJson(['api', `repos/${repo}/issues/${pr}/comments?per_page=100`]) || [];
-  if (comments.some((comment) => (comment.body || '').includes(marker))) return;
-  gh(['api', '-X', 'POST', `repos/${repo}/issues/${pr}/comments`, '-f', `body=${marker}\n${body}`]);
+  const change = commentChange(comments, marker, body);
+  if (change.action === 'none') return;
+  if (change.action === 'update') {
+    gh(['api', '-X', 'PATCH', `repos/${repo}/issues/comments/${change.id}`, '-f', `body=${change.body}`]);
+    return;
+  }
+  gh(['api', '-X', 'POST', `repos/${repo}/issues/${pr}/comments`, '-f', `body=${change.body}`]);
 }
 
 function recordDecision(repo, pr, data, state, reason) {
   const marker = `${DECISION_MARKER}\n<!-- state:${state};head:${data.headSha} -->`;
   const heading = state === 'ready' ? '✅ Safe Dependabot auto-merge is ready' : '🧑‍💻 Dependabot update needs human review';
-  postOnce(repo, pr, marker, [
+  upsertComment(repo, pr, marker, [
     `### ${heading}`,
     '',
     `- PR raised: ${data.createdAt}`,
@@ -210,6 +250,26 @@ function recordDecision(repo, pr, data, state, reason) {
     `- Evaluated head: \`${data.headSha.slice(0, 12)}\``,
     `- Reason: ${reason}`,
   ].join('\n'));
+}
+
+async function loadCandidateData(repo, pr, baseSha) {
+  const [view, checkData, statusData, comparison] = await Promise.all([
+    ghJsonAsync(['pr', 'view', String(pr.number), '--repo', repo, '--json', 'files,commits,comments']),
+    ghJsonAsync(['api', `repos/${repo}/commits/${pr.headRefOid}/check-runs?per_page=100`]),
+    ghJsonAsync(['api', `repos/${repo}/commits/${pr.headRefOid}/status`]),
+    ghJsonAsync(['api', `repos/${repo}/compare/${baseSha}...${pr.headRefOid}`]),
+  ]);
+  return {
+    ...pr,
+    headSha: pr.headRefOid,
+    files: view.files || [],
+    commits: view.commits || [],
+    comments: view.comments || [],
+    checkRuns: checkData.check_runs || [],
+    statuses: statusData.statuses || [],
+    behindBy: comparison.behind_by || 0,
+    headUpdatedAt: (view.commits || []).at(-1)?.committedDate || pr.updatedAt,
+  };
 }
 
 function conflictCommand(repo, pr, data, action, reason) {
@@ -258,74 +318,70 @@ async function main() {
 
   const baseSha = gh(['api', `repos/${repo}/git/ref/heads/${defaultBranch}`, '--jq', '.object.sha']);
   const candidates = [];
+  const evaluationErrors = [];
   for (const pr of prs.sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt))) {
     if (pr.baseRefName !== defaultBranch) continue;
-    const view = ghJson(['pr', 'view', String(pr.number), '--repo', repo, '--json', 'files,commits,comments']);
-    const checkData = ghJson(['api', `repos/${repo}/commits/${pr.headRefOid}/check-runs?per_page=100`]);
-    const statusData = ghJson(['api', `repos/${repo}/commits/${pr.headRefOid}/status`]);
-    const comparison = ghJson(['api', `repos/${repo}/compare/${baseSha}...${pr.headRefOid}`]);
-    const data = {
-      ...pr,
-      headSha: pr.headRefOid,
-      files: view.files || [],
-      commits: view.commits || [],
-      comments: view.comments || [],
-      checkRuns: checkData.check_runs || [],
-      statuses: statusData.statuses || [],
-      behindBy: comparison.behind_by || 0,
-      headUpdatedAt: (view.commits || []).at(-1)?.committedDate || pr.updatedAt,
-    };
+    try {
+      const data = await loadCandidateData(repo, pr, baseSha);
+      const decision = evaluateCandidate(data);
+      console.log(`#${pr.number} ${decision.state}: ${decision.reason}`);
 
-    const decision = evaluateCandidate(data);
-    console.log(`#${pr.number} ${decision.state}: ${decision.reason}`);
-
-    // A rebase or recreate can invalidate advisory gates that GitHub itself
-    // does not require. Never leave a previous native auto-merge request armed
-    // while the current head is waiting, conflicted, or requires a person.
-    if (pr.autoMergeRequest && decision.state !== 'eligible') {
-      disableAutoMerge(repo, pr.number);
-      // Keep the loop snapshot consistent so this run may arm a different,
-      // fully eligible PR instead of waiting for the next schedule tick.
-      pr.autoMergeRequest = null;
-      console.log(`#${pr.number} disabled stale auto-merge for ${data.headSha.slice(0, 12)}.`);
-    }
-
-    if (decision.state === 'conflict' || decision.state === 'behind') {
-      setLabel(repo, pr.number, pr.labels, 'dependencies-conflict', [
-        'dependencies-automerge-ready',
-        'dependencies-needs-human',
-      ]);
-      const recovery = nextConflictAction({
-        headUpdatedAt: data.headUpdatedAt,
-        comments: data.comments,
-        headSha: data.headSha,
-        pureDependabotCommits: hasOnlyDependabotCommits(data.commits),
-      });
-      if (recovery.action === 'rebase' || recovery.action === 'recreate') {
-        conflictCommand(repo, pr.number, data, recovery.action, recovery.reason);
-      } else if (recovery.action === 'human') {
-        setLabel(repo, pr.number, [{ name: 'dependencies-conflict' }, ...pr.labels], 'dependencies-needs-human', ['dependencies-conflict']);
-        recordDecision(repo, pr.number, data, 'human', recovery.reason);
+      // A rebase or recreate can invalidate advisory gates that GitHub itself
+      // does not require. Never leave a previous native auto-merge request armed
+      // while the current head is waiting, conflicted, or requires a person.
+      if (pr.autoMergeRequest && decision.state !== 'eligible') {
+        disableAutoMerge(repo, pr.number);
+        // Keep the loop snapshot consistent so this run may arm a different,
+        // fully eligible PR instead of waiting for the next schedule tick.
+        pr.autoMergeRequest = null;
+        console.log(`#${pr.number} disabled stale auto-merge for ${data.headSha.slice(0, 12)}.`);
       }
-      continue;
-    }
 
-    setLabel(repo, pr.number, pr.labels, null, ['dependencies-conflict']);
-    if (decision.state === 'human') {
-      setLabel(repo, pr.number, pr.labels, 'dependencies-needs-human', ['dependencies-automerge-ready']);
-      recordDecision(repo, pr.number, data, 'human', decision.reason);
-    } else if (decision.state === 'eligible') {
-      setLabel(repo, pr.number, pr.labels, 'dependencies-automerge-ready', ['dependencies-needs-human']);
-      recordDecision(repo, pr.number, data, 'ready', decision.reason);
-      candidates.push(data);
-    } else {
-      // A new head starts unclassified. Remove conclusions recorded for an old
-      // head until every gate has completed again.
-      setLabel(repo, pr.number, pr.labels, null, [
-        'dependencies-automerge-ready',
-        'dependencies-needs-human',
-      ]);
+      if (decision.state === 'conflict' || decision.state === 'behind') {
+        setLabel(repo, pr.number, pr.labels, 'dependencies-conflict', [
+          'dependencies-automerge-ready',
+          'dependencies-needs-human',
+        ]);
+        const recovery = nextConflictAction({
+          headUpdatedAt: data.headUpdatedAt,
+          comments: data.comments,
+          headSha: data.headSha,
+          pureDependabotCommits: hasOnlyDependabotCommits(data.commits),
+        });
+        if (recovery.action === 'rebase' || recovery.action === 'recreate') {
+          conflictCommand(repo, pr.number, data, recovery.action, recovery.reason);
+        } else if (recovery.action === 'human') {
+          setLabel(repo, pr.number, [{ name: 'dependencies-conflict' }, ...pr.labels], 'dependencies-needs-human', ['dependencies-conflict']);
+          recordDecision(repo, pr.number, data, 'human', recovery.reason);
+        }
+        continue;
+      }
+
+      setLabel(repo, pr.number, pr.labels, null, ['dependencies-conflict']);
+      if (decision.state === 'human') {
+        setLabel(repo, pr.number, pr.labels, 'dependencies-needs-human', ['dependencies-automerge-ready']);
+        recordDecision(repo, pr.number, data, 'human', decision.reason);
+      } else if (decision.state === 'eligible') {
+        setLabel(repo, pr.number, pr.labels, 'dependencies-automerge-ready', ['dependencies-needs-human']);
+        recordDecision(repo, pr.number, data, 'ready', decision.reason);
+        candidates.push(data);
+      } else {
+        // A new head starts unclassified. Remove conclusions recorded for an old
+        // head until every gate has completed again.
+        setLabel(repo, pr.number, pr.labels, null, [
+          'dependencies-automerge-ready',
+          'dependencies-needs-human',
+        ]);
+      }
+    } catch (error) {
+      const message = `#${pr.number} could not be evaluated: ${error.message}`;
+      evaluationErrors.push(message);
+      console.error(message);
     }
+  }
+
+  if (evaluationErrors.length) {
+    throw new Error(`Dependabot evaluation was incomplete; no auto-merge was armed.\n${evaluationErrors.join('\n')}`);
   }
 
   if (mode !== 'merge') {

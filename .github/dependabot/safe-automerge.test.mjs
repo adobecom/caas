@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
+  commentChange,
   evaluateCandidate,
   extractAgentVerdict,
   extractDependencyMetadata,
@@ -63,6 +64,32 @@ test('allows only a fully safe candidate', () => {
   })).state, 'human');
   assert.equal(evaluateCandidate(candidate({ comments: [agentComment('FAIL')] })).state, 'human');
   assert.equal(evaluateCandidate(candidate({ behindBy: 2 })).state, 'behind');
+});
+
+test('routes skipped and neutral required checks to human review', () => {
+  for (const conclusion of ['skipped', 'neutral']) {
+    const checkRuns = requiredChecks.map((check) => check.name === 'check-build'
+      ? { ...check, conclusion }
+      : check);
+    assert.deepEqual(evaluateCandidate(candidate({ checkRuns })), {
+      state: 'human',
+      reason: `check-build concluded ${conclusion.toUpperCase()}`,
+    });
+  }
+});
+
+test('updates a decision comment when its reason changes on the same head', () => {
+  const marker = '<!-- dependabot-safe-automerge -->\n<!-- state:human;head:abc123 -->';
+  const previous = `${marker}\nReason: check-linting concluded FAILURE`;
+  const next = `${marker}\nReason: Agent QA verdict is FAIL`;
+  assert.deepEqual(commentChange([{ id: 42, body: previous }], marker, 'Reason: Agent QA verdict is FAIL'), {
+    action: 'update',
+    id: 42,
+    body: next,
+  });
+  assert.deepEqual(commentChange([{ id: 42, body: next }], marker, 'Reason: Agent QA verdict is FAIL'), {
+    action: 'none',
+  });
 });
 
 test('keeps production and major updates human-reviewed', () => {
