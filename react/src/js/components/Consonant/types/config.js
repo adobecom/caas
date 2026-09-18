@@ -71,6 +71,8 @@ const FilterPanelType = {
     clearFilterText: string,
     leftPanelHeader: string,
     clearAllFiltersText: string,
+    clearAllFiltersAriaLabel: string,
+    clearFilterAriaLabel: string,
     enabled: oneOfType(EnabledType),
     filters: oneOfType(FiltersType),
 };
