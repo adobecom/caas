@@ -215,8 +215,9 @@ function setLabel(repo, pr, currentLabels, add, remove = []) {
   if (add && !current.has(add)) gh(['pr', 'edit', String(pr), '--repo', repo, '--add-label', add]);
 }
 
-function disableAutoMerge(repo, pr) {
-  gh(['pr', 'merge', String(pr), '--repo', repo, '--disable-auto'], { allowFailure: true });
+export function disableAutoMerge(repo, pr, runGh = gh) {
+  runGh(['pr', 'merge', String(pr.number), '--repo', repo, '--disable-auto']);
+  pr.autoMergeRequest = null;
 }
 
 export function commentChange(comments, marker, body) {
@@ -330,10 +331,9 @@ async function main() {
       // does not require. Never leave a previous native auto-merge request armed
       // while the current head is waiting, conflicted, or requires a person.
       if (pr.autoMergeRequest && decision.state !== 'eligible') {
-        disableAutoMerge(repo, pr.number);
-        // Keep the loop snapshot consistent so this run may arm a different,
-        // fully eligible PR instead of waiting for the next schedule tick.
-        pr.autoMergeRequest = null;
+        // Only clear the loop snapshot after GitHub confirms the stale request
+        // was disabled. A failure stops this run from arming a second PR.
+        disableAutoMerge(repo, pr);
         console.log(`#${pr.number} disabled stale auto-merge for ${data.headSha.slice(0, 12)}.`);
       }
 

@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   commentChange,
+  disableAutoMerge,
   evaluateCandidate,
   extractAgentVerdict,
   extractDependencyMetadata,
@@ -90,6 +91,28 @@ test('updates a decision comment when its reason changes on the same head', () =
   assert.deepEqual(commentChange([{ id: 42, body: next }], marker, 'Reason: Agent QA verdict is FAIL'), {
     action: 'none',
   });
+});
+
+test('keeps stale auto-merge armed in memory when GitHub fails to disable it', () => {
+  const autoMergeRequest = { enabledAt: '2026-09-18T12:00:00Z' };
+  const pr = { number: 42, autoMergeRequest };
+  assert.throws(
+    () => disableAutoMerge('adobecom/caas', pr, () => {
+      throw new Error('GitHub rejected --disable-auto');
+    }),
+    /GitHub rejected --disable-auto/,
+  );
+  assert.equal(pr.autoMergeRequest, autoMergeRequest);
+});
+
+test('clears stale auto-merge in memory only after GitHub disables it', () => {
+  const calls = [];
+  const pr = { number: 42, autoMergeRequest: { enabledAt: '2026-09-18T12:00:00Z' } };
+  disableAutoMerge('adobecom/caas', pr, (args) => calls.push(args));
+  assert.deepEqual(calls, [[
+    'pr', 'merge', '42', '--repo', 'adobecom/caas', '--disable-auto',
+  ]]);
+  assert.equal(pr.autoMergeRequest, null);
 });
 
 test('keeps production and major updates human-reviewed', () => {
