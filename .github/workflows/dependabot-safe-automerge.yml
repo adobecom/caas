@@ -1,0 +1,47 @@
+name: Dependabot Safe Autonomy
+
+on:
+  # Agent QA is the last safety signal unique to this policy. The scheduled
+  # pass catches slower CI completions and drives bounded conflict recovery.
+  workflow_run:
+    workflows: ["Agent QA Review"]
+    types: [completed]
+  schedule:
+    - cron: "17,47 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: dependabot-safe-autonomy
+  cancel-in-progress: false
+
+# This privileged controller always executes the version on main. It never
+# checks out or executes Dependabot PR code; it only reads API results, labels,
+# comments, and enables native auto-merge.
+permissions:
+  actions: read
+  checks: read
+  contents: write
+  issues: write
+  pull-requests: write
+  statuses: read
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ secrets.BOT_TOKEN || secrets.WORKFLOW_TOKEN || secrets.GITHUB_TOKEN }}
+      GITHUB_REPOSITORY: ${{ github.repository }}
+      # Safe rollout: absent/anything except "merge" records decisions without
+      # merging. Set the repository variable to "merge" after observing results.
+      AUTOMERGE_MODE: ${{ vars.DEPENDABOT_AUTOMERGE_MODE }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+
+      - name: Test policy evaluator
+        run: node --test .github/dependabot/safe-automerge.test.mjs
+
+      - name: Evaluate PRs, recover conflicts, and arm one safe merge
+        run: node .github/dependabot/safe-automerge.mjs
