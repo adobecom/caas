@@ -2,9 +2,11 @@
 /**
  * Conservative Dependabot controller.
  *
- * Only pure dev-dependency minor/patch PRs are eligible. They must touch only
- * the root npm manifest/lockfile, include latest main, produce a byte-identical
- * shipped bundle, receive a current Agent QA PASS, and pass the full PR suite.
+ * Only simple direct-dependency updates are eligible: development dependency
+ * minor/patch updates and production dependency patch updates. They must touch
+ * only the root npm manifest/lockfile, include latest main, produce a
+ * byte-identical shipped bundle, receive a current Agent QA PASS, and pass the
+ * full PR suite.
  *
  * Runtime I/O intentionally goes through `gh`; pure policy helpers are exported
  * for unit tests. This file is always executed from trusted default-branch code
@@ -92,28 +94,36 @@ export function evaluateCandidate(candidate) {
   } = candidate;
 
   if (!files.length || files.some((file) => !ALLOWED_FILES.has(file.path))) {
-    return { state: 'human', reason: 'changes files outside package.json and package-lock.json' };
+    return { state: 'review', reason: 'changes files outside package.json and package-lock.json' };
   }
   if (!hasOnlyDependabotCommits(commits)) {
-    return { state: 'human', reason: 'contains commits not authored by Dependabot' };
+    return { state: 'review', reason: 'contains commits not authored by Dependabot' };
   }
 
   const metadata = extractDependencyMetadata(commits);
   if (!metadata.dependencyTypes.length) {
-    return { state: 'human', reason: 'Dependabot dependency-type metadata is missing' };
-  }
-  if (metadata.dependencyTypes.some((type) => type !== 'direct:development')) {
-    return { state: 'human', reason: 'first rollout only allows direct development dependencies' };
+    return { state: 'review', reason: 'Dependabot dependency-type metadata is missing' };
   }
   if (!metadata.updateTypes.length) {
-    return { state: 'human', reason: 'Dependabot update-type metadata is missing' };
+    return { state: 'review', reason: 'Dependabot update-type metadata is missing' };
   }
-  if (metadata.updateTypes.some((type) => !/version-update:semver-(patch|minor)$/.test(type))) {
-    return { state: 'human', reason: 'first rollout only allows patch and minor version updates' };
+
+  const developmentUpdate = metadata.dependencyTypes.every((type) => type === 'direct:development')
+    && metadata.updateTypes.every((type) => /version-update:semver-(patch|minor)$/.test(type));
+  const productionPatch = metadata.dependencyTypes.every((type) => type === 'direct:production')
+    && metadata.updateTypes.every((type) => type === 'version-update:semver-patch');
+  if (!developmentUpdate && !productionPatch) {
+    return {
+      state: 'review',
+      reason: 'only direct development patch/minor and direct production patch updates are automated',
+    };
   }
 
   if (mergeStateStatus === 'DIRTY') return { state: 'conflict', reason: 'branch has merge conflicts' };
   if (behindBy > 0 || mergeStateStatus === 'BEHIND') return { state: 'behind', reason: `branch is ${behindBy || 1} commit(s) behind main` };
+  if (mergeStateStatus !== 'CLEAN') {
+    return { state: 'review', reason: `GitHub reports merge state ${mergeStateStatus || 'UNKNOWN'}` };
+  }
 
   const buildDiff = statuses.find(({ context }) => context === 'build-output-diff');
   if (!buildDiff) return { state: 'waiting', reason: 'waiting for build-output-diff' };
@@ -121,23 +131,23 @@ export function evaluateCandidate(candidate) {
     return { state: 'waiting', reason: `waiting for successful build-output-diff (${buildDiff.state || 'unknown'})` };
   }
   if (!/NO_CHANGE/i.test(buildDiff.description || '')) {
-    return { state: 'human', reason: `shipped build output is not byte-identical (${buildDiff.description || 'unknown'})` };
+    return { state: 'review', reason: `shipped build output is not byte-identical (${buildDiff.description || 'unknown'})` };
   }
 
   const agent = extractAgentVerdict(comments, headSha);
   if (!agent.current) return { state: 'waiting', reason: 'waiting for Agent QA on the current commit' };
-  if (agent.verdict !== 'PASS') return { state: 'human', reason: `Agent QA verdict is ${agent.verdict}` };
+  if (agent.verdict !== 'PASS') return { state: 'review', reason: `Agent QA verdict is ${agent.verdict}` };
 
   for (const name of REQUIRED_CHECKS) {
     const state = resultState(checkRuns, name);
     if (TERMINAL_CHECK_FAILURES.has(state)) {
-      return { state: 'human', reason: `${name} concluded ${state}` };
+      return { state: 'review', reason: `${name} concluded ${state}` };
     }
     if (state !== 'SUCCESS') return { state: 'waiting', reason: `waiting for ${name} (${state})` };
   }
   for (const name of REQUIRED_STATUSES) {
     const state = resultState(statuses, name);
-    if (['FAILURE', 'ERROR'].includes(state)) return { state: 'human', reason: `${name} concluded ${state}` };
+    if (['FAILURE', 'ERROR'].includes(state)) return { state: 'review', reason: `${name} concluded ${state}` };
     if (state !== 'SUCCESS') return { state: 'waiting', reason: `waiting for ${name} (${state})` };
   }
 
@@ -145,7 +155,7 @@ export function evaluateCandidate(candidate) {
 }
 
 export function nextConflictAction({ headUpdatedAt, comments, headSha, pureDependabotCommits, now = Date.now() }) {
-  if (!pureDependabotCommits) return { action: 'human', reason: 'extra commits prevent Dependabot automatic rebasing' };
+  if (!pureDependabotCommits) return { action: 'review', reason: 'extra commits prevent Dependabot automatic rebasing' };
   if (now - Date.parse(headUpdatedAt) < THIRTY_MINUTES_MS) return { action: 'wait', reason: 'giving Dependabot time to rebase automatically' };
 
   const actions = comments
@@ -160,7 +170,7 @@ export function nextConflictAction({ headUpdatedAt, comments, headSha, pureDepen
   const recreate = actions.find(({ action }) => action === 'recreate');
   if (recreate) {
     return now - recreate.at >= TWO_HOURS_MS
-      ? { action: 'human', reason: 'still conflicted two hours after recreate' }
+      ? { action: 'review', reason: 'still conflicted two hours after recreate' }
       : { action: 'wait', reason: 'waiting for requested recreate' };
   }
   const rebase = actions.find(({ action }) => action === 'rebase');
@@ -240,9 +250,9 @@ function upsertComment(repo, pr, marker, body) {
 }
 
 function recordDecision(repo, pr, data, state, reason) {
-  const marker = `${DECISION_MARKER}\n<!-- state:${state};head:${data.headSha} -->`;
-  const heading = state === 'ready' ? '✅ Safe Dependabot auto-merge is ready' : '🧑‍💻 Dependabot update needs human review';
-  upsertComment(repo, pr, marker, [
+  const heading = state === 'ready' ? '✅ Safe Dependabot auto-merge is ready' : '🔎 Dependabot update needs review';
+  upsertComment(repo, pr, DECISION_MARKER, [
+    `<!-- state:${state};head:${data.headSha} -->`,
     `### ${heading}`,
     '',
     `- PR raised: ${data.createdAt}`,
@@ -307,7 +317,7 @@ async function main() {
   const strict = strictUpToDateEnabled(repo, defaultBranch);
 
   ensureLabel(repo, 'dependencies-automerge-ready', '0e8a16', 'Dependabot update passed every safe-automerge gate');
-  ensureLabel(repo, 'dependencies-needs-human', 'd73a4a', 'Dependabot update requires human intervention');
+  ensureLabel(repo, 'dependencies-review', '5319e7', 'Dependabot update requires review by a person or Codex');
   ensureLabel(repo, 'dependencies-conflict', 'fbca04', 'Dependabot branch is behind or conflicted');
 
   const prs = ghJson(['pr', 'list', '--repo', repo, '--state', 'open', '--author', 'app/dependabot', '--limit', '100',
@@ -340,6 +350,7 @@ async function main() {
       if (decision.state === 'conflict' || decision.state === 'behind') {
         setLabel(repo, pr.number, pr.labels, 'dependencies-conflict', [
           'dependencies-automerge-ready',
+          'dependencies-review',
           'dependencies-needs-human',
         ]);
         const recovery = nextConflictAction({
@@ -350,19 +361,28 @@ async function main() {
         });
         if (recovery.action === 'rebase' || recovery.action === 'recreate') {
           conflictCommand(repo, pr.number, data, recovery.action, recovery.reason);
-        } else if (recovery.action === 'human') {
-          setLabel(repo, pr.number, [{ name: 'dependencies-conflict' }, ...pr.labels], 'dependencies-needs-human', ['dependencies-conflict']);
-          recordDecision(repo, pr.number, data, 'human', recovery.reason);
+        } else if (recovery.action === 'review') {
+          setLabel(repo, pr.number, [{ name: 'dependencies-conflict' }, ...pr.labels], 'dependencies-review', [
+            'dependencies-conflict',
+            'dependencies-needs-human',
+          ]);
+          recordDecision(repo, pr.number, data, 'review', recovery.reason);
         }
         continue;
       }
 
       setLabel(repo, pr.number, pr.labels, null, ['dependencies-conflict']);
-      if (decision.state === 'human') {
-        setLabel(repo, pr.number, pr.labels, 'dependencies-needs-human', ['dependencies-automerge-ready']);
-        recordDecision(repo, pr.number, data, 'human', decision.reason);
+      if (decision.state === 'review') {
+        setLabel(repo, pr.number, pr.labels, 'dependencies-review', [
+          'dependencies-automerge-ready',
+          'dependencies-needs-human',
+        ]);
+        recordDecision(repo, pr.number, data, 'review', decision.reason);
       } else if (decision.state === 'eligible') {
-        setLabel(repo, pr.number, pr.labels, 'dependencies-automerge-ready', ['dependencies-needs-human']);
+        setLabel(repo, pr.number, pr.labels, 'dependencies-automerge-ready', [
+          'dependencies-review',
+          'dependencies-needs-human',
+        ]);
         recordDecision(repo, pr.number, data, 'ready', decision.reason);
         candidates.push(data);
       } else {
@@ -370,6 +390,7 @@ async function main() {
         // head until every gate has completed again.
         setLabel(repo, pr.number, pr.labels, null, [
           'dependencies-automerge-ready',
+          'dependencies-review',
           'dependencies-needs-human',
         ]);
       }
