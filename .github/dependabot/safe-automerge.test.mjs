@@ -16,8 +16,7 @@ const agentComment = (verdict = 'PASS', headSha = SHA.slice(0, 7)) => ({
 const success = (name) => ({ name, conclusion: 'success' });
 const requiredChecks = [
   'Adobe CLA Signed?', 'agent-review', 'check-build', 'check-coverage-thresholds',
-  'check-linting', 'check-test-requirements', 'deployment', 'run-accessibility-checks',
-  'run-core-web-vitals-checks', 'run-e2e-tests', 'run-unit-tests',
+  'check-linting', 'check-test-requirements', 'run-unit-tests',
 ].map(success);
 
 function candidate(overrides = {}) {
@@ -150,13 +149,17 @@ test('keeps grouped indirect updates in review even without update-type metadata
   });
 });
 
-test('routes non-clean GitHub merge states to review', () => {
-  for (const mergeStateStatus of ['UNSTABLE', 'BLOCKED', 'UNKNOWN']) {
-    assert.deepEqual(evaluateCandidate(candidate({ mergeStateStatus })), {
-      state: 'review',
-      reason: `GitHub reports merge state ${mergeStateStatus}`,
-    });
-  }
+test('does not let an optional preview failure override the deterministic gates', () => {
+  assert.equal(evaluateCandidate(candidate({
+    mergeStateStatus: 'UNSTABLE',
+    checkRuns: [
+      ...requiredChecks,
+      { name: 'deployment', conclusion: 'failure' },
+      { name: 'run-e2e-tests', conclusion: 'skipped' },
+      { name: 'run-accessibility-checks', conclusion: 'skipped' },
+      { name: 'run-core-web-vitals-checks', conclusion: 'skipped' },
+    ],
+  })).state, 'eligible');
 });
 
 test('conflict recovery waits, rebases, recreates, then escalates', () => {

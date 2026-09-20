@@ -10,11 +10,11 @@ The controller in this directory separates update creation from merge policy:
    and `package-lock.json`.
 4. The shipped bundle must be byte-identical (`build-output-diff: NO_CHANGE`),
    Agent QA must report `PASS` for the current head SHA, and the deterministic
-   PR build, lint, unit, coverage, E2E, accessibility, and performance suite
-   must pass.
-5. GitHub must report a clean merge state. Anything else receives
-   `dependencies-review` for review by a person or Codex and remains open
-   without blocking other safe updates.
+   build, lint, unit, coverage, test-requirement, CLA, and review gates must pass.
+5. Preview deployment, E2E, accessibility, and performance jobs are not policy
+   gates for a byte-identical update because they share Pages infrastructure and
+   can fail when another preview is deploying. Anything outside the simple path
+   receives `dependencies-review` for review by a person or Codex.
 
 ## Rollout
 
