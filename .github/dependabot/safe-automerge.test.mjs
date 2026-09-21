@@ -59,22 +59,26 @@ test('routes old and conflicted branches through recovery', () => {
   assert.equal(evaluateCandidate(candidate({ mergeStateStatus: 'DIRTY' })).state, 'conflict');
 });
 
-test('waits for running checks and routes failed checks to review', () => {
+test('waits for running checks until GitHub has a final result', () => {
   assert.deepEqual(evaluateCandidate(candidate({
+    mergeStateStatus: 'BLOCKED',
     checkRuns: [{ name: 'check-build', status: 'in_progress', conclusion: null }],
   })), { state: 'waiting', reason: 'waiting for check-build' });
-  assert.deepEqual(evaluateCandidate(candidate({
-    checkRuns: [{ name: 'deployment', status: 'completed', conclusion: 'failure' }],
-  })), { state: 'review', reason: 'deployment concluded FAILURE' });
 });
 
-test('allows a harmless skipped check only when GitHub still reports clean', () => {
+test('trusts the current clean result over an older duplicate failure', () => {
   assert.equal(evaluateCandidate(candidate({
-    checkRuns: [{ name: 'conditional-job', status: 'completed', conclusion: 'skipped' }],
+    checkRuns: [
+      successfulCheck('deployment'),
+      { name: 'deployment', status: 'completed', conclusion: 'failure' },
+    ],
   })).state, 'eligible');
+});
+
+test('routes a final non-clean GitHub result to review', () => {
   assert.deepEqual(evaluateCandidate(candidate({
     mergeStateStatus: 'UNSTABLE',
-    checkRuns: [{ name: 'conditional-job', status: 'completed', conclusion: 'skipped' }],
+    checkRuns: [{ name: 'deployment', status: 'completed', conclusion: 'failure' }],
   })), {
     state: 'review',
     reason: 'GitHub reports merge state UNSTABLE',

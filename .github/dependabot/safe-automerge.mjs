@@ -23,15 +23,6 @@ const DECISION_MARKER = '<!-- dependabot-safe-automerge -->';
 const CONFLICT_MARKER = '<!-- dependabot-conflict-recovery:';
 const TWO_HOURS_MS = 2 * 60 * 60 * 1000;
 const THIRTY_MINUTES_MS = 30 * 60 * 1000;
-const TERMINAL_CHECK_FAILURES = new Set([
-  'ACTION_REQUIRED',
-  'CANCELLED',
-  'FAILURE',
-  'STALE',
-  'STARTUP_FAILURE',
-  'TIMED_OUT',
-]);
-
 export function hasOnlyDependabotCommits(commits) {
   return commits.length > 0 && commits.every((commit) =>
     (commit.authors || []).length > 0 && commit.authors.every((author) => author.login === DEPENDABOT));
@@ -62,25 +53,17 @@ export function evaluateCandidate(candidate) {
     return { state: 'review', reason: `shipped build output is not byte-identical (${buildDiff.description || 'unknown'})` };
   }
 
-  for (const check of checkRuns) {
-    const state = String(check.conclusion || '').toUpperCase();
-    if (TERMINAL_CHECK_FAILURES.has(state)) {
-      return { state: 'review', reason: `${check.name} concluded ${state}` };
-    }
-    if (String(check.status || '').toUpperCase() !== 'COMPLETED') {
-      return { state: 'waiting', reason: `waiting for ${check.name}` };
-    }
-  }
-  for (const status of statuses.filter(({ context }) => context !== 'build-output-diff')) {
-    const state = String(status.state || '').toUpperCase();
-    if (['FAILURE', 'ERROR'].includes(state)) return { state: 'review', reason: `${status.context} concluded ${state}` };
-    if (['PENDING', 'EXPECTED'].includes(state)) return { state: 'waiting', reason: `waiting for ${status.context}` };
-  }
-  if (mergeStateStatus !== 'CLEAN') {
-    return { state: 'review', reason: `GitHub reports merge state ${mergeStateStatus || 'UNKNOWN'}` };
+  if (mergeStateStatus === 'CLEAN') {
+    return { state: 'eligible', reason: 'package-only update, byte-identical build, and clean GitHub result' };
   }
 
-  return { state: 'eligible', reason: 'package-only update, byte-identical build, and clean GitHub result' };
+  const runningCheck = checkRuns.find(({ status }) => String(status || '').toUpperCase() !== 'COMPLETED');
+  const pendingStatus = statuses.find(({ context, state }) =>
+    context !== 'build-output-diff' && ['PENDING', 'EXPECTED'].includes(String(state || '').toUpperCase()));
+  if (runningCheck) return { state: 'waiting', reason: `waiting for ${runningCheck.name}` };
+  if (pendingStatus) return { state: 'waiting', reason: `waiting for ${pendingStatus.context}` };
+
+  return { state: 'review', reason: `GitHub reports merge state ${mergeStateStatus || 'UNKNOWN'}` };
 }
 
 export function nextConflictAction({ headUpdatedAt, comments, headSha, pureDependabotCommits, now = Date.now() }) {
