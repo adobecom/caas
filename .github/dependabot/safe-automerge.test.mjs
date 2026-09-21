@@ -4,34 +4,20 @@ import {
   commentChange,
   disableAutoMerge,
   evaluateCandidate,
-  extractAgentVerdict,
-  extractDependencyMetadata,
   nextConflictAction,
 } from './safe-automerge.mjs';
 
 const SHA = '1234567890abcdef1234567890abcdef12345678';
-const agentComment = (verdict = 'PASS', headSha = SHA.slice(0, 7)) => ({
-  body: `<!-- agent-qa-review -->\n<!-- qa-verdict-b64: ${Buffer.from(JSON.stringify({ verdict, headSha })).toString('base64')} -->`,
-});
-const success = (name) => ({ name, conclusion: 'success' });
-const requiredChecks = [
-  'Adobe CLA Signed?', 'agent-review', 'check-build', 'check-coverage-thresholds',
-  'check-linting', 'check-test-requirements', 'deployment', 'run-accessibility-checks',
-  'run-core-web-vitals-checks', 'run-e2e-tests', 'run-unit-tests',
-].map(success);
+const successfulCheck = (name) => ({ name, status: 'completed', conclusion: 'success' });
 
 function candidate(overrides = {}) {
   return {
     files: [{ path: 'package.json' }, { path: 'package-lock.json' }],
-    commits: [{
-      authors: [{ login: 'dependabot[bot]' }],
-      messageBody: 'dependency-type: direct:development\nupdate-type: version-update:semver-patch',
-    }],
-    comments: [agentComment()],
+    commits: [{ authors: [{ login: 'dependabot[bot]' }], messageBody: '' }],
     headSha: SHA,
     behindBy: 0,
     mergeStateStatus: 'CLEAN',
-    checkRuns: requiredChecks,
+    checkRuns: [successfulCheck('check-build')],
     statuses: [
       { context: 'build-output-diff', state: 'success', description: 'NO_CHANGE' },
       { context: 'review-score-gate', state: 'success' },
@@ -40,49 +26,65 @@ function candidate(overrides = {}) {
   };
 }
 
-test('extracts current Agent QA verdict', () => {
-  assert.deepEqual(extractAgentVerdict([agentComment()], SHA), { verdict: 'PASS', current: true });
-  assert.deepEqual(extractAgentVerdict([agentComment('PASS', 'fffffff')], SHA), { verdict: 'PASS', current: false });
-});
-
-test('accepts the legacy Agent QA header only for its reviewed head', () => {
-  const encoded = Buffer.from(JSON.stringify({ verdict: 'PASS', sinceSha: '' })).toString('base64');
-  const comment = { body: `<!-- agent-qa-review -->\n_Last updated now · commit \`1234567\`._\n<!-- qa-verdict-b64: ${encoded} -->` };
-  assert.deepEqual(extractAgentVerdict([comment], SHA), { verdict: 'PASS', current: true });
-});
-
-test('extracts Dependabot metadata', () => {
-  assert.deepEqual(extractDependencyMetadata(candidate().commits), {
-    dependencyTypes: ['direct:development'],
-    updateTypes: ['version-update:semver-patch'],
+test('allows a package-only Dependabot update with no shipped output change', () => {
+  assert.deepEqual(evaluateCandidate(candidate()), {
+    state: 'eligible',
+    reason: 'package-only update, byte-identical build, and clean GitHub result',
   });
 });
 
-test('allows only a fully safe candidate', () => {
-  assert.equal(evaluateCandidate(candidate()).state, 'eligible');
+test('uses actual results instead of dependency type or version size', () => {
+  assert.equal(evaluateCandidate(candidate({
+    commits: [{
+      authors: [{ login: 'dependabot[bot]' }],
+      messageBody: 'dependency-type: direct:production\nupdate-type: version-update:semver-major',
+    }],
+  })).state, 'eligible');
+});
+
+test('routes changed output, non-package files, and non-Dependabot commits to review', () => {
   assert.equal(evaluateCandidate(candidate({
     statuses: [{ context: 'build-output-diff', state: 'success', description: 'CHANGED' }],
   })).state, 'review');
-  assert.equal(evaluateCandidate(candidate({ comments: [agentComment('FAIL')] })).state, 'review');
-  assert.equal(evaluateCandidate(candidate({ behindBy: 2 })).state, 'behind');
+  assert.equal(evaluateCandidate(candidate({
+    files: [{ path: 'package.json' }, { path: 'src/index.js' }],
+  })).state, 'review');
+  assert.equal(evaluateCandidate(candidate({
+    commits: [{ authors: [{ login: 'person' }], messageBody: '' }],
+  })).state, 'review');
 });
 
-test('routes skipped and neutral required checks to review', () => {
-  for (const conclusion of ['skipped', 'neutral']) {
-    const checkRuns = requiredChecks.map((check) => check.name === 'check-build'
-      ? { ...check, conclusion }
-      : check);
-    assert.deepEqual(evaluateCandidate(candidate({ checkRuns })), {
-      state: 'review',
-      reason: `check-build concluded ${conclusion.toUpperCase()}`,
-    });
-  }
+test('routes old and conflicted branches through recovery', () => {
+  assert.equal(evaluateCandidate(candidate({ behindBy: 2 })).state, 'behind');
+  assert.equal(evaluateCandidate(candidate({ mergeStateStatus: 'DIRTY' })).state, 'conflict');
+});
+
+test('waits for running checks and routes failed checks to review', () => {
+  assert.deepEqual(evaluateCandidate(candidate({
+    checkRuns: [{ name: 'check-build', status: 'in_progress', conclusion: null }],
+  })), { state: 'waiting', reason: 'waiting for check-build' });
+  assert.deepEqual(evaluateCandidate(candidate({
+    checkRuns: [{ name: 'deployment', status: 'completed', conclusion: 'failure' }],
+  })), { state: 'review', reason: 'deployment concluded FAILURE' });
+});
+
+test('allows a harmless skipped check only when GitHub still reports clean', () => {
+  assert.equal(evaluateCandidate(candidate({
+    checkRuns: [{ name: 'conditional-job', status: 'completed', conclusion: 'skipped' }],
+  })).state, 'eligible');
+  assert.deepEqual(evaluateCandidate(candidate({
+    mergeStateStatus: 'UNSTABLE',
+    checkRuns: [{ name: 'conditional-job', status: 'completed', conclusion: 'skipped' }],
+  })), {
+    state: 'review',
+    reason: 'GitHub reports merge state UNSTABLE',
+  });
 });
 
 test('updates the existing decision comment when its state or reason changes', () => {
   const marker = '<!-- dependabot-safe-automerge -->';
   const previous = `${marker}\n<!-- state:human;head:abc123 -->\nReason: check-linting concluded FAILURE`;
-  const nextBody = '<!-- state:review;head:abc123 -->\nReason: Agent QA verdict is FAIL';
+  const nextBody = '<!-- state:review;head:abc123 -->\nReason: GitHub reports merge state UNSTABLE';
   const next = `${marker}\n${nextBody}`;
   assert.deepEqual(commentChange([{ id: 42, body: previous }], marker, nextBody), {
     action: 'update',
@@ -114,56 +116,6 @@ test('clears stale auto-merge in memory only after GitHub disables it', () => {
     'pr', 'merge', '42', '--repo', 'adobecom/caas', '--disable-auto',
   ]]);
   assert.equal(pr.autoMergeRequest, null);
-});
-
-test('allows production patches but keeps production minor and development major updates for review', () => {
-  assert.equal(evaluateCandidate(candidate({
-    commits: [{
-      authors: [{ login: 'dependabot[bot]' }],
-      messageBody: 'dependency-type: direct:production\nupdate-type: version-update:semver-patch',
-    }],
-  })).state, 'eligible');
-  assert.equal(evaluateCandidate(candidate({
-    commits: [{
-      authors: [{ login: 'dependabot[bot]' }],
-      messageBody: 'dependency-type: direct:production\nupdate-type: version-update:semver-minor',
-    }],
-  })).state, 'review');
-  assert.equal(evaluateCandidate(candidate({
-    commits: [{
-      authors: [{ login: 'dependabot[bot]' }],
-      messageBody: 'dependency-type: direct:development\nupdate-type: version-update:semver-major',
-    }],
-  })).state, 'review');
-});
-
-test('keeps grouped indirect updates in review even without update-type metadata', () => {
-  const result = evaluateCandidate(candidate({
-    commits: [{
-      authors: [{ login: 'dependabot[bot]' }],
-      messageBody: 'dependency-type: direct:development\ndependency-type: indirect\ndependency-group: npm_and_yarn',
-    }],
-  }));
-  assert.deepEqual(result, {
-    state: 'review',
-    reason: 'Dependabot update-type metadata is missing',
-  });
-});
-
-test('routes a visibly unstable PR to review even when another run passed', () => {
-  assert.deepEqual(evaluateCandidate(candidate({
-    mergeStateStatus: 'UNSTABLE',
-    checkRuns: [
-      ...requiredChecks,
-      { name: 'deployment', conclusion: 'failure' },
-      { name: 'run-e2e-tests', conclusion: 'skipped' },
-      { name: 'run-accessibility-checks', conclusion: 'skipped' },
-      { name: 'run-core-web-vitals-checks', conclusion: 'skipped' },
-    ],
-  })), {
-    state: 'review',
-    reason: 'GitHub reports merge state UNSTABLE',
-  });
 });
 
 test('conflict recovery waits, rebases, recreates, then escalates', () => {

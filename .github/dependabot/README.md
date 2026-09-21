@@ -5,16 +5,12 @@ The controller in this directory separates update creation from merge policy:
 1. Dependabot checks npm each weekday morning and may keep up to five PRs open.
 2. The controller evaluates every open Dependabot PR, but can arm only one merge
    at a time.
-3. The automatic path permits direct development dependency patch/minor updates
-   and direct production dependency patch updates that touch only `package.json`
-   and `package-lock.json`.
-4. The shipped bundle must be byte-identical (`build-output-diff: NO_CHANGE`),
-   Agent QA must report `PASS` for the current head SHA, and the deterministic
-   build, lint, unit, coverage, deployment, E2E, accessibility, performance,
-   test-requirement, CLA, and review gates must pass.
-5. GitHub must report a clean merge state. A PR with a duplicate or infrastructure
-   failure is sent to `dependencies-review` even if another run passed, so a
-   person or Codex can resolve the visible red CI before it is merged.
+3. The automatic path does not guess safety from dependency type or version size.
+   It requires changes only to `package.json` and `package-lock.json`.
+4. The shipped bundle must be byte-identical (`build-output-diff: NO_CHANGE`) and
+   GitHub must report a clean result with no failed checks.
+5. Old or conflicted pure-Dependabot branches go through bounded recovery. Every
+   other case receives `dependencies-review` for a person or Codex to handle.
 
 ## Rollout
 

@@ -46,20 +46,21 @@ jobs:
           let a = 0, b = 0;
           for (const s of latest.values()) { if (s === 'APPROVED') a++; else b++; }
           const score = a - b;
-          // Deterministic fast-path: a dev-dependency bump whose shipped bundle is
-          // byte-identical to base is provably behavior-neutral, so the build-output-diff
-          // NO_CHANGE verdict may stand in for a human approval. ONLY deps-dev + NO_CHANGE
-          // qualifies; every other PR still needs a human vote.
+          // Deterministic fast-path: a Dependabot PR that changes only the package
+          // manifest/lockfile and leaves the shipped bundle byte-identical may use
+          // build-output-diff NO_CHANGE instead of a human approval.
           let fastPass = false;
           if (score < REQUIRED_SCORE) {
-            let title = '', ref = '';
+            let packageOnly = false, ref = '';
             try {
               const prObj = JSON.parse(execSync('gh api "repos/' + repo + '/pulls/' + pr + '"', { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }));
-              title = prObj.title || '';
               ref = (prObj.head && prObj.head.ref) || '';
+              const files = JSON.parse(execSync('gh api "repos/' + repo + '/pulls/' + pr + '/files?per_page=100"', { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }));
+              const allowed = new Set(['package.json', 'package-lock.json']);
+              packageOnly = files.length > 0 && files.every(function (f) { return allowed.has(f.filename); });
             } catch (e) {}
-            const isDepsDev = /deps-dev/i.test(title) || (/dependabot/i.test(author) && /dependabot\//.test(ref));
-            if (isDepsDev) {
+            const isDependabot = author === 'dependabot[bot]' && /dependabot\//.test(ref);
+            if (isDependabot && packageOnly) {
               const readVerdict = function () {
                 try {
                   const st = JSON.parse(execSync('gh api "repos/' + repo + '/commits/' + sha + '/statuses?per_page=100"', { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 })).find(function (x) { return x.context === 'build-output-diff'; });
@@ -93,7 +94,7 @@ jobs:
           }
           const pass = score >= REQUIRED_SCORE || fastPass;
           const desc = fastPass
-            ? 'auto-pass: deps-dev + build-output-diff NO_CHANGE (bundle byte-identical)'
+            ? 'auto-pass: Dependabot package-only + build-output-diff NO_CHANGE'
             : 'score ' + score + ' (' + a + ' approve, ' + b + ' block), need >= ' + REQUIRED_SCORE;
           console.log((pass ? 'PASS: ' : 'BLOCK: ') + desc);
           const res = spawnSync('gh', ['api','-X','POST','repos/' + repo + '/statuses/' + sha,

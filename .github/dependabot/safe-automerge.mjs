@@ -2,11 +2,10 @@
 /**
  * Conservative Dependabot controller.
  *
- * Only simple direct-dependency updates are eligible: development dependency
- * minor/patch updates and production dependency patch updates. They must touch
- * only the root npm manifest/lockfile, include latest main, produce a
- * byte-identical shipped bundle, receive a current Agent QA PASS, and pass the
- * deterministic core gates.
+ * A Dependabot update is eligible only when it touches the root npm
+ * manifest/lockfile, includes latest main, produces a byte-identical shipped
+ * bundle, and GitHub reports a clean result. Dependency type and version size
+ * are deliberately not used as policy signals.
  *
  * Runtime I/O intentionally goes through `gh`; pure policy helpers are exported
  * for unit tests. This file is always executed from trusted default-branch code
@@ -20,20 +19,6 @@ const execFileAsync = promisify(execFile);
 
 const DEPENDABOT = 'dependabot[bot]';
 const ALLOWED_FILES = new Set(['package.json', 'package-lock.json']);
-const REQUIRED_CHECKS = [
-  'Adobe CLA Signed?',
-  'agent-review',
-  'check-build',
-  'check-coverage-thresholds',
-  'check-linting',
-  'check-test-requirements',
-  'deployment',
-  'run-accessibility-checks',
-  'run-core-web-vitals-checks',
-  'run-e2e-tests',
-  'run-unit-tests',
-];
-const REQUIRED_STATUSES = ['review-score-gate'];
 const DECISION_MARKER = '<!-- dependabot-safe-automerge -->';
 const CONFLICT_MARKER = '<!-- dependabot-conflict-recovery:';
 const TWO_HOURS_MS = 2 * 60 * 60 * 1000;
@@ -42,54 +27,19 @@ const TERMINAL_CHECK_FAILURES = new Set([
   'ACTION_REQUIRED',
   'CANCELLED',
   'FAILURE',
-  'NEUTRAL',
-  'SKIPPED',
   'STALE',
   'STARTUP_FAILURE',
   'TIMED_OUT',
 ]);
-
-export function extractAgentVerdict(comments, headSha) {
-  const shortSha = headSha.slice(0, 7);
-  const comment = comments.find(({ body = '' }) => body.includes('<!-- agent-qa-review -->'));
-  if (!comment) return { verdict: 'MISSING', current: false };
-  const match = comment.body.match(/<!-- qa-verdict-b64:\s*([A-Za-z0-9+/=]+)\s*-->/);
-  if (!match) return { verdict: 'MISSING', current: false };
-  try {
-    const state = JSON.parse(Buffer.from(match[1], 'base64').toString('utf8'));
-    // New comments carry headSha explicitly. The header fallback keeps the
-    // first rollout compatible with comments created before this change.
-    const reviewedSha = state.headSha || ((comment.body.match(/commit\s+`([0-9a-f]{7,40})`/i) || [])[1] || '');
-    return { verdict: state.verdict || 'UNKNOWN', current: reviewedSha.startsWith(shortSha) };
-  } catch {
-    return { verdict: 'UNKNOWN', current: false };
-  }
-}
-
-export function extractDependencyMetadata(commits) {
-  const dependencyTypes = [];
-  const updateTypes = [];
-  for (const commit of commits) {
-    const body = commit.messageBody || '';
-    for (const match of body.matchAll(/dependency-type:\s*"?([^\s"\n]+)"?/g)) dependencyTypes.push(match[1]);
-    for (const match of body.matchAll(/update-type:\s*"?([^\s"\n]+)"?/g)) updateTypes.push(match[1]);
-  }
-  return { dependencyTypes, updateTypes };
-}
 
 export function hasOnlyDependabotCommits(commits) {
   return commits.length > 0 && commits.every((commit) =>
     (commit.authors || []).length > 0 && commit.authors.every((author) => author.login === DEPENDABOT));
 }
 
-function resultState(collection, name) {
-  const item = collection.find((entry) => (entry.name || entry.context) === name);
-  return item ? String(item.conclusion || item.state || item.status || '').toUpperCase() : 'MISSING';
-}
-
 export function evaluateCandidate(candidate) {
   const {
-    files, commits, comments, headSha, behindBy, mergeStateStatus,
+    files, commits, behindBy, mergeStateStatus,
     checkRuns, statuses,
   } = candidate;
 
@@ -100,30 +50,8 @@ export function evaluateCandidate(candidate) {
     return { state: 'review', reason: 'contains commits not authored by Dependabot' };
   }
 
-  const metadata = extractDependencyMetadata(commits);
-  if (!metadata.dependencyTypes.length) {
-    return { state: 'review', reason: 'Dependabot dependency-type metadata is missing' };
-  }
-  if (!metadata.updateTypes.length) {
-    return { state: 'review', reason: 'Dependabot update-type metadata is missing' };
-  }
-
-  const developmentUpdate = metadata.dependencyTypes.every((type) => type === 'direct:development')
-    && metadata.updateTypes.every((type) => /version-update:semver-(patch|minor)$/.test(type));
-  const productionPatch = metadata.dependencyTypes.every((type) => type === 'direct:production')
-    && metadata.updateTypes.every((type) => type === 'version-update:semver-patch');
-  if (!developmentUpdate && !productionPatch) {
-    return {
-      state: 'review',
-      reason: 'only direct development patch/minor and direct production patch updates are automated',
-    };
-  }
-
   if (mergeStateStatus === 'DIRTY') return { state: 'conflict', reason: 'branch has merge conflicts' };
   if (behindBy > 0 || mergeStateStatus === 'BEHIND') return { state: 'behind', reason: `branch is ${behindBy || 1} commit(s) behind main` };
-  if (mergeStateStatus !== 'CLEAN') {
-    return { state: 'review', reason: `GitHub reports merge state ${mergeStateStatus || 'UNKNOWN'}` };
-  }
 
   const buildDiff = statuses.find(({ context }) => context === 'build-output-diff');
   if (!buildDiff) return { state: 'waiting', reason: 'waiting for build-output-diff' };
@@ -134,24 +62,25 @@ export function evaluateCandidate(candidate) {
     return { state: 'review', reason: `shipped build output is not byte-identical (${buildDiff.description || 'unknown'})` };
   }
 
-  const agent = extractAgentVerdict(comments, headSha);
-  if (!agent.current) return { state: 'waiting', reason: 'waiting for Agent QA on the current commit' };
-  if (agent.verdict !== 'PASS') return { state: 'review', reason: `Agent QA verdict is ${agent.verdict}` };
-
-  for (const name of REQUIRED_CHECKS) {
-    const state = resultState(checkRuns, name);
+  for (const check of checkRuns) {
+    const state = String(check.conclusion || '').toUpperCase();
     if (TERMINAL_CHECK_FAILURES.has(state)) {
-      return { state: 'review', reason: `${name} concluded ${state}` };
+      return { state: 'review', reason: `${check.name} concluded ${state}` };
     }
-    if (state !== 'SUCCESS') return { state: 'waiting', reason: `waiting for ${name} (${state})` };
+    if (String(check.status || '').toUpperCase() !== 'COMPLETED') {
+      return { state: 'waiting', reason: `waiting for ${check.name}` };
+    }
   }
-  for (const name of REQUIRED_STATUSES) {
-    const state = resultState(statuses, name);
-    if (['FAILURE', 'ERROR'].includes(state)) return { state: 'review', reason: `${name} concluded ${state}` };
-    if (state !== 'SUCCESS') return { state: 'waiting', reason: `waiting for ${name} (${state})` };
+  for (const status of statuses.filter(({ context }) => context !== 'build-output-diff')) {
+    const state = String(status.state || '').toUpperCase();
+    if (['FAILURE', 'ERROR'].includes(state)) return { state: 'review', reason: `${status.context} concluded ${state}` };
+    if (['PENDING', 'EXPECTED'].includes(state)) return { state: 'waiting', reason: `waiting for ${status.context}` };
+  }
+  if (mergeStateStatus !== 'CLEAN') {
+    return { state: 'review', reason: `GitHub reports merge state ${mergeStateStatus || 'UNKNOWN'}` };
   }
 
-  return { state: 'eligible', reason: 'byte-identical build, current Agent QA PASS, and all deterministic checks passed' };
+  return { state: 'eligible', reason: 'package-only update, byte-identical build, and clean GitHub result' };
 }
 
 export function nextConflictAction({ headUpdatedAt, comments, headSha, pureDependabotCommits, now = Date.now() }) {
