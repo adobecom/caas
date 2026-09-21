@@ -1,5 +1,12 @@
 
 
+## [0.68.16](https://github.com/adobecom/caas/compare/0.68.15...0.68.16) (2026-09-21)
+
+
+### Dependencies
+
+* **deps:** bump shortid from 2.2.16 to 2.2.17 ([#612](https://github.com/adobecom/caas/issues/612)) ([67c82ab](https://github.com/adobecom/caas/commit/67c82abca762f2c427f5de4f1cac5063a4746e3e))
+
 ## [0.68.15](https://github.com/adobecom/caas/compare/0.68.14...0.68.15) (2026-09-21)
 
 
