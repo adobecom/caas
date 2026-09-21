@@ -1,10 +1,10 @@
 name: Dependabot Safe Autonomy
 
 on:
-  # Agent QA is the last safety signal unique to this policy. The scheduled
-  # pass catches slower CI completions and drives bounded conflict recovery.
+  # Build output is the policy's main safety signal. The scheduled pass catches
+  # slower CI completions and drives bounded conflict recovery.
   workflow_run:
-    workflows: ["Agent QA Review"]
+    workflows: ["Build Output Diff (advisory)"]
     types: [completed]
   schedule:
     - cron: "17,47 * * * *"

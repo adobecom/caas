@@ -5,14 +5,12 @@ The controller in this directory separates update creation from merge policy:
 1. Dependabot checks npm each weekday morning and may keep up to five PRs open.
 2. The controller evaluates every open Dependabot PR, but can arm only one merge
    at a time.
-3. The first rollout permits only direct development dependency patch/minor
-   updates that touch `package.json` and `package-lock.json`.
-4. The shipped bundle must be byte-identical (`build-output-diff: NO_CHANGE`),
-   Agent QA must report `PASS` for the current head SHA, and the deterministic
-   PR build, lint, unit, coverage, E2E, accessibility, and performance suite
-   must pass.
-5. Anything else receives `dependencies-needs-human` and remains open without
-   blocking other safe updates.
+3. The automatic path does not guess safety from dependency type or version size.
+   It requires changes only to `package.json` and `package-lock.json`.
+4. The shipped bundle must be byte-identical (`build-output-diff: NO_CHANGE`) and
+   GitHub must report a clean result with no failed checks.
+5. Old or conflicted pure-Dependabot branches go through bounded recovery. Every
+   other case receives `dependencies-review` for a person or Codex to handle.
 
 ## Rollout
 
@@ -37,7 +35,7 @@ Dependabot branch stays behind or conflicted, the scheduled controller:
 1. waits 30 minutes for the normal automatic rebase;
 2. requests `@dependabot rebase`;
 3. after two more hours, requests `@dependabot recreate` once;
-4. after another two hours, labels the PR `dependencies-needs-human`.
+4. after another two hours, labels the PR `dependencies-review`.
 
 Branches containing human commits are never recreated automatically. Every new
 head SHA must pass the complete policy again before auto-merge is armed. If an
