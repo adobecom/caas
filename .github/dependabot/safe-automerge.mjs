@@ -27,6 +27,10 @@ const REQUIRED_CHECKS = [
   'check-coverage-thresholds',
   'check-linting',
   'check-test-requirements',
+  'deployment',
+  'run-accessibility-checks',
+  'run-core-web-vitals-checks',
+  'run-e2e-tests',
   'run-unit-tests',
 ];
 const REQUIRED_STATUSES = ['review-score-gate'];
@@ -117,6 +121,9 @@ export function evaluateCandidate(candidate) {
 
   if (mergeStateStatus === 'DIRTY') return { state: 'conflict', reason: 'branch has merge conflicts' };
   if (behindBy > 0 || mergeStateStatus === 'BEHIND') return { state: 'behind', reason: `branch is ${behindBy || 1} commit(s) behind main` };
+  if (mergeStateStatus !== 'CLEAN') {
+    return { state: 'review', reason: `GitHub reports merge state ${mergeStateStatus || 'UNKNOWN'}` };
+  }
 
   const buildDiff = statuses.find(({ context }) => context === 'build-output-diff');
   if (!buildDiff) return { state: 'waiting', reason: 'waiting for build-output-diff' };

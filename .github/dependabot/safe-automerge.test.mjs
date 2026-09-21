@@ -16,7 +16,8 @@ const agentComment = (verdict = 'PASS', headSha = SHA.slice(0, 7)) => ({
 const success = (name) => ({ name, conclusion: 'success' });
 const requiredChecks = [
   'Adobe CLA Signed?', 'agent-review', 'check-build', 'check-coverage-thresholds',
-  'check-linting', 'check-test-requirements', 'run-unit-tests',
+  'check-linting', 'check-test-requirements', 'deployment', 'run-accessibility-checks',
+  'run-core-web-vitals-checks', 'run-e2e-tests', 'run-unit-tests',
 ].map(success);
 
 function candidate(overrides = {}) {
@@ -149,8 +150,8 @@ test('keeps grouped indirect updates in review even without update-type metadata
   });
 });
 
-test('does not let an optional preview failure override the deterministic gates', () => {
-  assert.equal(evaluateCandidate(candidate({
+test('routes a visibly unstable PR to review even when another run passed', () => {
+  assert.deepEqual(evaluateCandidate(candidate({
     mergeStateStatus: 'UNSTABLE',
     checkRuns: [
       ...requiredChecks,
@@ -159,7 +160,10 @@ test('does not let an optional preview failure override the deterministic gates'
       { name: 'run-accessibility-checks', conclusion: 'skipped' },
       { name: 'run-core-web-vitals-checks', conclusion: 'skipped' },
     ],
-  })).state, 'eligible');
+  })), {
+    state: 'review',
+    reason: 'GitHub reports merge state UNSTABLE',
+  });
 });
 
 test('conflict recovery waits, rebases, recreates, then escalates', () => {
