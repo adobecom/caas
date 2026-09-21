@@ -1,5 +1,12 @@
 
 
+## [0.68.15](https://github.com/adobecom/caas/compare/0.68.14...0.68.15) (2026-09-21)
+
+
+### Dependencies
+
+* **deps-dev:** bump @babel/plugin-transform-object-rest-spread ([#613](https://github.com/adobecom/caas/issues/613)) ([4c9ec14](https://github.com/adobecom/caas/commit/4c9ec146c41ab8b41a493c9426abe2f781d63bc2))
+
 ## [0.68.14](https://github.com/adobecom/caas/compare/0.68.13...0.68.14) (2026-09-21)
 
 ## [0.68.13](https://github.com/adobecom/caas/compare/0.68.12...0.68.13) (2026-09-18)
