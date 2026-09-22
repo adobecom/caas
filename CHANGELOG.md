@@ -1,5 +1,12 @@
 
 
+## [0.68.20](https://github.com/adobecom/caas/compare/0.68.19...0.68.20) (2026-09-22)
+
+
+### Dependencies
+
+* **deps-dev:** bump jest-fetch-mock from 3.0.3 to 3.2.0 ([#618](https://github.com/adobecom/caas/issues/618)) ([115e944](https://github.com/adobecom/caas/commit/115e9444e2e2c757924776d73ded4bedec34e545))
+
 ## [0.68.19](https://github.com/adobecom/caas/compare/0.68.18...0.68.19) (2026-09-22)
 
 
