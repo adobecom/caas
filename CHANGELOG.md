@@ -1,5 +1,12 @@
 
 
+## [0.68.18](https://github.com/adobecom/caas/compare/0.68.17...0.68.18) (2026-09-22)
+
+
+### Dependencies
+
+* **deps-dev:** bump jest-environment-jsdom from 30.2.0 to 30.5.2 ([#615](https://github.com/adobecom/caas/issues/615)) ([1e47367](https://github.com/adobecom/caas/commit/1e473672397842ec079b3654f2a7d550880ab01c))
+
 ## [0.68.17](https://github.com/adobecom/caas/compare/0.68.16...0.68.17) (2026-09-22)
 
 ## [0.68.16](https://github.com/adobecom/caas/compare/0.68.15...0.68.16) (2026-09-21)
