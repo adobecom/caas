@@ -1,5 +1,12 @@
 
 
+## [0.68.19](https://github.com/adobecom/caas/compare/0.68.18...0.68.19) (2026-09-22)
+
+
+### Dependencies
+
+* **deps-dev:** bump @babel/eslint-parser from 7.28.6 to 7.29.9 ([#614](https://github.com/adobecom/caas/issues/614)) ([3fc4232](https://github.com/adobecom/caas/commit/3fc4232ffd896957b4d7eee2b7091b6339750914))
+
 ## [0.68.18](https://github.com/adobecom/caas/compare/0.68.17...0.68.18) (2026-09-22)
 
 
