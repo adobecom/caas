@@ -1,5 +1,12 @@
 
 
+## [0.68.25](https://github.com/adobecom/caas/compare/0.68.24...0.68.25) (2026-09-22)
+
+
+### Dependencies
+
+* **deps-dev:** bump dotenv from 17.3.1 to 17.4.2 ([#626](https://github.com/adobecom/caas/issues/626)) ([b5cf82b](https://github.com/adobecom/caas/commit/b5cf82bf927796125a466a00ab9c5585a7477777))
+
 ## [0.68.24](https://github.com/adobecom/caas/compare/0.68.23...0.68.24) (2026-09-22)
 
 ## [0.68.23](https://github.com/adobecom/caas/compare/0.68.22...0.68.23) (2026-09-22)
