@@ -1,5 +1,12 @@
 
 
+## [0.68.30](https://github.com/adobecom/caas/compare/0.68.29...0.68.30) (2026-09-22)
+
+
+### Dependencies
+
+* **deps:** bump @datastructures-js/priority-queue from 5.4.0 to 5.4.1 ([#628](https://github.com/adobecom/caas/issues/628)) ([96fb19c](https://github.com/adobecom/caas/commit/96fb19c8213234cceaf510df42f9b6433089015e))
+
 ## [0.68.29](https://github.com/adobecom/caas/compare/0.68.28...0.68.29) (2026-09-22)
 
 
