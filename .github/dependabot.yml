@@ -11,9 +11,9 @@ updates:
       time: "06:00"
       timezone: "America/Los_Angeles"
 
-    # Limit: Max 10 open version-update PRs at once.
+    # Limit: Max 20 open version-update PRs at once.
     # Security updates use GitHub's separate limit.
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 20
 
     # The serial safe-automerge controller updates only the PR that currently
     # owns the queue slot. Do not rebase all open Dependabot PRs after each merge.
