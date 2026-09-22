@@ -1,6 +1,10 @@
 name: Dependabot Safe Autonomy
 
 on:
+  # A merge changes the base for every remaining Dependabot PR. Wake the
+  # controller immediately so it can advance the next item in the queue.
+  push:
+    branches: [main]
   # Re-evaluate after every workflow that can change the PR's merge state.
   # Build output can finish before the required and advisory checks, so it
   # cannot be the only completion event that wakes this controller.
