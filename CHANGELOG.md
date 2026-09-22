@@ -1,5 +1,12 @@
 
 
+## [0.68.27](https://github.com/adobecom/caas/compare/0.68.26...0.68.27) (2026-09-22)
+
+
+### Dependencies
+
+* **deps-dev:** bump jest from 30.3.0 to 30.5.2 ([#632](https://github.com/adobecom/caas/issues/632)) ([3bad846](https://github.com/adobecom/caas/commit/3bad8469a7cd1203ac608d833be2e456fb040a07))
+
 ## [0.68.26](https://github.com/adobecom/caas/compare/0.68.25...0.68.26) (2026-09-22)
 
 
