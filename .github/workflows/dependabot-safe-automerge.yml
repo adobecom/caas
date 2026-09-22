@@ -45,8 +45,8 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.BOT_TOKEN || secrets.WORKFLOW_TOKEN || secrets.GITHUB_TOKEN }}
       GITHUB_REPOSITORY: ${{ github.repository }}
-      # Safe rollout: absent/anything except "merge" records decisions without
-      # merging. Set the repository variable to "merge" after observing results.
+      # Absent/anything except "merge" records decisions without merging.
+      # The live repository currently controls this through the named variable.
       AUTOMERGE_MODE: ${{ vars.DEPENDABOT_AUTOMERGE_MODE }}
     steps:
       - uses: actions/checkout@v4

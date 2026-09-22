@@ -8,7 +8,7 @@ name: Feature QA Review
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened, labeled]
   workflow_dispatch:
     inputs:
       pr_number:
@@ -24,7 +24,15 @@ jobs:
   feature-review:
     runs-on: [self-hosted, qa-audit]   # the Mini — only runner with the persistent Chrome/CDP
     timeout-minutes: 20
-    if: ${{ (github.event_name == 'workflow_dispatch' && !startsWith(inputs.pr_number, 'backtest:')) || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) }}
+    if: >
+      (github.event_name == 'workflow_dispatch' && !startsWith(inputs.pr_number, 'backtest:')) ||
+      (github.event_name == 'pull_request' &&
+       github.event.pull_request.head.repo.full_name == github.repository &&
+       (github.event.action != 'labeled' ||
+        (github.event.pull_request.user.login == 'dependabot[bot]' &&
+         github.event.label.name == 'dependencies-active')) &&
+       (github.event.pull_request.user.login != 'dependabot[bot]' ||
+        contains(github.event.pull_request.labels.*.name, 'dependencies-active')))
     permissions:
       contents: read
       pull-requests: write
