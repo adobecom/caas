@@ -1,5 +1,12 @@
 
 
+## [0.68.29](https://github.com/adobecom/caas/compare/0.68.28...0.68.29) (2026-09-22)
+
+
+### Dependencies
+
+* **deps-dev:** bump @ungap/structured-clone from 1.3.3 to 1.4.0 ([#627](https://github.com/adobecom/caas/issues/627)) ([f661d6f](https://github.com/adobecom/caas/commit/f661d6fbabe027741fde01e72df952a5d867f545))
+
 ## [0.68.28](https://github.com/adobecom/caas/compare/0.68.27...0.68.28) (2026-09-22)
 
 
