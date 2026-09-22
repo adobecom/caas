@@ -1,5 +1,12 @@
 
 
+## [0.68.31](https://github.com/adobecom/caas/compare/0.68.30...0.68.31) (2026-09-22)
+
+
+### Chores
+
+* **mwpw-204835:** serialize Dependabot validation queue ([#634](https://github.com/adobecom/caas/issues/634)) ([c95fcc4](https://github.com/adobecom/caas/commit/c95fcc485b297b1fbd732a09f269c3c5f0be9772))
+
 ## [0.68.30](https://github.com/adobecom/caas/compare/0.68.29...0.68.30) (2026-09-22)
 
 
