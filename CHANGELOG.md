@@ -1,5 +1,12 @@
 
 
+## [0.68.34](https://github.com/adobecom/caas/compare/0.68.33...0.68.34) (2026-09-22)
+
+
+### Bug Fixes
+
+* **mwpw-204835:** restore Dependabot and raise PR limit ([#636](https://github.com/adobecom/caas/issues/636)) ([d619323](https://github.com/adobecom/caas/commit/d6193235b88a46b252e507e5a55936eba9481179))
+
 ## [0.68.33](https://github.com/adobecom/caas/compare/0.68.32...0.68.33) (2026-09-22)
 
 ## [0.68.32](https://github.com/adobecom/caas/compare/0.68.31...0.68.32) (2026-09-22)
