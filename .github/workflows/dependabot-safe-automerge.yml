@@ -1,11 +1,24 @@
 name: Dependabot Safe Autonomy
 
 on:
-  # Build output is the policy's main safety signal. The scheduled pass catches
-  # slower CI completions and drives bounded conflict recovery.
+  # A merge changes the base for every remaining Dependabot PR. Wake the
+  # controller immediately so it can advance the next item in the queue.
+  push:
+    branches: [main]
+  # Re-evaluate after every workflow that can change the PR's merge state.
+  # Build output can finish before the required and advisory checks, so it
+  # cannot be the only completion event that wakes this controller.
   workflow_run:
-    workflows: ["Build Output Diff (advisory)"]
+    workflows:
+      - Build Output Diff (advisory)
+      - Pull Request
+      - Review Score Gate
+      - AI Code Review
+      - Agent QA Review
+      - Feature QA Review
     types: [completed]
+  # Backup for conflict recovery. Scheduled Actions may be delayed or dropped,
+  # so normal ready-to-merge processing must not depend on this timer.
   schedule:
     - cron: "17,47 * * * *"
   workflow_dispatch:
