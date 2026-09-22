@@ -3,17 +3,17 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
 
-    # Refill the queue three times each weekday so safe updates can flow
-    # throughout the day without continuously polling Dependabot.
+    # Check each weekday morning so safe updates can flow continuously.
+    # GitHub enforces a minimum 24-hour interval for Dependabot schedules.
     # Security updates are advisory-triggered and do not wait for this schedule.
     schedule:
-      interval: "cron"
-      cronjob: "0 6,12,18 * * 1-5"
+      interval: "daily"
+      time: "06:00"
       timezone: "America/Los_Angeles"
 
-    # Limit: Max 10 open version-update PRs at once.
+    # Limit: Max 20 open version-update PRs at once.
     # Security updates use GitHub's separate limit.
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 20
 
     # The serial safe-automerge controller updates only the PR that currently
     # owns the queue slot. Do not rebase all open Dependabot PRs after each merge.
