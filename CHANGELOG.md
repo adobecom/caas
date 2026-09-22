@@ -1,5 +1,12 @@
 
 
+## [0.68.35](https://github.com/adobecom/caas/compare/0.68.34...0.68.35) (2026-09-22)
+
+
+### Bug Fixes
+
+* **mwpw-204835:** patch vulnerable transitive dependencies ([#638](https://github.com/adobecom/caas/issues/638)) ([7ac3aac](https://github.com/adobecom/caas/commit/7ac3aaccc83b6d8a30d991c36ebf6812e9cb80cd))
+
 ## [0.68.34](https://github.com/adobecom/caas/compare/0.68.33...0.68.34) (2026-09-22)
 
 
