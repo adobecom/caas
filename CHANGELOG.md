@@ -1,5 +1,12 @@
 
 
+## [0.68.32](https://github.com/adobecom/caas/compare/0.68.31...0.68.32) (2026-09-22)
+
+
+### Dependencies
+
+* **deps-dev:** bump express from 4.22.1 to 4.22.3 ([#633](https://github.com/adobecom/caas/issues/633)) ([a52e701](https://github.com/adobecom/caas/commit/a52e7016acdb24a753e051de0725d114baa684dd))
+
 ## [0.68.31](https://github.com/adobecom/caas/compare/0.68.30...0.68.31) (2026-09-22)
 
 
