@@ -14,9 +14,9 @@ updates:
     # Security updates use GitHub's separate limit.
     open-pull-requests-limit: 10
 
-    # Dependabot normally rebases automatically. Keep this explicit because the
-    # safe-automerge controller requires every candidate to include latest main.
-    rebase-strategy: "auto"
+    # The serial safe-automerge controller updates only the PR that currently
+    # owns the queue slot. Do not rebase all open Dependabot PRs after each merge.
+    rebase-strategy: "disabled"
 
     # No grouping: Dependabot will open individual PRs per update
 

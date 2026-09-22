@@ -2,7 +2,7 @@ name: AI Code Review
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened, labeled]
   # Let a maintainer talk to the bot by mentioning "@ai-bot" in a PR comment.
   # Such a comment (on create OR edit) re-runs the review, and only @ai-bot
   # comments are fed back as context, so the bot revises against the proof in
@@ -27,7 +27,12 @@ jobs:
     #    public comments cannot trigger a run.
     if: >
       (github.event_name == 'pull_request' &&
-       github.event.pull_request.head.repo.full_name == github.repository) ||
+       github.event.pull_request.head.repo.full_name == github.repository &&
+       (github.event.action != 'labeled' ||
+        (github.event.pull_request.user.login == 'dependabot[bot]' &&
+         github.event.label.name == 'dependencies-active')) &&
+       (github.event.pull_request.user.login != 'dependabot[bot]' ||
+        contains(github.event.pull_request.labels.*.name, 'dependencies-active'))) ||
       (github.event_name == 'issue_comment' &&
        github.event.issue.pull_request != null &&
        contains(github.event.comment.body, '@ai-bot') &&

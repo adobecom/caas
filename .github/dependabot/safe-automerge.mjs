@@ -22,7 +22,25 @@ const ALLOWED_FILES = new Set(['package.json', 'package-lock.json']);
 const DECISION_MARKER = '<!-- dependabot-safe-automerge -->';
 const CONFLICT_MARKER = '<!-- dependabot-conflict-recovery:';
 const TWO_HOURS_MS = 2 * 60 * 60 * 1000;
-const THIRTY_MINUTES_MS = 30 * 60 * 1000;
+const QUEUED_LABEL = 'dependencies-queued';
+const PREPARING_LABEL = 'dependencies-preparing';
+const ACTIVE_LABEL = 'dependencies-active';
+const READY_LABEL = 'dependencies-automerge-ready';
+const REVIEW_LABEL = 'dependencies-review';
+const CONFLICT_LABEL = 'dependencies-conflict';
+
+function hasLabel(pr, name) {
+  return (pr.labels || []).some((label) => (label.name || label) === name);
+}
+
+export function selectQueueCandidate(prs) {
+  const ordered = [...prs].sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt));
+  const reserved = ordered.find((pr) =>
+    pr.autoMergeRequest || hasLabel(pr, PREPARING_LABEL) || hasLabel(pr, ACTIVE_LABEL));
+  if (reserved) return reserved;
+  return ordered.find((pr) => !hasLabel(pr, REVIEW_LABEL)) || null;
+}
+
 export function hasOnlyDependabotCommits(commits) {
   return commits.length > 0 && commits.every((commit) =>
     (commit.authors || []).length > 0 && commit.authors.every((author) => author.login === DEPENDABOT));
@@ -66,9 +84,8 @@ export function evaluateCandidate(candidate) {
   return { state: 'review', reason: `GitHub reports merge state ${mergeStateStatus || 'UNKNOWN'}` };
 }
 
-export function nextConflictAction({ headUpdatedAt, comments, headSha, pureDependabotCommits, now = Date.now() }) {
+export function nextConflictAction({ comments, headSha, pureDependabotCommits, now = Date.now() }) {
   if (!pureDependabotCommits) return { action: 'review', reason: 'extra commits prevent Dependabot automatic rebasing' };
-  if (now - Date.parse(headUpdatedAt) < THIRTY_MINUTES_MS) return { action: 'wait', reason: 'giving Dependabot time to rebase automatically' };
 
   const actions = comments
     .filter(({ body = '' }) => body.includes(CONFLICT_MARKER) && body.includes(headSha))
@@ -91,7 +108,7 @@ export function nextConflictAction({ headUpdatedAt, comments, headSha, pureDepen
       ? { action: 'recreate', reason: 'still conflicted two hours after rebase' }
       : { action: 'wait', reason: 'waiting for requested rebase' };
   }
-  return { action: 'rebase', reason: 'automatic rebase did not clear the conflict within 30 minutes' };
+  return { action: 'rebase', reason: 'selected queue item must include the latest main branch' };
 }
 
 function gh(args, { allowFailure = false } = {}) {
@@ -132,9 +149,36 @@ function ensureLabel(repo, name, color, description) {
 function setLabel(repo, pr, currentLabels, add, remove = []) {
   const current = new Set((currentLabels || []).map((label) => label.name || label));
   for (const label of remove) {
-    if (current.has(label)) gh(['pr', 'edit', String(pr), '--repo', repo, '--remove-label', label], { allowFailure: true });
+    if (current.has(label)) {
+      gh(['pr', 'edit', String(pr), '--repo', repo, '--remove-label', label]);
+      current.delete(label);
+    }
   }
-  if (add && !current.has(add)) gh(['pr', 'edit', String(pr), '--repo', repo, '--add-label', add]);
+  if (add && !current.has(add)) {
+    gh(['pr', 'edit', String(pr), '--repo', repo, '--add-label', add]);
+    current.add(add);
+  }
+  if (Array.isArray(currentLabels)) {
+    currentLabels.splice(0, currentLabels.length, ...[...current].map((name) => ({ name })));
+  }
+}
+
+function setQueueState(repo, pr, state) {
+  const states = [QUEUED_LABEL, PREPARING_LABEL, ACTIVE_LABEL, REVIEW_LABEL];
+  const remove = states.filter((label) => label !== state);
+  remove.push(READY_LABEL, CONFLICT_LABEL, 'dependencies-needs-human');
+  setLabel(repo, pr.number, pr.labels, state, remove);
+}
+
+function queueNext(repo, prs, completedNumber) {
+  const next = selectQueueCandidate(prs.filter((pr) => pr.number !== completedNumber));
+  if (!next) {
+    console.log('No queued Dependabot PR remains.');
+    return null;
+  }
+  setQueueState(repo, next, PREPARING_LABEL);
+  console.log(`#${next.number} reserved as the next queue item.`);
+  return next;
 }
 
 export function disableAutoMerge(repo, pr, runGh = gh) {
@@ -231,6 +275,9 @@ async function main() {
   ensureLabel(repo, 'dependencies-automerge-ready', '0e8a16', 'Dependabot update passed every safe-automerge gate');
   ensureLabel(repo, 'dependencies-review', '5319e7', 'Dependabot update requires review by a person or Codex');
   ensureLabel(repo, 'dependencies-conflict', 'fbca04', 'Dependabot branch is behind or conflicted');
+  ensureLabel(repo, QUEUED_LABEL, 'd4c5f9', 'Dependabot update is waiting for the serial validation queue');
+  ensureLabel(repo, PREPARING_LABEL, 'f9d0c4', 'Dependabot update owns the queue slot and is being updated');
+  ensureLabel(repo, ACTIVE_LABEL, '1d76db', 'Dependabot update owns the queue slot and may run expensive checks');
 
   const prs = ghJson(['pr', 'list', '--repo', repo, '--state', 'open', '--author', 'app/dependabot', '--limit', '100',
     '--json', 'number,title,baseRefName,headRefOid,mergeStateStatus,createdAt,updatedAt,autoMergeRequest,url,labels']) || [];
@@ -239,101 +286,104 @@ async function main() {
     return;
   }
 
+  const eligiblePrs = prs.filter((pr) => pr.baseRefName === defaultBranch);
+  const armed = eligiblePrs.filter((pr) => pr.autoMergeRequest);
+  if (armed.length > 1) {
+    throw new Error(`More than one Dependabot PR has auto-merge armed: ${armed.map(({ number }) => `#${number}`).join(', ')}`);
+  }
+  const selected = selectQueueCandidate(eligiblePrs);
+  if (!selected) {
+    console.log('Every open Dependabot PR requires review; the automatic queue is empty.');
+    return;
+  }
+
+  for (const pr of eligiblePrs) {
+    if (pr.number === selected.number || hasLabel(pr, REVIEW_LABEL)) continue;
+    setQueueState(repo, pr, QUEUED_LABEL);
+  }
+
+  const alreadyReserved = selected.autoMergeRequest || hasLabel(selected, PREPARING_LABEL) || hasLabel(selected, ACTIVE_LABEL);
+  if (!alreadyReserved) {
+    setQueueState(repo, selected, PREPARING_LABEL);
+    console.log(`#${selected.number} reserved as the next queue item.`);
+  }
+
   const baseSha = gh(['api', `repos/${repo}/git/ref/heads/${defaultBranch}`, '--jq', '.object.sha']);
-  const candidates = [];
-  const evaluationErrors = [];
-  for (const pr of prs.sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt))) {
-    if (pr.baseRefName !== defaultBranch) continue;
-    try {
-      const data = await loadCandidateData(repo, pr, baseSha);
-      const decision = evaluateCandidate(data);
-      console.log(`#${pr.number} ${decision.state}: ${decision.reason}`);
+  let data;
+  try {
+    data = await loadCandidateData(repo, selected, baseSha);
+  } catch (error) {
+    throw new Error(`#${selected.number} could not be evaluated: ${error.message}`);
+  }
+  const decision = evaluateCandidate(data);
+  console.log(`#${selected.number} ${decision.state}: ${decision.reason}`);
 
-      // A rebase or recreate can invalidate advisory gates that GitHub itself
-      // does not require. Never leave a previous native auto-merge request armed
-      // while the current head is waiting, conflicted, or requires a person.
-      if (pr.autoMergeRequest && decision.state !== 'eligible') {
-        // Only clear the loop snapshot after GitHub confirms the stale request
-        // was disabled. A failure stops this run from arming a second PR.
-        disableAutoMerge(repo, pr);
-        console.log(`#${pr.number} disabled stale auto-merge for ${data.headSha.slice(0, 12)}.`);
-      }
+  // A rebase or recreate can invalidate advisory gates that GitHub itself
+  // does not require. Never leave a previous native auto-merge request armed
+  // while the current head is waiting, conflicted, or requires a person.
+  if (selected.autoMergeRequest && decision.state !== 'eligible') {
+    disableAutoMerge(repo, selected);
+    console.log(`#${selected.number} disabled stale auto-merge for ${data.headSha.slice(0, 12)}.`);
+  }
 
-      if (decision.state === 'conflict' || decision.state === 'behind') {
-        setLabel(repo, pr.number, pr.labels, 'dependencies-conflict', [
-          'dependencies-automerge-ready',
-          'dependencies-review',
-          'dependencies-needs-human',
-        ]);
-        const recovery = nextConflictAction({
-          headUpdatedAt: data.headUpdatedAt,
-          comments: data.comments,
-          headSha: data.headSha,
-          pureDependabotCommits: hasOnlyDependabotCommits(data.commits),
-        });
-        if (recovery.action === 'rebase' || recovery.action === 'recreate') {
-          conflictCommand(repo, pr.number, data, recovery.action, recovery.reason);
-        } else if (recovery.action === 'review') {
-          setLabel(repo, pr.number, [{ name: 'dependencies-conflict' }, ...pr.labels], 'dependencies-review', [
-            'dependencies-conflict',
-            'dependencies-needs-human',
-          ]);
-          recordDecision(repo, pr.number, data, 'review', recovery.reason);
-        }
-        continue;
-      }
-
-      setLabel(repo, pr.number, pr.labels, null, ['dependencies-conflict']);
-      if (decision.state === 'review') {
-        setLabel(repo, pr.number, pr.labels, 'dependencies-review', [
-          'dependencies-automerge-ready',
-          'dependencies-needs-human',
-        ]);
-        recordDecision(repo, pr.number, data, 'review', decision.reason);
-      } else if (decision.state === 'eligible') {
-        setLabel(repo, pr.number, pr.labels, 'dependencies-automerge-ready', [
-          'dependencies-review',
-          'dependencies-needs-human',
-        ]);
-        recordDecision(repo, pr.number, data, 'ready', decision.reason);
-        candidates.push(data);
-      } else {
-        // A new head starts unclassified. Remove conclusions recorded for an old
-        // head until every gate has completed again.
-        setLabel(repo, pr.number, pr.labels, null, [
-          'dependencies-automerge-ready',
-          'dependencies-review',
-          'dependencies-needs-human',
-        ]);
-      }
-    } catch (error) {
-      const message = `#${pr.number} could not be evaluated: ${error.message}`;
-      evaluationErrors.push(message);
-      console.error(message);
+  if (decision.state === 'conflict' || decision.state === 'behind') {
+    setQueueState(repo, selected, PREPARING_LABEL);
+    setLabel(repo, selected.number, selected.labels, CONFLICT_LABEL, [READY_LABEL, REVIEW_LABEL]);
+    const recovery = nextConflictAction({
+      comments: data.comments,
+      headSha: data.headSha,
+      pureDependabotCommits: hasOnlyDependabotCommits(data.commits),
+    });
+    if (recovery.action === 'rebase' || recovery.action === 'recreate') {
+      conflictCommand(repo, selected.number, data, recovery.action, recovery.reason);
+    } else if (recovery.action === 'review') {
+      setQueueState(repo, selected, REVIEW_LABEL);
+      recordDecision(repo, selected.number, data, 'review', recovery.reason);
+      queueNext(repo, eligiblePrs, selected.number);
     }
+    return;
   }
 
-  if (evaluationErrors.length) {
-    throw new Error(`Dependabot evaluation was incomplete; no auto-merge was armed.\n${evaluationErrors.join('\n')}`);
+  if (decision.state === 'review') {
+    setQueueState(repo, selected, REVIEW_LABEL);
+    recordDecision(repo, selected.number, data, 'review', decision.reason);
+    queueNext(repo, eligiblePrs, selected.number);
+    return;
   }
+
+  if (!hasLabel(selected, ACTIVE_LABEL)) {
+    setQueueState(repo, selected, ACTIVE_LABEL);
+    setLabel(repo, selected.number, selected.labels, null, [CONFLICT_LABEL, READY_LABEL]);
+    console.log(`#${selected.number} is current with main and may run expensive checks.`);
+    return;
+  }
+
+  if (decision.state === 'waiting') {
+    setLabel(repo, selected.number, selected.labels, null, [READY_LABEL, REVIEW_LABEL, CONFLICT_LABEL]);
+    return;
+  }
+
+  setLabel(repo, selected.number, selected.labels, READY_LABEL, [
+    REVIEW_LABEL,
+    CONFLICT_LABEL,
+    'dependencies-needs-human',
+  ]);
+  recordDecision(repo, selected.number, data, 'ready', decision.reason);
 
   if (mode !== 'merge') {
-    console.log(`Observation mode: ${candidates.length} PR(s) ready; set DEPENDABOT_AUTOMERGE_MODE=merge to arm native auto-merge.`);
+    console.log(`Observation mode: #${selected.number} is ready; set DEPENDABOT_AUTOMERGE_MODE=merge to arm native auto-merge.`);
     return;
   }
   if (!repository.allow_auto_merge) throw new Error('Merge mode requires repository setting “Allow auto-merge”.');
   if (!strict) throw new Error('Merge mode requires strict up-to-date status checks on the default-branch ruleset.');
-  if (prs.some(({ autoMergeRequest }) => autoMergeRequest)) {
-    console.log('A Dependabot PR already has auto-merge armed; waiting before arming another.');
+  if (selected.autoMergeRequest) {
+    console.log(`#${selected.number} already has auto-merge armed.`);
     return;
   }
-  if (!candidates.length) return;
-
-  const candidate = candidates[0];
-  execFileSync('gh', ['pr', 'merge', String(candidate.number), '--repo', repo, '--auto', '--squash', '--match-head-commit', candidate.headSha], {
+  execFileSync('gh', ['pr', 'merge', String(selected.number), '--repo', repo, '--auto', '--squash', '--match-head-commit', data.headSha], {
     stdio: 'inherit',
   });
-  console.log(`Armed auto-merge for #${candidate.number}.`);
+  console.log(`Armed auto-merge for #${selected.number}.`);
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

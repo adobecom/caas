@@ -5,6 +5,7 @@ import {
   disableAutoMerge,
   evaluateCandidate,
   nextConflictAction,
+  selectQueueCandidate,
 } from './safe-automerge.mjs';
 
 const SHA = '1234567890abcdef1234567890abcdef12345678';
@@ -122,19 +123,44 @@ test('clears stale auto-merge in memory only after GitHub disables it', () => {
   assert.equal(pr.autoMergeRequest, null);
 });
 
-test('conflict recovery waits, rebases, recreates, then escalates', () => {
+test('keeps an existing queue owner instead of starting another PR', () => {
+  const prs = [
+    { number: 10, createdAt: '2026-08-18T08:00:00Z', labels: [{ name: 'dependencies-queued' }] },
+    { number: 11, createdAt: '2026-08-18T09:00:00Z', labels: [{ name: 'dependencies-active' }] },
+    { number: 12, createdAt: '2026-08-18T10:00:00Z', labels: [] },
+  ];
+  assert.equal(selectQueueCandidate(prs).number, 11);
+
+  prs[1].labels = [{ name: 'dependencies-queued' }];
+  prs[2].autoMergeRequest = { enabledAt: '2026-08-18T11:00:00Z' };
+  assert.equal(selectQueueCandidate(prs).number, 12);
+});
+
+test('selects the oldest waiting PR and leaves a newer PR at the back', () => {
+  const prs = [
+    { number: 12, createdAt: '2026-08-18T10:00:00Z', labels: [] },
+    { number: 10, createdAt: '2026-08-18T08:00:00Z', labels: [{ name: 'dependencies-review' }] },
+    { number: 11, createdAt: '2026-08-18T09:00:00Z', labels: [{ name: 'dependencies-queued' }] },
+  ];
+  assert.equal(selectQueueCandidate(prs).number, 11);
+  assert.equal(selectQueueCandidate(prs.filter(({ number }) => number !== 11)).number, 12);
+  assert.equal(selectQueueCandidate(prs.filter(({ number }) => number === 10)), null);
+});
+
+test('selected conflict recovery rebases, waits, recreates, then escalates', () => {
   const now = Date.parse('2026-08-18T12:00:00Z');
   const base = { headSha: SHA, pureDependabotCommits: true, now, comments: [] };
-  assert.equal(nextConflictAction({ ...base, headUpdatedAt: '2026-08-18T11:45:00Z' }).action, 'wait');
-  assert.equal(nextConflictAction({ ...base, headUpdatedAt: '2026-08-18T10:00:00Z' }).action, 'rebase');
+  assert.equal(nextConflictAction(base).action, 'rebase');
   assert.equal(nextConflictAction({
     ...base,
-    headUpdatedAt: '2026-08-18T08:00:00Z',
+    comments: [{ createdAt: '2026-08-18T11:00:00Z', body: `${CONFLICT('rebase')} ${SHA}` }],
+  }).action, 'wait');
+  assert.equal(nextConflictAction({
+    ...base,
     comments: [{ createdAt: '2026-08-18T09:00:00Z', body: `${CONFLICT('rebase')} ${SHA}` }],
   }).action, 'recreate');
   assert.equal(nextConflictAction({
     ...base,
-    headUpdatedAt: '2026-08-18T06:00:00Z',
     comments: [{ createdAt: '2026-08-18T09:00:00Z', body: `${CONFLICT('recreate')} ${SHA}` }],
   }).action, 'review');
 });
