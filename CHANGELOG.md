@@ -1,5 +1,12 @@
 
 
+## [0.68.28](https://github.com/adobecom/caas/compare/0.68.27...0.68.28) (2026-09-22)
+
+
+### Dependencies
+
+* **deps-dev:** bump cors from 2.8.5 to 2.8.6 ([#631](https://github.com/adobecom/caas/issues/631)) ([cca1af3](https://github.com/adobecom/caas/commit/cca1af3c8dcf5e45f9d73ebeef0d5fdb8acbd703))
+
 ## [0.68.27](https://github.com/adobecom/caas/compare/0.68.26...0.68.27) (2026-09-22)
 
 
