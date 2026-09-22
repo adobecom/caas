@@ -5,7 +5,7 @@ const getStartNumber = ({ page, itemsPerPage }) => {
 
 const getEndNumber = ({ page, itemsPerPage, totalResults }) => {
     const res = page * itemsPerPage;
-    return res < totalResults ? res : totalResults;
+    return Math.min(res, totalResults);
 };
 
 // eslint-disable-next-line import/prefer-default-export
