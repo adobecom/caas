@@ -75,7 +75,7 @@
     "@wdio/mocha-framework": "^8.46.0",
     "@wdio/spec-reporter": "^8.43.0",
     "aemsync": "^3.0.2",
-    "axe-core": "^4.11.1",
+    "axe-core": "^4.13.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^30.4.1",
     "babel-loader": "^8.3.0",
