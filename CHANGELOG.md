@@ -1,5 +1,12 @@
 
 
+## [0.68.36](https://github.com/adobecom/caas/compare/0.68.35...0.68.36) (2026-09-23)
+
+
+### Bug Fixes
+
+* **mwpw-204835:** patch easy dependency vulnerabilities ([#639](https://github.com/adobecom/caas/issues/639)) ([04c2858](https://github.com/adobecom/caas/commit/04c28584cdfa4fa8963ff6d834e8c9b9ecf1a75e))
+
 ## [0.68.35](https://github.com/adobecom/caas/compare/0.68.34...0.68.35) (2026-09-22)
 
 
