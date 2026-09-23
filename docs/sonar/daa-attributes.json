@@ -1,0 +1,13 @@
+{
+  "projectKey": "adobecom_caas_9e89bc21-de4f-46e2-9443-2052ced9386d",
+  "language": "js",
+  "ruleKey": "javascript:S6747",
+  "parameter": "whitelist",
+  "appendValues": [
+    "daa-ll",
+    "daa-lh",
+    "daa-im",
+    "daa-state"
+  ],
+  "expectedFindings": 41
+}
