@@ -36,12 +36,12 @@ export default function scroller(
             if (typeof callback === 'function') return callback();
         } else {
             scrollElement[attribute] = newScrollValue;
-            window.requestAnimationFrame(stepper);
+            globalThis.requestAnimationFrame(stepper);
         }
         return true;
     }
 
     if (newPosition !== scrollElement[attribute]) {
-        window.requestAnimationFrame(stepper);
+        globalThis.requestAnimationFrame(stepper);
     }
 }

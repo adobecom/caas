@@ -1,0 +1,23 @@
+{
+  "main.js": {
+    "result": "CHANGED",
+    "baseBytes": 920208,
+    "headBytes": 920825,
+    "baseSha256": "05537cea0082701a258edf66ce7234ac60caa4889061d8e21e3de54ab364d6f1",
+    "headSha256": "bfeaabe380cd9be638e82c6981c10dce73a022e559a6ffc661b7af3c43affd57"
+  },
+  "main.min.js": {
+    "result": "CHANGED",
+    "baseBytes": 377572,
+    "headBytes": 377963,
+    "baseSha256": "33d95d9e8083a21095c1a1166cd91c40f6b166c0f9b5accdbb2345986766c605",
+    "headSha256": "d7f28a6d918b9240214d46ee62e867ffdc74cad2b35c4232d920d83a8c7b3013"
+  },
+  "app.css": {
+    "result": "NO_CHANGE",
+    "baseBytes": 241405,
+    "headBytes": 241405,
+    "baseSha256": "f79e56f91029f64e7c3dcf5828bbac00b9397895ccbbab0d539c3aef5a35859b",
+    "headSha256": "f79e56f91029f64e7c3dcf5828bbac00b9397895ccbbab0d539c3aef5a35859b"
+  }
+}

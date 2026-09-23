@@ -35,7 +35,7 @@ export const watch = (registry) => {
  * @param {Class} registry The React DOM Component Registry
  */
 export const authorWatch = (registry) => {
-    if (global.CQ) {
+    if (globalThis.CQ) {
         watch(registry);
     }
 };

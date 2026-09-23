@@ -496,7 +496,7 @@ const Container = (props) => {
             return filterClearedState;
         });
 
-        const urlParams = new URLSearchParams(window.location.search);
+        const urlParams = new URLSearchParams(globalThis.location.search);
         clearUrlState();
         // actually clear the url state
         urlParams.forEach((value, key) => {
@@ -519,7 +519,7 @@ const Container = (props) => {
             return allFiltersClearedState;
         });
 
-        const urlParams = new URLSearchParams(window.location.search);
+        const urlParams = new URLSearchParams(globalThis.location.search);
 
         clearUrlState();
         urlParams.forEach((value, key) => {
@@ -534,7 +534,7 @@ const Container = (props) => {
     const resetFiltersSearchAndBookmarks = () => {
         clearAllFilters();
         setSearchQuery('');
-        const urlParams = new URLSearchParams(window.location.search);
+        const urlParams = new URLSearchParams(globalThis.location.search);
         clearUrlState();
         urlParams.forEach((value, key) => {
             if (key.indexOf(filterGroupPrefix) === -1
@@ -1017,12 +1017,12 @@ const Container = (props) => {
         }
         const { // eslint-disable-line no-underscore-dangle
             __satelliteLoadedPromise: visitorPromise,
-        } = window;
+        } = globalThis;
 
         let collectionEndpoint = getConfig('collection', 'endpoint');
         const fallbackEndpoint = getConfig('collection', 'fallbackEndpoint');
 
-        const caasEndpointKey = new URLSearchParams(window.location.search).get('caas-endpoint');
+        const caasEndpointKey = new URLSearchParams(globalThis.location.search).get('caas-endpoint');
         const endpointOverride = Object.prototype.hasOwnProperty.call(
             CAAS_ENDPOINT_MAP,
             caasEndpointKey,
@@ -1038,7 +1038,7 @@ const Container = (props) => {
         if (r.test(collectionEndpoint)) {
             collectionEndpointURI = new URL(collectionEndpoint);
         } else {
-            collectionEndpointURI = new URL(collectionEndpoint, window.location.origin);
+            collectionEndpointURI = new URL(collectionEndpoint, globalThis.location.origin);
         }
 
         if (!fallbackEndpoint) {
@@ -1060,7 +1060,7 @@ const Container = (props) => {
          */
         function getCards(endPoint = collectionEndpoint) {
             const start = Date.now();
-            return window.fetch(endPoint, {
+            return globalThis.fetch(endPoint, {
                 credentials: 'include',
                 headers,
             })
@@ -1280,11 +1280,11 @@ const Container = (props) => {
         }
 
         function alloyApiFallback(visitor, url) {
-            const satellite = window._satellite; // eslint-disable-line no-underscore-dangle
-            if (window.alloy && window.edgeConfigId && satellite
+            const satellite = globalThis._satellite; // eslint-disable-line no-underscore-dangle
+            if (globalThis.alloy && globalThis.edgeConfigId && satellite
                 && satellite.alloyConfigurePromise) {
                 satellite.alloyConfigurePromise
-                    .then(() => window.alloy('getIdentity'))
+                    .then(() => globalThis.alloy('getIdentity'))
                     .then((res) => {
                         const ecid = getByPath(res, 'identity.ECID');
                         const regionId = getByPath(res, 'edge.regionId');
@@ -1310,7 +1310,7 @@ const Container = (props) => {
             if (revealId) url.searchParams.set('currentEntityId', revealId);
             visitorApi
                 .then((visitor) => {
-                    const identity = window.alloy_getIdentity;
+                    const identity = globalThis.alloy_getIdentity;
                     if (identity) {
                         identity
                             .then((res) => {
@@ -1360,7 +1360,7 @@ const Container = (props) => {
 
                     const { // eslint-disable-line no-underscore-dangle
                         __satelliteLoadedPromise: visitorPromiseRetry,
-                    } = window;
+                    } = globalThis;
 
                     if (visitorPromiseRetry) {
                         getVisitorData(visitorPromiseRetry);
