@@ -1,4 +1,4 @@
-export default ({ onLoadDelay }) => {
+const mockImage = ({ onLoadDelay }) => {
     let timeout = null;
 
     const properties = {
@@ -26,3 +26,5 @@ export default ({ onLoadDelay }) => {
     };
     Object.defineProperty(Image.prototype, 'onload', properties);
 };
+
+export default mockImage;
