@@ -1,5 +1,12 @@
 
 
+## [0.68.37](https://github.com/adobecom/caas/compare/0.68.36...0.68.37) (2026-09-23)
+
+
+### Bug Fixes
+
+* **mwpw-204835:** remove 20 more dependency alerts ([#646](https://github.com/adobecom/caas/issues/646)) ([b79f981](https://github.com/adobecom/caas/commit/b79f98178eac5c6280ef5117fe294b3f0e74747e))
+
 ## [0.68.36](https://github.com/adobecom/caas/compare/0.68.35...0.68.36) (2026-09-23)
 
 
