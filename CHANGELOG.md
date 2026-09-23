@@ -1,5 +1,12 @@
 
 
+## [0.68.39](https://github.com/adobecom/caas/compare/0.68.38...0.68.39) (2026-09-23)
+
+
+### Code Refactoring
+
+* **mwpw-00000:** fix 23 Sonar findings without changing production output ([#637](https://github.com/adobecom/caas/issues/637)) ([befaa69](https://github.com/adobecom/caas/commit/befaa69a9bc54a381a7e7d6be79ef1f390fd00dd))
+
 ## [0.68.38](https://github.com/adobecom/caas/compare/0.68.37...0.68.38) (2026-09-23)
 
 
