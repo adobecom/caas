@@ -260,13 +260,17 @@ function eventTiming(sessions = [], eventFilter = []) {
             visibleSessions: cards,
             ...((nextTransitionMs && { nextTransitionMs })),
         };
-    } if (eventFilter.indexOf('live') > -1) {
+    }
+    if (eventFilter.indexOf('live') > -1) {
         cards = cards.concat(live);
-    } if (eventFilter.indexOf('upcoming') > -1) {
+    }
+    if (eventFilter.indexOf('upcoming') > -1) {
         cards = cards.concat(upComing);
-    } if (eventFilter.indexOf('on-demand') > -1) {
+    }
+    if (eventFilter.indexOf('on-demand') > -1) {
         cards = cards.concat(onDemand);
-    } if (eventFilter.indexOf('not-timed') > -1) {
+    }
+    if (eventFilter.indexOf('not-timed') > -1) {
         cards = cards.concat(notTimed);
     }
 

@@ -18,6 +18,13 @@ on:
     paths:
       - 'package.json'
       - 'package-lock.json'
+      - 'react/**'
+      - 'less/**'
+      - '.babelrc'
+      - 'webpack.config.js'
+      - 'sourcemaps.config.js'
+      - 'scripts/compare-build-output.sh'
+      - '.github/workflows/output-diff-check.yml'
 
 permissions:
   contents: read
