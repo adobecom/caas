@@ -7,20 +7,20 @@ const source = fs.readFileSync(path.join(__dirname, '../polyfills.js'), 'utf8');
 
 test('installs a non-enumerable globalThis alias before app code in older browsers', () => {
     const context = vm.createContext({});
-    vm.runInContext('this.self = this; delete this.globalThis;', context);
+    vm.runInContext('this.document = { defaultView: this }; delete this.globalThis;', context);
     vm.runInContext(source, context);
-    expect(vm.runInContext('globalThis === self', context)).toBe(true);
-    expect(vm.runInContext("Object.getOwnPropertyDescriptor(self, 'globalThis').enumerable", context)).toBe(false);
+    expect(vm.runInContext('globalThis === document.defaultView', context)).toBe(true);
+    expect(vm.runInContext("Object.getOwnPropertyDescriptor(document.defaultView, 'globalThis').enumerable", context)).toBe(false);
     vm.runInContext('globalThis.lana = { ready: true };', context);
-    expect(vm.runInContext('self.lana.ready', context)).toBe(true);
+    expect(vm.runInContext('document.defaultView.lana.ready', context)).toBe(true);
 });
 
 test('preserves the native globalThis property', () => {
     const native = {};
-    const context = vm.createContext({ globalThis: native, self: {} });
+    const context = vm.createContext({ globalThis: native, document: { defaultView: {} } });
     vm.runInContext(source, context);
     expect(context.globalThis).toBe(native);
-    expect(context.self).not.toHaveProperty('globalThis');
+    expect(context.document.defaultView).not.toHaveProperty('globalThis');
 });
 
 test('does nothing when neither a globalThis nor a browser global exists', () => {

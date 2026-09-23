@@ -43,8 +43,8 @@ After removing only the existing build-timestamp banner:
 
 | File | Result | Baseline bytes | Changed bytes |
 | --- | --- | ---: | ---: |
-| main.js | CHANGED | 920208 | 920825 |
-| main.min.js | CHANGED | 377572 | 377963 |
+| main.js | CHANGED | 920208 | 920885 |
+| main.min.js | CHANGED | 377572 | 378021 |
 | app.css | NO_CHANGE | 241405 | 241405 |
 
 Normalized SHA-256 hashes are in `globalthis-build.json`. The JavaScript diff

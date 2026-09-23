@@ -1,8 +1,8 @@
 // Run before application imports. Babel does not polyfill globalThis, and the
 // configured browser targets still include engines without native support.
-if (typeof globalThis === 'undefined' && typeof self !== 'undefined') {
-    Object.defineProperty(self, 'globalThis', {
-        value: self,
+if (typeof globalThis === 'undefined' && typeof document !== 'undefined' && document.defaultView) {
+    Object.defineProperty(document.defaultView, 'globalThis', {
+        value: document.defaultView,
         writable: true,
         configurable: true,
     });
