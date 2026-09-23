@@ -1,5 +1,12 @@
 
 
+## [0.68.38](https://github.com/adobecom/caas/compare/0.68.37...0.68.38) (2026-09-23)
+
+
+### Dependencies
+
+* **deps:** bump ip-address and socks ([#645](https://github.com/adobecom/caas/issues/645)) ([2bdfc29](https://github.com/adobecom/caas/commit/2bdfc29c00bc036875f63c77048b56831fc229c8))
+
 ## [0.68.37](https://github.com/adobecom/caas/compare/0.68.36...0.68.37) (2026-09-23)
 
 
