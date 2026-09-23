@@ -18,8 +18,6 @@ on:
     paths:
       - 'package.json'
       - 'package-lock.json'
-      - 'docs/sonar/**'
-      - '.github/workflows/output-diff-check.yml'
 
 permissions:
   contents: read
