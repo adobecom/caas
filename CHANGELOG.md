@@ -1,5 +1,33 @@
 
 
+## [0.68.38](https://github.com/adobecom/caas/compare/0.68.37...0.68.38) (2026-09-23)
+
+
+### Dependencies
+
+* **deps:** bump ip-address and socks ([#645](https://github.com/adobecom/caas/issues/645)) ([2bdfc29](https://github.com/adobecom/caas/commit/2bdfc29c00bc036875f63c77048b56831fc229c8))
+
+## [0.68.37](https://github.com/adobecom/caas/compare/0.68.36...0.68.37) (2026-09-23)
+
+
+### Bug Fixes
+
+* **mwpw-204835:** remove 20 more dependency alerts ([#646](https://github.com/adobecom/caas/issues/646)) ([b79f981](https://github.com/adobecom/caas/commit/b79f98178eac5c6280ef5117fe294b3f0e74747e))
+
+## [0.68.36](https://github.com/adobecom/caas/compare/0.68.35...0.68.36) (2026-09-23)
+
+
+### Bug Fixes
+
+* **mwpw-204835:** patch easy dependency vulnerabilities ([#639](https://github.com/adobecom/caas/issues/639)) ([04c2858](https://github.com/adobecom/caas/commit/04c28584cdfa4fa8963ff6d834e8c9b9ecf1a75e))
+
+## [0.68.35](https://github.com/adobecom/caas/compare/0.68.34...0.68.35) (2026-09-22)
+
+
+### Bug Fixes
+
+* **mwpw-204835:** patch vulnerable transitive dependencies ([#638](https://github.com/adobecom/caas/issues/638)) ([7ac3aac](https://github.com/adobecom/caas/commit/7ac3aaccc83b6d8a30d991c36ebf6812e9cb80cd))
+
 ## [0.68.34](https://github.com/adobecom/caas/compare/0.68.33...0.68.34) (2026-09-22)
 
 
