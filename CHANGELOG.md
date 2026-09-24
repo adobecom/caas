@@ -1,5 +1,12 @@
 
 
+## [0.68.40](https://github.com/adobecom/caas/compare/0.68.39...0.68.40) (2026-09-24)
+
+
+### Chores
+
+* **mwpw-0:** bump Node to 24 across engines, .nvmrc and CI workflows ([#648](https://github.com/adobecom/caas/issues/648)) ([1cb382a](https://github.com/adobecom/caas/commit/1cb382a092b7b688b98a53fb8bf21dffd568ae94))
+
 ## [0.68.39](https://github.com/adobecom/caas/compare/0.68.38...0.68.39) (2026-09-23)
 
 
