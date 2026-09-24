@@ -47,7 +47,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 24
 
       # Keep the reviewer that belongs to this workflow revision. A manual replay
       # checks out an older PR below; without this copy it also rolls the reviewer
@@ -161,7 +161,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 24
 
       - name: Install back-test browser tools
         working-directory: .github/qa
