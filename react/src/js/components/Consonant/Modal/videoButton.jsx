@@ -26,7 +26,7 @@ const VideoButton = ({
 
     const handleShowModal = () => {
         if (isAuthoredModal) {
-            window.location.hash = new URL(videoURL, document.baseURI).hash;
+            globalThis.location.hash = new URL(videoURL, document.baseURI).hash;
         } else if (isFullUrl && gateVideo) {
             window.open(videoURL, '_blank');
         } else {

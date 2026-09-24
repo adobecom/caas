@@ -6,7 +6,7 @@ const OPEN_MODAL_SELECTOR = '.dexter-Modal_overlay.is-Open';
 const CLOSE_BUTTON_CLASS = 'dexter-CloseButton';
 const isDesktop =
     getPropertySafely(
-        window,
+        globalThis,
         'dexter.personalization.technology.platform.type',
     ) === 'desktop';
 
@@ -20,12 +20,12 @@ const getActiveModalEl = () => {
  * when the modal is imported from a consumer project.
  */
 const getModalFocusTrap = () => {
-    window.dexter = window.dexter || {};
-    window.dexter.utils = window.dexter.utils || {};
-    if (window.dexter.utils.modalFocusTrap) {
-        return window.dexter.utils.modalFocusTrap;
+    globalThis.dexter = globalThis.dexter || {};
+    globalThis.dexter.utils = globalThis.dexter.utils || {};
+    if (globalThis.dexter.utils.modalFocusTrap) {
+        return globalThis.dexter.utils.modalFocusTrap;
     }
-    window.dexter.utils.modalFocusTrap = focusTrap.createFocusTrap(
+    globalThis.dexter.utils.modalFocusTrap = focusTrap.createFocusTrap(
         OPEN_MODAL_SELECTOR,
         {
             escapeDeactivates: false,
@@ -63,7 +63,7 @@ const getModalFocusTrap = () => {
             fallbackFocus: document.body,
         },
     );
-    return window.dexter.utils.modalFocusTrap;
+    return globalThis.dexter.utils.modalFocusTrap;
 };
 
 const focusActiveModal = () => {

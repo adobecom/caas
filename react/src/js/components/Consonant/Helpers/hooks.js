@@ -149,7 +149,7 @@ export const useLazyLoading = (imageRef, image) => {
 export const useURLState = () => {
     const {
         location: { search, pathname, hash },
-    } = window;
+    } = globalThis;
 
     const [urlState, setUrlState] = useState(qs.parse(search));
 
@@ -174,7 +174,7 @@ export const useURLState = () => {
         const searchString = qs.stringify(urlState, { array: 'comma' });
         const urlString = `${pathname}${searchString ? '?' : ''}${searchString}${hash}`;
 
-        window.history.replaceState(null, '', urlString);
+        globalThis.history.replaceState(null, '', urlString);
     }, [urlState]);
 
     return [urlState, handleSetQuery, handleClearQuery];
@@ -184,7 +184,7 @@ export const useRegistered = () => {
     const [registered, setRegistered] = useState(false);
 
     function isRegisteredForEvent() {
-        const fedsData = getByPath(window, 'feds.data', null);
+        const fedsData = getByPath(globalThis, 'feds.data', null);
         const eventName = getByPath(fedsData, 'eventName', null);
         const eventData = eventName && fedsData[eventName] ? fedsData[eventName] : null;
         const isUserRegistered = eventData ? eventData.isRegistered : null;
@@ -196,7 +196,7 @@ export const useRegistered = () => {
 
     useEffect(() => {
         if (!registered) {
-            const fedsUtilities = getByPath(window, 'feds.utilities', null);
+            const fedsUtilities = getByPath(globalThis, 'feds.utilities', null);
             const getEventData = fedsUtilities ? fedsUtilities.getEventData : null;
             if (getEventData) {
                 getEventData()

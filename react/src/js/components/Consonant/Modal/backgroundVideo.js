@@ -97,7 +97,7 @@ const mediaWatcher = (e, opts) => {
  */
 const enableResponsiveEvent = (opts) => {
     Object.keys(breakpoints.mediaExpression).forEach((surface) => {
-        const surfacePoint = window.matchMedia(breakpoints.mediaExpression[surface]);
+        const surfacePoint = globalThis.matchMedia(breakpoints.mediaExpression[surface]);
         surfacePoint.addListener(e => mediaWatcher(e, opts));
     });
 };
