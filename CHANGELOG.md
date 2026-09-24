@@ -1,5 +1,12 @@
 
 
+## [0.68.41](https://github.com/adobecom/caas/compare/0.68.40...0.68.41) (2026-09-24)
+
+
+### Bug Fixes
+
+* **mwpw-204835:** remove unused webpack plugins ([#647](https://github.com/adobecom/caas/issues/647)) ([61682c2](https://github.com/adobecom/caas/commit/61682c2a34d53e6c59c5ddf1fcda61793d9b3b68))
+
 ## [0.68.40](https://github.com/adobecom/caas/compare/0.68.39...0.68.40) (2026-09-24)
 
 
