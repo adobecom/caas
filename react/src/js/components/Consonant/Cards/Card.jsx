@@ -127,6 +127,14 @@ const defaultProps = {
     reference: '',
 };
 
+const escapeHtml = (value = '') => value
+    .toString()
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll('\'', '&#39;');
+
 const Card = (props) => {
     const {
         id,
@@ -415,20 +423,37 @@ const Card = (props) => {
         const cta1Url = getCtaLink(footer, 'right');
         const cta1Text = getCtaText(footer, 'right');
         const cta2Url = getCtaLink(footer, 'center');
+        const link1 = (cta1Url && cta1Text)
+            ? `<a href="${escapeHtml(cta1Url)}">${escapeHtml(cta1Text)}</a>`
+            : '';
+        const link2 = (cta2Url && cta2Text)
+            ? `<a href="${escapeHtml(cta2Url)}">${escapeHtml(cta2Text)}</a>`
+            : '';
         return markup
-            .replaceAll('{link:cta1}', `<a href="${cta1Url}">${cta1Text}</a>`)
-            .replaceAll('{link:cta2}', `<a href="${cta2Url}">${cta2Text}</a>`);
+            .replaceAll('{link:cta1}', link1)
+            .replaceAll('{link:cta2}', link2);
     };
 
     const parseMarkDown = (md = '') => {
+        const normalized = ((md && md.toString()) || '')
+            .replace(/\r\n/g, '\n')
+            .replace(/\r/g, '\n');
+
         if (searchEnabled) {
-            return removeMarkDown(md.replace(/<[^>]*>/g, ''));
+            let markup = removeMarkDown(normalized.replace(/<[^>]*>/g, ''))
+                .replaceAll('\n', '<br/>');
+
+            if (markup.toLowerCase().includes('{link:')) {
+                markup = parseLinks(markup);
+            }
+
+            return markup;
         }
         let markup = '';
         if (isProduct && mnemonic) {
             markup += `<img src=${mnemonic} alt="mnemonic" loading="lazy" />`;
         }
-        markup += md && md.toString()
+        markup += normalized
             .replace(/<[^>]*>/g, '')
             .replaceAll('{**', '<b>')
             .replaceAll('**}', '</b>')
@@ -439,7 +464,7 @@ const Card = (props) => {
         if (markup.toLowerCase().includes('{link:')) {
             return parseLinks(markup);
         }
-    
+
         return markup;
     };
 
