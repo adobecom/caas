@@ -1,5 +1,54 @@
 
 
+## [0.68.42](https://github.com/adobecom/caas/compare/0.68.41...0.68.42) (2026-09-28)
+
+
+### Dependencies
+
+* **deps-dev:** bump fast-uri from 3.1.6 to 3.1.8 ([#649](https://github.com/adobecom/caas/issues/649)) ([2a96fce](https://github.com/adobecom/caas/commit/2a96fce2bb950ea88eaa95f1b045a442a0944495))
+
+## [0.68.41](https://github.com/adobecom/caas/compare/0.68.40...0.68.41) (2026-09-24)
+
+
+### Bug Fixes
+
+* **mwpw-204835:** remove unused webpack plugins ([#647](https://github.com/adobecom/caas/issues/647)) ([61682c2](https://github.com/adobecom/caas/commit/61682c2a34d53e6c59c5ddf1fcda61793d9b3b68))
+
+## [0.68.40](https://github.com/adobecom/caas/compare/0.68.39...0.68.40) (2026-09-24)
+
+
+### Chores
+
+* **mwpw-0:** bump Node to 24 across engines, .nvmrc and CI workflows ([#648](https://github.com/adobecom/caas/issues/648)) ([1cb382a](https://github.com/adobecom/caas/commit/1cb382a092b7b688b98a53fb8bf21dffd568ae94))
+
+## [0.68.39](https://github.com/adobecom/caas/compare/0.68.38...0.68.39) (2026-09-23)
+
+
+### Code Refactoring
+
+* **mwpw-00000:** fix 23 Sonar findings without changing production output ([#637](https://github.com/adobecom/caas/issues/637)) ([befaa69](https://github.com/adobecom/caas/commit/befaa69a9bc54a381a7e7d6be79ef1f390fd00dd))
+
+## [0.68.38](https://github.com/adobecom/caas/compare/0.68.37...0.68.38) (2026-09-23)
+
+
+### Dependencies
+
+* **deps:** bump ip-address and socks ([#645](https://github.com/adobecom/caas/issues/645)) ([2bdfc29](https://github.com/adobecom/caas/commit/2bdfc29c00bc036875f63c77048b56831fc229c8))
+
+## [0.68.37](https://github.com/adobecom/caas/compare/0.68.36...0.68.37) (2026-09-23)
+
+
+### Bug Fixes
+
+* **mwpw-204835:** remove 20 more dependency alerts ([#646](https://github.com/adobecom/caas/issues/646)) ([b79f981](https://github.com/adobecom/caas/commit/b79f98178eac5c6280ef5117fe294b3f0e74747e))
+
+## [0.68.36](https://github.com/adobecom/caas/compare/0.68.35...0.68.36) (2026-09-23)
+
+
+### Bug Fixes
+
+* **mwpw-204835:** patch easy dependency vulnerabilities ([#639](https://github.com/adobecom/caas/issues/639)) ([04c2858](https://github.com/adobecom/caas/commit/04c28584cdfa4fa8963ff6d834e8c9b9ecf1a75e))
+
 ## [0.68.35](https://github.com/adobecom/caas/compare/0.68.34...0.68.35) (2026-09-22)
 
 

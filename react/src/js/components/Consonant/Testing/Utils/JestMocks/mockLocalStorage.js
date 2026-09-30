@@ -1,4 +1,4 @@
-export default (defaultStore) => {
+const mockLocalStorage = (defaultStore) => {
     class LocalStorageMock {
         store = defaultStore || {};
 
@@ -20,6 +20,7 @@ export default (defaultStore) => {
         value: new LocalStorageMock(),
     };
 
-    Object.defineProperty(window, 'localStorage', properties);
-    Object.defineProperty(global, 'localStorage', properties);
+    Object.defineProperty(globalThis, 'localStorage', properties);
 };
+
+export default mockLocalStorage;

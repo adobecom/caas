@@ -7,25 +7,17 @@ export default function setupIntersectionObserverMock({
     takeRecords = () => null,
     unobserve = () => null,
 } = {}) {
-    class MockIntersectionObserver {
-        constructor() {
-            this.root = root;
-            this.rootMargin = rootMargin;
-            this.thresholds = thresholds;
-            this.disconnect = disconnect;
-            this.observe = observe;
-            this.takeRecords = takeRecords;
-            this.unobserve = unobserve;
-        }
+    function MockIntersectionObserver() {
+        this.root = root;
+        this.rootMargin = rootMargin;
+        this.thresholds = thresholds;
+        this.disconnect = disconnect;
+        this.observe = observe;
+        this.takeRecords = takeRecords;
+        this.unobserve = unobserve;
     }
 
-    Object.defineProperty(window, 'IntersectionObserver', {
-        writable: true,
-        configurable: true,
-        value: MockIntersectionObserver,
-    });
-
-    Object.defineProperty(global, 'IntersectionObserver', {
+    Object.defineProperty(globalThis, 'IntersectionObserver', {
         writable: true,
         configurable: true,
         value: MockIntersectionObserver,

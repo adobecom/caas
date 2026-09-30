@@ -15,13 +15,13 @@ import {
 } from '../../Helpers/contexts';
 
 const ContextProvider = ({ context, children }) => {
-    const [isOpen, toggle] = useState(null);
+    const [isOpen, setIsOpen] = useState(null);
 
     const handleChangeVisibility = useCallback(
         (value) => {
-            toggle(value);
+            setIsOpen(value);
         },
-        [toggle],
+        [setIsOpen],
     );
 
     const expandableContext = useMemo(

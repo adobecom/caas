@@ -1,4 +1,4 @@
-export default ({
+const mockIntersectionObserver = ({
     unobserve = () => {},
     intersectionRatio = 1,
     observe = callback => callback(),
@@ -19,6 +19,7 @@ export default ({
         value: IntersectionObserverMock,
     };
 
-    Object.defineProperty(window, 'IntersectionObserver', properties);
-    Object.defineProperty(global, 'IntersectionObserver', properties);
+    Object.defineProperty(globalThis, 'IntersectionObserver', properties);
 };
+
+export default mockIntersectionObserver;

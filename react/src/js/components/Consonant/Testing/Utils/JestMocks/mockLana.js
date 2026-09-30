@@ -1,4 +1,4 @@
-export default () => {
+const mockLana = () => {
     class LanaMock {
         log = msg => console.log(msg);
     }
@@ -9,5 +9,7 @@ export default () => {
         value: new LanaMock(),
     };
 
-    Object.defineProperty(window, 'lana', properties);
+    Object.defineProperty(globalThis, 'lana', properties);
 };
+
+export default mockLana;

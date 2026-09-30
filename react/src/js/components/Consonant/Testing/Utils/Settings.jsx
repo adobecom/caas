@@ -12,7 +12,7 @@ export const createTree = component => renderer
     .create(component)
     .toJSON();
 
-export default (Component, defaultProps, options = {}) => (passedProps, passedConfig) => {
+const createSettings = (Component, defaultProps, options = {}) => (passedProps, passedConfig) => {
     const props = {
         ...defaultProps,
         ...passedProps,
@@ -44,3 +44,5 @@ export default (Component, defaultProps, options = {}) => (passedProps, passedCo
         wrapper,
     };
 };
+
+export default createSettings;

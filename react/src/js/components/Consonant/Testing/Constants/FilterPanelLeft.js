@@ -6,6 +6,8 @@ const { clearFilterText, clearAllFiltersText, filters } = filterPanel;
 export const DESKTOP_WIDTH = 1900;
 export const NON_DESKTOP_WIDTH = 800;
 
+const EmptyComponent = () => null;
+
 export const DEFAULT_PROPS = {
     filters,
     clearFilterText,
@@ -23,8 +25,8 @@ export const DEFAULT_PROPS = {
     onMobileFiltersToggleClick: jest.fn(),
     onSelectedFilterClick: jest.fn(),
 
-    searchComponent: <React.Fragment />,
-    bookmarkComponent: <React.Fragment />,
+    searchComponent: <EmptyComponent />,
+    bookmarkComponent: <EmptyComponent />,
 };
 
 export const selectedAllFilters = filters.map(({ items, ...filter }) => ({
