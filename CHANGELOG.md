@@ -1,5 +1,26 @@
 
 
+## [0.68.42](https://github.com/adobecom/caas/compare/0.68.41...0.68.42) (2026-09-28)
+
+
+### Dependencies
+
+* **deps-dev:** bump fast-uri from 3.1.6 to 3.1.8 ([#649](https://github.com/adobecom/caas/issues/649)) ([2a96fce](https://github.com/adobecom/caas/commit/2a96fce2bb950ea88eaa95f1b045a442a0944495))
+
+## [0.68.41](https://github.com/adobecom/caas/compare/0.68.40...0.68.41) (2026-09-24)
+
+
+### Bug Fixes
+
+* **mwpw-204835:** remove unused webpack plugins ([#647](https://github.com/adobecom/caas/issues/647)) ([61682c2](https://github.com/adobecom/caas/commit/61682c2a34d53e6c59c5ddf1fcda61793d9b3b68))
+
+## [0.68.40](https://github.com/adobecom/caas/compare/0.68.39...0.68.40) (2026-09-24)
+
+
+### Chores
+
+* **mwpw-0:** bump Node to 24 across engines, .nvmrc and CI workflows ([#648](https://github.com/adobecom/caas/issues/648)) ([1cb382a](https://github.com/adobecom/caas/commit/1cb382a092b7b688b98a53fb8bf21dffd568ae94))
+
 ## [0.68.39](https://github.com/adobecom/caas/compare/0.68.38...0.68.39) (2026-09-23)
 
 
