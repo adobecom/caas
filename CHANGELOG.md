@@ -1,5 +1,12 @@
 
 
+## [0.68.44](https://github.com/adobecom/caas/compare/0.68.43...0.68.44) (2026-09-30)
+
+
+### Code Refactoring
+
+* **mwpw-208479:** standardize 70 Sonar global references ([#640](https://github.com/adobecom/caas/issues/640)) ([72e0812](https://github.com/adobecom/caas/commit/72e081263dd06e9e44b02e21c14ad4bbf10fc01a))
+
 ## [0.68.43](https://github.com/adobecom/caas/compare/0.68.42...0.68.43) (2026-09-30)
 
 
