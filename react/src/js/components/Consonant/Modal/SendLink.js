@@ -83,12 +83,12 @@ export default class SendLink {
     }
 
     setUpBranchAndBind() {
-        if (this.branchKey && !window.branchPromise) {
+        if (this.branchKey && !globalThis.branchPromise) {
             this.defBranch();
             this.initBranch();
         }
-        if (window.branchPromise) {
-            window.branchPromise.catch(() => {
+        if (globalThis.branchPromise) {
+            globalThis.branchPromise.catch(() => {
                 this.initBranch({ doBind: false });
             }).finally(() => {
                 this.bindEvents();
@@ -97,9 +97,9 @@ export default class SendLink {
     }
 
     initBranch({ doBind = true } = {}) {
-        const privacyConsent = !!window.adobePrivacy
-                                    && window.adobePrivacy.hasUserProvidedConsent();
-        window.branch.init(this.branchKey, { tracking_disabled: !privacyConsent }, () => {
+        const privacyConsent = !!globalThis.adobePrivacy
+                                    && globalThis.adobePrivacy.hasUserProvidedConsent();
+        globalThis.branch.init(this.branchKey, { tracking_disabled: !privacyConsent }, () => {
             if (doBind) {
                 this.bindEvents();
             }
@@ -119,8 +119,8 @@ export default class SendLink {
     }
 
     sendSMS() {
-        if (typeof window.branch !== 'undefined') {
-            window.branch.sendSMS(
+        if (typeof globalThis.branch !== 'undefined') {
+            globalThis.branch.sendSMS(
                 this.phone.value,
                 { channel: CHANNEL, feature: BRANCH_FEATURE, data: this.linkData },
                 { make_new_link: false },
@@ -135,11 +135,11 @@ export default class SendLink {
 
     sendCustomAnalytics(event) {
         /* eslint-disable no-underscore-dangle */
-        if (window.digitalData && window._satellite && this.analyticsLink !== null) {
-            window.digitalData._set('primaryEvent.eventInfo.eventName', `branch:${this.analyticsLink}:text_app_link:${event}`);
-            window.digitalData._set('primaryEvent.eventInfo.interaction.click', `branch:${this.analyticsLink}:text_app_link:${event}`);
-            window._satellite.track('event', {
-                digitalData: window.digitalData._snapshot(),
+        if (globalThis.digitalData && globalThis._satellite && this.analyticsLink !== null) {
+            globalThis.digitalData._set('primaryEvent.eventInfo.eventName', `branch:${this.analyticsLink}:text_app_link:${event}`);
+            globalThis.digitalData._set('primaryEvent.eventInfo.interaction.click', `branch:${this.analyticsLink}:text_app_link:${event}`);
+            globalThis._satellite.track('event', {
+                digitalData: globalThis.digitalData._snapshot(),
             });
         }
         /* eslint-enable no-underscore-dangle */

@@ -43,7 +43,7 @@ const timeOverride = () => {
         location: {
             search = '',
         } = {},
-    } = window;
+    } = globalThis;
     const { servertime = '' } = qs.parse(search);
 
     return servertime ? parseInt(servertime, 10) : undefined;
@@ -57,11 +57,11 @@ const timeOverride = () => {
 /* eslint-disable no-unused-vars */
 const updateTimeOverride = (base, increment) => {
     // Build from current href to avoid jsdom Location quirks
-    const url = new URL(window.location.href);
+    const url = new URL(globalThis.location.href);
     // Remove prior servertime and set new one
     url.searchParams.delete('servertime');
     url.searchParams.append('servertime', String(base + increment));
-    window.history.replaceState(null, '', url.toString());
+    globalThis.history.replaceState(null, '', url.toString());
 };
 // Definitions
 /* eslint-disable no-useless-escape */

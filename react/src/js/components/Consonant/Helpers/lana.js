@@ -1,22 +1,22 @@
 export const loadLana = (options = {}) => {
-    if (window.lana) return;
+    if (globalThis.lana) return;
 
     const lanaError = (e) => {
-        if (window.lana && window.lana.logImpl) {
-            window.lana.logImpl(e.reason || e.error || e.message, { errorType: 'i' });
+        if (globalThis.lana && globalThis.lana.logImpl) {
+            globalThis.lana.logImpl(e.reason || e.error || e.message, { errorType: 'i' });
         }
     };
 
     let lanaLoaded = false;
 
-    window.lana = {
+    globalThis.lana = {
         logImpl: (...args) => {
             console.log('Lana not yet loaded, logging to console:', ...args);
         },
         log: async (...args) => {
             if (!lanaLoaded) {
-                window.removeEventListener('error', lanaError);
-                window.removeEventListener('unhandledrejection', lanaError);
+                globalThis.removeEventListener('error', lanaError);
+                globalThis.removeEventListener('unhandledrejection', lanaError);
                 try {
                     // eslint-disable-next-line import/no-unresolved, import/extensions
                     await fetch('www.caas.com/libs/utils/lana.js');
@@ -25,21 +25,21 @@ export const loadLana = (options = {}) => {
                     console.error('Failed to load Lana:', error);
                 }
             }
-            return window.lana.logImpl(...args);
+            return globalThis.lana.logImpl(...args);
         },
         debug: false,
         options,
     };
-    window.addEventListener('error', lanaError);
-    window.addEventListener('unhandledrejection', lanaError);
+    globalThis.addEventListener('error', lanaError);
+    globalThis.addEventListener('unhandledrejection', lanaError);
 };
 
 export const logLana = ({
     message, tags, e = '', sampleRate = 1,
 } = {}) => {
-    const msg = `${message} | referer: ${window.location.href} | ${e.reason || e.error || e.message || e}`;
-    if (window.lana && typeof window.lana.log === 'function') {
-        window.lana.log(msg, {
+    const msg = `${message} | referer: ${globalThis.location.href} | ${e.reason || e.error || e.message || e}`;
+    if (globalThis.lana && typeof globalThis.lana.log === 'function') {
+        globalThis.lana.log(msg, {
             clientId: 'chimera',
             sampleRate,
             tags,

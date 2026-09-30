@@ -435,8 +435,8 @@ const QA_REPLACE_PROPERTY = '_caasQaReplace';
 
 export const applyQaConfigOverride = (config) => {
     try {
-        if (typeof window === 'undefined' || !window.location || !window.localStorage) return config;
-        const params = new URLSearchParams(window.location.search || '');
+        if (typeof globalThis.window === 'undefined' || !globalThis.location || !globalThis.localStorage) return config;
+        const params = new URLSearchParams(globalThis.location.search || '');
         if (!params.has('caasqa')) return config;
         // Capture each collection's untouched config for the QA planner. A page may
         // host several collections, so preserve all of them as independent snapshots.
@@ -444,7 +444,7 @@ export const applyQaConfigOverride = (config) => {
             window[QA_CONFIGS_PROPERTY] = window[QA_CONFIGS_PROPERTY] || [];
             window[QA_CONFIGS_PROPERTY].push(JSON.parse(JSON.stringify(config)));
         } catch (e) { /* capture is best-effort */ }
-        const raw = window.localStorage.getItem('caasQaConfig');
+        const raw = globalThis.localStorage.getItem('caasQaConfig');
         if (!raw) return config;
         const override = JSON.parse(raw);
         if (!isObject(override)) return config;
@@ -536,7 +536,7 @@ export const isDateAfterInterval = (currentDate, endDate) => {
 };
 
 export const getCurrentDate = () => {
-    const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(globalThis.location.search);
     const servertime = parseInt(urlParams.get('servertime'), 10);
     const timeSinceArrival = performance.now();
     const currDate = servertime ? new Date(servertime + timeSinceArrival) : new Date();
@@ -592,7 +592,7 @@ export function getTransitions(cardsPtr) {
 }
 
 
-export const getLinkTarget = (link, ctaAction = '', domain = window.location.hostname) => {
+export const getLinkTarget = (link, ctaAction = '', domain = globalThis.location.hostname) => {
     if (ctaAction || link.startsWith('#')) {
         return ctaAction;
     }

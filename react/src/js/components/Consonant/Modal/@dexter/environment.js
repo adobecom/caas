@@ -1,5 +1,5 @@
 export function isAuthor() {
-    return typeof window.Granite !== 'undefined';
+    return typeof globalThis.Granite !== 'undefined';
 }
 
 export function isEditor() {
