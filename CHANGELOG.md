@@ -1,5 +1,12 @@
 
 
+## [0.68.43](https://github.com/adobecom/caas/compare/0.68.42...0.68.43) (2026-09-30)
+
+
+### Chores
+
+* **mwpw-208480:** propose Sonar allowlist for 41 tracking findings ([#641](https://github.com/adobecom/caas/issues/641)) ([a5ece50](https://github.com/adobecom/caas/commit/a5ece5036598f5f61e5dfac1a8d6b6786a28cd2b))
+
 ## [0.68.42](https://github.com/adobecom/caas/compare/0.68.41...0.68.42) (2026-09-28)
 
 
