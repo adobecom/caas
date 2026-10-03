@@ -1,5 +1,12 @@
 
 
+## [0.68.45](https://github.com/adobecom/caas/compare/0.68.44...0.68.45) (2026-10-03)
+
+
+### Dependencies
+
+* **deps-dev:** bump moment from 2.30.1 to 2.31.0 ([#652](https://github.com/adobecom/caas/issues/652)) ([7008641](https://github.com/adobecom/caas/commit/7008641b9a5d44c8d02b43afc996a17eb3144b3d))
+
 ## [0.68.44](https://github.com/adobecom/caas/compare/0.68.43...0.68.44) (2026-09-30)
 
 
