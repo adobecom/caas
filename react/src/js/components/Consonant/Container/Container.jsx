@@ -10,6 +10,7 @@ import classNames from 'classnames';
 import { shape } from 'prop-types';
 // import 'whatwg-fetch'; // Removed: fetch is native in modern browsers
 import { logLana } from '../Helpers/lana';
+import createLanaSmokeLogger from '../Helpers/lanaSmoke';
 import Popup from '../Sort/Popup';
 import Search from '../Search/Search';
 import Loader from '../Loader/Loader';
@@ -220,6 +221,7 @@ const Container = (props) => {
     const hashedCategoryMappingsRef = useRef(categoryMappings);
     const originSelectionRef = useRef();
     const [hasLoadedCards, setHasLoadedCards] = useState(false);
+    const [logSmoke] = useState(createLanaSmokeLogger);
 
     const [, updateState] = React.useState();
     const scrollElementRef = useRef(null);
@@ -1059,6 +1061,7 @@ const Container = (props) => {
          * @returns {Void} - an updated state
          */
         function getCards(endPoint = collectionEndpoint) {
+            logSmoke('collection_started');
             const start = Date.now();
             return globalThis.fetch(endPoint, {
                 credentials: 'include',
@@ -1091,6 +1094,7 @@ const Container = (props) => {
                     setLoading(false);
                     setIsFirstLoad(true);
                     if (!getByPath(payload, 'cards.length')) {
+                        logSmoke('collection_ready', 0);
                         logLana({ message: `no cards return by query to this endpoint: ${endPoint}`, tags: 'collection' });
                         if (originSelection === 'events' && box.current) {
                             removeCollectionFromPage();
@@ -1234,6 +1238,7 @@ const Container = (props) => {
                         setCards(processedCards);
                         setHasLoadedCards(true);
                     });
+                    logSmoke('collection_ready', processedCards.length);
 
                     // check if the current page is greater than the last page
                     const lastPage = Math.ceil(processedCards.length / resultsPerPage);
@@ -1260,6 +1265,7 @@ const Container = (props) => {
                         getCards(fallbackEndpoint);
                         return;
                     }
+                    logSmoke('collection_failed');
                     logLana({ message: 'failed to return processed cards', tags: 'collection' });
                     setLoading(false);
                     setApiFailure(true);

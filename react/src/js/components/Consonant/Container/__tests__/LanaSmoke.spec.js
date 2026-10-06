@@ -1,0 +1,48 @@
+import React from 'react';
+import { render, waitFor } from '@testing-library/react';
+import Container from '../Container';
+import config from '../../Testing/Mocks/config.json';
+import cards from '../../Testing/Mocks/cards.json';
+import setupIntersectionObserverMock from '../../Testing/Mocks/intersectionObserver';
+import jestMocks from '../../Testing/Utils/JestMocks';
+
+const primary = 'https://example.com/cards';
+const fallback = 'https://example.com/fallback';
+const logs = () => global.fetch.mock.calls
+    .filter(([url]) => url.startsWith('https://www.adobe.com/lana/ll?'))
+    .map(([url]) => JSON.parse(new URL(url).searchParams.get('m')));
+
+beforeEach(() => {
+    window.digitalData = {};
+    window.history.replaceState({}, '', '/?caas_log_poc=smoke-integration');
+    window.OnetrustActiveGroups = ',C0002,';
+    setupIntersectionObserverMock();
+    jestMocks.lana();
+});
+
+afterEach(() => {
+    window.history.replaceState({}, '', '/');
+    delete window.OnetrustActiveGroups;
+});
+
+test.each(['success', 'fallback', 'empty', 'failure'])('logs the actual collection outcome: %s', async scenario => {
+    global.fetch = jest.fn(url => {
+        // Even a blocked logging endpoint must not change the card result.
+        if (url.startsWith('https://www.adobe.com/lana/ll?')) return Promise.reject(new Error('logging blocked'));
+        if (scenario === 'failure' || (scenario === 'fallback' && url === primary)) {
+            return Promise.reject(new Error('card request failed'));
+        }
+        return Promise.resolve({ ok: true, json: () => Promise.resolve({ cards: scenario === 'empty' ? [] : cards }) });
+    });
+    render(<Container config={{ ...config,
+        collection: {
+            ...config.collection, lazyLoad: false, endpoint: primary, fallbackEndpoint: fallback,
+        } }} />);
+    const outcome = scenario === 'failure' ? 'collection_failed' : 'collection_ready';
+    await waitFor(() => expect(logs().map(message => message.event)).toEqual(['collection_started', outcome]));
+    if (scenario === 'failure' || scenario === 'fallback') {
+        expect(global.fetch).toHaveBeenCalledWith(fallback, expect.any(Object));
+    }
+    if (scenario === 'empty') expect(logs()[1].cardCount).toBe(0);
+    if (scenario === 'success' || scenario === 'fallback') expect(logs()[1].cardCount).toBeGreaterThan(0);
+});
