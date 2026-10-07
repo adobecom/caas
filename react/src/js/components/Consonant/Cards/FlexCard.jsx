@@ -121,7 +121,7 @@ const FlexCard = () => {
                         center={!altCtaUsed ? extendFooterData(footerItem.center) : []}
                         right={extendFooterData(footerItem.right)}
                         altRight={altCtaUsed ? extendFooterData(footerItem.altCta) : []}
-                        cardDate={new Date(cardDate)}
+                        cardDate={cardDate}
                         startDate={startDate}
                         endDate={endDate}
                         cardStyle="flex-card"
