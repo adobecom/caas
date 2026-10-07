@@ -39,6 +39,8 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          RELEASE_TAG: ${{ inputs.version }}
 
       - name: Create dist tarball
         run: tar -czf dist.tar.gz -C dist .

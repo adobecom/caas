@@ -39,10 +39,14 @@ test.each(['success', 'fallback', 'empty', 'failure'])('logs the actual collecti
             ...config.collection, lazyLoad: false, endpoint: primary, fallbackEndpoint: fallback,
         } }} />);
     const outcome = scenario === 'failure' ? 'collection_failed' : 'collection_ready';
-    await waitFor(() => expect(logs().map(message => message.event)).toEqual(['collection_started', outcome]));
+    const expected = ['collection_started'];
+    if (scenario === 'failure' || scenario === 'fallback') expected.push('collection_fallback');
+    expected.push(outcome);
+    if (scenario === 'success' || scenario === 'fallback') expected.push('collection_rendered');
+    await waitFor(() => expect(logs().map(message => message.event)).toEqual(expected));
     if (scenario === 'failure' || scenario === 'fallback') {
         expect(global.fetch).toHaveBeenCalledWith(fallback, expect.any(Object));
     }
-    if (scenario === 'empty') expect(logs()[1].cardCount).toBe(0);
-    if (scenario === 'success' || scenario === 'fallback') expect(logs()[1].cardCount).toBeGreaterThan(0);
+    if (scenario === 'empty') expect(logs().find(message => message.event === 'collection_ready').cardCount).toBe(0);
+    if (scenario === 'success' || scenario === 'fallback') expect(logs().find(message => message.event === 'collection_ready').cardCount).toBeGreaterThan(0);
 });

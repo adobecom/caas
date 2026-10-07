@@ -1,79 +1,83 @@
-# CaaS logging smoke test
+# CaaS sampled release telemetry
 
-This POC answers one question: can we find a real CaaS browser event in Splunk?
-It is a separate test from moving release tags and rolling back. It does not
-split visitor traffic, automatically roll back, or measure production error rates.
+Normal visits with OneTrust analytics group C0002 active are sampled at 1%.
+The bundle makes one random decision per page load, shared by all collections.
+No cookie or persistent visitor identifier is created. Consent is checked for
+ every event; events before consent are not replayed. Reload after consenting.
 
-## What this change does
+For a controlled test, use `?caas_log_poc=smoke-<label>` with 1–40 letters,
+digits, underscores or hyphens after `smoke-`. This enables all test attempts,
+still requiring consent. Test records have `mode=test`; exclude them from
+production comparisons with `mode=sample`. Never put personal data in labels.
 
-On a visit with `?caas_log_poc=smoke-<run-label>`, and only while OneTrust analytics
-group `C0002` is active, each collection attempts these messages:
+## What is reported
 
-- `collection_started`: the collection is starting its card request.
-- `collection_ready`: card processing finished, including a card count. An empty
-  response reports zero. This does **not** prove that cards painted correctly.
-- `collection_failed`: loading/processing failed after any configured fallback.
-  A primary request that fails but succeeds on fallback reports ready, not failed.
+All records use marker `caas_telemetry_v1`, client `chimera`, and include release,
+build commit, mode, sampleRate, event and (for collection events) a page-local
+collection number. The release is baked into the bundle, not fetched from the
+current stable alias: a cached old bundle identifies its actual build.
+Release artifact workflows explicitly supply RELEASE_TAG. Untagged development
+builds use the existing webpack version fallback plus the exact build commit.
 
-Use a label such as `smoke-20261008-a1`. After `smoke-`, use 1–40 letters,
-digits, underscores, or hyphens. Do not use names, emails, or other private data.
-Messages include the fixed marker `caas_lana_poc_v1`, the label, a page-local
-collection number, event name, and optional card count. No page URL, card contents,
-or error text is added. Fetch omits cookies and referrer; the receiving service
-still sees ordinary connection metadata. No new identifiers are stored.
+- collection_started: first card fetch begins.
+- collection_fallback: primary loading/processing failed; fallback is attempted.
+- collection_ready: card data processed, with cardCount (including zero).
+- collection_rendered: React committed loaded card state, with cardCount.
+  This is not a guarantee that images loaded or every card is visible.
+- collection_failed: loading/processing failed after any fallback.
+- runtime_error / unhandled_rejection: an uncaught error explicitly identifies
+  the loaded CaaS bundle URL. Errors caught elsewhere and errors before telemetry
+  starts are not captured. These events have no collection attribution.
 
-Each event is attempted once per collection; the whole bundle has a limit of 12
-attempts per page load. Logging errors are ignored and never retried. Consent is
-checked for every event. Events missed before consent are not replayed: accept
-analytics in the normal consent UI, then reload. There is no consent bypass.
+Duration is milliseconds since first fetch, including fallback. We do not send
+raw error text, stacks, console arguments, page URLs, card content or identifiers.
+We do not intercept console.log/error or collect other scripts' failures.
 
-This uses the same GET query protocol as
-[Milo's LANA client](https://github.com/adobecom/milo/blob/main/libs/utils/lana.js),
-with client `chimera`, explicit type `e`, and 100% sampling for these opt-in
-attempts. It sends to the production LANA endpoint even on a test page. Existing
-CaaS logging is unchanged. An opaque fetch response does not confirm delivery.
+Events are deduplicated per collection; runtime categories once per bundle.
+There is a hard cap of 12 attempts per bundle/page load, no retries, and logging
+failure cannot fail card loading. This is not a global ingestion quota. Pages
+with many collections may exhaust the cap and omit later outcomes; counts are
+sampled diagnostics, not an exact site-wide failure rate. Browser blocking,
+consent timing, navigation and network loss can also omit outcomes.
 
-## Run it on the second test day
+The client already chooses the 1% sample. LANA's `s=1` describes that sample;
+test records use `s=100`. Requests go to production LANA, including from local
+controlled tests. An opaque fetch response alone is not delivery proof.
 
-1. Load a controlled collection page using the build from this PR. Record its
-   bundle URL and commit/release, plus the previous bundle to restore. The marker
-   identifies this POC, not a release version; verify the actual bundle in Network.
-2. Open browser developer tools, enable Network logging, and disable browser
-   cache for the test. First visit without the query parameter: no request with
-   `caas_lana_poc_v1` should appear (existing LANA logs may still appear).
-3. Accept analytics through the page's normal consent UI. Add
-   `caas_log_poc=smoke-20261008-a1` to the URL and reload. Use `&` if the URL
-   already has a query. Scroll to the collection if it lazy loads.
-4. Filter Network for `/lana/ll`. Inspect `m` in the query. Expect started then
-   ready, with the same run and collection number. Check the cards visually too.
-5. In Splunk, select the LANA app, set a recent time range, and search:
+## Volume planning
 
-   ```spl
-   index=lana_prod "caas_lana_poc_v1" "smoke-20261008-a1"
-   | table _time _raw
-   ```
+A successful one-collection sampled visit normally sends three events:
+started, ready, rendered. For 100,000 consented visits/hour, 1% sampling means
+roughly 3,000 events/hour. Multiply by collections and allow for fallback/error
+events, subject to the page cap. This is an estimate, not measured traffic or a
+confirmed ingestion allowance. Record actual event counts and indexed bytes;
+do not extrapolate total traffic from older logs with unknown sampling.
 
-   Inspect the raw message for the matching event/run. Do not assume JSON fields
-   are automatically extracted. If nothing appears, expand the time range and
-   verify the index, permissions, client allowlist, and ingestion delay. Browser
-   attempts alone do not pass this test. Missing logs are inconclusive, not success.
-6. On this browser only, block the collection's primary **and fallback** card
-   request URLs with developer tools. Do not block LANA. Use a fresh run label
-   and reload. Expect started then failed in both Network and Splunk. Unblock
-   the card URLs and confirm that another fresh run reports ready.
-7. Restore the previous build through the normal release/test-page process and
-   reload. Verify that Network serves the old artifact and the cards still work.
-   If that build lacks the POC, new POC messages should stop. Old Splunk records
-   remain; use timestamps and labels to distinguish them. Record how long it
-   takes before a fresh browser receives the restored artifact.
+## Pre-merge verification
 
-Use the separately agreed release window/change process if changing production
-release tags. This PR does not deploy anything or extend an existing window.
+Run Jest with coverage, the production build and the telemetry browser suite:
+`npx wdio run wdio.conf.js --spec e2e-tests/specs/lana-telemetry.e2e.js`.
+The browser suite serves the actual local bundle and fixture card data, blocks
+only LANA transport, and checks success, fallback failure and absent consent.
+CI builds the bundle before running the suite. Tests do not submit logs to LANA.
 
-## Evidence to keep
+For live ingestion, use a controlled page with this build and a fresh test label.
+Check working cards, then fail both card endpoints in that browser and check
+failure. Find the exact labels in Splunk via the existing read-only Rundeck job:
 
-Record the build/commit, test page, run label, start/end times, Network screenshot,
-matching Splunk records, visible card outcome, and rollback artifact verification.
-Pass only after both successful loading and the controlled failure are visible in
-Splunk. Local automated tests mock the network; they cannot prove LANA ingestion,
-Splunk permissions, CDN propagation, or live rollback.
+```spl
+index=lana_prod "caas_telemetry_v1" "smoke-your-label"
+| table _time l_client l_message
+```
+
+The JSON inside l_message may contain escaped quotes. Inspect a returned record
+before choosing extraction syntax. Do not assume automatic JSON extraction.
+Record bundle hash/build, label, browser outcome and matching Splunk records.
+Then test recovery and confirm no logs without consent. Never enable test mode
+in shared production links or use test events to calculate production health.
+
+During the agreed release window, verify the real site's consent/CSP permits
+requests, compare sample-mode outcomes by release/build and comparable windows,
+and verify restored assets after rollback. Version 0.68.42 lacks this telemetry;
+its absence of new-format logs is not evidence that it is healthier. A measured
+old-versus-new comparison needs the same instrumentation in both builds.

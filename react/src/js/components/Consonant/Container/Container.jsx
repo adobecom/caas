@@ -368,6 +368,9 @@ const Container = (props) => {
      * @type {[Array, Function]} Cards
      */
     const [cards, setCards] = useState([]);
+    useEffect(() => {
+        if (hasLoadedCards) logSmoke('collection_rendered', cards.length);
+    }, [hasLoadedCards, cards, logSmoke]);
 
     /**
      * @typedef {Boolean} LoadingState — Can either be true or false
@@ -1262,6 +1265,7 @@ const Container = (props) => {
                     }, 100);
                 }).catch(() => {
                     if (endPoint === collectionEndpoint && fallbackEndpoint) {
+                        logSmoke('collection_fallback');
                         getCards(fallbackEndpoint);
                         return;
                     }
