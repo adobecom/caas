@@ -30,7 +30,7 @@ describe('CaaS telemetry integration', () => {
             cfg.collection.endpoint = `/cards${failure ? '?fail' : ''}`;
             cfg.collection.fallbackEndpoint = `/fallback${failure ? '?fail' : ''}`;
             res.setHeader('Content-Type', 'text/html');
-            res.end(`<html><body><div id="cards"></div><script>
+            res.end(`<html><body><div id="cards"></div><div id="second"></div><script>
                 window.digitalData={};window.OnetrustActiveGroups=${url.searchParams.has('noConsent') ? "''" : "',C0002,'"};
                 window.events=[];const original=window.fetch;
                 window.fetch=(url,opts)=>{if(String(url).includes('/lana/ll?')) {
@@ -39,6 +39,7 @@ describe('CaaS telemetry integration', () => {
                 }return original(url,opts);};
                 </script><script src="/main.js"></script><script>
                 new window.ConsonantCardCollection(${JSON.stringify(cfg)},document.querySelector('#cards'));
+                ${url.searchParams.has('multiple') ? `new window.ConsonantCardCollection(${JSON.stringify({ ...cfg, collection: { ...cfg.collection, endpoint: '/cards?fail', fallbackEndpoint: '/fallback?fail' } })},document.querySelector('#second'));` : ''}
                 </script></body></html>`);
         });
         await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
@@ -49,7 +50,7 @@ describe('CaaS telemetry integration', () => {
     it('renders cards even when logging fails and includes build, count and timing', async () => {
         await browser.url(`${origin}/?caas_log_poc=smoke-e2e`);
         await browser.waitUntil(async () => browser.execute(() => window.events.some(e => e.event === 'collection_rendered')));
-        const events = await browser.execute(() => window.events);
+        const events = await browser.execute(() => window.events.filter(e => ['collection_started','collection_ready','collection_rendered','collection_fallback','collection_failed'].includes(e.event)));
         assert.deepStrictEqual(events.map(e => e.event), ['collection_started', 'collection_ready', 'collection_rendered']);
         assert.ok(events[1].cardCount > 0);
         assert.ok(events[1].durationMs >= 0);
@@ -61,10 +62,33 @@ describe('CaaS telemetry integration', () => {
     it('reports failure only after both card sources fail', async () => {
         await browser.url(`${origin}/?caas_log_poc=smoke-e2e-failure&failure`);
         await browser.waitUntil(async () => browser.execute(() => window.events.some(e => e.event === 'collection_failed')));
-        const events = await browser.execute(() => window.events);
+        const events = await browser.execute(() => window.events.filter(e => ['collection_started','collection_ready','collection_rendered','collection_fallback','collection_failed'].includes(e.event)));
         assert.deepStrictEqual(events.map(e => e.event), ['collection_started', 'collection_fallback', 'collection_failed']);
         assert.strictEqual(events[2].fallback, true);
         assert.ok((await $('#cards').getText()).includes('system error'));
+    });
+    it('correlates two collections and reconstructs their actual configs', async () => {
+        await browser.url(`${origin}/?caas_log_poc=smoke-multiple&multiple`);
+        await browser.waitUntil(async () => browser.execute(() => window.events.some(e => e.event === 'collection_failed') && window.events.some(e => e.event === 'collection_rendered')));
+        const events = await browser.execute(() => window.events);
+        assert.strictEqual(new Set(events.map(e => e.pageVisitId)).size, 1);
+        const contexts = events.filter(e => e.event === 'collection_context');
+        assert.strictEqual(contexts.length, 2);
+        assert.notStrictEqual(contexts[0].collectionId, contexts[1].collectionId);
+        const failure = events.find(e => e.event === 'collection_failed');
+        assert.strictEqual(failure.collectionId, contexts[1].collectionId);
+        const requestFailure = events.find(e => e.event === 'request_failed');
+        assert.strictEqual(requestFailure.error.status, 503);
+        assert.strictEqual(requestFailure.error.kind, 'http');
+        assert.ok(events.some(e => e.event === 'request_started' && e.collectionId === requestFailure.collectionId && e.requestId === requestFailure.requestId));
+        for (const context of contexts) {
+            const parts = events.filter(e => e.event === 'config_part' && e.configId === context.configId).sort((a,b) => a.part-b.part);
+            assert.strictEqual(parts.length, parts[0].totalParts);
+            const snapshot = JSON.parse(parts.map(e => e.data).join(''));
+            assert.strictEqual(snapshot.collection.resultsPerPage, config.collection.resultsPerPage);
+            assert.ok(context.browser);
+            assert.ok(!context.page.includes('?'));
+        }
     });
     it('sends nothing without analytics consent while cards still render', async () => {
         await browser.url(`${origin}/?caas_log_poc=smoke-e2e&noConsent`);

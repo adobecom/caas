@@ -1,83 +1,108 @@
-# CaaS sampled release telemetry
+# Correlated CaaS release telemetry
 
-Normal visits with OneTrust analytics group C0002 active are sampled at 1%.
-The bundle makes one random decision per page load, shared by all collections.
-No cookie or persistent visitor identifier is created. Consent is checked for
- every event; events before consent are not replayed. Reload after consenting.
+## One sampled visit, several related records
 
-For a controlled test, use `?caas_log_poc=smoke-<label>` with 1–40 letters,
-digits, underscores or hyphens after `smoke-`. This enables all test attempts,
-still requiring consent. Test records have `mode=test`; exclude them from
-production comparisons with `mode=sample`. Never put personal data in labels.
+One decision selects 1% of analytics-consented page visits. Selection and IDs are
+shared across CaaS bundles on the same window using a Symbol-keyed in-memory
+state. No cookies, local storage or cross-page visitor IDs are created. A fresh
+page gets a fresh random 128-bit pageVisitId. Embedded frames have separate IDs.
+Consent (OneTrust C0002) is rechecked before each transmission. Events missed
+before consent are not replayed.
 
-## What is reported
+Use `?caas_log_poc=smoke-<label>` for controlled tests (1–40 letters, digits,
+underscores or hyphens after smoke-). This still requires consent. Test events
+have mode=test and sampleRate=100. Normal selected visits have mode=sample and
+sampleRate=1. Do not include test records in production comparisons.
 
-All records use marker `caas_telemetry_v1`, client `chimera`, and include release,
-build commit, mode, sampleRate, event and (for collection events) a page-local
-collection number. The release is baked into the bundle, not fetched from the
-current stable alias: a cached old bundle identifies its actual build.
-Release artifact workflows explicitly supply RELEASE_TAG. Untagged development
-builds use the existing webpack version fallback plus the exact build commit.
+All records contain marker=caas_telemetry_v2, pageVisitId, release, build,
+mode, sampleRate and event. The release and commit are baked into the loaded
+bundle. Release workflows supply RELEASE_TAG, so cached bundles identify their
+actual version rather than the current stable alias. Untagged builds use the
+existing webpack version fallback plus their exact commit.
 
-- collection_started: first card fetch begins.
-- collection_fallback: primary loading/processing failed; fallback is attempted.
-- collection_ready: card data processed, with cardCount (including zero).
-- collection_rendered: React committed loaded card state, with cardCount.
-  This is not a guarantee that images loaded or every card is visible.
-- collection_failed: loading/processing failed after any fallback.
-- runtime_error / unhandled_rejection: an uncaught error explicitly identifies
-  the loaded CaaS bundle URL. Errors caught elsewhere and errors before telemetry
-  starts are not captured. These events have no collection attribution.
+## Records
 
-Duration is milliseconds since first fetch, including fallback. We do not send
-raw error text, stacks, console arguments, page URLs, card content or identifiers.
-We do not intercept console.log/error or collect other scripts' failures.
+- collection_context: collectionId, configId, page (origin/path), browser user
+  agent. Two collections on the same visit have different collectionIds even
+  when their settings are identical.
+- config_snapshot: configId, snapshotKind=collection_input, status, character
+  count and totalParts. Identical sanitized snapshots are sent once per page.
+- config_part: configId, zero-based part, totalParts, data. Sort by part,
+  concatenate data and JSON.parse to reconstruct the sanitized input config.
+  Do not treat missing parts as a complete snapshot.
+- collection_started / collection_ready / collection_rendered: collectionId,
+  configId, elapsed milliseconds from first load, and cardCount on ready/rendered.
+  Rendered means React committed loaded card state, not that all images painted.
+  Empty results report ready with zero, without promising a render event.
+- request_started: collectionId, configId, requestId, endpoint origin/path and
+  source=primary/fallback. Request IDs are local to each collection.
+- request_failed: the same IDs, request duration, error.kind and HTTP status
+  where available. Kinds: http, network, parse, processing. A network rejection
+  does not distinguish offline/CORS/blocking. Overlapping requests retain their
+  own IDs and timings.
+- collection_fallback / collection_failed: collection-level outcome. Failure
+  occurs after fallback is exhausted. Elapsed time includes the fallback.
+- runtime_error / unhandled_rejection: pageVisitId, collectionId=null,
+  configId=null, allowlisted error kind and sanitized source; line/column when
+  available. Only errors explicitly attributed to the loaded CaaS bundle count.
+  They are not attributed to an arbitrary collection. No raw message or stack.
 
-Events are deduplicated per collection; runtime categories once per bundle.
-There is a hard cap of 12 attempts per bundle/page load, no retries, and logging
-failure cannot fail card loading. This is not a global ingestion quota. Pages
-with many collections may exhaust the cap and omit later outcomes; counts are
-sampled diagnostics, not an exact site-wide failure rate. Browser blocking,
-consent timing, navigation and network loss can also omit outcomes.
+The snapshot is the input config used when the mounted collection first reports,
+not a dump of live UI state. Defaults are determined by the recorded build;
+user-entered searches and subsequent filter interactions are not captured.
+Credentials/headers/visitor fields and email-like values are redacted. URLs lose
+credentials/fragments. Page/request URLs lose queries. Config URLs retain only
+allowlisted public query values (locale, tags, limits, sorting and similar);
+other query values are replaced with [removed]. Redacted input is not an exact
+replay of private/personalized state. No console interception or card contents.
 
-The client already chooses the 1% sample. LANA's `s=1` describes that sample;
-test records use `s=100`. Requests go to production LANA, including from local
-controlled tests. An opaque fetch response alone is not delivery proof.
+## Size and traffic
 
-## Volume planning
+GET to production https://www.adobe.com/lana/ll remains the transport. Each JSON
+message is below 1,800 UTF-8 bytes. Snapshots are split into 400-character ASCII
+pieces (Unicode is escaped without changing its decoded value).
 
-A successful one-collection sampled visit normally sends three events:
-started, ready, rendered. For 100,000 consented visits/hour, 1% sampling means
-roughly 3,000 events/hour. Multiply by collections and allow for fallback/error
-events, subject to the page cap. This is an estimate, not measured traffic or a
-confirmed ingestion allowance. Record actual event counts and indexed bytes;
-do not extrapolate total traffic from older logs with unknown sampling.
+Limits per page: eight collections, 64 config pieces, 96 other records. Each
+collection has eight lifecycle/request events. Collection/event budget exhaustion
+produces telemetry_limit; oversized snapshots (>12,000 escaped characters) or
+exhausted config budget produce config_snapshot status=omitted, reason=size_budget.
+Config traffic cannot consume the separate outcome budget. These are diagnostic
+samples, not exact traffic or failure-rate accounting. Network loss can still
+lose records; there are no retries, and logging failure never fails the cards.
 
-## Pre-merge verification
+A successful collection normally sends context + snapshot header + N config
+pieces + started + request_started + ready + rendered: N+6 records. Identical
+configs on a page reuse the snapshot. This is more traffic than the earlier
+three-event POC. Measure real volume/bytes during the window before increasing
+sampling. Absolute maximum is 160 attempts per page, not a global quota.
 
-Run Jest with coverage, the production build and the telemetry browser suite:
+## Verify before merge and during the release window
+
+Run Jest with coverage, build, lint and browser integration tests:
 `npx wdio run wdio.conf.js --spec e2e-tests/specs/lana-telemetry.e2e.js`.
-The browser suite serves the actual local bundle and fixture card data, blocks
-only LANA transport, and checks success, fallback failure and absent consent.
-CI builds the bundle before running the suite. Tests do not submit logs to LANA.
+The suite serves the actual local bundle and fixture cards. LANA is stubbed so CI
+sends no synthetic production records. It tests successful rendering despite
+blocked logging, failed primary/fallback requests, absent consent, two collections
+on one page and reconstructing their snapshots.
 
-For live ingestion, use a controlled page with this build and a fresh test label.
-Check working cards, then fail both card endpoints in that browser and check
-failure. Find the exact labels in Splunk via the existing read-only Rundeck job:
+For a real ingestion check, open a controlled page with this build, consent and
+a unique smoke label. Verify successful cards and a deliberately failing second
+collection. Find the label in Splunk, then search the returned pageVisitId:
 
 ```spl
-index=lana_prod "caas_telemetry_v1" "smoke-your-label"
-| table _time l_client l_message
+index=lana_prod "caas_telemetry_v2" "PASTE_PAGE_VISIT_ID"
+| table _time l_message
 ```
 
-The JSON inside l_message may contain escaped quotes. Inspect a returned record
-before choosing extraction syntax. Do not assume automatic JSON extraction.
-Record bundle hash/build, label, browser outcome and matching Splunk records.
-Then test recovery and confirm no logs without consent. Never enable test mode
-in shared production links or use test events to calculate production health.
+One search retrieves all related events; no database join is needed. Narrow by
+collectionId to inspect that collection's results, then configId to retrieve its
+snapshot. Use the part numbers, not arrival order, when reconstructing config.
+Network concurrency can deliver started after ready. Inspect escaped l_message
+before choosing JSON extraction syntax; do not assume automatic field extraction.
 
-During the agreed release window, verify the real site's consent/CSP permits
-requests, compare sample-mode outcomes by release/build and comparable windows,
-and verify restored assets after rollback. Version 0.68.42 lacks this telemetry;
-its absence of new-format logs is not evidence that it is healthier. A measured
-old-versus-new comparison needs the same instrumentation in both builds.
+Record build/hash, test page, visit ID, config completeness, browser outcomes,
+matching Splunk results and observed event volume. An opaque fetch response alone
+is not ingestion proof. Browser consent/CSP and delivery on real sites still need
+verification in the agreed release window. Version 0.68.42 lacks these records;
+its silence is not evidence of better health. Comparable measurements need the
+same instrumentation in both versions. No automatic promotion or rollback.

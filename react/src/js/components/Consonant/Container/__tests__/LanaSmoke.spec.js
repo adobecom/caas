@@ -8,11 +8,14 @@ import jestMocks from '../../Testing/Utils/JestMocks';
 
 const primary = 'https://example.com/cards';
 const fallback = 'https://example.com/fallback';
-const logs = () => global.fetch.mock.calls
+const allLogs = () => global.fetch.mock.calls
     .filter(([url]) => url.startsWith('https://www.adobe.com/lana/ll?'))
     .map(([url]) => JSON.parse(new URL(url).searchParams.get('m')));
 
+const logs = () => allLogs().filter(message => ['collection_started', 'collection_ready', 'collection_rendered', 'collection_failed', 'collection_fallback'].includes(message.event));
+
 beforeEach(() => {
+    delete window[Symbol.for('caas.telemetry.v2')];
     window.digitalData = {};
     window.history.replaceState({}, '', '/?caas_log_poc=smoke-integration');
     window.OnetrustActiveGroups = ',C0002,';
@@ -44,6 +47,7 @@ test.each(['success', 'fallback', 'empty', 'failure'])('logs the actual collecti
     expected.push(outcome);
     if (scenario === 'success' || scenario === 'fallback') expected.push('collection_rendered');
     await waitFor(() => expect(logs().map(message => message.event)).toEqual(expected));
+    expect(allLogs().find(message => message.event === 'collection_context')).toMatchObject({ collectionId: 'collection-1', configId: 'config-1' });
     if (scenario === 'failure' || scenario === 'fallback') {
         expect(global.fetch).toHaveBeenCalledWith(fallback, expect.any(Object));
     }

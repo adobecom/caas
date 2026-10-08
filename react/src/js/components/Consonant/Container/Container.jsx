@@ -221,7 +221,7 @@ const Container = (props) => {
     const hashedCategoryMappingsRef = useRef(categoryMappings);
     const originSelectionRef = useRef();
     const [hasLoadedCards, setHasLoadedCards] = useState(false);
-    const [logSmoke] = useState(createLanaSmokeLogger);
+    const [logSmoke] = useState(() => createLanaSmokeLogger(() => config));
 
     const [, updateState] = React.useState();
     const scrollElementRef = useRef(null);
@@ -1066,6 +1066,9 @@ const Container = (props) => {
         function getCards(endPoint = collectionEndpoint) {
             logSmoke('collection_started');
             const start = Date.now();
+            let failureKind = 'network';
+            let httpStatus;
+            const telemetryRequest = logSmoke('request_started', { endpoint: endPoint, source: endPoint === fallbackEndpoint ? 'fallback' : 'primary' });
             return globalThis.fetch(endPoint, {
                 credentials: 'include',
                 headers,
@@ -1078,6 +1081,8 @@ const Container = (props) => {
                         url,
                     } = resp;
 
+                    httpStatus = status;
+                    failureKind = ok ? 'parse' : 'http';
                     if (ok) {
                         return resp.json().then((json) => {
                             const validData = !!Object.keys(json).length;
@@ -1093,6 +1098,7 @@ const Container = (props) => {
                     return Promise.reject(new Error(`${status}: ${statusText}, failure for call to ${url}`));
                 })
                 .then((payload) => {
+                    failureKind = 'processing';
                     logLana({ message: `response took ${(Date.now() - start) / 1000}s`, tags: 'collection' });
                     setLoading(false);
                     setIsFirstLoad(true);
@@ -1264,6 +1270,7 @@ const Container = (props) => {
                         lastID.scrollIntoView();
                     }, 100);
                 }).catch(() => {
+                    logSmoke('request_failed', { kind: failureKind, status: httpStatus, requestId: telemetryRequest });
                     if (endPoint === collectionEndpoint && fallbackEndpoint) {
                         logSmoke('collection_fallback');
                         getCards(fallbackEndpoint);
