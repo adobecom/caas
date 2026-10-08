@@ -1,3 +1,5 @@
+import createPulse, { consentStatus, pulseState } from './lanaPulse';
+
 // Correlate one sampled page visit across independently mounted collections.
 const KEY = Symbol.for('caas.telemetry.v2');
 const EVENTS = ['collection_started', 'collection_ready', 'collection_rendered',
@@ -55,10 +57,9 @@ errors: new Set() };
 
 function context() {
     const run = new URLSearchParams(globalThis.location.search).get('caas_log_poc');
-    if (!(globalThis.OnetrustActiveGroups || '').split(',').includes('C0002')) return null;
     if (run !== null && !/^smoke-[a-z0-9_-]{1,40}$/i.test(run)) return null;
     const page = state();
-    if (page.sampled === undefined) page.sampled = Math.random() < 0.01;
+    if (page.sampled === undefined) page.sampled = !!(pulseState() && pulseState().sampled);
     if (!run && !page.sampled) return null;
     if (!page.id) {
         const random = new Uint32Array(4);
@@ -70,8 +71,27 @@ pageVisitId: page.id,
         release: process.env.CAAS_RELEASE_VERSION || 'development',
         build: process.env.CAAS_BUILD_COMMIT || 'unknown',
         mode: run ? 'test' : 'sample',
-sampleRate: run ? 100 : 1,
+sampleRate: run ? 100 : 10,
+...consentStatus(),
 ...(run ? { run } : {}) };
+}
+
+function transmit(message, event) {
+    try {
+    const query = new URLSearchParams({ m: message,
+c: 'chimera',
+s: String(JSON.parse(message).sampleRate),
+            t: 'e',
+r: /failed|error|rejection/.test(event) ? 'error' : 'info',
+tags: 'caas_telemetry_v2' });
+        Promise.resolve(globalThis.fetch(`https://www.adobe.com/lana/ll?${query}`, {
+            method: 'GET',
+mode: 'no-cors',
+credentials: 'omit',
+            referrerPolicy: 'no-referrer',
+keepalive: true,
+        })).catch(() => {});
+    } catch (error) { /* Logging must never interrupt a page. */ }
 }
 
 function send(event, details, isConfigPart = false) {
@@ -83,19 +103,26 @@ function send(event, details, isConfigPart = false) {
         const message = JSON.stringify({ ...base, event, ...details });
         if (bytes(message) > 1800) return;
         if (!isConfigPart) page.outcomes += 1;
-        const query = new URLSearchParams({ m: message,
-c: 'chimera',
-s: String(base.sampleRate),
-            t: 'e',
-r: /failed|error|rejection/.test(event) ? 'error' : 'info',
-tags: base.marker });
-        Promise.resolve(globalThis.fetch(`https://www.adobe.com/lana/ll?${query}`, {
-            method: 'GET',
-mode: 'no-cors',
-credentials: 'omit',
-            referrerPolicy: 'no-referrer',
-keepalive: true,
-        })).catch(() => {});
+        if (consentStatus().analyticsConsent === 'enabled') {
+            transmit(message, event);
+        } else {
+            if (page.pendingClosed) return;
+            if (!page.pending) {
+                page.pending = [];
+                globalThis.setTimeout(() => {
+                    const {pending} = page;
+                    page.pending = [];
+                    page.pendingClosed = true;
+                    if (consentStatus().analyticsConsent !== 'enabled') return;
+                    pending.forEach(([saved, name]) => transmit(JSON.stringify({
+                        ...JSON.parse(saved), ...consentStatus(),
+                    }), name));
+                }, 10000);
+            }
+            // The existing page budgets bound this in-memory buffer. It is discarded
+            // after ten seconds unless analytics consent is explicitly enabled.
+            page.pending.push([message, event]);
+        }
     } catch (error) { /* Telemetry cannot interrupt the collection. */ }
 }
 
@@ -127,6 +154,7 @@ configId: null,
 }
 
 export default function createLanaSmokeLogger(getConfig = () => ({})) {
+    const pulse = createPulse();
     const collectionId = `collection-${++state().nextCollection}`;
     const sent = new Set();
     let configId;
@@ -174,6 +202,7 @@ page: cleanUrl(globalThis.location.href),
     };
 
     return (event, value) => {
+        pulse(event);
         try {
             if (!EVENTS.includes(event) || !context()) return undefined;
             // Bound collections separately so snapshots cannot consume outcome capacity.

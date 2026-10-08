@@ -1,33 +1,35 @@
 import { cleanConfig, cleanUrl } from '../lanaSmoke';
 
 let createLogger;
-const records = () => global.fetch.mock.calls.map(([url]) => JSON.parse(new URL(url).searchParams.get('m')));
+const records = () => global.fetch.mock.calls.map(([url]) => JSON.parse(new URL(url).searchParams.get('m'))).filter(record => record.marker === 'caas_telemetry_v2');
 const outcomes = () => records().filter(record => /^(collection|request)_/.test(record.event) && record.event !== 'collection_context');
 const fresh = () => {
-    delete window[Symbol.for('caas.telemetry.v2')];
+    delete window[Symbol.for('caas.telemetry.v2')]; delete window[Symbol.for('caas.pulse.v1')];
     jest.isolateModules(() => {
         // eslint-disable-next-line global-require
         createLogger = require('../lanaSmoke').default;
     });
 };
 beforeEach(() => {
+    jest.useFakeTimers();
     jest.spyOn(Math, 'random').mockReturnValue(0.5);
     fresh();
     window.history.replaceState({}, '', '/events?caas_log_poc=smoke-test');
     window.OnetrustActiveGroups = ',C0001,C0002,';
     global.fetch = jest.fn().mockResolvedValue({ type: 'opaque' });
 });
-afterEach(() => { jest.restoreAllMocks(); delete window[Symbol.for('caas.telemetry.v2')]; delete window.OnetrustActiveGroups; });
+afterEach(() => { jest.clearAllTimers(); jest.useRealTimers(); jest.restoreAllMocks(); delete window[Symbol.for('caas.telemetry.v2')]; delete window[Symbol.for('caas.pulse.v1')]; delete window.OnetrustActiveGroups; });
 
 test.each(['', '?caas_log_poc=private@example.com', '?caas_log_poc=smoke-', `?caas_log_poc=smoke-${'x'.repeat(41)}`])('does not send for excluded or invalid visits %s', query => {
     window.history.replaceState({}, '', `/${query}`);
     createLogger()('collection_started');
     expect(global.fetch).not.toHaveBeenCalled();
 });
-test.each([undefined, '', ',C0001,', ',C00020,'])('requires consent %s', consent => {
+test.each([undefined, '', ',C0001,', ',C00020,'])('requires consent for detailed records %s', consent => {
     window.OnetrustActiveGroups = consent;
     createLogger()('collection_started');
-    expect(global.fetch).not.toHaveBeenCalled();
+    expect(records()).toHaveLength(0);
+    expect(global.fetch).toHaveBeenCalledTimes(1);
 });
 test('links separate collections, deduplicates snapshots, and strips page queries', () => {
     const config = { collection: { layout: { type: '3up' }, resultsPerPage: 9 } };
@@ -58,13 +60,13 @@ test('one sampling decision for the page and a new ephemeral ID for a fresh page
     createLogger()('collection_started'); createLogger()('collection_started');
     expect(Math.random).toHaveBeenCalledTimes(1);
     const id = records()[0].pageVisitId;
-    expect(records()[0]).toMatchObject({ mode: 'sample', sampleRate: 1 });
+    expect(records()[0]).toMatchObject({ mode: 'sample', sampleRate: 10 });
     expect(records()[0]).not.toHaveProperty('run');
     fresh(); createLogger()('collection_started');
     expect(records()[records().length - 1].pageVisitId).not.toBe(id);
 });
 test('does not resample excluded visits', () => {
-    window.history.replaceState({}, '', '/'); Math.random.mockReturnValue(0.01);
+    window.history.replaceState({}, '', '/'); Math.random.mockReturnValue(0.1);
     createLogger()('collection_started'); Math.random.mockReturnValue(0);
     createLogger()('collection_started'); expect(global.fetch).not.toHaveBeenCalled();
     expect(Math.random).toHaveBeenCalledTimes(1);
@@ -89,6 +91,7 @@ test('rechecks consent, deduplicates outcomes and bounds noisy collections', () 
     expect(outcomes()).toHaveLength(1);
     window.OnetrustActiveGroups = ',C0002,';
     for (let i = 0; i < 20; i += 1) log('request_started', { endpoint: '/cards' });
+    jest.advanceTimersByTime(10000);
     expect(outcomes()).toHaveLength(8);
 });
 test('explicitly reports collection and config limits while preserving outcomes', () => {
@@ -153,4 +156,31 @@ test('retains public endpoint options and correlates overlapping request failure
     const failures = outcomes().filter(r => r.event === 'request_failed');
     expect(failures.map(r => r.requestId)).toEqual([first, second]);
     expect(failures.map(r => r.error.kind)).toEqual(['parse', 'processing']);
+});
+
+
+test('keeps config, page and outcomes when consent becomes ready within ten seconds', () => {
+    delete window.OnetrustActiveGroups;
+    const log = createLogger(() => ({ collection: { layout: '3up' } }));
+    log('collection_started');
+    log('collection_rendered', 9);
+    expect(records()).toHaveLength(0);
+    window.adobePrivacy = { activeCookieGroups: () => ['C0002'] };
+    jest.advanceTimersByTime(10000);
+    expect(records().find(r => r.event === 'collection_context')).toMatchObject({ page: 'http://localhost/events' });
+    expect(records().filter(r => r.event === 'config_part').map(r => r.data).join('')).toBe('{"collection":{"layout":"3up"}}');
+    expect(records().find(r => r.event === 'collection_rendered')).toMatchObject({ cardCount: 9, analyticsConsent: 'enabled', consentSource: 'adobePrivacy' });
+    delete window.adobePrivacy;
+});
+
+test('discards buffered details if consent is still disabled after ten seconds', () => {
+    window.OnetrustActiveGroups = ',C0001,';
+    const log = createLogger();
+    log('collection_started'); log('collection_rendered', 9);
+    jest.advanceTimersByTime(10000);
+    expect(records()).toHaveLength(0);
+    expect(window[Symbol.for('caas.telemetry.v2')].pending).toEqual([]);
+    window.OnetrustActiveGroups = ',C0002,';
+    jest.advanceTimersByTime(10000);
+    expect(records()).toHaveLength(0);
 });

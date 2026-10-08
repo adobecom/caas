@@ -70,7 +70,7 @@ describe('CaaS telemetry integration', () => {
     it('correlates two collections and reconstructs their actual configs', async () => {
         await browser.url(`${origin}/?caas_log_poc=smoke-multiple&multiple`);
         await browser.waitUntil(async () => browser.execute(() => window.events.some(e => e.event === 'collection_failed') && window.events.some(e => e.event === 'collection_rendered')));
-        const events = await browser.execute(() => window.events);
+        const events = await browser.execute(() => window.events.filter(e => e.marker === 'caas_telemetry_v2'));
         assert.strictEqual(new Set(events.map(e => e.pageVisitId)).size, 1);
         const contexts = events.filter(e => e.event === 'collection_context');
         assert.strictEqual(contexts.length, 2);
@@ -90,9 +90,13 @@ describe('CaaS telemetry integration', () => {
             assert.ok(!context.page.includes('?'));
         }
     });
-    it('sends nothing without analytics consent while cards still render', async () => {
+    it('sends only the consent-count pulses without analytics consent while cards render', async () => {
         await browser.url(`${origin}/?caas_log_poc=smoke-e2e&noConsent`);
         await browser.waitUntil(async () => (await $('#cards').getText()).includes('Your Top Picks'));
-        assert.deepStrictEqual(await browser.execute(() => window.events), []);
+        await browser.waitUntil(async () => browser.execute(() => window.events.some(e => e.phase === 'after_10s')), { timeout: 20000 });
+        const events = await browser.execute(() => window.events);
+        assert.strictEqual(events.length, 2);
+        assert.ok(events.every(e => e.marker === 'caas_pulse_v1' && e.analyticsConsent === 'disabled'));
+        assert.ok(events.every(e => !e.page && !e.pageVisitId));
     });
 });

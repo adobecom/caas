@@ -16,6 +16,7 @@ const logs = () => allLogs().filter(message => ['collection_started', 'collectio
 
 beforeEach(() => {
     delete window[Symbol.for('caas.telemetry.v2')];
+    delete window[Symbol.for('caas.pulse.v1')];
     window.digitalData = {};
     window.history.replaceState({}, '', '/?caas_log_poc=smoke-integration');
     window.OnetrustActiveGroups = ',C0002,';

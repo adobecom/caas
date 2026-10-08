@@ -1,18 +1,44 @@
+# October 8 retry update
+
+Keep the detailed records described below: sanitized page URL, actual configuration
+snapshots, browser, per-page/per-collection correlation, timings, card counts and
+request/runtime failures. One 10% sampling decision is shared across all collections.
+
+Add two small operational pulses (`caas_pulse_v1`): initial and after ten seconds.
+These run independently of analytics consent and contain only release/build,
+sampling mode, consent state/source/raw flag, and collection started/rendered/failed
+counts. They contain no page URL, config, identifiers, cookies or error text. The
+server can still see normal transport metadata such as IP address.
+
+Detailed `caas_telemetry_v2` records still require analytics consent. Check
+`adobePrivacy.activeCookieGroups()` first and fall back to `OnetrustActiveGroups`.
+Missing consent is unknown, never consent. Buffer bounded details locally for up to
+ten seconds when consent is unavailable/disabled, then send only if consent is
+enabled; otherwise discard. This captures fast loads when consent initializes late.
+
+The October 8 retry was halted by the user after the incomplete-bundle delivery
+incident. Tuesday, October 13 is tentative after regrouping, not an automatic
+rollout. No new release/tag has been created for this revision. For a future
+authorized trial, build a NEW tag from the final updated PR commit; never reuse `.1`.
+Verify actual config reconstruction and page URL in Splunk before broad exposure.
+Full served-file hashes and card-loading checks remain necessary: a truncated
+bundle cannot report its own failure. Zero records is not evidence of health.
+
 # Correlated CaaS release telemetry
 
 ## One sampled visit, several related records
 
-One decision selects 1% of analytics-consented page visits. Selection and IDs are
+One decision selects 10% of CaaS page loads regardless of consent. Detailed records require consent. Selection and IDs are
 shared across CaaS bundles on the same window using a Symbol-keyed in-memory
 state. No cookies, local storage or cross-page visitor IDs are created. A fresh
 page gets a fresh random 128-bit pageVisitId. Embedded frames have separate IDs.
 Consent (OneTrust C0002) is rechecked before each transmission. Events missed
-before consent are not replayed.
+before consent are buffered for up to ten seconds and sent only if consent is then enabled.
 
 Use `?caas_log_poc=smoke-<label>` for controlled tests (1–40 letters, digits,
-underscores or hyphens after smoke-). This still requires consent. Test events
+underscores or hyphens after smoke-). Detailed records still require consent; basic pulses do not. Test events
 have mode=test and sampleRate=100. Normal selected visits have mode=sample and
-sampleRate=1. Do not include test records in production comparisons.
+sampleRate=10. Do not include test records in production comparisons.
 
 All records contain marker=caas_telemetry_v2, pageVisitId, release, build,
 mode, sampleRate and event. The release and commit are baked into the loaded
@@ -106,3 +132,23 @@ is not ingestion proof. Browser consent/CSP and delivery on real sites still nee
 verification in the agreed release window. Version 0.68.42 lacks these records;
 its silence is not evidence of better health. Comparable measurements need the
 same instrumentation in both versions. No automatic promotion or rollback.
+
+
+## Next one-hour trial
+
+Use 10%, not 50%. The deployment window and rollback limit exposure to one hour;
+the bundle itself has no one-hour timer. Count only mode=sample, phase=initial
+records for caas_pulse_v1 and the candidate release in the measured live window.
+Estimated reporting-capable CaaS page loads = initial records * 10. Never multiply
+all records: configs and outcomes create multiple records per page. Exclude forced
+test runs and separate beta traffic where possible. This is not a count of unique
+people or of loads blocked before the bundle ran; lost/blocked logs bias it low.
+
+Group initial and after_10s separately by analyticsConsent, rawFlag, consentSource
+and consentApiState (available/missing/invalid_response/error). This reveals missing
+flags, failed API calls and late readiness without treating unknown as consent.
+Detailed records share one in-memory pageVisitId plus collectionId/configId/requestId.
+Runtime errors link to the page only when the responsible collection is unknown.
+No persistent cross-page session identifier or arbitrary console capture is added.
+Before deployment, prove URL/config reconstruction and outcomes in Splunk using
+the exact new build. Tuesday or Wednesday remains tentative; no deployment scheduled.
