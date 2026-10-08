@@ -10,11 +10,14 @@ sampling mode, consent state/source/raw flag, and collection started/rendered/fa
 counts. They contain no page URL, config, identifiers, cookies or error text. The
 server can still see normal transport metadata such as IP address.
 
-Detailed `caas_telemetry_v2` records still require analytics consent. Check
-`adobePrivacy.activeCookieGroups()` first and fall back to `OnetrustActiveGroups`.
-Missing consent is unknown, never consent. Buffer bounded details locally for up to
-ten seconds when consent is unavailable/disabled, then send only if consent is
-enabled; otherwise discard. This captures fast loads when consent initializes late.
+For the user-requested temporary diagnostic trial, detailed `caas_telemetry_v2`
+records also send independently of analytics consent. Consent is measured, not a
+transmission gate: enabled, disabled and unknown all retain sanitized URL/config,
+collection outcomes, timings and relevant failures. There is no consent buffer.
+Check `adobePrivacy.activeCookieGroups()` first and fall back to
+`OnetrustActiveGroups`; record missing/error/invalid API responses explicitly.
+This diagnoses the consent integration without assuming unknown means enabled.
+This is a temporary trial design, not a permanent analytics configuration.
 
 The October 8 retry was halted by the user after the incomplete-bundle delivery
 incident. Tuesday, October 13 is tentative after regrouping, not an automatic
@@ -28,15 +31,14 @@ bundle cannot report its own failure. Zero records is not evidence of health.
 
 ## One sampled visit, several related records
 
-One decision selects 10% of CaaS page loads regardless of consent. Detailed records require consent. Selection and IDs are
+One decision selects 10% of CaaS page loads regardless of consent. Selection and IDs are
 shared across CaaS bundles on the same window using a Symbol-keyed in-memory
 state. No cookies, local storage or cross-page visitor IDs are created. A fresh
 page gets a fresh random 128-bit pageVisitId. Embedded frames have separate IDs.
-Consent (OneTrust C0002) is rechecked before each transmission. Events missed
-before consent are buffered for up to ten seconds and sent only if consent is then enabled.
+Consent (OneTrust C0002) is observed on each record and does not suppress diagnostics.
 
 Use `?caas_log_poc=smoke-<label>` for controlled tests (1–40 letters, digits,
-underscores or hyphens after smoke-). Detailed records still require consent; basic pulses do not. Test events
+underscores or hyphens after smoke-). Neither detailed records nor basic pulses are consent-gated in this trial. Test events
 have mode=test and sampleRate=100. Normal selected visits have mode=sample and
 sampleRate=10. Do not include test records in production comparisons.
 
@@ -111,7 +113,7 @@ sends no synthetic production records. It tests successful rendering despite
 blocked logging, failed primary/fallback requests, absent consent, two collections
 on one page and reconstructing their snapshots.
 
-For a real ingestion check, open a controlled page with this build, consent and
+For a real ingestion check, open a controlled page with this build and
 a unique smoke label. Verify successful cards and a deliberately failing second
 collection. Find the label in Splunk, then search the returned pageVisitId:
 
@@ -128,7 +130,7 @@ before choosing JSON extraction syntax; do not assume automatic field extraction
 
 Record build/hash, test page, visit ID, config completeness, browser outcomes,
 matching Splunk results and observed event volume. An opaque fetch response alone
-is not ingestion proof. Browser consent/CSP and delivery on real sites still need
+is not ingestion proof. Real consent API behavior, CSP and delivery on real sites still need
 verification in the agreed release window. Version 0.68.42 lacks these records;
 its silence is not evidence of better health. Comparable measurements need the
 same instrumentation in both versions. No automatic promotion or rollback.

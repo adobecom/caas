@@ -25,11 +25,11 @@ test.each(['', '?caas_log_poc=private@example.com', '?caas_log_poc=smoke-', `?ca
     createLogger()('collection_started');
     expect(global.fetch).not.toHaveBeenCalled();
 });
-test.each([undefined, '', ',C0001,', ',C00020,'])('requires consent for detailed records %s', consent => {
+test.each([undefined, '', ',C0001,', ',C00020,'])('reports details and observed consent state even when absent or disabled: %s', consent => {
     window.OnetrustActiveGroups = consent;
     createLogger()('collection_started');
-    expect(records()).toHaveLength(0);
-    expect(global.fetch).toHaveBeenCalledTimes(1);
+    expect(records().find(r => r.event === 'collection_context')).toMatchObject({ page: 'http://localhost/events' });
+    expect(records().find(r => r.event === 'collection_started').analyticsConsent).toBe(consent === undefined ? 'unknown' : 'disabled');
 });
 test('links separate collections, deduplicates snapshots, and strips page queries', () => {
     const config = { collection: { layout: { type: '3up' }, resultsPerPage: 9 } };
@@ -88,7 +88,8 @@ test('ties primary and fallback failures to separate requests and includes total
 test('rechecks consent, deduplicates outcomes and bounds noisy collections', () => {
     const log = createLogger(); log('unknown'); log('collection_started'); log('collection_started');
     window.OnetrustActiveGroups = ''; log('collection_ready', 1);
-    expect(outcomes()).toHaveLength(1);
+    expect(outcomes()).toHaveLength(2);
+    expect(outcomes()[1].analyticsConsent).toBe('disabled');
     window.OnetrustActiveGroups = ',C0002,';
     for (let i = 0; i < 20; i += 1) log('request_started', { endpoint: '/cards' });
     jest.advanceTimersByTime(10000);
@@ -159,28 +160,29 @@ test('retains public endpoint options and correlates overlapping request failure
 });
 
 
-test('keeps config, page and outcomes when consent becomes ready within ten seconds', () => {
+test.each(['missing', 'error', 'invalid_response'])('keeps correlated diagnostics when consent API is %s', (apiState) => {
     delete window.OnetrustActiveGroups;
+    if (apiState === 'error') window.adobePrivacy = { activeCookieGroups: () => { throw new Error('failed'); } };
+    if (apiState === 'invalid_response') window.adobePrivacy = { activeCookieGroups: () => 'unexpected' };
     const log = createLogger(() => ({ collection: { layout: '3up' } }));
     log('collection_started');
-    log('collection_rendered', 9);
-    expect(records()).toHaveLength(0);
-    window.adobePrivacy = { activeCookieGroups: () => ['C0002'] };
-    jest.advanceTimersByTime(10000);
-    expect(records().find(r => r.event === 'collection_context')).toMatchObject({ page: 'http://localhost/events' });
+    const requestId = log('request_started', { endpoint: '/cards' });
+    log('request_failed', { requestId, kind: 'http', status: 503 });
+    log('collection_failed');
+    const context = records().find(r => r.event === 'collection_context');
+    expect(context).toMatchObject({ page: 'http://localhost/events', analyticsConsent: 'unknown', consentApiState: apiState });
     expect(records().filter(r => r.event === 'config_part').map(r => r.data).join('')).toBe('{"collection":{"layout":"3up"}}');
-    expect(records().find(r => r.event === 'collection_rendered')).toMatchObject({ cardCount: 9, analyticsConsent: 'enabled', consentSource: 'adobePrivacy' });
+    expect(records().find(r => r.event === 'request_failed')).toMatchObject({ pageVisitId: context.pageVisitId, collectionId: context.collectionId, configId: context.configId, requestId, error: { kind: 'http', status: 503 } });
     delete window.adobePrivacy;
 });
 
-test('discards buffered details if consent is still disabled after ten seconds', () => {
-    window.OnetrustActiveGroups = ',C0001,';
+test('records a later consent change without withholding initial outcomes', () => {
+    delete window.OnetrustActiveGroups;
     const log = createLogger();
     log('collection_started'); log('collection_rendered', 9);
-    jest.advanceTimersByTime(10000);
-    expect(records()).toHaveLength(0);
-    expect(window[Symbol.for('caas.telemetry.v2')].pending).toEqual([]);
+    expect(records().find(r => r.event === 'collection_rendered')).toMatchObject({ analyticsConsent: 'unknown', cardCount: 9 });
     window.OnetrustActiveGroups = ',C0002,';
     jest.advanceTimersByTime(10000);
-    expect(records()).toHaveLength(0);
+    const all = global.fetch.mock.calls.map(([url]) => JSON.parse(new URL(url).searchParams.get('m')));
+    expect(all.find(r => r.phase === 'after_10s')).toMatchObject({ analyticsConsent: 'enabled', collectionsRendered: 1 });
 });

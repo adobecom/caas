@@ -103,26 +103,9 @@ function send(event, details, isConfigPart = false) {
         const message = JSON.stringify({ ...base, event, ...details });
         if (bytes(message) > 1800) return;
         if (!isConfigPart) page.outcomes += 1;
-        if (consentStatus().analyticsConsent === 'enabled') {
-            transmit(message, event);
-        } else {
-            if (page.pendingClosed) return;
-            if (!page.pending) {
-                page.pending = [];
-                globalThis.setTimeout(() => {
-                    const {pending} = page;
-                    page.pending = [];
-                    page.pendingClosed = true;
-                    if (consentStatus().analyticsConsent !== 'enabled') return;
-                    pending.forEach(([saved, name]) => transmit(JSON.stringify({
-                        ...JSON.parse(saved), ...consentStatus(),
-                    }), name));
-                }, 10000);
-            }
-            // The existing page budgets bound this in-memory buffer. It is discarded
-            // after ten seconds unless analytics consent is explicitly enabled.
-            page.pending.push([message, event]);
-        }
+        // Temporary diagnostic trial: consent is an observed field, not a gate.
+        // Sampling, redaction and volume caps still apply to every record.
+        transmit(message, event);
     } catch (error) { /* Telemetry cannot interrupt the collection. */ }
 }
 

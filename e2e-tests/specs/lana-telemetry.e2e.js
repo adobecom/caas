@@ -32,6 +32,7 @@ describe('CaaS telemetry integration', () => {
             res.setHeader('Content-Type', 'text/html');
             res.end(`<html><body><div id="cards"></div><div id="second"></div><script>
                 window.digitalData={};window.OnetrustActiveGroups=${url.searchParams.has('noConsent') ? "''" : "',C0002,'"};
+                ${url.searchParams.has('brokenConsent') ? `delete window.OnetrustActiveGroups;window.adobePrivacy={activeCookieGroups:()=>{throw new Error('consent unavailable');}};` : ''}
                 window.events=[];const original=window.fetch;
                 window.fetch=(url,opts)=>{if(String(url).includes('/lana/ll?')) {
                     events.push(JSON.parse(new URL(url).searchParams.get('m')));
@@ -90,13 +91,23 @@ describe('CaaS telemetry integration', () => {
             assert.ok(!context.page.includes('?'));
         }
     });
-    it('sends only the consent-count pulses without analytics consent while cards render', async () => {
-        await browser.url(`${origin}/?caas_log_poc=smoke-e2e&noConsent`);
-        await browser.waitUntil(async () => (await $('#cards').getText()).includes('Your Top Picks'));
-        await browser.waitUntil(async () => browser.execute(() => window.events.some(e => e.phase === 'after_10s')), { timeout: 20000 });
-        const events = await browser.execute(() => window.events);
-        assert.strictEqual(events.length, 2);
-        assert.ok(events.every(e => e.marker === 'caas_pulse_v1' && e.analyticsConsent === 'disabled'));
-        assert.ok(events.every(e => !e.page && !e.pageVisitId));
-    });
+    for (const scenario of ['noConsent', 'brokenConsent']) {
+        it(`sends linked config, URL and outcomes with ${scenario}`, async () => {
+            await browser.url(`${origin}/?caas_log_poc=smoke-e2e&${scenario}`);
+            await browser.waitUntil(async () => browser.execute(() => window.events.some(e => e.event === 'collection_rendered')));
+            const events = await browser.execute(() => window.events);
+            const context = events.find(e => e.event === 'collection_context');
+            assert.strictEqual(context.page, `${origin}/`);
+            assert.strictEqual(context.analyticsConsent, scenario === 'noConsent' ? 'disabled' : 'unknown');
+            if (scenario === 'brokenConsent') assert.strictEqual(context.consentApiState, 'error');
+            const parts = events.filter(e => e.event === 'config_part' && e.configId === context.configId).sort((a,b) => a.part-b.part);
+            const snapshot = JSON.parse(parts.map(e => e.data).join(''));
+            assert.strictEqual(snapshot.collection.resultsPerPage, config.collection.resultsPerPage);
+            const outcome = events.find(e => e.event === 'collection_rendered');
+            assert.strictEqual(outcome.pageVisitId, context.pageVisitId);
+            assert.strictEqual(outcome.collectionId, context.collectionId);
+            assert.ok(outcome.cardCount > 0);
+            assert.ok((await $('#cards').getText()).includes('Your Top Picks'));
+        });
+    }
 });
