@@ -1,5 +1,12 @@
 
 
+## [0.68.46](https://github.com/adobecom/caas/compare/0.68.45...0.68.46) (2026-10-07)
+
+
+### Bug Fixes
+
+* **MWPW-209444:** do not convert cardDate value on flex and blog cards ([#655](https://github.com/adobecom/caas/issues/655)) ([c3ad12e](https://github.com/adobecom/caas/commit/c3ad12eecc962dab9d252cbdb9caaa594356ff4e))
+
 ## [0.68.45](https://github.com/adobecom/caas/compare/0.68.44...0.68.45) (2026-10-03)
 
 
