@@ -419,6 +419,23 @@
             }
         }
 
+        /* Carousel Navigation */
+        &-Wrapper-collection.modern-carousel {
+            .consonant-Navigation--carousel {
+                button.consonant-Button--previous {
+                    transform: rotate(0deg) !important;
+                }
+
+                button.consonant-Button--next {
+                    transform: rotate(180deg) !important;
+                }
+
+                button:after {
+                    right: 9px;
+                }
+            }
+        }
+
         @media @consonant-tablet-up {
             /* Top filters panel */
             &-TopFilters {
