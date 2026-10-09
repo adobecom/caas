@@ -112,7 +112,11 @@ export function serverReviewSafety(s) {
     || (s.protection?.required_status_checks?.contexts || []).includes('review-score-gate')
     || (s.protection?.required_status_checks?.checks || []).some((c) => c.context === 'review-score-gate');
   const nativeReview = s.rules.filter((r) => r.type === 'pull_request').map((r) => r.parameters);
-  if (s.protection?.required_pull_request_reviews) nativeReview.push(s.protection.required_pull_request_reviews);
+  const classic = s.protection?.required_pull_request_reviews;
+  if (classic) nativeReview.push({
+    ...classic,
+    dismiss_stale_reviews_on_push: classic.dismiss_stale_reviews,
+  });
   return gateRequired && nativeReview.some((r) => r.required_approving_review_count >= 1 && r.dismiss_stale_reviews_on_push === true);
 }
 

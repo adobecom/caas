@@ -85,6 +85,20 @@ test('live mode refuses advisory-only review policy even if observation eligibil
   assert.equal(serverReviewSafety(t), false);
 });
 
+test('classic branch protection uses dismiss_stale_reviews and can satisfy live safeguards', () => {
+  const s = fixture(); s.rules = [];
+  s.protection = {
+    required_status_checks: { strict: true, contexts: ['build', 'review-score-gate'], checks: [] },
+    required_pull_request_reviews: { required_approving_review_count: 1, dismiss_stale_reviews: true },
+  };
+  assert.equal(evaluate(s, repo).eligible, true);
+  assert.equal(serverReviewSafety(s), true);
+  s.protection.required_pull_request_reviews.dismiss_stale_reviews = false;
+  assert.equal(serverReviewSafety(s), false);
+  s.protection.required_pull_request_reviews.dismiss_stale_reviews_on_push = true;
+  assert.equal(serverReviewSafety(s), false, 'ruleset-only field cannot substitute for classic evidence');
+});
+
 test('actual CLI paginates API evidence, accepts protection 404, and makes only exact-head merge writes', () => {
   const dir = mkdtempSync(join(tmpdir(), 'ordinary-cli-'));
   try {
