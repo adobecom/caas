@@ -26,6 +26,8 @@ jobs:
 
       - name: Build project
         run: npm run build
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
 
       - name: Create dist tarball
         run: tar -czf dist.tar.gz dist/
