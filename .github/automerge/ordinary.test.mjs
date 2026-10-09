@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { evaluate, run, serverReviewSafety } from './ordinary.mjs';
+import { evaluate, run, serverReviewSafety, normalizeProtection } from './ordinary.mjs';
 import { mkdtempSync, writeFileSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -99,7 +99,18 @@ test('classic branch protection uses dismiss_stale_reviews and can satisfy live 
   assert.equal(serverReviewSafety(s), false, 'ruleset-only field cannot substitute for classic evidence');
 });
 
-test('actual CLI paginates API evidence, accepts protection 404, and makes only exact-head merge writes', () => {
+test('GraphQL classic evidence is normalized; only explicit null means absence', () => {
+  const s = fixture(); s.rules = [];
+  s.protection = normalizeProtection({ requiresStatusChecks: true, requiresStrictStatusChecks: true,
+    requiredStatusCheckContexts: ['build', 'review-score-gate'], requiredStatusChecks: [{ context: 'build', app: { databaseId: 7 } }, { context: 'review-score-gate', app: null }],
+    requiresApprovingReviews: true, requiredApprovingReviewCount: 1, dismissesStaleReviews: true, requiresCodeOwnerReviews: true });
+  assert.equal(evaluate(s, repo).eligible, true);
+  assert.equal(serverReviewSafety(s), true);
+  assert.equal(normalizeProtection(null), null);
+  assert.throws(() => normalizeProtection(undefined), /Missing classic/);
+});
+
+test('actual CLI paginates API evidence, reads GraphQL protection, and makes only exact-head merge writes', () => {
   const dir = mkdtempSync(join(tmpdir(), 'ordinary-cli-'));
   try {
     writeFileSync(join(dir, 'fixture.json'), JSON.stringify(fixture()));
@@ -110,12 +121,12 @@ appendFileSync(process.env.CALLS, JSON.stringify(args) + '\\n');
 const s = JSON.parse(readFileSync(process.env.FIXTURE));
 let value;
 if (args[0] === 'pr') value = s.view;
+else if (args[1] === 'graphql') {
+  if (process.env.DENIED) { console.error('Cannot establish classic branch protection'); process.exit(1); }
+  value = { data: { repository: { ref: { branchProtectionRule: null } } } };
+}
 else {
   const p = args.find(x => x.startsWith('repos/'));
-  if (p.endsWith('/protection')) {
-    console.log('HTTP/2.0 ' + (process.env.DENIED ? '403 Forbidden' : '404 Not Found'));
-    process.exit(1);
-  }
   if (args.includes('PUT')) {
     if (!args.includes('sha=head') || !args.includes('merge_method=squash')) process.exit(3);
     value = { merged: true };

@@ -11,6 +11,11 @@ left to their owner and excluded from this controller.
 
 Every evaluation reads the current head and base, all paginated check runs,
 commit statuses, reviews, effective branch rules, and classic branch protection.
+Classic protection is read through GraphQL, avoiding the REST protection
+endpoint's administration-read requirement. Explicit null means no classic rule;
+missing or inaccessible data blocks evaluation. PR CI verifies this protection
+read with its existing contents-read workflow token, without invoking the merge
+controller or adding any token permission.
 Unknown rules, API failures, missing evidence, conflicts, behind branches, or an
 unknown GitHub merge state fail closed. Effective strict required checks must
 exist. Required checks must succeed, including their required app identity when

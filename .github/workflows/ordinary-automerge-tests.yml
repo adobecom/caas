@@ -17,3 +17,10 @@ jobs:
         with:
           node-version: 24
       - run: node --test .github/automerge/*.test.mjs
+      - name: Verify protection read with the existing read-only workflow token
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          node --input-type=module -e 'import { readProtection } from "./.github/automerge/ordinary.mjs";
+          readProtection(process.env.GITHUB_REPOSITORY);
+          console.log("Classic protection read completed; no merge controller invoked.");'

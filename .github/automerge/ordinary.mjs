@@ -63,14 +63,36 @@ export function gh(args) {
 const api = (path) => gh(['api', path]);
 const pages = (path, field) => gh(['api', '--paginate', '--slurp', path]).flatMap((p) => field ? p[field] : p);
 
+export function normalizeProtection(rule) {
+  if (rule === null) return null;
+  if (!rule || typeof rule.requiresStatusChecks !== 'boolean' || typeof rule.requiresApprovingReviews !== 'boolean') throw new Error('Missing classic protection evidence');
+  return {
+    required_status_checks: rule.requiresStatusChecks ? {
+      strict: rule.requiresStrictStatusChecks,
+      contexts: rule.requiredStatusCheckContexts,
+      checks: rule.requiredStatusChecks.map((c) => ({ context: c.context, app_id: c.app?.databaseId })),
+    } : null,
+    required_pull_request_reviews: rule.requiresApprovingReviews || rule.requiresCodeOwnerReviews ? {
+      required_approving_review_count: rule.requiredApprovingReviewCount,
+      dismiss_stale_reviews: rule.dismissesStaleReviews,
+      require_code_owner_review: rule.requiresCodeOwnerReviews,
+    } : null,
+  };
+}
+
+export function readProtection(repo) {
+  // GraphQL avoids the REST endpoint's administration-read permission. A null
+  // rule is absence; missing ref/data or API errors cannot be treated as absence.
+  const [owner, name] = repo.split('/');
+  const protectionData = gh(['api', 'graphql', '-F', `owner=${owner}`, '-F', `name=${name}`, '-f',
+    'query=query($owner:String!,$name:String!){repository(owner:$owner,name:$name){ref(qualifiedName:"refs/heads/main"){branchProtectionRule{requiresStatusChecks requiresStrictStatusChecks requiredStatusCheckContexts requiredStatusChecks{context app{databaseId}} requiresApprovingReviews requiredApprovingReviewCount dismissesStaleReviews requiresCodeOwnerReviews}}}}']);
+  return normalizeProtection(protectionData.data?.repository?.ref?.branchProtectionRule);
+}
+
 export function snapshot(repo, number) {
   const pr = api(`repos/${repo}/pulls/${number}`);
   const base = api(`repos/${repo}/git/ref/heads/main`).object.sha;
-  // A documented 404 means no classic protection; every other error is fatal.
-  const result = spawnSync('gh', ['api', '--include', `repos/${repo}/branches/main/protection`], { encoding: 'utf8' });
-  let protection = null;
-  if (result.status === 0) protection = JSON.parse(result.stdout.slice(result.stdout.indexOf('{')));
-  else if (!/^HTTP\/\S+ 404\b/m.test(result.stdout)) throw new Error('Cannot establish classic branch protection');
+  const protection = readProtection(repo);
   return {
     pr, base, protection,
     view: gh(['pr', 'view', String(number), '--repo', repo, '--json', 'headRefOid,mergeStateStatus,reviewDecision']),
