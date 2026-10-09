@@ -1,5 +1,12 @@
 
 
+## [0.68.50](https://github.com/adobecom/caas/compare/0.68.49...0.68.50) (2026-10-09)
+
+
+### Dependencies
+
+* **deps-dev:** bump handlebars from 4.7.9 to 4.7.10 ([#659](https://github.com/adobecom/caas/issues/659)) ([1676b3a](https://github.com/adobecom/caas/commit/1676b3ac687c1c67b1710fa8e35b8905abe11be3))
+
 ## [0.68.49](https://github.com/adobecom/caas/compare/0.68.48...0.68.49) (2026-10-09)
 
 
