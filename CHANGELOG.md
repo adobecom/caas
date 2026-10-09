@@ -1,5 +1,12 @@
 
 
+## [0.68.49](https://github.com/adobecom/caas/compare/0.68.48...0.68.49) (2026-10-09)
+
+
+### Dependencies
+
+* **deps:** bump proxy-addr from 2.0.7 to 2.0.8 ([#658](https://github.com/adobecom/caas/issues/658)) ([cd52265](https://github.com/adobecom/caas/commit/cd52265c92d65ee87a2ae4d3c4c91642d12c9a52))
+
 ## [0.68.48](https://github.com/adobecom/caas/compare/0.68.47...0.68.48) (2026-10-09)
 
 
