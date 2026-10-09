@@ -76,7 +76,9 @@ export function snapshot(repo, number) {
     view: gh(['pr', 'view', String(number), '--repo', repo, '--json', 'headRefOid,mergeStateStatus,reviewDecision']),
     rules: pages(`repos/${repo}/rules/branches/main?per_page=100`),
     checks: pages(`repos/${repo}/commits/${pr.head.sha}/check-runs?per_page=100&filter=all`, 'check_runs'),
-    statuses: pages(`repos/${repo}/commits/${pr.head.sha}/statuses?per_page=100`),
+    // REST status entries omit sha; their exact-SHA endpoint supplies provenance.
+    statuses: pages(`repos/${repo}/commits/${pr.head.sha}/statuses?per_page=100`)
+      .map((status) => ({ ...status, sha: pr.head.sha })),
     reviews: pages(`repos/${repo}/pulls/${number}/reviews?per_page=100`),
     comparison: api(`repos/${repo}/compare/${base}...${pr.head.sha}`),
   };

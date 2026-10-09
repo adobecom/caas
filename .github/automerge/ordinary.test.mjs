@@ -111,7 +111,7 @@ else {
   else if (p.includes('/git/ref/')) value = { object: { sha: s.base } };
   else if (p.includes('/rules/')) value = [s.rules];
   else if (p.includes('/check-runs?')) value = [{check_runs: []}, {check_runs: s.checks}];
-  else if (p.includes('/statuses?')) value = [[], s.statuses];
+  else if (p.includes('/statuses?')) value = [[], s.statuses.map(({sha, ...status}) => status)];
   else if (p.includes('/reviews?')) value = [[], s.reviews];
   else if (p.includes('/compare/')) value = s.comparison;
   else process.exit(4);
