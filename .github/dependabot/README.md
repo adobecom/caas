@@ -16,6 +16,17 @@ The controller in this directory separates update creation from merge policy:
 7. Old or conflicted pure-Dependabot branches go through bounded recovery. Every
    other case receives `dependencies-review` for a person or Codex to handle.
 
+## Failed checks
+
+A completed failed, cancelled, timed-out, or skipped build comparison moves the
+PR to `dependencies-review`, even if the job never published its commit status.
+A final failed build also moves to review instead of waiting for missing output
+evidence. The existing queue handoff reserves the next PR automatically. Failed
+PRs stay open for repair; they are never merged or closed by this recovery.
+Newer queued/running comparison attempts are allowed to finish, and successful
+reruns supersede older failures. Missing or pending evidence cannot authorize a
+merge. A review-labelled PR must be explicitly returned to the queue after repair.
+
 ## Rollout
 
 The repository variable `DEPENDABOT_AUTOMERGE_MODE` controls rollout. Any value

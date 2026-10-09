@@ -62,8 +62,34 @@ export function evaluateCandidate(candidate) {
   if (mergeStateStatus === 'DIRTY') return { state: 'conflict', reason: 'branch has merge conflicts' };
   if (behindBy > 0 || mergeStateStatus === 'BEHIND') return { state: 'behind', reason: `branch is ${behindBy || 1} commit(s) behind main` };
 
+  // The comparison job can fail before it publishes its commit status. A
+  // missing status is not evidence that the job is still running (#653).
+  // Collapse reruns by check name and app; never let an older failed attempt
+  // override a newer queued/running/successful attempt on the same head.
+  const latestChecks = [...checkRuns].sort((a, b) => (b.id || 0) - (a.id || 0))
+    .filter((check, index, checks) => checks.findIndex((other) =>
+      other.name === check.name && other.app?.id === check.app?.id) === index);
+  const outputCheck = latestChecks.find(({ name }) => name === 'build-output-diff');
+  const runningCheck = latestChecks.find(({ status }) => String(status || '').toUpperCase() !== 'COMPLETED');
+  const failedCheck = latestChecks.find(({ status, conclusion }) =>
+    String(status || '').toUpperCase() === 'COMPLETED'
+      && ['FAILURE', 'CANCELLED', 'TIMED_OUT', 'ACTION_REQUIRED', 'STARTUP_FAILURE', 'STALE']
+        .includes(String(conclusion || '').toUpperCase()));
+  if (outputCheck && String(outputCheck.status).toUpperCase() !== 'COMPLETED') {
+    return { state: 'waiting', reason: 'waiting for build-output-diff' };
+  }
+  if (outputCheck && String(outputCheck.conclusion).toUpperCase() !== 'SUCCESS') {
+    return { state: 'review', reason: `build-output-diff concluded ${outputCheck.conclusion || 'unknown'}` };
+  }
+  if (mergeStateStatus !== 'CLEAN' && failedCheck && !runningCheck) {
+    return { state: 'review', reason: `${failedCheck.name} concluded ${failedCheck.conclusion}` };
+  }
+
   const buildDiff = statuses.find(({ context }) => context === 'build-output-diff');
   if (!buildDiff) return { state: 'waiting', reason: 'waiting for build-output-diff' };
+  if (['FAILURE', 'ERROR'].includes(String(buildDiff.state || '').toUpperCase())) {
+    return { state: 'review', reason: `build-output-diff status is ${buildDiff.state}` };
+  }
   if (String(buildDiff.state || '').toUpperCase() !== 'SUCCESS') {
     return { state: 'waiting', reason: `waiting for successful build-output-diff (${buildDiff.state || 'unknown'})` };
   }
@@ -75,7 +101,6 @@ export function evaluateCandidate(candidate) {
     return { state: 'eligible', reason: 'package-only update, byte-identical build, and clean GitHub result' };
   }
 
-  const runningCheck = checkRuns.find(({ status }) => String(status || '').toUpperCase() !== 'COMPLETED');
   const pendingStatus = statuses.find(({ context, state }) =>
     context !== 'build-output-diff' && ['PENDING', 'EXPECTED'].includes(String(state || '').toUpperCase()));
   if (runningCheck) return { state: 'waiting', reason: `waiting for ${runningCheck.name}` };
