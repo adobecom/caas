@@ -1,5 +1,12 @@
 
 
+## [0.68.48](https://github.com/adobecom/caas/compare/0.68.47...0.68.48) (2026-10-09)
+
+
+### Bug Fixes
+
+* **mwpw-210483:** release Dependabot queue after failed build checks ([#663](https://github.com/adobecom/caas/issues/663)) ([bb00eda](https://github.com/adobecom/caas/commit/bb00eda04f3baa1fe2242ed9d63173148f92f216))
+
 ## [0.68.47](https://github.com/adobecom/caas/compare/0.68.46...0.68.47) (2026-10-08)
 
 
