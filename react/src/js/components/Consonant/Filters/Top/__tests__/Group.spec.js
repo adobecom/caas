@@ -51,6 +51,17 @@ describe('Consonant/Filters/Top/Group', () => {
         expect(filterNameElement).toHaveAttribute('daa-ll', `${name} Open`);
     });
 
+    test('Should expose a descriptive accessible group name while keeping the visible filter name', () => {
+        const { props: { name } } = renderTopFilterGroup();
+
+        const groupElement = document.querySelector('.consonant-TopFilter');
+        expect(groupElement).toHaveAttribute('role', 'group');
+        expect(groupElement).toHaveAttribute('aria-label', `Filter by ${name}`);
+
+        const filterLinkElement = document.querySelector('.consonant-TopFilter-link');
+        expect(filterLinkElement).toHaveTextContent(name);
+    });
+
     // Accessibility test with jest-axe
     describe('Accessibility', () => {
         testAccessibility(renderTopFilterGroup, {}, 'Top Filter Group');
