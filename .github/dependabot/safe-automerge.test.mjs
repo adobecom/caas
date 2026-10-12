@@ -82,7 +82,7 @@ test('routes a final non-clean GitHub result to review', () => {
     checkRuns: [{ name: 'deployment', status: 'completed', conclusion: 'failure' }],
   })), {
     state: 'review',
-    reason: 'GitHub reports merge state UNSTABLE',
+    reason: 'deployment concluded failure',
   });
 });
 
@@ -168,3 +168,58 @@ test('selected conflict recovery rebases, waits, recreates, then escalates', () 
 function CONFLICT(action) {
   return `<!-- dependabot-conflict-recovery:${action}:${SHA} -->`;
 }
+
+// Regression: #653 held the only queue slot after the comparison build failed
+// before publishing a build-output-diff status.
+for (const conclusion of ['failure', 'cancelled', 'timed_out', 'action_required', 'startup_failure', 'stale', 'skipped']) {
+  test(`releases a comparison that concluded ${conclusion} without a status`, () => {
+    const result = evaluateCandidate(candidate({
+      mergeStateStatus: 'BLOCKED', statuses: [],
+      checkRuns: [{ id: 10, name: 'build-output-diff', status: 'completed', conclusion }],
+    }));
+    assert.equal(result.state, 'review');
+    assert.match(result.reason, /build-output-diff concluded/);
+  });
+}
+
+test('does not let a failed build wait forever for a missing comparison status', () => {
+  assert.equal(evaluateCandidate(candidate({
+    mergeStateStatus: 'BLOCKED', statuses: [],
+    checkRuns: [{ name: 'check-build', status: 'completed', conclusion: 'failure' }],
+  })).state, 'review');
+});
+
+test('waits for a newer comparison attempt and accepts a successful rerun', () => {
+  const failed = { id: 10, name: 'build-output-diff', status: 'completed', conclusion: 'failure' };
+  for (const status of ['queued', 'in_progress']) {
+    assert.equal(evaluateCandidate(candidate({
+      checkRuns: [failed, { id: 11, name: 'build-output-diff', status, conclusion: null }],
+    })).state, 'waiting');
+  }
+  assert.equal(evaluateCandidate(candidate({
+    checkRuns: [failed, { id: 11, ...successfulCheck('build-output-diff') }],
+  })).state, 'eligible');
+});
+
+test('missing or pending comparison evidence never allows a merge', () => {
+  for (const statuses of [[], [{ context: 'build-output-diff', state: 'pending' }]]) {
+    assert.equal(evaluateCandidate(candidate({ statuses })).state, 'waiting');
+  }
+  for (const state of ['failure', 'error']) {
+    assert.equal(evaluateCandidate(candidate({
+      statuses: [{ context: 'build-output-diff', state }],
+    })).state, 'review');
+  }
+});
+
+test('a failed comparison moves out of the queue so the next PR is selected', () => {
+  const failed = { number: 653, createdAt: '2026-10-08', labels: [{ name: 'dependencies-active' }] };
+  const next = { number: 658, createdAt: '2026-10-09', labels: [{ name: 'dependencies-queued' }] };
+  assert.equal(selectQueueCandidate([failed, next]).number, 653);
+  const decision = evaluateCandidate(candidate({
+    statuses: [], checkRuns: [{ name: 'build-output-diff', status: 'completed', conclusion: 'failure' }],
+  }));
+  assert.equal(decision.state, 'review');
+  failed.labels = [{ name: `dependencies-${decision.state}` }];
+  assert.equal(selectQueueCandidate([failed, next]).number, 658);
+});
