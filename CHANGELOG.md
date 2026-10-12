@@ -1,5 +1,12 @@
 
 
+## [0.68.52](https://github.com/adobecom/caas/compare/0.68.51...0.68.52) (2026-10-12)
+
+
+### Bug Fixes
+
+* **mwpw-208841:** correct text-card RTL padding ([#664](https://github.com/adobecom/caas/issues/664)) ([29e7af9](https://github.com/adobecom/caas/commit/29e7af9ccb7fffaf7d41bc11a123143002ed7bb0))
+
 ## [0.68.51](https://github.com/adobecom/caas/compare/0.68.50...0.68.51) (2026-10-09)
 
 
