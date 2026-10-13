@@ -1,5 +1,40 @@
 
 
+## [0.68.52](https://github.com/adobecom/caas/compare/0.68.51...0.68.52) (2026-10-12)
+
+
+### Bug Fixes
+
+* **mwpw-208841:** correct text-card RTL padding ([#664](https://github.com/adobecom/caas/issues/664)) ([29e7af9](https://github.com/adobecom/caas/commit/29e7af9ccb7fffaf7d41bc11a123143002ed7bb0))
+
+## [0.68.51](https://github.com/adobecom/caas/compare/0.68.50...0.68.51) (2026-10-09)
+
+
+### Dependencies
+
+* **deps-dev:** bump axe-core from 4.13.0 to 4.14.0 ([#661](https://github.com/adobecom/caas/issues/661)) ([43160c5](https://github.com/adobecom/caas/commit/43160c53ab998e0594a72f01b19f19895df41b0c))
+
+## [0.68.50](https://github.com/adobecom/caas/compare/0.68.49...0.68.50) (2026-10-09)
+
+
+### Dependencies
+
+* **deps-dev:** bump handlebars from 4.7.9 to 4.7.10 ([#659](https://github.com/adobecom/caas/issues/659)) ([1676b3a](https://github.com/adobecom/caas/commit/1676b3ac687c1c67b1710fa8e35b8905abe11be3))
+
+## [0.68.49](https://github.com/adobecom/caas/compare/0.68.48...0.68.49) (2026-10-09)
+
+
+### Dependencies
+
+* **deps:** bump proxy-addr from 2.0.7 to 2.0.8 ([#658](https://github.com/adobecom/caas/issues/658)) ([cd52265](https://github.com/adobecom/caas/commit/cd52265c92d65ee87a2ae4d3c4c91642d12c9a52))
+
+## [0.68.48](https://github.com/adobecom/caas/compare/0.68.47...0.68.48) (2026-10-09)
+
+
+### Bug Fixes
+
+* **mwpw-210483:** release Dependabot queue after failed build checks ([#663](https://github.com/adobecom/caas/issues/663)) ([bb00eda](https://github.com/adobecom/caas/commit/bb00eda04f3baa1fe2242ed9d63173148f92f216))
+
 ## [0.68.47](https://github.com/adobecom/caas/compare/0.68.46...0.68.47) (2026-10-08)
 
 
