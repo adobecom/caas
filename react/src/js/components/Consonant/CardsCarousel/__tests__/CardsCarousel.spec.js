@@ -78,6 +78,14 @@ describe('CardsCarousel comprehensive behaviors', () => {
     expect(carousel.scrollLeft).toBe(initial + (-500 / 2 + 620));
   });
 
+  test.each(['next', 'previous'])('mobile RTL: %s centers in the RTL scroll direction', async (buttonName) => {
+    const c = await setupCarousel(500);
+    const carousel = c.querySelector('.consonant-Container--carousel');
+    carousel.style.direction = 'rtl';
+    fireEvent.click(c.querySelector(`[name="${buttonName}"]`));
+    expect(carousel.scrollLeft).toBe(-(-500 / 2 + 620));
+  });
+
   test('desktop: both nav buttons hidden on initial mount', async () => {
     const c = await setupCarousel(1400);
     const nextBtn = c.querySelector('[name="next"]');
@@ -114,6 +122,25 @@ describe('CardsCarousel comprehensive behaviors', () => {
     fireEvent.click(c.querySelector('[name="previous"]'));
     const carousel = c.querySelector('.consonant-Container--carousel');
     expect(carousel.scrollLeft).toBe(0);
+  });
+
+  test('desktop RTL: next advances and previous returns to the first cards', async () => {
+    const c = await setupCarousel(1400);
+    const carousel = c.querySelector('.consonant-Container--carousel');
+    carousel.style.direction = 'rtl';
+    const nextBtn = c.querySelector('[name="next"]');
+    const prevBtn = c.querySelector('[name="previous"]');
+    const cardEls = c.querySelectorAll('.consonant-Card');
+
+    fireEvent.click(nextBtn);
+    expect(carousel.scrollLeft).toBe(-(getCardWidth('3up', 24) + 24) * 3);
+    expect(prevBtn).not.toHaveClass('hide');
+    expect(cardEls[0].querySelector('a, button')).toHaveAttribute('tabindex', '-1');
+
+    fireEvent.click(prevBtn);
+    expect(carousel.scrollLeft).toBe(0);
+    expect(prevBtn).toHaveClass('hide');
+    expect(nextBtn).not.toHaveClass('hide');
   });
 
   test('desktop: scroll end hides next button', async () => {
