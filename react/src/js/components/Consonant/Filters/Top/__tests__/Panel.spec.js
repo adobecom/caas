@@ -132,6 +132,29 @@ describe('Consonant/Filters/Top/Panel', () => {
         expect(onClearAllFilters).toHaveBeenCalled();
     });
 
+    test('The clear all filters button should have a descriptive accessible name while keeping its visible text', () => {
+        const {
+            config: {
+                filterPanel: {
+                    i18n: {
+                        topPanel: {
+                            clearAllFiltersText,
+                        },
+                    },
+                },
+            },
+        } = renderTopFilterPanel({
+            filterPanelEnabled: true,
+            filters: selectedAllFilters,
+            showLimitedFiltersQty: true,
+        });
+
+        const clearButtonElement = screen.queryByTestId('consonant-TopFilters-clearBtn');
+
+        expect(clearButtonElement).toHaveAttribute('aria-label', 'Clear all filters');
+        expect(clearButtonElement).toHaveTextContent(clearAllFiltersText);
+    });
+
     test('should load analytics onto the filter panel', () => {
         renderTopFilterPanel({
             filterPanelEnabled: true,

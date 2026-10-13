@@ -220,6 +220,8 @@ const Group = (props) => {
                 <div
                     data-testid="consonant-TopFilter"
                     daa-lh={name}
+                    role="group"
+                    aria-label={`Filter by ${filterLabel}`}
                     className={`${containerClassname} FILTER-ID-${id}`}>
                     <div
                         className="consonant-TopFilter-inner">

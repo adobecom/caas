@@ -55,6 +55,13 @@ const defaultProps = {
 };
 
 /**
+ * Accessible name for the "Clear All" button, distinct from its visible
+ * text so screen readers convey the control's purpose
+ * @type {String}
+ */
+const CLEAR_ALL_FILTERS_ARIA_LABEL = 'Clear all filters';
+
+/**
  * Top filters panel
  *
  * @component
@@ -315,6 +322,7 @@ const FiltersPanelTop = (props) => {
                             data-testid="consonant-TopFilters-clearBtn"
                             className="consonant-TopFilters-clearBtn"
                             onClick={onClearAllFilters}
+                            aria-label={CLEAR_ALL_FILTERS_ARIA_LABEL}
                             tabIndex="0">
                             {clearAllFiltersText}
                         </button>
