@@ -105,12 +105,14 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const deployments = await github.paginate(github.rest.repos.listDeployments, {...context.repo, environment: 'github-pages', per_page: 100});
             let run;
-            for (const deployment of deployments) {
-              const {data: statuses} = await github.rest.repos.listDeploymentStatuses({...context.repo, deployment_id: deployment.id, per_page: 1});
-              if (statuses[0]?.state !== 'success') continue;
-              run = statuses[0].log_url?.match(/\/actions\/runs\/(\d+)/)?.[1];
+            for await (const {data: deployments} of github.paginate.iterator(github.rest.repos.listDeployments, {...context.repo, environment: 'github-pages', per_page: 100})) {
+              for (const deployment of deployments) {
+                const {data: statuses} = await github.rest.repos.listDeploymentStatuses({...context.repo, deployment_id: deployment.id, per_page: 1});
+                if (statuses[0]?.state !== 'success') continue;
+                run = statuses[0].log_url?.match(/\/actions\/runs\/(\d+)/)?.[1];
+                if (run) break;
+              }
               if (run) break;
             }
             if (!run) throw new Error('No successful Pages deployment found. Run the normal Pages workflow first.');
