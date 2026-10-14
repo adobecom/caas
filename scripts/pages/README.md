@@ -42,7 +42,10 @@ https://adobecom.github.io/caas/pr-builds/pr-662/manifest.json
 - Publishing is serialized with the `pages` concurrency group. GitHub permits
   one running and one pending job per group; a newer pending job can replace an
   older pending job. Rerun any canceled publication; it will not corrupt storage.
-- Public files can be cached. Compare the manifest SHA and use a build-specific
+- Pages currently serves files with a ten-minute cache lifetime; a successful
+  deployment can temporarily serve the previous build, even with query strings.
+  The job waits up to 15 minutes for matching public asset and manifest hashes.
+  Compare the manifest SHA and use a build-specific
   query string while checking a newly published build. A future Milo integration
   should use this metadata for its indicator and cache-busting. This POC does not
   change Milo or guarantee an atomic multi-request JS/CSS load across updates.

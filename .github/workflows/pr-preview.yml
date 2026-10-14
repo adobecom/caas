@@ -89,7 +89,7 @@ jobs:
   publish:
     needs: [resolve, build]
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     concurrency:
       group: pages
       cancel-in-progress: false
@@ -195,8 +195,11 @@ jobs:
           from pathlib import Path
           manifest = json.loads(Path('incoming/manifest.json').read_text())
           base = os.environ['PAGE_URL'].rstrip('/') + '/pr-builds/pr-' + os.environ['PR_NUMBER']
-          for name, expected in manifest['sha256'].items():
-              for attempt in range(12):
+          deadline = time.monotonic() + 900  # Pages serves assets with max-age=600.
+          expected_files = dict(manifest['sha256'])
+          expected_files['manifest.json'] = hashlib.sha256(Path('incoming/manifest.json').read_bytes()).hexdigest()
+          for name, expected in expected_files.items():
+              while time.monotonic() < deadline:
                   try:
                       data = urllib.request.urlopen(base + '/' + name + '?build=' + os.environ['GITHUB_RUN_ID'], timeout=30).read()
                       if hashlib.sha256(data).hexdigest() == expected: break
