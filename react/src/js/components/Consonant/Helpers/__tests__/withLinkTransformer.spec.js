@@ -163,6 +163,90 @@ describe('withLinkTransformer', () => {
         });
 
 
+        test('skips a catastrophic-backtracking pattern and logs instead of transforming', () => {
+            const unsafeConfig = {
+                linkTransformer: {
+                    enabled: true,
+                    hostnameTransforms: [
+                        {
+                            from: '(a+)+$',
+                            to: '$1',
+                        },
+                    ],
+                },
+            };
+
+            renderWithConfig(
+                <TransformedComponent
+                    href="https://business.adobe.com/products/magento/magento-commerce.html"
+                    text="Magento Commerce" />,
+                unsafeConfig,
+            );
+
+            const link = screen.getByRole('link', { name: /Magento Commerce/i });
+            expect(link).toHaveAttribute('href', 'https://business.adobe.com/products/magento/magento-commerce.html');
+            expect(logLana).toHaveBeenCalledWith({
+                message: 'Skipping unsafe or invalid link transform pattern',
+                tags: 'linkTransformer',
+            });
+        });
+
+        test('skips an overly long pattern and logs instead of transforming', () => {
+            const longPatternConfig = {
+                linkTransformer: {
+                    enabled: true,
+                    hostnameTransforms: [
+                        {
+                            from: `(${'a'.repeat(250)})`,
+                            to: '$1',
+                        },
+                    ],
+                },
+            };
+
+            renderWithConfig(
+                <TransformedComponent
+                    href="https://business.adobe.com/products/magento/magento-commerce.html"
+                    text="Magento Commerce" />,
+                longPatternConfig,
+            );
+
+            const link = screen.getByRole('link', { name: /Magento Commerce/i });
+            expect(link).toHaveAttribute('href', 'https://business.adobe.com/products/magento/magento-commerce.html');
+            expect(logLana).toHaveBeenCalledWith({
+                message: 'Skipping unsafe or invalid link transform pattern',
+                tags: 'linkTransformer',
+            });
+        });
+
+        test('skips an invalid regex pattern and logs instead of throwing', () => {
+            const invalidPatternConfig = {
+                linkTransformer: {
+                    enabled: true,
+                    hostnameTransforms: [
+                        {
+                            from: '(unterminated',
+                            to: '$1',
+                        },
+                    ],
+                },
+            };
+
+            expect(() => renderWithConfig(
+                <TransformedComponent
+                    href="https://business.adobe.com/products/magento/magento-commerce.html"
+                    text="Magento Commerce" />,
+                invalidPatternConfig,
+            )).not.toThrow();
+
+            const link = screen.getByRole('link', { name: /Magento Commerce/i });
+            expect(link).toHaveAttribute('href', 'https://business.adobe.com/products/magento/magento-commerce.html');
+            expect(logLana).toHaveBeenCalledWith({
+                message: 'Skipping unsafe or invalid link transform pattern',
+                tags: 'linkTransformer',
+            });
+        });
+
         test('handles localStorage errors gracefully', () => {
             const mockGetItem = jest.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
                 throw new Error('localStorage error');
