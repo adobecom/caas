@@ -27,6 +27,8 @@ def copy_build(source, destination):
     for name in FILES + ('manifest.json',):
         shutil.copyfile(source / name, destination / name)
 
+    shutil.copyfile(Path(__file__).with_name('preview.html'), destination / 'index.html')
+
 
 def restore(store, site):
     if not store.exists():

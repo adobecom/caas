@@ -78,7 +78,12 @@ should also be exercised after merging the workflow changes.
   checks. Initial branch creation succeeded; subsequent generated commits cannot
   pass those source-code checks on this storage-only branch.
 - The repeat-662 run was canceled after identifying this blocker.
-- No protection settings were changed. A maintainer must explicitly authorize
-  and configure an exact `qa-previews` storage-branch policy before this design
-  can support additional PRs or updates. Do not bypass protection with an admin
-  token, forged status checks, or a renamed storage branch.
+- With maintainer approval, an exact `qa-previews` protection rule now exempts
+  generated storage from source-code CI checks. The existing source-branch rule
+  is unchanged.
+
+Preview builds set `RELEASE_TAG` to `pr-<number>-<12-character SHA>` and verify
+that both JS and CSS banners contain it. The manifest exposes the same version.
+An older PR whose build does not support this override fails before publication.
+Each preview also has an `index.html` asset smoke-test page that loads its actual
+CSS, React dependencies, and JS. This verifies loading, not collection behavior.

@@ -18,6 +18,7 @@ jobs:
     outputs:
       sha: ${{ steps.pr.outputs.sha }}
       number: ${{ steps.pr.outputs.number }}
+      version: ${{ steps.pr.outputs.version }}
     steps:
       - uses: actions/github-script@v7
         id: pr
@@ -32,6 +33,7 @@ jobs:
             }
             core.setOutput('number', String(pr.number));
             core.setOutput('sha', pr.head.sha);
+            core.setOutput('version', `pr-${pr.number}-${pr.head.sha.slice(0, 12)}`);
             core.info(`Building PR #${pr.number} (${pr.state}) at ${pr.head.sha}`);
   build:
     needs: resolve
@@ -52,10 +54,12 @@ jobs:
       - run: npm run build
         env:
           NODE_OPTIONS: --openssl-legacy-provider
+          RELEASE_TAG: ${{ needs.resolve.outputs.version }}
       - name: Package only browser assets
         env:
           PR_NUMBER: ${{ needs.resolve.outputs.number }}
           PR_SHA: ${{ needs.resolve.outputs.sha }}
+          PREVIEW_VERSION: ${{ needs.resolve.outputs.version }}
         run: |
           python3 - <<'PY'
           import datetime, hashlib, json, os, pathlib, shutil
@@ -66,10 +70,13 @@ jobs:
               source = pathlib.Path('dist') / name
               if source.is_symlink() or not source.is_file() or not source.stat().st_size:
                   raise ValueError(f'Missing or invalid asset: {source}')
+              if name in ('main.min.js', 'app.css') and os.environ['PREVIEW_VERSION'] not in source.read_text()[:1000]:
+                  raise ValueError(f'Preview version missing from asset banner: {name}')
               shutil.copyfile(source, out / name)
               hashes[name] = hashlib.sha256(source.read_bytes()).hexdigest()
           (out / 'manifest.json').write_text(json.dumps({
               'pr': int(os.environ['PR_NUMBER']), 'sha': os.environ['PR_SHA'],
+              'version': os.environ['PREVIEW_VERSION'],
               'builtAt': datetime.datetime.now(datetime.timezone.utc).isoformat(),
               'run': os.environ['GITHUB_RUN_ID'], 'sha256': hashes,
           }, indent=2) + '\n')
@@ -199,6 +206,6 @@ jobs:
               else: raise RuntimeError(f'Published checksum did not match: {name}')
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
               summary.write(f"## PR #{manifest['pr']} preview published\n\nCommit: `{manifest['sha']}`\n\n")
-              for name in (*manifest['sha256'], 'manifest.json'):
+              for name in (*manifest['sha256'], 'manifest.json', 'index.html'):
                   summary.write(f'- [{name}]({base}/{name})\n')
           PY
