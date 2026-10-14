@@ -65,3 +65,20 @@ actionlint .github/workflows/pr-preview.yml
 Cloud POC: publish 662, publish a second PR, rerun 662, and verify both folders
 still load. Compare root-site checksums before/after. Normal-deploy retention
 should also be exercised after merging the workflow changes.
+
+## POC results and repository prerequisite
+
+- PR 662 built and published successfully:
+  https://github.com/adobecom/caas/actions/runs/38624922577
+  All four public asset checksums matched its manifest. The pre-existing
+  `index.html`, `dist/main.min.js`, and `dist/app.css` checksums were unchanged.
+- PR 654 built, but saving its folder was rejected:
+  https://github.com/adobecom/caas/actions/runs/38624969322
+  `qa-previews` inherits the repository branch rule requiring 11 source-code CI
+  checks. Initial branch creation succeeded; subsequent generated commits cannot
+  pass those source-code checks on this storage-only branch.
+- The repeat-662 run was canceled after identifying this blocker.
+- No protection settings were changed. A maintainer must explicitly authorize
+  and configure an exact `qa-previews` storage-branch policy before this design
+  can support additional PRs or updates. Do not bypass protection with an admin
+  token, forged status checks, or a renamed storage branch.
