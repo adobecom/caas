@@ -8,6 +8,22 @@ import { loadLana } from './components/Consonant/Helpers/lana';
 import Container from './components/Consonant/Container/Container';
 import consonantPageRDC from './components/Consonant/Page/ConsonantPageDOM';
 
+// Temporary preview-hosting proof. Do not merge this demo into main.
+window.__CAAS_PR_PROOF__ = 'revision-1';
+console.info('[CaaS PR PROOF] revision-1: this message comes from the PR JavaScript bundle');
+const showPreviewProof = () => {
+    document.body.classList.add('caas-pr-proof');
+    const banner = document.createElement('div');
+    banner.id = 'caas-pr-proof-banner';
+    banner.textContent = 'PR CODE IS RUNNING · revision 1 · red background comes from PR CSS';
+    document.body.prepend(banner);
+};
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', showPreviewProof, { once: true });
+} else {
+    showPreviewProof();
+}
+
 // Runtime accessibility auditing in development with react-axe
 if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined') {
     /* eslint-disable-next-line global-require */
