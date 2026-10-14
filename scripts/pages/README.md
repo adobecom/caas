@@ -69,21 +69,34 @@ Cloud POC: publish 662, publish a second PR, rerun 662, and verify both folders
 still load. Compare root-site checksums before/after. Normal-deploy retention
 should also be exercised after merging the workflow changes.
 
-## POC results and repository prerequisite
+## POC results and repository setup
 
-- PR 662 built and published successfully:
+- Initial PR 662 publication passed all four public asset checksums:
   https://github.com/adobecom/caas/actions/runs/38624922577
-  All four public asset checksums matched its manifest. The pre-existing
-  `index.html`, `dist/main.min.js`, and `dist/app.css` checksums were unchanged.
-- PR 654 built, but saving its folder was rejected:
-  https://github.com/adobecom/caas/actions/runs/38624969322
-  `qa-previews` inherits the repository branch rule requiring 11 source-code CI
-  checks. Initial branch creation succeeded; subsequent generated commits cannot
-  pass those source-code checks on this storage-only branch.
-- The repeat-662 run was canceled after identifying this blocker.
-- With maintainer approval, an exact `qa-previews` protection rule now exempts
+- Draft demo PR 666 adds a red background through its CSS and a visible banner,
+  console message, and window marker through its JavaScript. Do not merge it.
+  https://github.com/adobecom/caas/pull/666
+- First demo publication passed:
+  https://github.com/adobecom/caas/actions/runs/38626630772
+- Updating the demo PR and republishing changed revision 1 to revision 2 at the
+  same public URL, with a new PR-specific version in the JS/CSS banners:
+  https://github.com/adobecom/caas/actions/runs/38627343664
+- Chromium verified the red background, banner, console marker, all four HTTP
+  200 responses, and no uncaught JavaScript errors for both demo revisions:
+  https://adobecom.github.io/caas/pr-builds/pr-666/
+- After both demo publications, PR 662's existing assets and root `index.html`,
+  `dist/main.min.js`, and `dist/app.css` still matched their prior checksums.
+  A local archive-restore test also retained both PR folders without changing
+  an existing root page. A full normal root deployment was not performed.
+- Rebuilding merged PR 662 with the new version label also passed:
+  https://github.com/adobecom/caas/actions/runs/38627887751
+  Its public version is `pr-662-9e53e7435094`. Afterwards, all eight hosted asset
+  hashes matched the two manifests, PR 666 still displayed revision 2 in
+  Chromium, and the three checked root-site files remained unchanged.
+- With maintainer approval, an exact `qa-previews` protection rule exempts
   generated storage from source-code CI checks. The existing source-branch rule
-  is unchanged.
+  is unchanged. Without this exception, subsequent storage updates were blocked
+  by 11 source CI checks that cannot run on the generated-files branch.
 
 Preview builds set `RELEASE_TAG` to `pr-<number>-<12-character SHA>` and verify
 that both JS and CSS banners contain it. The manifest exposes the same version.
