@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CaaS PR preview: asset smoke test</title>
+<style>
+body { margin: 0; font: 18px/1.5 system-ui, sans-serif; background: #f4f4f4; color: #222; }
+main { margin: 60px auto; padding: 32px; max-width: 800px; background: white; border-radius: 12px; }
+code { overflow-wrap: anywhere; }
+</style>
+<main>
+<h1>CaaS PR preview</h1>
+<p>This page loads the JS and CSS published for this PR. It is an asset smoke test, not a collection test.</p>
+<p id="identity">Reading build information…</p>
+<p id="status" role="status">Loading…</p>
+<p><a href="manifest.json">Build manifest</a> · <a href="main.min.js">JavaScript</a> · <a href="app.css">CSS</a></p>
+</main>
+<script>
+(async () => {
+  const status = document.querySelector('#status');
+  try {
+    const response = await fetch('manifest.json', { cache: 'no-store' });
+    if (!response.ok) throw new Error(`Manifest: HTTP ${response.status}`);
+    const build = await response.json();
+    document.querySelector('#identity').textContent = `PR #${build.pr} · ${build.version || build.sha} · Run ${build.run}`;
+    window.__CAAS_PREVIEW_BUILD__ = build;
+    const asset = name => `${name}?build=${encodeURIComponent(build.run)}`;
+    await new Promise((resolve, reject) => {
+      const css = document.createElement('link');
+      css.rel = 'stylesheet'; css.href = asset('app.css');
+      css.onload = resolve; css.onerror = () => reject(new Error('CSS failed to load'));
+      document.head.append(css);
+    });
+    for (const name of ['react.umd.js', 'react.dom.umd.js', 'main.min.js']) {
+      await new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = asset(name); script.onload = resolve;
+        script.onerror = () => reject(new Error(`${name} failed to load`));
+        document.body.append(script);
+      });
+    }
+    status.textContent = 'All four hosted assets loaded. Check the console for any runtime errors.';
+    console.info('[CaaS preview loader]', build);
+  } catch (error) {
+    status.textContent = `Loading failed: ${error.message}`;
+    console.error(error);
+  }
+})();
+</script>
+</html>
