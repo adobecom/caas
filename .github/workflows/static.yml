@@ -8,6 +8,15 @@ on:
 
   # Allows manual dispatch from the Actions tab
   workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to publish (blank = normal site deployment)'
+        type: string
+        required: false
+      node_version:
+        description: 'Node version for the PR build'
+        type: string
+        default: '24'
 
 # Permissions required for GitHub Pages in the new model
 permissions:
@@ -15,13 +24,24 @@ permissions:
   pages: write
   id-token: write
 
-# Only one deployment to GitHub Pages can be in progress
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
 jobs:
+  pr-preview:
+    if: github.event_name == 'workflow_dispatch' && inputs.pr_number != ''
+    uses: ./.github/workflows/pr-preview.yml
+    with:
+      pr_number: ${{ inputs.pr_number }}
+      node_version: ${{ inputs.node_version }}
+    permissions:
+      contents: write
+      actions: read
+      deployments: read
+      pages: write
+      id-token: write
   deploy:
+    if: github.event_name != 'workflow_dispatch' || inputs.pr_number == ''
+    concurrency:
+      group: pages
+      cancel-in-progress: false
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -43,6 +63,17 @@ jobs:
 
       - name: Build project
         run: npm run build
+
+      - name: Include retained PR previews
+        run: |
+          status=0
+          git ls-remote --exit-code --heads origin qa-previews > /dev/null || status=$?
+          if [ "$status" -eq 0 ]; then
+            git fetch origin qa-previews
+            git archive FETCH_HEAD pr-builds | tar -x
+          elif [ "$status" -ne 2 ]; then
+            exit "$status"
+          fi
 
       # 4. Configure GitHub Pages
       - name: Configure GitHub Pages
