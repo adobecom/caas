@@ -9,13 +9,13 @@ import Container from './components/Consonant/Container/Container';
 import consonantPageRDC from './components/Consonant/Page/ConsonantPageDOM';
 
 // Temporary preview-hosting proof. Do not merge this demo into main.
-window.__CAAS_PR_PROOF__ = 'revision-1';
-console.info('[CaaS PR PROOF] revision-1: this message comes from the PR JavaScript bundle');
+window.__CAAS_PR_PROOF__ = 'revision-2';
+console.info('[CaaS PR PROOF] revision-2: this message comes from the PR JavaScript bundle');
 const showPreviewProof = () => {
     document.body.classList.add('caas-pr-proof');
     const banner = document.createElement('div');
     banner.id = 'caas-pr-proof-banner';
-    banner.textContent = 'PR CODE IS RUNNING · revision 1 · red background comes from PR CSS';
+    banner.textContent = 'PR CODE IS RUNNING · revision 2 · red background comes from PR CSS';
     document.body.prepend(banner);
 };
 if (document.readyState === 'loading') {
