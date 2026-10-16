@@ -175,6 +175,26 @@ function CardsCarousel({
         showNextButton();
     }
 
+    function updateMobileNavigation() {
+        if (!isMobile() || carouselType === 'default') return;
+
+        const carousel = carouselRef.current;
+        const scrollDirection = window.getComputedStyle(carousel).direction === 'rtl' ? -1 : 1;
+        const scrollPosition = carousel.scrollLeft * scrollDirection;
+        const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+
+        if (scrollPosition <= 1) {
+            hidePrevButton();
+        } else {
+            showPrevButton();
+        }
+        if (scrollPosition >= maxScroll - 1) {
+            hideNextButton();
+        } else {
+            showNextButton();
+        }
+    }
+
     function setFocusPrevBtn() {
         const prevBtn = prev.current;
         if (prevBtn) prevBtn.focus();
@@ -218,11 +238,12 @@ function CardsCarousel({
      * 620 = (tablet range) + average grid gap
      * 620 = 1200px - 600px + (8 + 32)/2
      */
-    function centerClick() {
+    function centerClick(direction = 1) {
+        console.log('>>>> Center click direction:', direction);
         const carousel = carouselRef.current;
         const scrollDirection = window.getComputedStyle(carousel).direction === 'rtl' ? -1 : 1;
         /* eslint-disable-next-line no-mixed-operators */
-        carousel.scrollLeft += (-window.innerWidth / 2 + 620) * scrollDirection;
+        carousel.scrollLeft += (-window.innerWidth / 2 + 620) * scrollDirection * direction;
     }
 
     /**
@@ -296,7 +317,7 @@ function CardsCarousel({
 
     function prevButtonClick() {
         if (isMobile()) {
-            centerClick();
+            centerClick(-1);
         } else {
             const carousel = carouselRef.current;
             const scrollDirection = window.getComputedStyle(carousel).direction === 'rtl' ? -1 : 1;
@@ -368,6 +389,7 @@ function CardsCarousel({
             {/* eslint-disable jsx-a11y/no-static-element-interactions */}
             <div
                 className="consonant-Container--carousel"
+                onScroll={updateMobileNavigation}
                 ref={carouselRef}>
                 <Grid
                     cards={cards}
