@@ -243,7 +243,11 @@ function CardsCarousel({
         const carousel = carouselRef.current;
         const scrollDirection = window.getComputedStyle(carousel).direction === 'rtl' ? -1 : 1;
         /* eslint-disable-next-line no-mixed-operators */
+<<<<<<< HEAD
         carousel.scrollLeft += (-window.innerWidth / 2 + 620) * scrollDirection * direction;
+=======
+        carousel.scrollLeft += (-window.innerWidth / 2 + 620) * scrollDirection;
+>>>>>>> main
     }
 
     /**

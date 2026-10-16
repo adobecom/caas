@@ -131,6 +131,14 @@ describe('CardsCarousel comprehensive behaviors', () => {
     expect(carousel.scrollLeft).toBe((-500 / 2 + 620) * (buttonName === 'next' ? -1 : 1));
   });
 
+  test.each(['next', 'previous'])('mobile RTL: %s centers in the RTL scroll direction', async (buttonName) => {
+    const c = await setupCarousel(500);
+    const carousel = c.querySelector('.consonant-Container--carousel');
+    carousel.style.direction = 'rtl';
+    fireEvent.click(c.querySelector(`[name="${buttonName}"]`));
+    expect(carousel.scrollLeft).toBe(-(-500 / 2 + 620));
+  });
+
   test('desktop: both nav buttons hidden on initial mount', async () => {
     const c = await setupCarousel(1400);
     const nextBtn = c.querySelector('[name="next"]');

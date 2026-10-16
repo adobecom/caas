@@ -1,5 +1,12 @@
 
 
+## [0.68.54](https://github.com/adobecom/caas/compare/0.68.53...0.68.54) (2026-10-13)
+
+
+### Bug Fixes
+
+* **mwpw-205589:** fixes carousel navigation in RTL ([#662](https://github.com/adobecom/caas/issues/662)) ([245484e](https://github.com/adobecom/caas/commit/245484e53cb830b8fb9ed68a64b83667c200b3a3))
+
 ## [0.68.53](https://github.com/adobecom/caas/compare/0.68.52...0.68.53) (2026-10-13)
 
 ## [0.68.52](https://github.com/adobecom/caas/compare/0.68.51...0.68.52) (2026-10-12)
