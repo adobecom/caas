@@ -1,6 +1,13 @@
 import React, { isValidElement } from 'react';
+import safeRegex from 'safe-regex';
 import { useConfig } from '../Helpers/hooks';
 import { logLana } from '../Helpers/lana';
+
+// hostnameTransforms patterns can come from localStorage (user/browser-controlled),
+// so they must be validated before being compiled into a RegExp to avoid a
+// catastrophic-backtracking reDOS. MAX_PATTERN_LENGTH keeps any backtracking
+// search space bounded even for patterns safeRegex's heuristic doesn't catch.
+const MAX_PATTERN_LENGTH = 200;
 
 function isValidURL(string) {
     try {
@@ -12,9 +19,28 @@ function isValidURL(string) {
     }
 }
 
+function isSafePattern(pattern) {
+    return typeof pattern === 'string'
+        && pattern.length > 0
+        && pattern.length <= MAX_PATTERN_LENGTH
+        && safeRegex(pattern);
+}
+
 function transformLink(url, patterns) {
     for (const pattern of patterns) {
-        const regex = new RegExp(pattern.from);
+        if (!isSafePattern(pattern.from)) {
+            logLana({ message: 'Skipping unsafe or invalid link transform pattern', tags: 'linkTransformer' });
+            // eslint-disable-next-line no-continue
+            continue;
+        }
+        let regex;
+        try {
+            regex = new RegExp(pattern.from);
+        } catch (error) {
+            logLana({ message: 'Invalid link transform pattern', tags: 'linkTransformer', e: error });
+            // eslint-disable-next-line no-continue
+            continue;
+        }
         if (regex.test(url)) {
             return url.replace(regex, pattern.to);
         }
