@@ -1,5 +1,12 @@
 
 
+## [0.68.55](https://github.com/adobecom/caas/compare/0.68.54...0.68.55) (2026-10-17)
+
+
+### Dependencies
+
+* **deps-dev:** bump postcss from 8.5.29 to 8.5.30 ([#668](https://github.com/adobecom/caas/issues/668)) ([3769952](https://github.com/adobecom/caas/commit/376995297567f8c6582d7d7ec4e107298d52d42b))
+
 ## [0.68.54](https://github.com/adobecom/caas/compare/0.68.53...0.68.54) (2026-10-13)
 
 
