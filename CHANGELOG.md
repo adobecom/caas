@@ -1,5 +1,19 @@
 
 
+## [0.68.56](https://github.com/adobecom/caas/compare/0.68.55...0.68.56) (2026-10-19)
+
+
+### Dependencies
+
+* **deps:** fix browserslist without upgrading webpack tooling ([#656](https://github.com/adobecom/caas/issues/656)) ([c89ffd2](https://github.com/adobecom/caas/commit/c89ffd2e47f517a3326871f500ecf270730d2405))
+
+## [0.68.55](https://github.com/adobecom/caas/compare/0.68.54...0.68.55) (2026-10-17)
+
+
+### Dependencies
+
+* **deps-dev:** bump postcss from 8.5.29 to 8.5.30 ([#668](https://github.com/adobecom/caas/issues/668)) ([3769952](https://github.com/adobecom/caas/commit/376995297567f8c6582d7d7ec4e107298d52d42b))
+
 ## [0.68.54](https://github.com/adobecom/caas/compare/0.68.53...0.68.54) (2026-10-13)
 
 

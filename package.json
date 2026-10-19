@@ -1,6 +1,6 @@
 {
   "name": "CaaS",
-  "version": "0.68.54",
+  "version": "0.68.56",
   "private": false,
   "description": "",
   "scripts": {
@@ -115,7 +115,7 @@
     "less": "^3.11.1",
     "less-loader": "^4.0.5",
     "minify": "^9.1.0",
-    "postcss": "^8.5.29",
+    "postcss": "^8.5.30",
     "postcss-sass": "^0.5.0",
     "puppeteer": "^23.6.1",
     "react-axe": "^3.5.4",
@@ -214,6 +214,7 @@
     "basic-ftp": "5.2.2",
     "brace-expansion@^1.0.0": "1.1.16",
     "brace-expansion@^2.0.0": "2.1.2",
+    "browserslist": "4.29.3",
     "elliptic": "6.6.1",
     "flatted": "3.4.4",
     "js-yaml@^3.0.0": "3.15.2",
