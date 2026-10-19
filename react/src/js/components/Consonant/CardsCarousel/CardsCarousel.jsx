@@ -220,8 +220,9 @@ function CardsCarousel({
      */
     function centerClick() {
         const carousel = carouselRef.current;
+        const scrollDirection = window.getComputedStyle(carousel).direction === 'rtl' ? -1 : 1;
         /* eslint-disable-next-line no-mixed-operators */
-        carousel.scrollLeft += (-window.innerWidth / 2 + 620);
+        carousel.scrollLeft += (-window.innerWidth / 2 + 620) * scrollDirection;
     }
 
     /**
@@ -284,7 +285,8 @@ function CardsCarousel({
             centerClick();
         } else {
             const carousel = carouselRef.current;
-            carousel.scrollLeft += ((cardWidth + gridGap) * cardsShiftedPerClick);
+            const scrollDirection = window.getComputedStyle(carousel).direction === 'rtl' ? -1 : 1;
+            carousel.scrollLeft += ((cardWidth + gridGap) * cardsShiftedPerClick * scrollDirection);
             setVisibleCards('next');
             setAriaAttributes(carousel);
             showPrevButton();
@@ -297,7 +299,8 @@ function CardsCarousel({
             centerClick();
         } else {
             const carousel = carouselRef.current;
-            carousel.scrollLeft -= ((cardWidth + gridGap) * cardsShiftedPerClick);
+            const scrollDirection = window.getComputedStyle(carousel).direction === 'rtl' ? -1 : 1;
+            carousel.scrollLeft -= ((cardWidth + gridGap) * cardsShiftedPerClick * scrollDirection);
             setVisibleCards('prev');
             setAriaAttributes(carousel);
             showNextButton();
