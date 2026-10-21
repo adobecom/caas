@@ -1,5 +1,12 @@
 
 
+## [0.68.57](https://github.com/adobecom/caas/compare/0.68.56...0.68.57) (2026-10-21)
+
+
+### Dependencies
+
+* **deps:** bump follow-redirects from 1.16.0 to 1.16.1 ([#670](https://github.com/adobecom/caas/issues/670)) ([18faf9a](https://github.com/adobecom/caas/commit/18faf9af62ef2979dd11a2ce34264f7c2b072751))
+
 ## [0.68.56](https://github.com/adobecom/caas/compare/0.68.55...0.68.56) (2026-10-19)
 
 
