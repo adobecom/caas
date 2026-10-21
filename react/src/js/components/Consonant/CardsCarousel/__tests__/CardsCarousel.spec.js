@@ -70,12 +70,57 @@ describe('CardsCarousel comprehensive behaviors', () => {
     expect(carousel.scrollLeft).toBe(initial + (-500 / 2 + 620));
   });
 
+  test.each([
+    ['incrementalModern', 'ltr'],
+    ['incrementalModern', 'rtl'],
+    ['pagedModern', 'ltr'],
+    ['pagedModern', 'rtl'],
+    ['incrementalModern-light', 'ltr'],
+    ['incrementalModern-light', 'rtl'],
+    ['pagedModern-light', 'ltr'],
+    ['pagedModern-light', 'rtl'],
+  ])('mobile modern %s %s: previous returns to the starting position', async (animationStyle, direction) => {
+    global.innerWidth = 500;
+    const cfg = JSON.parse(JSON.stringify(config));
+    cfg.collection.layout = { container: 'carousel', gutter: '3x', type: '3up' };
+    cfg.pagination.animationStyle = animationStyle;
+    await act(async () => {
+      ({ container } = render(<Container config={cfg} />));
+    });
+    const carousel = container.querySelector('.consonant-Container--carousel');
+    carousel.style.direction = direction;
+    Object.defineProperty(carousel, 'scrollWidth', { value: 2000 });
+    Object.defineProperty(carousel, 'clientWidth', { value: 500 });
+    const previousButton = container.querySelector('[name="previous"]');
+    const nextButton = container.querySelector('[name="next"]');
+    expect(previousButton).toBeDisabled();
+    const initial = carousel.scrollLeft;
+    fireEvent.click(nextButton);
+    expect(carousel.scrollLeft).toBe(initial + (-500 / 2 + 620) * (direction === 'rtl' ? -1 : 1));
+    fireEvent.scroll(carousel);
+    expect(previousButton).toBeEnabled();
+    expect(previousButton).not.toHaveClass('disabled');
+    expect(previousButton).not.toHaveAttribute('aria-hidden');
+    fireEvent.click(previousButton);
+    expect(carousel.scrollLeft).toBe(initial);
+    fireEvent.scroll(carousel);
+    expect(previousButton).toBeDisabled();
+    carousel.scrollLeft = (direction === 'rtl' ? -1 : 1) * 1500;
+    fireEvent.scroll(carousel);
+    expect(previousButton).toBeEnabled();
+    expect(nextButton).toBeDisabled();
+    carousel.scrollLeft = (direction === 'rtl' ? -1 : 1) * 750;
+    fireEvent.scroll(carousel);
+    expect(previousButton).toBeEnabled();
+    expect(nextButton).toBeEnabled();
+  });
+
   test('mobile: clicking previous invokes centerClick and scrolls', async () => {
     const c = await setupCarousel(500);
     const carousel = c.querySelector('.consonant-Container--carousel');
     const initial = carousel.scrollLeft;
     fireEvent.click(c.querySelector('[name="previous"]'));
-    expect(carousel.scrollLeft).toBe(initial + (-500 / 2 + 620));
+    expect(carousel.scrollLeft).toBe(initial - (-500 / 2 + 620));
   });
 
   test.each(['next', 'previous'])('mobile RTL: %s centers in the RTL scroll direction', async (buttonName) => {
@@ -83,7 +128,35 @@ describe('CardsCarousel comprehensive behaviors', () => {
     const carousel = c.querySelector('.consonant-Container--carousel');
     carousel.style.direction = 'rtl';
     fireEvent.click(c.querySelector(`[name="${buttonName}"]`));
-    expect(carousel.scrollLeft).toBe(-(-500 / 2 + 620));
+    expect(carousel.scrollLeft).toBe((-500 / 2 + 620) * (buttonName === 'next' ? -1 : 1));
+  });
+
+  test.each(['ltr', 'rtl'])('mobile %s: endpoint navigation preserves keyboard focus', async (direction) => {
+    const c = await setupCarousel(500);
+    const carousel = c.querySelector('.consonant-Container--carousel');
+    const previousButton = c.querySelector('[name="previous"]');
+    const nextButton = c.querySelector('[name="next"]');
+    const sign = direction === 'rtl' ? -1 : 1;
+
+    carousel.style.direction = direction;
+    Object.defineProperty(carousel, 'scrollWidth', { value: 2000 });
+    Object.defineProperty(carousel, 'clientWidth', { value: 500 });
+    document.body.classList.add('tabbing');
+
+    nextButton.focus();
+    expect(nextButton).toHaveFocus();
+
+    carousel.scrollLeft = sign * 1500;
+    fireEvent.scroll(carousel);
+
+    expect(nextButton).toBeDisabled();
+    expect(previousButton).toHaveFocus();
+
+    carousel.scrollLeft = 0;
+    fireEvent.scroll(carousel);
+
+    expect(previousButton).toBeDisabled();
+    expect(nextButton).toHaveFocus();
   });
 
   test('desktop: both nav buttons hidden on initial mount', async () => {

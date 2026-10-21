@@ -185,6 +185,38 @@ function CardsCarousel({
         if (nextBtn) nextBtn.focus();
     }
 
+    function updateMobileNavigation() {
+        if (!isMobile() || carouselType === 'default') return;
+
+        const carousel = carouselRef.current;
+        const scrollDirection = window.getComputedStyle(carousel).direction === 'rtl' ? -1 : 1;
+        const scrollPosition = carousel.scrollLeft * scrollDirection;
+        const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+        const atStart = scrollPosition <= 1;
+        const atEnd = scrollPosition >= maxScroll - 1;
+        const focusedElement = document.activeElement;
+
+        if (atStart) {
+            hidePrevButton();
+        } else {
+            showPrevButton();
+        }
+
+        if (atEnd) {
+            hideNextButton();
+        } else {
+            showNextButton();
+        }
+
+        if (!userIsTabbing()) return;
+
+        if (atStart && !atEnd && focusedElement === prev.current) {
+            setFocusNextBtn();
+        } else if (atEnd && !atStart && focusedElement === next.current) {
+            setFocusPrevBtn();
+        }
+    }
+
     function shouldHidePrevButton() {
         if (firstVisibleCard === 1) {
             hidePrevButton();
@@ -218,11 +250,11 @@ function CardsCarousel({
      * 620 = (tablet range) + average grid gap
      * 620 = 1200px - 600px + (8 + 32)/2
      */
-    function centerClick() {
+    function centerClick(direction = 1) {
         const carousel = carouselRef.current;
         const scrollDirection = window.getComputedStyle(carousel).direction === 'rtl' ? -1 : 1;
         /* eslint-disable-next-line no-mixed-operators */
-        carousel.scrollLeft += (-window.innerWidth / 2 + 620) * scrollDirection;
+        carousel.scrollLeft += (-window.innerWidth / 2 + 620) * scrollDirection * direction;
     }
 
     /**
@@ -296,7 +328,7 @@ function CardsCarousel({
 
     function prevButtonClick() {
         if (isMobile()) {
-            centerClick();
+            centerClick(-1);
         } else {
             const carousel = carouselRef.current;
             const scrollDirection = window.getComputedStyle(carousel).direction === 'rtl' ? -1 : 1;
@@ -368,6 +400,7 @@ function CardsCarousel({
             {/* eslint-disable jsx-a11y/no-static-element-interactions */}
             <div
                 className="consonant-Container--carousel"
+                onScroll={updateMobileNavigation}
                 ref={carouselRef}>
                 <Grid
                     cards={cards}
