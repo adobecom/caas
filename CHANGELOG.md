@@ -1,5 +1,12 @@
 
 
+## [0.68.58](https://github.com/adobecom/caas/compare/0.68.57...0.68.58) (2026-10-21)
+
+
+### Bug Fixes
+
+* **mwpw-211564:** fixes carousel navigation in mobile ([#669](https://github.com/adobecom/caas/issues/669)) ([8635fd5](https://github.com/adobecom/caas/commit/8635fd59e864fedcd19b6aca3e9c64de9f558a34))
+
 ## [0.68.57](https://github.com/adobecom/caas/compare/0.68.56...0.68.57) (2026-10-21)
 
 
