@@ -175,26 +175,6 @@ function CardsCarousel({
         showNextButton();
     }
 
-    function updateMobileNavigation() {
-        if (!isMobile() || carouselType === 'default') return;
-
-        const carousel = carouselRef.current;
-        const scrollDirection = window.getComputedStyle(carousel).direction === 'rtl' ? -1 : 1;
-        const scrollPosition = carousel.scrollLeft * scrollDirection;
-        const maxScroll = carousel.scrollWidth - carousel.clientWidth;
-
-        if (scrollPosition <= 1) {
-            hidePrevButton();
-        } else {
-            showPrevButton();
-        }
-        if (scrollPosition >= maxScroll - 1) {
-            hideNextButton();
-        } else {
-            showNextButton();
-        }
-    }
-
     function setFocusPrevBtn() {
         const prevBtn = prev.current;
         if (prevBtn) prevBtn.focus();
@@ -203,6 +183,38 @@ function CardsCarousel({
     function setFocusNextBtn() {
         const nextBtn = next.current;
         if (nextBtn) nextBtn.focus();
+    }
+
+    function updateMobileNavigation() {
+        if (!isMobile() || carouselType === 'default') return;
+
+        const carousel = carouselRef.current;
+        const scrollDirection = window.getComputedStyle(carousel).direction === 'rtl' ? -1 : 1;
+        const scrollPosition = carousel.scrollLeft * scrollDirection;
+        const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+        const atStart = scrollPosition <= 1;
+        const atEnd = scrollPosition >= maxScroll - 1;
+        const focusedElement = document.activeElement;
+
+        if (atStart) {
+            hidePrevButton();
+        } else {
+            showPrevButton();
+        }
+
+        if (atEnd) {
+            hideNextButton();
+        } else {
+            showNextButton();
+        }
+
+        if (!userIsTabbing()) return;
+
+        if (atStart && !atEnd && focusedElement === prev.current) {
+            setFocusNextBtn();
+        } else if (atEnd && !atStart && focusedElement === next.current) {
+            setFocusPrevBtn();
+        }
     }
 
     function shouldHidePrevButton() {

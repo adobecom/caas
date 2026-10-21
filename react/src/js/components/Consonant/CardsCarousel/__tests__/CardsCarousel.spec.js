@@ -131,6 +131,34 @@ describe('CardsCarousel comprehensive behaviors', () => {
     expect(carousel.scrollLeft).toBe((-500 / 2 + 620) * (buttonName === 'next' ? -1 : 1));
   });
 
+  test.each(['ltr', 'rtl'])('mobile %s: endpoint navigation preserves keyboard focus', async (direction) => {
+    const c = await setupCarousel(500);
+    const carousel = c.querySelector('.consonant-Container--carousel');
+    const previousButton = c.querySelector('[name="previous"]');
+    const nextButton = c.querySelector('[name="next"]');
+    const sign = direction === 'rtl' ? -1 : 1;
+
+    carousel.style.direction = direction;
+    Object.defineProperty(carousel, 'scrollWidth', { value: 2000 });
+    Object.defineProperty(carousel, 'clientWidth', { value: 500 });
+    document.body.classList.add('tabbing');
+
+    nextButton.focus();
+    expect(nextButton).toHaveFocus();
+
+    carousel.scrollLeft = sign * 1500;
+    fireEvent.scroll(carousel);
+
+    expect(nextButton).toBeDisabled();
+    expect(previousButton).toHaveFocus();
+
+    carousel.scrollLeft = 0;
+    fireEvent.scroll(carousel);
+
+    expect(previousButton).toBeDisabled();
+    expect(nextButton).toHaveFocus();
+  });
+
   test('desktop: both nav buttons hidden on initial mount', async () => {
     const c = await setupCarousel(1400);
     const nextBtn = c.querySelector('[name="next"]');
