@@ -75,17 +75,21 @@ export default class CardFilterer {
      * @return {*} Chainable
      * @memberof CardFilterer
      */
-    searchCards(searchQuery, searchFields, cardStyle) {
+    searchCards(searchQuery, searchFields, cardStyle, detailsTextOption) {
         const query = searchQuery.trim().toLowerCase();
         const cardsMatchingSearch = getCardsMatchingSearch(
             searchQuery,
             this.filteredCards,
             searchFields,
         );
+        // Product details are resolved by matching the raw detailText to a product tag ID.
+        const highlightFields = ['productName', 'productIcon'].includes(detailsTextOption)
+            ? searchFields.filter(searchField => searchField !== 'contentArea.detailText')
+            : searchFields;
 
         if (query.length >= 3 && cardStyle !== 'custom-card') {
             this.filteredCards = cardsMatchingSearch
-                .map(card => searchFields.reduce((baseCard, searchField) => highlightCard(
+                .map(card => highlightFields.reduce((baseCard, searchField) => highlightCard(
                     baseCard,
                     searchField,
                     query,
