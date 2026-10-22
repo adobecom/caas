@@ -1,5 +1,12 @@
 
 
+## [0.68.60](https://github.com/adobecom/caas/compare/0.68.59...0.68.60) (2026-10-22)
+
+
+### Bug Fixes
+
+* **MWPW-212505:** fixes search with productName and productIcon ([#671](https://github.com/adobecom/caas/issues/671)) ([1181968](https://github.com/adobecom/caas/commit/1181968a8c9395bacc5a4f86a3423fceee3d1d26))
+
 ## [0.68.59](https://github.com/adobecom/caas/compare/0.68.58...0.68.59) (2026-10-22)
 
 
