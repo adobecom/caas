@@ -42,7 +42,9 @@ const plugins = [
     }),
     // Inject environment variable for conditional code removal
     new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+        'process.env.CAAS_RELEASE_VERSION': JSON.stringify(version.replace(/^v/, '')),
+        'process.env.CAAS_BUILD_COMMIT': JSON.stringify(execSync('git rev-parse --short=12 HEAD').toString().trim())
     }),
 ];
 
