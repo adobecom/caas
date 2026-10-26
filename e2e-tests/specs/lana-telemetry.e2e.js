@@ -47,7 +47,10 @@ describe('CaaS telemetry integration', () => {
         await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
         origin = `http://127.0.0.1:${server.address().port}`;
     });
-    after(async () => { await new Promise(resolve => server.close(resolve)); });
+    after(async () => {
+        server.closeAllConnections();
+        await new Promise(resolve => server.close(resolve));
+    });
     afterEach(async function saveLocalEvidence() {
         if (!process.env.CAAS_TELEMETRY_EVIDENCE_DIR) return;
         const events = await browser.execute(() => window.events || []);
