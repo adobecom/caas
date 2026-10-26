@@ -1,31 +1,24 @@
-# October 8 retry update
+# CaaS telemetry: implementation reference
 
-Keep the detailed records described below: sanitized page URL, actual configuration
-snapshots, browser, per-page/per-collection correlation, timings, card counts and
-request/runtime failures. One 10% sampling decision is shared across all collections.
+Updated October 26, 2026. The next step is a query-param-only trial before another
+broad rollout. See [the trial plan](TELEMETRY_TRIAL_PLAN.md) for proposed build
+controls, DOM checks, browser-only failures and Splunk acceptance criteria.
+The schema below describes the current implementation, not those future changes.
 
-Add two small operational pulses (`caas_pulse_v1`): initial and after ten seconds.
-These run independently of analytics consent and contain only release/build,
-sampling mode, consent state/source/raw flag, and collection started/rendered/failed
-counts. They contain no page URL, config, identifiers, cookies or error text. The
-server can still see normal transport metadata such as IP address.
+## Historical results
 
-For the user-requested temporary diagnostic trial, detailed `caas_telemetry_v2`
-records also send independently of analytics consent. Consent is measured, not a
-transmission gate: enabled, disabled and unknown all retain sanitized URL/config,
-collection outcomes, timings and relevant failures. There is no consent buffer.
-Check `adobePrivacy.activeCookieGroups()` first and fall back to
-`OnetrustActiveGroups`; record missing/error/invalid API responses explicitly.
-This diagnoses the consent integration without assuming unknown means enabled.
-This is a temporary trial design, not a permanent analytics configuration.
+The October 8 trial encountered an incomplete public JavaScript response and no
+matching diagnostic records in its measured query. The cause was not established.
+The subsequent October 14 trial of `0.68.47-pr654.2` did deliver sampled records:
+33,123 records, 1,076 initial pulses, 953 React-rendered events, 16 request failures
+and 15 collection failures at the final pre-rollback query. Forced tests were
+separate. These counts are not unique users or a matched collection success rate.
+Stable/0 were restored to their then-baseline `0.68.52`, and beta to `0.68.54`.
+These are historical versions, not future rollback targets.
 
-The October 8 retry was halted by the user after the incomplete-bundle delivery
-incident. Tuesday, October 13 is tentative after regrouping, not an automatic
-rollout. No new release/tag has been created for this revision. For a future
-authorized trial, build a NEW tag from the final updated PR commit; never reuse `.1`.
-Verify actual config reconstruction and page URL in Splunk before broad exposure.
-Full served-file hashes and card-loading checks remain necessary: a truncated
-bundle cannot report its own failure. Zero records is not evidence of health.
+The existing temporary diagnostic design records consent rather than gating
+transmission on it. Its sampling rate remains hardcoded at 10% until the planned
+build control is implemented. This document update does not enable a new trial.
 
 # Correlated CaaS release telemetry
 
@@ -136,7 +129,7 @@ its silence is not evidence of better health. Comparable measurements need the
 same instrumentation in both versions. No automatic promotion or rollback.
 
 
-## Next one-hour trial
+## Interpreting a later broad trial (historical 10% design)
 
 Use 10%, not 50%. The deployment window and rollback limit exposure to one hour;
 the bundle itself has no one-hour timer. Count only mode=sample, phase=initial
@@ -153,4 +146,5 @@ Detailed records share one in-memory pageVisitId plus collectionId/configId/requ
 Runtime errors link to the page only when the responsible collection is unknown.
 No persistent cross-page session identifier or arbitrary console capture is added.
 Before deployment, prove URL/config reconstruction and outcomes in Splunk using
-the exact new build. Tuesday or Wednesday remains tentative; no deployment scheduled.
+the exact new build. Follow the query-param-first trial plan above. No new
+deployment is scheduled by this documentation.
