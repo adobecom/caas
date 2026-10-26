@@ -1,9 +1,7 @@
 # CaaS telemetry: implementation reference
 
 Updated October 26, 2026. The next step is a query-param-only trial before another
-broad rollout. See [the trial plan](TELEMETRY_TRIAL_PLAN.md) for proposed build
-controls, DOM checks, browser-only failures and Splunk acceptance criteria.
-The schema below describes the current implementation, not those future changes.
+broad rollout. See [the trial plan](TELEMETRY_TRIAL_PLAN.md) for build controls, DOM checks, browser-only failures and remaining Splunk acceptance criteria.
 
 ## Historical results
 
@@ -17,14 +15,14 @@ Stable/0 were restored to their then-baseline `0.68.52`, and beta to `0.68.54`.
 These are historical versions, not future rollback targets.
 
 The existing temporary diagnostic design records consent rather than gating
-transmission on it. Its sampling rate remains hardcoded at 10% until the planned
-build control is implemented. This document update does not enable a new trial.
+transmission on it. Its build-time sampling rate is now configurable with
+`CAAS_DIAGNOSTIC_SAMPLE_RATE` (0–100, default 0). This document update does not enable a new trial.
 
 # Correlated CaaS release telemetry
 
 ## One sampled visit, several related records
 
-One decision selects 10% of CaaS page loads regardless of consent. Selection and IDs are
+One decision selects the configured percentage of CaaS page loads regardless of consent. Selection and IDs are
 shared across CaaS bundles on the same window using a Symbol-keyed in-memory
 state. No cookies, local storage or cross-page visitor IDs are created. A fresh
 page gets a fresh random 128-bit pageVisitId. Embedded frames have separate IDs.
@@ -33,7 +31,7 @@ Consent (OneTrust C0002) is observed on each record and does not suppress diagno
 Use `?caas_log_poc=smoke-<label>` for controlled tests (1–40 letters, digits,
 underscores or hyphens after smoke-). Neither detailed records nor basic pulses are consent-gated in this trial. Test events
 have mode=test and sampleRate=100. Normal selected visits have mode=sample and
-sampleRate=10. Do not include test records in production comparisons.
+sampleRate equal to the build setting. Do not include test records in production comparisons.
 
 All records contain marker=caas_telemetry_v2, pageVisitId, release, build,
 mode, sampleRate and event. The release and commit are baked into the loaded
@@ -54,10 +52,13 @@ existing webpack version fallback plus their exact commit.
 - collection_started / collection_ready / collection_rendered: collectionId,
   configId, elapsed milliseconds from first load, and cardCount on ready/rendered.
   Rendered means React committed loaded card state, not that all images painted.
-  Empty results report ready with zero, without promising a render event.
+  Empty API results report ready with zero plus collection_empty.
+- collection_dom: domStatus (present/hidden/missing/unknown), domCardCount and
+  displayedCardCount from a collection-scoped layout/style snapshot. This does
+  not require scrolling into view or prove images/occlusion.
 - request_started: collectionId, configId, requestId, endpoint origin/path and
   source=primary/fallback. Request IDs are local to each collection.
-- request_failed: the same IDs, request duration, error.kind and HTTP status
+- request_failed: the same IDs, sanitized endpoint, primary/fallback source, request duration, error.kind and HTTP status
   where available. Kinds: http, network, parse, processing. A network rejection
   does not distinguish offline/CORS/blocking. Overlapping requests retain their
   own IDs and timings.
@@ -84,7 +85,7 @@ message is below 1,800 UTF-8 bytes. Snapshots are split into 400-character ASCII
 pieces (Unicode is escaped without changing its decoded value).
 
 Limits per page: eight collections, 64 config pieces, 96 other records. Each
-collection has eight lifecycle/request events. Collection/event budget exhaustion
+collection has eight regular lifecycle/request events plus at most one DOM and one empty outcome, still subject to the page cap. Collection/event budget exhaustion
 produces telemetry_limit; oversized snapshots (>12,000 escaped characters) or
 exhausted config budget produce config_snapshot status=omitted, reason=size_budget.
 Config traffic cannot consume the separate outcome budget. These are diagnostic

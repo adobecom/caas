@@ -22,22 +22,23 @@ describe('CaaS telemetry integration', () => {
             if (['/cards', '/fallback'].includes(url.pathname)) {
                 res.setHeader('Content-Type', 'application/json');
                 res.statusCode = url.searchParams.has('fail') ? 503 : 200;
-                res.end(JSON.stringify({ cards }));
+                res.end(url.searchParams.has('badJson') ? '{not-json' : JSON.stringify({ cards: url.searchParams.has('empty') ? [] : cards }));
                 return;
             }
             const failure = url.searchParams.has('failure');
             const cfg = JSON.parse(JSON.stringify(config));
-            cfg.collection.endpoint = `/cards${failure ? '?fail' : ''}`;
-            cfg.collection.fallbackEndpoint = `/fallback${failure ? '?fail' : ''}`;
+            const suffix = failure ? '?fail' : url.searchParams.has('badJson') ? '?badJson' : url.searchParams.has('empty') ? '?empty' : '';
+            cfg.collection.endpoint = `/cards${suffix}`;
+            cfg.collection.fallbackEndpoint = `/fallback${suffix}`;
             res.setHeader('Content-Type', 'text/html');
-            res.end(`<html><body><div id="cards"></div><div id="second"></div><script>
+            res.end(`<html><head><style>[data-testid="consonant-Card"]{display:block;width:200px;min-height:100px} ${url.searchParams.has('hidden') ? '#cards{display:none}' : ''}</style></head><body><div id="cards"></div><div id="second"></div><script>
                 window.digitalData={};window.OnetrustActiveGroups=${url.searchParams.has('noConsent') ? "''" : "',C0002,'"};
                 ${url.searchParams.has('brokenConsent') ? `delete window.OnetrustActiveGroups;window.adobePrivacy={activeCookieGroups:()=>{throw new Error('consent unavailable');}};` : ''}
                 window.events=[];const original=window.fetch;
                 window.fetch=(url,opts)=>{if(String(url).includes('/lana/ll?')) {
                     events.push(JSON.parse(new URL(url).searchParams.get('m')));
                     return Promise.reject(new Error('Logging intentionally blocked'));
-                }return original(url,opts);};
+                }${url.searchParams.has('network') ? `if(/^\\/(cards|fallback)/.test(String(url)))return Promise.reject(new TypeError('Test network rejection'));` : ''}return original(url,opts);};
                 </script><script src="/main.js"></script><script>
                 new window.ConsonantCardCollection(${JSON.stringify(cfg)},document.querySelector('#cards'));
                 ${url.searchParams.has('multiple') ? `new window.ConsonantCardCollection(${JSON.stringify({ ...cfg, collection: { ...cfg.collection, endpoint: '/cards?fail', fallbackEndpoint: '/fallback?fail' } })},document.querySelector('#second'));` : ''}
@@ -47,6 +48,16 @@ describe('CaaS telemetry integration', () => {
         origin = `http://127.0.0.1:${server.address().port}`;
     });
     after(async () => { await new Promise(resolve => server.close(resolve)); });
+    afterEach(async function saveLocalEvidence() {
+        if (!process.env.CAAS_TELEMETRY_EVIDENCE_DIR) return;
+        const events = await browser.execute(() => window.events || []);
+        const directory = process.env.CAAS_TELEMETRY_EVIDENCE_DIR;
+        fs.mkdirSync(directory, { recursive: true });
+        const name = this.currentTest.title.replace(/[^a-z0-9]+/gi, '-');
+        fs.writeFileSync(path.join(directory, `${name}.json`), JSON.stringify({
+            test: this.currentTest.title, state: this.currentTest.state, events,
+        }, null, 2));
+    });
 
     it('renders cards even when logging fails and includes build, count and timing', async () => {
         await browser.url(`${origin}/?caas_log_poc=smoke-e2e`);
@@ -110,4 +121,41 @@ describe('CaaS telemetry integration', () => {
             assert.ok((await $('#cards').getText()).includes('Your Top Picks'));
         });
     }
+    for (const scenario of ['normal', 'hidden', 'empty', 'badJson', 'network']) {
+        it(`classifies ${scenario} in the built bundle with a unique test run`, async () => {
+            await browser.url(`${origin}/?caas_log_poc=smoke-${scenario}&${scenario}`);
+            const expected = scenario === 'empty' ? 'collection_empty'
+                : ['badJson', 'network'].includes(scenario) ? 'collection_failed' : 'collection_dom';
+            await browser.waitUntil(async () => browser.execute(event => window.events.some(e => e.event === event), expected));
+            const events = await browser.execute(() => window.events);
+            const outcome = events.find(e => e.event === expected);
+            assert.strictEqual(outcome.run, `smoke-${scenario}`);
+            assert.strictEqual(outcome.mode, 'test');
+            assert.strictEqual(outcome.sampleRate, 100);
+            assert.ok(events.some(e => e.event === 'collection_context' && e.collectionId === outcome.collectionId && e.pageVisitId === outcome.pageVisitId));
+            if (scenario === 'normal') {
+                assert.strictEqual(outcome.domStatus, 'present');
+                assert.ok(outcome.displayedCardCount > 0);
+                assert.ok(await $('#cards [data-testid="consonant-Card"]').isDisplayed());
+            }
+            if (scenario === 'hidden') {
+                assert.strictEqual(outcome.domStatus, 'hidden');
+                assert.strictEqual(outcome.displayedCardCount, 0);
+            }
+            if (scenario === 'empty') assert.strictEqual(outcome.cardCount, 0);
+            if (['badJson', 'network'].includes(scenario)) {
+                const failure = events.find(e => e.event === 'request_failed');
+                assert.strictEqual(failure.error.kind, scenario === 'badJson' ? 'parse' : 'network');
+                assert.strictEqual(failure.endpoint, `${origin}/cards`);
+                assert.strictEqual(failure.collectionId, outcome.collectionId);
+                if (scenario === 'badJson') assert.strictEqual(failure.error.status, 200);
+            }
+        });
+    }
+    it('normal visit sends no diagnostics with the default-off build', async () => {
+        await browser.url(`${origin}/`);
+        await browser.waitUntil(async () => (await $('#cards').getText()).includes('Your Top Picks'));
+        assert.deepStrictEqual(await browser.execute(() => window.events), []);
+    });
+
 });

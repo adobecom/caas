@@ -1,6 +1,6 @@
 # Telemetry trial plan
 
-Updated October 26, 2026. This is the next implementation and verification plan
+Updated October 26, 2026. This records implementation and the remaining verification plan
 for [PR #654](https://github.com/adobecom/caas/pull/654), not a record of completed
 new tests or authorization for another production rollout.
 
@@ -35,9 +35,9 @@ not proof the correct build loaded; hosts can also rewrite/remove parameters.
 
 | Area | Current PR | Next change or proof |
 | --- | --- | --- |
-| Sampling | Hardcoded 10% page selection; forced test visits use 100% | One build setting, normal diagnostic rate 0; chosen trial rate |
+| Sampling | Validated build setting, default 0%; forced test visits use 100% | Publish and verify a separate version |
 | Correlation | Page, collection, config and request IDs | Verify all test results reconstruct the right page/collection |
-| Outcomes | Started, ready, React-rendered, fallback and failed | Add card-element/style checks and an explicit empty outcome |
+| Outcomes | Started, ready, React-rendered, DOM card counts, empty, fallback and failed | Prove these records in live Splunk |
 | Errors | HTTP, network, parse, processing and scoped runtime errors | Improve safe request detail and prove each supported path |
 | Config | Bounded sanitized snapshots, reused within a page | Reduce repeated volume while retaining reproducible context |
 | Browser tests | Built-bundle success, HTTP/fallback failure, multiple collections and consent cases; LANA stubbed | Expand controlled failures, then separately prove real ingestion |
@@ -46,7 +46,7 @@ not proof the correct build loaded; hosts can also rewrite/remove parameters.
 
 ## Build control
 
-Introduce one validated diagnostic sample-rate input, for example
+Implemented one validated diagnostic sample-rate input:
 `CAAS_DIAGNOSTIC_SAMPLE_RATE`, from 0 to 100. Default to 0 for the new detailed
 diagnostics in normal builds. Preserve existing ordinary LANA logging separately.
 Both pulse selection and detailed records must use the same configured rate.
@@ -143,8 +143,8 @@ Report:
 
 ## Acceptance before another broad trial
 
-- [ ] Implement and test the shared build rate/default-off behavior.
-- [ ] Implement DOM/empty outcomes and safe failed-request details.
+- [x] Implement and test the shared build rate/default-off behavior.
+- [x] Implement DOM/empty outcomes and safe failed-request details.
 - [ ] Reduce config volume without losing failure context.
 - [ ] Pass unit, coverage, build, lint and controlled browser tests for the exact SHA.
 - [ ] Publish version-only assets with alias/beta isolation verified.
@@ -156,3 +156,25 @@ October 14 historical evidence: [trial query](https://rundeck.wcmsops.adobe.com/
 [stable restoration](https://rundeck.wcmsops.adobe.com/execution/show/2776660#output),
 [beta restoration](https://rundeck.wcmsops.adobe.com/execution/show/2776664#output).
 The new checks above are not yet proved by those older executions.
+
+## October 26 implementation evidence
+
+`CAAS_DIAGNOSTIC_SAMPLE_RATE=10 npm run build` embeds 10%; omission embeds 0%.
+The point-release workflow exposes this input. Use a NEW version, never replace
+a previously tested asset. The existing manual asset rebuild is not a safe
+separate-version mechanism. Label automation is still a follow-up.
+
+The DOM probe runs once per collection after loaded cards commit (100ms delay).
+It counts card nodes scoped to that collection, nonzero dimensions, and hidden
+styles on cards/ancestors. It reports `present`, `hidden`, `missing` or `unknown`;
+this is a snapshot, not proof of viewport exposure, image loading or no overlay.
+An empty API payload reports `collection_empty`. Request failures now carry their
+own sanitized endpoint and primary/fallback source, plus existing category/status.
+
+Local verification: 999 unit tests with coverage; 11 real Chrome browser cases
+using the built minified bundle. Cases include default-off, forced test logging,
+visible/hidden cards, empty data, HTTP 503, invalid JSON, network rejection,
+two collections, consent unavailable/disabled and blocked logging transport.
+Failure controls exist only in fixtures. LANA is intercepted in these tests;
+these results do not claim real Splunk delivery. Controlled rendering exceptions
+and live query-param ingestion still need separate verification.

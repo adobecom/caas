@@ -11,6 +11,7 @@ import { shape } from 'prop-types';
 // import 'whatwg-fetch'; // Removed: fetch is native in modern browsers
 import { logLana } from '../Helpers/lana';
 import createLanaSmokeLogger from '../Helpers/lanaSmoke';
+import cardDisplay from '../Helpers/cardDisplay';
 import Popup from '../Sort/Popup';
 import Search from '../Search/Search';
 import Loader from '../Loader/Loader';
@@ -369,7 +370,10 @@ const Container = (props) => {
      */
     const [cards, setCards] = useState([]);
     useEffect(() => {
-        if (hasLoadedCards) logSmoke('collection_rendered', cards.length);
+        if (!hasLoadedCards) return undefined;
+        logSmoke('collection_rendered', cards.length);
+        const timer = setTimeout(() => logSmoke('collection_dom', () => cardDisplay(box.current)), 100);
+        return () => clearTimeout(timer);
     }, [hasLoadedCards, cards, logSmoke]);
 
     /**
@@ -1104,6 +1108,7 @@ const Container = (props) => {
                     setIsFirstLoad(true);
                     if (!getByPath(payload, 'cards.length')) {
                         logSmoke('collection_ready', 0);
+                        logSmoke('collection_empty');
                         logLana({ message: `no cards return by query to this endpoint: ${endPoint}`, tags: 'collection' });
                         if (originSelection === 'events' && box.current) {
                             removeCollectionFromPage();
@@ -1805,6 +1810,7 @@ const Container = (props) => {
                 {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions,jsx-a11y/click-events-have-key-events */}
                 <section
                     ref={box}
+                    data-caas-collection=""
                     role="group"
                     aria-label={title || 'Card Collection'}
                     daa-lh={collectionAnalytics}

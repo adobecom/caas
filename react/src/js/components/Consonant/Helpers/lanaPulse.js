@@ -1,6 +1,9 @@
 // Small operational pulse: one sampling decision and at most two requests per page.
 const KEY = Symbol.for('caas.pulse.v1');
-const SAMPLE_RATE = 10;
+export function diagnosticSampleRate() {
+    const rate = Number(process.env.CAAS_DIAGNOSTIC_SAMPLE_RATE || 0);
+    return Number.isFinite(rate) && rate >= 0 && rate <= 100 ? rate : 0;
+}
 
 export function consentStatus() {
     const raw = globalThis.OnetrustActiveGroups;
@@ -34,7 +37,7 @@ function send(page, phase) {
             release: process.env.CAAS_RELEASE_VERSION || 'development',
             build: process.env.CAAS_BUILD_COMMIT || 'unknown',
             mode: page.run ? 'test' : 'sample',
-sampleRate: page.run ? 100 : SAMPLE_RATE,
+sampleRate: page.run ? 100 : page.sampleRate,
             phase,
 ...consentStatus(),
             collectionsStarted: page.started,
@@ -70,7 +73,8 @@ export default function createLanaSmokeLogger() {
                 const value = new URLSearchParams(globalThis.location.search).get('caas_log_poc');
                 const run = /^smoke-[a-z0-9_-]{1,40}$/i.test(value || '') ? value : null;
                 globalThis[KEY] = { run,
-sampled: !!run || Math.random() < SAMPLE_RATE / 100,
+sampleRate: diagnosticSampleRate(),
+sampled: !!run || Math.random() < diagnosticSampleRate() / 100,
                     started: 0,
 rendered: 0,
 failed: 0,

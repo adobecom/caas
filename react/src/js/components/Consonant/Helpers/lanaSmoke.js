@@ -3,7 +3,7 @@ import createPulse, { consentStatus, pulseState } from './lanaPulse';
 // Correlate one sampled page visit across independently mounted collections.
 const KEY = Symbol.for('caas.telemetry.v2');
 const EVENTS = ['collection_started', 'collection_ready', 'collection_rendered',
-    'collection_failed', 'collection_fallback', 'request_started', 'request_failed'];
+    'collection_dom', 'collection_empty', 'collection_failed', 'collection_fallback', 'request_started', 'request_failed'];
 const bundleUrl = globalThis.document && globalThis.document.currentScript
     ? globalThis.document.currentScript.src : '';
 const bytes = value => encodeURIComponent(value).replace(/%[A-F\d]{2}/gi, 'x').length;
@@ -71,7 +71,7 @@ pageVisitId: page.id,
         release: process.env.CAAS_RELEASE_VERSION || 'development',
         build: process.env.CAAS_BUILD_COMMIT || 'unknown',
         mode: run ? 'test' : 'sample',
-sampleRate: run ? 100 : 10,
+        sampleRate: run ? 100 : pulseState().sampleRate,
 ...consentStatus(),
 ...(run ? { run } : {}) };
 }
@@ -197,7 +197,7 @@ page: cleanUrl(globalThis.location.href),
                 return undefined;
             }
             if (event !== 'request_started' && event !== 'request_failed' && sent.has(event)) return undefined;
-            if (attempts >= 8) {
+            if (attempts >= 8 && !['collection_dom', 'collection_empty'].includes(event)) {
                 if (!limitSent) {
                     limitSent = true;
                     send('telemetry_limit', { collectionId, configId, reason: 'event_budget' });
@@ -212,21 +212,26 @@ page: cleanUrl(globalThis.location.href),
             const details = { collectionId, configId };
             if (event === 'request_started') {
                 request = `request-${++requestSequence}`;
-                requests.set(request, Date.now());
-                details.endpoint = cleanUrl(value.endpoint);
-                details.source = value.source === 'fallback' ? 'fallback' : 'primary';
+                requests.set(request, { started: Date.now(),
+                    endpoint: cleanUrl(value.endpoint),
+                    source: value.source === 'fallback' ? 'fallback' : 'primary' });
             }
             if (event.startsWith('request_')) {
                 const requestId = event === 'request_failed' ? value.requestId : request;
                 if (!requests.has(requestId)) return undefined;
                 details.requestId = requestId;
-                details.durationMs = Math.max(0, Date.now() - requests.get(requestId));
+                const entry = requests.get(requestId);
+                details.endpoint = entry.endpoint;
+                details.source = entry.source;
+                details.durationMs = Math.max(0, Date.now() - entry.started);
             } else if (started !== undefined && event !== 'collection_started') {
                 details.durationMs = Math.max(0, Date.now() - started);
                 details.fallback = fallback;
             }
             if (['collection_ready', 'collection_rendered'].includes(event)
                 && Number.isSafeInteger(value) && value >= 0) details.cardCount = value;
+            if (event === 'collection_dom') Object.assign(details, value());
+            if (event === 'collection_empty') details.cardCount = 0;
             if (event === 'request_failed') {
                 const kind = ['http', 'network', 'parse', 'processing'].includes(value.kind) ? value.kind : 'processing';
                 details.error = { kind };

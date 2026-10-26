@@ -11,6 +11,7 @@ const fresh = () => {
     });
 };
 beforeEach(() => {
+    process.env.CAAS_DIAGNOSTIC_SAMPLE_RATE = '10';
     jest.useFakeTimers();
     jest.spyOn(Math, 'random').mockReturnValue(0.5);
     fresh();
@@ -18,7 +19,7 @@ beforeEach(() => {
     window.OnetrustActiveGroups = ',C0001,C0002,';
     global.fetch = jest.fn().mockResolvedValue({ type: 'opaque' });
 });
-afterEach(() => { jest.clearAllTimers(); jest.useRealTimers(); jest.restoreAllMocks(); delete window[Symbol.for('caas.telemetry.v2')]; delete window[Symbol.for('caas.pulse.v1')]; delete window.OnetrustActiveGroups; });
+afterEach(() => { delete process.env.CAAS_DIAGNOSTIC_SAMPLE_RATE; jest.clearAllTimers(); jest.useRealTimers(); jest.restoreAllMocks(); delete window[Symbol.for('caas.telemetry.v2')]; delete window[Symbol.for('caas.pulse.v1')]; delete window.OnetrustActiveGroups; });
 
 test.each(['', '?caas_log_poc=private@example.com', '?caas_log_poc=smoke-', `?caas_log_poc=smoke-${'x'.repeat(41)}`])('does not send for excluded or invalid visits %s', query => {
     window.history.replaceState({}, '', `/${query}`);
@@ -185,4 +186,33 @@ test('records a later consent change without withholding initial outcomes', () =
     jest.advanceTimersByTime(10000);
     const all = global.fetch.mock.calls.map(([url]) => JSON.parse(new URL(url).searchParams.get('m')));
     expect(all.find(r => r.phase === 'after_10s')).toMatchObject({ analyticsConsent: 'enabled', collectionsRendered: 1 });
+});
+
+test('configured rate is consistent in pulse and detail records', () => {
+    process.env.CAAS_DIAGNOSTIC_SAMPLE_RATE = '50';
+    window.history.replaceState({}, '', '/'); Math.random.mockReturnValue(0.49);
+    createLogger()('collection_started');
+    const all = fetch.mock.calls.map(([url]) => JSON.parse(new URL(url).searchParams.get('m')));
+    expect(all.every(record => record.sampleRate === 50)).toBe(true);
+});
+test('unsampled page does not evaluate a DOM probe', () => {
+    process.env.CAAS_DIAGNOSTIC_SAMPLE_RATE = '0';
+    window.history.replaceState({}, '', '/');
+    const inspect = jest.fn(); const log = createLogger();
+    log('collection_started'); log('collection_dom', inspect);
+    expect(inspect).not.toHaveBeenCalled(); expect(fetch).not.toHaveBeenCalled();
+});
+test('DOM and empty outcomes retain collection context', () => {
+    const log = createLogger(); log('collection_started');
+    log('collection_dom', () => ({ domStatus: 'hidden', domCardCount: 2, displayedCardCount: 0 }));
+    log('collection_empty');
+    expect(records().find(r => r.event === 'collection_dom')).toMatchObject({ collectionId: 'collection-1', configId: 'config-1', domStatus: 'hidden', displayedCardCount: 0 });
+    expect(records().find(r => r.event === 'collection_empty')).toMatchObject({ cardCount: 0 });
+});
+test('failure record contains request endpoint and source without needing request-start delivery', () => {
+    const log = createLogger(); log('collection_started');
+    const requestId = log('request_started', { endpoint: '/cards?token=private', source: 'fallback' });
+    log('request_failed', { requestId, kind: 'parse', status: 200 });
+    expect(records().find(r => r.event === 'request_failed')).toMatchObject({ endpoint: 'http://localhost/cards', source: 'fallback', error: { kind: 'parse', status: 200 } });
+    expect(JSON.stringify(records())).not.toContain('private');
 });

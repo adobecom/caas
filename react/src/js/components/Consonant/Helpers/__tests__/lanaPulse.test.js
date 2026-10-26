@@ -3,13 +3,14 @@ import createLogger, { consentStatus } from '../lanaPulse';
 const key = Symbol.for('caas.pulse.v1');
 const messages = () => fetch.mock.calls.map(([url]) => JSON.parse(new URL(url).searchParams.get('m')));
 beforeEach(() => {
+    process.env.CAAS_DIAGNOSTIC_SAMPLE_RATE = '10';
     jest.useFakeTimers();
     jest.spyOn(Math, 'random').mockReturnValue(0.05);
     global.fetch = jest.fn().mockResolvedValue({});
     delete window[key]; delete window.OnetrustActiveGroups; delete window.adobePrivacy;
     window.history.replaceState({}, '', '/');
 });
-afterEach(() => { jest.clearAllTimers(); jest.useRealTimers(); jest.restoreAllMocks(); });
+afterEach(() => { delete process.env.CAAS_DIAGNOSTIC_SAMPLE_RATE; jest.clearAllTimers(); jest.useRealTimers(); jest.restoreAllMocks(); });
 
 test('pulse is visible when the raw consent flag is missing', () => {
     createLogger()('collection_started');
@@ -95,4 +96,28 @@ test.each([
     window.adobePrivacy = api;
     createLogger()('collection_started');
     expect(messages()[0]).toMatchObject({ consentApiState: expected, analyticsConsent: 'unknown' });
+});
+
+ test('default-off diagnostics do not send even when random returns zero', () => {
+    delete process.env.CAAS_DIAGNOSTIC_SAMPLE_RATE;
+    Math.random.mockReturnValue(0);
+    createLogger()('collection_started');
+    jest.advanceTimersByTime(10000);
+    expect(fetch).not.toHaveBeenCalled();
+});
+test('forced test works with organic diagnostics disabled', () => {
+    delete process.env.CAAS_DIAGNOSTIC_SAMPLE_RATE;
+    window.history.replaceState({}, '', '/?caas_log_poc=smoke-zero');
+    createLogger()('collection_started');
+    expect(messages()[0]).toMatchObject({ mode: 'test', sampleRate: 100 });
+});
+test.each(['25', '100'])('configured sample rate %s is reported', (rate) => {
+    process.env.CAAS_DIAGNOSTIC_SAMPLE_RATE = rate;
+    createLogger()('collection_started');
+    expect(messages()[0].sampleRate).toBe(Number(rate));
+});
+test.each(['bad', '-1', '101'])('invalid rate %s fails closed', (rate) => {
+    process.env.CAAS_DIAGNOSTIC_SAMPLE_RATE = rate;
+    createLogger()('collection_started');
+    expect(fetch).not.toHaveBeenCalled();
 });
