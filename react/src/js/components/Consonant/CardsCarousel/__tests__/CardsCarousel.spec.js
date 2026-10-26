@@ -493,4 +493,36 @@ describe('CardsCarousel comprehensive behaviors', () => {
     fireEvent.click(container.querySelector('[name="previous"]'));
     expect(carousel.scrollLeft).toBe(initialScroll);
   });
+
+  const renderModernCarousel = async (cardCount) => {
+    global.innerWidth = 1400;
+    global.fetch.mockImplementationOnce(() => Promise.resolve({
+      ok: true,
+      status: 200,
+      json: () => Promise.resolve({ cards: cards.slice(0, cardCount) }),
+    }));
+    const cfg = JSON.parse(JSON.stringify(config));
+    cfg.pagination.animationStyle = 'pagedModern';
+    cfg.collection.layout = { container: 'carousel', gutter: '3x', type: '3up' };
+    await act(async () => {
+      ({ container } = render(<Container config={cfg} />));
+    });
+    return container.querySelector('.consonant-Navigation--carousel');
+  };
+
+  test('modern: hides navigation when all cards fit without scrolling', async () => {
+    const nav = await renderModernCarousel(3);
+    expect(nav).toHaveClass('hide');
+  });
+
+  test('modern: shows navigation when there are cards to scroll', async () => {
+    const nav = await renderModernCarousel(4);
+    expect(nav).not.toHaveClass('hide');
+    expect(container.querySelector('[name="next"]')).toBeEnabled();
+
+    fireEvent.click(container.querySelector('[name="next"]'));
+    expect(container.querySelector('[name="next"]')).toBeDisabled();
+    expect(container.querySelector('[name="previous"]')).toBeEnabled();
+    expect(nav).not.toHaveClass('hide');
+  });
 });
