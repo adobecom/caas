@@ -523,24 +523,20 @@ describe('CardsCarousel comprehensive behaviors', () => {
     expect(nav).toHaveClass('hide');
   });
 
-  test('modern: hides navigation on desktop even when cards overflow', async () => {
+  test('modern: shows navigation on desktop when cards overflow', async () => {
     const nav = await renderModernCarousel(4);
-    expect(nav).toHaveClass('hide');
+    expect(nav).not.toHaveClass('hide');
     expect(container.querySelector('[name="next"]')).toBeEnabled();
 
     fireEvent.click(container.querySelector('[name="next"]'));
     expect(container.querySelector('[name="next"]')).toBeDisabled();
     expect(container.querySelector('[name="previous"]')).toBeEnabled();
-    expect(nav).toHaveClass('hide');
+    expect(nav).not.toHaveClass('hide');
   });
 
-  test.each([
-    [1198, false],
-    [1199, true],
-    [1400, true],
-  ])('modern: viewport width %s sets overflowing navigation hidden to %s', async (width, hidden) => {
+  test.each([1198, 1199, 1400])('modern: shows overflowing navigation at viewport width %s', async (width) => {
     const nav = await renderModernCarousel(4, width, 1600, 1000);
-    expect(nav.classList.contains('hide')).toBe(hidden);
+    expect(nav).not.toHaveClass('hide');
   });
 
   test('modern: resizing between mobile and desktop updates navigation visibility', async () => {
@@ -548,12 +544,58 @@ describe('CardsCarousel comprehensive behaviors', () => {
     expect(nav).not.toHaveClass('hide');
 
     global.innerWidth = 1400;
+    jest.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(1200);
     fireEvent(window, new Event('resize'));
     expect(nav).toHaveClass('hide');
 
     global.innerWidth = 500;
+    jest.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(500);
     fireEvent(window, new Event('resize'));
     expect(container.querySelector('.consonant-Navigation--carousel')).not.toHaveClass('hide');
+    expect(container.querySelector('[name="previous"]')).toBeDisabled();
+    expect(container.querySelector('[name="next"]')).toBeEnabled();
+  });
+
+  test.each([
+    ['incrementalModern', 'ltr'],
+    ['incrementalModern', 'rtl'],
+    ['pagedModern', 'ltr'],
+    ['pagedModern', 'rtl'],
+    ['incrementalModern-light', 'ltr'],
+    ['incrementalModern-light', 'rtl'],
+    ['pagedModern-light', 'ltr'],
+    ['pagedModern-light', 'rtl'],
+  ])('mobile %s %s: resizing recalculates endpoint buttons when overflow changes', async (animationStyle, direction) => {
+    const nav = await renderModernCarousel(3, 1000, 1000, 1000, animationStyle);
+    const carousel = container.querySelector('.consonant-Container--carousel');
+    carousel.style.direction = direction;
+    const previousButton = container.querySelector('[name="previous"]');
+    const nextButton = container.querySelector('[name="next"]');
+    expect(nav).toHaveClass('hide');
+    expect(previousButton).toBeDisabled();
+    expect(nextButton).toBeDisabled();
+
+    global.innerWidth = 500;
+    jest.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(500);
+    fireEvent(window, new Event('resize'));
+    expect(nav).not.toHaveClass('hide');
+    expect(previousButton).toBeDisabled();
+    expect(nextButton).toBeEnabled();
+    expect(nextButton).not.toHaveClass('disabled');
+    expect(nextButton).not.toHaveAttribute('aria-hidden');
+
+    carousel.scrollLeft = direction === 'rtl' ? -500 : 500;
+    fireEvent(window, new Event('resize'));
+    expect(previousButton).toBeEnabled();
+    expect(nextButton).toBeDisabled();
+
+    carousel.scrollLeft = 0;
+    global.innerWidth = 1000;
+    jest.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(1000);
+    fireEvent(window, new Event('resize'));
+    expect(nav).toHaveClass('hide');
+    expect(previousButton).toBeDisabled();
+    expect(nextButton).toBeDisabled();
   });
 
   test.each([
