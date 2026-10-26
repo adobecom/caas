@@ -111,17 +111,15 @@ function CardsCarousel({
     let lastVisibleCard = firstVisibleCard + cardsPerPage - 1;
 
     /**
-     * Hides the navigation controls when neither button can scroll the carousel.
+     * Shows navigation only on mobile when the carousel has overflow.
      */
     function updateNavVisibility() {
         const nav = navRef.current;
-        const prevBtn = prev.current;
-        const nextBtn = next.current;
-        if (!nav || !prevBtn || !nextBtn) return;
+        const carousel = carouselRef.current;
+        if (!nav || !carousel) return;
 
-        const nothingToScroll = prevBtn.getAttribute('aria-hidden') === 'true'
-            && nextBtn.getAttribute('aria-hidden') === 'true';
-        nav.classList.toggle('hide', nothingToScroll);
+        const hasOverflow = carousel.scrollWidth - carousel.clientWidth > 1;
+        nav.classList.toggle('hide', !isMobile() || !hasOverflow);
     }
 
     function hideNextButton() {
@@ -373,7 +371,11 @@ function CardsCarousel({
 
     useEffect(() => {
         mobileLogic();
+        updateMobileNavigation();
+        updateNavVisibility();
         setAriaAttributes(carouselRef.current);
+        window.addEventListener('resize', updateNavVisibility);
+        return () => window.removeEventListener('resize', updateNavVisibility);
     }, []);
 
     return (
