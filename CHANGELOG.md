@@ -1,5 +1,12 @@
 
 
+## [0.69.0](https://github.com/adobecom/caas/compare/0.68.61...0.69.0) (2026-10-27)
+
+
+### Features
+
+* **mwpw-199088:** add sampled release telemetry for CaaS collections ([#654](https://github.com/adobecom/caas/issues/654)) ([93480ca](https://github.com/adobecom/caas/commit/93480caf4c06dd4944d52c8ed5d8afd0e076a866))
+
 ## [0.68.61](https://github.com/adobecom/caas/compare/0.68.60...0.68.61) (2026-10-27)
 
 
