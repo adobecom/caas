@@ -166,6 +166,7 @@ const Container = (props) => {
     const sortEnabled = getConfig('sort', 'enabled');
     const localFirstRecencyThreshold = getConfig('sort', 'localFirstRecencyThreshold');
     const cardStyle = getConfig('collection', 'cardStyle');
+    const detailsTextOption = getConfig('collection', 'detailsTextOption');
     const title = getConfig('collection', 'i18n.title');
     const headers = getConfig('headers', '');
     const partialLoadWithBackgroundFetch = getConfig('collection', 'partialLoadWithBackgroundFetch.enabled');
@@ -1544,7 +1545,7 @@ const Container = (props) => {
         .keepCardsWithinDateRange()
         .filterCards(expandedFilterIds, activePanels, filterLogic, FILTER_TYPES, currCategories, groupedFilterSelections)
         .truncateList(totalCardLimit)
-        .searchCards(removeMarkDown(searchQuery), searchFields, cardStyle)
+        .searchCards(removeMarkDown(searchQuery), searchFields, cardStyle, detailsTextOption)
         .removeCards(inclusionIds);
 
     /**

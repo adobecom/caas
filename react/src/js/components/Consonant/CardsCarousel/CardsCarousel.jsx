@@ -103,11 +103,24 @@ function CardsCarousel({
     const cardsPerPage = parseInt(cardsUp, 10);
     const [pages] = useState(Number.POSITIVE_INFINITY);
     const carouselRef = useRef(null);
+    const navRef = useRef(null);
     const prev = useRef(null);
     const next = useRef(null);
 
     let firstVisibleCard = 1;
     let lastVisibleCard = firstVisibleCard + cardsPerPage - 1;
+
+    /**
+     * Hides navigation when the carousel has no overflow.
+     */
+    function updateNavVisibility() {
+        const nav = navRef.current;
+        const carousel = carouselRef.current;
+        if (!nav || !carousel) return;
+
+        const hasOverflow = carousel.scrollWidth - carousel.clientWidth > 1;
+        nav.classList.toggle('hide', !hasOverflow);
+    }
 
     function hideNextButton() {
         const nextBtn = next.current;
@@ -121,6 +134,7 @@ function CardsCarousel({
             nextBtn.setAttribute('aria-hidden', 'true');
             nextBtn.classList.add('disabled');
         }
+        updateNavVisibility();
     }
 
     function hidePrevButton() {
@@ -135,6 +149,7 @@ function CardsCarousel({
             prevBtn.setAttribute('aria-hidden', 'true');
             prevBtn.classList.add('disabled');
         }
+        updateNavVisibility();
     }
 
     function showNextButton() {
@@ -149,6 +164,7 @@ function CardsCarousel({
             nextBtn.removeAttribute('aria-hidden');
             nextBtn.classList.remove('disabled');
         }
+        updateNavVisibility();
     }
 
     function showPrevButton() {
@@ -163,6 +179,7 @@ function CardsCarousel({
             prevBtn.removeAttribute('aria-hidden');
             prevBtn.classList.remove('disabled');
         }
+        updateNavVisibility();
     }
 
     function hideNav() {
@@ -183,6 +200,38 @@ function CardsCarousel({
     function setFocusNextBtn() {
         const nextBtn = next.current;
         if (nextBtn) nextBtn.focus();
+    }
+
+    function updateMobileNavigation() {
+        if (!isMobile() || carouselType === 'default') return;
+
+        const carousel = carouselRef.current;
+        const scrollDirection = window.getComputedStyle(carousel).direction === 'rtl' ? -1 : 1;
+        const scrollPosition = carousel.scrollLeft * scrollDirection;
+        const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+        const atStart = scrollPosition <= 1;
+        const atEnd = scrollPosition >= maxScroll - 1;
+        const focusedElement = document.activeElement;
+
+        if (atStart) {
+            hidePrevButton();
+        } else {
+            showPrevButton();
+        }
+
+        if (atEnd) {
+            hideNextButton();
+        } else {
+            showNextButton();
+        }
+
+        if (!userIsTabbing()) return;
+
+        if (atStart && !atEnd && focusedElement === prev.current) {
+            setFocusNextBtn();
+        } else if (atEnd && !atStart && focusedElement === next.current) {
+            setFocusPrevBtn();
+        }
     }
 
     function shouldHidePrevButton() {
@@ -218,10 +267,11 @@ function CardsCarousel({
      * 620 = (tablet range) + average grid gap
      * 620 = 1200px - 600px + (8 + 32)/2
      */
-    function centerClick() {
+    function centerClick(direction = 1) {
         const carousel = carouselRef.current;
+        const scrollDirection = window.getComputedStyle(carousel).direction === 'rtl' ? -1 : 1;
         /* eslint-disable-next-line no-mixed-operators */
-        carousel.scrollLeft += (-window.innerWidth / 2 + 620);
+        carousel.scrollLeft += (-window.innerWidth / 2 + 620) * scrollDirection * direction;
     }
 
     /**
@@ -284,7 +334,8 @@ function CardsCarousel({
             centerClick();
         } else {
             const carousel = carouselRef.current;
-            carousel.scrollLeft += ((cardWidth + gridGap) * cardsShiftedPerClick);
+            const scrollDirection = window.getComputedStyle(carousel).direction === 'rtl' ? -1 : 1;
+            carousel.scrollLeft += ((cardWidth + gridGap) * cardsShiftedPerClick * scrollDirection);
             setVisibleCards('next');
             setAriaAttributes(carousel);
             showPrevButton();
@@ -294,10 +345,11 @@ function CardsCarousel({
 
     function prevButtonClick() {
         if (isMobile()) {
-            centerClick();
+            centerClick(-1);
         } else {
             const carousel = carouselRef.current;
-            carousel.scrollLeft -= ((cardWidth + gridGap) * cardsShiftedPerClick);
+            const scrollDirection = window.getComputedStyle(carousel).direction === 'rtl' ? -1 : 1;
+            carousel.scrollLeft -= ((cardWidth + gridGap) * cardsShiftedPerClick * scrollDirection);
             setVisibleCards('prev');
             setAriaAttributes(carousel);
             showNextButton();
@@ -318,13 +370,23 @@ function CardsCarousel({
     const totalResultsHtml = RenderTotalResults(showTotalResultsText, resQty);
 
     useEffect(() => {
+        function updateNavigation() {
+            updateMobileNavigation();
+            updateNavVisibility();
+        }
+
         mobileLogic();
+        updateNavigation();
         setAriaAttributes(carouselRef.current);
+        window.addEventListener('resize', updateNavigation);
+        return () => window.removeEventListener('resize', updateNavigation);
     }, []);
 
     return (
         <Fragment>
-            <div className="consonant-Navigation--carousel">
+            <div
+                className="consonant-Navigation--carousel"
+                ref={navRef}>
                 <button
                     aria-label={prevCard}
                     aria-hidden="true"
@@ -365,6 +427,7 @@ function CardsCarousel({
             {/* eslint-disable jsx-a11y/no-static-element-interactions */}
             <div
                 className="consonant-Container--carousel"
+                onScroll={updateMobileNavigation}
                 ref={carouselRef}>
                 <Grid
                     cards={cards}

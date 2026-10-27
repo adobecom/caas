@@ -1,5 +1,105 @@
 
 
+## [0.68.61](https://github.com/adobecom/caas/compare/0.68.60...0.68.61) (2026-10-27)
+
+
+### Bug Fixes
+
+* **mwpw-195936:** removes carousel nav controls when not needed ([#673](https://github.com/adobecom/caas/issues/673)) ([db7de54](https://github.com/adobecom/caas/commit/db7de54ae8b1e96575e2a056caf4ca7ab2532298))
+
+## [0.68.60](https://github.com/adobecom/caas/compare/0.68.59...0.68.60) (2026-10-22)
+
+
+### Bug Fixes
+
+* **MWPW-212505:** fixes search with productName and productIcon ([#671](https://github.com/adobecom/caas/issues/671)) ([1181968](https://github.com/adobecom/caas/commit/1181968a8c9395bacc5a4f86a3423fceee3d1d26))
+
+## [0.68.59](https://github.com/adobecom/caas/compare/0.68.58...0.68.59) (2026-10-22)
+
+
+### Dependencies
+
+* **deps-dev:** bump postcss from 8.5.30 to 8.5.31 ([#672](https://github.com/adobecom/caas/issues/672)) ([723bec7](https://github.com/adobecom/caas/commit/723bec7ad04519694dadeae66650a511a306f414))
+
+## [0.68.58](https://github.com/adobecom/caas/compare/0.68.57...0.68.58) (2026-10-21)
+
+
+### Bug Fixes
+
+* **mwpw-211564:** fixes carousel navigation in mobile ([#669](https://github.com/adobecom/caas/issues/669)) ([8635fd5](https://github.com/adobecom/caas/commit/8635fd59e864fedcd19b6aca3e9c64de9f558a34))
+
+## [0.68.57](https://github.com/adobecom/caas/compare/0.68.56...0.68.57) (2026-10-21)
+
+
+### Dependencies
+
+* **deps:** bump follow-redirects from 1.16.0 to 1.16.1 ([#670](https://github.com/adobecom/caas/issues/670)) ([18faf9a](https://github.com/adobecom/caas/commit/18faf9af62ef2979dd11a2ce34264f7c2b072751))
+
+## [0.68.56](https://github.com/adobecom/caas/compare/0.68.55...0.68.56) (2026-10-19)
+
+
+### Dependencies
+
+* **deps:** fix browserslist without upgrading webpack tooling ([#656](https://github.com/adobecom/caas/issues/656)) ([c89ffd2](https://github.com/adobecom/caas/commit/c89ffd2e47f517a3326871f500ecf270730d2405))
+
+## [0.68.55](https://github.com/adobecom/caas/compare/0.68.54...0.68.55) (2026-10-17)
+
+
+### Dependencies
+
+* **deps-dev:** bump postcss from 8.5.29 to 8.5.30 ([#668](https://github.com/adobecom/caas/issues/668)) ([3769952](https://github.com/adobecom/caas/commit/376995297567f8c6582d7d7ec4e107298d52d42b))
+
+## [0.68.54](https://github.com/adobecom/caas/compare/0.68.53...0.68.54) (2026-10-13)
+
+
+### Bug Fixes
+
+* **mwpw-205589:** fixes carousel navigation in RTL ([#662](https://github.com/adobecom/caas/issues/662)) ([245484e](https://github.com/adobecom/caas/commit/245484e53cb830b8fb9ed68a64b83667c200b3a3))
+
+## [0.68.53](https://github.com/adobecom/caas/compare/0.68.52...0.68.53) (2026-10-13)
+
+## [0.68.52](https://github.com/adobecom/caas/compare/0.68.51...0.68.52) (2026-10-12)
+
+
+### Bug Fixes
+
+* **mwpw-208841:** correct text-card RTL padding ([#664](https://github.com/adobecom/caas/issues/664)) ([29e7af9](https://github.com/adobecom/caas/commit/29e7af9ccb7fffaf7d41bc11a123143002ed7bb0))
+
+## [0.68.51](https://github.com/adobecom/caas/compare/0.68.50...0.68.51) (2026-10-09)
+
+
+### Dependencies
+
+* **deps-dev:** bump axe-core from 4.13.0 to 4.14.0 ([#661](https://github.com/adobecom/caas/issues/661)) ([43160c5](https://github.com/adobecom/caas/commit/43160c53ab998e0594a72f01b19f19895df41b0c))
+
+## [0.68.50](https://github.com/adobecom/caas/compare/0.68.49...0.68.50) (2026-10-09)
+
+
+### Dependencies
+
+* **deps-dev:** bump handlebars from 4.7.9 to 4.7.10 ([#659](https://github.com/adobecom/caas/issues/659)) ([1676b3a](https://github.com/adobecom/caas/commit/1676b3ac687c1c67b1710fa8e35b8905abe11be3))
+
+## [0.68.49](https://github.com/adobecom/caas/compare/0.68.48...0.68.49) (2026-10-09)
+
+
+### Dependencies
+
+* **deps:** bump proxy-addr from 2.0.7 to 2.0.8 ([#658](https://github.com/adobecom/caas/issues/658)) ([cd52265](https://github.com/adobecom/caas/commit/cd52265c92d65ee87a2ae4d3c4c91642d12c9a52))
+
+## [0.68.48](https://github.com/adobecom/caas/compare/0.68.47...0.68.48) (2026-10-09)
+
+
+### Bug Fixes
+
+* **mwpw-210483:** release Dependabot queue after failed build checks ([#663](https://github.com/adobecom/caas/issues/663)) ([bb00eda](https://github.com/adobecom/caas/commit/bb00eda04f3baa1fe2242ed9d63173148f92f216))
+
+## [0.68.47](https://github.com/adobecom/caas/compare/0.68.46...0.68.47) (2026-10-08)
+
+
+### Dependencies
+
+* **deps-dev:** bump postcss from 8.5.28 to 8.5.29 ([#657](https://github.com/adobecom/caas/issues/657)) ([b2cfab2](https://github.com/adobecom/caas/commit/b2cfab2ea7b68e04db02321c6c03f9d7324306a4))
+
 ## [0.68.46](https://github.com/adobecom/caas/compare/0.68.45...0.68.46) (2026-10-07)
 
 

@@ -408,5 +408,20 @@ tags: ['event1'] },
 
             expect(filteredCards).toEqual([]);
         });
+        test.each(['productName', 'productIcon'])('should not highlight detailText when detailsTextOption is %s', (detailsTextOption) => {
+            const detailText = 'caas:product/photoshop';
+            const cards = [{ contentArea: { title: 'Photoshop bulletin', detailText } }];
+            const cardFilterer = new CardFilterer(cards);
+
+            const { filteredCards } = cardFilterer.searchCards(
+                'pho',
+                ['contentArea.title', 'contentArea.detailText'],
+                'flex-card',
+                detailsTextOption,
+            );
+
+            expect(filteredCards[0].contentArea.detailText).toBe(detailText);
+            expect(filteredCards[0].contentArea.highlightedTitle).toBeDefined();
+        });
     });
 });

@@ -16,6 +16,17 @@ The controller in this directory separates update creation from merge policy:
 7. Old or conflicted pure-Dependabot branches go through bounded recovery. Every
    other case receives `dependencies-review` for a person or Codex to handle.
 
+## Failed checks
+
+A completed failed, cancelled, timed-out, or skipped build comparison moves the
+PR to `dependencies-review`, even if the job never published its commit status.
+A final failed build also moves to review instead of waiting for missing output
+evidence. The existing queue handoff reserves the next PR automatically. Failed
+PRs stay open for repair; they are never merged or closed by this recovery.
+Newer queued/running comparison attempts are allowed to finish, and successful
+reruns supersede older failures. Missing or pending evidence cannot authorize a
+merge. A review-labelled PR must be explicitly returned to the queue after repair.
+
 ## Rollout
 
 The repository variable `DEPENDABOT_AUTOMERGE_MODE` controls rollout. Any value
@@ -52,3 +63,20 @@ controller disables its stale auto-merge request immediately.
 
 Decision comments record PR creation time, decision time, elapsed time, head SHA,
 and reason. GitHub's `mergedAt` timestamp completes raised-to-merge metrics.
+
+## Testing before merge
+
+Run `node --test .github/dependabot/*.test.mjs`. The PR workflow
+`Dependabot Controller Tests` runs the same suite with read-only permissions.
+
+Policy tests cover decision rules. Integration tests execute the actual controller
+CLI against a stateful local GitHub stand-in, without GitHub credentials and with
+only the fake `gh` executable on the child PATH. They verify label changes,
+decision comments, queue handoff across runs, exact-head merge requests, and
+stale auto-merge cancellation. Unknown commands fail the simulation. No live
+labels, comments, or merge settings are changed by the tests.
+
+These tests do not prove live token permissions or GitHub event delivery. Verify
+the first controller runs after merge to confirm the expected handoff. Do not
+use the production controller's observation mode as a read-only dry run: it
+still writes labels, comments, and recovery requests.
