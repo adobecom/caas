@@ -42,7 +42,7 @@ not proof the correct build loaded; hosts can also rewrite/remove parameters.
 | Config | Bounded sanitized snapshots, reused within a page | Reduce repeated volume while retaining reproducible context |
 | Browser tests | Built-bundle success, HTTP/fallback failure, multiple collections and consent cases; LANA stubbed | Expand controlled failures, then separately prove real ingestion |
 | Live evidence | October 14 sampled records reached Splunk and rollback completed | Exact new-build query-param proof before another broad rollout |
-| Trial automation | Existing release build workflows | Proposed label/manual triggers; no new trigger or merge gate installed |
+| Trial automation | Existing release build workflows | ready-for-canary label builds a 10% prerelease; no deployment or merge gate |
 
 ## Build control
 
@@ -57,19 +57,31 @@ SHA, sample rate and hashes. Never move an old tag or replace a previously teste
 release asset. An older source tag must contain the telemetry/build support before
 it can simply be rebuilt with the setting.
 
-Possible controls for the same build workflow:
+### PR label: ready-for-canary
 
-- PR: a `telemetry-trial` label requests a trial package. A required check can
-  block merging while the label is present, if that policy is installed.
-- Existing version: a manual workflow accepts a source tag and sample rate; a
-  link in release notes makes it discoverable. GitHub releases have no PR-style
-  custom labels.
-- Normal main build: diagnostics default to 0. A PR label does not automatically
-  carry a build setting into main.
+Add `ready-for-canary` to an open same-repository PR to build its exact head SHA
+with 10% detailed diagnostic sampling. New commits and reopening while labeled
+also request a fresh build. Other label changes do not create builds. Fork PRs
+are excluded. Removing the label before publication, closing the PR, or changing
+its SHA prevents the stale run from publishing.
 
-These controls create packages, not production deployments. Removing a label or
-rolling back does not alter already-loaded code in open tabs. A hard logging
-deadline would need a separately implemented expiry.
+The workflow creates a GitHub prerelease named
+`<package-version>-canary.pr<PR-number>.<run-id>.<attempt>` with `dist.tar.gz`.
+It does not overwrite tags, mark the release as latest, or comment on the PR.
+Find the version in GitHub Releases or the Actions run summary. Normal builds
+continue to default to 0%; the label is not inherited by the main-branch build.
+
+This creates the package only. Use the existing Rundeck publishing job with
+`Pin=false` to upload the version (and update beta), then select it with `caasver`.
+The label does not invoke Rundeck, create a CMR, enforce blackout dates, deploy
+stable, or merge the PR. Existing beta polling may discover releases according
+to its own selection rules; this workflow does not change that job.
+
+The workflow must be present in a PR's workflow revision; after #654 merges,
+update older PR branches from main before using the label. Until then, use the
+existing Create Point Release form for other branches. For an existing source
+version, that form remains available with an explicit new version and sample rate.
+
 
 ## Check cards on the page
 
@@ -162,7 +174,7 @@ The new checks above are not yet proved by those older executions.
 `CAAS_DIAGNOSTIC_SAMPLE_RATE=10 npm run build` embeds 10%; omission embeds 0%.
 The point-release workflow exposes this input. Use a NEW version, never replace
 a previously tested asset. The existing manual asset rebuild is not a safe
-separate-version mechanism. Label automation is still a follow-up.
+separate-version mechanism. The ready-for-canary label workflow now creates separate 10% trial packages.
 
 The DOM probe runs once per collection after loaded cards commit (100ms delay).
 It counts card nodes scoped to that collection, nonzero dimensions, and hidden
