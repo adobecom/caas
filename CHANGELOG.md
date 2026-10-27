@@ -1,5 +1,12 @@
 
 
+## [0.68.61](https://github.com/adobecom/caas/compare/0.68.60...0.68.61) (2026-10-27)
+
+
+### Bug Fixes
+
+* **mwpw-195936:** removes carousel nav controls when not needed ([#673](https://github.com/adobecom/caas/issues/673)) ([db7de54](https://github.com/adobecom/caas/commit/db7de54ae8b1e96575e2a056caf4ca7ab2532298))
+
 ## [0.68.60](https://github.com/adobecom/caas/compare/0.68.59...0.68.60) (2026-10-22)
 
 
