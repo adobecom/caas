@@ -103,11 +103,24 @@ function CardsCarousel({
     const cardsPerPage = parseInt(cardsUp, 10);
     const [pages] = useState(Number.POSITIVE_INFINITY);
     const carouselRef = useRef(null);
+    const navRef = useRef(null);
     const prev = useRef(null);
     const next = useRef(null);
 
     let firstVisibleCard = 1;
     let lastVisibleCard = firstVisibleCard + cardsPerPage - 1;
+
+    /**
+     * Hides navigation when the carousel has no overflow.
+     */
+    function updateNavVisibility() {
+        const nav = navRef.current;
+        const carousel = carouselRef.current;
+        if (!nav || !carousel) return;
+
+        const hasOverflow = carousel.scrollWidth - carousel.clientWidth > 1;
+        nav.classList.toggle('hide', !hasOverflow);
+    }
 
     function hideNextButton() {
         const nextBtn = next.current;
@@ -121,6 +134,7 @@ function CardsCarousel({
             nextBtn.setAttribute('aria-hidden', 'true');
             nextBtn.classList.add('disabled');
         }
+        updateNavVisibility();
     }
 
     function hidePrevButton() {
@@ -135,6 +149,7 @@ function CardsCarousel({
             prevBtn.setAttribute('aria-hidden', 'true');
             prevBtn.classList.add('disabled');
         }
+        updateNavVisibility();
     }
 
     function showNextButton() {
@@ -149,6 +164,7 @@ function CardsCarousel({
             nextBtn.removeAttribute('aria-hidden');
             nextBtn.classList.remove('disabled');
         }
+        updateNavVisibility();
     }
 
     function showPrevButton() {
@@ -163,6 +179,7 @@ function CardsCarousel({
             prevBtn.removeAttribute('aria-hidden');
             prevBtn.classList.remove('disabled');
         }
+        updateNavVisibility();
     }
 
     function hideNav() {
@@ -353,13 +370,23 @@ function CardsCarousel({
     const totalResultsHtml = RenderTotalResults(showTotalResultsText, resQty);
 
     useEffect(() => {
+        function updateNavigation() {
+            updateMobileNavigation();
+            updateNavVisibility();
+        }
+
         mobileLogic();
+        updateNavigation();
         setAriaAttributes(carouselRef.current);
+        window.addEventListener('resize', updateNavigation);
+        return () => window.removeEventListener('resize', updateNavigation);
     }, []);
 
     return (
         <Fragment>
-            <div className="consonant-Navigation--carousel">
+            <div
+                className="consonant-Navigation--carousel"
+                ref={navRef}>
                 <button
                     aria-label={prevCard}
                     aria-hidden="true"
