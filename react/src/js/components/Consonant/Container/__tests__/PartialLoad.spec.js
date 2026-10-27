@@ -8,6 +8,9 @@ import cards from '../../Testing/Mocks/cards.json';
 import setupIntersectionObserverMock from '../../Testing/Mocks/intersectionObserver';
 import jestMocks from '../../Testing/Utils/JestMocks';
 
+// These tests count card requests; telemetry has its own transport tests.
+jest.mock('../../Helpers/lanaSmoke', () => () => jest.fn());
+
 global.fetch = jest.fn();
 setupIntersectionObserverMock();
 jestMocks.lana();

@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
@@ -16,6 +17,7 @@ const listStyles = new StyleLintPlugin({
 });
 
 const plugins = [
+    new webpack.DefinePlugin(require('./scripts/telemetry-build')),
     extractStyles,
     listStyles,
 ];

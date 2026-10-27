@@ -11,6 +11,11 @@ on:
         description: 'Version number (e.g., 0.42.6.1)'
         required: true
         type: string
+      diagnostic_sample_rate:
+        description: 'Detailed diagnostic sampling percent (0 disables organic diagnostics)'
+        required: false
+        type: number
+        default: 0
       force:
         description: 'Force update existing release?'
         required: false
@@ -39,6 +44,9 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          CAAS_DIAGNOSTIC_SAMPLE_RATE: ${{ inputs.diagnostic_sample_rate }}
+          RELEASE_TAG: ${{ inputs.version }}
 
       - name: Create dist tarball
         run: tar -czf dist.tar.gz -C dist .

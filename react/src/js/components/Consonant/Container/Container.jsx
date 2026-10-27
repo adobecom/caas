@@ -10,6 +10,8 @@ import classNames from 'classnames';
 import { shape } from 'prop-types';
 // import 'whatwg-fetch'; // Removed: fetch is native in modern browsers
 import { logLana } from '../Helpers/lana';
+import createLanaSmokeLogger from '../Helpers/lanaSmoke';
+import cardDisplay from '../Helpers/cardDisplay';
 import Popup from '../Sort/Popup';
 import Search from '../Search/Search';
 import Loader from '../Loader/Loader';
@@ -221,6 +223,7 @@ const Container = (props) => {
     const hashedCategoryMappingsRef = useRef(categoryMappings);
     const originSelectionRef = useRef();
     const [hasLoadedCards, setHasLoadedCards] = useState(false);
+    const [logSmoke] = useState(() => createLanaSmokeLogger(() => config));
 
     const [, updateState] = React.useState();
     const scrollElementRef = useRef(null);
@@ -367,6 +370,12 @@ const Container = (props) => {
      * @type {[Array, Function]} Cards
      */
     const [cards, setCards] = useState([]);
+    useEffect(() => {
+        if (!hasLoadedCards) return undefined;
+        logSmoke('collection_rendered', cards.length);
+        const timer = setTimeout(() => logSmoke('collection_dom', () => cardDisplay(box.current)), 100);
+        return () => clearTimeout(timer);
+    }, [hasLoadedCards, cards, logSmoke]);
 
     /**
      * @typedef {Boolean} LoadingState — Can either be true or false
@@ -1060,7 +1069,11 @@ const Container = (props) => {
          * @returns {Void} - an updated state
          */
         function getCards(endPoint = collectionEndpoint) {
+            logSmoke('collection_started');
             const start = Date.now();
+            let failureKind = 'network';
+            let httpStatus;
+            const telemetryRequest = logSmoke('request_started', { endpoint: endPoint, source: endPoint === fallbackEndpoint ? 'fallback' : 'primary' });
             return globalThis.fetch(endPoint, {
                 credentials: 'include',
                 headers,
@@ -1073,6 +1086,8 @@ const Container = (props) => {
                         url,
                     } = resp;
 
+                    httpStatus = status;
+                    failureKind = ok ? 'parse' : 'http';
                     if (ok) {
                         return resp.json().then((json) => {
                             const validData = !!Object.keys(json).length;
@@ -1088,10 +1103,13 @@ const Container = (props) => {
                     return Promise.reject(new Error(`${status}: ${statusText}, failure for call to ${url}`));
                 })
                 .then((payload) => {
+                    failureKind = 'processing';
                     logLana({ message: `response took ${(Date.now() - start) / 1000}s`, tags: 'collection' });
                     setLoading(false);
                     setIsFirstLoad(true);
                     if (!getByPath(payload, 'cards.length')) {
+                        logSmoke('collection_ready', 0);
+                        logSmoke('collection_empty');
                         logLana({ message: `no cards return by query to this endpoint: ${endPoint}`, tags: 'collection' });
                         if (originSelection === 'events' && box.current) {
                             removeCollectionFromPage();
@@ -1235,6 +1253,7 @@ const Container = (props) => {
                         setCards(processedCards);
                         setHasLoadedCards(true);
                     });
+                    logSmoke('collection_ready', processedCards.length);
 
                     // check if the current page is greater than the last page
                     const lastPage = Math.ceil(processedCards.length / resultsPerPage);
@@ -1257,10 +1276,13 @@ const Container = (props) => {
                         lastID.scrollIntoView();
                     }, 100);
                 }).catch(() => {
+                    logSmoke('request_failed', { kind: failureKind, status: httpStatus, requestId: telemetryRequest });
                     if (endPoint === collectionEndpoint && fallbackEndpoint) {
+                        logSmoke('collection_fallback');
                         getCards(fallbackEndpoint);
                         return;
                     }
+                    logSmoke('collection_failed');
                     logLana({ message: 'failed to return processed cards', tags: 'collection' });
                     setLoading(false);
                     setApiFailure(true);
@@ -1789,6 +1811,7 @@ const Container = (props) => {
                 {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions,jsx-a11y/click-events-have-key-events */}
                 <section
                     ref={box}
+                    data-caas-collection=""
                     role="group"
                     aria-label={title || 'Card Collection'}
                     daa-lh={collectionAnalytics}
