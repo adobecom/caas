@@ -1,5 +1,12 @@
 
 
+## [0.69.4](https://github.com/adobecom/caas/compare/0.69.3...0.69.4) (2026-10-28)
+
+
+### Dependencies
+
+* **deps-dev:** bump qs from 6.16.0 to 6.16.2 ([#675](https://github.com/adobecom/caas/issues/675)) ([cb92008](https://github.com/adobecom/caas/commit/cb92008f4836c822a200bfe1395f09616be3fc78))
+
 ## [0.69.3](https://github.com/adobecom/caas/compare/0.69.2...0.69.3) (2026-10-28)
 
 
