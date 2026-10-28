@@ -149,6 +149,18 @@ export function evaluateCandidate(candidate) {
   return { state: 'review', reason: `GitHub reports merge state ${mergeStateStatus || 'UNKNOWN'}` };
 }
 
+// Dependabot acknowledges a command it accepts with a thumbs-up reaction. It
+// occasionally drops a command with no reaction at all, so an unacknowledged
+// request is posted again after 15 minutes (up to three times) instead of
+// waiting the full two hours before escalating.
+const ACK_TIMEOUT_MS = 15 * 60 * 1000;
+const MAX_COMMAND_ATTEMPTS = 3;
+
+function acknowledged(comment) {
+  return (comment.reactionGroups || []).some(({ content, users }) =>
+    content === 'THUMBS_UP' && (users?.totalCount || 0) > 0);
+}
+
 export function nextConflictAction({ comments, headSha, pureDependabotCommits, now = Date.now() }) {
   if (!pureDependabotCommits) return { action: 'review', reason: 'extra commits prevent Dependabot automatic rebasing' };
 
@@ -157,21 +169,29 @@ export function nextConflictAction({ comments, headSha, pureDependabotCommits, n
     .map((comment) => ({
       action: (comment.body.match(/dependabot-conflict-recovery:(rebase|recreate):/) || [])[1],
       at: Date.parse(comment.createdAt),
+      acknowledged: acknowledged(comment),
     }))
     .filter(({ action, at }) => action && Number.isFinite(at))
     .sort((a, b) => b.at - a.at);
 
-  const recreate = actions.find(({ action }) => action === 'recreate');
-  if (recreate) {
-    return now - recreate.at >= TWO_HOURS_MS
-      ? { action: 'review', reason: 'still conflicted two hours after recreate' }
-      : { action: 'wait', reason: 'waiting for requested recreate' };
+  const step = (kind, escalation) => {
+    const requests = actions.filter(({ action }) => action === kind);
+    const first = requests.at(-1);
+    const latest = requests[0];
+    if (now - first.at >= TWO_HOURS_MS) return escalation;
+    if (!requests.some((request) => request.acknowledged) && now - latest.at >= ACK_TIMEOUT_MS) {
+      return requests.length < MAX_COMMAND_ATTEMPTS
+        ? { action: kind, attempt: requests.length + 1, reason: `Dependabot did not acknowledge the ${kind} request, asking again` }
+        : { action: 'wait', reason: `Dependabot has not acknowledged ${requests.length} ${kind} requests` };
+    }
+    return { action: 'wait', reason: `waiting for requested ${kind}` };
+  };
+
+  if (actions.some(({ action }) => action === 'recreate')) {
+    return step('recreate', { action: 'review', reason: 'still conflicted two hours after recreate' });
   }
-  const rebase = actions.find(({ action }) => action === 'rebase');
-  if (rebase) {
-    return now - rebase.at >= TWO_HOURS_MS
-      ? { action: 'recreate', reason: 'still conflicted two hours after rebase' }
-      : { action: 'wait', reason: 'waiting for requested rebase' };
+  if (actions.some(({ action }) => action === 'rebase')) {
+    return step('rebase', { action: 'recreate', reason: 'still conflicted two hours after rebase' });
   }
   return { action: 'rebase', reason: 'selected queue item must include the latest main branch' };
 }
@@ -304,8 +324,9 @@ async function loadCandidateData(repo, pr, baseSha) {
   };
 }
 
-function conflictCommand(repo, pr, data, action, reason) {
-  const marker = `${CONFLICT_MARKER}${action}:${data.headSha} -->`;
+function conflictCommand(repo, pr, data, action, reason, attempt = 1) {
+  const suffix = attempt > 1 ? `:${attempt}` : '';
+  const marker = `${CONFLICT_MARKER}${action}:${data.headSha}${suffix} -->`;
   const comments = ghJson(['api', `repos/${repo}/issues/${pr}/comments?per_page=100`]) || [];
   if (comments.some((comment) => (comment.body || '').includes(marker))) return;
   const body = [
@@ -412,7 +433,7 @@ async function main() {
       pureDependabotCommits: hasOnlyDependabotCommits(data.commits),
     });
     if (recovery.action === 'rebase' || recovery.action === 'recreate') {
-      conflictCommand(repo, selected.number, data, recovery.action, recovery.reason);
+      conflictCommand(repo, selected.number, data, recovery.action, recovery.reason, recovery.attempt);
     } else if (recovery.action === 'review') {
       setQueueState(repo, selected, REVIEW_LABEL);
       recordDecision(repo, selected.number, data, 'review', recovery.reason);

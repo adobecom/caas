@@ -59,6 +59,11 @@ conflicted, the scheduled controller:
 2. after two hours, requests `@dependabot recreate` once;
 3. after another two hours, labels the PR `dependencies-review` and moves on.
 
+Dependabot confirms a command it accepts with a 👍 reaction, but it sometimes
+drops one silently. If a request has no 👍 after 15 minutes, the controller
+posts it again (up to three times). The two-hour timers count from the first
+request.
+
 GitHub notes that PRs created before automatic rebasing is disabled can continue
 to be rebased automatically for up to 30 days. The active-label gate still keeps
 those waiting PRs from using the self-hosted review runner.
