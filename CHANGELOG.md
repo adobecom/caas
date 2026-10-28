@@ -1,5 +1,12 @@
 
 
+## [0.69.1](https://github.com/adobecom/caas/compare/0.69.0...0.69.1) (2026-10-28)
+
+
+### Bug Fixes
+
+* ignore telemetry commit IDs in build output comparison ([#677](https://github.com/adobecom/caas/issues/677)) ([41d305e](https://github.com/adobecom/caas/commit/41d305e67769af563809c3e4e3a50438ab68e502))
+
 ## [0.69.0](https://github.com/adobecom/caas/compare/0.68.61...0.69.0) (2026-10-27)
 
 
