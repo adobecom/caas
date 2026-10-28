@@ -1,5 +1,12 @@
 
 
+## [0.69.3](https://github.com/adobecom/caas/compare/0.69.2...0.69.3) (2026-10-28)
+
+
+### Dependencies
+
+* **deps:** bump serialize-javascript and @wdio/mocha-framework ([#674](https://github.com/adobecom/caas/issues/674)) ([8e0adbf](https://github.com/adobecom/caas/commit/8e0adbf59aea12c132769a1d83c7a28e75ad49d1))
+
 ## [0.69.2](https://github.com/adobecom/caas/compare/0.69.1...0.69.2) (2026-10-28)
 
 
