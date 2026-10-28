@@ -1,5 +1,12 @@
 
 
+## [0.69.2](https://github.com/adobecom/caas/compare/0.69.1...0.69.2) (2026-10-28)
+
+
+### Dependencies
+
+* **deps-dev:** bump fast-uri from 3.1.8 to 3.1.9 ([#676](https://github.com/adobecom/caas/issues/676)) ([7d6bd53](https://github.com/adobecom/caas/commit/7d6bd53a69fdc70aca9d2fbe1f40ac26743418a6))
+
 ## [0.69.1](https://github.com/adobecom/caas/compare/0.69.0...0.69.1) (2026-10-28)
 
 
