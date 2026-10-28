@@ -118,6 +118,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
   deployment:
+    # This disposable proof must only publish through the manual PR preview job.
+    if: false
     needs: check-build
     environment:
       name: github-pages
