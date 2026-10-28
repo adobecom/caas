@@ -39,7 +39,9 @@ FILES=("main.js" "app.css")
 normalize() {
   # $1 = input path, $2 = output path
   if [[ -f "$1" ]]; then
-    sed '/Chimera UI Libraries - Build/d' "$1" > "$2"
+    # Only normalize SHA literals in the two telemetry envelopes. Keep the
+    # property, fallback, sampling settings, and all other code comparable.
+    sed -E "/Chimera UI Libraries - Build/d; /marker: 'caas_(telemetry_v2|pulse_v1)'/,/mode:/s/^( *build: )\"[0-9a-f]{12}\"( \|\| 'unknown',)$/\1\"<commit>\"\2/" "$1" > "$2"
   else
     : > "$2"   # missing file -> treat as empty so comparison still works
   fi
@@ -50,7 +52,7 @@ changed=0
   echo "## Build output diff"
   echo
   echo "Compares the built bundle on the PR against the base branch, after"
-  echo "normalizing away the build-timestamp banner."
+  echo "normalizing the build-timestamp banner and telemetry commit IDs."
   echo
 } > "$OUT_DIR/summary.md"
 
@@ -89,7 +91,7 @@ done
 echo >> "$OUT_DIR/summary.md"
 if [[ "$changed" -eq 0 ]]; then
   echo "NO_CHANGE" > "$OUT_DIR/result.txt"
-  echo "**Result: NO_CHANGE** — the shipped bundle is identical after normalization. Nothing users receive changes; safe to fast-track." >> "$OUT_DIR/summary.md"
+  echo "**Result: NO_CHANGE** — the shipped bundle is identical after normalization. No code or style differences detected; other required checks still apply." >> "$OUT_DIR/summary.md"
 else
   echo "CHANGED" > "$OUT_DIR/result.txt"
   echo "**Result: CHANGED** — the shipped bundle differs. Review the diff(s) above (and screenshots, once Layer 2 is wired) before approving." >> "$OUT_DIR/summary.md"

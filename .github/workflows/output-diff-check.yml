@@ -1,6 +1,6 @@
 # Build Output Diff — Layer 1 (deterministic, advisory, non-blocking)
 #
-# Builds the base branch and the PR, normalizes away the build-timestamp banner,
+# Builds the base branch and the PR, normalizes the build-timestamp banner and telemetry commit IDs,
 # and compares the shipped bundle. Publishes the verdict THREE ways:
 #   - the Actions run summary + a diff artifact (human view)
 #   - a `build-output-diff` commit status on the PR head, whose description is
@@ -24,6 +24,7 @@ on:
       - 'webpack.config.js'
       - 'sourcemaps.config.js'
       - 'scripts/compare-build-output.sh'
+      - 'scripts/test-compare-build-output.sh'
       - '.github/workflows/output-diff-check.yml'
 
 permissions:
@@ -73,6 +74,9 @@ jobs:
 
       - name: Restore PR checkout (for the compare script)
         run: git checkout --force "$HEAD_SHA"
+
+      - name: Verify comparison rules
+        run: bash scripts/test-compare-build-output.sh
 
       - name: Compare build output
         id: compare
