@@ -46,6 +46,48 @@ export function hasOnlyDependabotCommits(commits) {
     (commit.authors || []).length > 0 && commit.authors.every((author) => author.login === DEPENDABOT));
 }
 
+// Collapse reruns by check name and app so the newest attempt on a head wins.
+export function latestCheckRuns(checkRuns) {
+  return [...checkRuns].sort((a, b) => (b.id || 0) - (a.id || 0))
+    .filter((check, index, checks) => checks.findIndex((other) =>
+      other.name === check.name && other.app?.id === check.app?.id) === index);
+}
+
+const FAILED_CHECK_REASON = /^(.+) concluded (failure|cancelled|timed_out|action_required|startup_failure|stale)$/i;
+
+// A review caused by a failed check is not a policy decision: a rerun or a new
+// head can repair it. Such PRs go back to the queue once the failed check has
+// passed on the current head, or has not run yet on a new head; every gate is
+// evaluated again. Policy reviews (files, authors, shipped output, conflict
+// escalation) and reviews without a controller decision stay put.
+export function failedCheckReview(comments = []) {
+  const decision = [...comments].reverse().find(({ body = '' }) => body.includes(DECISION_MARKER));
+  if (!decision) return null;
+  const marker = decision.body.match(/<!-- state:(\w+);head:([0-9a-z]+) -->/);
+  if (!marker || marker[1] !== 'review') return null;
+  const reason = (decision.body.match(/^- Reason: (.+)$/m) || [])[1]?.trim() || '';
+  const failed = reason.match(FAILED_CHECK_REASON);
+  return failed ? { headSha: marker[2], checkName: failed[1] } : null;
+}
+
+export function reviewRecovery({ review, headSha, checkRuns = [] }) {
+  if (!review) return { action: 'keep', reason: 'not a failed-check review' };
+  const { checkName } = review;
+  const latest = latestCheckRuns(checkRuns.filter(({ name }) => name === checkName))[0];
+  if (!latest) {
+    return review.headSha !== headSha
+      ? { action: 'requeue', reason: `head changed since ${checkName} failed` }
+      : { action: 'keep', reason: `${checkName} has no result on this head` };
+  }
+  if (String(latest.status || '').toUpperCase() !== 'COMPLETED') {
+    return { action: 'keep', reason: `${checkName} is still running` };
+  }
+  if (String(latest.conclusion || '').toUpperCase() === 'SUCCESS') {
+    return { action: 'requeue', reason: `${checkName} now passes` };
+  }
+  return { action: 'keep', reason: `${checkName} still concluded ${latest.conclusion}` };
+}
+
 export function evaluateCandidate(candidate) {
   const {
     files, commits, behindBy, mergeStateStatus,
@@ -66,9 +108,7 @@ export function evaluateCandidate(candidate) {
   // missing status is not evidence that the job is still running (#653).
   // Collapse reruns by check name and app; never let an older failed attempt
   // override a newer queued/running/successful attempt on the same head.
-  const latestChecks = [...checkRuns].sort((a, b) => (b.id || 0) - (a.id || 0))
-    .filter((check, index, checks) => checks.findIndex((other) =>
-      other.name === check.name && other.app?.id === check.app?.id) === index);
+  const latestChecks = latestCheckRuns(checkRuns);
   const outputCheck = latestChecks.find(({ name }) => name === 'build-output-diff');
   const runningCheck = latestChecks.find(({ status }) => String(status || '').toUpperCase() !== 'COMPLETED');
   const failedCheck = latestChecks.find(({ status, conclusion }) =>
@@ -312,6 +352,18 @@ async function main() {
   }
 
   const eligiblePrs = prs.filter((pr) => pr.baseRefName === defaultBranch);
+  for (const pr of eligiblePrs.filter((item) => hasLabel(item, REVIEW_LABEL) && !item.autoMergeRequest)) {
+    const view = ghJson(['pr', 'view', String(pr.number), '--repo', repo, '--json', 'comments'], { allowFailure: true });
+    const review = failedCheckReview(view?.comments || []);
+    if (!review) continue;
+    const query = `check_name=${encodeURIComponent(review.checkName)}&per_page=100`;
+    const checks = ghJson(['api', `repos/${repo}/commits/${pr.headRefOid}/check-runs?${query}`], { allowFailure: true });
+    if (!checks) continue;
+    const recovery = reviewRecovery({ review, headSha: pr.headRefOid, checkRuns: checks.check_runs || [] });
+    console.log(`#${pr.number} review recovery ${recovery.action}: ${recovery.reason}.`);
+    if (recovery.action === 'requeue') setLabel(repo, pr.number, pr.labels, QUEUED_LABEL, [REVIEW_LABEL]);
+  }
+
   const armed = eligiblePrs.filter((pr) => pr.autoMergeRequest);
   if (armed.length > 1) {
     throw new Error(`More than one Dependabot PR has auto-merge armed: ${armed.map(({ number }) => `#${number}`).join(', ')}`);

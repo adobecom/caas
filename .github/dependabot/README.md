@@ -25,7 +25,14 @@ evidence. The existing queue handoff reserves the next PR automatically. Failed
 PRs stay open for repair; they are never merged or closed by this recovery.
 Newer queued/running comparison attempts are allowed to finish, and successful
 reruns supersede older failures. Missing or pending evidence cannot authorize a
-merge. A review-labelled PR must be explicitly returned to the queue after repair.
+merge.
+
+A review caused only by a failed check (for example a flaky `deployment` job)
+repairs itself: on every run the controller checks review-labelled PRs, and if
+that check now passes on the same head, or the head has changed, the PR goes
+back to `dependencies-queued` and must pass every gate again. Policy reviews
+(files outside the manifest, non-Dependabot commits, changed shipped output,
+conflict escalation) still need a person to return the PR to the queue.
 
 ## Rollout
 

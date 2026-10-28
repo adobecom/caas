@@ -4,7 +4,9 @@ import {
   commentChange,
   disableAutoMerge,
   evaluateCandidate,
+  failedCheckReview,
   nextConflictAction,
+  reviewRecovery,
   selectQueueCandidate,
 } from './safe-automerge.mjs';
 
@@ -222,4 +224,43 @@ test('a failed comparison moves out of the queue so the next PR is selected', ()
   assert.equal(decision.state, 'review');
   failed.labels = [{ name: `dependencies-${decision.state}` }];
   assert.equal(selectQueueCandidate([failed, next]).number, 658);
+});
+
+const OTHER_SHA = 'abcdefabcdefabcdefabcdefabcdefabcdefabcd';
+const decisionComment = (reason, head = SHA, state = 'review') => ({
+  body: `<!-- dependabot-safe-automerge -->\n<!-- state:${state};head:${head} -->\n### title\n\n- Reason: ${reason}`,
+});
+const deploy = (id, status, conclusion) => ({ id, name: 'deployment', status, conclusion });
+
+test('reads only failed-check reviews from the controller decision', () => {
+  assert.deepEqual(failedCheckReview([decisionComment('deployment concluded failure')]),
+    { headSha: SHA, checkName: 'deployment' });
+  for (const reason of [
+    'changes files outside package.json and package-lock.json',
+    'contains commits not authored by Dependabot',
+    'shipped build output is not byte-identical (CHANGED)',
+    'still conflicted two hours after recreate',
+  ]) {
+    assert.equal(failedCheckReview([decisionComment(reason)]), null);
+  }
+  assert.equal(failedCheckReview([]), null);
+  assert.equal(failedCheckReview([decisionComment('deployment concluded failure', SHA, 'ready')]), null);
+});
+
+test('returns a failed-check review to the queue once that check passes', () => {
+  const review = failedCheckReview([decisionComment('deployment concluded failure')]);
+  const recover = (checkRuns, headSha = SHA) => reviewRecovery({ review, headSha, checkRuns }).action;
+  assert.equal(recover([deploy(1, 'completed', 'failure')]), 'keep');
+  assert.equal(recover([deploy(1, 'completed', 'failure'), deploy(2, 'in_progress')]), 'keep');
+  assert.equal(recover([deploy(1, 'completed', 'failure'), deploy(3, 'completed', 'success')]), 'requeue');
+  assert.equal(recover([]), 'keep');
+});
+
+test('a new head is requeued unless the same check already failed or is running there', () => {
+  const review = failedCheckReview([decisionComment('build-output-diff concluded failure', OTHER_SHA)]);
+  const recover = (checkRuns) => reviewRecovery({ review, headSha: SHA, checkRuns }).action;
+  assert.equal(recover([]), 'requeue');
+  assert.equal(recover([{ id: 1, name: 'build-output-diff', status: 'completed', conclusion: 'failure' }]), 'keep');
+  assert.equal(recover([{ id: 1, name: 'build-output-diff', status: 'queued' }]), 'keep');
+  assert.equal(reviewRecovery({ review: null, headSha: SHA }).action, 'keep');
 });
