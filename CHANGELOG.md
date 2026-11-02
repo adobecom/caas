@@ -1,5 +1,26 @@
 
 
+## [0.69.5](https://github.com/adobecom/caas/compare/0.69.4...0.69.5) (2026-10-30)
+
+
+### Dependencies
+
+* **deps-dev:** bump postcss from 8.5.31 to 8.5.32 ([#679](https://github.com/adobecom/caas/issues/679)) ([1bca182](https://github.com/adobecom/caas/commit/1bca1825d15106208e35e895e1833246a0b9c21c))
+
+## [0.69.4](https://github.com/adobecom/caas/compare/0.69.3...0.69.4) (2026-10-28)
+
+
+### Dependencies
+
+* **deps-dev:** bump qs from 6.16.0 to 6.16.2 ([#675](https://github.com/adobecom/caas/issues/675)) ([cb92008](https://github.com/adobecom/caas/commit/cb92008f4836c822a200bfe1395f09616be3fc78))
+
+## [0.69.3](https://github.com/adobecom/caas/compare/0.69.2...0.69.3) (2026-10-28)
+
+
+### Dependencies
+
+* **deps:** bump serialize-javascript and @wdio/mocha-framework ([#674](https://github.com/adobecom/caas/issues/674)) ([8e0adbf](https://github.com/adobecom/caas/commit/8e0adbf59aea12c132769a1d83c7a28e75ad49d1))
+
 ## [0.69.2](https://github.com/adobecom/caas/compare/0.69.1...0.69.2) (2026-10-28)
 
 
