@@ -1,5 +1,12 @@
 
 
+## [0.69.6](https://github.com/adobecom/caas/compare/0.69.5...0.69.6) (2026-11-05)
+
+
+### Bug Fixes
+
+* **MWPW-212848:** fixes rtl aligment issues ([#681](https://github.com/adobecom/caas/issues/681)) ([61c7d5d](https://github.com/adobecom/caas/commit/61c7d5dd1e49a6b7cdbc72ae2355407b9b040230))
+
 ## [0.69.5](https://github.com/adobecom/caas/compare/0.69.4...0.69.5) (2026-10-30)
 
 
