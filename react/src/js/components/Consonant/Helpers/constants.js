@@ -143,6 +143,7 @@ export const THEME_TYPE = {
 export const DEFAULT_CONFIG = {
     collection: {
         mode: '',
+        presentation: 'legacy',
         layout: {
             type: '3up',
             gutter: '4x',

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CaaS C2 opt-in POC</title>
+<link rel="stylesheet" href="../../dist/app.css">
+<link rel="stylesheet" href="../../dependencies/typekit.css">
+<style>
+body { margin: 0; background: white; color: #222; font: 16px/1.5 Arial, sans-serif; }
+header { padding: 24px; max-width: 1200px; margin: auto; }
+.controls { display: flex; flex-wrap: wrap; gap: 24px; align-items: center; }
+select, button { font: inherit; padding: 6px; }
+label { display: inline-flex; gap: 8px; align-items: center; }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+#status { margin: 16px 0; }
+</style>
+</head>
+<body>
+<header>
+<h1>CaaS C2 opt-in POC</h1>
+<p>One-half · 16:9 · light · outline CTA. Structural prototype, not final design tokens.</p>
+<div class="controls">
+<label><input type="checkbox" id="c2"> Use C2 (pilot)</label>
+<label>Card style <select id="style"><option value="1:2">One-half (saved as 1:2)</option><option value="text-card">Text card (legacy only)</option></select></label>
+<button type="button" id="export">Download configuration</button>
+</div>
+<p id="status" role="status"></p>
+<p>Existing grid/reflow retained. eBook stays on the image pending design agreement. The mnemonic uses existing response data; no icon is fabricated when it is missing.</p>
+<details><summary>Saved collection settings</summary><pre id="config"></pre></details>
+</header>
+<main class="consonant"><div id="preview"></div></main>
+<div class="modalContainer"></div>
+<script src="../../dist/main.js"></script>
+<script src="./poc.js"></script>
+</body>
+</html>

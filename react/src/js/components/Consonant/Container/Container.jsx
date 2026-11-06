@@ -12,6 +12,7 @@ import { shape } from 'prop-types';
 import { logLana } from '../Helpers/lana';
 import createLanaSmokeLogger from '../Helpers/lanaSmoke';
 import cardDisplay from '../Helpers/cardDisplay';
+import { getC2Presentation } from '../Helpers/presentation';
 import Popup from '../Sort/Popup';
 import Search from '../Search/Search';
 import Loader from '../Loader/Loader';
@@ -103,6 +104,7 @@ import {
 const Container = (props) => {
     const { config } = props;
     const getConfig = makeConfigGetter(config);
+    const c2Presentation = getC2Presentation(config.collection);
     const filterGroupPrefix = 'ch_';
     const searchPrefix = 'sh_';
     const CARD_HASH_LENGTH = 10;
@@ -1781,6 +1783,7 @@ const Container = (props) => {
      */
     const wrapperClass = classNames({
         'consonant-Wrapper': true,
+        'caas-c2': Boolean(c2Presentation),
         'consonant-Wrapper--32MarginContainer': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_100_VW_32_MARGIN,
         'consonant-Wrapper--83PercentContainier': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_83_VW,
         'consonant-Wrapper--1200MaxWidth': authoredLayoutContainer === LAYOUT_CONTAINER.SIZE_1200_PX,
@@ -1817,7 +1820,9 @@ const Container = (props) => {
                     daa-lh={collectionAnalytics}
                     daa-im={String(trackImpressions)}
                     onClick={handleWindowClick}
-                    className={`${wrapperClass} ${themeClass}`}>
+                    className={`${wrapperClass} ${themeClass}`}
+                    data-c2-card={c2Presentation?.name}
+                    data-c2-media-ratio={c2Presentation?.mediaAspectRatio}>
                     <div className="consonant-Wrapper-inner">
                         { isCategoriesContainer &&
                         <Fragment>
