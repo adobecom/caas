@@ -1,6 +1,8 @@
 import React from 'react';
 import cuid from 'cuid';
 import { useCardData } from './CardContext';
+import { useConfig } from '../Helpers/hooks';
+import { isC2Presentation } from '../Helpers/presentation';
 import CardHeader from './CardHeader/CardHeader';
 import CardContent from './CardContent/CardContent';
 import CardFooter from './CardFooter/CardFooter';
@@ -9,7 +11,7 @@ import LinkBlocker from './LinkBlocker/LinkBlocker';
 const OneHalf = () => {
     const {
         id, country, reference, lh, cardClassName,
-        optimizedImage, altText,
+        optimizedImage, altText, mnemonic,
         hasBanner, disableBanners,
         bannerBackgroundColor, bannerFontColor, bannerIcon, bannerDescription,
         badgeText, fromDexter, showCardBadges,
@@ -25,6 +27,9 @@ const OneHalf = () => {
         onFocus, tabIndex, ariaHidden,
         renderOverlay, hideCTA,
     } = useCardData();
+
+    const getConfig = useConfig();
+    const isC2 = isC2Presentation(getConfig('collection'));
 
     return (
         <li
@@ -60,6 +65,9 @@ const OneHalf = () => {
                 logoBorderBg={logoBorderBg}
                 showIconLogo={false} />
             <div className="consonant-Card-content">
+                {isC2 && mnemonic && (
+                    <img className="caas-c2-mnemonic" src={mnemonic} alt="" width="24" height="24" />
+                )}
                 <CardContent
                     showLabel
                     detailText={detailText}

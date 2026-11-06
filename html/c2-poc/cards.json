@@ -1,0 +1,106 @@
+{
+  "cards": [
+    {
+      "id": "c2-poc-0",
+      "styles": {
+        "backgroundImage": "https://business.adobe.com/resources/media_13742c7f2bfe74e8c307ecdc859c9476bc127a572.png?width=1200&format=pjpg&optimize=medium",
+        "backgroundAltText": "",
+        "mnemonic": "https://www.adobe.com/content/dam/shared/images/product-icons/svg/acrobat-reader.svg"
+      },
+      "contentArea": {
+        "title": "Create better documents",
+        "description": "Explore ideas and practical resources for your team."
+      },
+      "overlays": {
+        "label": {
+          "description": "eBook"
+        }
+      },
+      "tags": [],
+      "footer": [
+        {
+          "right": [
+            {
+              "type": "button",
+              "text": "Read more",
+              "href": "https://www.adobe.com/acrobat.html",
+              "style": "secondary"
+            }
+          ]
+        }
+      ],
+      "showCard": {
+        "from": "2020-01-01T00:00:00Z",
+        "until": "2099-01-01T00:00:00Z"
+      }
+    },
+    {
+      "id": "c2-poc-1",
+      "styles": {
+        "backgroundImage": "https://business.adobe.com/resources/media_13742c7f2bfe74e8c307ecdc859c9476bc127a572.png?width=1200&format=pjpg&optimize=medium",
+        "backgroundAltText": "",
+        "mnemonic": "https://www.adobe.com/content/dam/shared/images/product-icons/svg/acrobat-reader.svg"
+      },
+      "contentArea": {
+        "title": "A longer title to compare wrapping across the existing grid",
+        "description": "This longer description exercises wrapping while preserving the existing content contract. Compare both presentations at narrow widths before agreeing final copy limits."
+      },
+      "overlays": {
+        "label": {
+          "description": "eBook"
+        }
+      },
+      "tags": [],
+      "footer": [
+        {
+          "right": [
+            {
+              "type": "button",
+              "text": "Read more",
+              "href": "https://www.adobe.com/acrobat.html",
+              "style": "secondary"
+            }
+          ]
+        }
+      ],
+      "showCard": {
+        "from": "2020-01-01T00:00:00Z",
+        "until": "2099-01-01T00:00:00Z"
+      }
+    },
+    {
+      "id": "c2-poc-2",
+      "styles": {
+        "backgroundImage": "https://business.adobe.com/resources/media_13742c7f2bfe74e8c307ecdc859c9476bc127a572.png?width=1200&format=pjpg&optimize=medium",
+        "backgroundAltText": "",
+        "mnemonic": ""
+      },
+      "contentArea": {
+        "title": "No mnemonic on this record",
+        "description": "Explore ideas and practical resources for your team."
+      },
+      "overlays": {
+        "label": {
+          "description": "eBook"
+        }
+      },
+      "tags": [],
+      "footer": [
+        {
+          "right": [
+            {
+              "type": "button",
+              "text": "Read more",
+              "href": "https://www.adobe.com/acrobat.html",
+              "style": "secondary"
+            }
+          ]
+        }
+      ],
+      "showCard": {
+        "from": "2020-01-01T00:00:00Z",
+        "until": "2099-01-01T00:00:00Z"
+      }
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+/* Structural POC, not final C2 tokens. Existing typography/colors are retained. */
+.caas-c2[data-c2-media-ratio = "16:9"] .consonant-CardsGrid .consonant-Card.one-half {
+    min-height: 0;
+    height: auto;
+    padding-bottom: 0;
+    border: 0;
+    background: transparent;
+
+    .consonant-Card-header {
+        width: 100%;
+        height: auto;
+        min-height: 0;
+        max-height: none;
+
+        /* Older stylelint predates this standard property. */
+        /* stylelint-disable-next-line property-no-unknown */
+        aspect-ratio: 16 / 9;
+        margin: 0;
+        border-radius: 12px;
+    }
+
+    .consonant-Card-content {
+        padding: 16px;
+        background: transparent;
+    }
+
+    .caas-c2-mnemonic {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+        margin-bottom: 8px;
+    }
+
+    .consonant-CardFooter {
+        margin-top: 0;
+        padding-top: 16px;
+    }
+
+    .consonant-CardFooter-row {
+        height: auto;
+        min-height: 32px;
+    }
+
+    .consonant-CardFooter-cell--right {
+        justify-content: flex-start;
+    }
+}
+
+/* Only rendered when the visitor explicitly requests the comparison UI. */
+.caas-c2-review {
+    margin: 16px 0;
+    padding: 16px;
+    border: 1px solid #767676;
+    background: #fff;
+    color: #222;
+    font: 16px / 1.5 Arial, sans-serif;
+
+    label {
+        display: block;
+        cursor: pointer;
+    }
+
+    input {
+        margin-right: 8px;
+    }
+
+    p {
+        margin: 8px 0 0;
+    }
+}
