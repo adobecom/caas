@@ -37,3 +37,13 @@ A supported collection gets `caas-c2`, `data-c2-card="media"`, and `data-c2-medi
 Agree on C2 tokens, responsive rules, allowed field combinations, CTA variations, and rollout eligibility. Review keyboard behavior, contrast, focus, icon meaning/accessible naming, long text, localization and RTL. The prototype treats the mnemonic as decorative; meaningful product identity requires an agreed text/accessibility approach. Backend description truncation is unchanged. Supporting longer descriptions requires separate service work, not a new image ratio or a CSS change.
 
 Implement the production configurator option in Milo, confirm configuration propagation and preview/export behavior, and agree on US pilot scope and later regional rollout gates. No backend or Milo changes are included here.
+
+## Shareable collection comparison
+
+After publishing this build's versioned assets, use `?caasver=<published-version>&caas_c2_review=1` on a Milo page. The first parameter chooses the library; the second explicitly enables prototype comparison controls above each collection. Supported collections initially show C2. Each checkbox independently switches the same loaded content between C2 and legacy without refetching, changing stored configuration, or changing the grid. Reloading resets review switches to C2. Unsupported collections show an explanatory message and retain their authored presentation.
+
+Without `caas_c2_review=1`, no review controls appear and the authored presentation setting applies. This is a review mechanism, not the production authoring checkbox. Reviewers can compare multiple compatible collections on a page; other card styles, dark themes and other grid layouts remain outside this pilot. The demo URL does not grant access to restricted pages.
+
+The release package alone is not a live Adobe.com preview. The existing Rundeck Release CAAS UI job must publish it before `caasver` can load it. `Pin=false` updates the chosen version and beta, while stable/0 should remain unchanged and require verification. A new immutable version should be used for each review build; do not overwrite a previously shared version.
+
+Capture feedback with the full URL/version, collection title or location, viewport width, C2/legacy selection, and the specific discrepancy. Review short/long copy, missing icons, badge/icon combinations and mobile/tablet layouts. Final design, accessibility and localization sign-off remain separate from this demonstration.

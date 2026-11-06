@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { unstable_batchedUpdates as batchedUpdates } from 'react-dom';
 import classNames from 'classnames';
+import cuid from 'cuid';
 import { shape } from 'prop-types';
 // import 'whatwg-fetch'; // Removed: fetch is native in modern browsers
 import { logLana } from '../Helpers/lana';
@@ -104,7 +105,16 @@ import {
 const Container = (props) => {
     const { config } = props;
     const getConfig = makeConfigGetter(config);
-    const c2Presentation = getC2Presentation(config.collection);
+    // Review controls affect this collection's presentation only, never authored data.
+    const reviewRequested = new URLSearchParams(window.location.search).get('caas_c2_review') === '1';
+    const reviewSupported = Boolean(getC2Presentation({ ...config.collection, presentation: 'c2' }));
+    const [reviewC2, setReviewC2] = useState(true);
+    const [reviewControlId] = useState(() => `caas-c2-review-${cuid()}`);
+    const renderConfig = reviewRequested && reviewSupported ? {
+        ...config,
+        collection: { ...config.collection, presentation: reviewC2 ? 'c2' : 'legacy' },
+    } : config;
+    const c2Presentation = getC2Presentation(renderConfig.collection);
     const filterGroupPrefix = 'ch_';
     const searchPrefix = 'sh_';
     const CARD_HASH_LENGTH = 10;
@@ -1808,7 +1818,7 @@ const Container = (props) => {
     });
 
     return (
-        <ConfigContext.Provider value={config}>
+        <ConfigContext.Provider value={renderConfig}>
             <ExpandableContext.Provider value={{ value: openDropdown, setValue: setOpenDropdown }} >
                 {/* eslint-disable-next-line max-len */}
                 {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions,jsx-a11y/click-events-have-key-events */}
@@ -1823,6 +1833,29 @@ const Container = (props) => {
                     className={`${wrapperClass} ${themeClass}`}
                     data-c2-card={c2Presentation?.name}
                     data-c2-media-ratio={c2Presentation?.mediaAspectRatio}>
+                    {reviewRequested && (
+                        <div className="caas-c2-review" data-testid="caas-c2-review">
+                            {reviewSupported ? (
+                                <label htmlFor={reviewControlId}>
+                                    <input
+                                        type="checkbox"
+                                        id={reviewControlId}
+                                        checked={reviewC2}
+                                        onChange={event => setReviewC2(event.target.checked)} />
+                                    Show C2 prototype
+                                    <span>
+                                        {' '}
+                                        —
+                                        {reviewC2 ? 'C2' : 'Legacy'}
+                                        ; same content, existing grid
+                                    </span>
+                                </label>
+                            ) : (
+                                <p>C2 comparison unavailable: this pilot requires one-half, light theme and the 3up grid.</p>
+                            )}
+                            <p>Design review only. Final styles and accessibility/localization acceptance are pending.</p>
+                        </div>
+                    )}
                     <div className="consonant-Wrapper-inner">
                         { isCategoriesContainer &&
                         <Fragment>

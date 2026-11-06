@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import Container from '../Container';
 import { isC2Presentation, getC2Presentation } from '../../Helpers/presentation';
@@ -90,4 +90,55 @@ test('a C2 collection does not opt an adjacent legacy collection in', async () =
     expect(wrappers[0]).toHaveClass('caas-c2');
     expect(wrappers[1]).not.toHaveClass('caas-c2');
     expect(wrappers[1].querySelector('.caas-c2-mnemonic')).toBeNull();
+});
+
+
+afterEach(() => {
+    window.history.replaceState({}, '', '/');
+});
+
+test('review query adds independent toggles without refetching or changing saved config', async () => {
+    window.history.replaceState({}, '', '/?caas_c2_review=1');
+    const authored = configFor({ presentation: 'legacy' });
+    let view;
+    await act(async () => {
+        view = render(
+            <div>
+                <Container config={authored} />
+                <Container config={authored} />
+            </div>,
+        );
+    });
+    const wrappers = view.container.querySelectorAll('.consonant-Wrapper');
+    const toggles = screen.getAllByRole('checkbox', { name: /Show C2 prototype/ });
+    const requests = global.fetch.mock.calls.length;
+    expect(wrappers[0]).toHaveClass('caas-c2');
+    expect(wrappers[1]).toHaveClass('caas-c2');
+    fireEvent.click(toggles[0]);
+    expect(wrappers[0]).not.toHaveClass('caas-c2');
+    expect(wrappers[0].querySelector('.caas-c2-mnemonic')).toBeNull();
+    expect(wrappers[1]).toHaveClass('caas-c2');
+    expect(global.fetch).toHaveBeenCalledTimes(requests);
+    expect(authored.collection.presentation).toBe('legacy');
+    fireEvent.click(toggles[0]);
+    expect(wrappers[0]).toHaveClass('caas-c2');
+});
+
+test('review query explains unsupported collections without forcing a different layout', async () => {
+    window.history.replaceState({}, '', '/?caas_c2_review=1');
+    let view;
+    await act(async () => {
+        view = render(<Container config={configFor({ cardStyle: 'text-card' })} />);
+    });
+    expect(screen.getByText(/C2 comparison unavailable/)).toBeInTheDocument();
+    expect(screen.queryByRole('checkbox', { name: /Show C2 prototype/ })).toBeNull();
+    expect(view.container.querySelector('.caas-c2')).toBeNull();
+});
+
+test.each(['', '?caas_c2_review=0'])('normal visits have no review controls: %s', async (query) => {
+    window.history.replaceState({}, '', `/${query}`);
+    await act(async () => {
+        render(<Container config={configFor({})} />);
+    });
+    expect(screen.queryByTestId('caas-c2-review')).toBeNull();
 });

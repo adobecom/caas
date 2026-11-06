@@ -6,6 +6,8 @@
     const output = document.getElementById('config');
     const preview = document.getElementById('preview');
     const storageKey = 'caas-c2-poc';
+    const reviewMode = new URLSearchParams(window.location.search).get('caas_c2_review') === '1';
+    checkbox.disabled = reviewMode;
     let saved = {};
     try { saved = JSON.parse(localStorage.getItem(storageKey) || '{}'); } catch (_) { /* optional */ }
     checkbox.checked = saved.presentation === 'c2';
@@ -32,7 +34,8 @@
             pagination: { enabled: false },
             bookmarks: { enabled: false },
         };
-        status.textContent = !checkbox.checked ? 'Legacy presentation.'
+        status.textContent = reviewMode ? 'Review mode: use the comparison control above the collection. The authoring checkbox is disabled.'
+            : !checkbox.checked ? 'Legacy presentation.'
             : style.value === '1:2' ? 'C2 pilot active for this collection.'
                 : 'C2 requested, but this style is unsupported: the entire collection stays legacy.';
         output.textContent = JSON.stringify(config.collection, null, 2);
