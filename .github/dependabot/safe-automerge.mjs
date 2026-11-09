@@ -46,6 +46,48 @@ export function hasOnlyDependabotCommits(commits) {
     (commit.authors || []).length > 0 && commit.authors.every((author) => author.login === DEPENDABOT));
 }
 
+// Collapse reruns by check name and app so the newest attempt on a head wins.
+export function latestCheckRuns(checkRuns) {
+  return [...checkRuns].sort((a, b) => (b.id || 0) - (a.id || 0))
+    .filter((check, index, checks) => checks.findIndex((other) =>
+      other.name === check.name && other.app?.id === check.app?.id) === index);
+}
+
+const FAILED_CHECK_REASON = /^(.+) concluded (failure|cancelled|timed_out|action_required|startup_failure|stale)$/i;
+
+// A review caused by a failed check is not a policy decision: a rerun or a new
+// head can repair it. Such PRs go back to the queue once the failed check has
+// passed on the current head, or has not run yet on a new head; every gate is
+// evaluated again. Policy reviews (files, authors, shipped output, conflict
+// escalation) and reviews without a controller decision stay put.
+export function failedCheckReview(comments = []) {
+  const decision = [...comments].reverse().find(({ body = '' }) => body.includes(DECISION_MARKER));
+  if (!decision) return null;
+  const marker = decision.body.match(/<!-- state:(\w+);head:([0-9a-z]+) -->/);
+  if (!marker || marker[1] !== 'review') return null;
+  const reason = (decision.body.match(/^- Reason: (.+)$/m) || [])[1]?.trim() || '';
+  const failed = reason.match(FAILED_CHECK_REASON);
+  return failed ? { headSha: marker[2], checkName: failed[1] } : null;
+}
+
+export function reviewRecovery({ review, headSha, checkRuns = [] }) {
+  if (!review) return { action: 'keep', reason: 'not a failed-check review' };
+  const { checkName } = review;
+  const latest = latestCheckRuns(checkRuns.filter(({ name }) => name === checkName))[0];
+  if (!latest) {
+    return review.headSha !== headSha
+      ? { action: 'requeue', reason: `head changed since ${checkName} failed` }
+      : { action: 'keep', reason: `${checkName} has no result on this head` };
+  }
+  if (String(latest.status || '').toUpperCase() !== 'COMPLETED') {
+    return { action: 'keep', reason: `${checkName} is still running` };
+  }
+  if (String(latest.conclusion || '').toUpperCase() === 'SUCCESS') {
+    return { action: 'requeue', reason: `${checkName} now passes` };
+  }
+  return { action: 'keep', reason: `${checkName} still concluded ${latest.conclusion}` };
+}
+
 export function evaluateCandidate(candidate) {
   const {
     files, commits, behindBy, mergeStateStatus,
@@ -66,9 +108,7 @@ export function evaluateCandidate(candidate) {
   // missing status is not evidence that the job is still running (#653).
   // Collapse reruns by check name and app; never let an older failed attempt
   // override a newer queued/running/successful attempt on the same head.
-  const latestChecks = [...checkRuns].sort((a, b) => (b.id || 0) - (a.id || 0))
-    .filter((check, index, checks) => checks.findIndex((other) =>
-      other.name === check.name && other.app?.id === check.app?.id) === index);
+  const latestChecks = latestCheckRuns(checkRuns);
   const outputCheck = latestChecks.find(({ name }) => name === 'build-output-diff');
   const runningCheck = latestChecks.find(({ status }) => String(status || '').toUpperCase() !== 'COMPLETED');
   const failedCheck = latestChecks.find(({ status, conclusion }) =>
@@ -109,6 +149,18 @@ export function evaluateCandidate(candidate) {
   return { state: 'review', reason: `GitHub reports merge state ${mergeStateStatus || 'UNKNOWN'}` };
 }
 
+// Dependabot acknowledges a command it accepts with a thumbs-up reaction. It
+// occasionally drops a command with no reaction at all, so an unacknowledged
+// request is posted again after 15 minutes (up to three times) instead of
+// waiting the full two hours before escalating.
+const ACK_TIMEOUT_MS = 15 * 60 * 1000;
+const MAX_COMMAND_ATTEMPTS = 3;
+
+function acknowledged(comment) {
+  return (comment.reactionGroups || []).some(({ content, users }) =>
+    content === 'THUMBS_UP' && (users?.totalCount || 0) > 0);
+}
+
 export function nextConflictAction({ comments, headSha, pureDependabotCommits, now = Date.now() }) {
   if (!pureDependabotCommits) return { action: 'review', reason: 'extra commits prevent Dependabot automatic rebasing' };
 
@@ -117,21 +169,29 @@ export function nextConflictAction({ comments, headSha, pureDependabotCommits, n
     .map((comment) => ({
       action: (comment.body.match(/dependabot-conflict-recovery:(rebase|recreate):/) || [])[1],
       at: Date.parse(comment.createdAt),
+      acknowledged: acknowledged(comment),
     }))
     .filter(({ action, at }) => action && Number.isFinite(at))
     .sort((a, b) => b.at - a.at);
 
-  const recreate = actions.find(({ action }) => action === 'recreate');
-  if (recreate) {
-    return now - recreate.at >= TWO_HOURS_MS
-      ? { action: 'review', reason: 'still conflicted two hours after recreate' }
-      : { action: 'wait', reason: 'waiting for requested recreate' };
+  const step = (kind, escalation) => {
+    const requests = actions.filter(({ action }) => action === kind);
+    const first = requests.at(-1);
+    const latest = requests[0];
+    if (now - first.at >= TWO_HOURS_MS) return escalation;
+    if (!requests.some((request) => request.acknowledged) && now - latest.at >= ACK_TIMEOUT_MS) {
+      return requests.length < MAX_COMMAND_ATTEMPTS
+        ? { action: kind, attempt: requests.length + 1, reason: `Dependabot did not acknowledge the ${kind} request, asking again` }
+        : { action: 'wait', reason: `Dependabot has not acknowledged ${requests.length} ${kind} requests` };
+    }
+    return { action: 'wait', reason: `waiting for requested ${kind}` };
+  };
+
+  if (actions.some(({ action }) => action === 'recreate')) {
+    return step('recreate', { action: 'review', reason: 'still conflicted two hours after recreate' });
   }
-  const rebase = actions.find(({ action }) => action === 'rebase');
-  if (rebase) {
-    return now - rebase.at >= TWO_HOURS_MS
-      ? { action: 'recreate', reason: 'still conflicted two hours after rebase' }
-      : { action: 'wait', reason: 'waiting for requested rebase' };
+  if (actions.some(({ action }) => action === 'rebase')) {
+    return step('rebase', { action: 'recreate', reason: 'still conflicted two hours after rebase' });
   }
   return { action: 'rebase', reason: 'selected queue item must include the latest main branch' };
 }
@@ -264,8 +324,9 @@ async function loadCandidateData(repo, pr, baseSha) {
   };
 }
 
-function conflictCommand(repo, pr, data, action, reason) {
-  const marker = `${CONFLICT_MARKER}${action}:${data.headSha} -->`;
+function conflictCommand(repo, pr, data, action, reason, attempt = 1) {
+  const suffix = attempt > 1 ? `:${attempt}` : '';
+  const marker = `${CONFLICT_MARKER}${action}:${data.headSha}${suffix} -->`;
   const comments = ghJson(['api', `repos/${repo}/issues/${pr}/comments?per_page=100`]) || [];
   if (comments.some((comment) => (comment.body || '').includes(marker))) return;
   const body = [
@@ -312,6 +373,18 @@ async function main() {
   }
 
   const eligiblePrs = prs.filter((pr) => pr.baseRefName === defaultBranch);
+  for (const pr of eligiblePrs.filter((item) => hasLabel(item, REVIEW_LABEL) && !item.autoMergeRequest)) {
+    const view = ghJson(['pr', 'view', String(pr.number), '--repo', repo, '--json', 'comments'], { allowFailure: true });
+    const review = failedCheckReview(view?.comments || []);
+    if (!review) continue;
+    const query = `check_name=${encodeURIComponent(review.checkName)}&per_page=100`;
+    const checks = ghJson(['api', `repos/${repo}/commits/${pr.headRefOid}/check-runs?${query}`], { allowFailure: true });
+    if (!checks) continue;
+    const recovery = reviewRecovery({ review, headSha: pr.headRefOid, checkRuns: checks.check_runs || [] });
+    console.log(`#${pr.number} review recovery ${recovery.action}: ${recovery.reason}.`);
+    if (recovery.action === 'requeue') setLabel(repo, pr.number, pr.labels, QUEUED_LABEL, [REVIEW_LABEL]);
+  }
+
   const armed = eligiblePrs.filter((pr) => pr.autoMergeRequest);
   if (armed.length > 1) {
     throw new Error(`More than one Dependabot PR has auto-merge armed: ${armed.map(({ number }) => `#${number}`).join(', ')}`);
@@ -360,7 +433,7 @@ async function main() {
       pureDependabotCommits: hasOnlyDependabotCommits(data.commits),
     });
     if (recovery.action === 'rebase' || recovery.action === 'recreate') {
-      conflictCommand(repo, selected.number, data, recovery.action, recovery.reason);
+      conflictCommand(repo, selected.number, data, recovery.action, recovery.reason, recovery.attempt);
     } else if (recovery.action === 'review') {
       setQueueState(repo, selected, REVIEW_LABEL);
       recordDecision(repo, selected.number, data, 'review', recovery.reason);
