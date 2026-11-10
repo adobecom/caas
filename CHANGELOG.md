@@ -1,5 +1,12 @@
 
 
+## [0.69.8](https://github.com/adobecom/caas/compare/0.69.7...0.69.8) (2026-11-10)
+
+
+### Dependencies
+
+* **deps-dev:** bump @babel/core from 7.29.7 to 7.29.13 ([#686](https://github.com/adobecom/caas/issues/686)) ([f7cfcb0](https://github.com/adobecom/caas/commit/f7cfcb0171cf774801c4423fc7c077285742ae5f))
+
 ## [0.69.7](https://github.com/adobecom/caas/compare/0.69.6...0.69.7) (2026-11-09)
 
 
