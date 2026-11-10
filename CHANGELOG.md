@@ -1,5 +1,12 @@
 
 
+## [0.69.9](https://github.com/adobecom/caas/compare/0.69.8...0.69.9) (2026-11-10)
+
+
+### Dependencies
+
+* **deps-dev:** bump @wdio/mocha-framework from 10.1.0 to 10.2.0 ([#685](https://github.com/adobecom/caas/issues/685)) ([e4e626f](https://github.com/adobecom/caas/commit/e4e626fc5024427e9e64cb84fa63dae622584552))
+
 ## [0.69.8](https://github.com/adobecom/caas/compare/0.69.7...0.69.8) (2026-11-10)
 
 
