@@ -31,13 +31,16 @@ const ENVIRONMENTS = [
   },
   {
     name: 'stage',
+    // milo.stage.adobe.com is only reachable from Adobe's network; outside it the
+    // edge returns 403 Access Denied, which made these pages fail to publish from
+    // CI runners. Use the public stage origin for the same content.
     bulkPublisherUrl: 'https://stage--milo--adobecom.aem.live/tools/send-to-caas/bulkpublisher.html',
     pageUrls: [
       { url: 'https://stage--milo--adobecom.aem.live/drafts/jmichnow/cards/document113', expected: 'success' },
-      { url: 'https://milo.stage.adobe.com/fr/drafts/gayane/bulkpublishcontent/bpcontent1', expected: 'success' },
-      { url: 'https://milo.stage.adobe.com/fr/drafts/gayane/bulkpublishcontent/bpcontent2', expected: 'success' },
-      { url: 'https://milo.stage.adobe.com/fr/drafts/gayane/bulkpublishcontent/bpcontent3', expected: 'success' },
-      { url: 'https://milo.stage.adobe.com/fr/drafts/gayane/bulkpublishcontent/fake', expected: 'failure' },
+      { url: 'https://stage--milo--adobecom.aem.live/fr/drafts/gayane/bulkpublishcontent/bpcontent1', expected: 'success' },
+      { url: 'https://stage--milo--adobecom.aem.live/fr/drafts/gayane/bulkpublishcontent/bpcontent2', expected: 'success' },
+      { url: 'https://stage--milo--adobecom.aem.live/fr/drafts/gayane/bulkpublishcontent/bpcontent3', expected: 'success' },
+      { url: 'https://stage--milo--adobecom.aem.live/fr/drafts/gayane/bulkpublishcontent/fake', expected: 'failure' },
     ]
   },
 ];
