@@ -4,11 +4,11 @@ module.exports = {
         {
             rules: {
                 'jira-ticket-in-scope': ({scope}) => {
-                    const pattern = /^mwpw-\d+$/;
+                    const pattern = /^mwpw-\d+$/i;
                     const hasValidTicket = pattern.test(scope || '');
                     return [
                         hasValidTicket,
-                        'Scope must contain JIRA ticket (e.g., feat(mwpw-123): message)',
+                        'Scope must contain JIRA ticket (e.g., feat(MWPW-123): message; case-insensitive)',
                     ];
                 },
             },
