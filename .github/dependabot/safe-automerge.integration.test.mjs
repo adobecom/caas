@@ -20,7 +20,7 @@ function simulate(prs, data, runs = 1) {
     const statePath = join(dir, 'state.json');
     writeFileSync(statePath, JSON.stringify({ prs, data, calls: [] }));
     writeFileSync(join(dir, 'gh'), `#!${process.execPath}
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, renameSync } from 'node:fs';
 const path = process.env.TEST_STATE;
 const state = JSON.parse(readFileSync(path));
 const a = process.argv.slice(2);
@@ -61,7 +61,11 @@ else if (a[0] === 'pr' && a[1] === 'edit') {
  else if (endpoint === '-X' && a[2] === 'POST' && a[3].includes('/comments')) result = {};
  else throw Error('Unexpected API call: '+JSON.stringify(a));
 } else throw Error('Unexpected command: '+JSON.stringify(a));
-writeFileSync(path,JSON.stringify(state));
+// Atomic replace: the controller runs several gh calls in parallel, and a
+// reader must never see a half-written state file.
+const tmp = path + '.' + process.pid;
+writeFileSync(tmp,JSON.stringify(state));
+renameSync(tmp,path);
 process.stdout.write(typeof result === 'string' ? result : JSON.stringify(result));
 `, { mode: 0o755 });
     // Treat the extensionless fake gh as ESM on supported Node versions.
