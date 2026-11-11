@@ -17,6 +17,10 @@ on:
       - Agent QA Review
       - Feature QA Review
     types: [completed]
+  # The QA reviewer's "QA result:" comment can clear (or withdraw) a QA PASS. issue_comment
+  # always runs this file from the default branch, never from the PR.
+  issue_comment:
+    types: [created, edited]
   # Backup for conflict recovery. Scheduled Actions may be delayed or dropped,
   # so normal ready-to-merge processing must not depend on this timer.
   schedule:
@@ -40,9 +44,21 @@ permissions:
 
 jobs:
   evaluate:
+    # Comments only wake the controller when they are the QA reviewer's QA
+    # result on a pull request (PASS, or a later result that withdraws one);
+    # every other comment is ignored.
+    if: >-
+      github.event_name != 'issue_comment' || (
+        github.event.issue.pull_request &&
+        github.event.comment.user.login == (vars.DEPENDABOT_QA_REVIEWER || 'sanrai') &&
+        contains(github.event.comment.body, 'QA result:')
+      )
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
+      # Whose QA PASS comment (naming the exact head SHA) may override the
+      # byte-identical bundle rule and non-required check failures.
+      QA_REVIEWER: ${{ vars.DEPENDABOT_QA_REVIEWER || 'sanrai' }}
       GH_TOKEN: ${{ secrets.BOT_TOKEN || secrets.WORKFLOW_TOKEN || secrets.GITHUB_TOKEN }}
       GITHUB_REPOSITORY: ${{ github.repository }}
       # Absent/anything except "merge" records decisions without merging.
