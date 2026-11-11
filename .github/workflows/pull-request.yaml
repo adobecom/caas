@@ -17,6 +17,8 @@ jobs:
           node-version: 24
           cache: 'npm'
       - run: npm ci
+      - name: Test PR title rules
+        run: node --test .github/tests/commitlint.test.cjs
       - name: Check PR title
         uses: JulienKode/pull-request-name-linter-action@v0.5.0
         with:
