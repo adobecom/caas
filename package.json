@@ -122,7 +122,7 @@
     "regenerator-runtime": "^0.14.1",
     "release-it": "^15.11.0",
     "reset-css": "^2.2.1",
-    "serve": "^14.2.6",
+    "serve": "^14.2.7",
     "sinon": "^7.5.0",
     "style-loader": "^0.23.1",
     "stylelint": "^8.4.0",
