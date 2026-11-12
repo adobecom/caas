@@ -1,5 +1,12 @@
 
 
+## [0.69.10](https://github.com/adobecom/caas/compare/0.69.9...0.69.10) (2026-11-12)
+
+
+### Bug Fixes
+
+* **mwpw-215103:** remove the Agent QA Review and Feature QA Review workflows ([#694](https://github.com/adobecom/caas/issues/694)) ([b911a34](https://github.com/adobecom/caas/commit/b911a343b80c2715ae6a3fc7b1e9f9e26ffcc299))
+
 ## [0.69.9](https://github.com/adobecom/caas/compare/0.69.8...0.69.9) (2026-11-10)
 
 
