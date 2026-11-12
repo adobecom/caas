@@ -1,5 +1,12 @@
 
 
+## [0.69.11](https://github.com/adobecom/caas/compare/0.69.10...0.69.11) (2026-11-12)
+
+
+### Bug Fixes
+
+* **MWPW-215098:** Accept case-insensitive Jira keys and any-case descriptions in PR titles ([#696](https://github.com/adobecom/caas/issues/696)) ([0d7c7d6](https://github.com/adobecom/caas/commit/0d7c7d6e7984d54de2c5d1362e0f00ff300607f2))
+
 ## [0.69.10](https://github.com/adobecom/caas/compare/0.69.9...0.69.10) (2026-11-12)
 
 
