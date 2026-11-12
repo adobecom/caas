@@ -23,7 +23,7 @@ The current map only accepts a one-half collection, a light/lightest/default mod
 
 ## Rendering and fields
 
-A supported collection gets `caas-c2`, `data-c2-card="media"`, and `data-c2-media-ratio="16:9"` on its own wrapper. CSS is scoped to that wrapper. Adjacent collections remain independent. Turning the option off restores legacy markup and styles.
+A supported collection gets `caas-c2`, `data-c2-card="media"`, and `data-c2-media-ratio="16:9"` on its own wrapper. CSS is scoped to that wrapper. C2 wrappers allow visible overflow so edge-card hover shadows are not clipped; both axes are overridden together to avoid CSS converting visible horizontal overflow to auto. Card image cropping remains unchanged. Adjacent collections remain independent. Turning the option off restores legacy markup and styles.
 
 - Existing images use the existing crop behavior inside a 16:9 image area. Image height grows with card width. Source images are not rewritten.
 - Existing `styles.mnemonic`, when present, supplies the product icon above the copy. Missing values leave no placeholder. No new tag lookup or backend field is introduced.

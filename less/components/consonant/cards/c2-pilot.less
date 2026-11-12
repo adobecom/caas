@@ -1,4 +1,10 @@
 /* Structural POC, not final C2 tokens. Existing typography/colors are retained. */
+.consonant-Wrapper.caas-c2 {
+    /* Let edge-card shadows paint outside the wrapper without changing grid geometry.
+       Both axes must be visible: retaining overflow-y:auto also clips the x axis. */
+    overflow: visible;
+}
+
 .caas-c2[data-c2-media-ratio = "16:9"] .consonant-CardsGrid.consonant-CardsGrid--3up {
     /* Override legacy auto-fit and mobile flex without changing collection widths. */
     display: grid !important;
