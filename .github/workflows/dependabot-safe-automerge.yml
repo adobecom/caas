@@ -14,8 +14,6 @@ on:
       - Pull Request
       - Review Score Gate
       - AI Code Review
-      - Agent QA Review
-      - Feature QA Review
     types: [completed]
   # Backup for conflict recovery. Scheduled Actions may be delayed or dropped,
   # so normal ready-to-merge processing must not depend on this timer.
