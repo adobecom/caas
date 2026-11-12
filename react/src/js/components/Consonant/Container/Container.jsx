@@ -1847,7 +1847,7 @@ const Container = (props) => {
                                         {' '}
                                         —
                                         {reviewC2 ? 'C2' : 'Legacy'}
-                                        ; same content, existing grid
+                                        ; same content, C2 uses a 3 / 2 / 1 responsive grid
                                     </span>
                                 </label>
                             ) : (

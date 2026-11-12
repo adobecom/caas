@@ -30,7 +30,7 @@ A supported collection gets `caas-c2`, `data-c2-card="media"`, and `data-c2-medi
 - Existing eBook badge data and position are retained. Final badge/eyebrow/icon combinations still need design approval.
 - The demo supplies one existing secondary outline button. The POC does not validate all possible authored footer combinations.
 - Existing typography and colors are retained. Spacing and radius in the pilot stylesheet are provisional.
-- Existing 3up grid and breakpoints are reused. The POC does not introduce a 12/10/8 grid or claim approved C2 reflow behavior.
+- C2 uses equal fractional columns: three at viewport widths >=1280px, two at 768–1279px, and one below 768px. Card width fills its column without legacy card width limits. Existing collection widths and gutters are retained; an odd last card does not stretch. Legacy presentation retains its original reflow. This implements the simplified direction reported by William on November 12, 2026 for review; filter sidebar behavior and final design acceptance remain open.
 
 ## Before production
 
@@ -40,7 +40,7 @@ Implement the production configurator option in Milo, confirm configuration prop
 
 ## Shareable collection comparison
 
-After publishing this build's versioned assets, use `?caasver=<published-version>&caas_c2_review=1` on a Milo page. The first parameter chooses the library; the second explicitly enables prototype comparison controls above each collection. Supported collections initially show C2. Each checkbox independently switches the same loaded content between C2 and legacy without refetching, changing stored configuration, or changing the grid. Reloading resets review switches to C2. Unsupported collections show an explanatory message and retain their authored presentation.
+After publishing this build's versioned assets, use `?caasver=<published-version>&caas_c2_review=1` on a Milo page. The first parameter chooses the library; the second explicitly enables prototype comparison controls above each collection. Supported collections initially show C2. Each checkbox independently switches the same loaded content between C2 and legacy without refetching or changing stored configuration. The switch also compares C2 reflow against the legacy grid. Reloading resets review switches to C2. Unsupported collections show an explanatory message and retain their authored presentation.
 
 Without `caas_c2_review=1`, no review controls appear and the authored presentation setting applies. This is a review mechanism, not the production authoring checkbox. Reviewers can compare multiple compatible collections on a page; other card styles, dark themes and other grid layouts remain outside this pilot. The demo URL does not grant access to restricted pages.
 

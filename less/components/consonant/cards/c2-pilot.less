@@ -1,4 +1,25 @@
 /* Structural POC, not final C2 tokens. Existing typography/colors are retained. */
+.caas-c2[data-c2-media-ratio = "16:9"] .consonant-CardsGrid.consonant-CardsGrid--3up {
+    /* Override legacy auto-fit and mobile flex without changing collection widths. */
+    display: grid !important;
+    grid-template-columns: 1fr;
+
+    @media (min-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 1280px) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .consonant-Card.one-half {
+        min-width: 0;
+        width: 100%;
+        max-width: none;
+        overflow-wrap: break-word;
+    }
+}
+
 .caas-c2[data-c2-media-ratio = "16:9"] .consonant-CardsGrid .consonant-Card.one-half {
     min-height: 0;
     height: auto;
