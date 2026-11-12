@@ -36,3 +36,17 @@ for (const title of ['fix: missing scope', 'fix(MWPW-123)', 'unknown(MWPW-123): 
         assert.equal((await lintTitle(title)).valid, false);
     });
 }
+
+for (const subject of ['Accept jira key', 'accept jira key', 'Add API support for MWPW keys', 'Update README']) {
+    test(`accepts subject ${JSON.stringify(subject)} in any case`, async () => {
+        for (const scope of ['MWPW-123', 'mwpw-123']) {
+            const result = await lintTitle(`fix(${scope}): ${subject}`);
+            assert.equal(result.valid, true, JSON.stringify(result.errors));
+        }
+    });
+}
+
+test('still rejects an uppercase type', async () => {
+    assert.equal((await lintTitle('Fix(MWPW-123): Accept jira key')).valid, false);
+});
+
