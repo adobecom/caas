@@ -1,5 +1,26 @@
 
 
+## [0.69.12](https://github.com/adobecom/caas/compare/0.69.11...0.69.12) (2026-11-12)
+
+
+### Dependencies
+
+* **deps-dev:** bump serve from 14.2.6 to 14.2.7 ([#688](https://github.com/adobecom/caas/issues/688)) ([674f853](https://github.com/adobecom/caas/commit/674f853ca4f24e65b7e13b02699c2a33c4d4b61b))
+
+## [0.69.11](https://github.com/adobecom/caas/compare/0.69.10...0.69.11) (2026-11-12)
+
+
+### Bug Fixes
+
+* **MWPW-215098:** Accept case-insensitive Jira keys and any-case descriptions in PR titles ([#696](https://github.com/adobecom/caas/issues/696)) ([0d7c7d6](https://github.com/adobecom/caas/commit/0d7c7d6e7984d54de2c5d1362e0f00ff300607f2))
+
+## [0.69.10](https://github.com/adobecom/caas/compare/0.69.9...0.69.10) (2026-11-12)
+
+
+### Bug Fixes
+
+* **mwpw-215103:** remove the Agent QA Review and Feature QA Review workflows ([#694](https://github.com/adobecom/caas/issues/694)) ([b911a34](https://github.com/adobecom/caas/commit/b911a343b80c2715ae6a3fc7b1e9f9e26ffcc299))
+
 ## [0.69.9](https://github.com/adobecom/caas/compare/0.69.8...0.69.9) (2026-11-10)
 
 
