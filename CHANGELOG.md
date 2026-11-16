@@ -1,5 +1,12 @@
 
 
+## [0.69.15](https://github.com/adobecom/caas/compare/0.69.14...0.69.15) (2026-11-16)
+
+
+### Dependencies
+
+* **deps-dev:** bump @lhci/cli from 0.16.0 to 0.16.1 ([#699](https://github.com/adobecom/caas/issues/699)) ([fdbde13](https://github.com/adobecom/caas/commit/fdbde139eb4ecf3aacd962646aa4719f8a9ecf18))
+
 ## [0.69.14](https://github.com/adobecom/caas/compare/0.69.13...0.69.14) (2026-11-13)
 
 
