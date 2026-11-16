@@ -1,5 +1,12 @@
 
 
+## [0.69.16](https://github.com/adobecom/caas/compare/0.69.15...0.69.16) (2026-11-16)
+
+
+### Dependencies
+
+* **deps-dev:** bump @babel/preset-env from 7.29.7 to 7.29.14 ([#700](https://github.com/adobecom/caas/issues/700)) ([893a6d9](https://github.com/adobecom/caas/commit/893a6d9eda351247231ee0bb4964fa20a14bcb68))
+
 ## [0.69.15](https://github.com/adobecom/caas/compare/0.69.14...0.69.15) (2026-11-16)
 
 
