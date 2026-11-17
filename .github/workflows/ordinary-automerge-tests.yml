@@ -1,0 +1,26 @@
+name: Ordinary Automerge Tests
+on:
+  pull_request:
+    paths:
+      - '.github/automerge/**'
+      - '.github/workflows/ordinary-*.yml'
+permissions:
+  contents: read
+jobs:
+  ordinary-automerge-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node --test .github/automerge/*.test.mjs
+      - name: Verify protection read with the existing read-only workflow token
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          node --input-type=module -e 'import { readProtection } from "./.github/automerge/ordinary.mjs";
+          readProtection(process.env.GITHUB_REPOSITORY);
+          console.log("Classic protection read completed; no merge controller invoked.");'
