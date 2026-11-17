@@ -5,6 +5,13 @@ on:
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions: write-all
 
+# Retry package downloads when the registry connection drops (ECONNRESET and
+# similar). Applies to every npm command in this workflow, in CI only.
+env:
+  npm_config_fetch_retries: 5
+  npm_config_fetch_retry_mintimeout: 20000
+  npm_config_fetch_retry_maxtimeout: 120000
+
 jobs:
   check-pr-title:
     runs-on: ubuntu-latest
