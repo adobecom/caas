@@ -4,6 +4,13 @@ on:
     - cron: '0 8 * * 1-5'  # 8am UTC, weekdays
   workflow_dispatch:
 
+# Retry package downloads when the registry connection drops (ECONNRESET and
+# similar). Applies to every npm command in this workflow, in CI only.
+env:
+  npm_config_fetch_retries: 5
+  npm_config_fetch_retry_mintimeout: 20000
+  npm_config_fetch_retry_maxtimeout: 120000
+
 jobs:
   run-bulk-publisher-e2e:
     runs-on: ubuntu-latest
