@@ -1,5 +1,12 @@
 
 
+## [0.69.18](https://github.com/adobecom/caas/compare/0.69.17...0.69.18) (2026-11-18)
+
+
+### Bug Fixes
+
+* **MWPW-000000:** retry npm downloads in CI when the registry connection drops ([#705](https://github.com/adobecom/caas/issues/705)) ([c66b170](https://github.com/adobecom/caas/commit/c66b17040418e99bf4b46f3ad84b6e06d085f61c)), closes [#702](https://github.com/adobecom/caas/issues/702) [#703](https://github.com/adobecom/caas/issues/703) [#688](https://github.com/adobecom/caas/issues/688)
+
 ## [0.69.17](https://github.com/adobecom/caas/compare/0.69.16...0.69.17) (2026-11-16)
 
 ## [0.69.16](https://github.com/adobecom/caas/compare/0.69.15...0.69.16) (2026-11-16)
