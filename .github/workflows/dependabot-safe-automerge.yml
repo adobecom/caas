@@ -12,6 +12,7 @@ on:
     workflows:
       - Build Output Diff (advisory)
       - Pull Request
+      - Pull Request Title
       - Review Score Gate
       - AI Code Review
     types: [completed]
