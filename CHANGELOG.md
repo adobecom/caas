@@ -1,5 +1,12 @@
 
 
+## [0.69.20](https://github.com/adobecom/caas/compare/0.69.19...0.69.20) (2026-11-19)
+
+
+### Dependencies
+
+* **deps-dev:** bump axe-core from 4.14.0 to 4.14.1 ([#708](https://github.com/adobecom/caas/issues/708)) ([96b661d](https://github.com/adobecom/caas/commit/96b661d4cbff5fcf8f9cec1fb656010b1f4776cd))
+
 ## [0.69.19](https://github.com/adobecom/caas/compare/0.69.18...0.69.19) (2026-11-18)
 
 
