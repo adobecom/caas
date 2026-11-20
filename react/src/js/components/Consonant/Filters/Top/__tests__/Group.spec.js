@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom/extend-expect';
 import {
     fireEvent,
+    screen,
 } from '@testing-library/react';
 
 import { Group } from '../Group';
@@ -13,6 +14,30 @@ import {
 const renderTopFilterGroup = setup(Group, DEFAULT_PROPS);
 
 describe('Consonant/Filters/Top/Group', () => {
+    test.each(['Clear', 'Effacer'])('Should use authored "%s" text as the group clear button name', (clearFilterText) => {
+        renderTopFilterGroup({
+            numItemsSelected: 1,
+            clearFilterText,
+        });
+
+        const clearButton = screen.getByTestId('consonant-TopFilter-footerClearBtn');
+        expect(clearButton).toHaveAttribute('aria-label', clearFilterText);
+        expect(clearButton).toHaveAccessibleName(clearFilterText);
+    });
+
+    test('Should clear only the current filter group', () => {
+        const onClearAll = jest.fn();
+        const { props: { id } } = renderTopFilterGroup({
+            numItemsSelected: 1,
+            onClearAll,
+        });
+
+        fireEvent.click(screen.getByTestId('consonant-TopFilter-footerClearBtn'));
+
+        expect(onClearAll).toHaveBeenCalledTimes(1);
+        expect(onClearAll).toHaveBeenCalledWith(id);
+    });
+
     test('Should set correct analytics attribute with "Open" when filter is closed', () => {
         const { props: { name } } = renderTopFilterGroup();
         
