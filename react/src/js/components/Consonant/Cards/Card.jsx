@@ -476,6 +476,7 @@ const Card = (props) => {
         logoBorderBg,
         image,
         cardIcon,
+        mnemonic,
         iconAlt,
         detailText,
         editorialOpenVariant,
