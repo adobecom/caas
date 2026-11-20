@@ -7,7 +7,6 @@ import {
 
 const footerType = {
     clearFilterText: string,
-    clearAllFiltersAriaLabel: string,
     numItemsSelected: number,
     mobileFooterBtnText: string,
     handleClear: func.isRequired,
@@ -18,7 +17,6 @@ const footerType = {
 const defaultProps = {
     numItemsSelected: 0,
     clearFilterText: '',
-    clearAllFiltersAriaLabel: '',
     mobileFooterBtnText: '',
     mobileGroupTotalResultsText: '',
 };
@@ -48,7 +46,6 @@ const Footer = (props) => {
         clearFilterText,
         handleToggle,
         mobileFooterBtnText,
-        clearAllFiltersAriaLabel,
     } = props;
 
     /**
@@ -74,7 +71,7 @@ const Footer = (props) => {
             <button
                 data-testid="consonant-TopFilter-footerClearBtn"
                 type="button"
-                aria-label={clearAllFiltersAriaLabel}
+                aria-label={clearFilterText}
                 onClick={handleClear}
                 className="consonant-TopFilter-footerClearBtn"
                 tabIndex="0">
