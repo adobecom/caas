@@ -14,13 +14,13 @@ const pr = (number, label) => ({ number, baseRefName: 'main', headRefOid: `head$
 
 // Execute the actual CLI with a stateful GitHub stand-in. No real gh binary or
 // credentials are available to the child. Unexpected commands fail the test.
-function simulate(prs, data, runs = 1) {
+function simulate(prs, data, runs = 1, comments = {}) {
   const dir = mkdtempSync(join(tmpdir(), 'caas-queue-test-'));
   try {
     const statePath = join(dir, 'state.json');
-    writeFileSync(statePath, JSON.stringify({ prs, data, calls: [] }));
+    writeFileSync(statePath, JSON.stringify({ prs, data, comments, calls: [] }));
     writeFileSync(join(dir, 'gh'), `#!${process.execPath}
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, renameSync } from 'node:fs';
 const path = process.env.TEST_STATE;
 const state = JSON.parse(readFileSync(path));
 const a = process.argv.slice(2);
@@ -30,7 +30,7 @@ if (a[0] === 'label' && a[1] === 'create') {}
 else if (a[0] === 'pr' && a[1] === 'list') result = state.prs;
 else if (a[0] === 'pr' && a[1] === 'view') result = {
  files: [{path:'package.json'}, {path:'package-lock.json'}],
- commits: [{authors:[{login:'dependabot[bot]'}]}], comments: []
+ commits: [{authors:[{login:'dependabot[bot]'}]}], comments: (state.comments || {})[a[2]] || []
 };
 else if (a[0] === 'pr' && a[1] === 'edit') {
  const p = state.prs.find(p => p.number === Number(a[2]));
@@ -61,7 +61,10 @@ else if (a[0] === 'pr' && a[1] === 'edit') {
  else if (endpoint === '-X' && a[2] === 'POST' && a[3].includes('/comments')) result = {};
  else throw Error('Unexpected API call: '+JSON.stringify(a));
 } else throw Error('Unexpected command: '+JSON.stringify(a));
-writeFileSync(path,JSON.stringify(state));
+// Atomic replace: the controller runs gh calls in parallel, so a reader must
+// never see a half-written state file.
+writeFileSync(path+'.'+process.pid,JSON.stringify(state));
+renameSync(path+'.'+process.pid,path);
 process.stdout.write(typeof result === 'string' ? result : JSON.stringify(result));
 `, { mode: 0o755 });
     // Treat the extensionless fake gh as ESM on supported Node versions.
@@ -110,4 +113,24 @@ test('CLI keeps a running comparison in place without merging or advancing', () 
  assert.ok(state.prs[0].labels.some(l=>l.name==='dependencies-active'));
  assert.deepEqual(state.prs[1].labels.map(l=>l.name),['dependencies-queued']);
  assert.equal(state.calls.some(a=>a.includes('--auto')),false);
+});
+
+test('CLI returns a repaired failed-check review to the queue and merges it', () => {
+ const comments = {653:[{body:'<!-- dependabot-safe-automerge -->\n<!-- state:review;head:head653 -->\n- Reason: deployment concluded failure'}]};
+ const repaired = {checkRuns:[{id:1,name:'deployment',status:'completed',conclusion:'failure'},
+  {id:4,name:'deployment',status:'completed',conclusion:'success'}],
+  statuses:[{context:'build-output-diff',state:'success',description:'NO_CHANGE'}]};
+ const state = simulate([pr(653,'dependencies-review'),pr(659,'dependencies-queued')],
+  {head653:repaired,head659:clean},3,comments);
+ assert.ok(state.prs[0].autoMergeRequest);
+ assert.equal(state.prs[1].autoMergeRequest,null);
+});
+
+test('CLI leaves a review whose check still fails', () => {
+ const comments = {653:[{body:'<!-- dependabot-safe-automerge -->\n<!-- state:review;head:head653 -->\n- Reason: deployment concluded failure'}]};
+ const stillFailed = {checkRuns:[{id:1,name:'deployment',status:'completed',conclusion:'failure'}],statuses:[]};
+ const state = simulate([pr(653,'dependencies-review'),pr(659,'dependencies-queued')],
+  {head653:stillFailed,head659:clean},2,comments);
+ assert.deepEqual(state.prs[0].labels.map(l=>l.name),['dependencies-review']);
+ assert.ok(state.prs[1].autoMergeRequest);
 });
