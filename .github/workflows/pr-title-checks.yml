@@ -1,0 +1,51 @@
+name: Pull Request Title
+on:
+  pull_request:
+    # These checks read the PR title, so they also re-run when it is edited.
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+# Retry package downloads when the registry connection drops (ECONNRESET and
+# similar). Applies to every npm command in this workflow, in CI only.
+env:
+  npm_config_fetch_retries: 5
+  npm_config_fetch_retry_mintimeout: 20000
+  npm_config_fetch_retry_maxtimeout: 120000
+
+jobs:
+  check-pr-title:
+    runs-on: ubuntu-latest
+    # Skip PR title check for Dependabot (doesn't use JIRA tickets)
+    if: github.event_name == 'pull_request' && github.event.pull_request.user.login != 'dependabot[bot]'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 24
+          cache: 'npm'
+      - run: npm ci
+      - name: Test PR title rules
+        run: node --test .github/tests/commitlint.test.cjs
+      - name: Check PR title
+        uses: JulienKode/pull-request-name-linter-action@v0.5.0
+        with:
+          configuration-path: ./commitlint.config.js
+  check-test-requirements:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 24
+      - name: Install dependencies
+        run: npm install @actions/core @actions/github
+      - name: Check PR Type and Tests
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const script = require('./test-enforcement.js')
+            await script({github, context, core})
