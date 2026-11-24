@@ -1,5 +1,12 @@
 
 
+## [0.69.23](https://github.com/adobecom/caas/compare/0.69.22...0.69.23) (2026-11-24)
+
+
+### Bug Fixes
+
+* **MWPW-216053:** don't rerun the full PR workflow when a PR description is edited ([#706](https://github.com/adobecom/caas/issues/706)) ([87229b2](https://github.com/adobecom/caas/commit/87229b2cf69ce1ff7beaf231eea7f8c3417e56c8)), closes [#702](https://github.com/adobecom/caas/issues/702) [#682](https://github.com/adobecom/caas/issues/682) [#685](https://github.com/adobecom/caas/issues/685)
+
 ## [0.69.22](https://github.com/adobecom/caas/compare/0.69.21...0.69.22) (2026-11-24)
 
 
