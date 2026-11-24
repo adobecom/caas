@@ -104,6 +104,7 @@ const FiltersPanelTop = (props) => {
     const searchTitle = getConfig('search', 'i18n.leftFilterPanel.searchTitle');
     const clearFilterText = getConfig('filterPanel', 'i18n.topPanel.mobile.group.clearFilterText');
     const clearAllFiltersText = getConfig('filterPanel', 'i18n.topPanel.clearAllFiltersText');
+    const clearAllFiltersAriaLabel = getConfig('filterPanel', 'i18n.topPanel.clearAllFiltersAriaLabel');
     const blurMobileFilters = getConfig('filterPanel', 'topPanel.mobile.blurFilters');
     const showTotalResults = getConfig('collection', 'showTotalResults');
     const showTotalResultsText = getConfig('collection', 'i18n.totalResultsText');
@@ -314,6 +315,7 @@ const FiltersPanelTop = (props) => {
                             type="button"
                             data-testid="consonant-TopFilters-clearBtn"
                             className="consonant-TopFilters-clearBtn"
+                            aria-label={clearAllFiltersAriaLabel}
                             onClick={onClearAllFilters}
                             tabIndex="0">
                             {clearAllFiltersText}

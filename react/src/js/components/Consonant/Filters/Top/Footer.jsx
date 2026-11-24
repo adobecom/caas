@@ -71,6 +71,7 @@ const Footer = (props) => {
             <button
                 data-testid="consonant-TopFilter-footerClearBtn"
                 type="button"
+                aria-label={clearFilterText}
                 onClick={handleClear}
                 className="consonant-TopFilter-footerClearBtn"
                 tabIndex="0">
