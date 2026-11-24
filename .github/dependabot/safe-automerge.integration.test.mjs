@@ -14,11 +14,11 @@ const pr = (number, label) => ({ number, baseRefName: 'main', headRefOid: `head$
 
 // Execute the actual CLI with a stateful GitHub stand-in. No real gh binary or
 // credentials are available to the child. Unexpected commands fail the test.
-function simulate(prs, data, runs = 1) {
+function simulate(prs, data, runs = 1, comments = {}) {
   const dir = mkdtempSync(join(tmpdir(), 'caas-queue-test-'));
   try {
     const statePath = join(dir, 'state.json');
-    writeFileSync(statePath, JSON.stringify({ prs, data, calls: [] }));
+    writeFileSync(statePath, JSON.stringify({ prs, data, comments, calls: [] }));
     writeFileSync(join(dir, 'gh'), `#!${process.execPath}
 import { readFileSync, writeFileSync, renameSync } from 'node:fs';
 const path = process.env.TEST_STATE;
@@ -30,7 +30,8 @@ if (a[0] === 'label' && a[1] === 'create') {}
 else if (a[0] === 'pr' && a[1] === 'list') result = state.prs;
 else if (a[0] === 'pr' && a[1] === 'view') result = {
  files: [{path:'package.json'}, {path:'package-lock.json'}],
- commits: [{authors:[{login:'dependabot[bot]'}]}], comments: []
+ commits: [{authors:[{login:'dependabot[bot]'}]}],
+ comments: (state.comments || {})[a[2]] || []
 };
 else if (a[0] === 'pr' && a[1] === 'edit') {
  const p = state.prs.find(p => p.number === Number(a[2]));
@@ -114,4 +115,34 @@ test('CLI keeps a running comparison in place without merging or advancing', () 
  assert.ok(state.prs[0].labels.some(l=>l.name==='dependencies-active'));
  assert.deepEqual(state.prs[1].labels.map(l=>l.name),['dependencies-queued']);
  assert.equal(state.calls.some(a=>a.includes('--auto')),false);
+});
+
+const changed = {checkRuns:[{id:2,name:'check-build',status:'completed',conclusion:'success'}],
+ statuses:[{context:'build-output-diff',state:'success',description:'CHANGED'}]};
+const HEAD = '400f0377a41ec7e57bcbb299b687724b8f2cf495';
+const OLD_HEAD = '59e154920067583abd5f446a42baa457f7d9bf9b';
+const BASE = '59b0b92bcb892fcdb304c12316f60f0f3a94d616';
+const reviewPr = (label) => ({ ...pr(686, label), headRefOid: HEAD });
+// Same shape as the Mac mini reviewer's comment, including the base SHA on the Head line.
+const qaPass = (head, login = 'sanrai') => ({ author: { login }, createdAt: '2026-11-09T19:11:00Z',
+ body: `**QA result: PASS**\n\nShould this merge? Yes.\n\n- Head [\`${head.slice(0,7)}\`](https://github.com/test/queue/commit/${head}), base (main) [\`${BASE.slice(0,7)}\`](https://github.com/test/queue/commit/${BASE})` });
+
+test('CLI returns a QA-passed review PR to the queue and arms it despite a changed bundle', () => {
+ const state = simulate([reviewPr('dependencies-review')], {[HEAD]:changed}, 1, {686:[qaPass(HEAD)]});
+ assert.ok(state.prs[0].autoMergeRequest);
+ const merge = state.calls.find(a=>a[0]==='pr' && a[1]==='merge' && a.includes('--auto'));
+ assert.ok(merge.includes(HEAD));
+ assert.ok(state.prs[0].labels.some(l=>l.name==='dependencies-automerge-ready'));
+});
+
+test('CLI ignores a QA PASS from anyone other than the QA reviewer', () => {
+ const state = simulate([reviewPr('dependencies-review')], {[HEAD]:changed}, 1, {686:[qaPass(HEAD,'someone-else')]});
+ assert.equal(state.prs[0].autoMergeRequest, null);
+ assert.deepEqual(state.prs[0].labels.map(l=>l.name),['dependencies-review']);
+});
+
+test('CLI still sends a changed bundle to review when QA passed an older head', () => {
+ const state = simulate([reviewPr('dependencies-active')], {[HEAD]:changed}, 1, {686:[qaPass(OLD_HEAD)]});
+ assert.equal(state.prs[0].autoMergeRequest, null);
+ assert.deepEqual(state.prs[0].labels.map(l=>l.name),['dependencies-review']);
 });
