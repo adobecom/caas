@@ -13,7 +13,6 @@ on:
       - Build Output Diff (advisory)
       - Pull Request
       - Review Score Gate
-      - AI Code Review
     types: [completed]
   # Backup for conflict recovery. Scheduled Actions may be delayed or dropped,
   # so normal ready-to-merge processing must not depend on this timer.

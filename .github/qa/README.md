@@ -61,7 +61,7 @@ Keep prompts tight - the agent has limited turn budget and rambles when given to
 
 ## Required secrets
 
-- `IMS_ACCESS_TOKEN` - already configured (used by `ai-code-review.yml`).
+- `IMS_ACCESS_TOKEN` - already configured.
 
 ## Self-hosted runner requirements
 
@@ -70,4 +70,4 @@ Keep prompts tight - the agent has limited turn budget and rambles when given to
 - Playwright installed globally OR via `npm install playwright` in the working tree.
 - ImageMagick (`brew install imagemagick`) for `diff_screenshots`.
 
-The existing self-hosted runner used by `ai-code-review.yml` satisfies these requirements.
+The existing `qa-audit` self-hosted runner satisfies these requirements.
