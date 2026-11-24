@@ -70,7 +70,7 @@
     "@testing-library/react-hooks": "^3.4.2",
     "@ungap/structured-clone": "^1.4.0",
     "@wdio/cli": "^8.46.0",
-    "@wdio/devtools-service": "^8.46.0",
+    "@wdio/devtools-service": "^11.2.0",
     "@wdio/local-runner": "^8.46.0",
     "@wdio/mocha-framework": "^10.2.0",
     "@wdio/spec-reporter": "^8.43.0",
