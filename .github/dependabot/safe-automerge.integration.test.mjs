@@ -117,6 +117,26 @@ test('CLI keeps a running comparison in place without merging or advancing', () 
  assert.equal(state.calls.some(a=>a.includes('--auto')),false);
 });
 
+test('CLI returns a repaired failed-check review to the queue and merges it', () => {
+ const comments = {653:[{body:'<!-- dependabot-safe-automerge -->\n<!-- state:review;head:head653 -->\n- Reason: deployment concluded failure'}]};
+ const repaired = {checkRuns:[{id:1,name:'deployment',status:'completed',conclusion:'failure'},
+  {id:4,name:'deployment',status:'completed',conclusion:'success'}],
+  statuses:[{context:'build-output-diff',state:'success',description:'NO_CHANGE'}]};
+ const state = simulate([pr(653,'dependencies-review'),pr(659,'dependencies-queued')],
+  {head653:repaired,head659:clean},3,comments);
+ assert.ok(state.prs[0].autoMergeRequest);
+ assert.equal(state.prs[1].autoMergeRequest,null);
+});
+
+test('CLI leaves a review whose check still fails', () => {
+ const comments = {653:[{body:'<!-- dependabot-safe-automerge -->\n<!-- state:review;head:head653 -->\n- Reason: deployment concluded failure'}]};
+ const stillFailed = {checkRuns:[{id:1,name:'deployment',status:'completed',conclusion:'failure'}],statuses:[]};
+ const state = simulate([pr(653,'dependencies-review'),pr(659,'dependencies-queued')],
+  {head653:stillFailed,head659:clean},2,comments);
+ assert.deepEqual(state.prs[0].labels.map(l=>l.name),['dependencies-review']);
+ assert.ok(state.prs[1].autoMergeRequest);
+});
+
 const changed = {checkRuns:[{id:2,name:'check-build',status:'completed',conclusion:'success'}],
  statuses:[{context:'build-output-diff',state:'success',description:'CHANGED'}]};
 const HEAD = '400f0377a41ec7e57bcbb299b687724b8f2cf495';
