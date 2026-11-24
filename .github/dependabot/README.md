@@ -16,6 +16,29 @@ The controller in this directory separates update creation from merge policy:
 7. Old or conflicted pure-Dependabot branches go through bounded recovery. Every
    other case receives `dependencies-review` for a person or Codex to handle.
 
+## QA PASS override
+
+The local QA reviewer (`sanrai` by default, set with the repository variable
+`DEPENDABOT_QA_REVIEWER`) builds and tests each PR and posts a comment that
+starts with `**QA result: PASS**` and names the head on a line like
+`- Head <full 40-character sha>, base (main) <sha>`.
+
+When the reviewer's latest QA result for the PR's current head is PASS:
+
+- a changed shipped bundle no longer needs review;
+- failed checks GitHub does not require (merge state `UNSTABLE`, for example
+  the Pages preview `deployment` job) no longer need review;
+- a PR already labelled `dependencies-review` for one of those reasons returns
+  to the queue on its own, and the controller arms it without waiting for the
+  CI AI review jobs.
+
+Everything else still applies: package-only files, Dependabot-only commits,
+up to date with `main`, required checks green, and a successful
+`build-output-diff` run. A QA PASS for an older head does not count, so a
+rebase needs a fresh QA PASS. Any QA result comment from the reviewer wakes the
+controller through `issue_comment`, so a later non-PASS result withdraws a PASS
+promptly; other comments are ignored.
+
 ## Failed checks
 
 A completed failed, cancelled, timed-out, or skipped build comparison moves the
