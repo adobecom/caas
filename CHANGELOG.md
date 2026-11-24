@@ -1,5 +1,12 @@
 
 
+## [0.69.24](https://github.com/adobecom/caas/compare/0.69.23...0.69.24) (2026-11-24)
+
+
+### Tests
+
+* **MWPW-216600:** fix flaky Dependabot controller integration tests ([#693](https://github.com/adobecom/caas/issues/693)) ([41f662c](https://github.com/adobecom/caas/commit/41f662ca30da49e5673e705b63913f8978752acb)), closes [#689](https://github.com/adobecom/caas/issues/689) [#685](https://github.com/adobecom/caas/issues/685) [#686](https://github.com/adobecom/caas/issues/686) [#687](https://github.com/adobecom/caas/issues/687) [#685](https://github.com/adobecom/caas/issues/685) [#686](https://github.com/adobecom/caas/issues/686) [#687](https://github.com/adobecom/caas/issues/687)
+
 ## [0.69.23](https://github.com/adobecom/caas/compare/0.69.22...0.69.23) (2026-11-24)
 
 
