@@ -28,9 +28,68 @@ const ACTIVE_LABEL = 'dependencies-active';
 const READY_LABEL = 'dependencies-automerge-ready';
 const REVIEW_LABEL = 'dependencies-review';
 const CONFLICT_LABEL = 'dependencies-conflict';
+// The one account whose local QA run may override the byte-identical bundle
+// rule and non-required check failures. Its QA comment must name the exact
+// head SHA, so any new commit needs a fresh QA PASS.
+const DEFAULT_QA_REVIEWER = 'sanrai';
+const QA_RESULT = /^\s*\*\*QA result:\s*([A-Za-z]+)/;
+// Review reasons a QA PASS can clear. Anything else (extra files, extra
+// commits, unrecoverable conflicts) stays with a person.
+const QA_OVERRIDABLE = [
+  /shipped build output is not byte-identical/,
+  /^(?!build-output-diff).* concluded /,
+  /GitHub reports merge state UNSTABLE/,
+];
 
 function hasLabel(pr, name) {
   return (pr.labels || []).some((label) => (label.name || label) === name);
+}
+
+function commentAuthor(comment) {
+  return comment.author?.login || comment.user?.login || '';
+}
+
+// "- Head 400f0377a41ec7e57bcbb299b687724b8f2cf495, base (main) 59b0b92..." (the
+// reviewer's format), or the same SHA inside a Markdown commit link. Only the first
+// full SHA after "Head" counts; the base SHA later on the same line does not.
+const QA_HEAD = /\bHead\b[^\n]*?\b([0-9a-f]{40})\b/i;
+
+export function qaHeadSha(body = '') {
+  return ((body || '').match(QA_HEAD) || [])[1] || '';
+}
+
+/**
+ * True when the reviewer's latest QA result for this exact head is PASS.
+ * The QA comment names the full head SHA on its "Head" line.
+ */
+export function hasQaPass(comments, headSha, reviewer = DEFAULT_QA_REVIEWER) {
+  if (!headSha || !reviewer) return false;
+  const results = (comments || [])
+    .filter((comment) => commentAuthor(comment).toLowerCase() === reviewer.toLowerCase())
+    .filter((comment) => qaHeadSha(comment.body).toLowerCase() === headSha.toLowerCase())
+    .map((comment) => ({
+      result: ((comment.body || '').match(QA_RESULT) || [])[1],
+      at: Date.parse(comment.updatedAt || comment.updated_at || comment.createdAt || comment.created_at || 0),
+    }))
+    .filter(({ result }) => result)
+    .sort((a, b) => b.at - a.at);
+  return results.length > 0 && results[0].result.toUpperCase() === 'PASS';
+}
+
+/** The reason recorded in this controller's decision comment for a head, if any. */
+export function recordedReviewReason(comments, headSha) {
+  const decision = (comments || []).find(({ body = '' }) =>
+    body.includes(DECISION_MARKER) && body.includes(`state:review;head:${headSha}`));
+  if (!decision) return null;
+  return ((decision.body.match(/^- Reason: (.*)$/m) || [])[1] || '').trim();
+}
+
+/** A review-labelled PR returns to the queue once QA clears its review reason. */
+export function shouldRequeueAfterQa(comments, headSha, reviewer = DEFAULT_QA_REVIEWER) {
+  if (!hasQaPass(comments, headSha, reviewer)) return false;
+  const reason = recordedReviewReason(comments, headSha);
+  if (reason === null) return true;
+  return QA_OVERRIDABLE.some((pattern) => pattern.test(reason));
 }
 
 export function selectQueueCandidate(prs) {
@@ -49,7 +108,7 @@ export function hasOnlyDependabotCommits(commits) {
 export function evaluateCandidate(candidate) {
   const {
     files, commits, behindBy, mergeStateStatus,
-    checkRuns, statuses,
+    checkRuns, statuses, qaPass = false,
   } = candidate;
 
   if (!files.length || files.some((file) => !ALLOWED_FILES.has(file.path))) {
@@ -81,7 +140,10 @@ export function evaluateCandidate(candidate) {
   if (outputCheck && String(outputCheck.conclusion).toUpperCase() !== 'SUCCESS') {
     return { state: 'review', reason: `build-output-diff concluded ${outputCheck.conclusion || 'unknown'}` };
   }
-  if (mergeStateStatus !== 'CLEAN' && failedCheck && !runningCheck) {
+  // A QA PASS on this exact head clears checks that GitHub does not require
+  // (UNSTABLE). Required checks still block: GitHub then reports BLOCKED.
+  const qaClearsFailures = qaPass && mergeStateStatus === 'UNSTABLE';
+  if (mergeStateStatus !== 'CLEAN' && failedCheck && !runningCheck && !qaClearsFailures) {
     return { state: 'review', reason: `${failedCheck.name} concluded ${failedCheck.conclusion}` };
   }
 
@@ -93,16 +155,31 @@ export function evaluateCandidate(candidate) {
   if (String(buildDiff.state || '').toUpperCase() !== 'SUCCESS') {
     return { state: 'waiting', reason: `waiting for successful build-output-diff (${buildDiff.state || 'unknown'})` };
   }
-  if (!/NO_CHANGE/i.test(buildDiff.description || '')) {
+  const bundleChanged = !/NO_CHANGE/i.test(buildDiff.description || '');
+  if (bundleChanged && !qaPass) {
     return { state: 'review', reason: `shipped build output is not byte-identical (${buildDiff.description || 'unknown'})` };
   }
 
+  if (mergeStateStatus === 'CLEAN' && qaPass) {
+    return {
+      state: 'eligible',
+      reason: bundleChanged
+        ? 'QA PASS on this head; shipped build changed and was tested'
+        : 'QA PASS on this head, byte-identical build, and clean GitHub result',
+    };
+  }
   if (mergeStateStatus === 'CLEAN') {
     return { state: 'eligible', reason: 'package-only update, byte-identical build, and clean GitHub result' };
   }
 
   const pendingStatus = statuses.find(({ context, state }) =>
     context !== 'build-output-diff' && ['PENDING', 'EXPECTED'].includes(String(state || '').toUpperCase()));
+  // UNSTABLE means every required check passed; only optional ones (CI AI
+  // reviews, Pages preview) are failing or still running. With a QA PASS they
+  // must not hold, or disarm, the merge.
+  if (qaClearsFailures) {
+    return { state: 'eligible', reason: 'QA PASS on this head; required checks passed' };
+  }
   if (runningCheck) return { state: 'waiting', reason: `waiting for ${runningCheck.name}` };
   if (pendingStatus) return { state: 'waiting', reason: `waiting for ${pendingStatus.context}` };
 
@@ -244,7 +321,7 @@ function recordDecision(repo, pr, data, state, reason) {
   ].join('\n'));
 }
 
-async function loadCandidateData(repo, pr, baseSha) {
+async function loadCandidateData(repo, pr, baseSha, reviewer) {
   const [view, checkData, statusData, comparison] = await Promise.all([
     ghJsonAsync(['pr', 'view', String(pr.number), '--repo', repo, '--json', 'files,commits,comments']),
     ghJsonAsync(['api', `repos/${repo}/commits/${pr.headRefOid}/check-runs?per_page=100`]),
@@ -260,6 +337,7 @@ async function loadCandidateData(repo, pr, baseSha) {
     checkRuns: checkData.check_runs || [],
     statuses: statusData.statuses || [],
     behindBy: comparison.behind_by || 0,
+    qaPass: hasQaPass(view.comments || [], pr.headRefOid, reviewer),
     headUpdatedAt: (view.commits || []).at(-1)?.committedDate || pr.updatedAt,
   };
 }
@@ -293,6 +371,7 @@ async function main() {
   const repo = process.env.GITHUB_REPOSITORY;
   if (!repo) throw new Error('GITHUB_REPOSITORY is required');
   const mode = process.env.AUTOMERGE_MODE === 'merge' ? 'merge' : 'observe';
+  const reviewer = process.env.QA_REVIEWER || DEFAULT_QA_REVIEWER;
   const repository = ghJson(['api', `repos/${repo}`]);
   const defaultBranch = repository.default_branch;
   const strict = strictUpToDateEnabled(repo, defaultBranch);
@@ -312,6 +391,17 @@ async function main() {
   }
 
   const eligiblePrs = prs.filter((pr) => pr.baseRefName === defaultBranch);
+
+  // A QA PASS from the reviewer on a review-labelled PR's current head puts it
+  // back in the queue, as long as the recorded review reason is one QA can clear.
+  for (const pr of eligiblePrs.filter((item) => hasLabel(item, REVIEW_LABEL))) {
+    const view = ghJson(['pr', 'view', String(pr.number), '--repo', repo, '--json', 'comments'], { allowFailure: true });
+    if (view && shouldRequeueAfterQa(view.comments || [], pr.headRefOid, reviewer)) {
+      setQueueState(repo, pr, QUEUED_LABEL);
+      console.log(`#${pr.number} returned to the queue: QA PASS by ${reviewer} on ${pr.headRefOid.slice(0, 12)}.`);
+    }
+  }
+
   const armed = eligiblePrs.filter((pr) => pr.autoMergeRequest);
   if (armed.length > 1) {
     throw new Error(`More than one Dependabot PR has auto-merge armed: ${armed.map(({ number }) => `#${number}`).join(', ')}`);
@@ -336,7 +426,7 @@ async function main() {
   const baseSha = gh(['api', `repos/${repo}/git/ref/heads/${defaultBranch}`, '--jq', '.object.sha']);
   let data;
   try {
-    data = await loadCandidateData(repo, selected, baseSha);
+    data = await loadCandidateData(repo, selected, baseSha, reviewer);
   } catch (error) {
     throw new Error(`#${selected.number} could not be evaluated: ${error.message}`);
   }
@@ -380,7 +470,9 @@ async function main() {
     setQueueState(repo, selected, ACTIVE_LABEL);
     setLabel(repo, selected.number, selected.labels, null, [CONFLICT_LABEL, READY_LABEL]);
     console.log(`#${selected.number} is current with main and may run expensive checks.`);
-    return;
+    // A QA PASS on this head already covers what the expensive CI review jobs
+    // check, so go straight to arming instead of waiting for another event.
+    if (!(decision.state === 'eligible' && data.qaPass)) return;
   }
 
   if (decision.state === 'waiting') {
