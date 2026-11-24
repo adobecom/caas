@@ -1,5 +1,12 @@
 
 
+## [0.69.25](https://github.com/adobecom/caas/compare/0.69.24...0.69.25) (2026-11-24)
+
+
+### Bug Fixes
+
+* **mwpw-213303:** self-heal Dependabot queue after failed checks and Pages deploy collisions ([#678](https://github.com/adobecom/caas/issues/678)) ([4d6102f](https://github.com/adobecom/caas/commit/4d6102f536bc84a78d012e793520a8b462ff8198)), closes [#674](https://github.com/adobecom/caas/issues/674)
+
 ## [0.69.24](https://github.com/adobecom/caas/compare/0.69.23...0.69.24) (2026-11-24)
 
 
