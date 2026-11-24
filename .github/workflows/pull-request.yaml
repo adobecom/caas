@@ -99,6 +99,11 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
   deployment:
     needs: check-build
+    # Skip the Pages preview for Dependabot PRs. Nobody reviews those previews,
+    # and Dependabot opens many PRs at once, so their deploys collide (Pages
+    # allows one deployment at a time) and fail the run for reasons unrelated
+    # to the dependency change. The safe-automerge queue still builds each one.
+    if: github.event.pull_request.user.login != 'dependabot[bot]'
     # One preview deployment per PR. A new push cancels the older deploy instead
     # of failing with "in progress deployment" (GitHub Pages allows only one).
     concurrency:
@@ -167,6 +172,8 @@ jobs:
   run-e2e-tests:
     runs-on: ubuntu-latest
     needs: deployment
+    # Still run when the preview deploy was skipped (Dependabot PRs).
+    if: ${{ !cancelled() && (needs.deployment.result == 'success' || needs.deployment.result == 'skipped') }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -224,6 +231,8 @@ jobs:
   run-accessibility-checks:
     runs-on: ubuntu-latest
     needs: deployment
+    # Still run when the preview deploy was skipped (Dependabot PRs).
+    if: ${{ !cancelled() && (needs.deployment.result == 'success' || needs.deployment.result == 'skipped') }}
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js 24
@@ -237,6 +246,8 @@ jobs:
   run-core-web-vitals-checks:
     runs-on: ubuntu-latest
     needs: deployment
+    # Still run when the preview deploy was skipped (Dependabot PRs).
+    if: ${{ !cancelled() && (needs.deployment.result == 'success' || needs.deployment.result == 'skipped') }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
