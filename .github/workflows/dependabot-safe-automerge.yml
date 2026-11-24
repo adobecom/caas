@@ -12,10 +12,8 @@ on:
     workflows:
       - Build Output Diff (advisory)
       - Pull Request
+      - Pull Request Title
       - Review Score Gate
-      - AI Code Review
-      - Agent QA Review
-      - Feature QA Review
     types: [completed]
   # The QA reviewer's "QA result:" comment can clear (or withdraw) a QA PASS. issue_comment
   # always runs this file from the default branch, never from the PR.

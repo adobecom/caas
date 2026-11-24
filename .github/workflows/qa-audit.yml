@@ -26,10 +26,17 @@ on:
 
 # Public repo + self-hosted runner: only authorized users with write access
 # can trigger workflow_dispatch, so external visitors cannot execute code
-# on the runner. The existing AI Code Review workflow uses the same posture.
+# on the runner.
 concurrency:
   group: qa-audit-${{ inputs.caasver }}
   cancel-in-progress: false
+
+# Retry package downloads when the registry connection drops (ECONNRESET and
+# similar). Applies to every npm command in this workflow, in CI only.
+env:
+  npm_config_fetch_retries: 5
+  npm_config_fetch_retry_mintimeout: 20000
+  npm_config_fetch_retry_maxtimeout: 120000
 
 jobs:
   audit:

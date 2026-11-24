@@ -1,5 +1,91 @@
 
 
+## [0.69.22](https://github.com/adobecom/caas/compare/0.69.21...0.69.22) (2026-11-24)
+
+
+### Chores
+
+* **MWPW-000000:** remove the AI Code Review workflow ([#707](https://github.com/adobecom/caas/issues/707)) ([f748d24](https://github.com/adobecom/caas/commit/f748d24a461857605765c022c27efad9784cfcd7)), closes [#694](https://github.com/adobecom/caas/issues/694)
+
+## [0.69.21](https://github.com/adobecom/caas/compare/0.69.20...0.69.21) (2026-11-24)
+
+
+### Bug Fixes
+
+* **mwpw-191651:** adds aria-label to close all filters ([#709](https://github.com/adobecom/caas/issues/709)) ([237a06e](https://github.com/adobecom/caas/commit/237a06e94bf8245c3904e3b93a7eef8c0a131204))
+
+## [0.69.20](https://github.com/adobecom/caas/compare/0.69.19...0.69.20) (2026-11-19)
+
+
+### Dependencies
+
+* **deps-dev:** bump axe-core from 4.14.0 to 4.14.1 ([#708](https://github.com/adobecom/caas/issues/708)) ([96b661d](https://github.com/adobecom/caas/commit/96b661d4cbff5fcf8f9cec1fb656010b1f4776cd))
+
+## [0.69.19](https://github.com/adobecom/caas/compare/0.69.18...0.69.19) (2026-11-18)
+
+
+### Dependencies
+
+* **deps-dev:** bump postcss from 8.5.32 to 8.5.33 ([#702](https://github.com/adobecom/caas/issues/702)) ([f70eaa7](https://github.com/adobecom/caas/commit/f70eaa74d21690c0e69588f03ebcac6290a224f1))
+
+## [0.69.18](https://github.com/adobecom/caas/compare/0.69.17...0.69.18) (2026-11-18)
+
+
+### Bug Fixes
+
+* **MWPW-000000:** retry npm downloads in CI when the registry connection drops ([#705](https://github.com/adobecom/caas/issues/705)) ([c66b170](https://github.com/adobecom/caas/commit/c66b17040418e99bf4b46f3ad84b6e06d085f61c)), closes [#702](https://github.com/adobecom/caas/issues/702) [#703](https://github.com/adobecom/caas/issues/703) [#688](https://github.com/adobecom/caas/issues/688)
+
+## [0.69.17](https://github.com/adobecom/caas/compare/0.69.16...0.69.17) (2026-11-16)
+
+## [0.69.16](https://github.com/adobecom/caas/compare/0.69.15...0.69.16) (2026-11-16)
+
+
+### Dependencies
+
+* **deps-dev:** bump @babel/preset-env from 7.29.7 to 7.29.14 ([#700](https://github.com/adobecom/caas/issues/700)) ([893a6d9](https://github.com/adobecom/caas/commit/893a6d9eda351247231ee0bb4964fa20a14bcb68))
+
+## [0.69.15](https://github.com/adobecom/caas/compare/0.69.14...0.69.15) (2026-11-16)
+
+
+### Dependencies
+
+* **deps-dev:** bump @lhci/cli from 0.16.0 to 0.16.1 ([#699](https://github.com/adobecom/caas/issues/699)) ([fdbde13](https://github.com/adobecom/caas/commit/fdbde139eb4ecf3aacd962646aa4719f8a9ecf18))
+
+## [0.69.14](https://github.com/adobecom/caas/compare/0.69.13...0.69.14) (2026-11-13)
+
+
+### Dependencies
+
+* **deps-dev:** bump @lhci/cli from 0.15.1 to 0.16.0 ([#682](https://github.com/adobecom/caas/issues/682)) ([d3dc94c](https://github.com/adobecom/caas/commit/d3dc94c857b48371f7097192a0788f06a9ad4613))
+
+## [0.69.13](https://github.com/adobecom/caas/compare/0.69.12...0.69.13) (2026-11-13)
+
+
+### Dependencies
+
+* **deps:** bump follow-redirects from 1.16.1 to 1.16.3 ([#687](https://github.com/adobecom/caas/issues/687)) ([d55e025](https://github.com/adobecom/caas/commit/d55e025e1fc5a20d07b056ec77d95594fece355c))
+
+## [0.69.12](https://github.com/adobecom/caas/compare/0.69.11...0.69.12) (2026-11-12)
+
+
+### Dependencies
+
+* **deps-dev:** bump serve from 14.2.6 to 14.2.7 ([#688](https://github.com/adobecom/caas/issues/688)) ([674f853](https://github.com/adobecom/caas/commit/674f853ca4f24e65b7e13b02699c2a33c4d4b61b))
+
+## [0.69.11](https://github.com/adobecom/caas/compare/0.69.10...0.69.11) (2026-11-12)
+
+
+### Bug Fixes
+
+* **MWPW-215098:** Accept case-insensitive Jira keys and any-case descriptions in PR titles ([#696](https://github.com/adobecom/caas/issues/696)) ([0d7c7d6](https://github.com/adobecom/caas/commit/0d7c7d6e7984d54de2c5d1362e0f00ff300607f2))
+
+## [0.69.10](https://github.com/adobecom/caas/compare/0.69.9...0.69.10) (2026-11-12)
+
+
+### Bug Fixes
+
+* **mwpw-215103:** remove the Agent QA Review and Feature QA Review workflows ([#694](https://github.com/adobecom/caas/issues/694)) ([b911a34](https://github.com/adobecom/caas/commit/b911a343b80c2715ae6a3fc7b1e9f9e26ffcc299))
+
 ## [0.69.9](https://github.com/adobecom/caas/compare/0.69.8...0.69.9) (2026-11-10)
 
 

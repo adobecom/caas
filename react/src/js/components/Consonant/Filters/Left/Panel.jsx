@@ -97,6 +97,7 @@ const LeftFilterPanel = forwardRef(({
      */
     const showTotalResults = getConfig('collection', 'showTotalResults');
     const clearAllFiltersText = getConfig('filterPanel', 'i18n.leftPanel.clearAllFiltersText');
+    const clearAllFiltersAriaLabel = getConfig('filterPanel', 'i18n.leftPanel.clearAllFiltersAriaLabel');
     const bookmarksEnabled = getConfig('bookmarks', 'leftFilterPanel.showBookmarksFilter');
     const searchEnabled = getConfig('search', 'enabled');
     const panelHeader = getConfig('filterPanel', 'i18n.leftPanel.header');
@@ -213,6 +214,7 @@ const LeftFilterPanel = forwardRef(({
                 {DESKTOP_SCREEN_SIZE &&
                 <DesktopClearBtn
                     clearAllFiltersText={clearAllFiltersText}
+                    clearAllFiltersAriaLabel={clearAllFiltersAriaLabel}
                     onClearAllFilters={onClearAllFilters}
                     panelHeader={panelHeader} />
                 }
@@ -263,6 +265,7 @@ const LeftFilterPanel = forwardRef(({
                 showTotalResultsText={showTotalResultsText}
                 onMobileFiltersToggleClick={onMobileFiltersToggleClick}
                 clearAllFiltersText={clearAllFiltersText}
+                clearAllFiltersAriaLabel={clearAllFiltersAriaLabel}
                 onClearAllFilters={onClearAllFilters}
                 resQty={resQty}
                 showTotalResults={showTotalResults}

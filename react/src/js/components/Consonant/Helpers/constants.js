@@ -189,6 +189,7 @@ export const DEFAULT_CONFIG = {
         filters: [],
         clearAllFiltersText: 'Clear all',
         clearFilterText: 'Clear',
+        clearAllFiltersAriaLabel: 'Clear all filters',
         filterLogic: 'and',
         leftPanelHeader: 'Refine the results',
         topPanel: {
