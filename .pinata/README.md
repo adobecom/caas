@@ -32,7 +32,7 @@ Every gate mirrors something this repo already enforces or ships:
   `index.html` + built bundle + `mock-json/`, require the Consonant grid, ≥1 card,
   and no uncaught page errors.
 - **adversary** — org-floor-mandated independent model review; the harness-side
-  counterpart of `.github/workflows/ai-code-review.yml`.
+  counterpart of the former `.github/workflows/ai-code-review.yml` (since removed).
 
 Every command above was executed against a clean checkout before being declared.
 

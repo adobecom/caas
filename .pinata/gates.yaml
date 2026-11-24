@@ -112,7 +112,7 @@ gates:
         name: Adversarial review — independent merge gate (INV-4)
         description: >-
             Independent-model review of the diff before merge, required by the
-            acom org floor. Plays the role caas's own ai-code-review.yml plays
+            acom org floor. Plays the role caas's former ai-code-review.yml played
             upstream (stateful LLM diff review): correctness, security, data
             loss — style and nits belong to the lint gate. Skips honestly when
             no adversary model is reachable.
