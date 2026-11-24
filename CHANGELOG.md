@@ -1,5 +1,12 @@
 
 
+## [0.69.22](https://github.com/adobecom/caas/compare/0.69.21...0.69.22) (2026-11-24)
+
+
+### Chores
+
+* **MWPW-000000:** remove the AI Code Review workflow ([#707](https://github.com/adobecom/caas/issues/707)) ([f748d24](https://github.com/adobecom/caas/commit/f748d24a461857605765c022c27efad9784cfcd7)), closes [#694](https://github.com/adobecom/caas/issues/694)
+
 ## [0.69.21](https://github.com/adobecom/caas/compare/0.69.20...0.69.21) (2026-11-24)
 
 
