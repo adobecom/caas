@@ -129,7 +129,7 @@
     "stylelint-config-standard": "^18.3.0",
     "stylelint-webpack-plugin": "^0.10.5",
     "wdio-chromedriver-service": "^8.0.1",
-    "webpack": "^3.9.1",
+    "webpack": "^5.113.0",
     "webpack-bundle-analyzer": "^4.10.2"
   },
   "husky": {
