@@ -1,5 +1,12 @@
 
 
+## [0.69.29](https://github.com/adobecom/caas/compare/0.69.28...0.69.29) (2026-11-25)
+
+
+### Dependencies
+
+* **deps:** bump uuid and @wdio/devtools-service ([#712](https://github.com/adobecom/caas/issues/712)) ([d13890d](https://github.com/adobecom/caas/commit/d13890dc3cce390234fa576009560637ed52dc1e))
+
 ## [0.69.28](https://github.com/adobecom/caas/compare/0.69.27...0.69.28) (2026-11-25)
 
 ## [0.69.27](https://github.com/adobecom/caas/compare/0.69.26...0.69.27) (2026-11-24)
