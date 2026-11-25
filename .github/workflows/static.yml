@@ -55,15 +55,25 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v3
 
-      # 5. Upload our site files to the Pages artifact
-      #    - Our index.html is in the repo root, so we use 'path: "."'.
+      # 5. Collect only the files the site serves: everything tracked in git
+      #    plus the fresh build in dist/. Uploading the whole checkout also sent
+      #    node_modules (~168 MB, tens of thousands of files), and deploy-pages
+      #    often failed to find that artifact ("Fetching artifact metadata failed").
+      - name: Collect site files
+        run: |
+          rm -rf _site && mkdir _site
+          git ls-files -z | xargs -0 cp --parents -t _site
+          cp -R dist/. _site/dist/
+          du -sh _site
+
+      # 6. Upload the site files to the Pages artifact
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: '_site'
           name: 'github-pages'
 
-      # 6. Deploy the artifact to GitHub Pages
+      # 7. Deploy the artifact to GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
