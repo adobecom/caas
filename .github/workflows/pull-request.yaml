@@ -136,16 +136,27 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v3
 
-      # 6. Upload the built site. The name includes the run attempt so that
+      # 6. Collect only the files the site serves: everything tracked in git
+      #    plus the fresh build in dist/. Uploading the whole checkout also sent
+      #    node_modules (~168 MB, tens of thousands of files), and deploy-pages
+      #    often failed to find that artifact ("Fetching artifact metadata failed").
+      - name: Collect site files
+        run: |
+          rm -rf _site && mkdir _site
+          git ls-files -z | xargs -0 cp --parents -t _site
+          cp -R dist/. _site/dist/
+          du -sh _site
+
+      # 7. Upload the built site. The name includes the run attempt so that
       #    re-running a failed job does not leave two artifacts with the same
       #    name in the run (deploy-pages refuses to deploy in that case).
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: '_site'
           name: github-pages-${{ github.run_attempt }}
 
-      # 7. Deploy the uploaded artifact to GitHub Pages
+      # 8. Deploy the uploaded artifact to GitHub Pages
       - name: Deploy to GitHub Pages (Preview)
         id: deployment
         continue-on-error: true
@@ -154,7 +165,7 @@ jobs:
           artifact_name: github-pages-${{ github.run_attempt }}
           preview: true
 
-      # 8. Pages allows one deployment at a time, so a collision with another
+      # 9. Pages allows one deployment at a time, so a collision with another
       #    deployment is usually gone a minute later. Retry once; the job still
       #    fails if the retry fails.
       - name: Wait for the in-progress Pages deployment
