@@ -76,6 +76,23 @@ export function hasQaPass(comments, headSha, reviewer = DEFAULT_QA_REVIEWER) {
   return results.length > 0 && results[0].result.toUpperCase() === 'PASS';
 }
 
+const QA_BLOCK = /^\s*\*\*QA result:\s*DO NOT MERGE/i;
+
+/**
+ * True when the reviewer's latest QA result for this exact head says DO NOT MERGE.
+ * Such a PR must not hold the queue: it goes to review and the next PR moves up.
+ */
+export function hasQaBlock(comments, headSha, reviewer = DEFAULT_QA_REVIEWER) {
+  if (!headSha || !reviewer) return false;
+  const latest = (comments || [])
+    .filter((comment) => commentAuthor(comment).toLowerCase() === reviewer.toLowerCase())
+    .filter((comment) => qaHeadSha(comment.body).toLowerCase() === headSha.toLowerCase())
+    .filter((comment) => QA_RESULT.test(comment.body || ''))
+    .sort((a, b) => Date.parse(b.updatedAt || b.updated_at || b.createdAt || b.created_at || 0)
+      - Date.parse(a.updatedAt || a.updated_at || a.createdAt || a.created_at || 0))[0];
+  return Boolean(latest && QA_BLOCK.test(latest.body || ''));
+}
+
 /** The reason recorded in this controller's decision comment for a head, if any. */
 export function recordedReviewReason(comments, headSha) {
   const decision = (comments || []).find(({ body = '' }) =>
@@ -129,9 +146,17 @@ export function failedCheckReview(comments = []) {
   return failed ? { headSha: marker[2], checkName: failed[1] } : null;
 }
 
-export function reviewRecovery({ review, headSha, checkRuns = [] }) {
+// Checks that fail for infrastructure reasons, not because of the update. A PR
+// that failed one and is behind main goes back to the queue: the queue rebases
+// it, which gives it a fresh run.
+const INFRA_CHECKS = new Set(['deployment']);
+
+export function reviewRecovery({ review, headSha, checkRuns = [], behind = false }) {
   if (!review) return { action: 'keep', reason: 'not a failed-check review' };
   const { checkName } = review;
+  if (behind && INFRA_CHECKS.has(checkName)) {
+    return { action: 'requeue', reason: `${checkName} failed for infrastructure reasons and the branch is behind main` };
+  }
   const latest = latestCheckRuns(checkRuns.filter(({ name }) => name === checkName))[0];
   if (!latest) {
     return review.headSha !== headSha
@@ -150,7 +175,7 @@ export function reviewRecovery({ review, headSha, checkRuns = [] }) {
 export function evaluateCandidate(candidate) {
   const {
     files, commits, behindBy, mergeStateStatus,
-    checkRuns, statuses, qaPass = false,
+    checkRuns, statuses, qaPass = false, qaBlock = false,
   } = candidate;
 
   if (!files.length || files.some((file) => !ALLOWED_FILES.has(file.path))) {
@@ -159,6 +184,8 @@ export function evaluateCandidate(candidate) {
   if (!hasOnlyDependabotCommits(commits)) {
     return { state: 'review', reason: 'contains commits not authored by Dependabot' };
   }
+  // Checked before conflicts: rebasing a PR the reviewer rejected only holds the queue.
+  if (qaBlock) return { state: 'review', reason: 'QA reviewer marked this head DO NOT MERGE' };
 
   if (mergeStateStatus === 'DIRTY') return { state: 'conflict', reason: 'branch has merge conflicts' };
   if (behindBy > 0 || mergeStateStatus === 'BEHIND') return { state: 'behind', reason: `branch is ${behindBy || 1} commit(s) behind main` };
@@ -257,9 +284,11 @@ export function nextConflictAction({ comments, headSha, pureDependabotCommits, n
     const latest = requests[0];
     if (now - first.at >= TWO_HOURS_MS) return escalation;
     if (!requests.some((request) => request.acknowledged) && now - latest.at >= ACK_TIMEOUT_MS) {
+      // After the last ignored request, step up now instead of holding the
+      // queue for the rest of the two-hour window.
       return requests.length < MAX_COMMAND_ATTEMPTS
         ? { action: kind, attempt: requests.length + 1, reason: `Dependabot did not acknowledge the ${kind} request, asking again` }
-        : { action: 'wait', reason: `Dependabot has not acknowledged ${requests.length} ${kind} requests` };
+        : { ...escalation, reason: `Dependabot ignored ${requests.length} ${kind} requests` };
     }
     return { action: 'wait', reason: `waiting for requested ${kind}` };
   };
@@ -398,6 +427,7 @@ async function loadCandidateData(repo, pr, baseSha, reviewer) {
     statuses: statusData.statuses || [],
     behindBy: comparison.behind_by || 0,
     qaPass: hasQaPass(view.comments || [], pr.headRefOid, reviewer),
+    qaBlock: hasQaBlock(view.comments || [], pr.headRefOid, reviewer),
     headUpdatedAt: (view.commits || []).at(-1)?.committedDate || pr.updatedAt,
   };
 }
@@ -470,7 +500,9 @@ async function main() {
     const query = `check_name=${encodeURIComponent(review.checkName)}&per_page=100`;
     const checks = ghJson(['api', `repos/${repo}/commits/${pr.headRefOid}/check-runs?${query}`], { allowFailure: true });
     if (!checks) continue;
-    const recovery = reviewRecovery({ review, headSha: pr.headRefOid, checkRuns: checks.check_runs || [] });
+    const recovery = reviewRecovery({
+      review, headSha: pr.headRefOid, checkRuns: checks.check_runs || [], behind: pr.mergeStateStatus === 'BEHIND',
+    });
     console.log(`#${pr.number} review recovery ${recovery.action}: ${recovery.reason}.`);
     if (recovery.action === 'requeue') setQueueState(repo, pr, QUEUED_LABEL);
   }

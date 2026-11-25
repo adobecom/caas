@@ -39,6 +39,10 @@ rebase needs a fresh QA PASS. Any QA result comment from the reviewer wakes the
 controller through `issue_comment`, so a later non-PASS result withdraws a PASS
 promptly; other comments are ignored.
 
+A `**QA result: DO NOT MERGE**` from the reviewer on the current head sends the PR
+to `dependencies-review` before any rebase, so a rejected PR never holds the
+queue slot. A later PASS on that head returns it to the queue as usual.
+
 ## Failed checks
 
 A completed failed, cancelled, timed-out, or skipped build comparison moves the
@@ -56,6 +60,10 @@ that check now passes on the same head, or the head has changed, the PR goes
 back to `dependencies-queued` and must pass every gate again. Policy reviews
 (files outside the manifest, non-Dependabot commits, changed shipped output,
 conflict escalation) still need a person to return the PR to the queue.
+
+A failed `deployment` (the Pages preview, which fails for infrastructure
+reasons) also returns to the queue when the branch is behind `main`: the queue
+rebases it, which gives it a fresh run.
 
 ## Rollout
 
@@ -84,8 +92,14 @@ conflicted, the scheduled controller:
 
 Dependabot confirms a command it accepts with a 👍 reaction, but it sometimes
 drops one silently. If a request has no 👍 after 15 minutes, the controller
-posts it again (up to three times). The two-hour timers count from the first
-request.
+posts it again (up to three times). If all three go unanswered, it steps up
+right away (rebase to recreate, recreate to review) instead of holding the queue
+for the rest of the two hours. The two-hour timers count from the first request.
+
+Each step only happens when the controller runs, and GitHub drops many scheduled
+runs. `dependabot-queue-wake.yml` covers that: while a PR is labelled
+`dependencies-preparing`, it waits 15 minutes, runs the controller, and starts
+its next wait, until nothing is waiting.
 
 GitHub notes that PRs created before automatic rebasing is disabled can continue
 to be rebased automatically for up to 30 days. The active-label gate still keeps
