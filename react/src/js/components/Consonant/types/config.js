@@ -28,6 +28,7 @@ const CollectionType = {
     title: string,
     endpoint: string,
     cardStyle: string,
+    presentation: string,
     totalResultsText: string,
     resultsPerPage: oneOfType(CollectionResultPerPageType),
     totalCardLimit: oneOfType(CollectionTotalCardLimitType),
