@@ -1,0 +1,41 @@
+name: Ordinary PR Safe Autonomy
+
+on:
+  push:
+    branches: [main]
+  workflow_run:
+    workflows: [Pull Request, Review Score Gate, AI Code Review, Agent QA Review, Feature QA Review, Build Output Diff (advisory), Ordinary Automerge Tests]
+    types: [completed]
+  schedule:
+    - cron: '23 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: ordinary-pr-safe-autonomy
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+  checks: read
+  statuses: read
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GITHUB_REPOSITORY: ${{ github.repository }}
+      ORDINARY_AUTOMERGE_MODE: ${{ vars.ORDINARY_AUTOMERGE_MODE }}
+    steps:
+      # Always trusted default-branch code, never workflow_run's PR head.
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node --test .github/automerge/*.test.mjs
+      - run: node .github/automerge/ordinary.mjs
