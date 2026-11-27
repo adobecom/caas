@@ -156,7 +156,25 @@ jobs:
           path: '_site'
           name: github-pages-${{ github.run_attempt }}
 
-      # 8. Deploy the uploaded artifact to GitHub Pages
+      # 8. GitHub lists a new artifact a moment after the upload reports it
+      #    finalized. deploy-pages looks it up immediately and fails with
+      #    "Found 0 artifact(s)" when it is not listed yet, so wait until it is.
+      - name: Wait for the Pages artifact to be listed
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT: github-pages-${{ github.run_attempt }}
+        run: |
+          for i in $(seq 1 30); do
+            count=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts?name=$ARTIFACT" --jq '.total_count')
+            if [ "${count:-0}" -ge 1 ]; then
+              echo "$ARTIFACT is listed (check $i)."
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "::warning::$ARTIFACT was still not listed after 60 seconds; trying the deploy anyway."
+
+      # 9. Deploy the uploaded artifact to GitHub Pages
       - name: Deploy to GitHub Pages (Preview)
         id: deployment
         continue-on-error: true
@@ -165,7 +183,7 @@ jobs:
           artifact_name: github-pages-${{ github.run_attempt }}
           preview: true
 
-      # 9. Pages allows one deployment at a time, so a collision with another
+      # 10. Pages allows one deployment at a time, so a collision with another
       #    deployment is usually gone a minute later. Retry once; the job still
       #    fails if the retry fails.
       - name: Wait for the in-progress Pages deployment
