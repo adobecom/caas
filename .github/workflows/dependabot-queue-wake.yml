@@ -1,0 +1,53 @@
+name: Dependabot Queue Wake
+
+# GitHub drops many scheduled runs, and the controller has no other event to
+# wake it while it waits for Dependabot to rebase or recreate the queue head.
+# Without a wake-up, an ignored request holds the whole queue for hours.
+#
+# While a Dependabot PR is waiting on Dependabot (dependencies-preparing), this
+# waits 15 minutes, runs the controller, and starts its next wait. It stops on
+# its own once nothing is waiting. Only one wait runs at a time.
+on:
+  workflow_run:
+    workflows: [Dependabot Safe Autonomy]
+    types: [completed]
+  schedule:
+    - cron: "7 * * * *"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  pull-requests: read
+
+concurrency:
+  group: dependabot-queue-wake
+  cancel-in-progress: true
+
+jobs:
+  wake:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      GH_TOKEN: ${{ secrets.BOT_TOKEN || secrets.WORKFLOW_TOKEN || secrets.GITHUB_TOKEN }}
+      REPO: ${{ github.repository }}
+      BRANCH: ${{ github.event.repository.default_branch }}
+    steps:
+      - name: Wake the controller while the queue waits on Dependabot
+        run: |
+          waiting() {
+            gh pr list --repo "$REPO" --state open --author app/dependabot \
+              --label dependencies-preparing --json number --jq 'length'
+          }
+          if [ "$(waiting)" = "0" ]; then
+            echo "No Dependabot PR is waiting on Dependabot."
+            exit 0
+          fi
+          sleep 900
+          if [ "$(waiting)" = "0" ]; then
+            echo "The queue moved on while waiting."
+            exit 0
+          fi
+          gh workflow run dependabot-safe-automerge.yml --repo "$REPO" --ref "$BRANCH"
+          # Start the next wait in case the controller's completion does not
+          # trigger this workflow (workflow_run chains are limited).
+          gh workflow run dependabot-queue-wake.yml --repo "$REPO" --ref "$BRANCH"

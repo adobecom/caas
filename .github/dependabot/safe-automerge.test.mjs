@@ -5,6 +5,7 @@ import {
   disableAutoMerge,
   evaluateCandidate,
   failedCheckReview,
+  hasQaBlock,
   hasQaPass,
   nextConflictAction,
   qaHeadSha,
@@ -184,7 +185,12 @@ test('asks Dependabot again when it ignores a request, then waits for the normal
   assert.equal(nextConflictAction({ ...base, comments: [request(20, 'rebase', ACK)] }).action, 'wait');
   const third = nextConflictAction({ ...base, comments: [request(50), request(20)] });
   assert.deepEqual([third.action, third.attempt], ['rebase', 3]);
-  assert.equal(nextConflictAction({ ...base, comments: [request(80), request(50), request(20)] }).action, 'wait');
+  // Three ignored requests: step up now instead of waiting out the two hours.
+  assert.equal(nextConflictAction({ ...base, comments: [request(50), request(30), request(10)] }).action, 'wait');
+  const ignored = nextConflictAction({ ...base, comments: [request(80), request(50), request(20)] });
+  assert.deepEqual([ignored.action, ignored.reason], ['recreate', 'Dependabot ignored 3 rebase requests']);
+  const ignoredRecreate = nextConflictAction({ ...base, comments: [request(200), request(80, 'recreate'), request(50, 'recreate'), request(20, 'recreate')] });
+  assert.equal(ignoredRecreate.action, 'review');
   // Escalation still counts from the first request, not the latest retry.
   assert.equal(nextConflictAction({ ...base, comments: [request(130), request(20)] }).action, 'recreate');
   const recreate = nextConflictAction({ ...base, comments: [request(200), request(20, 'recreate')] });
@@ -384,4 +390,26 @@ test('recognises the QA reviewer\'s real plain-SHA comments and never the base S
     assert.equal(hasQaPass([{ author: { login: 'sanrai' }, createdAt: '2026-11-09T19:00:00Z', body }], head), true);
     assert.equal(hasQaPass([{ author: { login: 'sanrai' }, body }], '59b0b92bcb892fcdb304c12316f60f0f3a94d616'), false);
   }
+});
+
+test('a DO NOT MERGE from the reviewer on this head sends the PR to review before any rebase', () => {
+  const qa = (result, head = SHA, login = 'sanrai', at = '2026-11-24T18:32:00Z') => ({
+    author: { login }, createdAt: at, body: `**QA result: ${result}**\n\n- Head ${head}, base (main) ${'b'.repeat(40)}`,
+  });
+  assert.equal(hasQaBlock([qa('DO NOT MERGE')], SHA), true);
+  assert.equal(hasQaBlock([qa('DO NOT MERGE', 'f'.repeat(40))], SHA), false);
+  assert.equal(hasQaBlock([qa('DO NOT MERGE', SHA, 'someone-else')], SHA), false);
+  assert.equal(hasQaBlock([qa('DO NOT MERGE'), qa('PASS', SHA, 'sanrai', '2026-11-24T19:00:00Z')], SHA), false);
+  assert.equal(hasQaBlock([qa('PASS')], SHA), false);
+  const blocked = evaluateCandidate(candidate({ qaBlock: true, behindBy: 10, mergeStateStatus: 'BEHIND' }));
+  assert.deepEqual(blocked, { state: 'review', reason: 'QA reviewer marked this head DO NOT MERGE' });
+});
+
+test('a failed preview deploy returns to the queue when the branch is behind main', () => {
+  const review = { headSha: SHA, checkName: 'deployment' };
+  const failed = [{ id: 1, name: 'deployment', status: 'completed', conclusion: 'failure' }];
+  assert.equal(reviewRecovery({ review, headSha: SHA, checkRuns: failed, behind: true }).action, 'requeue');
+  assert.equal(reviewRecovery({ review, headSha: SHA, checkRuns: failed, behind: false }).action, 'keep');
+  const build = { headSha: SHA, checkName: 'build-output-diff' };
+  assert.equal(reviewRecovery({ review: build, headSha: SHA, checkRuns: [{ ...failed[0], name: 'build-output-diff' }], behind: true }).action, 'keep');
 });
