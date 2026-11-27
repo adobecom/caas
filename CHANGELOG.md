@@ -1,5 +1,12 @@
 
 
+## [0.69.31](https://github.com/adobecom/caas/compare/0.69.30...0.69.31) (2026-11-27)
+
+
+### Bug Fixes
+
+* **MWPW-213303:** keep the Dependabot queue moving without manual help ([#717](https://github.com/adobecom/caas/issues/717)) ([8a31816](https://github.com/adobecom/caas/commit/8a3181647251fb06a436421bb51d206bee827334))
+
 ## [0.69.30](https://github.com/adobecom/caas/compare/0.69.29...0.69.30) (2026-11-27)
 
 ## [0.69.29](https://github.com/adobecom/caas/compare/0.69.28...0.69.29) (2026-11-25)
